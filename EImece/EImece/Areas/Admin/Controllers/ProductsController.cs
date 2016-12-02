@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
             var products = ProductRepository.GetAll().ToList();
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(r => r.Name.ToLower().Contains(search)).ToList();
+                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search)).ToList();
             }
             return View(products);
         }
