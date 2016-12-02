@@ -1,0 +1,15 @@
+﻿@model IEnumerable<EImece.Domain.Entities.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+ 
+
+@foreach (var item in Model)
+{
+    <div>
+        @Html.DisplayFor(modelItem => item)
+    </div>
+}

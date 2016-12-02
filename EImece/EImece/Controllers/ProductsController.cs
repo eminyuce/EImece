@@ -11,7 +11,8 @@ namespace EImece.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            return View();
+            var products = ProductRepository.GetAll().ToList();
+            return View(products);
         }
     }
 }

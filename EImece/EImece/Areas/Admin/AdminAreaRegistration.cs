@@ -17,7 +17,8 @@ namespace EImece.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional },
+                      null, new[] { "EImece.Areas.Admin.Controllers" }
             );
         }
     }
