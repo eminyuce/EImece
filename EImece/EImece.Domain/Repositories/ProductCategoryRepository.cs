@@ -15,6 +15,33 @@ namespace EImece.Domain.Repositories
         {
         }
 
+        //Recursion method for recursively get all child nodes
+        private void GetTreeview(List<ProductCategory> list, ProductCategory current, ref List<ProductCategory> returnList)
+        {
+            //get child of current item
+            var childs = list.Where(a => a.ParentId == current.Id).ToList();
+            current.Childrens = new List<ProductCategory>();
+            current.Childrens.AddRange(childs);
+            foreach (var i in childs)
+            {
+                GetTreeview(list, i, ref returnList);
+            }
+        }
+
+        public List<ProductCategory> BuildTree()
+        {
+            List<ProductCategory> list = GetAll().ToList();
+            List<ProductCategory> returnList = new List<ProductCategory>();
+            //find top levels items
+            var topLevels = list.Where(a => a.ParentId == 0 || a.ParentId == null).ToList();
+            returnList.AddRange(topLevels);
+            foreach (var i in topLevels)
+            {
+                GetTreeview(list, i, ref returnList);
+            }
+            return returnList;
+        }
+
         public void Dispose()
         {
             Dispose(true);

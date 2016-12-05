@@ -152,6 +152,12 @@ namespace EImece.Areas.Admin.Controllers
             return View(product);
 
         }
+        public ActionResult GetCategories()
+        {
+            List<ProductCategory> treelist = ProductCategoryRepository.BuildTree();
+            return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+       
 
     }
 }

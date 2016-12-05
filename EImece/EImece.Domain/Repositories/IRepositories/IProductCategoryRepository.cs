@@ -10,5 +10,6 @@ namespace EImece.Domain.Repositories.IRepositories
 
     public interface IProductCategoryRepository : IBaseRepository<ProductCategory, int>, IDisposable
     {
+        List<ProductCategory> BuildTree();
     }
 }

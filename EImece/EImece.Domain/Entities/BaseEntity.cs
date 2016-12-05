@@ -16,5 +16,7 @@ namespace EImece.Domain.Entities
         public bool IsActive { get; set; }
         public int Position { get; set; }
 
+
+
     }
 }

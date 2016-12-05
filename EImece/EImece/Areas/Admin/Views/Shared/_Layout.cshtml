@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body ng-app="myApp" class="ng-cloak">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -34,7 +34,14 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+ 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <link href="~/Content/css/angular.treeview.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular.treeview.min.js"></script>
+    <script src="~/Scripts/ng-script/MyApp.js"></script>
+    <script src="~/Scripts/ng-script/Directive.js"></script>
 </body>
 </html>
