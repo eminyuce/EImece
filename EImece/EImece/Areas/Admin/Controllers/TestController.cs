@@ -43,7 +43,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
 
             //sort
-            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDir))
             {
                 //for make sort simpler we will add Syste.Linq.Dynamic reference
                 v = v.OrderBy(sortColumn + " " + sortColumnDir);

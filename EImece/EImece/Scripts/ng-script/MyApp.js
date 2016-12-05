@@ -19,11 +19,17 @@
         }
     });
 
+    var titleHtml = '<input type="checkbox" ng-model="showCase.selectAll" ng-click="showCase.toggleAll(showCase.selectAll, showCase.selected)">';
 
     var app = angular.module('myApp', ['datatables']);
     app.controller('homeCtrl', ['$scope', '$http', 'DTOptionsBuilder', 'DTColumnBuilder',
         function ($scope, $http, DTOptionsBuilder, DTColumnBuilder) {
             $scope.dtColumns = [
+                 DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
+            .renderWith(function (data, type, full, meta) {
+                vm.selected[full.id] = false;
+                return '<input type="checkbox" ng-model="showCase.selected[' + data.id + ']" ng-click="showCase.toggleOne(showCase.selected)">';
+            }),
                 //here We will add .withOption('name','column_name') for send column name to the server 
                 DTColumnBuilder.newColumn("Id", "ID").withOption('name', 'Id'),
                 DTColumnBuilder.newColumn("Name", "Name").withOption('name', 'Name'),
