@@ -12,5 +12,8 @@ namespace EImece.Controllers
     {
         [Inject]
         public IProductRepository ProductRepository { get; set; }
+
+        [Inject]
+        public IProductCategoryRepository ProductCategoryRepository { get; set; }
     }
 }

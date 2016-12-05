@@ -93,13 +93,16 @@
     <Compile Include="Entities\BaseContent.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="GenericRepositories\BaseEntityRepository.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IRepositories\IProductCategoryRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductRepository.cs" />
+    <Compile Include="Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>

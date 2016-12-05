@@ -68,10 +68,7 @@ namespace EImece.Domain.GenericRepositories
                         {
                             baseContent.IsActive = item.IsActive;
                         }
-                        else if (checkbox.Equals("mainpage", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            baseContent.MainPage = item.IsActive;
-                        }
+                        
                     }
                     repository.Edit(t);
                 }

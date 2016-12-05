@@ -67,6 +67,7 @@ namespace EImece.App_Start
         {
             kernel.Bind<IEImeceContext>().To<EImeceContext>().WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
             kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
+            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
         }        
     }
 }
