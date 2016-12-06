@@ -6,6 +6,16 @@
 
 <h2>Index</h2>
 
-<div ng-controller="homeCtrl">
-    <table id="entry-grid" datatable="" dt-options="dtOptions" dt-columns="dtColumns" class="table table-hover table-bordered table-condensed table-striped" ></table>
+@*<div ng-controller="productController">
+    <table id="entry-grid" datatable=""
+            dt-options="showCase.dtOptions"
+            dt-columns="showCase.dtColumns"
+            dt-instance="showCase.dtInstance"  
+           class="table table-hover table-bordered table-condensed table-striped" ></table>
+</div>*@
+
+<div ng-controller="BindAngularDirectiveCtrl as showCase">
+    <p class="text-danger"><strong>{{ showCase.message }}</strong></p>
+    <br>
+    <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>
 </div>
