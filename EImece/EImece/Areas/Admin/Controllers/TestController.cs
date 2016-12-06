@@ -48,6 +48,10 @@ namespace EImece.Areas.Admin.Controllers
                 //for make sort simpler we will add Syste.Linq.Dynamic reference
                 v = v.OrderBy(sortColumn + " " + sortColumnDir);
             }
+            else
+            {
+                v = v.OrderBy(r => r.Id);
+            }
 
             recordsTotal = v.Count();
                 allCustomer = v.Skip(skip).Take(pageSize).ToList();

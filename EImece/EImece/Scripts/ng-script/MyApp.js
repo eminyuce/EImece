@@ -24,12 +24,27 @@
     var app = angular.module('myApp', ['datatables']);
     app.controller('homeCtrl', ['$scope', '$http', 'DTOptionsBuilder', 'DTColumnBuilder',
         function ($scope, $http, DTOptionsBuilder, DTColumnBuilder) {
+            $scope.edit = function (id) {
+                console.log(id);
+            }
             $scope.dtColumns = [
                  DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
             .renderWith(function (data, type, full, meta) {
-                vm.selected[full.id] = false;
-                return '<input type="checkbox" ng-model="showCase.selected[' + data.id + ']" ng-click="showCase.toggleOne(showCase.selected)">';
+                return '<input type="checkbox" ng-model="showCase.selected[' + data.Id + ']" ng-click="showCase.toggleOne(showCase.selected)">';
             }),
+               DTColumnBuilder.newColumn(null).withTitle('Actions').notSortable()
+                        .renderWith(function (data, type, full, meta) {
+
+                            return '<button class="btn btn-primary" ng-click="edit(' + data.Id + ')">' +
+                                '   <i class="fa fa-eye"></i>' + "View" +
+                                '</button>&nbsp;' + '<button class="btn btn-warning" ng-click="update(' + data.Id + ')">' +
+                                '   <i class="fa fa-clipboard"></i>' + "Clone" +
+                                '</button>&nbsp;' +
+                                '<button class="btn btn-primary" ng-click="delete(' + data.Id + ')">' +
+                                '   <i class="fa fa-refresh"></i>' + "Update"
+                            '</button>';
+
+                        }),
                 //here We will add .withOption('name','column_name') for send column name to the server 
                 DTColumnBuilder.newColumn("Id", "ID").withOption('name', 'Id'),
                 DTColumnBuilder.newColumn("Name", "Name").withOption('name', 'Name'),
