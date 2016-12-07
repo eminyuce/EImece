@@ -234,6 +234,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestController.cs" />
@@ -322,6 +323,10 @@
     <Content Include="Areas\Admin\Views\ProductCategories\Delete.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Areas\Admin\Views\Test\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\Details.cshtml" />
     <None Include="Properties\PublishProfiles\EImecePublishProfile.pubxml" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />

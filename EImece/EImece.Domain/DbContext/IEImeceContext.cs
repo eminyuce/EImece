@@ -13,5 +13,6 @@ namespace EImece.Domain.DbContext
     {
         DbSet<Product> Products { get; set; }
         DbSet<ProductCategory> ProductCategories { get; set; }
+        DbSet<Menu> Menus { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace EImece.Domain.DbContext
             this.Database.CommandTimeout = int.MaxValue;
         }
 
+        public DbSet<Menu> Menus { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
 

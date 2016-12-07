@@ -15,5 +15,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public IProductCategoryRepository ProductCategoryRepository { get; set; }
+
+
+        [Inject]
+        public IMenuRepository MenuRepository { get; set; }
     }
 }
