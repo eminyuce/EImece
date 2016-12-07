@@ -42,7 +42,9 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <b> {{ngTree.currentNode.Name}}</b>
+
+                        <b> {{ngTree.currentNode.Name}} </b>
+
                         <input value="{{ngTree.currentNode.Id }}" type="hidden" name="ParentId" />
                     </div>
                 </div>

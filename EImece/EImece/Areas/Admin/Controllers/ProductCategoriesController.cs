@@ -60,6 +60,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = ProductCategoryRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
+
             }
 
             return View(content);

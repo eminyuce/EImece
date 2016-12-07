@@ -1,10 +1,11 @@
 ﻿(function () {
 
     //angular module
-    var myApp = angular.module('myApp', ['angularTreeview']);
+    var myApp = angular.module('myApp', ['angularTreeview', 'datatables']);
+  //  var myApp = angular.module('myApp', []);
 
     //controller
-    myApp.controller('myController', function ($scope, $http) {
+    myApp.controller('treeViewController', function ($scope, $http) {
         fetch();
         function fetch() {
             $http({
@@ -13,6 +14,9 @@
             }).then(function successCallback(response) {
                 console.log(response.data.treeList);
                 $scope.ProductCategoryList = response.data.treeList;
+                console.log($scope);
+                console.log($http);
+                //$("#selectedTreeItem").text("test");
             }, function errorCallback(response) {
                 console.log(response);
             });
@@ -21,8 +25,8 @@
 
 
   
-    var app2 = angular.module('myApp', ['datatables']);
-    app2.controller('BindAngularDirectiveCtrl', generateGrid);
+   // var app2 = angular.module('myApp', ['datatables']);
+    myApp.controller('BindAngularDirectiveCtrl', generateGrid);
 
     function generateGrid($scope, $compile, DTOptionsBuilder, DTColumnBuilder) {
         var vm = this;
@@ -103,7 +107,7 @@
         }
         function checkboxesHtml(data, type, full, meta) {
             vm.selected[data.Id] = false;
-            return '<input type="checkbox" ng-model="showCase.selected[' + data.Id + ']" ng-click="showCase.toggleOne(showCase.selected)">';
+            return '<input type="checkbox" name="selectedItems" ng-model="showCase.selected[' + data.Id + ']" ng-click="showCase.toggleOne(showCase.selected)">';
         }
         function toggleAll(selectAll, selectedItems) {
             console.log("test");
