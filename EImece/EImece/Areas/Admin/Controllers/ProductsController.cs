@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new Product();
-
+            var productCategory = new ProductCategory();
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -60,8 +60,9 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = ProductRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
+                productCategory = ProductCategoryRepository.GetSingle(content.ProductCategoryId);
             }
-
+            ViewBag.ProductCategory = productCategory;
             return View(content);
         }
 

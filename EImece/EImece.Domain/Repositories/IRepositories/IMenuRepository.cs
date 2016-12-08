@@ -9,5 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IMenuRepository : IBaseRepository<Menu, int>, IDisposable
     {
+        List<Menu> BuildTree();
     }
 }

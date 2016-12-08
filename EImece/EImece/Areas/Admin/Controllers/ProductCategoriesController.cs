@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new ProductCategory();
-
+            var parentCategory = new ProductCategory();
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -60,9 +60,14 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = ProductCategoryRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
+                if (content.ParentId.HasValue)
+                {
+                    parentCategory = ProductCategoryRepository.GetSingle(content.ParentId.Value);
+                }
+             
 
             }
-
+            ViewBag.ParentCategory = parentCategory;
             return View(content);
         }
 

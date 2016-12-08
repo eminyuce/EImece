@@ -19,7 +19,7 @@ namespace EImece.Domain.Repositories
         private void GetTreeview(List<ProductCategory> list, ProductCategory current, ref List<ProductCategory> returnList)
         {
             //get child of current item
-            var childs = list.Where(a => a.ParentId == current.Id).ToList();
+            var childs = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
             current.Childrens = new List<ProductCategory>();
             current.Childrens.AddRange(childs);
             foreach (var i in childs)
@@ -33,7 +33,7 @@ namespace EImece.Domain.Repositories
             List<ProductCategory> list = GetAll().ToList();
             List<ProductCategory> returnList = new List<ProductCategory>();
             //find top levels items
-            var topLevels = list.Where(a => a.ParentId == 0 || a.ParentId == null).ToList();
+            var topLevels = list.Where(a => a.ParentId == 0 || a.ParentId == null).OrderBy(r => r.Position).ToList();
             returnList.AddRange(topLevels);
             foreach (var i in topLevels)
             {

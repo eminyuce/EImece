@@ -1,12 +1,13 @@
 ﻿@model EImece.Domain.Entities.Product
-
+@using EImece.Domain.Entities;
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var productCategory = (ProductCategory) ViewBag.ProductCategory;
 }
 
 <h2>SaveOrEdit</h2>
-<div ng-controller="treeViewController as treeView"  class="row" style="padding:20px;">
+<div ng-controller="ProductCategoriesTreeController as treeView" class="row" style="padding:20px;">
 
     <div class="col-md-3">
         <div data-angular-treeview="true"
@@ -14,6 +15,7 @@
              data-tree-model="ProductCategoryList"
              data-node-id="Id"
              data-node-label="Name"
+             data-ng-click="selectNode(ngTree.currentNode.Id)"
              data-node-children="Childrens">
         </div>
     </div>
@@ -95,13 +97,16 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <span id="selectedTreeItem">
-                             {{ngTree.currentNode.Name}}
-                        </span>
+                        @if (productCategory.Id > 0)
+                        {
+                              @productCategory.Name
+
+                            @Html.HiddenFor(r=>r.ProductCategoryId)
+                        }
+                        <b> {{ngTree.currentNode.Name}} </b>
                         <input value="{{ngTree.currentNode.Id }}" type="hidden" name="ProductCategoryId" />
                     </div>
                 </div>
-
 
 
                 <div class="form-group">

@@ -49,6 +49,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new Menu();
 
+            var parentMenu = new Menu();
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -60,8 +61,13 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = MenuRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
+                if (content.ParentId.HasValue)
+                {
+                    parentMenu = MenuRepository.GetSingle(content.ParentId.Value);
+                }
 
             }
+            ViewBag.ParentMenu = parentMenu;
 
             return View(content);
         }
@@ -152,6 +158,12 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(product);
 
+        }
+
+        public ActionResult GetMenus()
+        {
+            List<Menu> treelist = MenuRepository.BuildTree();
+            return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }
 }

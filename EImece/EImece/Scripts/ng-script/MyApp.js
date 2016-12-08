@@ -1,28 +1,47 @@
 ﻿(function () {
 
     //angular module
-    var myApp = angular.module('myApp', ['angularTreeview', 'datatables']);
+    var myApp = angular.module('myApp', ['angularTreeview', 'datatables', 'ngTable', 'ngResource']);
   //  var myApp = angular.module('myApp', []);
 
     //controller
-    myApp.controller('treeViewController', function ($scope, $http) {
+    myApp.controller('ProductCategoriesTreeController', function ($scope, $http) {
         fetch();
         function fetch() {
             $http({
                 method: 'GET',
                 url: '/admin/ProductCategories/GetCategories'
             }).then(function successCallback(response) {
-                console.log(response.data.treeList);
                 $scope.ProductCategoryList = response.data.treeList;
-                console.log($scope);
-                console.log($http);
-                //$("#selectedTreeItem").text("test");
+                console.log($scope.ngTree);
             }, function errorCallback(response) {
                 console.log(response);
             });
         }
+        $scope.selectNode = function (id) {
+            console.log(id);
+            $("#selectedTreeId").val(id);
+            myApp.controller('BindAngularDirectiveCtrl', generateGrid);
+        }
     });
 
+    //controller
+    myApp.controller('MenusTreeController', function ($scope, $http) {
+        fetch();
+        function fetch() {
+            $http({
+                method: 'GET',
+                url: '/admin/Menus/GetMenus'
+            }).then(function successCallback(response) {
+                $scope.MenuList = response.data.treeList;
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+        }
+        $scope.selectNode = function (val) {
+            console.log(val);
+        }
+    });
 
   
    // var app2 = angular.module('myApp', ['datatables']);
@@ -39,10 +58,11 @@
         vm.selectAll = false;
         vm.toggleAll = toggleAll;
         vm.toggleOne = toggleOne;
-
+        var selectedTreeId = $("#selectedTreeId").val();
+        var ajaxUrl = "/test/getdata?id="+selectedTreeId;
         vm.dtOptions = DTOptionsBuilder.newOptions().withOption('ajax', {
             dataSrc: "data",
-            url: "/test/getdata",
+            url: ajaxUrl,
             type: "POST"
         })
                     .withOption('processing', true) //for show progress bar
@@ -130,5 +150,45 @@
         }
         console.log(vm);
     }
+
+
+     
+ 
+    
+    myApp.controller('CustomersController', 
+        ['$scope', '$http',  "$resource", 'NgTableParams', function ($scope, $http, $resource, NgTableParams) {
+
+
+
+
+            /* jshint validthis:true */
+            var vm = this;
+
+            vm.search = '';
+
+
+            var Api = $resource("/test/getproducts");
+            vm.tableParams = new NgTableParams({
+                pageNo: 1,
+                pageSize: 10,
+                sort: {
+                    Name: 'asc'
+                }
+            }, {
+                getData: function ( params) {
+                    // ajax request to api
+                    return Api.get(params.url()).$promise.then(function (data) {
+                        console.log(data);
+                        //
+                      
+                        params.total(data.TotalRecordCount); // recal. page nav controls
+                        return data.Items;
+                    });
+                }
+            });
+
+ 
+        }]);
+
 })();
 

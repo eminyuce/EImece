@@ -303,6 +303,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\angular.treeview.js" />
@@ -321,13 +322,14 @@
     <Content Include="Areas\Admin\Views\ProductCategories\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\Delete.cshtml" />
-    <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Areas\Admin\Views\Test\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Test\Index2.cshtml" />
     <None Include="Properties\PublishProfiles\EImecePublishProfile.pubxml" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -344,8 +346,11 @@
     <Content Include="Scripts\ng-script\Directive.js" />
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\ng-script\MyApp.js" />
+    <Content Include="Scripts\ng-table.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\restangular.min.js" />
+    <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -387,7 +392,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\BaseAdmin\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\ProductCategories\" />
   </ItemGroup>

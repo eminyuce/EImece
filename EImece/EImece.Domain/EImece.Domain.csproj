@@ -103,7 +103,9 @@
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="GenericRepositories\BaseEntityRepository.cs" />
     <Compile Include="Helpers\Convert.cs" />
+    <Compile Include="Helpers\QuerySortingExtensions.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
+    <Compile Include="Models\HelperModels\PagedResult.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

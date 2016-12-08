@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,5 +15,7 @@ namespace EImece.Domain.Entities
         public Boolean Static { get; set; }
         public   string Link { get; set; }
         public Boolean LinkIsActive { get; set; }
+        [NotMapped]
+        public List<Menu> Childrens { get; set; }
     }
 }

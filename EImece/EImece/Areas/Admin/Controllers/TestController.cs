@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
+using EImece.Domain.Models.HelperModels;
+using EImece.Domain.Helpers;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -15,7 +17,11 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
-        public ActionResult getData()
+        public ActionResult Index2()
+        {
+            return View();
+        }
+        public ActionResult getData(int id=0)
         {
             //Datatable parameter
             var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -28,8 +34,8 @@ namespace EImece.Areas.Admin.Controllers
             //filter parameter
             var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
             List<Product> products = new List<Product>();
-            int pageSize = length != null ? Convert.ToInt32(length) : 0;
-            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int pageSize = length.ToInt();
+            int skip = start.ToInt();
             int recordsTotal = 0;
             //Database query
             var v = ProductRepository.GetAll();
@@ -57,6 +63,44 @@ namespace EImece.Areas.Admin.Controllers
                 products = v.Skip(skip).Take(pageSize).ToList();
 
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = products });
+        }
+
+        public ActionResult getproducts(int pageNo = 1, int pageSize = 50,  string[] sort = null, string search = null)
+        {
+            // Determine the number of records to skip
+            int skip = (pageNo - 1) * pageSize;
+
+            IQueryable<Product> queryable = ProductRepository.GetAll();
+
+            // Apply the search
+            if (!String.IsNullOrEmpty(search))
+            {
+                string[] searchElements = search.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string searchElement in searchElements)
+                {
+                    string element = searchElement;
+                    queryable = queryable.Where(c => c.Name.Contains(element) || c.ProductCode.Contains(element));
+                }
+            }
+
+            // Add the sorting
+            if (sort != null)
+                queryable = queryable.ApplySorting(sort);
+            else
+                queryable = queryable.OrderBy(c => c.Id);
+
+            // Get the total number of records
+            int totalItemCount = queryable.Count();
+
+            // Retrieve the customers for the specified page
+            var prodocts = queryable
+                .Skip(skip)
+                .Take(pageSize)
+                .ToList();
+
+            // Return the paged results
+            var item = new PagedResult<Product>(prodocts, pageNo, pageSize, totalItemCount);
+            return Json(item, JsonRequestBehavior.AllowGet);
         }
     }
 }

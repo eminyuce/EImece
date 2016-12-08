@@ -6,7 +6,7 @@
 }
 
 <h2>Index</h2>
-<div ng-controller="treeViewController" class="row" style="padding:20px;">
+<div ng-controller="ProductCategoriesTreeController" class="row" style="padding:20px;">
 
     <div class="col-md-3">
         <div data-angular-treeview="true"
@@ -14,6 +14,7 @@
              data-tree-model="ProductCategoryList"
              data-node-id="Id"
              data-node-label="Name"
+             data-ng-click="selectNode(ngTree.currentNode.Id)"
              data-node-children="Childrens">
         </div>
     </div>
@@ -23,7 +24,7 @@
         <p>
             @Html.ActionLink("Create New", "SaveOrEdit")
         </p>
-        <table class="table">
+        <table class="table table-bordered table-hover table-responsive table-responsive">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Name)
@@ -40,15 +41,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Position)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageState)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
-                </th>
+             
                 <th></th>
             </tr>
 
@@ -71,15 +64,6 @@
                         @Html.DisplayFor(modelItem => item.Position)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ImageState)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ImageUrl)
-                    </td>
-                    <td>
                         @Html.ActionLink("Edit", "SaveOrEdit", new { id = item.Id }) |
                         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id })
@@ -89,4 +73,4 @@
 
         </table>
     </div>
-<</div>
+</div>
