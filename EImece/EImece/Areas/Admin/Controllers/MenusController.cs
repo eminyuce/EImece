@@ -20,6 +20,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 menus = menus.Where(r => r.Name.ToLower().Contains(search)).ToList();
             }
+
+            ViewBag.Tree = CreateMenuTreeViewDataList();
             return View(menus);
         }
 
@@ -48,7 +50,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new Menu();
-
+            ViewBag.Tree = CreateMenuTreeViewDataList();
             var parentMenu = new Menu();
             if (id == 0)
             {
@@ -81,6 +83,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                ViewBag.Tree = CreateMenuTreeViewDataList();
                 if (ModelState.IsValid)
                 {
 

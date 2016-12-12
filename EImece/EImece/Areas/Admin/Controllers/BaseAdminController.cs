@@ -22,7 +22,19 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IMenuRepository MenuRepository { get; set; }
 
-      
+
+        protected List<Node> CreateMenuTreeViewDataList()
+        {
+            List<Node> _lstTreeNodes = new List<Node>();
+            var menus = MenuRepository.GetAll().ToList();
+            foreach (var p in menus)
+            {
+                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId.HasValue ? p.ParentId.Value.ToStr() : String.Empty });
+            }
+
+            return _lstTreeNodes;
+        }
+
         protected List<Node> CreateProductCategoryTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();

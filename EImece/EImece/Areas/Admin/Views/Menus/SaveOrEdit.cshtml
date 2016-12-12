@@ -8,12 +8,6 @@
     var parentMenu = (Menu)ViewBag.ParentMenu;
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jquery")
-}
-
-
 
 
 <h2>SaveOrEdit</h2>
@@ -46,7 +40,7 @@ console.log(e);
 
         @using (Html.BeginForm())
         {
-        @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
                 <h4>Menu</h4>
@@ -113,22 +107,17 @@ console.log(e);
                     @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @if (Model.ParentId.HasValue && Model.ParentId > 0)
-                {
-
-                            @Html.HiddenFor(model => model.ParentId)
-                            if (parentMenu.Id > 0)
-                            {
-                                <span>
-                                    @parentMenu.Name
-                                </span>
-                            }
+                        {
+                            <span  id="ParentName">
+                                @parentMenu.Name
+                            </span>
                         }
                         else
                         {
-                            
-                            <b> {{ngTree.currentNode.Name}} </b>
-                            <input value="{{ngTree.currentNode.Id }}" type="hidden" name="ParentId" />
+                            <span id="ParentName">
+                            </span>
                         }
+                        @Html.HiddenFor(model => model.ParentId)
                     </div>
                 </div>
 

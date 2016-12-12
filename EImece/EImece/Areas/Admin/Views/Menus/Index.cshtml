@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<EImece.Domain.Entities.Menu>
+@using SharkDev.MVC
 
 @{
     ViewBag.Title = "Index";
@@ -10,14 +11,23 @@
 <div ng-controller="MenusTreeController" class="row" style="padding:20px;">
 
     <div class="col-md-3">
-        <div data-angular-treeview="true"
-             data-tree-id="ngTree"
-             data-tree-model="MenuList"
-             data-node-id="Id"
-             data-node-label="Name"
-             data-ng-click="selectNode(ngTree.currentNode.Id)"
-             data-node-children="Childrens">
-        </div>
+
+        @Html.SharkDev().TreeView(settings =>
+    {
+        settings.Id = "treeViewContainer";
+        settings.Header.Text = "Tree root - Animal";
+        settings.Header.Visible = false;
+        settings.Header.Expanded = true;
+        settings.ClientHandlers.ContentSelect = "function (e) { console.log(e); }";
+        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+        settings.Height = 300;
+        settings.Width = 270;
+        settings.DataOnClient = true;
+    }).GetContent(ViewBag.Tree)
+
+        <span id="treeClickContainer"></span>
+
+
     </div>
     <div class="col-md-9">
 
