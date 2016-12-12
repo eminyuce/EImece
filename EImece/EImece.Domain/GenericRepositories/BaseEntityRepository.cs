@@ -40,46 +40,8 @@ namespace EImece.Domain.GenericRepositories
         }
 
 
-
-
-
         #region GenericMethods
-
-
-        public static void ChangeGridBaseContentOrderingOrState<T>(IBaseRepository<T, int> repository, List<OrderingItem> values, String checkbox = "") where T : class, IEntity<int>
-        {
-            try
-            {
-                foreach (OrderingItem item in values)
-                {
-                    var t = repository.GetSingle(item.Id);
-                    var baseContent = t as BaseContent;
-                    if (baseContent != null)
-                    {
-                        if (String.IsNullOrEmpty(checkbox))
-                        {
-                            baseContent.Position = item.Position;
-                        }
-                        else if (checkbox.Equals("imagestate", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            baseContent.ImageState = item.IsActive;
-                        }
-                        else if (checkbox.Equals("state", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            baseContent.IsActive = item.IsActive;
-                        }
-                        
-                    }
-                    repository.Edit(t);
-                }
-                repository.Save();
-            }
-            catch (Exception exception)
-            {
-                Logger.Error(exception, "ChangeGridOrderingOrState<T> :" + exception.StackTrace, String.Join(",", values));
-            }
-        }
-
+        
 
         public static void ChangeGridBaseEntityOrderingOrState<T>(IBaseRepository<T, int> repository, List<OrderingItem> values, String checkbox = "") where T : class, IEntity<int>
         {
@@ -98,6 +60,22 @@ namespace EImece.Domain.GenericRepositories
                         else if (checkbox.Equals("state", StringComparison.InvariantCultureIgnoreCase))
                         {
                             baseContent.IsActive = item.IsActive;
+                        }
+                        else if (checkbox.Equals("mainpage", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if(baseContent is Product)
+                            {
+                                var product = baseContent as Product;
+                                product.MainPage = item.IsActive;
+                            }
+                        }
+                        else if (checkbox.Equals("imagestate", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (baseContent is BaseContent)
+                            {
+                                var product = baseContent as BaseContent;
+                                product.ImageState = item.IsActive;
+                            }
                         }
 
                     }

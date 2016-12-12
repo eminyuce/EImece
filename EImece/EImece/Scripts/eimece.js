@@ -3,6 +3,66 @@
 }
 
 $(document).ready(function () {
+
+    function OrderingItem() {
+        var item = this;
+        item.Id = "";
+        item.Position = "";
+        return item;
+    }
+    function GetSelectedOrderingValues() {
+        var itemArray = new Array();
+        var i = 0;
+        $("input[name=gridOrdering]").each(function () {
+            var id = $(this).attr("gridkey-id");
+            //var m = $("input[name=checkboxGrid]").find('[gridkey-id='+id+']').is(':checked');
+            //if (m) {
+            var item = new OrderingItem();
+            item.Id = id;
+            item.Position = $(this).val();
+            itemArray[i++] = item;
+            //}
+        });
+
+        var jsonRequest = JSON.stringify({ "values": itemArray });
+        return jsonRequest;
+    }
+    $("#DeleteAll").click(function () {
+        console.log("DeleteAll is clicked.");
+        var postData = GetSelectedCheckBoxValues();
+        var parsedPostData = jQuery.parseJSON(postData);
+        if (parsedPostData.values.length > 0) {
+            var tableName = $("[data-gridname]").attr("data-gridname");
+            console.log("Delete" + tableName + "Item");
+            ajaxMethodCall(postData, "/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
+        }
+    });
+    $("#OrderingAll").click(function () {
+        console.log("OrderingAll is clicked.");
+        var postData = GetSelectedOrderingValues();
+        console.log(postData);
+        var tableName = $("[data-gridname]").attr("data-gridname");
+        ajaxMethodCall(postData, "/Ajax/Change" + tableName + "OrderingOrState", changeOrderingSuccess);
+    });
+
+    function GetSelectedStateValues(checkboxName, state) {
+        var itemArray = new Array();
+        var i = 0;
+        $('span[name=' + checkboxName + ']').each(function () {
+            var id = $(this).attr("gridkey-id");
+            var m = $('input[name="checkboxGrid"]').filter('[gridkey-id="' + id + '"]').is(':checked');
+            if (m) {
+                var item = new OrderingItem();
+                item.Id = id;
+                item.Ordering = 0;
+                item.State = state;
+                itemArray[i++] = item;
+            }
+        });
+
+        return itemArray;
+    }
+
     $("#DeselectAll").click(function () {
         console.log("DeselectAll is clicked.");
         var i = 0;
@@ -57,53 +117,52 @@ $(document).ready(function () {
 
         }
     });
-    function displayMessage(messageType, message) {
-        var messagePanel = $("#ErrorMessagePanel");
-        var errorMessage = $("#ErrorMessage");
-        messagePanel.show();
-        if (messageType == "info") {
-            messagePanel.attr("class", "alert alert-info");
-            errorMessage.text(message);
-        } else if (messageType == "error") {
-            messagePanel.attr("class", "alert alert-danger");
-            errorMessage.text(message);
-        } else if (messageType == "hide") {
-            messagePanel.hide();
-        }
-    }
-    function hasQueryStringParameter(originalURL) {
+    
+});
 
-        if (originalURL.split('?').length > 1) {
-            var qs = originalURL.split('?')[1];
-            var qsArray = qs.split('&');
-            return qsArray.length > 0;
-        } else {
-            return false;
+function GetSelectedCheckBoxValues() {
+    var stringArray = GetSelectedCheckBoxValuesArray();
+    var jsonRequest = JSON.stringify({ "values": stringArray });
+    return jsonRequest;
+}
+function GetSelectedCheckBoxValuesArray() {
+    var stringArray = new Array();
+    var i = 0;
+    $("input[name=checkboxGrid]").each(function () {
+        var m = $(this).is(':checked');
+        if (m) {
+            stringArray[i++] = $(this).attr("gridkey-id");
         }
+    });
+    return stringArray;
+}
+function displayMessage(messageType, message) {
+    var messagePanel = $("#ErrorMessagePanel");
+    var errorMessage = $("#ErrorMessage");
+    messagePanel.show();
+    if (messageType == "info") {
+        messagePanel.attr("class", "alert alert-info");
+        errorMessage.text(message);
+    } else if (messageType == "error") {
+        messagePanel.attr("class", "alert alert-danger");
+        errorMessage.text(message);
+    } else if (messageType == "hide") {
+        messagePanel.hide();
     }
-    function getQueryStringParameter(originalURL, param) {
+}
+function hasQueryStringParameter(originalURL) {
 
-        if (originalURL.split('?').length > 1) {
-            var qs = originalURL.split('?')[1];
-            //3- get list of query strings
-            var qsArray = qs.split('&');
-            var flag = false;
-            //4- try to find query string key
-            for (var i = 0; i < qsArray.length; i++) {
-                if (qsArray[i].split('=').length > 0) {
-                    if (param == qsArray[i].split('=')[0]) {
-                        //exists key
-                        return qsArray[i].split('=')[1];
-                    }
-                }
-            }
-
-        }
-        return "";
+    if (originalURL.split('?').length > 1) {
+        var qs = originalURL.split('?')[1];
+        var qsArray = qs.split('&');
+        return qsArray.length > 0;
+    } else {
+        return false;
     }
-    function updateUrlParameter(originalURL, param, value) {
-        console.log(value);
-        var windowUrl = originalURL.split('?')[0];
+}
+function getQueryStringParameter(originalURL, param) {
+
+    if (originalURL.split('?').length > 1) {
         var qs = originalURL.split('?')[1];
         //3- get list of query strings
         var qsArray = qs.split('&');
@@ -113,46 +172,88 @@ $(document).ready(function () {
             if (qsArray[i].split('=').length > 0) {
                 if (param == qsArray[i].split('=')[0]) {
                     //exists key
-                    qsArray[i] = param + '=' + value;
+                    return qsArray[i].split('=')[1];
                 }
             }
         }
 
-        var finalQs = qsArray.join('&');
-        return windowUrl + '?' + finalQs;
-        //6- prepare final url
-        // window.location = windowUrl + '?' + finalQs;
     }
-
-    function ajaxMethodCall(postData, ajaxUrl, successFunction) {
-
-        $.ajax({
-            type: "POST",
-            url: ajaxUrl,
-            data: postData,
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            success: successFunction,
-            error: function (jqXHR, exception) {
-                console.error("parameters :" + postData);
-                console.error("ajaxUrl :" + ajaxUrl);
-                console.error("responseText :" + jqXHR.responseText);
-                if (jqXHR.status === 0) {
-                    console.error('Not connect.\n Verify Network.');
-                } else if (jqXHR.status == 404) {
-                    console.error('Requested page not found. [404]');
-                } else if (jqXHR.status == 500) {
-                    console.error('Internal Server Error [500].');
-                } else if (exception === 'parsererror') {
-                    console.error('Requested JSON parse failed.');
-                } else if (exception === 'timeout') {
-                    console.error('Time out error.');
-                } else if (exception === 'abort') {
-                    console.error('Ajax request aborted.');
-                } else {
-                    console.error('Uncaught Error.\n' + jqXHR.responseText);
-                }
+    return "";
+}
+function updateUrlParameter(originalURL, param, value) {
+    console.log(value);
+    var windowUrl = originalURL.split('?')[0];
+    var qs = originalURL.split('?')[1];
+    //3- get list of query strings
+    var qsArray = qs.split('&');
+    var flag = false;
+    //4- try to find query string key
+    for (var i = 0; i < qsArray.length; i++) {
+        if (qsArray[i].split('=').length > 0) {
+            if (param == qsArray[i].split('=')[0]) {
+                //exists key
+                qsArray[i] = param + '=' + value;
             }
-        });
+        }
     }
-});
+
+    var finalQs = qsArray.join('&');
+    return windowUrl + '?' + finalQs;
+    //6- prepare final url
+    // window.location = windowUrl + '?' + finalQs;
+}
+
+function deleteItemsSuccess(data) {
+
+    data.forEach(function (entry) {
+        var pp = $('[gridkey-id=' + entry + ']');
+        pp.parent().parent().remove();
+    });
+}
+function changeStateSuccess(data) {
+    //var parsedPostData = jQuery.parseJSON(data);
+    console.log(data);
+    data.values.forEach(function (entry) {
+        if (entry.State) {
+            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('style', 'color:green;  font-size:2em;').attr('class', 'glyphicon  glyphicon-ok-circle');
+        } else {
+            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('style', 'color:red;  font-size:2em;').attr('class', 'glyphicon  glyphicon-remove-circle');
+        }
+
+
+    });
+}
+function changeOrderingSuccess(data) {
+    console.log(data);
+}
+function ajaxMethodCall(postData, ajaxUrl, successFunction) {
+
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl,
+        data: postData,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: successFunction,
+        error: function (jqXHR, exception) {
+            console.error("parameters :" + postData);
+            console.error("ajaxUrl :" + ajaxUrl);
+            console.error("responseText :" + jqXHR.responseText);
+            if (jqXHR.status === 0) {
+                console.error('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                console.error('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                console.error('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                console.error('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                console.error('Time out error.');
+            } else if (exception === 'abort') {
+                console.error('Ajax request aborted.');
+            } else {
+                console.error('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+    });
+}
