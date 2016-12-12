@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -25,6 +25,11 @@ namespace EImece.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public ActionResult Menu()
+        {
+            var menus = MenuRepository.BuildTree();
+            return PartialView("_Navigation", menus);
         }
     }
 }

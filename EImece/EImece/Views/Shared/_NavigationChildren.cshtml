@@ -1,0 +1,15 @@
+﻿@using EImece.Domain.Entities;
+@model List<Menu>
+@{ 
+    var menus = Model;
+}
+<ul>
+    @foreach (var m in menus)
+    {
+        <li>@Html.ActionLink(m.Name, m.Action, m.Controller)</li>
+        if (m.Childrens.Any())
+        {
+            @Html.Partial("_NavigationChildren", m.Childrens)
+        }
+    }
+</ul>

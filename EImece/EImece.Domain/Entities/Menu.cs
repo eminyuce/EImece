@@ -11,7 +11,10 @@ namespace EImece.Domain.Entities
     {
         public  int? ParentId { get; set; }
         public Boolean MainPage { get; set; }
+        [NotMapped]
         public  string Modul { get; set; }
+        public string Action { get; set; }
+        public string Controller { get; set; }
         public Boolean Static { get; set; }
         public   string Link { get; set; }
         public Boolean LinkIsActive { get; set; }
