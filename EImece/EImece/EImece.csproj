@@ -266,6 +266,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\adminSite.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\angularTreeView\angular.treeview.css" />
@@ -344,7 +345,12 @@
     <Content Include="Areas\Admin\Views\Menus\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Test\Index2.cshtml" />
-    <Content Include="Grid.mvc.readme" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\EImecePublishProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
@@ -416,7 +422,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Ajax\" />
     <Folder Include="Views\ProductCategories\" />
   </ItemGroup>
   <ItemGroup>

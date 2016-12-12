@@ -22,8 +22,8 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IMenuRepository MenuRepository { get; set; }
 
-
-        protected List<Node> CreateTreeViewDataList()
+      
+        protected List<Node> CreateProductCategoryTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();
             var productCategories = ProductCategoryRepository.GetAll().ToList();

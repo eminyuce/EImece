@@ -22,7 +22,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 productCategories = productCategories.Where(r => r.Name.ToLower().Contains(search)).ToList();
             }
-            ViewBag.Tree = CreateTreeViewDataList();
+            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(productCategories);
         }
      
@@ -53,7 +53,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new ProductCategory();
             var parentCategory = new ProductCategory();
-            ViewBag.Tree = CreateTreeViewDataList();
+            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
 
             if (id == 0)
             {
@@ -87,7 +87,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
 
-                ViewBag.Tree = CreateTreeViewDataList();
+                ViewBag.Tree = CreateProductCategoryTreeViewDataList();
                 if (ModelState.IsValid)
                 {
 

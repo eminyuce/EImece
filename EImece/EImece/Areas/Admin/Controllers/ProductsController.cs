@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 products = products.Where(r => r.ProductCategoryId == id);
             }
-            ViewBag.Tree = CreateTreeViewDataList();
+            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(products.ToList());
         }
 
@@ -54,7 +54,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new Product();
             var productCategory = new ProductCategory();
-            ViewBag.Tree = CreateTreeViewDataList();
+            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -81,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-                ViewBag.Tree = CreateTreeViewDataList();
+                ViewBag.Tree = CreateProductCategoryTreeViewDataList();
                 if (ModelState.IsValid)
                 {
 

@@ -8,6 +8,7 @@ $(document).ready(function () {
         var item = this;
         item.Id = "";
         item.Position = "";
+        item.IsActive = false;
         return item;
     }
     function GetSelectedOrderingValues() {
@@ -55,7 +56,7 @@ $(document).ready(function () {
                 var item = new OrderingItem();
                 item.Id = id;
                 item.Ordering = 0;
-                item.State = state;
+                item.IsActive = state;
                 itemArray[i++] = item;
             }
         });
@@ -214,7 +215,7 @@ function changeStateSuccess(data) {
     //var parsedPostData = jQuery.parseJSON(data);
     console.log(data);
     data.values.forEach(function (entry) {
-        if (entry.State) {
+        if (entry.IsActive) {
             $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('style', 'color:green;  font-size:2em;').attr('class', 'glyphicon  glyphicon-ok-circle');
         } else {
             $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('style', 'color:red;  font-size:2em;').attr('class', 'glyphicon  glyphicon-remove-circle');

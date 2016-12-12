@@ -16,7 +16,7 @@
     <script src="~/Scripts/eimece.js"></script>
     <script src="~/Scripts/gridmvc.js"></script>
     <link href="~/Content/Gridmvc.css" rel="stylesheet" />
-
+    <link href="~/Content/adminSite.css" rel="stylesheet" />
 
 </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -32,6 +32,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Products", "Index", "Products")</li>
+                    <li>@Html.ActionLink("Product Categories", "Index", "ProductCategories")</li>
+                    <li>@Html.ActionLink("Menus", "Index", "Menus")</li>
                 </ul>
             </div>
         </div>
