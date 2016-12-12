@@ -24,6 +24,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 products = products.Where(r => r.ProductCategoryId == id);
             }
+            products = products.OrderBy(r => r.Position);
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(products.ToList());
         }
