@@ -65,42 +65,6 @@ namespace EImece.Areas.Admin.Controllers
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = products });
         }
 
-        public ActionResult getproducts(int pageNo = 1, int pageSize = 50,  string[] sort = null, string search = null)
-        {
-            // Determine the number of records to skip
-            int skip = (pageNo - 1) * pageSize;
-
-            IQueryable<Product> queryable = ProductRepository.GetAll();
-
-            // Apply the search
-            if (!String.IsNullOrEmpty(search))
-            {
-                string[] searchElements = search.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string searchElement in searchElements)
-                {
-                    string element = searchElement;
-                    queryable = queryable.Where(c => c.Name.Contains(element) || c.ProductCode.Contains(element));
-                }
-            }
-
-            // Add the sorting
-            if (sort != null)
-                queryable = queryable.ApplySorting(sort);
-            else
-                queryable = queryable.OrderBy(c => c.Id);
-
-            // Get the total number of records
-            int totalItemCount = queryable.Count();
-
-            // Retrieve the customers for the specified page
-            var prodocts = queryable
-                .Skip(skip)
-                .Take(pageSize)
-                .ToList();
-
-            // Return the paged results
-            var item = new PagedResult<Product>(prodocts, pageNo, pageSize, totalItemCount);
-            return Json(item, JsonRequestBehavior.AllowGet);
-        }
+         
     }
 }

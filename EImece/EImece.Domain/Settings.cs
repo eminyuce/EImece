@@ -34,6 +34,24 @@ namespace EImece.Domain
                 return httpSecure;
             }
         }
+        public static string OkStyle
+        {
+            get
+            {
+
+                return "style='color:green;font-size:2em;' class='glyphicon glyphicon-ok-circle'";
+
+            }
+        }
+        public static string CancelStyle
+        {
+            get
+            {
+
+                return "style='color:red;  font-size:2em;' class='glyphicon  glyphicon-remove-circle'";
+
+            }
+        }
         public static string SiteName
         {
             get

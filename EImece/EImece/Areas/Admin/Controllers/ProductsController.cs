@@ -13,14 +13,19 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(String search = "")
+        public ActionResult Index(int id=0,String search = "")
         {
-            var products = ProductRepository.GetAll().ToList();
+            var products = ProductRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search)).ToList();
+                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search));
             }
-            return View(products);
+            if (id > 0)
+            {
+                products = products.Where(r => r.ProductCategoryId == id);
+            }
+            ViewBag.Tree = CreateTreeViewDataList();
+            return View(products.ToList());
         }
 
         //
@@ -49,6 +54,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new Product();
             var productCategory = new ProductCategory();
+            ViewBag.Tree = CreateTreeViewDataList();
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -75,6 +81,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                ViewBag.Tree = CreateTreeViewDataList();
                 if (ModelState.IsValid)
                 {
 

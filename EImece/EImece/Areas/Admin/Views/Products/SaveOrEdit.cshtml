@@ -1,5 +1,7 @@
 ﻿@model EImece.Domain.Entities.Product
 @using EImece.Domain.Entities;
+@using SharkDev.MVC
+
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -7,17 +9,27 @@
 }
 
 <h2>SaveOrEdit</h2>
-<div ng-controller="ProductCategoriesTreeController as treeView" class="row" style="padding:20px;">
+<div class="row" style="padding:20px;">
 
     <div class="col-md-3">
-        <div data-angular-treeview="true"
-             data-tree-id="ngTree"
-             data-tree-model="ProductCategoryList"
-             data-node-id="Id"
-             data-node-label="Name"
-             data-ng-click="selectNode(ngTree.currentNode.Id)"
-             data-node-children="Childrens">
-        </div>
+        @Html.SharkDev().TreeView(settings =>
+    {
+        settings.Id = "treeViewContainer";
+        settings.Header.Text = "Tree root - Animal";
+        settings.Header.Visible = false;
+        settings.Header.Expanded = true;
+        settings.ClientHandlers.ContentSelect = @"function (e) {
+console.log(e);
+   $('#OldCategoryName').text(e.name);
+   $('#ProductCategoryId').val(e.id);
+}";
+        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+        settings.Height = 300;
+        settings.Width = 270;
+        settings.DataOnClient = true;
+    }).GetContent(ViewBag.Tree)
+
+
     </div>
     <div class="col-md-9">
 
@@ -99,12 +111,19 @@
                     <div class="col-md-10">
                         @if (productCategory.Id > 0)
                         {
-                              @productCategory.Name
-
-                            @Html.HiddenFor(r=>r.ProductCategoryId)
+                            <span id="OldCategoryName">
+                                @productCategory.Name
+                            </span>
                         }
-                        <b> {{ngTree.currentNode.Name}} </b>
-                        <input value="{{ngTree.currentNode.Id }}" type="hidden" name="ProductCategoryId" />
+                        else
+                        {
+
+                            <span id="OldCategoryName">
+                                
+                            </span>
+                        }
+
+                        @Html.HiddenFor(model => model.ProductCategoryId)
                     </div>
                 </div>
 

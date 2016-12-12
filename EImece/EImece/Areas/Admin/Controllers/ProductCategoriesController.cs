@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using NLog;
+using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +22,10 @@ namespace EImece.Areas.Admin.Controllers
             {
                 productCategories = productCategories.Where(r => r.Name.ToLower().Contains(search)).ToList();
             }
+            ViewBag.Tree = CreateTreeViewDataList();
             return View(productCategories);
         }
+     
 
         //
         // GET: /ProductCategory/Details/5
@@ -49,6 +53,8 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new ProductCategory();
             var parentCategory = new ProductCategory();
+            ViewBag.Tree = CreateTreeViewDataList();
+
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -64,7 +70,7 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     parentCategory = ProductCategoryRepository.GetSingle(content.ParentId.Value);
                 }
-             
+
 
             }
             ViewBag.ParentCategory = parentCategory;
@@ -80,6 +86,8 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+
+                ViewBag.Tree = CreateTreeViewDataList();
                 if (ModelState.IsValid)
                 {
 
@@ -163,7 +171,7 @@ namespace EImece.Areas.Admin.Controllers
             List<ProductCategory> treelist = ProductCategoryRepository.BuildTree();
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
-       
+
 
     }
 }

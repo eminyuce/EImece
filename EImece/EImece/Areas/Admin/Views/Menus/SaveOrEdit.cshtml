@@ -1,5 +1,6 @@
 ﻿@model EImece.Domain.Entities.Menu
 @using EImece.Domain.Entities;
+@using SharkDev.MVC
 
 @{
     ViewBag.Title = "SaveOrEdit";
@@ -7,19 +8,39 @@
     var parentMenu = (Menu)ViewBag.ParentMenu;
 }
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+}
+
+
+
+
 <h2>SaveOrEdit</h2>
 
-<div ng-controller="MenusTreeController" class="row" style="padding:20px;">
+<div class="row" style="padding:20px;">
 
     <div class="col-md-3">
-        <div data-angular-treeview="true"
-             data-tree-id="ngTree"
-             data-tree-model="MenuList"
-             data-node-id="Id"
-             data-node-label="Name"
-             data-ng-click="selectNode(ngTree.currentNode.Id)"
-             data-node-children="Childrens">
-        </div>
+        @Html.SharkDev().TreeView(settings =>
+   {
+       settings.Id = "treeViewContainer";
+       settings.Header.Text = "Tree root - Animal";
+       settings.Header.Visible = true;
+       settings.Header.Expanded = true;
+       settings.ClientHandlers.ContentSelect = @"function (e) {
+console.log(e);
+   $('#ParentName').text(e.name);
+   $('#ParentId').val(e.id);
+}";
+       settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+       settings.Height = 300;
+       settings.Width = 270;
+       settings.DataOnClient = true;
+   }).GetContent(ViewBag.Tree)
+
+
+
+
     </div>
     <div class="col-md-9">
 
@@ -172,9 +193,4 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
 

@@ -6,6 +6,18 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    
+    <link href="~/Content/SharkDev.TreeView.css" rel="stylesheet" />
+    <script src="~/Scripts/SharkDev.treeView.js"></script>
+    <script src="~/Scripts/eimece.js"></script>
+    <script src="~/Scripts/gridmvc.js"></script>
+    <link href="~/Content/Gridmvc.css" rel="stylesheet" />
+
+
 </head>
 <body ng-app="myApp" class="ng-cloak">
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,10 +45,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    
 
     <link href="~/Content/DataTable/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/Content/angularTreeView/angular.treeview.css" rel="stylesheet" />

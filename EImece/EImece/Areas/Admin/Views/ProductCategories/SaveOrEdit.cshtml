@@ -1,5 +1,6 @@
 ﻿@model EImece.Domain.Entities.ProductCategory
 @using EImece.Domain.Entities;
+@using SharkDev.MVC
 
 @{
     ViewBag.Title = "SaveOrEdit";
@@ -11,14 +12,23 @@
 <div ng-controller="ProductCategoriesTreeController" class="row" style="padding:20px;">
 
     <div class="col-md-3">
-        <div data-angular-treeview="true"
-             data-tree-id="ngTree"
-             data-tree-model="ProductCategoryList"
-             data-node-id="Id"
-             data-node-label="Name"
-             data-ng-click="selectNode(ngTree.currentNode.Id)"
-             data-node-children="Childrens">
-        </div>
+
+        @Html.SharkDev().TreeView(settings =>
+   {
+       settings.Id = "treeViewContainer";
+       settings.Header.Text = "Tree root - Animal";
+       settings.Header.Visible = true;
+       settings.Header.Expanded = true;
+       settings.ClientHandlers.ContentSelect = @"function (e) {
+console.log(e);
+   $('#ParentName').text(e.name);
+   $('#ParentId').val(e.id);
+}";
+       settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+       settings.Height = 300;
+       settings.Width = 270;
+       settings.DataOnClient = true;
+   }).GetContent(ViewBag.Tree)
     </div>
     <div class="col-md-9">
 
@@ -45,21 +55,18 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @if (Model.ParentId.HasValue && Model.ParentId > 0)
-                {
+                        @Html.HiddenFor(model => model.ParentId)
 
-                            @Html.HiddenFor(model => model.ParentId)
-                            if (parentCategory.Id > 0)
-                            {
-                                <span>
-                                    @parentCategory.Name
-                                </span>
-                            }
+                        @if (Model.ParentId.HasValue && Model.ParentId > 0)
+                        {
+                            <span id="ParentName">
+                                @parentCategory.Name
+                            </span>
                         }
                         else
                         {
-                            <b> {{ngTree.currentNode.Name}} </b>
-                            <input value="{{ngTree.currentNode.Id }}" type="hidden" name="ParentId" />
+                            <span id="ParentName">
+                            </span>
                         }
                     </div>
                 </div>

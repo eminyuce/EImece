@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 
+
 namespace EImece.Domain.Repositories
 {
     public class ProductCategoryRepository : BaseRepository<ProductCategory, int>, IProductCategoryRepository
@@ -27,7 +28,7 @@ namespace EImece.Domain.Repositories
                 GetTreeview(list, i, ref returnList);
             }
         }
-
+       
         public List<ProductCategory> BuildTree()
         {
             List<ProductCategory> list = GetAll().ToList();
