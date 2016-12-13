@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
+using System.Linq.Expressions;
+using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
@@ -19,6 +21,29 @@ namespace EImece.Domain.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public List<Product> GetMainPageProducts(int? take, int? skip)
+        {
+            try
+            {
+                Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
+                Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
+                Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2 };
+                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage;
+                var items = this.FindAllIncluding(match, take, skip, t => t.Position, OrderByType.Descending, includeProperties);
+                foreach (var item in items)
+                {
+                    item.ProductFiles = item.ProductFiles.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+                }
+                return items;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+                return null;
+            }
+
         }
     }
 }

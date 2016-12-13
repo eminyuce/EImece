@@ -6,6 +6,9 @@
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentMenu = (Menu)ViewBag.ParentMenu;
+    var moduls = new List<SelectListItem>();
+    moduls.Add(new SelectListItem() { Text = "Urunler", Value = "Products" });
+    moduls.Add(new SelectListItem() { Text = "Sayfalar", Value = "Pages" });
 }
 
 
@@ -137,7 +140,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.Modul, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Modul, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.Modul, moduls)
                         @Html.ValidationMessageFor(model => model.Modul, "", new { @class = "text-danger" })
                     </div>
                 </div>

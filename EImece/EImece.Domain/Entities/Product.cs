@@ -19,5 +19,7 @@ namespace EImece.Domain.Entities
         public String ProductCode { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }
+
+        public virtual ICollection<ProductFile> ProductFiles { get; set; }
     }
 }

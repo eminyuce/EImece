@@ -101,6 +101,7 @@
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
+    <Compile Include="Entities\ProductFile.cs" />
     <Compile Include="GenericRepositories\BaseEntityRepository.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\QuerySortingExtensions.cs" />

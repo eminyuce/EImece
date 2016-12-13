@@ -9,6 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IProductRepository : IBaseRepository<Product, int>, IDisposable
     {
-
+        List<Product> GetMainPageProducts(int? take, int? skip);
     }
 }
