@@ -87,16 +87,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    if (menu.Id == 0)
-                    {
-                        MenuRepository.Add(menu);
-                    }
-                    else
-                    {
-                        MenuRepository.Edit(menu);
-                    }
-
-                    MenuRepository.Save();
+                    MenuRepository.SaveOrEdit(menu);
                     int contentId = menu.Id;
                     return RedirectToAction("Index");
                 }
@@ -142,24 +133,24 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Menu product = MenuRepository.GetSingle(id);
-            if (product == null)
+            Menu menu = MenuRepository.GetSingle(id);
+            if (menu == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                MenuRepository.Delete(product);
-                MenuRepository.Save();
+                MenuRepository.DeleteItem(menu);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, product);
+                Logger.Error(ex, "Unable to delete product:" + 
+                    ex.StackTrace, menu);
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
-            return View(product);
+            return View(menu);
 
         }
 

@@ -41,8 +41,26 @@ namespace EImece.Domain.GenericRepositories
 
 
         #region GenericMethods
-        
 
+        public static int SaveOrEdit<T>(IBaseRepository<T, int> repository,T item) where T : class, IEntity<int>
+        {
+            if (item.Id == 0)
+            {
+                repository.Add(item);
+            }
+            else
+            {
+                repository.Edit(item);
+            }
+
+            return repository.Save();
+        }
+
+        public static int DeleteItem<T>(IBaseRepository<T, int> repository, T item) where T : class, IEntity<int>
+        {
+            repository.Delete(item);
+            return repository.Save();
+        }
         public static void ChangeGridBaseEntityOrderingOrState<T>(IBaseRepository<T, int> repository, List<OrderingItem> values, String checkbox = "") where T : class, IEntity<int>
         {
             try

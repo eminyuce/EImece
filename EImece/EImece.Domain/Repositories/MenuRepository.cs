@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
+using GenericRepository;
+using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
@@ -47,5 +49,17 @@ namespace EImece.Domain.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public int SaveOrEdit(Menu item)
+        {
+            return BaseEntityRepository.SaveOrEdit(this, item);
+        }
+
+        public int DeleteItem(Menu item)
+        {
+            return BaseEntityRepository.DeleteItem(this, item);
+        }
+
+          
     }
 }

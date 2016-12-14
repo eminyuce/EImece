@@ -91,16 +91,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    if (productCategory.Id == 0)
-                    {
-                        ProductCategoryRepository.Add(productCategory);
-                    }
-                    else
-                    {
-                        ProductCategoryRepository.Edit(productCategory);
-                    }
-
-                    ProductCategoryRepository.Save();
+                    ProductCategoryRepository.SaveOrEdit(productCategory);
                     int contentId = productCategory.Id;
                     return RedirectToAction("Index");
                 }
@@ -146,24 +137,23 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            ProductCategory product = ProductCategoryRepository.GetSingle(id);
-            if (product == null)
+            ProductCategory productCategory = ProductCategoryRepository.GetSingle(id);
+            if (productCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                ProductCategoryRepository.Delete(product);
-                ProductCategoryRepository.Save();
+                ProductCategoryRepository.DeleteItem(productCategory);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, product);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, productCategory);
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
-            return View(product);
+            return View(productCategory);
 
         }
         public ActionResult GetCategories()

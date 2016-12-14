@@ -9,24 +9,15 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-   // [Authorize]
+    // [Authorize]
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(int id=0,String search = "")
+        public ActionResult Index(int id = 0, String search = "")
         {
-            var products = ProductRepository.GetAll();
-            if (!String.IsNullOrEmpty(search))
-            {
-                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search));
-            }
-            if (id > 0)
-            {
-                products = products.Where(r => r.ProductCategoryId == id);
-            }
-            products = products.OrderBy(r => r.Position);
+            var products = ProductRepository.GetAdminPageList(id, search);
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
-            return View(products.ToList());
+            return View(products);
         }
 
         //
@@ -93,16 +84,7 @@ namespace EImece.Areas.Admin.Controllers
                     }
 
 
-                    if (product.Id == 0)
-                    {
-                        ProductRepository.Add(product);
-                    }
-                    else
-                    {
-                        ProductRepository.Edit(product);
-                    }
-
-                    ProductRepository.Save();
+                    ProductRepository.SaveOrEdit(product);
                     int contentId = product.Id;
                     return RedirectToAction("Index");
                 }
@@ -155,8 +137,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                ProductRepository.Delete(product);
-                ProductRepository.Save();
+                ProductRepository.DeleteItem(product);
                 return RedirectToAction("Index", new { categoryId = product.ProductCategoryId });
             }
             catch (Exception ex)

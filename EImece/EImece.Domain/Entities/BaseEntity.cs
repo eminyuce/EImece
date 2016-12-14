@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
-    public abstract class BaseEntity : IEntity
+    public abstract class BaseEntity : IEntity<int>
     {
         public int Id { get; set; }
 

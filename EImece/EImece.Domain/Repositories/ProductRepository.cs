@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
+using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
@@ -44,6 +45,32 @@ namespace EImece.Domain.Repositories
                 return null;
             }
 
+        }
+
+        public int SaveOrEdit(Product item)
+        {
+            return BaseEntityRepository.SaveOrEdit(this, item);
+        }
+
+        public int DeleteItem(Product item)
+        {
+            return BaseEntityRepository.DeleteItem(this, item);
+        }
+
+        public List<Product> GetAdminPageList(int categoryId, string search)
+        {
+            var products = GetAll();
+            if (!String.IsNullOrEmpty(search))
+            {
+                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search));
+            }
+            if (categoryId > 0)
+            {
+                products = products.Where(r => r.ProductCategoryId == categoryId);
+            }
+            products = products.OrderBy(r => r.Position);
+
+            return products.ToList();
         }
     }
 }

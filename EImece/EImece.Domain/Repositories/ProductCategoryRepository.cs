@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
-
+using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
@@ -47,6 +47,16 @@ namespace EImece.Domain.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public int SaveOrEdit(ProductCategory item)
+        {
+            return BaseEntityRepository.SaveOrEdit(this, item);
+        }
+
+        public int DeleteItem(ProductCategory item)
+        {
+            return BaseEntityRepository.DeleteItem(this, item);
         }
     }
 }
