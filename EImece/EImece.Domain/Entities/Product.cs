@@ -15,7 +15,7 @@ namespace EImece.Domain.Entities
         public double Price { get; set; }
         public Boolean MainPage { get; set; }
         public double Discount { get; set; }
-        public int BrandId { get; set; }
+        public int TemplateId { get; set; }
         public String ProductCode { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }

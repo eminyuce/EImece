@@ -66,9 +66,21 @@ namespace EImece.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IEImeceContext>().To<EImeceContext>().WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
-            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
-            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
+            kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
+            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
-        }        
+            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
+            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
+            kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
+            kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
+            kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
+            kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
+            kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();
+            kernel.Bind<IStoryTagRepository>().To<StoryTagRepository>().InRequestScope();
+            kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();
+            kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
+            kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
+
+        }
     }
 }
