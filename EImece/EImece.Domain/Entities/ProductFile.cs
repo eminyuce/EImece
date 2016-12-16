@@ -8,7 +8,9 @@ namespace EImece.Domain.Entities
 {
     public class ProductFile : BaseEntity
     {
+        public int FileStorageId { get; set; }
         public int ProductId { get; set; }
-        public string ImageUrl { get; set; }
+
+
     }
 }

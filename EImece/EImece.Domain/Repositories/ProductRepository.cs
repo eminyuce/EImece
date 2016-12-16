@@ -33,16 +33,13 @@ namespace EImece.Domain.Repositories
                 Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2 };
                 Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage;
                 var items = this.FindAllIncluding(match, take, skip, t => t.Position, OrderByType.Descending, includeProperties);
-                foreach (var item in items)
-                {
-                    item.ProductFiles = item.ProductFiles.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
-                }
+                
                 return items;
             }
             catch (Exception exception)
             {
-                Logger.Error(exception);
-                return null;
+                Logger.Error(exception,exception.Message);
+                throw exception;
             }
 
         }

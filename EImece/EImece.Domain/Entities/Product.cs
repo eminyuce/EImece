@@ -12,11 +12,14 @@ namespace EImece.Domain.Entities
         [Display(Name = "Category")]
         [Required(ErrorMessage = "Please enter category")]
         public int ProductCategoryId { get; set; }
-        public double Price { get; set; }
+
         public Boolean MainPage { get; set; }
+        public double Price { get; set; }
         public double Discount { get; set; }
+        public string ProductCode { get; set; }
         public int TemplateId { get; set; }
-        public String ProductCode { get; set; }
+
+
 
         public virtual ProductCategory ProductCategory { get; set; }
 

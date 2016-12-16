@@ -9,6 +9,7 @@ using EImece.Controllers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Repositories;
 using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 
 namespace EImece.Tests.Controllers
 {
@@ -17,7 +18,7 @@ namespace EImece.Tests.Controllers
     public class HomeControllerTest
     {
 
-        private const String ConnectionString = "Stores";
+        private const String ConnectionString = "EImeceDbConnection";
         [TestMethod]
         public void Index()
         {
@@ -57,11 +58,24 @@ namespace EImece.Tests.Controllers
             Assert.IsNotNull(result);
         }
         [TestMethod]
-        public void GetMainPageProducts()
+        public void TestAllRepository()
         {
-            IProductRepository rep = new ProductRepository(new EImeceContext(ConnectionString));
-            var products = rep.GetMainPageProducts(100,0);
+            var dbContext = new EImeceContext(ConnectionString);
 
+            Console.WriteLine(new FileStorageRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new FileStorageTagRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new MenuRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new ProductCategoryRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new ProductRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new ProductSpecificationRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new ProductTagRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new StoryCategoryRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new StoryFileRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new StoryRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new StoryTagRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new SubscriberRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new TagCategoryRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new TagRepository(dbContext).GetAll().ToList().Count());
 
         }
     }
