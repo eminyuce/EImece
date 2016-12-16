@@ -58,6 +58,13 @@ namespace EImece.Tests.Controllers
             Assert.IsNotNull(result);
         }
         [TestMethod]
+        public void PagingTest()
+        {
+            var dbContext = new EImeceContext(ConnectionString);
+            var p = new ProductRepository(dbContext);
+            var products =  p.GetMainPageProducts(1);
+        }
+        [TestMethod]
         public void TestAllRepository()
         {
             var dbContext = new EImeceContext(ConnectionString);

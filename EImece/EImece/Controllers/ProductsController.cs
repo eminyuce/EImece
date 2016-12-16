@@ -9,9 +9,9 @@ namespace EImece.Controllers
     public class ProductsController : BaseController
     {
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            var products = ProductRepository.GetMainPageProducts(100, 0);
+            var products = ProductRepository.GetMainPageProducts(page);
             return View(products);
         }
     }

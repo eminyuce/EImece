@@ -9,6 +9,7 @@ using EImece.Domain.DbContext;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
 using EImece.Domain.GenericRepositories;
+using GenericRepository;
 
 namespace EImece.Domain.Repositories
 {
@@ -24,16 +25,21 @@ namespace EImece.Domain.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public List<Product> GetMainPageProducts(int? take, int? skip)
+        public PaginatedList<Product> GetMainPageProducts(int page)
         {
             try
             {
+
+                int pageIndex = page;
+                int pageSize = Settings.RecordPerPage;
+
                 Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
                 Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2 };
                 Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage;
-                var items = this.FindAllIncluding(match, take, skip, t => t.Position, OrderByType.Descending, includeProperties);
-                
+                Expression<Func<Product, int>> keySelector = t => t.Position;
+                var items = this.PaginateDescending(pageIndex, pageSize, keySelector , match, includeProperties);
+
                 return items;
             }
             catch (Exception exception)
@@ -43,6 +49,8 @@ namespace EImece.Domain.Repositories
             }
 
         }
+
+       
 
         public int SaveOrEdit(Product item)
         {

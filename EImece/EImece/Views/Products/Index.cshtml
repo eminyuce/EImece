@@ -1,15 +1,20 @@
-﻿@model IEnumerable<EImece.Domain.Entities.Product>
+﻿@using GenericRepository;
+@using EImece.Domain.Entities;
+@model PaginatedList<Product>
 
 @{
     ViewBag.Title = "Index";
+    PaginatedList<Product> products = Model;
 }
 
 <h2>Index</h2>
- 
 
-@foreach (var item in Model)
+@Html.Partial("_PagingPartial", products)
+@foreach (var item in products)
 {
     <div>
         @Html.DisplayFor(modelItem => item)
     </div>
 }
+@Html.Partial("_PagingPartial", products)
+ 

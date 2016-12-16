@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using GenericRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IProductRepository : IBaseRepository<Product, int>, IDisposable
     {
-        List<Product> GetMainPageProducts(int? take, int? skip);
+        PaginatedList<Product> GetMainPageProducts(int page);
         int SaveOrEdit(Product p);
         int DeleteItem(Product p);
 

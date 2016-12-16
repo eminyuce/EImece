@@ -7,9 +7,17 @@
 Product Files : @Model.ProductFiles.Count()
 <div>
     <dl class="dl-horizontal">
-        <h5>
+        <h2>
             Product Category: @Model.ProductCategory.Name
-        </h5>
+        </h2>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.Id)
+        </dt>
+
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -19,9 +27,9 @@ Product Files : @Model.ProductFiles.Count()
         </dd>
         @foreach(var productFile in productFiles)
         {
-            <div>
+            <b style="color:red;">
                 @productFile.Name  @productFile.Position
-            </div>
+            </b>
         }
     </dl>
 </div>

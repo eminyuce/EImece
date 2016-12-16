@@ -1,0 +1,51 @@
+﻿@using GenericRepository;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+ 
+
+
+
+@{
+    var pager = Model as IPaginatedList;
+
+    string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
+
+    var curPage = Request["page"].ToInt();
+    var search = Request["search"].ToStr();
+
+
+   
+
+    if (pager.TotalPageCount > 1)
+    {
+        if (pager.HasPreviousPage)
+        {
+            @Html.ActionLink("Previous", action, controller, new { search = search, page = (pager.PageIndex - 1) }, new { @class = "btn btn-success btn-xs" })
+        }
+        else
+        {
+            <span>[Previous]</span>
+        }
+
+        for (int i = 1; i < pager.TotalPageCount+1; i++)
+        {
+            @:&nbsp;
+
+            var style = (curPage == i) ? "background-color:red; " : "";
+            @Html.ActionLink((i).ToStr(), action, controller, new { search = search, page = i }, new { @class = "btn btn-warning btn-xs", style = style })
+        }
+
+        if (pager.HasNextPage)
+        {
+            @:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.ActionLink("Next", action, controller, new { search = search, page = (pager.PageIndex + 1) }, new { @class = "btn btn-success btn-xs" })
+        }
+        else
+        {
+            <span>[Next]</span>
+        }
+
+    }
+}
+
