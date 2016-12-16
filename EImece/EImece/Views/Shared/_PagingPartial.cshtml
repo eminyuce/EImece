@@ -11,11 +11,11 @@
     string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
 
-    var curPage = Request["page"].ToInt();
+    //var curPage = Request["page"].ToInt() == 0 ? pager.PageIndex : Request["page"].ToInt();
     var search = Request["search"].ToStr();
 
 
-   
+
 
     if (pager.TotalPageCount > 1)
     {
@@ -32,7 +32,7 @@
         {
             @:&nbsp;
 
-            var style = (curPage == i) ? "background-color:red; " : "";
+            var style = (pager.PageIndex == i) ? "background-color:red; " : "";
             @Html.ActionLink((i).ToStr(), action, controller, new { search = search, page = i }, new { @class = "btn btn-warning btn-xs", style = style })
         }
 

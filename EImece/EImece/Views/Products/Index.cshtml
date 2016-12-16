@@ -1,5 +1,7 @@
 ﻿@using GenericRepository;
 @using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+
 @model PaginatedList<Product>
 
 @{
@@ -8,6 +10,10 @@
 }
 
 <h2>Index</h2>
+
+@Html.BootstrapPager(Model.PageIndex,
+    index => Url.Action("Index", "Products", new { page = index }),
+    Model.TotalCount, Model.PageSize, numberOfLinks: 10)
 
 @Html.Partial("_PagingPartial", products)
 @foreach (var item in products)
