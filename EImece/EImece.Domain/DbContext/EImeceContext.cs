@@ -11,7 +11,10 @@ namespace EImece.Domain.DbContext
 {
     public class EImeceContext : EntitiesContext, IEImeceContext
     {
-        
+        public EImeceContext()
+        {
+            
+        }
         public EImeceContext(String nameOrConnectionString) : base(nameOrConnectionString)
         {
             this.Database.CommandTimeout = int.MaxValue;

@@ -2,7 +2,7 @@
 @using EImece.Domain.Entities;
 @using SharkDev.MVC;
 @using EImece.Domain.Models.Enums;
-
+@using SharkDev.Web.Controls.TreeView.Model;
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -10,6 +10,7 @@
     var moduls = new List<SelectListItem>();
     moduls.Add(new SelectListItem() { Text = "Urunler", Value = "Products" });
     moduls.Add(new SelectListItem() { Text = "Sayfalar", Value = "Pages" });
+    var productTree =(List<Node>) ViewBag.Tree;
 }
 
 
@@ -19,7 +20,9 @@
 <div class="row" style="padding:20px;">
 
     <div class="col-md-3">
-        @Html.SharkDev().TreeView(settings =>
+        @if (productTree != null)
+        {
+            @Html.SharkDev().TreeView(settings =>
    {
        settings.Id = "treeViewContainer";
        settings.Header.Text = "Tree root - Animal";
@@ -34,9 +37,8 @@ console.log(e);
        settings.Height = 300;
        settings.Width = 270;
        settings.DataOnClient = true;
-   }).GetContent(ViewBag.Tree)
-
-
+   }).GetContent(productTree)
+        }
 
 
     </div>
@@ -54,10 +56,11 @@ console.log(e);
                 @Html.HiddenFor(model => model.CreatedDate)
                 @Html.HiddenFor(model => model.UpdatedDate)
 
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                     
+
                         @Html.DropDownListFor(model => model.Lang,
    EnumHelper.GetSelectList(typeof(EImeceLanguage)),
    "Select My Language",
@@ -81,7 +84,6 @@ console.log(e);
                     <div class="col-md-10">
                         <div class="checkbox">
                             @Html.EditorFor(model => model.IsActive)
-                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -106,7 +108,7 @@ console.log(e);
                     @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <div class="checkbox">
-                            @Html.EditorFor(model => model.ImageState)
+                            @Html.CheckBoxFor(model => model.ImageState)
                             @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -123,9 +125,9 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @if (Model.ParentId > 0)
+                        @if (Model.ParentId > 0 && parentMenu != null)
                         {
-                            <span  id="ParentName">
+                            <span id="ParentName">
                                 @parentMenu.Name
                             </span>
                         }
@@ -145,8 +147,7 @@ console.log(e);
                     @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <div class="checkbox">
-                            @Html.EditorFor(model => model.MainPage)
-                            @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                            @Html.CheckBoxFor(model => model.MainPage)
                         </div>
                     </div>
                 </div>

@@ -70,7 +70,7 @@ console.log(e);
                     <div class="col-md-10">
                         @Html.HiddenFor(model => model.ParentId)
 
-                        @if (Model.ParentId.HasValue && Model.ParentId > 0)
+                        @if (Model.ParentId > 0)
                         {
                             <span id="ParentName">
                                 @parentCategory.Name

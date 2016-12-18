@@ -17,7 +17,7 @@ namespace EImece.Domain.Repositories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected IEImeceContext DbContext;
-        protected EImeceContext StoreDbContext
+        protected EImeceContext EImeceDbContext
         {
             get
             {
@@ -28,8 +28,9 @@ namespace EImece.Domain.Repositories
         protected BaseRepository(IEImeceContext dbContext) : base(dbContext)
         {
             DbContext = dbContext;
-            StoreDbContext.Configuration.LazyLoadingEnabled = false;
-            StoreDbContext.Database.Log = s => Logger.Trace(s);
+            EImeceDbContext.Configuration.LazyLoadingEnabled = false;
+            EImeceDbContext.Configuration.ProxyCreationEnabled = false;
+            //  EImeceDbContext.Database.Log = s => Logger.Trace(s);
         }
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
@@ -44,7 +45,7 @@ namespace EImece.Domain.Repositories
             this.disposed = true;
         }
 
-   
+ 
 
 
 

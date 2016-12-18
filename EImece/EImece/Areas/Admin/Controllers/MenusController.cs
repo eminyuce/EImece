@@ -52,6 +52,10 @@ namespace EImece.Areas.Admin.Controllers
             var content = new Menu();
             ViewBag.Tree = CreateMenuTreeViewDataList();
             var parentMenu = new Menu();
+
+           
+
+
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -64,8 +68,10 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = MenuRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
-                parentMenu = MenuRepository.GetSingle(content.ParentId);
-
+                if(content.ParentId > 0)
+                {
+                    parentMenu = MenuRepository.GetSingle(content.ParentId);
+                }
             }
             ViewBag.ParentMenu = parentMenu;
 
@@ -77,18 +83,15 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Menu model)
+        public ActionResult SaveOrEdit(Menu menu)
         {
             try
             {
-                ViewBag.Tree = CreateMenuTreeViewDataList();
-
-                ViewBag.ParentMenu = MenuRepository.GetSingle(model.ParentId); ;
                 if (ModelState.IsValid)
                 {
 
-                    MenuRepository.SaveOrEdit(model);
-                    int contentId = model.Id;
+                    MenuRepository.SaveOrEdit(menu);
+                    int contentId = menu.Id;
                     return RedirectToAction("Index");
                 }
                 else
@@ -99,12 +102,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.Message, model);
+                Logger.Error(ex, "Unable to save changes:" + ex.Message, menu);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
 
-            return View(model);
+            return View(menu);
         }
 
 
@@ -153,6 +156,8 @@ namespace EImece.Areas.Admin.Controllers
             return View(menu);
 
         }
+
+ 
 
         public ActionResult GetMenus()
         {

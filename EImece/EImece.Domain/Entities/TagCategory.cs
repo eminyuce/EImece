@@ -9,6 +9,6 @@ namespace EImece.Domain.Entities
     public class TagCategory : BaseEntity
     {
         public int TagType { get; set; }
-        public string Lang { get; set; }
+        public int Lang { get; set; }
     }
 }

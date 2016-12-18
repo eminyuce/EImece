@@ -8,6 +8,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
 using EImece.Domain.GenericRepositories;
+using System.Data.Entity;
 
 namespace EImece.Domain.Repositories
 {
@@ -15,7 +16,7 @@ namespace EImece.Domain.Repositories
     {
         public MenuRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
+           
         }
 
         private void GetTreeview(List<Menu> list, Menu current, ref List<Menu> returnList)
@@ -47,19 +48,32 @@ namespace EImece.Domain.Repositories
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public int SaveOrEdit(Menu item)
         {
-            return BaseEntityRepository.SaveOrEdit(this, item);
+            //if (item.Id == 0)
+            //{
+            //    this.DbContext.Menus.Add(item);
+            //}
+            //else
+            //{
+            //    var  tempItem = this.DbContext.Menus.Find(item.Id);
+            //    tempItem = item;
+            //    this.DbContext.Entry(tempItem).State = EntityState.Modified;
+
+            //}
+            //return this.DbContext.SaveChanges();
+
+            return BaseEntityRepository.SaveOrEdit(this,item);
+
         }
 
         public int DeleteItem(Menu item)
         {
             return BaseEntityRepository.DeleteItem(this, item);
         }
+        
 
-          
     }
 }

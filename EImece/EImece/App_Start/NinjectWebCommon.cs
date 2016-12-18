@@ -65,7 +65,9 @@ namespace EImece.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IEImeceContext>().To<EImeceContext>().WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
+            var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
+            m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
+            m.InRequestScope();
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
             kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
