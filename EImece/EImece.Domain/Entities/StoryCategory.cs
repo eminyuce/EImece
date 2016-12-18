@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
-    public class StoryCategory : BaseEntity
+    public class StoryCategory : BaseContent
     {
     }
 }

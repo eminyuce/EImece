@@ -10,5 +10,6 @@ namespace EImece.Domain.Entities
     {
         public int TagCategoryId { get; set; }
         public int TagType { get; set; }
+        public string Lang { get; set; }
     }
 }

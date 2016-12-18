@@ -40,11 +40,11 @@
     </Reference>
     <Reference Include="GenericRepository, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\ProjectDlls\EImeceDllReferences\GenericRepository.dll</HintPath>
+      <HintPath>..\..\..\GenericRepositoryDll\GenericRepository.dll</HintPath>
     </Reference>
     <Reference Include="GenericRepository.EntityFramework, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\ProjectDlls\EImeceDllReferences\GenericRepository.EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\GenericRepositoryDll\GenericRepository.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>

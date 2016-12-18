@@ -11,7 +11,12 @@ namespace EImece.Areas.Admin.Controllers
     public class AjaxController : BaseAdminController
     {
         // GET: Admin/Ajax
-
+        [HttpPost]
+        public ActionResult DeleteSubscriberGridItem(List<String> values)
+        {
+            BaseEntityRepository.DeleteBaseEntity(SubscriberRepository, values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult DeleteProductGridItem(List<String> values)
         {

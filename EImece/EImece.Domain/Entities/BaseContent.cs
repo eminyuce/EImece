@@ -13,5 +13,6 @@ namespace EImece.Domain.Entities
         public string Description { get; set; }
         public Boolean ImageState { get; set; }
         public string ImageUrl { get; set; }
+        public string Lang { get; set; }
     }
 }

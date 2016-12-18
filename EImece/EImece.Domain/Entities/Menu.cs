@@ -61,6 +61,8 @@ namespace EImece.Domain.Entities
         }
         public Boolean Static { get; set; }
         public string Link { get; set; }
+       
+        public string PageTheme { get; set; }
         public Boolean LinkIsActive { get; set; }
         [NotMapped]
         public List<Menu> Childrens { get; set; }

@@ -17,8 +17,6 @@ namespace EImece.Domain.Helpers
 
                 foreach (string sortField in sort)
                 {
-                    string direction = null;
-                    string fieldName = null;
 
                     if (sortField.StartsWith("+"))
                     {
