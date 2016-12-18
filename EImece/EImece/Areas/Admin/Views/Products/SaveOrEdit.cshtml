@@ -1,11 +1,12 @@
 ﻿@model EImece.Domain.Entities.Product
 @using EImece.Domain.Entities;
 @using SharkDev.MVC
+@using EImece.Domain.Models.Enums;
 
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var productCategory = (ProductCategory) ViewBag.ProductCategory;
+    var productCategory = (ProductCategory)ViewBag.ProductCategory;
 }
 
 <h2>SaveOrEdit</h2>
@@ -44,6 +45,21 @@ console.log(e);
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.CreatedDate)
                 @Html.HiddenFor(model => model.UpdatedDate)
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        @Html.DropDownListFor(model => model.Lang,
+   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
+   "Select My Language",
+   new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -119,7 +135,7 @@ console.log(e);
                         {
 
                             <span id="OldCategoryName">
-                                
+
                             </span>
                         }
 

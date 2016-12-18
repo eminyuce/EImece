@@ -66,10 +66,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = ProductCategoryRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
-                if (content.ParentId.HasValue)
-                {
-                    parentCategory = ProductCategoryRepository.GetSingle(content.ParentId.Value);
-                }
+                parentCategory = ProductCategoryRepository.GetSingle(content.ParentId);
 
 
             }

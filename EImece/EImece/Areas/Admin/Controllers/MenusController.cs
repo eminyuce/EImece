@@ -63,10 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = MenuRepository.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
-                if (content.ParentId.HasValue)
-                {
-                    parentMenu = MenuRepository.GetSingle(content.ParentId.Value);
-                }
+                parentMenu = MenuRepository.GetSingle(content.ParentId);
 
             }
             ViewBag.ParentMenu = parentMenu;

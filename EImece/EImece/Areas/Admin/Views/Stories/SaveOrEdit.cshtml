@@ -1,4 +1,5 @@
 ﻿@model EImece.Domain.Entities.Story
+@using EImece.Domain.Models.Enums;
 
 @{
     ViewBag.Title = "SaveOrEdit";
@@ -19,6 +20,20 @@
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.Lang,
+   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
+   "Select My Language",
+   new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })

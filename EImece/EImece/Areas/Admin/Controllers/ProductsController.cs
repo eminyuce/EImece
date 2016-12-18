@@ -13,9 +13,9 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(int id = 0, String search = "")
+        public ActionResult Index(int id = 0, String search = "", int lang = 1)
         {
-            var products = ProductRepository.GetAdminPageList(id, search);
+            var products = ProductRepository.GetAdminPageList(id, search, lang);
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(products);
         }

@@ -9,7 +9,7 @@ namespace EImece.Domain.Entities
 {
     public class Menu : BaseContent
     {
-        public int? ParentId { get; set; }
+        public int ParentId { get; set; }
         public Boolean MainPage { get; set; }
         [NotMapped]
         public string Modul { get; set; }

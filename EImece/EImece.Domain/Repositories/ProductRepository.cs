@@ -25,7 +25,7 @@ namespace EImece.Domain.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public PaginatedList<Product> GetMainPageProducts(int page)
+        public PaginatedList<Product> GetMainPageProducts(int page, int language)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
                 Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2 };
-                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage;
+                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage  && r2.Lang == language;
                 Expression<Func<Product, int>> keySelector = t => t.Position;
                 var items = this.PaginateDescending(pageIndex, pageSize, keySelector , match, includeProperties);
 
@@ -62,9 +62,9 @@ namespace EImece.Domain.Repositories
             return BaseEntityRepository.DeleteItem(this, item);
         }
 
-        public List<Product> GetAdminPageList(int categoryId, string search)
+        public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
-            var products = GetAll();
+            var products = GetAll().Where(r => r.Lang == language);
             if (!String.IsNullOrEmpty(search))
             {
                 products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search));

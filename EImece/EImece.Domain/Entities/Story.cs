@@ -8,5 +8,6 @@ namespace EImece.Domain.Entities
 {
     public class Story : BaseContent
     {
+        public int StoryCategoryId { get; set; }
     }
 }

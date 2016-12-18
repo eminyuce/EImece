@@ -1,6 +1,7 @@
 ﻿@model EImece.Domain.Entities.Menu
 @using EImece.Domain.Entities;
-@using SharkDev.MVC
+@using SharkDev.MVC;
+@using EImece.Domain.Models.Enums;
 
 @{
     ViewBag.Title = "SaveOrEdit";
@@ -52,6 +53,19 @@ console.log(e);
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.CreatedDate)
                 @Html.HiddenFor(model => model.UpdatedDate)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                     
+                        @Html.DropDownListFor(model => model.Lang,
+   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
+   "Select My Language",
+   new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -140,7 +154,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.Modul, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Modul, moduls)
+                        @Html.DropDownListFor(model => model.Modul, moduls, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Modul, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -172,7 +186,15 @@ console.log(e);
                         </div>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.PageTheme)
+                            @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-default" />
