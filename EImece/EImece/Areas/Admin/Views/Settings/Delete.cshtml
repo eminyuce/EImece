@@ -1,15 +1,14 @@
-﻿@model EImece.Domain.Entities.Product
+﻿@model EImece.Domain.Entities.Setting
 
 @{
     ViewBag.Title = "Delete";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Product</h4>
+    <h4>Setting</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -61,53 +60,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.MainPage)
+            @Html.DisplayNameFor(model => model.SettingKey)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MainPage)
+            @Html.DisplayFor(model => model.SettingKey)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ImageState)
+            @Html.DisplayNameFor(model => model.SettingValue)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ImageState)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductCategoryId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductCategoryId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Discount)
-        </dd>
-
-     
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductCode)
+            @Html.DisplayFor(model => model.SettingValue)
         </dd>
 
     </dl>

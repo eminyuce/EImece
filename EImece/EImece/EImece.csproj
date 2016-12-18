@@ -251,6 +251,7 @@
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoryCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscribersController.cs" />
@@ -371,6 +372,9 @@
     <Content Include="Areas\Admin\Views\TagCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\SaveOrEdit.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

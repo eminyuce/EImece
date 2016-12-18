@@ -13,6 +13,8 @@ namespace EImece.Areas.Admin.Controllers
     public abstract class BaseAdminController : Controller
     {
         [Inject]
+        public ISettingRepository SettingRepository { get; set; }
+        [Inject]
         public IProductRepository ProductRepository { get; set; }
         [Inject]
         public IProductCategoryRepository ProductCategoryRepository { get; set; }

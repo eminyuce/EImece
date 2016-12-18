@@ -80,6 +80,7 @@ namespace EImece.App_Start
             kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();
             kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
             kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
+            kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
 
         }
     }

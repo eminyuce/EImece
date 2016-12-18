@@ -32,5 +32,6 @@ namespace EImece.Domain.DbContext
         public DbSet<ProductTag> ProductTags { get; set; }
         public DbSet<FileStorage> FileStorages { get; set; }
         public DbSet<FileStorageTag> FileStorageTags { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }
