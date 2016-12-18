@@ -10,6 +10,20 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
+
+        [HttpPost]
+        public ActionResult StoryGridItem(List<String> values)
+        {
+            BaseEntityRepository.DeleteBaseEntity(StoryRepository, values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult StoryCategoryGridItem(List<String> values)
+        {
+            BaseEntityRepository.DeleteBaseEntity(StoryCategoryRepository, values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
         // GET: Admin/Ajax
         [HttpPost]
         public ActionResult DeleteSubscriberGridItem(List<String> values)

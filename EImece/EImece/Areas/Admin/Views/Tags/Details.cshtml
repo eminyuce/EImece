@@ -1,14 +1,13 @@
-﻿@model EImece.Domain.Entities.ProductCategory
+﻿@model EImece.Domain.Entities.Tag
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>ProductCategory</h4>
+    <h4>Tag</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -52,27 +51,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.TagCategoryId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.TagCategoryId)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ImageState)
+            @Html.DisplayNameFor(model => model.TagType)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ImageState)
+            @Html.DisplayFor(model => model.TagType)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ImageUrl)
+            @Html.DisplayNameFor(model => model.Lang)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ImageUrl)
+            @Html.DisplayFor(model => model.Lang)
         </dd>
 
     </dl>

@@ -251,7 +251,11 @@
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StoriesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StoryCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscribersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TagCategoriesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -352,6 +356,21 @@
     </Content>
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\StoryCategories\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Stories\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\StoryCategories\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\StoryCategories\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\StoryCategories\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Stories\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Stories\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Stories\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Tags\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Tags\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Tags\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Tags\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\TagCategories\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\TagCategories\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\TagCategories\Delete.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
