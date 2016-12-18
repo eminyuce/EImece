@@ -57,6 +57,7 @@ namespace EImece.Areas.Admin.Controllers
                 content.CreatedDate = DateTime.Now;
                 content.IsActive = true;
                 content.UpdatedDate = DateTime.Now;
+                content.ParentId = 0;
             }
             else
             {
@@ -76,16 +77,18 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Menu menu)
+        public ActionResult SaveOrEdit(Menu model)
         {
             try
             {
                 ViewBag.Tree = CreateMenuTreeViewDataList();
+
+                ViewBag.ParentMenu = MenuRepository.GetSingle(model.ParentId); ;
                 if (ModelState.IsValid)
                 {
 
-                    MenuRepository.SaveOrEdit(menu);
-                    int contentId = menu.Id;
+                    MenuRepository.SaveOrEdit(model);
+                    int contentId = model.Id;
                     return RedirectToAction("Index");
                 }
                 else
@@ -96,12 +99,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, menu);
+                Logger.Error(ex, "Unable to save changes:" + ex.Message, model);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.StackTrace.ToString());
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
 
-            return View(menu);
+            return View(model);
         }
 
 
@@ -142,7 +145,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + 
+                Logger.Error(ex, "Unable to delete product:" +
                     ex.StackTrace, menu);
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }

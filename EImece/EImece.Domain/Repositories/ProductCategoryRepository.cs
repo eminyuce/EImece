@@ -34,7 +34,7 @@ namespace EImece.Domain.Repositories
             List<ProductCategory> list = GetAll().ToList();
             List<ProductCategory> returnList = new List<ProductCategory>();
             //find top levels items
-            var topLevels = list.Where(a => a.ParentId == 0 || a.ParentId == null).OrderBy(r => r.Position).ToList();
+            var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
             returnList.AddRange(topLevels);
             foreach (var i in topLevels)
             {

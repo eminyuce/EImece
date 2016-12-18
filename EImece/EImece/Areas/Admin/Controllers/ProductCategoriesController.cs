@@ -60,6 +60,7 @@ namespace EImece.Areas.Admin.Controllers
                 content.CreatedDate = DateTime.Now;
                 content.IsActive = true;
                 content.UpdatedDate = DateTime.Now;
+                content.ParentId = 0;
             }
             else
             {

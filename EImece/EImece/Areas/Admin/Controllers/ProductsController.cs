@@ -52,6 +52,7 @@ namespace EImece.Areas.Admin.Controllers
                 content.CreatedDate = DateTime.Now;
                 content.IsActive = true;
                 content.UpdatedDate = DateTime.Now;
+                content.ProductCategoryId = 0;
             }
             else
             {

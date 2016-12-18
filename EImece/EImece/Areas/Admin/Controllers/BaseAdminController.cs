@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
             var menus = MenuRepository.GetAll().ToList();
             foreach (var p in menus)
             {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId.ToStr() });
+                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
             }
 
             return _lstTreeNodes;
@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
             var productCategories = ProductCategoryRepository.GetAll().ToList();
             foreach (var p in productCategories)
             {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId.ToStr() });
+                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
             }
 
             return _lstTreeNodes;
