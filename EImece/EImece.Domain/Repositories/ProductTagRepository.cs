@@ -27,9 +27,32 @@ namespace EImece.Domain.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public List<ProductTag> GetAllByProductId(int productId)
+        {
+           return this.GetAll().Where(r => r.ProductId == productId).ToList();
+        }
+
         public int SaveOrEdit(ProductTag item)
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
+        }
+
+        public void SaveProductTags(int productId, int[] tags)
+        {
+            var productTags = GetAll().Where(r => r.ProductId == productId).ToList();
+            foreach (var product in productTags)
+            {
+                Delete(product);
+            }
+            Save();
+            foreach (var tag in tags)
+            {
+                ProductTag item = new ProductTag();
+                item.ProductId = productId;
+                item.TagId = tag;
+                this.Add(item);
+            }
+            Save();
         }
     }
 }

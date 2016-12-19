@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
-     public class ProductTag : IEntity<int>
+    public class ProductTag : IEntity<int>
     {
         public int Id { get; set; }
+        public int TagId { get; set; }
+        public int ProductId { get; set; }
+
     }
 }

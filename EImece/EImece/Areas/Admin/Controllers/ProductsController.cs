@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace EImece.Areas.Admin.Controllers
             var content = new Product();
             var productCategory = new ProductCategory();
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+
             if (id == 0)
             {
                 content.CreatedDate = DateTime.Now;
@@ -70,7 +72,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product)
+        public ActionResult SaveOrEdit(Product product, int [] tags = null)
         {
             try
             {
@@ -87,6 +89,11 @@ namespace EImece.Areas.Admin.Controllers
 
                     ProductRepository.SaveOrEdit(product);
                     int contentId = product.Id;
+
+                    if(tags!= null)
+                    {
+                        ProductTagRepository.SaveProductTags(product.Id, tags);
+                    }
                     return RedirectToAction("Index");
                 }
                 else

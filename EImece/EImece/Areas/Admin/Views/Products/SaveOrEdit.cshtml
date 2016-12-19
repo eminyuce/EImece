@@ -56,7 +56,7 @@ console.log(e);
 
                         @Html.DropDownListFor(model => model.Lang,
    EnumHelper.GetSelectList(typeof(EImeceLanguage)),
-   "Select My Language",
+ null,
    new { @class = "form-control" })
 
                         @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
@@ -178,7 +178,9 @@ console.log(e);
                         @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div id="productTagsHtml">
 
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-default" />
@@ -192,3 +194,22 @@ console.log(e);
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            CreateTags();
+            function CreateTags() {
+                var postData = JSON.stringify({ "language": $("#Lang").val(), "productId": $("#Id").val() });
+                console.log(postData);
+                ajaxMethodCall(postData, "/Ajax/GetProductTags", function (data) {
+                    $("#productTagsHtml").html(data);
+                });
+            }
+           
+            
+        });
+    </script>
+}

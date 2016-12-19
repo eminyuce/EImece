@@ -10,11 +10,13 @@ using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
 using EImece.Domain.GenericRepositories;
 using GenericRepository;
+using NLog;
 
 namespace EImece.Domain.Repositories
 {
     public class ProductRepository : BaseRepository<Product, int>, IProductRepository
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ProductRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }

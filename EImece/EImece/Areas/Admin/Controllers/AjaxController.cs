@@ -1,4 +1,6 @@
 ﻿using EImece.Domain.GenericRepositories;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,18 @@ namespace EImece.Areas.Admin.Controllers
         {
             BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(ProductRepository, values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetProductTags(EImeceLanguage language, int productId=0)
+        {
+            var tags = TagCategoryRepository.GetTagsByTagType(EImeceTagType.Products, language);
+            var productTags = ProductTagRepository.GetAllByProductId(productId).Select(r => r.TagId).ToList();
+            var tempData = new TempDataDictionary();
+            tempData["selectedTags"] = productTags;
+            var html = this.RenderPartialToString(
+                        "pProductsTag",
+                        new ViewDataDictionary(tags), tempData);
+            return Json(html, JsonRequestBehavior.AllowGet);
         }
     }
 }

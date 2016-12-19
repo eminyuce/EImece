@@ -119,6 +119,7 @@
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\QuerySortingExtensions.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\EImeceTagType.cs" />

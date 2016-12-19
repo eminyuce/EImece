@@ -10,5 +10,6 @@ namespace EImece.Domain.Entities
     {
         public int TagType { get; set; }
         public int Lang { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
     }
 }

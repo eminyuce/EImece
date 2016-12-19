@@ -14,7 +14,7 @@ namespace EImece.Domain.Repositories
        where T : class, IEntity<TId>
        where TId : IComparable
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
         protected IEImeceContext DbContext;
         protected EImeceContext EImeceDbContext

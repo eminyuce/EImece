@@ -59,7 +59,7 @@ console.log(e);
 
                         @Html.DropDownListFor(model => model.Lang,
    EnumHelper.GetSelectList(typeof(EImeceLanguage)),
-   "Select My Language",
+   null,
    new { @class = "form-control" })
 
                         @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
