@@ -15,14 +15,14 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var menus = MenuRepository.GetAll().ToList();
+            var menus = MenuRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                menus = menus.Where(r => r.Name.ToLower().Contains(search)).ToList();
+                menus = menus.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
 
             ViewBag.Tree = CreateMenuTreeViewDataList();
-            return View(menus);
+            return View(menus.OrderBy(r => r.Position).ToList());
         }
 
         //

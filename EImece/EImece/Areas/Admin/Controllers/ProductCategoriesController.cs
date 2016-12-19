@@ -17,13 +17,13 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var productCategories = ProductCategoryRepository.GetAll().ToList();
+            var productCategories = ProductCategoryRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                productCategories = productCategories.Where(r => r.Name.ToLower().Contains(search)).ToList();
+                productCategories = productCategories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
-            return View(productCategories);
+            return View(productCategories.OrderBy(r => r.Position).ToList());
         }
      
 

@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         protected List<Node> CreateMenuTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var menus = MenuRepository.GetAll().ToList();
+            var menus = MenuRepository.GetAll().OrderBy(r => r.Position).ToList();
             foreach (var p in menus)
             {
                 _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
@@ -60,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
         protected List<Node> CreateProductCategoryTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var productCategories = ProductCategoryRepository.GetAll().ToList();
+            var productCategories = ProductCategoryRepository.GetAll().OrderBy(r => r.Position).ToList();
             foreach (var p in productCategories)
             {
                 _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });

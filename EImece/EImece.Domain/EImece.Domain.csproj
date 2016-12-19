@@ -121,6 +121,7 @@
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\QuerySortingExtensions.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
+    <Compile Include="Models\Enums\EImeceTagType.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Models\HelperModels\PagedResult.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />

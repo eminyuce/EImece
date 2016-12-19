@@ -9,7 +9,7 @@ namespace EImece.Domain.Entities
     public class Tag : BaseEntity
     {
         public int TagCategoryId { get; set; }
-        public int TagType { get; set; }
-        public string Lang { get; set; }
+        public int Lang { get; set; }
+
     }
 }

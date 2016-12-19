@@ -74,7 +74,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-                ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+         
                 if (ModelState.IsValid)
                 {
 

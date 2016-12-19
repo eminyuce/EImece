@@ -2,35 +2,38 @@
 @using EImece.Domain.Entities;
 @using SharkDev.MVC
 @using EImece.Domain.Models.Enums;
+@using SharkDev.Web.Controls.TreeView.Model;
 
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategory = (ProductCategory)ViewBag.ProductCategory;
+    var productTree = (List<Node>)ViewBag.Tree;
 }
 
 <h2>SaveOrEdit</h2>
 <div class="row" style="padding:20px;">
 
     <div class="col-md-3">
-        @Html.SharkDev().TreeView(settings =>
-    {
-        settings.Id = "treeViewContainer";
-        settings.Header.Text = "Tree root - Animal";
-        settings.Header.Visible = false;
-        settings.Header.Expanded = true;
-        settings.ClientHandlers.ContentSelect = @"function (e) {
+        @if (productTree != null)
+        {
+            @Html.SharkDev().TreeView(settings =>
+            {
+                settings.Id = "treeViewContainer";
+                settings.Header.Text = "Tree root - Animal";
+                settings.Header.Visible = false;
+                settings.Header.Expanded = true;
+                settings.ClientHandlers.ContentSelect = @"function (e) {
 console.log(e);
    $('#OldCategoryName').text(e.name);
    $('#ProductCategoryId').val(e.id);
 }";
-        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
-        settings.Height = 300;
-        settings.Width = 270;
-        settings.DataOnClient = true;
-    }).GetContent(ViewBag.Tree)
-
-
+                settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+                settings.Height = 300;
+                settings.Width = 270;
+                settings.DataOnClient = true;
+            }).GetContent(productTree);
+        }
     </div>
     <div class="col-md-9">
 
@@ -125,7 +128,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @if (productCategory.Id > 0)
+                        @if (productCategory.Id > 0 && productCategory != null)
                         {
                             <span id="OldCategoryName">
                                 @productCategory.Name

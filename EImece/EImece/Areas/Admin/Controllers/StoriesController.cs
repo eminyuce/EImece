@@ -15,12 +15,12 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var categories = StoryRepository.GetAll().ToList();
+            var stories = StoryRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                categories = categories.Where(r => r.Name.ToLower().Contains(search)).ToList();
+                stories = stories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(categories);
+            return View(stories.OrderBy(r => r.Position).ToList());
         }
 
 

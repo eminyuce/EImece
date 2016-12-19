@@ -2,22 +2,28 @@
 @using EImece.Domain.Entities;
 @using SharkDev.MVC
 @using EImece.Domain.Models.Enums;
+@using SharkDev.Web.Controls.TreeView.Model;
+
+
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentCategory = (ProductCategory)ViewBag.ParentCategory;
+    var productTree = (List<Node>)ViewBag.Tree;
 }
 
 <h2>SaveOrEdit</h2>
 <div ng-controller="ProductCategoriesTreeController" class="row" style="padding:20px;">
 
     <div class="col-md-3">
+        @if (productTree != null)
+        {
 
-        @Html.SharkDev().TreeView(settings =>
+            @Html.SharkDev().TreeView(settings =>
    {
        settings.Id = "treeViewContainer";
        settings.Header.Text = "Tree root - Animal";
-       settings.Header.Visible = true;
+       settings.Header.Visible = false;
        settings.Header.Expanded = true;
        settings.ClientHandlers.ContentSelect = @"function (e) {
 console.log(e);
@@ -28,7 +34,10 @@ console.log(e);
        settings.Height = 300;
        settings.Width = 270;
        settings.DataOnClient = true;
-   }).GetContent(ViewBag.Tree)
+   }).GetContent(productTree)
+
+        }
+
     </div>
     <div class="col-md-9">
 

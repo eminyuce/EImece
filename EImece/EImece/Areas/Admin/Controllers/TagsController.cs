@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,13 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var tags = TagRepository.GetAll().ToList();
+            var tags = TagRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                tags = tags.Where(r => r.Name.ToLower().Contains(search)).ToList();
+                tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(tags);
+            
+            return View(tags.OrderBy(r => r.Position).ToList());
         }
 
 
@@ -48,7 +50,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new Tag();
-
+            ViewBag.Categories = TagCategoryRepository.GetAll().OrderBy(r=>r.Position).ToList().Select(r=> new SelectListItem() { Text = r.Name.ToStr(), Value = r.Id.ToStr() }).ToList();
 
             if (id == 0)
             {
@@ -87,15 +89,15 @@ namespace EImece.Areas.Admin.Controllers
                 {
 
                 }
-
+                
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Tag);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
             }
-
+            ViewBag.Categories = TagCategoryRepository.GetAll().OrderBy(r => r.Position).ToList().Select(r => new SelectListItem() { Text = r.Name.ToStr(), Value = r.Id.ToStr() }).ToList();
             return View(Tag);
         }
 

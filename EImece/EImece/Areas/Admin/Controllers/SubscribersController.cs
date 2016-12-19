@@ -14,9 +14,9 @@ namespace EImece.Areas.Admin.Controllers
             var subs = SubscriberRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                subs = subs.Where(r => r.Name.ToLower().Contains(search));
+                subs = subs.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()) || r.Email.ToLower().Contains(search.Trim().ToLower()));
             }
-            var resultSubs = subs.ToList();
+            var resultSubs = subs.OrderBy(r => r.Email).ToList();
             return View(resultSubs);
         }
     }

@@ -14,12 +14,12 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var categories = SettingRepository.GetAll().ToList();
+            var settings = SettingRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                categories = categories.Where(r => r.Name.ToLower().Contains(search)).ToList();
+                settings = settings.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(categories);
+            return View(settings.OrderBy(r => r.Position).ToList());
         }
 
          
