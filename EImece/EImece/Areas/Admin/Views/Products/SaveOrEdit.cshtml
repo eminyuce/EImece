@@ -128,7 +128,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @if (productCategory.Id > 0 && productCategory != null)
+                        @if (productCategory != null && productCategory.Id > 0)
                         {
                             <span id="OldCategoryName">
                                 @productCategory.Name
@@ -143,6 +143,7 @@ console.log(e);
                         }
 
                         @Html.HiddenFor(model => model.ProductCategoryId)
+                        @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

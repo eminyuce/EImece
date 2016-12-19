@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
             var tempData = new TempDataDictionary();
             tempData["selectedTags"] = productTags;
             var html = this.RenderPartialToString(
-                        "pProductsTag",
+                        @"~/Areas/Admin/Views/Shared/pProductsTag.cshtml", 
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }

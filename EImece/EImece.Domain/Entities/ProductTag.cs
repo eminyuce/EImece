@@ -13,5 +13,7 @@ namespace EImece.Domain.Entities
         public int TagId { get; set; }
         public int ProductId { get; set; }
 
+        public virtual Tag Tag { get; set; }
+
     }
 }

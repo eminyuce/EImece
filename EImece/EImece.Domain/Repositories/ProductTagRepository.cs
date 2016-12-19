@@ -36,8 +36,7 @@ namespace EImece.Domain.Repositories
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
-
-        public void SaveProductTags(int productId, int[] tags)
+        public void DeleteProductTags(int productId)
         {
             var productTags = GetAll().Where(r => r.ProductId == productId).ToList();
             foreach (var product in productTags)
@@ -45,14 +44,23 @@ namespace EImece.Domain.Repositories
                 Delete(product);
             }
             Save();
-            foreach (var tag in tags)
+        }
+        public void SaveProductTags(int productId, int[] tags)
+        {
+            DeleteProductTags(productId);                
+            if (tags != null)
             {
-                ProductTag item = new ProductTag();
-                item.ProductId = productId;
-                item.TagId = tag;
-                this.Add(item);
+                foreach (var tag in tags)
+                {
+                    ProductTag item = new ProductTag();
+                    item.ProductId = productId;
+                    item.TagId = tag;
+                    this.Add(item);
+                }
+                Save();
+
             }
-            Save();
+         
         }
     }
 }

@@ -22,7 +22,7 @@ namespace EImece.Domain.Entities
 
 
         public virtual ProductCategory ProductCategory { get; set; }
-
         public virtual ICollection<ProductFile> ProductFiles { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
     }
 }

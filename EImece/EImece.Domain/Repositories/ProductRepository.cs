@@ -11,12 +11,17 @@ using GenericRepository.EntityFramework.Enums;
 using EImece.Domain.GenericRepositories;
 using GenericRepository;
 using NLog;
+using Ninject;
 
 namespace EImece.Domain.Repositories
 {
     public class ProductRepository : BaseRepository<Product, int>, IProductRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public IProductTagRepository ProductTagRepository { get; set; }
+
         public ProductRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
@@ -61,6 +66,7 @@ namespace EImece.Domain.Repositories
 
         public int DeleteItem(Product item)
         {
+            ProductTagRepository.DeleteProductTags(item.Id);
             return BaseEntityRepository.DeleteItem(this, item);
         }
 

@@ -72,9 +72,10 @@ namespace EImece.App_Start
             kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
             kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
-            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
             kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
             kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
+            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
+
             kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
             kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
             kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();

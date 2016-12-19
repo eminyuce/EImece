@@ -11,5 +11,6 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<ProductTag> GetAllByProductId(int productId);
         void SaveProductTags(int id, int[] tags);
+        void DeleteProductTags(int productId);
     }
 }
