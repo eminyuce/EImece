@@ -12,6 +12,8 @@ namespace EImece.Domain.Models.Enums
         [Display(Name = "Products")]
         Products = 1,
         [Display(Name = "Stories")]
-        Stories = 2
+        Stories = 2,
+        [Display(Name = "Images")]
+        Images = 3
     }
 }

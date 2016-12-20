@@ -4,6 +4,7 @@
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
+@using EImece.Domain.Models.Enums;
 
 @{
     ViewBag.Title = "Index";
@@ -52,11 +53,8 @@
             </span>
 
             <span class="col-md-2">
-                <select name="ItemStateSelection" id="ItemStateSelection">
-                    <option value="State">Durum</option>
-                    <option value="ImageState">Resim Yayında</option>
-                    <option value="MainPage">Ana Sayfa</option>
-                </select>
+                <input type="hidden" value="State" id="ItemStateSelection"/>
+                     
             </span><span class="col-md-2">
                 <span class="btn btn-xs btn-default" id="SetStateOnAll">Set Selected State True All</span>
             </span><span class="col-md-2">
@@ -136,11 +134,19 @@
                                         @Html.ActionLink(" ", "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash glyphicon-white" })
                                     </b>);
 
-                           columns.Add(c => c.Name)
-                                  .Titled("Title")
-                                  .Filterable(true);
+                       columns.Add(c => c.Name)
+                              .Titled("Title")
+                              .Filterable(true);
 
 
+                       columns.Add(c => c.TagType)
+                .Titled("TagType")
+                .Sanitized(false)
+                .Encoded(false)
+                .Filterable(true).RenderValueAs(d =>
+                @<span>
+                    @String.Format("{0}", (EImeceTagType)d.TagType)
+                </span>);
 
                            columns.Add(o => o.Position)
                               .Encoded(false).

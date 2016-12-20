@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 stories = stories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(stories.OrderBy(r => r.Position).ToList());
+            return View(stories.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
         }
 
 

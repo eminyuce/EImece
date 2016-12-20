@@ -22,7 +22,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             ViewBag.Tree = CreateMenuTreeViewDataList();
-            return View(menus.OrderBy(r => r.Position).ToList());
+            return View(menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
         }
 
         //

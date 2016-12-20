@@ -23,7 +23,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategories = productCategories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
-            return View(productCategories.OrderBy(r => r.Position).ToList());
+            return View(productCategories.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
         }
      
 

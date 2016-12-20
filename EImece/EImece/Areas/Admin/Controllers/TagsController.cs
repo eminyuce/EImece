@@ -1,9 +1,11 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -15,13 +17,15 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var tags = TagRepository.GetAll();
+            Expression<Func<Tag, object>> includeProperty2 = r => r.TagCategory;
+            Expression<Func<Tag, object>>[] includeProperties = { includeProperty2 };
+            var tags = TagRepository.GetAllIncluding(includeProperties);
             if (!String.IsNullOrEmpty(search))
             {
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            
-            return View(tags.OrderBy(r => r.Position).ToList());
+            var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+            return View(result);
         }
 
 
@@ -42,7 +46,19 @@ namespace EImece.Areas.Admin.Controllers
             }
             return View(content);
         }
+        private List<SelectListItem> GetCategoriesSelectList()
+        {
 
+            var tagCategories = TagCategoryRepository.GetAll().OrderBy(r => r.Position).ToList();
+           return  tagCategories.Select(r => new SelectListItem()
+            {
+                Text =
+
+                String.Format("{0} -- {1}", r.Name.ToStr(), (EImeceTagType)r.TagType)
+                ,
+                Value = r.Id.ToStr()
+            }).ToList();
+        }
         //
         // GET: /Tag/Create
 
@@ -50,7 +66,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new Tag();
-            ViewBag.Categories = TagCategoryRepository.GetAll().OrderBy(r=>r.Position).ToList().Select(r=> new SelectListItem() { Text = r.Name.ToStr(), Value = r.Id.ToStr() }).ToList();
+            ViewBag.Categories = GetCategoriesSelectList();
 
             if (id == 0)
             {
@@ -97,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
             }
-            ViewBag.Categories = TagCategoryRepository.GetAll().OrderBy(r => r.Position).ToList().Select(r => new SelectListItem() { Text = r.Name.ToStr(), Value = r.Id.ToStr() }).ToList();
+            ViewBag.Categories = GetCategoriesSelectList();
             return View(Tag);
         }
 

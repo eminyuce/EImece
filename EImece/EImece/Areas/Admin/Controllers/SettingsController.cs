@@ -19,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 settings = settings.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(settings.OrderBy(r => r.Position).ToList());
+            return View(settings.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
         }
 
          

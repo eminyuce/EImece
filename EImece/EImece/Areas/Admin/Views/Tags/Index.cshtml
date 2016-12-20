@@ -4,6 +4,7 @@
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
+@using EImece.Domain.Models.Enums;
 
 @{
     ViewBag.Title = "Index";
@@ -52,11 +53,7 @@
             </span>
 
             <span class="col-md-2">
-                <select name="ItemStateSelection" id="ItemStateSelection">
-                    <option value="State">Durum</option>
-                    <option value="ImageState">Resim Yayında</option>
-                    <option value="MainPage">Ana Sayfa</option>
-                </select>
+                <input type="hidden" value="State" id="ItemStateSelection" />
             </span><span class="col-md-2">
                 <span class="btn btn-xs btn-default" id="SetStateOnAll">Set Selected State True All</span>
             </span><span class="col-md-2">
@@ -136,35 +133,54 @@
                                         @Html.ActionLink(" ", "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash glyphicon-white" })
                                     </b>);
 
-                       columns.Add(c => c.Name)
-                              .Titled("Title")
-                              .Filterable(true);
+                           columns.Add(c => c.Name)
+                                  .Titled("Tag Name")
+                                  .Filterable(true);
+
+                           columns.Add(c => c.TagCategory.Name)
+                         .Titled("TagCategoryName")
+                         .Filterable(true)
+                         .Encoded(false)
+                         .RenderValueAs(d =>
+                        @<span>
+                           @String.Format("{0}",d.Name)
+                        </span>);
+
+                       columns.Add(c => c.TagCategory.TagType)
+                .Titled("TagType")
+                .Sanitized(false)
+                .Encoded(false)
+                .Filterable(true).RenderValueAs(d =>
+                @<span>
+                    @String.Format("{0}", (EImeceTagType)d.TagCategory.TagType)
+                </span>);
 
 
 
-                       columns.Add(o => o.Position)
+
+                           columns.Add(o => o.Position)
                           .Encoded(false).
                                Sanitized(false).
                                SetWidth(10).
                                RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-                       columns.Add(o => o.IsActive)
-                              .Titled("State")
-                              .Sortable(true)
-                              .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                               Sanitized(false)
-                              .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                                o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
-     
-                       columns.Add(o => o.CreatedDate)
-                              .Titled("Date")
-                              .Sortable(true)
-                              .Css("gridDateClass")
-                              .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
-                              .SortInitialDirection(GridSortDirection.Descending);
+                           columns.Add(o => o.IsActive)
+                                  .Titled("State")
+                                  .Sortable(true)
+                                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                                   Sanitized(false)
+                                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+
+                           columns.Add(o => o.CreatedDate)
+                                  .Titled("Date")
+                                  .Sortable(true)
+                                  .Css("gridDateClass")
+                                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
+                                  .SortInitialDirection(GridSortDirection.Descending);
 
 
-     
+
 
 
                        }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)

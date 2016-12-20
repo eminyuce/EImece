@@ -19,7 +19,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(tags.OrderBy(r => r.Position).ToList());
+            var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+            return View(result);
         }
 
 

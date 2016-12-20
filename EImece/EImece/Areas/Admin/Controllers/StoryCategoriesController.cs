@@ -19,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 categories = categories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            return View(categories.OrderBy(r => r.Position).ToList());
+            return View(categories.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
         }
 
 
