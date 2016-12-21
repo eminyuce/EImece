@@ -1,0 +1,19 @@
+﻿using EImece.Domain.Models.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace EImece.Areas.Admin.Controllers
+{
+    public class FileStoragesController : BaseAdminController
+    {
+        // GET: Admin/FileStorages
+        public ActionResult Index()
+        {
+      
+            return View();
+        }
+    }
+}

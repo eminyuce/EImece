@@ -1,0 +1,20 @@
+﻿@using EImece.Domain.Entities;
+@model  List<TagCategory>
+@{
+    var tagCategories = Model;
+}
+
+@foreach (TagCategory tagCategory in tagCategories)
+{
+    <h3>
+        @tagCategory.Name
+    </h3>
+    <div>
+        @foreach (var tag in tagCategory.Tags)
+        {
+            <div>
+                <input type="checkbox"  name="tags" value="@tag.Id" /> @tag.Name
+            </div>
+        }
+    </div>
+}

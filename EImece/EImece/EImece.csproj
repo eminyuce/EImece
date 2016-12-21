@@ -248,6 +248,7 @@
     <Compile Include="Areas\Admin\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FileStoragesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
@@ -280,9 +281,14 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\angularTreeView\angular.treeview.css" />
     <Content Include="Content\DataTable\jquery.dataTables.min.css" />
+    <Content Include="Content\FileUpload\FileUploader.css" />
+    <Content Include="Content\FileUpload\styles.css" />
+    <Content Include="Content\FileUpload\styles.min.css" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\Images\SharkDev.TreeView.png" />
     <Content Include="Content\SharkDev.TreeView.css" />
+    <Content Include="Content\sonic\blue-circle-loader-spritesheet.png" />
+    <Content Include="Content\sonic\sonic-bluecircle.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -377,16 +383,23 @@
     <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\FileStorages\Index.cshtml" />
+    <Content Include="Content\FileUpload\styles.less" />
+    <Content Include="Areas\Admin\Views\Shared\pImagesTag.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\EImecePublishProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\FileUpload\FileManager_Readme.md" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\eimece.js" />
+    <Content Include="Scripts\FileUpload\FileManager.js" />
+    <Content Include="Scripts\FileUpload\FileUploader.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\Handlebars\handlebars-v2.0.0.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
     <Content Include="Scripts\jquery-1.12.4.min.map" />
@@ -457,6 +470,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="media\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

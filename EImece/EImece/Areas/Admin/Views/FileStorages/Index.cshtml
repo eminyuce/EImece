@@ -1,0 +1,263 @@
+﻿@using EImece.Domain.Models.Enums;
+
+@{
+    ViewBag.Title = "Index";
+    int baseId = 10;
+}
+
+<h2>Index</h2>
+<h3>Upload Files</h3>
+
+<div class="form-group">
+    Language
+    <div class="col-md-10">
+
+        @Html.DropDownList("Lang",
+   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
+ null,
+   new { @class = "form-control" })
+
+    </div>
+</div>
+<div id="imageTags">
+
+</div>
+
+<div id="fileuploader"></div>
+
+<div class="dv-upload-container" id="lst_uploads">
+    <h3>Uploads</h3>
+    <table data-filelist="" class="table table-bordered table-hover table-condensed table-striped table-responsive" >
+        <thead>
+            <tr>
+                <th></th>
+                <th>File</th>
+                <th>Width</th>
+                <th>Height</th>
+                <th>Caption</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+
+
+@section scripts {
+
+
+
+
+    <link href="~/Content/FileUpload/FileUploader.css" rel="stylesheet" />
+    <link href="~/Content/sonic/sonic-bluecircle.css" rel="stylesheet" />
+
+    <script src="~/Scripts/Handlebars/handlebars-v2.0.0.js"></script>
+    <script src="~/Scripts/FileUpload/FileUploader.js"></script>
+    <script src="~/Scripts/FileUpload/FileManager.js"></script>
+    <script>
+        var imagewidth_limit = 200;
+
+
+        $(document).ready(function () {
+            CreateTags();
+            function CreateTags() {
+                var postData = JSON.stringify({ "language": $("#Lang").val() });
+                console.log(postData);
+                ajaxMethodCall(postData, "/Ajax/GetImageTags", function (data) {
+                    $("#imageTags").html(data);
+                });
+            }
+
+            $('#Lang').change(
+                    function() {
+                        var val2 = $('#drop option:selected').val();
+                        CreateTags();
+                    });
+
+            lib_FileUploader.init(
+                "#fileuploader",
+                {
+                    actionUrl: "/Blogs/UploadFile",
+                    useDragDrop: true,
+
+                    onUploadSuccess: uploadSuccess,
+                    onUploadError: uploadError,
+
+                    loaderClass: "sonic-loader"
+                }
+            );
+
+            lib_FileManager.init(
+                '#lst_uploads',
+                {
+                    baseId: @baseId,  //for most cases this will be the StoryId, basically it's the base id we are associating with, if any
+                    loaderClass: "sonic-loader",
+                    engine:"razor",
+                    //SstarterTemplate: '#file-manager-starter', //a handlebars defintion for what the starter list should be created as, ie should it be a table or something else
+                    //defaults to a div
+                    add: {
+                        urlAdd: '/Ajax/AddFile_ForEntry',  //no url means the list is just a session instance, no persistance
+                        //templateAdd: '#file-manager-add',
+                        onSuccess: function (data, eventname) {
+
+                            //jedit instance
+                            @*var urlSaveDescription = '@Url.Action("SetFileDescription", "Ajax")';
+                            $(".jeditable-description").editable(urlSaveDescription, {
+                                type: 'textarea',
+                                width:"100%",
+                                submit: 'OK',
+                                cancel: 'Cancel',
+                                onblur: "ignore",
+                                tooltip: 'Click to edit...'
+                            });*@
+                        }   //default onSuccess and onError are the base handlers in the library, nothing extravagant
+                        //it's assumed that most users will be using their own callbacks to suit their implementations
+                    },
+                    remove: {
+                        urlRemove: '/Ajax/RemoveFile_ForEntry', //no url means the list is just a session instance, no persistance
+                        onSuccess: function () { } //default onSuccess and onError are the base handlers in the library, nothing extravagant
+                    },
+                    reorder: {
+                        urlReorder: '/Ajax/ReorderFile_ForEntry', //no url means the list is just a session instance, no persistance
+                        onSuccess: function () { } //default onSuccess and onError are the base handlers in the library, nothing extravagant
+                    },
+                    @*preload: {
+                        method: 'remote', //defaults to local
+                        url:"/Ajax/GetFiles_ForEntry?baseid=" + @(baseId)
+
+                        },*@
+                    model: [
+                        { name: "BlogFileId", visible: false, type: "string" },  //visible defaults to true
+                        { name: "FileNameUrl", visible: true, type: "string" },
+                        { name: "IsWebImage", visible: false, type: "bool" },
+                        { name: "Width", visible: true, type: "number" },
+                        { name: "Height", visible: true, type: "number" },
+                        { name: "Caption", visible: true, type: "string" },
+                        { name: "GetImageTagThumb", visible: false, type: "string" },
+                        { name: "GetDownloadLink", visible: false, type: "string" },
+                        { name: "GetFileNameUrlDownloadLink", visible: false, type: "string" }
+                        //{
+                        //    name: "DateCreated", visible: false, type: "datetime",
+                        //    printformat: function (value) { return (value.getMonth() + 1) + "/" + value.getDate() + "/" + value.getFullYear(); }
+                        //}
+                    ],  //model definition in an array for indexing, might switch to a defined object config model if we need spec definitions for each attribute
+                    //the model is most important for preloading but also if models have to be handled in some way to display content correctly
+                    //the most common example for value handling would be datetimes in JSON, as that's handled differently in each language
+                    onStart: function (mgr) {
+                    
+                    }
+                }
+            );
+
+            @*var urlSaveDescription = '@Url.Action("SetFileDescription","Ajax")';
+        $(".jeditable-description").editable(urlSaveDescription, {
+            type: 'textarea',
+            width:"100%",
+            submit: 'OK',
+            cancel: 'Cancel',
+            onblur: "ignore",
+            tooltip: 'Click to edit...'
+        });*@
+        });
+
+        function submit() {
+            //spnModelHook
+            //run client side validation
+            if ($("#spnModelHook [data-submit='fileuploader']").length == 0) {
+                $("#spnModelHook").append('<input type="submit" data-submit="fileuploader" />');
+            }
+
+            $("#spnModelHook [data-submit='fileuploader']").click();
+        }
+
+
+        function filterSubmit() {
+
+            if ($("#spnModelHook [data-submit='fileuploader']").length == 0) {
+                $("#spnModelHook").append('<input type="submit" data-submit="fileuploader" />');
+            }
+
+            //   console.log("filterSubmit");
+            $("#spnModelHook").append('<input type="hidden" name="filter" value="true"/>');
+            //     alert(''      +  $("#spnModelHook").html());
+            $("#spnModelHook [data-submit='fileuploader']").click();
+
+        }
+
+
+
+
+        function uploadSuccess(response) {
+            var manager = lib_FileManager.get.manager("#lst_uploads")[0];
+            manager.add(response.data);
+        }
+
+        function uploadError(data) {
+            console.log("error");
+            console.log(data);
+        }
+
+
+    </script>
+
+
+    <script id="file-manager-starter" type="text/x-handlebars-template">
+        <table data-filelist="{{this.id}}" class="uploads-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    {{#each this.model}}
+                    {{#if this.visible}}
+                    <th>{{this.name}}</th>
+                    {{/if}}
+                    {{/each}}
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </script>
+
+    <script id="file-manager-add" type="text/x-handlebars">
+        <tr data-file="{{this.model.BlogFileId}}">
+            <td>
+                <ul class="list-order">
+                    <li>
+                        <a href="javascript:void(0);" onclick="lib_FileManager.update.order('up', this)" class="btn sm flatBtn btnListOrder" title="Move Up">
+                            <span class="k-icon k-i-arrow-n"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onclick="lib_FileManager.update.order('down', this)" class="btn sm flatBtn btnListOrder" title="Move Down">
+                            <span class="k-icon k-i-arrow-s"></span>
+                        </a>
+                    </li>
+                </ul>
+            </td>
+
+            <td>
+                {{#if this.model.IsWebImage}}
+                {{{this.model.GetImageTagThumb}}}
+                {{else}}
+                {{{this.model.GetFileNameUrlDownloadLink}}}
+                {{/if}}
+            </td>
+            <td>
+                {{#if this.model.IsWebImage}}
+
+                {{this.model.Width}}
+
+                {{/if}}
+            </td>
+            <td>
+                {{#if this.model.IsWebImage}}
+                {{this.model.Height}}
+                {{/if}}
+            </td>
+            <td style="width:40%"><span class="jeditable-description" id="filedescription-{{this.model.BlogFileId}}">{{this.model.Caption}}</span></td>
+            <td><a class="btn sm red" href="javascript:void(0);" onclick="lib_FileManager.update.remove(this)"><span class="k-icon k-i-cancel"></span> Remove File</a></td>
+        </tr>
+    </script>
+
+}
