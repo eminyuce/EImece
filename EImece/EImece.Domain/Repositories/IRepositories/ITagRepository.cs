@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface ITagRepository : IBaseRepository<Tag, int>, IDisposable
     {
-
+        
     }
 }

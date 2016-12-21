@@ -1,4 +1,5 @@
 ﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
 @model List<Menu>
 @{ 
     var menus = Model;
@@ -6,7 +7,20 @@
 <ul>
     @foreach (var m in menus)
     {
-        <li>@Html.ActionLink(m.Name, m.Action, m.Controller)</li>
+        var parts = m.MenuLink.Split("-".ToCharArray());
+        var action = parts[1];
+        var controller = parts[0];
+
+        if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+        {
+            <li>@Html.ActionLink(m.Name, "detail", controller,new { id = GeneralHelper.GetUrlSeoString(m.Name) },null)</li>
+        }
+        else
+        {
+            <li>@Html.ActionLink(m.Name, action, controller)</li>
+        }
+
+
         if (m.Childrens.Any())
         {
             @Html.Partial("_NavigationChildren", m.Childrens)

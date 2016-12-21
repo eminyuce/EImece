@@ -7,9 +7,13 @@
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentMenu = (Menu)ViewBag.ParentMenu;
-    var moduls = new List<SelectListItem>();
-    moduls.Add(new SelectListItem() { Text = "Urunler", Value = "Products" });
-    moduls.Add(new SelectListItem() { Text = "Sayfalar", Value = "Pages" });
+
+
+    var menuLinks = new List<SelectListItem>();
+    menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
+    menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
+    menuLinks.Add(new SelectListItem() { Text = "Blog", Value = "stories-index" });
+
     var productTree =(List<Node>) ViewBag.Tree;
 }
 
@@ -153,10 +157,10 @@ console.log(e);
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Modul, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.MenuLink, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Modul, moduls, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Modul, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.MenuLink, menuLinks, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MenuLink, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

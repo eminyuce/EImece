@@ -5,7 +5,7 @@
     var selectedTags = (List<int>)TempData["selectedTags"];
 }
 
-@foreach (var tagCategory in tagCategories)
+@foreach (TagCategory tagCategory in tagCategories)
 {
     <h3>
         @tagCategory.Name

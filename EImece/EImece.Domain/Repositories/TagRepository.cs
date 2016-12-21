@@ -7,11 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 using EImece.Domain.GenericRepositories;
+using EImece.Domain.Models.Enums;
+using GenericRepository.EntityFramework.Enums;
+using System.Linq.Expressions;
+using NLog;
 
 namespace EImece.Domain.Repositories
 {
     public class TagRepository : BaseRepository<Tag, int>, ITagRepository
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public TagRepository(IEImeceContext dbContext) : base(dbContext)
         {
 
@@ -33,5 +38,7 @@ namespace EImece.Domain.Repositories
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
+
+         
     }
 }

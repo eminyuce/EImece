@@ -11,54 +11,7 @@ namespace EImece.Domain.Entities
     {
         public int ParentId { get; set; }
         public Boolean MainPage { get; set; }
-        [NotMapped]
-        public string Modul { get; set; }
-        private string _action = String.Empty;
-        public string Action
-        {
-            get
-            {
-                return _action;
-            }
-            set
-            {
-                if (!String.IsNullOrEmpty(Modul))
-                {
-                    if (Modul.Equals("products",StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        _action = "index";
-                    }
-                }
-                else
-                {
-                    _action = value;
-                }
-           
-            }
-        }
-        private string _controller = String.Empty;
-        public string Controller
-        {
-            get
-            {
-                return _controller;
-            }
-            set
-            {
-                if (!String.IsNullOrEmpty(Modul))
-                {
-                    if (Modul.Equals("products", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        _controller = "products";
-                    }
-                }
-                else
-                {
-                    _controller = value;
-                }
-
-            }
-        }
+        public string MenuLink   { get; set; }
         public Boolean Static { get; set; }
         public string Link { get; set; }
        

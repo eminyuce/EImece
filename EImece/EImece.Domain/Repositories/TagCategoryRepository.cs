@@ -37,15 +37,17 @@ namespace EImece.Domain.Repositories
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
 
-        public List<TagCategory> GetTagsByTagType(EImeceTagType products, EImeceLanguage language)
+        public List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language)
         {
             try
             {
                 Expression<Func<TagCategory, object>> includeProperty1 = r => r.Tags;
-                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language;
+                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language  && r2.TagType == (int)tagType;
                 Expression<Func<TagCategory, int>> keySelector = t => t.Position;
                 Expression<Func<TagCategory, object>>[] includeProperties = { includeProperty1 };
-                return this.FindAllIncluding(match, null, null, keySelector, OrderByType.Ascending, includeProperties);
+                var result = this.FindAllIncluding(match, null, null, keySelector, OrderByType.Ascending, includeProperties);
+
+                return result;
             }
             catch (Exception exception)
             {

@@ -10,6 +10,7 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Repositories;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Tests.Controllers
 {
@@ -57,7 +58,14 @@ namespace EImece.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
         }
-        
+        [TestMethod]
+        public void GetTagsByTagType()
+        {
+            var dbContext = new EImeceContext(ConnectionString);
+            var tr = new TagCategoryRepository(dbContext);
+            var tags = tr.GetTagsByTagType(EImeceTagType.Products, EImeceLanguage.Turkish);
+            Console.WriteLine(tags.Count);
+        }
         [TestMethod]
         public void TestAllRepository()
         {

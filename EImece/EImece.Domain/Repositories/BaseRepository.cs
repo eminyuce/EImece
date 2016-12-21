@@ -30,7 +30,7 @@ namespace EImece.Domain.Repositories
             DbContext = dbContext;
             EImeceDbContext.Configuration.LazyLoadingEnabled = false;
             EImeceDbContext.Configuration.ProxyCreationEnabled = false;
-            //  EImeceDbContext.Database.Log = s => Logger.Trace(s);
+            EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
         }
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
