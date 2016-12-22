@@ -22,6 +22,8 @@ namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
+
+     
         public static string EncodeForEmailLink(string text)
         {
             text = text.Replace(" ", "%20");

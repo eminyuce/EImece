@@ -5,6 +5,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -76,6 +77,28 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult UploadFile(HttpPostedFileBase file, string url = "")
+        {
+            FileStorage result = null;
+
+            // The Name of the Upload component is "files"
+            if (file != null)
+            {
+                //the idea is that some browsers set the filename to the full filepath, so all we need to do to fully clean it up is to grab the filenamee from the filepath
+                //computationally this is a pretty cheap operation compared to going through absolute filepath checks
+                //additoinally the Path class is multiplatform supportive so we don't have to worry about unix paths
+                result = ImageHelper.SaveFile(file);
+            }
+            else if (!String.IsNullOrEmpty(url))
+            {
+                //ask the storage sevice to download the file and assemble it's metadata after the upload is completed
+                result = ImageHelper.SaveFile(url);
+            }
+
+            return Json(result);
+         
+            throw new Exception("No files selected");
+        }
 
         public ActionResult GetFiles_ForEntry(int baseid)
         {
@@ -97,8 +120,10 @@ namespace EImece.Areas.Admin.Controllers
         {
             //int storyid = baseid.DecodeBase32_Int();
             //data.BlogPostId = baseid;
-
-
+            data.UpdatedDate = DateTime.Now;
+            data.CreatedDate = DateTime.Now;
+            var fileStorageId =  FileStorageRepository.SaveOrEdit(data);
+            data.Id = fileStorageId;
             //var num = BlogsRepository.SetBlogFile(data);
 
             //data.BlogFileId = num;
@@ -115,14 +140,14 @@ namespace EImece.Areas.Admin.Controllers
             //    Height = data.Height
             //});*/
 
-            //var html = PartialViewToString.RenderPartialToString(
-            //    this.ControllerContext,
-            //    "DisplayTemplates/FileManager/NwmBlogFile",
-            //    new ViewDataDictionary(data),
-            //    new TempDataDictionary()
-            //);
+            var html = PartialViewToString.RenderPartialToString(
+                this,
+                "~/Areas/Admin/Views/Shared/DisplayTemplates/FileManager/FileStorage.cshtml",
+                new ViewDataDictionary(data),
+                new TempDataDictionary()
+            );
 
-            return Json("");
+            return Json(html);
         }
 
         public ActionResult RemoveFile_ForEntry(int targetid, string baseid)
