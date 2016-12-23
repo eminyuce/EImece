@@ -15,22 +15,14 @@ namespace EImece.Domain.Repositories
         public StoryTagRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-        public int DeleteItem(StoryTag item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
+      
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        public int SaveOrEdit(StoryTag item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+      
 
      
     }

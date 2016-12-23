@@ -1,10 +1,12 @@
 ﻿using EImece.Domain.DbContext;
+using EImece.Domain.Helpers;
 using GenericRepository;
 using GenericRepository.EntityFramework;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,8 +46,34 @@ namespace EImece.Domain.Repositories
             }
             this.disposed = true;
         }
+        public virtual bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda)
+        {
+            this.Delete(whereLambda);
+            return true;
+        }
+        public virtual  EntitiesContext GetDbContext()
+        {
+            return EImeceDbContext;
+        }
+        public virtual int SaveOrEdit(T item)
+        {
+            if (item.Id.ToInt() == 0)
+            {
+                this.Add(item);
+            }
+            else
+            {
+                this.Edit(item);
+            }
 
- 
+            return this.Save();
+        }
+        public virtual int DeleteItem(T item)
+        {
+            this.Delete(item);
+            return this.Save();
+        }
+
 
 
 

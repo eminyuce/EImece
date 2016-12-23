@@ -10,26 +10,16 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class StoryFileRepository : BaseRepository<StoryFile, int>, IStoryFileRepository
+    public class StoryFileRepository : BaseEntityRepository<StoryFile>, IStoryFileRepository
     {
         public StoryFileRepository(IEImeceContext dbContext) : base(dbContext)
         {
-        }
-
-        public int DeleteItem(StoryFile item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
         }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public int SaveOrEdit(StoryFile item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
         }
 
         public List<StoryFile> GetActiveBaseEntities(bool? isActive)

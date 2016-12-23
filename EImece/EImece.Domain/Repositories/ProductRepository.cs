@@ -15,13 +15,11 @@ using Ninject;
 
 namespace EImece.Domain.Repositories
 {
-    public class ProductRepository : BaseRepository<Product, int>, IProductRepository
+    public class ProductRepository : BaseContentRepository<Product>, IProductRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductTagRepository ProductTagRepository { get; set; }
-
+       
         public ProductRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
@@ -58,19 +56,7 @@ namespace EImece.Domain.Repositories
 
         }
 
-       
-
-        public int SaveOrEdit(Product item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
-
-        public int DeleteItem(Product item)
-        {
-            ProductTagRepository.DeleteProductTags(item.Id);
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
+   
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
             var products = GetAll().Where(r => r.Lang == language);

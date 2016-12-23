@@ -141,6 +141,8 @@
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Models\HelperModels\PagedResult.cs" />
     <Compile Include="Models\HelperModels\ViewDataUploadFilesResult.cs" />
+    <Compile Include="Repositories\BaseContentRepository.cs" />
+    <Compile Include="Repositories\BaseEntityRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FileStorageRepository.cs" />
     <Compile Include="Repositories\FileStorageTagRepository.cs" />
@@ -176,6 +178,10 @@
     <Compile Include="Repositories\SubscriberRepository.cs" />
     <Compile Include="Repositories\TagCategoryRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\IServices\IBaseService.cs" />
+    <Compile Include="Services\IServices\IProductService.cs" />
+    <Compile Include="Services\ProductService.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,30 +14,19 @@ using NLog;
 
 namespace EImece.Domain.Repositories
 {
-    public class TagRepository : BaseRepository<Tag, int>, ITagRepository
+    public class TagRepository : BaseEntityRepository<Tag>, ITagRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public TagRepository(IEImeceContext dbContext) : base(dbContext)
         {
 
         }
-
-   
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-   
-        public int DeleteItem(Tag item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-        public int SaveOrEdit(Tag item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+    
         public List<Tag> GetActiveBaseEntities(bool? isActive)
         {
             return BaseEntityRepository.GetActiveBaseEntities(this, isActive);

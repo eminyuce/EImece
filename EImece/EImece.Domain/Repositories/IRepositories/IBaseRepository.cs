@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -12,6 +13,7 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         int SaveOrEdit(T item) ;
         int DeleteItem(T item);
-
+        bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda);
+        EntitiesContext GetDbContext();
     }
 }

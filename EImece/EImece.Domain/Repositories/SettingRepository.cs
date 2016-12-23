@@ -10,17 +10,14 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class SettingRepository : BaseRepository<Setting, int>, ISettingRepository
+    public class SettingRepository : BaseEntityRepository<Setting>, ISettingRepository
     {
         public SettingRepository(IEImeceContext dbContext) : base(dbContext)
         {
 
         }
 
-        public int DeleteItem(Setting item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
+     
 
         public void Dispose()
         {
@@ -32,12 +29,7 @@ namespace EImece.Domain.Repositories
         {
             return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
         }
-
-        public int SaveOrEdit(Setting item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
-
+ 
        
     }
 }

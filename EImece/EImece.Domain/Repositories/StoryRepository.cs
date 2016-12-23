@@ -10,7 +10,7 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class StoryRepository : BaseRepository<Story, int>, IStoryRepository
+    public class StoryRepository : BaseContentRepository<Story>, IStoryRepository
     {
         public StoryRepository(IEImeceContext dbContext) : base(dbContext)
         {

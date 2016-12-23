@@ -12,7 +12,7 @@ using System.Data.Entity;
 
 namespace EImece.Domain.Repositories
 {
-    public class MenuRepository : BaseRepository<Menu, int>, IMenuRepository
+    public class MenuRepository : BaseContentRepository<Menu>, IMenuRepository
     {
         public MenuRepository(IEImeceContext dbContext) : base(dbContext)
         {

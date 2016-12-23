@@ -10,7 +10,7 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class ProductSpecificationRepository : BaseRepository<ProductSpecification, int>, IProductSpecificationRepository
+    public class ProductSpecificationRepository : BaseEntityRepository<ProductSpecification>, IProductSpecificationRepository
     {
         public ProductSpecificationRepository(IEImeceContext dbContext) : base(dbContext)
         {

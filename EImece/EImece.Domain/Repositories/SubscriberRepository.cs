@@ -10,17 +10,13 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class SubscriberRepository : BaseRepository<Subscriber, int>, ISubscriberRepository
+    public class SubscriberRepository : BaseEntityRepository<Subscriber>, ISubscriberRepository
     {
         public SubscriberRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
 
-        public int DeleteItem(Subscriber item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
+      
         public void Dispose()
         {
             Dispose(true);
@@ -28,10 +24,7 @@ namespace EImece.Domain.Repositories
         }
 
 
-        public int SaveOrEdit(Subscriber item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+  
         public List<Subscriber> GetActiveBaseEntities(bool? isActive)
         {
             return BaseEntityRepository.GetActiveBaseEntities(this, isActive);

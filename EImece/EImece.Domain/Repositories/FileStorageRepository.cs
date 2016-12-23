@@ -11,15 +11,10 @@ using EImece.Domain.GenericRepositories;
 namespace EImece.Domain.Repositories
 {
 
-    public class FileStorageRepository : BaseRepository<FileStorage, int>, IFileStorageRepository
+    public class FileStorageRepository : BaseEntityRepository<FileStorage>, IFileStorageRepository
     {
         public FileStorageRepository(IEImeceContext dbContext) : base(dbContext)
         {
-        }
-
-        public int DeleteItem(FileStorage item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
         }
 
         public void Dispose()
@@ -27,12 +22,7 @@ namespace EImece.Domain.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-
-        public int SaveOrEdit(FileStorage item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+       
 
         public List<FileStorage> GetActiveBaseEntities(bool? isActive)
         {

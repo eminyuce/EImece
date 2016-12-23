@@ -10,7 +10,7 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class ProductCategoryRepository : BaseRepository<ProductCategory, int>, IProductCategoryRepository
+    public class ProductCategoryRepository : BaseContentRepository<ProductCategory>, IProductCategoryRepository
     {
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
@@ -48,17 +48,7 @@ namespace EImece.Domain.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        public int SaveOrEdit(ProductCategory item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
-
-        public int DeleteItem(ProductCategory item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
+ 
         public List<ProductCategory> GetActiveBaseEntities(bool? isActive)
         {
             return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
