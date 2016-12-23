@@ -121,6 +121,7 @@
     <Compile Include="Entities\Subscriber.cs" />
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\TagCategory.cs" />
+    <Compile Include="GenericRepositories\BaseContentRepository.cs" />
     <Compile Include="GenericRepositories\BaseEntityRepository.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
@@ -131,7 +132,9 @@
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\PartialViewToString.cs" />
+    <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\QuerySortingExtensions.cs" />
+    <Compile Include="Models\Enums\EImeceImageType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\EImeceTagType.cs" />
     <Compile Include="Models\HelperModels\FilesViewModel.cs" />
@@ -141,6 +144,8 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FileStorageRepository.cs" />
     <Compile Include="Repositories\FileStorageTagRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IBaseContentRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IBaseEntityRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositories\IFileStorageRepository.cs" />

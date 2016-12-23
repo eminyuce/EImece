@@ -52,28 +52,20 @@ namespace EImece.Domain.Repositories
 
         public int SaveOrEdit(Menu item)
         {
-            //if (item.Id == 0)
-            //{
-            //    this.DbContext.Menus.Add(item);
-            //}
-            //else
-            //{
-            //    var  tempItem = this.DbContext.Menus.Find(item.Id);
-            //    tempItem = item;
-            //    this.DbContext.Entry(tempItem).State = EntityState.Modified;
-
-            //}
-            //return this.DbContext.SaveChanges();
-
             return BaseEntityRepository.SaveOrEdit(this,item);
-
         }
-
         public int DeleteItem(Menu item)
         {
             return BaseEntityRepository.DeleteItem(this, item);
         }
-        
+        public List<Menu> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
+        }
 
+        public List<Menu> GetActiveBaseContents(bool? isActive, int language)
+        {
+            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
+        }
     }
 }

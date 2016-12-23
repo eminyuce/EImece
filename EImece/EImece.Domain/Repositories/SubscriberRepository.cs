@@ -32,5 +32,9 @@ namespace EImece.Domain.Repositories
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
+        public List<Subscriber> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
+        }
     }
 }

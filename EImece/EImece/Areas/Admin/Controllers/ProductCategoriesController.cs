@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using NLog;
 using SharkDev.Web.Controls.TreeView.Model;
 using System;
@@ -25,7 +26,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(productCategories.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
         }
-     
+
 
         //
         // GET: /ProductCategory/Details/5
@@ -80,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(ProductCategory productCategory)
+        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase productCategoryImage=null)
         {
             try
             {
@@ -89,8 +90,21 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
+
+
+                    if (productCategoryImage != null)
+                    {
+                        var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(productCategoryImage, 0, 0, EImeceImageType.ProductCategoryMainImage);
+                        FileStorageRepository.SaveOrEdit(mainImage);
+                        productCategory.MainImageId = mainImage.Id;
+
+                    }
+
                     ProductCategoryRepository.SaveOrEdit(productCategory);
                     int contentId = productCategory.Id;
+
+                 
+
                     return RedirectToAction("Index");
                 }
                 else

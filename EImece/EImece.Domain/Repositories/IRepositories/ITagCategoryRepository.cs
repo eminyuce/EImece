@@ -8,7 +8,7 @@ using EImece.Domain.Models.Enums;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ITagCategoryRepository : IBaseRepository<TagCategory, int>, IDisposable
+    public interface ITagCategoryRepository : IBaseEntityRepository<TagCategory>, IDisposable
     {
         List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language);
     }

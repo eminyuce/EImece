@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ITagRepository : IBaseRepository<Tag, int>, IDisposable
+    public interface ITagRepository : IBaseEntityRepository<Tag>, IDisposable
     {
         
     }

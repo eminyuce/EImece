@@ -36,7 +36,10 @@ namespace EImece.Domain.Repositories
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
-
+        public List<TagCategory> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
+        }
         public List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language)
         {
             try

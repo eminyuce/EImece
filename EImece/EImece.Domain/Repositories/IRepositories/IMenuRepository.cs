@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IMenuRepository : IBaseRepository<Menu, int>, IDisposable
+    public interface IMenuRepository : IBaseContentRepository<Menu>, IDisposable
     {
         List<Menu> BuildTree();
     }

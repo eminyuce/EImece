@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ISubscriberRepository : IBaseRepository<Subscriber, int>, IDisposable
+    public interface ISubscriberRepository : IBaseEntityRepository<Subscriber>, IDisposable
     {
 
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EImece.Domain.Repositories.IRepositories
 {
 
-    public interface IProductCategoryRepository : IBaseRepository<ProductCategory, int>, IDisposable
+    public interface IProductCategoryRepository : IBaseContentRepository<ProductCategory>, IDisposable
     {
         List<ProductCategory> BuildTree();
     }

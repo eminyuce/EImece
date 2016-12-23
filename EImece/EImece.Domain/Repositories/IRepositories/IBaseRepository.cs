@@ -12,5 +12,6 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         int SaveOrEdit(T item) ;
         int DeleteItem(T item);
+
     }
 }

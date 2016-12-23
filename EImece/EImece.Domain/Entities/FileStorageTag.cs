@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
-     public class FileStorageTag : IEntity<int>
+    public class FileStorageTag : IEntity<int>
     {
         public int Id { get; set; }
+        public int FileStorageId { get; set; }
+        public int TagId { get; set; }
     }
 }

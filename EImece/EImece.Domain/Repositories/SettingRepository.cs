@@ -28,9 +28,16 @@ namespace EImece.Domain.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public List<Setting> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
+        }
+
         public int SaveOrEdit(Setting item)
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
+
+       
     }
 }

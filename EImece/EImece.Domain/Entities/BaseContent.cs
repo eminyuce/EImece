@@ -12,7 +12,9 @@ namespace EImece.Domain.Entities
         [AllowHtml]
         public string Description { get; set; }
         public Boolean ImageState { get; set; }
-        public string ImageUrl { get; set; }
+        public int? MainImageId { get; set; }
         public int Lang { get; set; }
+
+        public virtual FileStorage MainImage { get; set; }
     }
 }

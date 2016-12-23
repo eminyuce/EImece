@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IStoryCategoryRepository : IBaseRepository<StoryCategory, int>, IDisposable
+    public interface IStoryCategoryRepository : IBaseContentRepository<StoryCategory>, IDisposable
     {
 
     }

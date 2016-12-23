@@ -26,11 +26,13 @@ namespace EImece.Domain.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-
         public int SaveOrEdit(ProductSpecification item)
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
+        }
+        public List<ProductSpecification> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
         }
     }
 }

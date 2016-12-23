@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new StoryCategory();
- 
+           
 
             if (id == 0)
             {
@@ -93,9 +93,9 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, StoryCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
             }
-
+ 
             return View(StoryCategory);
         }
 

@@ -41,7 +41,7 @@ console.log(e);
     </div>
     <div class="col-md-9">
 
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("SaveOrEdit", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
@@ -52,7 +52,7 @@ console.log(e);
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.CreatedDate)
                 @Html.HiddenFor(model => model.UpdatedDate)
-                 
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -139,10 +139,10 @@ console.log(e);
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ImageUrl, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-danger" })
+                        <input type="file" name="productCategoryImage" />
+                        @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

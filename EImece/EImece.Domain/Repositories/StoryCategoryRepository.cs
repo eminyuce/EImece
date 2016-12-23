@@ -27,6 +27,16 @@ namespace EImece.Domain.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public List<StoryCategory> GetActiveBaseContents(bool? isActive, int language)
+        {
+            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
+        }
+
+        public List<StoryCategory> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
+        }
+
         public int SaveOrEdit(StoryCategory item)
         {
             return BaseEntityRepository.SaveOrEdit(this, item);

@@ -58,5 +58,15 @@ namespace EImece.Domain.Repositories
         {
             return BaseEntityRepository.DeleteItem(this, item);
         }
+
+        public List<ProductCategory> GetActiveBaseEntities(bool? isActive)
+        {
+            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
+        }
+
+        public List<ProductCategory> GetActiveBaseContents(bool? isActive, int language)
+        {
+            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
+        }
     }
 }

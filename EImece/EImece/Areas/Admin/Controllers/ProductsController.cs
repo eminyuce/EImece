@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
@@ -72,7 +73,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product, int [] tags = null)
+        public ActionResult SaveOrEdit(Product product, int [] tags = null, HttpPostedFileBase productImage = null)
         {
             try
             {
@@ -86,6 +87,15 @@ namespace EImece.Areas.Admin.Controllers
                     }
                     else
                     {
+
+                        if (productImage != null)
+                        {
+                            var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(productImage, 0, 0, EImeceImageType.ProductCategoryMainImage);
+                            FileStorageRepository.SaveOrEdit(mainImage);
+                            product.MainImageId = mainImage.Id;
+
+                        }
+
                         ProductRepository.SaveOrEdit(product);
                         int contentId = product.Id;
 

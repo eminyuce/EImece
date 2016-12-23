@@ -46,6 +46,16 @@ namespace EImece.Areas.Admin.Controllers
             BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(ProductRepository, values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ChangeStoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(StoryRepository, values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ChangeStoryCategoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(StoryCategoryRepository, values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeTagGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(TagRepository, values, checkbox);
@@ -87,12 +97,12 @@ namespace EImece.Areas.Admin.Controllers
                 //the idea is that some browsers set the filename to the full filepath, so all we need to do to fully clean it up is to grab the filenamee from the filepath
                 //computationally this is a pretty cheap operation compared to going through absolute filepath checks
                 //additoinally the Path class is multiplatform supportive so we don't have to worry about unix paths
-                result = ImageHelper.SaveFile(file);
+                result = ImageHelper.SaveFileFromHttpPostedFileBase(file);
             }
             else if (!String.IsNullOrEmpty(url))
             {
                 //ask the storage sevice to download the file and assemble it's metadata after the upload is completed
-                result = ImageHelper.SaveFile(url);
+                result = ImageHelper.SaveFileFromUrl(url);
             }
 
             return Json(result);

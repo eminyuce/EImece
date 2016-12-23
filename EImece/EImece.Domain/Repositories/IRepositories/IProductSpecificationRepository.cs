@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EImece.Domain.Repositories.IRepositories
 {
 
-    public interface IProductSpecificationRepository : IBaseRepository<ProductSpecification, int>, IDisposable
+    public interface IProductSpecificationRepository : IBaseEntityRepository<ProductSpecification>, IDisposable
     {
     }
 }

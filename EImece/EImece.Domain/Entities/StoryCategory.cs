@@ -8,5 +8,7 @@ namespace EImece.Domain.Entities
 {
     public class StoryCategory : BaseContent
     {
+
+
     }
 }

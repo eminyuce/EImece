@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IProductRepository : IBaseRepository<Product, int>, IDisposable
+    public interface IProductRepository : IBaseContentRepository<Product>, IDisposable
     {
         PaginatedList<Product> GetMainPageProducts(int page, int language);
         List<Product> GetAdminPageList(int categoryId, string search, int language);

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Repositories;
 
 namespace EImece.Domain.GenericRepositories
 {
@@ -61,6 +62,32 @@ namespace EImece.Domain.GenericRepositories
             repository.Delete(item);
             return repository.Save();
         }
+        public static List<T> GetActiveBaseEntitiesSearchList<T>(IBaseRepository<T, int> repository,  string search) where T : BaseEntity
+        {
+            try
+            {
+                Expression<Func<T, bool>> match = r2 =>  r2.IsActive;
+                var predicate = PredicateBuilder.Create<T>(match);
+                if (!String.IsNullOrEmpty(search.ToStr()))
+                {
+                    predicate = predicate.And(r => r.Name.ToLower().Contains(search.ToLower().Trim()));
+                }
+                var items = repository.FindBy(predicate).OrderBy(r => r.Position).ThenByDescending(r => r.Name);
+
+                return items.ToList();
+
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+                return null;
+            }
+
+        }
+
+
+    
+
         public static void ChangeGridBaseEntityOrderingOrState<T>(IBaseRepository<T, int> repository, List<OrderingItem> values, String checkbox = "") where T : class, IEntity<int>
         {
             try
@@ -128,13 +155,14 @@ namespace EImece.Domain.GenericRepositories
                 Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
-        public static List<T> GetActiveBaseEnities<T>(IBaseRepository<T, int> repository, int? take, bool? isActive) where T : BaseEntity
+    
+        public static List<T> GetActiveBaseEntities<T>(IBaseRepository<T, int> repository, bool? isActive) where T : BaseEntity
         {
             try
             {
-                Expression<Func<T, bool>> match = r2 =>  r2.IsActive == (isActive.HasValue ? isActive.Value : r2.IsActive);
+                Expression<Func<T, bool>> match = r2 => r2.IsActive == (isActive.HasValue ? isActive.Value : r2.IsActive);
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = repository.FindAll(match, keySelector, OrderByType.Descending, take, null);
+                var items = repository.FindAll(match, keySelector, OrderByType.Ascending, null, null);
 
                 return items;
             }
@@ -144,7 +172,6 @@ namespace EImece.Domain.GenericRepositories
                 return null;
             }
         }
-       
 
         #endregion
     }

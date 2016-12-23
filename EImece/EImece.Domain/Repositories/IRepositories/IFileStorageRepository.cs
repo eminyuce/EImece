@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IFileStorageRepository : IBaseRepository<FileStorage, int>, IDisposable
+    public interface IFileStorageRepository : IBaseEntityRepository<FileStorage>, IDisposable
     {
+
     }
 }

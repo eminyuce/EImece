@@ -27,9 +27,15 @@ namespace EImece.Domain.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public List<FileStorageTag> GetActiveBaseEntities()
+        {
+            throw new NotImplementedException();
+        }
+
         public int SaveOrEdit(FileStorageTag item)
         {
             return BaseEntityRepository.SaveOrEdit(this, item);
         }
+    
     }
 }

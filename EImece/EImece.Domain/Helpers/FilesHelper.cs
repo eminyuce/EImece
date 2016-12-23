@@ -139,8 +139,17 @@ namespace EImece.Domain.Helpers
             for (int i = 0; i < request.Files.Count; i++)
             {
                 var file = request.Files[i];
+
+                var ext = Path.GetExtension(file.FileName);
+                var fileBase = Path.GetFileNameWithoutExtension(file.FileName);
+                Random random = new Random();
+                var randomNumber = random.Next(0, int.MaxValue).ToString();
+                var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
+
+
                 String pathOnServer = Path.Combine(StorageRoot);
-                var fullPath = Path.Combine(pathOnServer, Path.GetFileName(file.FileName));
+                //   var fullPath = Path.Combine(pathOnServer, Path.GetFileName(file.FileName));
+                var fullPath = Path.Combine(pathOnServer, newFileName);
                 file.SaveAs(fullPath);
 
                 //Create thumb
@@ -154,8 +163,11 @@ namespace EImece.Domain.Helpers
                     }
                     else
                     {
+
+                        var newFileNameThb = string.Format(@"thb{0}_{1}{2}", fileBase, randomNumber, ext);
                         var ThumbfullPath = Path.Combine(pathOnServer, "thumbs");
-                        String fileThumb = file.FileName + ".80x80.jpg";
+                        // String fileThumb = file.FileName + ".80x80.jpg";
+                        String fileThumb = newFileNameThb;
                         var ThumbfullPath2 = Path.Combine(ThumbfullPath, fileThumb);
                         using (MemoryStream stream = new MemoryStream(System.IO.File.ReadAllBytes(fullPath)))
                         {
@@ -165,7 +177,8 @@ namespace EImece.Domain.Helpers
 
                     }
                 }
-                statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
+                // statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
+                statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName));
             }
         }
 
@@ -223,7 +236,8 @@ namespace EImece.Domain.Helpers
                 string extansion = splited[1];
                 if (extansion.Equals("jpeg") || extansion.Equals("jpg") || extansion.Equals("png") || extansion.Equals("gif"))
                 {
-                    String thumbnailUrl = UrlBase + "/thumbs/" + FileName + ".80x80.jpg";
+                    //   String thumbnailUrl = UrlBase + "/thumbs/" + FileName + ".80x80.jpg";
+                    String thumbnailUrl = UrlBase + "/thumbs/thb" + FileName;
                     return thumbnailUrl;
                 }
                 else
