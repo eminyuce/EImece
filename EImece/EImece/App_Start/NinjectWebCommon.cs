@@ -14,6 +14,8 @@ namespace EImece.App_Start
     using Domain.Repositories.IRepositories;
     using Domain.Repositories;
     using Domain;
+    using Domain.Services;
+    using Domain.Services.IServices;
 
     public static class NinjectWebCommon 
     {
@@ -75,7 +77,6 @@ namespace EImece.App_Start
             kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
             kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
             kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
-
             kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
             kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
             kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();
@@ -84,6 +85,7 @@ namespace EImece.App_Start
             kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
             kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
             kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
+            kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
 
         }
     }

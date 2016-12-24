@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EImece.Domain.Repositories.IRepositories
+namespace EImece.Domain.Services.IServices
 {
-    public interface IStoryTagRepository : IBaseRepository<StoryTag>, IDisposable
+    public interface IBaseContentService<T> : IBaseEntityService<T> where T : BaseContent
     {
 
     }

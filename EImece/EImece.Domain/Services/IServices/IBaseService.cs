@@ -16,10 +16,12 @@ namespace EImece.Domain.Services.IServices
         //IQueryable<T> LoadEntites(Func<T, bool> whereLambda, int pageIndex, int pageSize, out int totalCount);
 
         T SaveOrEditEntity(T entity);
-
+        T GetSingle(TId id);
+        IQueryable<T> GetAll();
         bool DeleteEntity(T entity);
 
         bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda);
+        void DeleteBaseEntity(List<string> values);
 
         T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters);
     }

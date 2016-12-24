@@ -43,7 +43,7 @@ namespace EImece.Domain.GenericRepositories
 
         #region GenericMethods
 
-        public static int SaveOrEdit<T>(IBaseRepository<T, int> repository,T item) where T : class, IEntity<int>
+        public static int SaveOrEdit<T>(IBaseRepository<T> repository,T item) where T : class, IEntity<int>
         {
             if (item.Id == 0)
             {
@@ -57,12 +57,13 @@ namespace EImece.Domain.GenericRepositories
             return repository.Save();
         }
 
-        public static int DeleteItem<T>(IBaseRepository<T, int> repository, T item) where T : class, IEntity<int>
+        public static int DeleteItem<T>(IBaseRepository<T> repository, T item) where T : class, IEntity<int>
+
         {
             repository.Delete(item);
             return repository.Save();
         }
-        public static List<T> GetActiveBaseEntitiesSearchList<T>(IBaseRepository<T, int> repository,  string search) where T : BaseEntity
+        public static List<T> GetActiveBaseEntitiesSearchList<T>(IBaseRepository<T> repository,  string search) where T : BaseEntity
         {
             try
             {
@@ -88,7 +89,7 @@ namespace EImece.Domain.GenericRepositories
 
     
 
-        public static void ChangeGridBaseEntityOrderingOrState<T>(IBaseRepository<T, int> repository, List<OrderingItem> values, String checkbox = "") where T : class, IEntity<int>
+        public static void ChangeGridBaseEntityOrderingOrState<T>(IBaseRepository<T> repository, List<OrderingItem> values, String checkbox = "") where T : class, IEntity<int>
         {
             try
             {
@@ -133,7 +134,8 @@ namespace EImece.Domain.GenericRepositories
                 Logger.Error(exception, "ChangeGridOrderingOrState<T> :" + String.Join(",", values), checkbox);
             }
         }
-        public static void DeleteBaseEntity<T>(IBaseRepository<T, int> repository, List<string> values) where T : class, IEntity<int>
+        public static void DeleteBaseEntity<T>(IBaseRepository<T> repository, List<string> values) where T : class, IEntity<int>
+
         {
             try
             {
@@ -156,7 +158,7 @@ namespace EImece.Domain.GenericRepositories
             }
         }
     
-        public static List<T> GetActiveBaseEntities<T>(IBaseRepository<T, int> repository, bool? isActive) where T : BaseEntity
+        public static List<T> GetActiveBaseEntities<T>(IBaseRepository<T> repository, bool? isActive) where T : BaseEntity
         {
             try
             {

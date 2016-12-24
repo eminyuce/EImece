@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EImece.Domain.Repositories.IRepositories
+namespace EImece.Domain.Services
 {
-    public interface IStoryTagRepository : IBaseRepository<StoryTag>, IDisposable
+   
+    public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
-
+      
     }
 }

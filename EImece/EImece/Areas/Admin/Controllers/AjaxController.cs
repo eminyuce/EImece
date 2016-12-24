@@ -38,12 +38,12 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult DeleteProductGridItem(List<String> values)
         {
-            BaseEntityRepository.DeleteBaseEntity(ProductRepository, values);
+            ProductService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ChangeProductGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(ProductRepository, values, checkbox);
+            ProductService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ChangeStoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")

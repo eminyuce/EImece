@@ -178,10 +178,17 @@
     <Compile Include="Repositories\SubscriberRepository.cs" />
     <Compile Include="Repositories\TagCategoryRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
+    <Compile Include="Services\BaseContentService.cs" />
+    <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\IServices\IBaseContentService.cs" />
+    <Compile Include="Services\IServices\IBaseEntityService.cs" />
     <Compile Include="Services\IServices\IBaseService.cs" />
     <Compile Include="Services\IServices\IProductService.cs" />
+    <Compile Include="Services\ProductCategoryService.cs" />
     <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\StoryCategoryService.cs" />
+    <Compile Include="Services\StoryService.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

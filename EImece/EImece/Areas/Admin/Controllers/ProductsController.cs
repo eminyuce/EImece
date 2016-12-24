@@ -17,7 +17,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(int id = 0, String search = "", int lang = 1)
         {
-            var products = ProductRepository.GetAdminPageList(id, search, lang);
+            var products = ProductService.GetAdminPageList(id, search, lang);
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(products);
         }
@@ -32,7 +32,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product content = ProductRepository.GetSingle(id);
+            Product content = ProductService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -60,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
 
-                content = ProductRepository.GetSingle(id);
+                content = ProductService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
                 productCategory = ProductCategoryRepository.GetSingle(content.ProductCategoryId);
             }
@@ -96,7 +96,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         }
 
-                        ProductRepository.SaveOrEdit(product);
+                        ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 
                         if (tags != null)
@@ -136,7 +136,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product content = ProductRepository.GetSingle(id);
+            Product content = ProductService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -151,14 +151,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Product product = ProductRepository.GetSingle(id);
+            Product product = ProductService.GetSingle(id);
             if (product == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                ProductRepository.DeleteItem(product);
+                ProductService.DeleteEntity(product);
                 return RedirectToAction("Index", new { categoryId = product.ProductCategoryId });
             }
             catch (Exception ex)

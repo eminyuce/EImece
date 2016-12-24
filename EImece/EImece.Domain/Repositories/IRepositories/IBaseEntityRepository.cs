@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IBaseEntityRepository<T> : IBaseRepository<T, int> where T : BaseEntity
+    public interface IBaseEntityRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         List<T> GetActiveBaseEntities(bool? isActive);
     }

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using SharkDev.Web.Controls.TreeView.Model;
 using System;
@@ -15,7 +16,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ISettingRepository SettingRepository { get; set; }
         [Inject]
-        public IProductRepository ProductRepository { get; set; }
+        public IProductService ProductService { get; set; }
         [Inject]
         public IProductCategoryRepository ProductCategoryRepository { get; set; }
         [Inject]

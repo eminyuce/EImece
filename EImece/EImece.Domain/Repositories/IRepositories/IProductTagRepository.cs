@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IProductTagRepository : IBaseRepository<ProductTag, int>, IDisposable
+    public interface IProductTagRepository : IBaseRepository<ProductTag>, IDisposable
     {
         List<ProductTag> GetAllByProductId(int productId);
         void SaveProductTags(int id, int[] tags);

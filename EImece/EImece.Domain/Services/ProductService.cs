@@ -10,13 +10,25 @@ using Ninject;
 
 namespace EImece.Domain.Services
 {
-    public class ProductService : BaseService<Product, int>, IProductService
+    public class ProductService : BaseContentService<Product>, IProductService
     {
-        [Inject]
+          [Inject]
         public IProductRepository ProductRepository { get; set; }
+     
+ 
         public override void SetCurrentRepository()
         {
             this.baseRepository = ProductRepository;
+        }
+
+        public List<Product> GetAdminPageList(int id, string search, int lang)
+        {
+            return ProductRepository.GetAdminPageList(id, search, lang);
+        }
+
+        public List<Product> GetMainPageProducts(int page, int lang)
+        {
+            return ProductRepository.GetMainPageProducts(page, lang);
         }
     }
 }

@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
-    public interface IProductService: IBaseService<Product,int>
+    public interface IProductService : IBaseContentService<Product>
     {
+        List<Product> GetAdminPageList(int id, string search, int lang);
+        List<Product> GetMainPageProducts(int page, int lang);
     }
 }

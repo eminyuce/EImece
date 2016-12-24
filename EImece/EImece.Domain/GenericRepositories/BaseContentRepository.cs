@@ -39,7 +39,7 @@ namespace EImece.Domain.GenericRepositories
 
             return exceptionMessage;
         }
-        public static List<T> GetActiveBaseContents<T>(IBaseRepository<T, int> repository, bool? isActive, int language) where T : BaseContent
+        public static List<T> GetActiveBaseContents<T>(IBaseRepository<T> repository, bool? isActive, int language) where T : BaseContent
         {
             try
             {

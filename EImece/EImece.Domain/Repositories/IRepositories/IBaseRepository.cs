@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IBaseRepository<T, TId> : IEntityRepository<T, TId> where T : class, IEntity<TId> where TId : IComparable
+    public interface IBaseRepository<T> : IEntityRepository<T, int> where T : class, IEntity<int>
     {
         int SaveOrEdit(T item) ;
         int DeleteItem(T item);

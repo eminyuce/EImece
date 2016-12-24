@@ -38,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
             int skip = start.ToInt();
             int recordsTotal = 0;
             //Database query
-            var v = ProductRepository.GetAll();
+            var v = ProductService.GetAll();
                 //search
                 if (!string.IsNullOrEmpty(searchValue))
                 {

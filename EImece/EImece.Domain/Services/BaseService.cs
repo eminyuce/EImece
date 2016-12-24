@@ -8,12 +8,18 @@ using GenericRepository;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework;
 using System.Data.Entity.Infrastructure;
+using Ninject;
+using EImece.Domain.Helpers;
+using System.Data.Entity.Validation;
+using NLog;
 
 namespace EImece.Domain.Services
 {
-    public abstract class BaseService<T, TId> where T : class, IEntity<TId> where TId : IComparable
+    public abstract class BaseService<T> where T : class, IEntity<int>
     {
-        public IBaseRepository<T, TId> baseRepository { get; set; }
+        protected static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
+
+        public IBaseRepository<T> baseRepository { get; set; }
 
         public abstract void SetCurrentRepository();
 
@@ -23,7 +29,10 @@ namespace EImece.Domain.Services
             return baseRepository.FindBy(whereLambda);
         }
 
-
+        public virtual IQueryable<T> GetAll()
+        {
+            return baseRepository.GetAll();
+        }
         //public virtual IQueryable<T> LoadEntites(Expression<Func<T, bool>> whereLambda, int pageIndex, int pageSize, out int totalCount)
         //{
         //    var item =  this.baseRepository.Paginate(pageIndex, pageSize,r=>r.Id, whereLambda);
@@ -31,6 +40,10 @@ namespace EImece.Domain.Services
         //    return item;
         //}
 
+        public virtual T GetSingle(int id)
+        {
+            return baseRepository.GetSingle(id);
+        }
 
         public virtual T SaveOrEditEntity(T entity)
         {
@@ -58,5 +71,54 @@ namespace EImece.Domain.Services
             return result.ToArray();
         }
 
+      
+        public virtual String GetDbEntityValidationExceptionDetail(DbEntityValidationException ex)
+        {
+
+            var errorMessages = (from eve in ex.EntityValidationErrors
+                                 let entity = eve.Entry.Entity.GetType().Name
+                                 from ev in eve.ValidationErrors
+                                 select new
+                                 {
+                                     Entity = entity,
+                                     PropertyName = ev.PropertyName,
+                                     ErrorMessage = ev.ErrorMessage
+                                 });
+
+            var fullErrorMessage = string.Join("; ", errorMessages.Select(e => string.Format("[Entity: {0}, Property: {1}] {2}", e.Entity, e.PropertyName, e.ErrorMessage)));
+
+            var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+
+            return exceptionMessage;
+        }
+
+
+        public virtual void DeleteBaseEntity(List<string> values) 
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    var item = baseRepository.GetSingle(id);
+                    baseRepository.Delete(item);
+                }
+                baseRepository.Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = GetDbEntityValidationExceptionDetail(ex);
+                BaseServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                BaseServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+
+ 
+      
     }
 }

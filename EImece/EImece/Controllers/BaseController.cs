@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace EImece.Controllers
         [Inject]
         public ISettingRepository SettingRepository { get; set; }
         [Inject]
-        public IProductRepository ProductRepository { get; set; }
+        public IProductService ProductService { get; set; }
         [Inject]
         public IProductCategoryRepository ProductCategoryRepository { get; set; }
         [Inject]
