@@ -5,34 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Entities;
+using EImece.Domain.Repositories.IRepositories;
+using Ninject;
 
 namespace EImece.Domain.Services
 {
-    public class ProductService : IProductService
+    public class ProductService : BaseService<Product, int>, IProductService
     {
-        public bool DeleteEntity(Product entity)
+        [Inject]
+        public IProductRepository ProductRepository { get; set; }
+        public override void SetCurrentRepository()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteEntityByWhere(Func<Product, bool> whereLambda)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Product> LoadEntites(Func<Product, bool> whereLambda)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Product SaveOrEditEntity(Product entity)
-        {
-            throw new NotImplementedException();
+            this.baseRepository = ProductRepository;
         }
     }
 }

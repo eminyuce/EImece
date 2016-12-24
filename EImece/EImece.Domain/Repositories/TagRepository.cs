@@ -21,16 +21,7 @@ namespace EImece.Domain.Repositories
         {
 
         }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
     
-        public List<Tag> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
 
     }
 }

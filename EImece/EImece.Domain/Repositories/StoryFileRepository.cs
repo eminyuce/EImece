@@ -15,16 +15,7 @@ namespace EImece.Domain.Repositories
         public StoryFileRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public List<StoryFile> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
+ 
+ 
     }
 }

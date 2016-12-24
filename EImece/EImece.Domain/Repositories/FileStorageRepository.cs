@@ -16,17 +16,6 @@ namespace EImece.Domain.Repositories
         public FileStorageRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-       
-
-        public List<FileStorage> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
+ 
     }
 }

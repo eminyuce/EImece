@@ -16,26 +16,9 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public int DeleteItem(FileStorageTag item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
+    
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public List<FileStorageTag> GetActiveBaseEntities()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int SaveOrEdit(FileStorageTag item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+       
     
     }
 }

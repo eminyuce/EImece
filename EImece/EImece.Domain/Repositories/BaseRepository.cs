@@ -34,6 +34,7 @@ namespace EImece.Domain.Repositories
             EImeceDbContext.Configuration.ProxyCreationEnabled = false;
             EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
         }
+      
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
@@ -41,10 +42,16 @@ namespace EImece.Domain.Repositories
             {
                 if (disposing)
                 {
-                    this.DbContext.Dispose();
+                    DbContext.Dispose();
                 }
             }
             this.disposed = true;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         public virtual bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda)
         {

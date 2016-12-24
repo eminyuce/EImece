@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
-    public interface IProductService: IBaseService<Product>
+    public interface IProductService: IBaseService<Product,int>
     {
     }
 }

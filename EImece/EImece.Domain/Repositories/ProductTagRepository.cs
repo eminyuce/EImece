@@ -15,27 +15,13 @@ namespace EImece.Domain.Repositories
         public ProductTagRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-        public int DeleteItem(ProductTag item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+ 
 
         public List<ProductTag> GetAllByProductId(int productId)
         {
            return this.GetAll().Where(r => r.ProductId == productId).ToList();
         }
-
-        public int SaveOrEdit(ProductTag item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+ 
         public void DeleteProductTags(int productId)
         {
             var productTags = GetAll().Where(r => r.ProductId == productId).ToList();

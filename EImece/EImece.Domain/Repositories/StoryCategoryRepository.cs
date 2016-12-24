@@ -16,30 +16,7 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public int DeleteItem(StoryCategory item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public List<StoryCategory> GetActiveBaseContents(bool? isActive, int language)
-        {
-            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
-        }
-
-        public List<StoryCategory> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
-
-        public int SaveOrEdit(StoryCategory item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
+         
+       
     }
 }

@@ -15,13 +15,7 @@ namespace EImece.Domain.Repositories
         public StoryTagRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-      
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
+       
       
 
      

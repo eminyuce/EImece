@@ -24,11 +24,7 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+  
 
         public PaginatedList<Product> GetMainPageProducts(int page, int language)
         {
@@ -72,15 +68,6 @@ namespace EImece.Domain.Repositories
 
             return products.ToList();
         }
-
-        public List<Product> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
-
-        public List<Product> GetActiveBaseContents(bool? isActive, int language)
-        {
-            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
-        }
+ 
     }
 }

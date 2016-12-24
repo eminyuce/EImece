@@ -45,27 +45,6 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        public int SaveOrEdit(Menu item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this,item);
-        }
-        public int DeleteItem(Menu item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-        public List<Menu> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
-
-        public List<Menu> GetActiveBaseContents(bool? isActive, int language)
-        {
-            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
-        }
+       
     }
 }

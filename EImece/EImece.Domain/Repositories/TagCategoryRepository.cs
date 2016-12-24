@@ -14,32 +14,14 @@ using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
-    public class TagCategoryRepository : BaseRepository<TagCategory, int>, ITagCategoryRepository
+    public class TagCategoryRepository : BaseEntityRepository<TagCategory>, ITagCategoryRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public TagCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public int DeleteItem(TagCategory item)
-        {
-            return BaseEntityRepository.DeleteItem(this, item);
-        }
-
-        public int SaveOrEdit(TagCategory item)
-        {
-            return BaseEntityRepository.SaveOrEdit(this, item);
-        }
-        public List<TagCategory> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
+ 
+      
         public List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language)
         {
             try

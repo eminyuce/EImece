@@ -57,5 +57,6 @@ namespace EImece.Domain.Services
             DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
             return result.ToArray();
         }
+
     }
 }

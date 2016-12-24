@@ -43,20 +43,6 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
- 
-        public List<ProductCategory> GetActiveBaseEntities(bool? isActive)
-        {
-            return BaseEntityRepository.GetActiveBaseEntities(this, isActive);
-        }
-
-        public List<ProductCategory> GetActiveBaseContents(bool? isActive, int language)
-        {
-            return BaseContentRepository.GetActiveBaseContents(this, isActive, language);
-        }
+     
     }
 }
