@@ -33,6 +33,7 @@ namespace EImece.Domain.Repositories
             EImeceDbContext.Configuration.LazyLoadingEnabled = false;
             EImeceDbContext.Configuration.ProxyCreationEnabled = false;
             EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
+    
         }
       
         private bool disposed = false;

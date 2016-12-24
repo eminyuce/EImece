@@ -19,10 +19,15 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
 
+
         public IBaseRepository<T> baseRepository { get; set; }
 
         public abstract void SetCurrentRepository();
 
+        public BaseService()
+        {
+            SetCurrentRepository();
+        }
 
         public virtual IQueryable<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
         {
@@ -51,7 +56,7 @@ namespace EImece.Domain.Services
             return entity;
         }
 
- 
+
         public virtual bool DeleteEntity(T entity)
         {
             var result = this.baseRepository.DeleteItem(entity);
@@ -71,7 +76,7 @@ namespace EImece.Domain.Services
             return result.ToArray();
         }
 
-      
+
         public virtual String GetDbEntityValidationExceptionDetail(DbEntityValidationException ex)
         {
 
@@ -94,7 +99,7 @@ namespace EImece.Domain.Services
         }
 
 
-        public virtual void DeleteBaseEntity(List<string> values) 
+        public virtual void DeleteBaseEntity(List<string> values)
         {
             try
             {
