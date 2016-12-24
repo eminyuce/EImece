@@ -11,7 +11,7 @@ namespace EImece.Controllers
         // GET: Stories
         public ActionResult Index()
         {
-            var stories = StoryRepository.GetAll().ToList();
+            var stories = StoryService.GetAll().ToList();
             return View(stories);
         }
     }

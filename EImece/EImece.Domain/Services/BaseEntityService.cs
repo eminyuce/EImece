@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.HelperModels;
+using EImece.Domain.Repositories.IRepositories;
+using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,25 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseEntityService<T> : BaseService<T> where T : BaseEntity
     {
+
+        [Inject]
+        public ISettingRepository SettingRepository { get; set; }
+        [Inject]
+        public IFileStorageRepository FileStorageRepository { get; set; }
+        [Inject]
+        public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
+        [Inject]
+        public IStoryFileRepository StoryFileRepository { get; set; }
+        [Inject]
+        public ISubscriberRepository SubscriberRepository { get; set; }
+        [Inject]
+        public ITagCategoryRepository TagCategoryRepository { get; set; }
+        [Inject]
+        public ITagRepository TagRepository { get; set; }
+
+
+
+
         protected static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
         public virtual void ChangeGridBaseEntityOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {

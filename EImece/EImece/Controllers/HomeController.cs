@@ -28,7 +28,7 @@ namespace EImece.Controllers
         }
         public ActionResult Menu()
         {
-            var menus = MenuRepository.BuildTree();
+            var menus = MenuService.BuildTree();
             return PartialView("_Navigation", menus);
         }
     }

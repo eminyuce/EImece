@@ -12,10 +12,7 @@ namespace EImece.Domain.Services
 {
     public class ProductService : BaseContentService<Product>, IProductService
     {
-          [Inject]
-        public IProductRepository ProductRepository { get; set; }
-     
- 
+   
         public override void SetCurrentRepository()
         {
             this.baseRepository = ProductRepository;

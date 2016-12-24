@@ -17,7 +17,7 @@ namespace EImece.Controllers
         public ActionResult Detail(String id="")
         {
             var menuId = id.Split("-".ToCharArray()).Last().ToInt();
-            var page = MenuRepository.GetSingle(menuId);
+            var page = MenuService.GetSingle(menuId);
             return View(page);
         }
     }
