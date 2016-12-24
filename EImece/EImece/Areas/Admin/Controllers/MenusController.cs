@@ -15,7 +15,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var menus = MenuRepository.GetAll();
+            var menus = MenuService.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
                 menus = menus.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
@@ -35,7 +35,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Menu content = MenuRepository.GetSingle(id);
+            Menu content = MenuService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -66,11 +66,11 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
 
-                content = MenuRepository.GetSingle(id);
+                content = MenuService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
                 if(content.ParentId > 0)
                 {
-                    parentMenu = MenuRepository.GetSingle(content.ParentId);
+                    parentMenu = MenuService.GetSingle(content.ParentId);
                 }
             }
             ViewBag.ParentMenu = parentMenu;
@@ -90,7 +90,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    MenuRepository.SaveOrEdit(menu);
+                    MenuService.SaveOrEditEntity(menu);
                     int contentId = menu.Id;
                     return RedirectToAction("Index");
                 }
@@ -121,7 +121,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Menu content = MenuRepository.GetSingle(id);
+            Menu content = MenuService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -136,14 +136,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Menu menu = MenuRepository.GetSingle(id);
+            Menu menu = MenuService.GetSingle(id);
             if (menu == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                MenuRepository.DeleteItem(menu);
+                MenuService.DeleteEntity(menu);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -161,7 +161,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult GetMenus()
         {
-            List<Menu> treelist = MenuRepository.BuildTree();
+            List<Menu> treelist = MenuService.BuildTree();
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }

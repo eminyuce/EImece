@@ -16,11 +16,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ISettingRepository SettingRepository { get; set; }
         [Inject]
-        public IProductService ProductService { get; set; }
-        [Inject]
         public IProductCategoryRepository ProductCategoryRepository { get; set; }
-        [Inject]
-        public IMenuRepository MenuRepository { get; set; }
         [Inject]
         public IFileStorageRepository FileStorageRepository { get; set; }
         [Inject]
@@ -34,8 +30,6 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IStoryFileRepository StoryFileRepository { get; set; }
         [Inject]
-        public IStoryRepository StoryRepository { get; set; }
-        [Inject]
         public IStoryTagRepository StoryTagRepository { get; set; }
         [Inject]
         public ISubscriberRepository SubscriberRepository { get; set; }
@@ -44,12 +38,19 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ITagRepository TagRepository { get; set; }
 
+        [Inject]
+        public IProductService ProductService { get; set; }
+        [Inject]
+        public IMenuService MenuService { get; set; }
+        [Inject]
+        public IStoryService StoryService { get; set; }
+
 
 
         protected List<Node> CreateMenuTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var menus = MenuRepository.GetAll().OrderBy(r => r.Position).ToList();
+            var menus = MenuService.GetAll().OrderBy(r => r.Position).ToList();
             foreach (var p in menus)
             {
                 _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });

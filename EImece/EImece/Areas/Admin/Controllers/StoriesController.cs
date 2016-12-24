@@ -15,7 +15,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var stories = StoryRepository.GetAll();
+            var stories = StoryService.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
                 stories = stories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
@@ -34,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Story content = StoryRepository.GetSingle(id);
+            Story content = StoryService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -59,7 +59,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = StoryRepository.GetSingle(id);
+                content = StoryService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
             }
 
@@ -80,7 +80,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    StoryRepository.SaveOrEdit(Story);
+                    StoryService.SaveOrEditEntity(Story);
                     int contentId = Story.Id;
                     return RedirectToAction("Index");
                 }
@@ -111,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Story content = StoryRepository.GetSingle(id);
+            Story content = StoryService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -126,14 +126,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Story Story = StoryRepository.GetSingle(id);
+            Story Story = StoryService.GetSingle(id);
             if (Story == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                StoryRepository.DeleteItem(Story);
+                StoryService.DeleteEntity(Story);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

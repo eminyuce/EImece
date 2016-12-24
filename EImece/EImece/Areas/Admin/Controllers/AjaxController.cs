@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult StoryGridItem(List<String> values)
         {
-            BaseEntityRepository.DeleteBaseEntity(StoryRepository, values);
+            StoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult ChangeStoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(StoryRepository, values, checkbox);
+            StoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ChangeStoryCategoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
