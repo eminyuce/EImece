@@ -20,9 +20,9 @@ namespace EImece.Domain.Services
         protected static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
 
 
-        public IBaseRepository<T> baseRepository { get; set; }
+        private IBaseRepository<T> baseRepository { get; set; }
 
-        public BaseService(IBaseRepository<T> baseRepository)
+        protected BaseService(IBaseRepository<T> baseRepository)
         {
             this.baseRepository = baseRepository;
         }

@@ -14,30 +14,15 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseEntityService<T> : BaseService<T> where T : BaseEntity
     {
-        public IBaseEntityRepository<T> baseEntityRepository { get; set; }
-        public BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) :base(baseEntityRepository)
+        private IBaseEntityRepository<T> baseEntityRepository { get; set; }
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) :base(baseEntityRepository)
         {
             this.baseEntityRepository = baseEntityRepository;
         }
-
-        [Inject]
-        public ISettingRepository SettingRepository { get; set; }
-        [Inject]
-        public IFileStorageRepository FileStorageRepository { get; set; }
-        [Inject]
-        public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
-        [Inject]
-        public IStoryFileRepository StoryFileRepository { get; set; }
-        [Inject]
-        public ISubscriberRepository SubscriberRepository { get; set; }
-        [Inject]
-        public ITagCategoryRepository TagCategoryRepository { get; set; }
-        [Inject]
-        public ITagRepository TagRepository { get; set; }
        
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda,String search)
         {
-            var menus = baseRepository.GetAll();
+            var menus = baseEntityRepository.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
                 menus = menus.Where(whereLambda);
@@ -54,7 +39,7 @@ namespace EImece.Domain.Services
             {
                 foreach (OrderingItem item in values)
                 {
-                    var t = baseRepository.GetSingle(item.Id);
+                    var t = baseEntityRepository.GetSingle(item.Id);
                     var baseContent = t as BaseEntity;
                     if (baseContent != null)
                     {
@@ -84,9 +69,9 @@ namespace EImece.Domain.Services
                         }
 
                     }
-                    baseRepository.Edit(t);
+                    baseEntityRepository.Edit(t);
                 }
-                baseRepository.Save();
+                baseEntityRepository.Save();
             }
             catch (Exception exception)
             {
