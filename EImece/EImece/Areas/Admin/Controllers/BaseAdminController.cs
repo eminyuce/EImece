@@ -44,8 +44,12 @@ namespace EImece.Areas.Admin.Controllers
         public IMenuService MenuService { get; set; }
         [Inject]
         public IStoryService StoryService { get; set; }
-
-
+        [Inject]
+        public ITagService TagService { get; set; }
+        [Inject]
+        public ITagCategoryService TagCategoryService { get; set; }
+        [Inject]
+        public ISubsciberService SubsciberService { get; set; }
 
         protected List<Node> CreateMenuTreeViewDataList()
         {

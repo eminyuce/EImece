@@ -87,10 +87,11 @@ namespace EImece.App_Start
             kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
 
             kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();
-
             kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();
-
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
+            kernel.Bind<ISubsciberService>().To<SubsciberService>().InRequestScope();
+            kernel.Bind<ITagService>().To<TagService>().InRequestScope();
+            kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
 
         }
     }

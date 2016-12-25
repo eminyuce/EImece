@@ -202,6 +202,7 @@
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\StoryCategoryService.cs" />
     <Compile Include="Services\StoryService.cs" />
+    <Compile Include="Services\SubsciberService.cs" />
     <Compile Include="Services\TagCategoryService.cs" />
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Settings.cs" />
