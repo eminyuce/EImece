@@ -14,10 +14,10 @@ namespace EImece.Domain.Services
     {
 
         private IProductRepository ProductRepository { get; set; }
-        public ProductService(IProductRepository repository)
+        public ProductService(IProductRepository repository):base()
         {
             ProductRepository = repository;
-            this.baseRepository = repository;
+            this.baseContentRepository = repository;
         }
 
         public List<Product> GetAdminPageList(int id, string search, int lang)

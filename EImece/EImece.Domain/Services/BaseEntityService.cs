@@ -14,6 +14,11 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseEntityService<T> : BaseService<T> where T : BaseEntity
     {
+        public IBaseEntityRepository<T> baseEntityRepository { get; set; }
+        public BaseEntityService()
+        {
+            this.baseRepository = baseEntityRepository;
+        }
 
         [Inject]
         public ISettingRepository SettingRepository { get; set; }
