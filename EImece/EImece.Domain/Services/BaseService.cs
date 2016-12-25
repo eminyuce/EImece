@@ -29,14 +29,14 @@ namespace EImece.Domain.Services
             SetCurrentRepository();
         }
 
-        public virtual IQueryable<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
+        public virtual List<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
         {
-            return baseRepository.FindBy(whereLambda);
+            return baseRepository.FindBy(whereLambda).ToList();
         }
 
-        public virtual IQueryable<T> GetAll()
+        public virtual List<T> GetAll()
         {
-            return baseRepository.GetAll();
+            return baseRepository.GetAll().ToList();
         }
         //public virtual IQueryable<T> LoadEntites(Expression<Func<T, bool>> whereLambda, int pageIndex, int pageSize, out int totalCount)
         //{

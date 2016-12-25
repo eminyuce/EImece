@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,15 @@ namespace EImece.Domain.Services
         [Inject]
         public ITagRepository TagRepository { get; set; }
 
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda,String search)
+        {
+            var menus = baseRepository.GetAll();
+            if (!String.IsNullOrEmpty(search))
+            {
+                menus = menus.Where(whereLambda);
+            }
+            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+        }
 
 
 

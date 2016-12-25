@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
-    public interface IBaseService<T, TId> where T : class, IEntity<TId> where TId : IComparable
+    public interface IBaseService<T> where T : class
     {
 
-        IQueryable<T> LoadEntites(Expression<Func<T, bool>> whereLambda);
+        List<T> LoadEntites(Expression<Func<T, bool>> whereLambda);
 
         //IQueryable<T> LoadEntites(Func<T, bool> whereLambda, int pageIndex, int pageSize, out int totalCount);
 
         T SaveOrEditEntity(T entity);
-        T GetSingle(TId id);
-        IQueryable<T> GetAll();
+        T GetSingle(int id);
+        List<T> GetAll();
         bool DeleteEntity(T entity);
 
         bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda);

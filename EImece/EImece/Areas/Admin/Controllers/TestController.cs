@@ -45,18 +45,18 @@ namespace EImece.Areas.Admin.Controllers
                     v = v.Where(a =>
                         a.ProductCode.Contains(searchValue) ||
                         a.Name.Contains(searchValue) 
-                        );
+                        ).ToList();
                 }
 
             //sort
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDir))
             {
                 //for make sort simpler we will add Syste.Linq.Dynamic reference
-                v = v.OrderBy(sortColumn + " " + sortColumnDir);
+                v = v.OrderBy(sortColumn + " " + sortColumnDir).ToList();
             }
             else
             {
-                v = v.OrderBy(r => r.Id);
+                v = v.OrderBy(r => r.Id).ToList();
             }
 
             recordsTotal = v.Count();

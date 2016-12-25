@@ -3,6 +3,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -15,14 +16,10 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var menus = MenuService.GetAll();
-            if (!String.IsNullOrEmpty(search))
-            {
-                menus = menus.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
-            }
-
+            Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var menus = MenuService.SearchEntities(whereLambda, search);
             ViewBag.Tree = CreateMenuTreeViewDataList();
-            return View(menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
+            return View(menus);
         }
 
         //
