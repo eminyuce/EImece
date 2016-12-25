@@ -13,12 +13,9 @@ namespace EImece.Domain.Services
     public class MenuService : BaseContentService<Menu>, IMenuService
     {
         private IMenuRepository MenuRepository { get; set; }
-        public MenuService(IMenuRepository repository)
+        public MenuService(IMenuRepository repository):base(repository)
         {
             MenuRepository = repository;
-            this.baseContentRepository = repository;
-
-            
         }
 
         public List<Menu> BuildTree()

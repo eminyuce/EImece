@@ -15,9 +15,9 @@ namespace EImece.Domain.Services
     public abstract class BaseEntityService<T> : BaseService<T> where T : BaseEntity
     {
         public IBaseEntityRepository<T> baseEntityRepository { get; set; }
-        public BaseEntityService() 
+        public BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) :base(baseEntityRepository)
         {
-            this.baseRepository = baseEntityRepository;
+            this.baseEntityRepository = baseEntityRepository;
         }
 
         [Inject]

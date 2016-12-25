@@ -13,10 +13,9 @@ namespace EImece.Domain.Services
     public class StoryService : BaseContentService<Story>, IStoryService
     {
         private IStoryRepository StoryRepository { get; set; }
-        public StoryService(IStoryRepository repository)
+        public StoryService(IStoryRepository repository):base(repository)
         {
             StoryRepository = repository;
-            this.baseContentRepository = repository;
             
         }
 

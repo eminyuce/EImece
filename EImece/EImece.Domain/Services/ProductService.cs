@@ -14,10 +14,9 @@ namespace EImece.Domain.Services
     {
 
         private IProductRepository ProductRepository { get; set; }
-        public ProductService(IProductRepository repository)
+        public ProductService(IProductRepository repository) : base(repository)
         {
             ProductRepository = repository;
-            this.baseContentRepository = repository;
         }
 
         public List<Product> GetAdminPageList(int id, string search, int lang)
