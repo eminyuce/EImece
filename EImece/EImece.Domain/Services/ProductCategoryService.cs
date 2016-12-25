@@ -13,7 +13,7 @@ namespace EImece.Domain.Services
     public class ProductCategoryService : BaseContentService<ProductCategory>, IProductCategoryService
     {
         private IProductCategoryRepository ProductCategoryRepository { get; set; }
-        public ProductCategoryService(IProductCategoryRepository repository):base()
+        public ProductCategoryService(IProductCategoryRepository repository)
         {
             ProductCategoryRepository = repository;
             this.baseContentRepository = repository;

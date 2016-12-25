@@ -14,7 +14,7 @@ namespace EImece.Domain.Services
     {
 
         private IProductRepository ProductRepository { get; set; }
-        public ProductService(IProductRepository repository):base()
+        public ProductService(IProductRepository repository)
         {
             ProductRepository = repository;
             this.baseContentRepository = repository;

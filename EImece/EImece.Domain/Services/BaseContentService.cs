@@ -13,7 +13,7 @@ namespace EImece.Domain.Services
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
         public IBaseContentRepository<T> baseContentRepository { get; set; }
-        public BaseContentService() : base()
+        public BaseContentService()  
         {
             this.baseEntityRepository = baseContentRepository;
         }

@@ -13,7 +13,7 @@ namespace EImece.Domain.Services
     public class StoryCategoryService : BaseContentService<StoryCategory>, IStoryCategoryService
     {
         private IStoryCategoryRepository StoryCategoryRepository { get; set; }
-        public StoryCategoryService(IStoryCategoryRepository repository):base()
+        public StoryCategoryService(IStoryCategoryRepository repository)
         {
             StoryCategoryRepository = repository;
             this.baseContentRepository = repository;
