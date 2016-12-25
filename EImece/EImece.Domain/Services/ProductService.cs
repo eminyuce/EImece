@@ -12,10 +12,12 @@ namespace EImece.Domain.Services
 {
     public class ProductService : BaseContentService<Product>, IProductService
     {
-   
-        public override void SetCurrentRepository()
+
+        private IProductRepository ProductRepository { get; set; }
+        public ProductService(IProductRepository repository)
         {
-            this.baseRepository = ProductRepository;
+            ProductRepository = repository;
+            this.baseRepository = repository;
         }
 
         public List<Product> GetAdminPageList(int id, string search, int lang)

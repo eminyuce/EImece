@@ -12,11 +12,12 @@ namespace EImece.Domain.Services
 {
     public class StoryCategoryService : BaseContentService<StoryCategory>, IStoryCategoryService
     {
-
-   
-        public override void SetCurrentRepository()
+        private IStoryCategoryRepository StoryCategoryRepository { get; set; }
+        public StoryCategoryService(IStoryCategoryRepository repository)
         {
-            this.baseRepository = StoryCategoryRepository;
+            StoryCategoryRepository = repository;
+            this.baseRepository = repository;
         }
+
     }
 }

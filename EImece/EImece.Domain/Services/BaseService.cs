@@ -22,12 +22,6 @@ namespace EImece.Domain.Services
 
         public IBaseRepository<T> baseRepository { get; set; }
 
-        public abstract void SetCurrentRepository();
-
-        public BaseService()
-        {
-            SetCurrentRepository();
-        }
 
         public virtual List<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
         {

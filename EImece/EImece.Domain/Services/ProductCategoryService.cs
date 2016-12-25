@@ -12,10 +12,11 @@ namespace EImece.Domain.Services
 {
     public class ProductCategoryService : BaseContentService<ProductCategory>, IProductCategoryService
     {
-      
-        public override void SetCurrentRepository()
+        private IProductCategoryRepository ProductCategoryRepository { get; set; }
+        public ProductCategoryService(IProductCategoryRepository repository)
         {
-            this.baseRepository = ProductCategoryRepository;
+            ProductCategoryRepository = repository;
+            this.baseRepository = repository;
         }
     }
 }
