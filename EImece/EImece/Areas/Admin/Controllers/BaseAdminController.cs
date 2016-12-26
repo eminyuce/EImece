@@ -14,12 +14,6 @@ namespace EImece.Areas.Admin.Controllers
     public abstract class BaseAdminController : Controller
     {
         [Inject]
-        public IFileStorageRepository FileStorageRepository { get; set; }
-        [Inject]
-        public IFileStorageTagRepository FileStorageTagRepository { get; set; }
-
-
-        [Inject]
         public ISettingService SettingService { get; set; }
         [Inject]
         public IProductService ProductService { get; set; }
@@ -37,6 +31,9 @@ namespace EImece.Areas.Admin.Controllers
         public ITagCategoryService TagCategoryService { get; set; }
         [Inject]
         public ISubsciberService SubsciberService { get; set; }
+        [Inject]
+        public IFileStorageService FileStorageService { get; set; }
+
 
         protected List<Node> CreateMenuTreeViewDataList()
         {

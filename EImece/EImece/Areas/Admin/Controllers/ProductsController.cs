@@ -91,7 +91,7 @@ namespace EImece.Areas.Admin.Controllers
                         if (productImage != null)
                         {
                             var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(productImage, 0, 0, EImeceImageType.ProductCategoryMainImage);
-                            FileStorageRepository.SaveOrEdit(mainImage);
+                            FileStorageService.SaveOrEditEntity(mainImage);
                             product.MainImageId = mainImage.Id;
 
                         }

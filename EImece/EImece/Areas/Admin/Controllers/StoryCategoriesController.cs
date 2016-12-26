@@ -82,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
                     if (contentImage != null)
                     {
                         var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(contentImage, 0, 0, EImeceImageType.StoryCategoryMainImage);
-                        FileStorageRepository.SaveOrEdit(mainImage);
+                        FileStorageService.SaveOrEditEntity(mainImage);
                         StoryCategory.MainImageId = mainImage.Id;
                     }
 

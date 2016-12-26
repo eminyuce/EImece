@@ -149,8 +149,8 @@ namespace EImece.Areas.Admin.Controllers
             //data.BlogPostId = baseid;
             data.UpdatedDate = DateTime.Now;
             data.CreatedDate = DateTime.Now;
-            var fileStorageId =  FileStorageRepository.SaveOrEdit(data);
-            data.Id = fileStorageId;
+            var fileStorage = FileStorageService.SaveOrEditEntity(data);
+            data.Id = fileStorage.Id;
             //var num = BlogsRepository.SetBlogFile(data);
 
             //data.BlogFileId = num;
