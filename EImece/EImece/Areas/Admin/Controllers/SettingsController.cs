@@ -3,6 +3,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -14,12 +15,9 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var settings = SettingRepository.GetAll();
-            if (!String.IsNullOrEmpty(search))
-            {
-                settings = settings.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
-            }
-            return View(settings.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
+            Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var settings = SettingService.SearchEntities(whereLambda, search);
+            return View(settings);
         }
 
          
@@ -40,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = SettingRepository.GetSingle(id);
+                content = SettingService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
             }
 
@@ -61,7 +59,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    SettingRepository.SaveOrEdit(Setting);
+                    SettingService.SaveOrEditEntity(Setting);
                     int contentId = Setting.Id;
                     return RedirectToAction("Index");
                 }
@@ -92,7 +90,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Setting content = SettingRepository.GetSingle(id);
+            Setting content = SettingService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -107,14 +105,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Setting Setting = SettingRepository.GetSingle(id);
+            Setting Setting = SettingService.GetSingle(id);
             if (Setting == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                SettingRepository.DeleteItem(Setting);
+                SettingService.DeleteEntity(Setting);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

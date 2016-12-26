@@ -17,14 +17,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Tag, object>> includeProperty2 = r => r.TagCategory;
-            Expression<Func<Tag, object>>[] includeProperties = { includeProperty2 };
-            var tags = TagRepository.GetAllIncluding(includeProperties);
-            if (!String.IsNullOrEmpty(search))
-            {
-                tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
-            }
-            var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+            var result = TagService.GetAdminPageList(search);
             return View(result);
         }
 
@@ -39,7 +32,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Tag content = TagRepository.GetSingle(id);
+            Tag content = TagService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -49,7 +42,7 @@ namespace EImece.Areas.Admin.Controllers
         private List<SelectListItem> GetCategoriesSelectList()
         {
 
-            var tagCategories = TagCategoryRepository.GetAll().OrderBy(r => r.Position).ToList();
+           List<TagCategory> tagCategories = TagCategoryService.GetAll().OrderBy(r => r.Position).ToList();
            return  tagCategories.Select(r => new SelectListItem()
             {
                 Text =
@@ -76,7 +69,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = TagRepository.GetSingle(id);
+                content = TagService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
             }
 
@@ -97,7 +90,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    TagRepository.SaveOrEdit(Tag);
+                    TagService.SaveOrEditEntity(Tag);
                     int contentId = Tag.Id;
                     return RedirectToAction("Index");
                 }
@@ -128,7 +121,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Tag content = TagRepository.GetSingle(id);
+            Tag content = TagService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -143,14 +136,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Tag Tag = TagRepository.GetSingle(id);
+            Tag Tag = TagService.GetSingle(id);
             if (Tag == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                TagRepository.DeleteItem(Tag);
+                TagService.DeleteEntity(Tag);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

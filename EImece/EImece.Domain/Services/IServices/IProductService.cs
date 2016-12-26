@@ -11,5 +11,7 @@ namespace EImece.Domain.Services.IServices
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
         List<Product> GetMainPageProducts(int page, int lang);
+        List<ProductTag> GetProductTagsByProductId(int productId);
+        void SaveProductTags(int id, int[] tags);
     }
 }

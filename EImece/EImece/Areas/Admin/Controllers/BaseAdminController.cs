@@ -14,30 +14,13 @@ namespace EImece.Areas.Admin.Controllers
     public abstract class BaseAdminController : Controller
     {
         [Inject]
-        public ISettingRepository SettingRepository { get; set; }
-        [Inject]
-        public IProductCategoryRepository ProductCategoryRepository { get; set; }
-        [Inject]
         public IFileStorageRepository FileStorageRepository { get; set; }
         [Inject]
         public IFileStorageTagRepository FileStorageTagRepository { get; set; }
-        [Inject]
-        public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
-        [Inject]
-        public IProductTagRepository ProductTagRepository { get; set; }
-        [Inject]
-        public IStoryCategoryRepository StoryCategoryRepository { get; set; }
-        [Inject]
-        public IStoryFileRepository StoryFileRepository { get; set; }
-        [Inject]
-        public IStoryTagRepository StoryTagRepository { get; set; }
-        [Inject]
-        public ISubscriberRepository SubscriberRepository { get; set; }
-        [Inject]
-        public ITagCategoryRepository TagCategoryRepository { get; set; }
-        [Inject]
-        public ITagRepository TagRepository { get; set; }
 
+
+        [Inject]
+        public ISettingService SettingService { get; set; }
         [Inject]
         public IProductService ProductService { get; set; }
         [Inject]
@@ -46,6 +29,8 @@ namespace EImece.Areas.Admin.Controllers
         public IMenuService MenuService { get; set; }
         [Inject]
         public IStoryService StoryService { get; set; }
+        [Inject]
+        public IStoryCategoryService StoryCategoryService { get; set; }
         [Inject]
         public ITagService TagService { get; set; }
         [Inject]
@@ -68,7 +53,7 @@ namespace EImece.Areas.Admin.Controllers
         protected List<Node> CreateProductCategoryTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var productCategories = ProductCategoryRepository.GetAll().OrderBy(r => r.Position).ToList();
+            var productCategories = ProductCategoryService.GetAll().OrderBy(r => r.Position).ToList();
             foreach (var p in productCategories)
             {
                 _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });

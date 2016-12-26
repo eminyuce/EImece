@@ -62,7 +62,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 content = ProductService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
-                productCategory = ProductCategoryRepository.GetSingle(content.ProductCategoryId);
+                productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
             return View(content);
@@ -101,7 +101,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         if (tags != null)
                         {
-                            ProductTagRepository.SaveProductTags(product.Id, tags);
+                            ProductService.SaveProductTags(product.Id, tags);
                         }
                         return RedirectToAction("Index");
                     }
@@ -121,7 +121,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
             }
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
-            ViewBag.ProductCategory = ProductCategoryRepository.GetSingle(product.ProductCategoryId);
+            ViewBag.ProductCategory = ProductService.GetSingle(product.ProductCategoryId);
             return View(product);
         }
 

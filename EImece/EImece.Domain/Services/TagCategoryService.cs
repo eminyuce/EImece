@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Domain.Services
 {
@@ -15,6 +16,11 @@ namespace EImece.Domain.Services
         public TagCategoryService(ITagCategoryRepository repository) : base(repository)
         {
             TagCategoryRepository = repository;
+        }
+        
+        public List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language)
+        {
+            return TagCategoryRepository.GetTagsByTagType(tagType, language);
         }
     }
 }

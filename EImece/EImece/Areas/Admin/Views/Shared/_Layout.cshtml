@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    
+
     <link href="~/Content/SharkDev.TreeView.css" rel="stylesheet" />
     <script src="~/Scripts/SharkDev.treeView.js"></script>
     <script src="~/Scripts/eimece.js"></script>
@@ -20,21 +20,21 @@
 
 </head>
 <body ng-app="myApp" class="ng-cloak">
- 
+
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-           
-           
+
+
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home Page", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Main Page", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Dashboard", "Index", "Dashboard", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("Subscribers", "Index", "Subscribers", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("FileUpload", "Index", "FileUpload", new { area = "admin" }, null)</li>
-
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -52,20 +52,23 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stories <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("StoryCategories", "Index", "StoryCategories", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink("Stories", "Index", "Stories", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink("StoryCategories", "Index", "StoryCategories", new { area = "admin" }, null)</li>
                         </ul>
                     </li>
                 </ul>
-             
 
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-             
+                    @using (Html.BeginForm("SearchContent", "Dashboard",
+FormMethod.Get, new { @class = "navbar-form navbar-left",
+    role = "search" }))
+                    {
+                        <div class="form-group">
+                            <input type="text" name="search" id="searchTxt" data-provide="typehead" class="form-control" placeholder="Arama" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    
+                    }
+
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -78,7 +81,7 @@
         </footer>
     </div>
 
-    
+
 
     <link href="~/Content/DataTable/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/Content/angularTreeView/angular.treeview.css" rel="stylesheet" />
@@ -88,7 +91,7 @@
     <script src="~/Scripts/angular-datatables.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
 
-    <link rel="stylesheet"  href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
 
     <script src="~/Scripts/ng-table.min.js"></script>
 

@@ -9,6 +9,6 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IBaseContentService<T> : IBaseEntityService<T> where T : BaseContent
     {
-
+        List<T> GetActiveBaseContents(bool? isActive, int language);
     }
 }

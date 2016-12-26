@@ -9,5 +9,6 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IProductCategoryService : IBaseContentService<ProductCategory>
     {
+        List<ProductCategory> BuildTree();
     }
 }

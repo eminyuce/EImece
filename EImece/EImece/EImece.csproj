@@ -412,6 +412,7 @@
     <Content Include="Areas\Admin\Views\FileUpload\Index.cshtml" />
     <Content Include="Areas\Admin\Views\FileUpload\Show.cshtml" />
     <Content Include="Areas\Admin\Views\FileUpload\_Files.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\SearchContent.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

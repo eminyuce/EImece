@@ -25,14 +25,14 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult StoryCategoryGridItem(List<String> values)
         {
-            BaseEntityRepository.DeleteBaseEntity(StoryCategoryRepository, values);
+            StoryCategoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         // GET: Admin/Ajax
         [HttpPost]
         public ActionResult DeleteSubscriberGridItem(List<String> values)
         {
-            BaseEntityRepository.DeleteBaseEntity(SubscriberRepository, values);
+            SubsciberService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -69,23 +69,24 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult ChangeStoryCategoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(StoryCategoryRepository, values, checkbox);
+            StoryCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ChangeTagGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(TagRepository, values, checkbox);
+           
+            TagService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ChangeTagCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            BaseEntityRepository.ChangeGridBaseEntityOrderingOrState(TagCategoryRepository, values, checkbox);
+            TagCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetProductTags(EImeceLanguage language, int productId = 0)
         {
-            var tags = TagCategoryRepository.GetTagsByTagType(EImeceTagType.Products, language);
-            var productTags = ProductTagRepository.GetAllByProductId(productId).Select(r => r.TagId).ToList();
+            var tags = TagCategoryService.GetTagsByTagType(EImeceTagType.Products, language);
+            var productTags = ProductService.GetProductTagsByProductId(productId).Select(r => r.TagId).ToList();
             var tempData = new TempDataDictionary();
             tempData["selectedTags"] = productTags;
             var html = this.RenderPartialToString(
@@ -96,7 +97,7 @@ namespace EImece.Areas.Admin.Controllers
         //C:\Projects\StoryEngine\_imagesSample\samples2
         public ActionResult GetImageTags(EImeceLanguage language)
         {
-            var tags = TagCategoryRepository.GetTagsByTagType(EImeceTagType.Images, language);
+            var tags = TagCategoryService.GetTagsByTagType(EImeceTagType.Images, language);
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~/Areas/Admin/Views/Shared/pImagesTag.cshtml",

@@ -1,8 +1,11 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -14,12 +17,9 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var categories = StoryCategoryRepository.GetAll();
-            if (!String.IsNullOrEmpty(search))
-            {
-                categories = categories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
-            }
-            return View(categories.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
+            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var categories = StoryCategoryService.SearchEntities(whereLambda, search);
+            return View(categories);
         }
 
 
@@ -33,7 +33,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            StoryCategory content = StoryCategoryRepository.GetSingle(id);
+            StoryCategory content = StoryCategoryService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -58,7 +58,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = StoryCategoryRepository.GetSingle(id);
+                content = StoryCategoryService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
             }
 
@@ -71,7 +71,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(StoryCategory StoryCategory)
+        public ActionResult SaveOrEdit(StoryCategory StoryCategory, HttpPostedFileBase contentImage = null)
         {
             try
             {
@@ -79,7 +79,14 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    StoryCategoryRepository.SaveOrEdit(StoryCategory);
+                    if (contentImage != null)
+                    {
+                        var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(contentImage, 0, 0, EImeceImageType.StoryCategoryMainImage);
+                        FileStorageRepository.SaveOrEdit(mainImage);
+                        StoryCategory.MainImageId = mainImage.Id;
+                    }
+
+                    StoryCategoryService.SaveOrEditEntity(StoryCategory);
                     int contentId = StoryCategory.Id;
                     return RedirectToAction("Index");
                 }
@@ -110,7 +117,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            StoryCategory content = StoryCategoryRepository.GetSingle(id);
+            StoryCategory content = StoryCategoryService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -125,14 +132,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            StoryCategory StoryCategory = StoryCategoryRepository.GetSingle(id);
+            StoryCategory StoryCategory = StoryCategoryService.GetSingle(id);
             if (StoryCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                StoryCategoryRepository.DeleteItem(StoryCategory);
+                StoryCategoryService.DeleteEntity(StoryCategory);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

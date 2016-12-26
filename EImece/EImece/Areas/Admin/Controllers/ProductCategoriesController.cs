@@ -36,7 +36,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ProductCategory content = ProductCategoryRepository.GetSingle(id);
+            ProductCategory content = ProductCategoryService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -64,9 +64,9 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
 
-                content = ProductCategoryRepository.GetSingle(id);
+                content = ProductCategoryService.GetSingle(id);
                 content.UpdatedDate = DateTime.Now;
-                parentCategory = ProductCategoryRepository.GetSingle(content.ParentId);
+                parentCategory = ProductCategoryService.GetSingle(content.ParentId);
 
 
             }
@@ -84,24 +84,19 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
 
-                ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+   
                 if (ModelState.IsValid)
                 {
-
-
 
                     if (productCategoryImage != null)
                     {
                         var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(productCategoryImage, 0, 0, EImeceImageType.ProductCategoryMainImage);
                         FileStorageRepository.SaveOrEdit(mainImage);
                         productCategory.MainImageId = mainImage.Id;
-
                     }
 
-                    ProductCategoryRepository.SaveOrEdit(productCategory);
+                    ProductCategoryService.SaveOrEditEntity(productCategory);
                     int contentId = productCategory.Id;
-
-                 
 
                     return RedirectToAction("Index");
                 }
@@ -117,7 +112,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
-
+            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
             return View(productCategory);
         }
 
@@ -132,7 +127,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ProductCategory content = ProductCategoryRepository.GetSingle(id);
+            ProductCategory content = ProductCategoryService.GetSingle(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -147,14 +142,14 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            ProductCategory productCategory = ProductCategoryRepository.GetSingle(id);
+            ProductCategory productCategory = ProductCategoryService.GetSingle(id);
             if (productCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                ProductCategoryRepository.DeleteItem(productCategory);
+                ProductCategoryService.DeleteEntity(productCategory);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -168,7 +163,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GetCategories()
         {
-            List<ProductCategory> treelist = ProductCategoryRepository.BuildTree();
+            List<ProductCategory> treelist = ProductCategoryService.BuildTree();
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 

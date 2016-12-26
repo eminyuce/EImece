@@ -13,5 +13,10 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
+        public ActionResult SearchContent(String search)
+        {
+            ViewBag.SearchKey = search;
+            return View();
+        }
     }
 }

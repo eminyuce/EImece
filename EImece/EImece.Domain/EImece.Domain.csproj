@@ -200,6 +200,7 @@
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\ProductCategoryService.cs" />
     <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\SettingService.cs" />
     <Compile Include="Services\StoryCategoryService.cs" />
     <Compile Include="Services\StoryService.cs" />
     <Compile Include="Services\SubsciberService.cs" />

@@ -28,5 +28,16 @@ namespace EImece.Domain.Services
         {
             return ProductRepository.GetMainPageProducts(page, lang);
         }
+
+         
+        public void SaveProductTags(int id, int[] tags)
+        {
+            ProductTagRepository.SaveProductTags(id, tags);
+        }
+
+        public List<ProductTag> GetProductTagsByProductId(int productId)
+        {
+            return ProductTagRepository.GetAllByProductId(productId);
+        }
     }
 }

@@ -17,5 +17,10 @@ namespace EImece.Domain.Services
         {
             ProductCategoryRepository = repository;
         }
+
+        public List<ProductCategory> BuildTree()
+        {
+            return ProductCategoryRepository.BuildTree();
+        }
     }
 }
