@@ -92,7 +92,7 @@ namespace EImece.App_Start
             kernel.Bind<ISubsciberService>().To<SubsciberService>().InRequestScope();
             kernel.Bind<ITagService>().To<TagService>().InRequestScope();
             kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
-
+            kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
         }
     }
 }

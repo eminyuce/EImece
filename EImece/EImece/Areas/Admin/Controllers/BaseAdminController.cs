@@ -41,6 +41,8 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
         [Inject]
+        public IProductCategoryService ProductCategoryService { get; set; }
+        [Inject]
         public IMenuService MenuService { get; set; }
         [Inject]
         public IStoryService StoryService { get; set; }

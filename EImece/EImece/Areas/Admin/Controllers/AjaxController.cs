@@ -41,6 +41,22 @@ namespace EImece.Areas.Admin.Controllers
             ProductService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult DeleteProductCategoriesGridItem(List<String> values)
+        {
+            ProductCategoryService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ChangeMenusGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            MenuService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ChangeProductCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            ProductCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeProductGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             ProductService.ChangeGridBaseEntityOrderingOrState(values, checkbox);

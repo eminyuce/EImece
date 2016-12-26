@@ -28,6 +28,8 @@ namespace EImece.Domain.Models.Enums
         [Display(Name = "StoryMainImage")]
         StoryMainImage = 6,
         [Display(Name = "Carusels")]
-        Carusels = 7
+        Carusels = 7,
+        [Display(Name = "MenuMainImage")]
+        MenuMainImage = 8,
     }
 }

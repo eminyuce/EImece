@@ -1,4 +1,6 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -80,12 +82,18 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Menu menu)
+        public ActionResult SaveOrEdit(Menu menu, HttpPostedFileBase menuImage = null)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (menuImage != null)
+                    {
+                        var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(menuImage, 0, 0, EImeceImageType.MenuMainImage);
+                        FileStorageRepository.SaveOrEdit(mainImage);
+                        menu.MainImageId = mainImage.Id;
+                    }
 
                     MenuService.SaveOrEditEntity(menu);
                     int contentId = menu.Id;

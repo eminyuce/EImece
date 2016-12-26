@@ -6,6 +6,7 @@ using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -18,13 +19,10 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var productCategories = ProductCategoryRepository.GetAll();
-            if (!String.IsNullOrEmpty(search))
-            {
-                productCategories = productCategories.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
-            }
             ViewBag.Tree = CreateProductCategoryTreeViewDataList();
-            return View(productCategories.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList());
+            Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search);
+            return View(productCategories);
         }
 
 
