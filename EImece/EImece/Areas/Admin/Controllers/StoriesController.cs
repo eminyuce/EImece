@@ -1,4 +1,6 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -47,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new Story();
-            ViewBag.Categories = StoryService.GetActiveBaseContents(null,1);
+            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null,1);
 
             if (id == 0)
             {
@@ -70,13 +72,21 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Story Story)
+        public ActionResult SaveOrEdit(Story Story, HttpPostedFileBase contentImage = null)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
+
+
+                    if (contentImage != null)
+                    {
+                        var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(contentImage, 0, 0, EImeceImageType.StoryMainImage);
+                        FileStorageRepository.SaveOrEdit(mainImage);
+                        Story.MainImageId = mainImage.Id;
+                    }
 
                     StoryService.SaveOrEditEntity(Story);
                     int contentId = Story.Id;

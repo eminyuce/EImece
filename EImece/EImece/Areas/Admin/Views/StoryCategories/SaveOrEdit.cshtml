@@ -11,7 +11,7 @@
 <h2>SaveOrEdit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("SaveOrEdit", "StoryCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -84,7 +84,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" name="storyCategoryImage" />
+                <input type="file" name="contentImage" />
                 @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
             </div>
         </div>
