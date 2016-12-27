@@ -35,29 +35,8 @@ namespace EImece.Areas.Admin.Controllers
         public IFileStorageService FileStorageService { get; set; }
 
 
-        protected List<Node> CreateMenuTreeViewDataList()
-        {
-            List<Node> _lstTreeNodes = new List<Node>();
-            var menus = MenuService.GetAll().OrderBy(r => r.Position).ToList();
-            foreach (var p in menus)
-            {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
-            }
+    
 
-            return _lstTreeNodes;
-        }
-
-        protected List<Node> CreateProductCategoryTreeViewDataList()
-        {
-            List<Node> _lstTreeNodes = new List<Node>();
-            var productCategories = ProductCategoryService.GetAll().OrderBy(r => r.Position).ToList();
-            foreach (var p in productCategories)
-            {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
-            }
-
-            return _lstTreeNodes;
-        }
 
         protected int SelectedLanguage
         {

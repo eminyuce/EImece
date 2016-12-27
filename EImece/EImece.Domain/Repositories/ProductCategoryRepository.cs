@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 using EImece.Domain.GenericRepositories;
+using SharkDev.Web.Controls.TreeView.Model;
+using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Repositories
 {
@@ -42,7 +44,18 @@ namespace EImece.Domain.Repositories
             }
             return returnList;
         }
+        public List<Node> CreateProductCategoryTreeViewDataList()
+        {
+            List<Node> _lstTreeNodes = new List<Node>();
+            var productCategories = this.GetAll().OrderBy(r => r.Position).ToList();
+            foreach (var p in productCategories)
+            {
+                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
+            }
 
-     
+            return _lstTreeNodes;
+        }
+
+
     }
 }

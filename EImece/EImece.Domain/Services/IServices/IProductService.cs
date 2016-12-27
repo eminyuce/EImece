@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Models.AdminModels;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -13,5 +14,8 @@ namespace EImece.Domain.Services.IServices
         List<Product> GetMainPageProducts(int page, int lang);
         List<ProductTag> GetProductTagsByProductId(int productId);
         void SaveProductTags(int id, int[] tags);
+        ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);
+        Product GetProductById(int id);
+
     }
 }

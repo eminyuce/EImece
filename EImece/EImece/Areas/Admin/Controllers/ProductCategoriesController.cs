@@ -19,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search);
             return View(productCategories);
@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new ProductCategory();
             var parentCategory = new ProductCategory();
-            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
 
             if (id == 0)
             {
@@ -112,7 +112,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
-            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             return View(productCategory);
         }
 

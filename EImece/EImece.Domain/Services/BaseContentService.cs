@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using GenericRepository.EntityFramework.Enums;
 using Ninject;
 using NLog;
@@ -17,6 +18,9 @@ namespace EImece.Domain.Services
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
         protected static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public ITagCategoryService TagCategoryService { get; set; }
 
         public IBaseContentRepository<T> BaseContentRepository { get; set; }
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) :base(baseContentRepository) 

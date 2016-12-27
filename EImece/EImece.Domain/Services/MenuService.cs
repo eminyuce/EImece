@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharkDev.Web.Controls.TreeView.Model;
 
 namespace EImece.Domain.Services
 {
@@ -22,7 +23,10 @@ namespace EImece.Domain.Services
         {
             return MenuRepository.BuildTree();
         }
-         
 
+        public List<Node> CreateMenuTreeViewDataList()
+        {
+            return MenuRepository.CreateMenuTreeViewDataList();
+        }
     }
 }

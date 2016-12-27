@@ -413,6 +413,11 @@
     <Content Include="Areas\Admin\Views\FileUpload\Show.cshtml" />
     <Content Include="Areas\Admin\Views\FileUpload\_Files.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\SearchContent.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\_pSaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\_pProductGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\_pProductCategoryTree.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\_pProductTags.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\_pProductFiles.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

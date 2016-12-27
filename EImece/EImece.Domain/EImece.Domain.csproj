@@ -58,6 +58,14 @@
       <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharkDev.MVC, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharkTree.1.2.1.2\lib\SharkDev.MVC.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharkDev.Web.Controls, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharkTree.1.2.1.2\lib\SharkDev.Web.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -134,6 +142,7 @@
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\QuerySortingExtensions.cs" />
+    <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
     <Compile Include="Models\Enums\EImeceImageType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\EImeceTagType.cs" />
@@ -210,7 +219,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

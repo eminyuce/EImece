@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IProductCategoryRepository : IBaseContentRepository<ProductCategory>, IDisposable
     {
         List<ProductCategory> BuildTree();
+        List<Node> CreateProductCategoryTreeViewDataList();
     }
 }

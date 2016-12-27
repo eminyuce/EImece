@@ -12,5 +12,6 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         PaginatedList<Product> GetMainPageProducts(int page, int language);
         List<Product> GetAdminPageList(int categoryId, string search, int language);
+        Product GetProduct(int id);
     }
 }

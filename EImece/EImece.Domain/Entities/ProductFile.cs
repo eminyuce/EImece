@@ -10,7 +10,7 @@ namespace EImece.Domain.Entities
     {
         public int FileStorageId { get; set; }
         public int ProductId { get; set; }
-
+        public virtual FileStorage FileStorage { get; set; }
 
     }
 }

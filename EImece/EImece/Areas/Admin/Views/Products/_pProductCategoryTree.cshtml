@@ -1,0 +1,25 @@
+﻿@model EImece.Domain.Models.AdminModels.ProductAdminModel
+@using SharkDev.MVC
+
+@{
+    var tree = Model.ProductCategoryTree;
+}
+
+@Html.SharkDev().TreeView(settings =>
+    {
+        settings.Id = "treeViewContainer";
+        settings.Header.Text = "Tree root - Animal";
+        settings.Header.Visible = false;
+        settings.Header.Expanded = true;
+        settings.ClientHandlers.ContentSelect = @"function (e) {
+console.log(e);
+window.location='/admin/products/index/?catId='+e.id;
+
+}";
+        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+        settings.Height = 300;
+        settings.Width = 270;
+        settings.DataOnClient = true;
+    }).GetContent(tree)
+
+<span id="treeClickContainer"></span>

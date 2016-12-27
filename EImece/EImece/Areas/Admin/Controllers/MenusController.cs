@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search);
-            ViewBag.Tree = CreateMenuTreeViewDataList();
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
             return View(menus);
         }
 
@@ -49,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = new Menu();
-            ViewBag.Tree = CreateMenuTreeViewDataList();
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
             var parentMenu = new Menu();
 
            
@@ -111,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
-
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
             return View(menu);
         }
 

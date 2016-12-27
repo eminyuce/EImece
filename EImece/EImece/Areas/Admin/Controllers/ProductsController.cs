@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
@@ -15,11 +16,10 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(int id = 0, String search = "", int lang = 1)
+        public ActionResult Index(int id = 0, int catId = 0, String search = "", int lang = 1)
         {
-            var products = ProductService.GetAdminPageList(id, search, lang);
-            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
-            return View(products);
+            ProductAdminModel productAdminPage = ProductService.GetProductAdminPage(catId, search, lang, id);
+            return View(productAdminPage);
         }
 
         //
@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = new Product();
             var productCategory = new ProductCategory();
-            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
 
             if (id == 0)
             {
@@ -73,11 +73,11 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product, int [] tags = null, HttpPostedFileBase productImage = null)
+        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase productImage = null)
         {
             try
             {
-         
+
                 if (ModelState.IsValid)
                 {
 
@@ -95,7 +95,8 @@ namespace EImece.Areas.Admin.Controllers
                             product.MainImageId = mainImage.Id;
 
                         }
-
+                        product.CreatedDate = DateTime.Now;
+                        product.UpdatedDate = DateTime.Now;
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 
@@ -118,9 +119,9 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, product);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message);
             }
-            ViewBag.Tree = CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             ViewBag.ProductCategory = ProductService.GetSingle(product.ProductCategoryId);
             return View(product);
         }

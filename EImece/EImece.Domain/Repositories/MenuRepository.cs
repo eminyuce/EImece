@@ -9,6 +9,8 @@ using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
 using EImece.Domain.GenericRepositories;
 using System.Data.Entity;
+using SharkDev.Web.Controls.TreeView.Model;
+using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Repositories
 {
@@ -45,6 +47,16 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
-       
+        public List<Node> CreateMenuTreeViewDataList()
+        {
+            List<Node> _lstTreeNodes = new List<Node>();
+            var menus = this.GetAll().OrderBy(r => r.Position).ToList();
+            foreach (var p in menus)
+            {
+                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
+            }
+
+            return _lstTreeNodes;
+        }
     }
 }

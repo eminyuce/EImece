@@ -68,6 +68,16 @@ namespace EImece.Domain.Repositories
 
             return products.ToList();
         }
- 
+
+        public Product GetProduct(int id)
+        {
+            Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
+            Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
+            Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Product, object>> includeProperty4 = r => r.ProductTags;
+            Expression<Func<Product, object>> includeProperty5 = r => r.ProductSpecifications;
+            Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty3, includeProperty4, includeProperty5 };
+            return this.GetSingleIncluding(id, includeProperties);
+        }
     }
 }
