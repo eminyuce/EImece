@@ -68,6 +68,13 @@ namespace EImece.Domain
             }
         }
 
+        public static int GridPageSizeNumber
+        {
+            get
+            {
+                return GetConfigInt("GridPageSizeNumber", 50);
+            }
+        }
 
 
         public static int RecordPerPage

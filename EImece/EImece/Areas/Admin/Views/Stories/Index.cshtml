@@ -10,7 +10,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? 10 : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Stories";
     var title = "Stories";
     var gridName = "StoryGrid";

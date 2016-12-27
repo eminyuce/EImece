@@ -58,5 +58,22 @@ namespace EImece.Areas.Admin.Controllers
 
             return _lstTreeNodes;
         }
+
+        protected int SelectedLanguage
+        {
+            get
+            {
+                if (Session["SelectedLanguage"] != null)
+                    return Session["SelectedLanguage"].ToInt(1);
+                else
+                {
+                    return 1;
+                };
+            }
+            set
+            {
+                Session["SelectedLanguage"] = value;
+            }
+        }
     }
 }

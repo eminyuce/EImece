@@ -11,7 +11,7 @@
 
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? 10 : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "ProductCategories";
     var title = "ProductCategories";
     var gridName = "ProductCategoriesGrid";
