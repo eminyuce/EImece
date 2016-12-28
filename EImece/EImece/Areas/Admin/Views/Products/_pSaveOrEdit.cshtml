@@ -3,11 +3,12 @@
 @using SharkDev.MVC
 @using EImece.Domain.Models.Enums;
 @using SharkDev.Web.Controls.TreeView.Model;
+@using EImece.Domain;
 
 @{
     var product = Model.Product;
     var productCategory = Model.Product.ProductCategoryId > 0 ? Model.Product.ProductCategory : null;
-
+    var saveButtonText = Settings.GetConfigString("SaveButtonText", "Kaydet");
 }
 
 <div class="row" style="padding:20px;">
@@ -156,7 +157,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
+                        <input type="submit" value="@saveButtonText" class="btn btn-default btn-lg btn-block" />
                     </div>
                 </div>
             </div>

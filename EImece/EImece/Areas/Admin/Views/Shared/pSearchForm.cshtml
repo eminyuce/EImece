@@ -1,8 +1,10 @@
-﻿@{
+﻿@using EImece.Domain;
+@{
 
     string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
     string search = @Request.QueryString["search"];
+    var gridSearchButtonText = Settings.GetConfigString("gridSearchButtonText", "Arama");
 }
 
 @using (Html.BeginForm(action, controller, FormMethod.Get, new { @class = "" }))
@@ -14,7 +16,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" name="search" value="@search" placeholder="Search for...">
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <button class="btn btn-primary" type="submit">@gridSearchButtonText</button>
                 </span>
             </div><!-- /input-group -->
         </div><!-- /.col-lg-12 -->

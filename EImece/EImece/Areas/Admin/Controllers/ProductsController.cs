@@ -171,7 +171,10 @@ namespace EImece.Areas.Admin.Controllers
             return View(product);
 
         }
-
+        public ActionResult Media(int id)
+        {
+            return RedirectToAction("Index", "Media", new { id, mod= MediaModType.Products, imageType =EImeceImageType.ProductGallery });
+        }
 
     }
 }

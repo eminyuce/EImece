@@ -73,13 +73,14 @@ FormMethod.Get, new { @class = "navbar-form navbar-left",
         </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year</p>
-        </footer>
-    </div>
+    @*<div class="container body-content">*@
+        <div class="">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year</p>
+            </footer>
+        </div>
 
 
 

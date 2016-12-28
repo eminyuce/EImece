@@ -1,5 +1,4 @@
 ﻿
-
 input.GridOrderingTextbox {
     max-width: 30px;
     width: 35px;
@@ -137,9 +136,14 @@ div .roleradio {
     max-width: 120px;
     max-height: 120px;
 }
+
 input[name='checkboxGrid'] {
     width: 34px;
     height: 30px;
     padding: 5em;
     border: 1px solid #369;
+}
+
+@media (min-width: 768px).container {
+    max-width: 1200px;
 }

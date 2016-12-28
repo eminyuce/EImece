@@ -142,10 +142,12 @@
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\QuerySortingExtensions.cs" />
+    <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
     <Compile Include="Models\Enums\EImeceImageType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\EImeceTagType.cs" />
+    <Compile Include="Models\Enums\MediaModType.cs" />
     <Compile Include="Models\HelperModels\FilesViewModel.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Models\HelperModels\PagedResult.cs" />

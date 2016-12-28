@@ -1,0 +1,11 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Models.AdminModels;
+@model MediaAdminIndexModel
+     
+@{
+    ViewBag.Title = "Index";
+    var baseContent = Model.baseContent;
+}
+
+<h2>@baseContent.Name </h2>
+
