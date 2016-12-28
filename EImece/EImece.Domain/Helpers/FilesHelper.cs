@@ -1,4 +1,7 @@
-﻿using EImece.Domain.Models.HelperModels;
+﻿using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.HelperModels;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,15 +16,17 @@ namespace EImece.Domain.Helpers
 {
     public class FilesHelper
     {
+        [Inject]
+        public IFileStorageService FileStorageService { get; set; }
 
-        String DeleteURL = null;
-        String DeleteType = null;
-        String StorageRoot = null;
-        String UrlBase = null;
-        String tempPath = null;
+        public String DeleteURL { get; set; }
+        public String DeleteType { get; set; }
+        public String StorageRoot { get; set; }
+        public String UrlBase { get; set; }
+        public String tempPath { get; set; }
         //ex:"~/Files/something/";
-        String serverMapPath = null;
-        public FilesHelper(String DeleteURL, String DeleteType, String StorageRoot, String UrlBase, String tempPath, String serverMapPath)
+        public String serverMapPath { get; set; }
+        public void Init(String DeleteURL, String DeleteType, String StorageRoot, String UrlBase, String tempPath, String serverMapPath)
         {
             this.DeleteURL = DeleteURL;
             this.DeleteType = DeleteType;
@@ -50,8 +55,15 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public String DeleteFile(String file)
+        public String DeleteFile(String file, HttpContextBase ContentBase)
         {
+
+            var request = ContentBase.Request;
+            int contentId = request.QueryString["contentId"].ToInt();
+            var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
+            var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
+
+
             System.Diagnostics.Debug.WriteLine("DeleteFile");
             //    var req = HttpContext.Current;
             System.Diagnostics.Debug.WriteLine(file);
@@ -74,13 +86,19 @@ namespace EImece.Domain.Helpers
                 }
                 System.IO.File.Delete(fullPath);
                 String succesMessage = "Ok";
+
+                FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
                 return succesMessage;
             }
             String failMessage = "Error Delete";
             return failMessage;
         }
-        public JsonFiles GetFileList()
+        public JsonFiles GetFileList(HttpContextBase ContentBase)
         {
+            var request = ContentBase.Request;
+            int Id = request.QueryString["contentId"].ToInt();
+            var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
+            var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
 
             var r = new List<ViewDataUploadFilesResult>();
 
@@ -91,7 +109,7 @@ namespace EImece.Domain.Helpers
                 foreach (FileInfo file in dir.GetFiles())
                 {
                     int SizeInt = unchecked((int)file.Length);
-                    r.Add(UploadResult(file.Name, SizeInt, file.FullName));
+                    r.Add(UploadResult(file.Name, SizeInt, file.FullName, ContentBase));
                 }
 
             }
@@ -136,6 +154,9 @@ namespace EImece.Domain.Helpers
         {
 
             var request = requestContext.Request;
+
+
+
             for (int i = 0; i < request.Files.Count; i++)
             {
                 var file = request.Files[i];
@@ -178,7 +199,7 @@ namespace EImece.Domain.Helpers
                     }
                 }
                 // statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
-                statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName));
+                statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName, requestContext));
             }
         }
 
@@ -210,18 +231,25 @@ namespace EImece.Domain.Helpers
                 fs.Flush();
                 fs.Close();
             }
-            statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
+            statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext));
         }
-        public ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath)
+        public ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
         {
+            var request = requestContext.Request;
+            int contentId = request.Form["contentId"].ToInt();
+            var imageType = EnumHelper.Parse<EImeceImageType>(request.Form["imageType"].ToStr());
+            var mod = EnumHelper.Parse<MediaModType>(request.Form["mod"].ToStr());
+
+
             String getType = System.Web.MimeMapping.GetMimeMapping(FileFullPath);
+
             var result = new ViewDataUploadFilesResult()
             {
                 name = FileName,
                 size = fileSize,
                 type = getType,
                 url = UrlBase + FileName,
-                deleteUrl = DeleteURL + FileName,
+                deleteUrl = String.Format(DeleteURL, FileName, contentId, mod, imageType),
                 thumbnailUrl = CheckThumb(getType, FileName),
                 deleteType = DeleteType,
             };

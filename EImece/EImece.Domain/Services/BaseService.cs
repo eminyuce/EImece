@@ -126,7 +126,10 @@ namespace EImece.Domain.Services
         public IFileStorageTagRepository FileStorageTagRepository { get; set; }
         [Inject]
         public IStoryTagRepository StoryTagRepository { get; set; }
-
+        [Inject]
+        public IStoryFileRepository StoryFileRepository { get; set; }
+        [Inject]
+        public IProductFileRepository ProductFileRepository { get; set; }
 
     }
 }

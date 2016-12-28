@@ -7,13 +7,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Web.Hosting;
-
+using Ninject;
 
 namespace EImece.Areas.Admin.Controllers
 {
     public class FileUploadController : BaseAdminController
     {
-        FilesHelper filesHelper;
+        public FilesHelper filesHelper { get; set; }
         String tempPath = "~/media/tempFiles/";
         String serverMapPath = "~/media/images/";
         private string StorageRoot
@@ -23,9 +23,11 @@ namespace EImece.Areas.Admin.Controllers
         private string UrlBase = "/media/images/";
         String DeleteURL = "/FileUpload/DeleteFile/?file=";
         String DeleteType = "GET";
-        public FileUploadController()
+        public FileUploadController(FilesHelper fh)
         {
-            filesHelper = new FilesHelper(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
+            filesHelper = fh;
+            filesHelper.Init(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
+    
         }
 
         public ActionResult Index()
@@ -34,7 +36,8 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult Show()
         {
-            JsonFiles ListOfFiles = filesHelper.GetFileList();
+            var CurrentContext = HttpContext;
+            JsonFiles ListOfFiles = filesHelper.GetFileList(CurrentContext);
             var model = new FilesViewModel()
             {
                 Files = ListOfFiles.files
@@ -70,13 +73,15 @@ namespace EImece.Areas.Admin.Controllers
         }
         public JsonResult GetFileList()
         {
-            var list = filesHelper.GetFileList();
+            var CurrentContext = HttpContext;
+            var list = filesHelper.GetFileList(CurrentContext);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult DeleteFile(string file)
         {
-            filesHelper.DeleteFile(file);
+            var CurrentContext = HttpContext;
+            filesHelper.DeleteFile(file, CurrentContext);
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
 

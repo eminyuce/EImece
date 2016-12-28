@@ -15,7 +15,7 @@ namespace EImece.Domain.Repositories
         public StoryFileRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
- 
- 
+
+        
     }
 }

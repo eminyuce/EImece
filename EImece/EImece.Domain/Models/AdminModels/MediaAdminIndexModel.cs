@@ -11,9 +11,9 @@ namespace EImece.Domain.Models.AdminModels
     public class MediaAdminIndexModel
     {
         public int Id { get; set; }
-        public EImeceImageType imageType { get; set; }
-        public MediaModType mediaMod { get; set; }
-        public BaseContent baseContent { get; set; }
+        public EImeceImageType ImageType { get; set; }
+        public MediaModType MediaMod { get; set; }
+        public BaseContent BaseContent { get; set; }
 
     }
 }

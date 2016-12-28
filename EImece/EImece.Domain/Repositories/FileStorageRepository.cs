@@ -16,6 +16,10 @@ namespace EImece.Domain.Repositories
         public FileStorageRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
- 
+
+        public FileStorage GetFileStoragebyFileName(string fileName)
+        {
+            return GetAll().FirstOrDefault(r => r.Name.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }

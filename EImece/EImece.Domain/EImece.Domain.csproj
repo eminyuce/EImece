@@ -165,6 +165,7 @@
     <Compile Include="Repositories\IRepositories\IFileStorageTagRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMenuRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductCategoryRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IProductFileRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductSpecificationRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductTagRepository.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Repositories\IRepositories\ITagRepository.cs" />
     <Compile Include="Repositories\MenuRepository.cs" />
     <Compile Include="Repositories\ProductCategoryRepository.cs" />
+    <Compile Include="Repositories\ProductFileRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\ProductSpecificationRepository.cs" />
     <Compile Include="Repositories\ProductTagRepository.cs" />

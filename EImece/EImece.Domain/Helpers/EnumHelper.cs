@@ -11,7 +11,7 @@ namespace EImece.Domain.Helpers
 {
     public static class EnumHelper
     {
-        public static Nullable<T> Parse<T>(String value, Boolean ignoreCase) where T : struct
+        public static Nullable<T> Parse<T>(String value, Boolean ignoreCase=true) where T : struct
         {
             return String.IsNullOrEmpty(value) ? null : (Nullable<T>)Enum.Parse(typeof(T), value, ignoreCase);
         }

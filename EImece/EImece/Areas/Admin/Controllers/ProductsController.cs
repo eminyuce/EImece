@@ -173,7 +173,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult Media(int id)
         {
-            return RedirectToAction("Index", "Media", new { id, mod= MediaModType.Products, imageType =EImeceImageType.ProductGallery });
+            return RedirectToAction("Index", "Media", new { contentId=id, mod= MediaModType.Products, imageType =EImeceImageType.ProductGallery });
         }
 
     }

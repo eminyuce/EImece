@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.HelperModels;
 
 namespace EImece.Domain.Services.IServices
 {
 
     public interface IFileStorageService : IBaseEntityService<FileStorage>
     {
+        void SaveUploadImages(int contentId, EImeceImageType? contentImageType, MediaModType? contentMediaType, List<ViewDataUploadFilesResult> resultList);
+        void DeleteUploadImage(String fileName,int contentId, EImeceImageType? imageType, MediaModType? mod);
     }
 }
