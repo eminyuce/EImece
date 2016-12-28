@@ -259,6 +259,7 @@
     <Compile Include="Areas\Admin\Controllers\SubscribersController.cs" />
     <Compile Include="Areas\Admin\Controllers\TagCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -423,6 +424,9 @@
     <Content Include="Areas\Admin\Views\Media\_Files.cshtml" />
     <Content Include="Areas\Admin\Views\Media\Show.cshtml" />
     <Content Include="Areas\Admin\Views\Media\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\Delete.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

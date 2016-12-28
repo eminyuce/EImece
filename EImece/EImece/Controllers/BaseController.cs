@@ -20,6 +20,8 @@ namespace EImece.Controllers
         [Inject]
         public IStoryService StoryService { get; set; }
 
+        [Inject]
+        public IProductCategoryService ProductCategoryService { get; set; }
 
     }
 }

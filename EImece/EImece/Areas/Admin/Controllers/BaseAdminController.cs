@@ -33,9 +33,10 @@ namespace EImece.Areas.Admin.Controllers
         public ISubsciberService SubsciberService { get; set; }
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
+        [Inject]
+        public ITemplateService TemplateService { get; set; }
 
 
-    
 
 
         protected int SelectedLanguage

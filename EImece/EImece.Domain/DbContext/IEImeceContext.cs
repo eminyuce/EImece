@@ -26,6 +26,7 @@ namespace EImece.Domain.DbContext
         DbSet<ProductSpecification> ProductSpecifications { get; set; }
         DbSet<FileStorage> FileStorages { get; set; }
         DbSet<FileStorageTag> FileStorageTags { get; set; }
-          DbSet<Setting> Settings { get; set; }
+        DbSet<Setting> Settings { get; set; }
+        DbSet<Template> Templates { get; set; }
     }
 }

@@ -42,6 +42,12 @@ namespace EImece.Areas.Admin.Controllers
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public ActionResult DeleteTemplateGridItem(List<String> values)
+        {
+            TemplateService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public ActionResult DeleteProductCategoriesGridItem(List<String> values)
         {
             ProductCategoryService.DeleteBaseEntity(values);
@@ -81,6 +87,11 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ChangeTagCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             TagCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ChangeTemplateGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            TemplateService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetProductTags(EImeceLanguage language, int productId = 0)
