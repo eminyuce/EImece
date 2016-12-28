@@ -5,6 +5,7 @@ using GenericRepository.EntityFramework;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -32,10 +33,10 @@ namespace EImece.Domain.Repositories
             DbContext = dbContext;
             EImeceDbContext.Configuration.LazyLoadingEnabled = false;
             EImeceDbContext.Configuration.ProxyCreationEnabled = false;
-            EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
-    
+        //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
+
         }
-      
+
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
@@ -48,18 +49,32 @@ namespace EImece.Domain.Repositories
             }
             this.disposed = true;
         }
-
+        public virtual bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda)
+        {
+            var isResult = false;
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                // Re-Initialise Repository
+                try
+                {
+                    this.Delete(whereLambda);
+                    isResult =  this.Save() == 1;
+                    transactionResult.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transactionResult.Rollback();
+                    BaseLogger.Error(ex, "DeleteEntityByWhere");
+                }
+            }
+            return isResult;
+        }
         public virtual void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        public virtual bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda)
-        {
-            this.Delete(whereLambda);
-            return true;
-        }
-        public virtual  EntitiesContext GetDbContext()
+        public virtual EntitiesContext GetDbContext()
         {
             return EImeceDbContext;
         }
@@ -78,10 +93,33 @@ namespace EImece.Domain.Repositories
         }
         public virtual int DeleteItem(T item)
         {
-            this.Delete(item);
-            return this.Save();
+            int r = 0;
+            var isResult = false;
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                // Re-Initialise Repository
+                try
+                {
+                    this.Delete(item);
+                    r = this.Save();
+                    isResult = r == 1;
+                    transactionResult.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transactionResult.Rollback();
+                    isResult = false;
+                    BaseLogger.Error(ex, "DeleteItem");
+                }
+            }
+            return r;
         }
-
+        public T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters)
+        {
+            EntitiesContext objectContext = this.GetDbContext();
+            DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
+            return result.ToArray();
+        }
 
 
 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
@@ -88,6 +89,7 @@ namespace EImece.Domain.Helpers
                 String succesMessage = "Ok";
 
                 FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
+                Thread.Sleep(100);
                 return succesMessage;
             }
             String failMessage = "Error Delete";

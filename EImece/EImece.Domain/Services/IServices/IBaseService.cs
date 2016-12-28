@@ -20,9 +20,7 @@ namespace EImece.Domain.Services.IServices
         List<T> GetAll();
         bool DeleteEntity(T entity);
 
-        bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda);
         void DeleteBaseEntity(List<string> values);
 
-        T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters);
     }
 }

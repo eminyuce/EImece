@@ -17,9 +17,24 @@ namespace EImece.Areas.Admin.Controllers
     public class MediaController : BaseAdminController
     {
 
+        private string StorageRoot
+        {
+            get { return Path.Combine(HostingEnvironment.MapPath(serverMapPath)); }
+        }
+
         public FilesHelper filesHelper;
         String tempPath = "~/media/tempFiles/";
         String serverMapPath = "~/media/images/";
+        private string UrlBase = "/media/images/";
+        String DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
+        String DeleteType = "GET";
+        public MediaController(FilesHelper fh)
+        {
+            filesHelper = fh;
+            filesHelper.Init(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
+            //filesHelper.FileStorageService = FileStorageService;
+        }
+
 
         // GET: Admin/Media
         public ActionResult Index(int contentId, String mod, String imageType)
@@ -48,22 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(returnModel);
         }
-
-
-        private string StorageRoot
-        {
-            get { return Path.Combine(HostingEnvironment.MapPath(serverMapPath)); }
-        }
-
-        private string UrlBase = "/media/images/";
-        String DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
-        String DeleteType = "GET";
-        public MediaController(FilesHelper fh)
-        {
-            filesHelper = fh;
-            filesHelper.Init(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
-            //filesHelper.FileStorageService = FileStorageService;
-        }
+       
 
         public ActionResult Show(int id, String mod, String imageType)
         {

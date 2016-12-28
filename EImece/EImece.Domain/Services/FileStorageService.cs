@@ -100,15 +100,16 @@ namespace EImece.Domain.Services
         public void DeleteUploadImage(String fileName, int contentId, EImeceImageType? imageType, MediaModType? mod)
         {
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
+            bool isResult = false;
             switch (mod.Value)
             {
                 case MediaModType.Stories:
-                    StoryFileRepository.DeleteEntityByWhere(r => r.FileStorageId == f.Id && r.StoryId == contentId);
+                    isResult = StoryFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.StoryId == contentId);
                     FileStorageRepository.DeleteItem(f);
                     break;
 
                 case MediaModType.Products:
-                    ProductFileRepository.DeleteEntityByWhere(r=>r.FileStorageId == f.Id && r.ProductId == contentId);
+                    isResult = ProductFileRepository.DeleteByWhereCondition(r=>r.FileStorageId == f.Id && r.ProductId == contentId);
                     FileStorageRepository.DeleteItem(f);
                     break;
                 default:

@@ -13,7 +13,8 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         int SaveOrEdit(T item) ;
         int DeleteItem(T item);
-        bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda);
         EntitiesContext GetDbContext();
+        bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda);
+        T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters);
     }
 }

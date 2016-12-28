@@ -62,17 +62,6 @@ namespace EImece.Domain.Services
         }
 
 
-        public virtual bool DeleteEntityByWhere(Expression<Func<T, bool>> whereLambda)
-        {
-            return this.baseRepository.DeleteEntityByWhere(whereLambda);
-        }
-
-        public T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters)
-        {
-            EntitiesContext objectContext = baseRepository.GetDbContext();
-            DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
-            return result.ToArray();
-        }
 
 
         public virtual String GetDbEntityValidationExceptionDetail(DbEntityValidationException ex)
