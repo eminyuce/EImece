@@ -24,19 +24,16 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var template = new Template();
+            var template = Template.GetInstance<Template>();  
 
             if (id == 0)
             {
-                template.CreatedDate = DateTime.Now;
-                template.IsActive = true;
-                template.UpdatedDate = DateTime.Now;
+      
             }
             else
             {
 
                 template = TemplateService.GetSingle(id);
-                template.UpdatedDate = DateTime.Now;
             }
 
             return View(template);

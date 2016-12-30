@@ -58,19 +58,16 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = new Tag();
+            var content = Tag.GetInstance<Tag>(); 
             ViewBag.Categories = GetCategoriesSelectList();
 
             if (id == 0)
             {
-                content.CreatedDate = DateTime.Now;
-                content.IsActive = true;
-                content.UpdatedDate = DateTime.Now;
+ 
             }
             else
             {
                 content = TagService.GetSingle(id);
-                content.UpdatedDate = DateTime.Now;
             }
 
 

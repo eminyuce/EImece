@@ -48,25 +48,21 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = new Menu();
+            var content = Menu.GetInstance<Menu>();
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
-            var parentMenu = new Menu();
+            var parentMenu = Menu.GetInstance<Menu>();
 
-           
+
 
 
             if (id == 0)
             {
-                content.CreatedDate = DateTime.Now;
-                content.IsActive = true;
-                content.UpdatedDate = DateTime.Now;
                 content.ParentId = 0;
             }
             else
             {
 
                 content = MenuService.GetSingle(id);
-                content.UpdatedDate = DateTime.Now;
                 if(content.ParentId > 0)
                 {
                     parentMenu = MenuService.GetSingle(content.ParentId);

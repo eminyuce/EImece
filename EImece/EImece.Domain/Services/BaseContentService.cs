@@ -27,6 +27,7 @@ namespace EImece.Domain.Services
         {
             this.BaseContentRepository = baseContentRepository;
         }
+       
         public virtual List<T> GetActiveBaseContents(bool ?isActive, int language)
         {
             try

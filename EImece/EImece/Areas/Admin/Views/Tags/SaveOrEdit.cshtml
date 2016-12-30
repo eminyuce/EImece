@@ -21,7 +21,7 @@
         @Html.HiddenFor(model => model.UpdatedDate)
 
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Lang,
@@ -31,7 +31,7 @@
 
                 @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.TagCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })

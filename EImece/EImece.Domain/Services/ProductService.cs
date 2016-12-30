@@ -59,7 +59,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                result.Product = new Product();
+                result.Product = Product.GetInstance<Product>();
                 if (categoryId > 0)
                 {
                     result.Product.ProductCategoryId = categoryId;

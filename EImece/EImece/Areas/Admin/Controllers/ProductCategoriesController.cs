@@ -50,22 +50,18 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = new ProductCategory();
-            var parentCategory = new ProductCategory();
+            var content = ProductCategory.GetInstance<ProductCategory>(); 
+            var parentCategory = ProductCategory.GetInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
 
             if (id == 0)
             {
-                content.CreatedDate = DateTime.Now;
-                content.IsActive = true;
-                content.UpdatedDate = DateTime.Now;
                 content.ParentId = 0;
             }
             else
             {
 
                 content = ProductCategoryService.GetSingle(id);
-                content.UpdatedDate = DateTime.Now;
                 parentCategory = ProductCategoryService.GetSingle(content.ParentId);
 
 

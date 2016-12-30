@@ -18,12 +18,19 @@ namespace EImece.Domain.Entities
         [Column("Name")]
         [Display(Name = "Name")]
         public string Name { get; set; }
+        public string EntityHash { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool IsActive { get; set; }
         public int Position { get; set; }
-  
+        public int Lang { get; set; }
 
-
+         
+        public static T GetInstance<T>() where T : BaseEntity, new()
+        {
+            T item = new T();
+            item.IsActive = true;
+            return item;
+        }
     }
 }

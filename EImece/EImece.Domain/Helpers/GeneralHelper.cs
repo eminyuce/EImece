@@ -618,7 +618,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception e)
             {
-
+                throw e;
             }
 
             return objResult;

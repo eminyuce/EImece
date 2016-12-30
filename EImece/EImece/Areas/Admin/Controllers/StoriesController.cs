@@ -48,19 +48,16 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = new Story();
+            var content = Story.GetInstance<Story>();
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null,1);
 
             if (id == 0)
             {
-                content.CreatedDate = DateTime.Now;
-                content.IsActive = true;
-                content.UpdatedDate = DateTime.Now;
+
             }
             else
             {
                 content = StoryService.GetSingle(id);
-                content.UpdatedDate = DateTime.Now;
             }
 
 

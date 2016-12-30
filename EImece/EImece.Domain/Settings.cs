@@ -184,5 +184,20 @@ namespace EImece.Domain
             }
 
         }
+
+        public static bool IsMainLanguageSet
+        {
+            get
+            {
+                return MainLanguage > 0;
+            }
+        }
+        public static int MainLanguage
+        {
+            get
+            {
+                return GetConfigInt("MainLanguage", 0);
+            }
+        }
     }
 }

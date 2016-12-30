@@ -47,19 +47,16 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = new StoryCategory();
+            var content = StoryCategory.GetInstance<StoryCategory>();  
            
 
             if (id == 0)
             {
-                content.CreatedDate = DateTime.Now;
-                content.IsActive = true;
-                content.UpdatedDate = DateTime.Now;
+               
             }
             else
             {
                 content = StoryCategoryService.GetSingle(id);
-                content.UpdatedDate = DateTime.Now;
             }
 
 

@@ -9,8 +9,6 @@ namespace EImece.Domain.Entities
     public class Tag : BaseEntity
     {
         public int TagCategoryId { get; set; }
-        public int Lang { get; set; }
-
         public virtual TagCategory TagCategory { get; set; }
 
 

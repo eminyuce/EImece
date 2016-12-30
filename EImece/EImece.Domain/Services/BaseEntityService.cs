@@ -33,7 +33,21 @@ namespace EImece.Domain.Services
             return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
         }
 
-
+        public new virtual T SaveOrEditEntity(T entity)
+        {
+            entity.Lang = Settings.IsMainLanguageSet ? Settings.MainLanguage : entity.Lang;
+            if(entity.Id > 0)
+            {
+                entity.UpdatedDate = DateTime.Now;
+            }
+            else
+            {
+                entity.UpdatedDate = DateTime.Now;
+                entity.CreatedDate = DateTime.Now;
+            }
+            var tmp = baseEntityRepository.SaveOrEdit(entity);
+            return entity;
+        }
 
         public virtual void ChangeGridBaseEntityOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {

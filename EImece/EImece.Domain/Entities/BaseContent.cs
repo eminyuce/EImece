@@ -13,8 +13,14 @@ namespace EImece.Domain.Entities
         public string Description { get; set; }
         public Boolean ImageState { get; set; }
         public int? MainImageId { get; set; }
-        public int Lang { get; set; }
 
         public virtual FileStorage MainImage { get; set; }
+
+        public static new T GetInstance<T>() where T : BaseContent, new()
+        {
+            T item = new T();
+            item.IsActive = true;
+            return item;
+        }
     }
 }
