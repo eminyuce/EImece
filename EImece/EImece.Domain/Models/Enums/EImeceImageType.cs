@@ -31,5 +31,7 @@ namespace EImece.Domain.Models.Enums
         Carusels = 7,
         [Display(Name = "MenuMainImage")]
         MenuMainImage = 8,
+        [Display(Name = "MainPageImages")]
+        MainPageImages = 9,
     }
 }

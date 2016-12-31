@@ -195,7 +195,7 @@ console.log(e);
                     @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <div class="checkbox">
-                            @Html.EditorFor(model => model.PageTheme)
+                            @Html.Partial("pPageThemes")
                             @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
                         </div>
                     </div>

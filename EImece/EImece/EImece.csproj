@@ -278,6 +278,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Content\PageThemes\tema-01.gif" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-02.gif" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-03.gif" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-04.gif" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-05.gif" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-06.gif" />
     <Content Include="Content\adminSite.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -427,6 +433,7 @@
     <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\pPageThemes.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

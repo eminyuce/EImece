@@ -11,6 +11,8 @@ using EImece.Domain.Models.HelperModels;
 using Ninject;
 using EImece.Domain.Helpers;
 using NLog;
+using System.Linq.Expressions;
+using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Services
 {
@@ -115,6 +117,34 @@ namespace EImece.Domain.Services
                 default:
                     break;
             }
+        }
+
+        public List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType)
+        {
+            bool isResult = false;
+            switch (enumMod.Value)
+            {
+                case MediaModType.Stories:
+                    Expression<Func<StoryFile, object>> includeProperty = r => r.FileStorage;
+                    Expression<Func<StoryFile, object>>[] includeProperties = { includeProperty };
+                    Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
+
+                    var item = StoryFileRepository.FindAllIncluding(match, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties);
+                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+
+                case MediaModType.Products:
+                    Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
+                    Expression<Func<ProductFile, object>>[] includeProperties1 = { includeProperty1 };
+                    Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
+
+                    var item1 = ProductFileRepository.FindAllIncluding(match1, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties1);
+                    return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+ 
+                default:
+                    break;
+            }
+
+            return null;
         }
     }
 }

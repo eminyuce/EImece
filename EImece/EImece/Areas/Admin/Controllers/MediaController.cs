@@ -46,7 +46,7 @@ namespace EImece.Areas.Admin.Controllers
             returnModel.Id = id;
             returnModel.ImageType = enumImageType.Value;
             returnModel.MediaMod = enumMod.Value;
-
+            returnModel.FileStorages = FileStorageService.GetUploadImages(contentId, enumMod, enumImageType);
             switch (enumMod)
             {
                 case MediaModType.Stories:

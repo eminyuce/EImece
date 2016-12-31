@@ -14,6 +14,6 @@ namespace EImece.Domain.Models.AdminModels
         public EImeceImageType ImageType { get; set; }
         public MediaModType MediaMod { get; set; }
         public BaseContent BaseContent { get; set; }
-
+        public List<FileStorage> FileStorages { get; set; }
     }
 }
