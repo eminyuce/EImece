@@ -55,15 +55,23 @@ namespace EImece.Domain.Helpers
                 di.Delete(true);
             }
         }
-
         public String DeleteFile(String file, HttpContextBase ContentBase)
         {
+            var fileResult = DeleteFile(file);
+            if (fileResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var request = ContentBase.Request;
+                int contentId = request.QueryString["contentId"].ToInt();
+                var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
+                var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
 
-            var request = ContentBase.Request;
-            int contentId = request.QueryString["contentId"].ToInt();
-            var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
-            var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
+                FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
+            }
 
+            return fileResult;
+        }
+        public String DeleteFile(String file)
+        {
 
             System.Diagnostics.Debug.WriteLine("DeleteFile");
             //    var req = HttpContext.Current;
@@ -88,7 +96,6 @@ namespace EImece.Domain.Helpers
                 System.IO.File.Delete(fullPath);
                 String succesMessage = "Ok";
 
-                FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
                 Thread.Sleep(100);
                 return succesMessage;
             }

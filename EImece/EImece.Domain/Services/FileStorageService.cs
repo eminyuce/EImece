@@ -13,6 +13,7 @@ using EImece.Domain.Helpers;
 using NLog;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
+using System.Data.Entity.Validation;
 
 namespace EImece.Domain.Services
 {
@@ -26,6 +27,8 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IStoryService StoryService { get; set; }
+
+
 
         public IFileStorageRepository FileStorageRepository { get; set; }
         public FileStorageService(IFileStorageRepository repository) : base(repository)
@@ -111,7 +114,7 @@ namespace EImece.Domain.Services
                     break;
 
                 case MediaModType.Products:
-                    isResult = ProductFileRepository.DeleteByWhereCondition(r=>r.FileStorageId == f.Id && r.ProductId == contentId);
+                    isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.ProductId == contentId);
                     FileStorageRepository.DeleteItem(f);
                     break;
                 default:
@@ -139,12 +142,61 @@ namespace EImece.Domain.Services
 
                     var item1 = ProductFileRepository.FindAllIncluding(match1, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties1);
                     return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
- 
+
                 default:
                     break;
             }
 
             return null;
+        }
+
+        public override void DeleteBaseEntity(List<string> values)
+        {
+            try
+            {
+                var deletedResult = "";
+                FilesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+
+                foreach (String v in values)
+                {
+                    var parts = v.Split("-".ToCharArray());
+                    var fileStorageId = parts[0].ToInt();
+                    int contentId = parts[1].ToInt();
+                    MediaModType? enumMod = EnumHelper.Parse<MediaModType>(parts[2].ToStr());
+                    EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(parts[3].ToStr());
+                    var fileStorage = FileStorageRepository.GetSingle(fileStorageId);
+                    deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+                    switch (enumMod.Value)
+                    {
+                        case MediaModType.Stories:
+                            if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == contentId && r.FileStorageId == fileStorageId);
+                                FileStorageRepository.Delete(fileStorage);
+                            }
+                            break;
+                        case MediaModType.Products:
+                            if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
+                                FileStorageRepository.Delete(fileStorage);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = GetDbEntityValidationExceptionDetail(ex);
+                Logger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
         }
     }
 }

@@ -120,5 +120,7 @@ namespace EImece.Domain.Services
         [Inject]
         public IProductFileRepository ProductFileRepository { get; set; }
 
+        [Inject]
+        public FilesHelper FilesHelper { get; set; }
     }
 }

@@ -53,6 +53,17 @@ namespace EImece.Areas.Admin.Controllers
             ProductCategoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult DeleteMediaGridItem(List<String> values)
+        {
+            FileStorageService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ChangeMediaGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            FileStorageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeMenusGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             MenuService.ChangeGridBaseEntityOrderingOrState(values, checkbox);

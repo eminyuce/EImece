@@ -3,9 +3,11 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 
 namespace EImece.Domain
 {
@@ -199,5 +201,14 @@ namespace EImece.Domain
                 return GetConfigInt("MainLanguage", 0);
             }
         }
+        public static string StorageRoot
+        {
+            get { return Path.Combine(HostingEnvironment.MapPath(Settings.ServerMapPath)); }
+        }
+        public static String TempPath = "~/media/tempFiles/";
+        public static String ServerMapPath = "~/media/images/";
+        public static string UrlBase = "/media/images/";
+        public static String DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
+        public static String DeleteType = "GET";
     }
 }

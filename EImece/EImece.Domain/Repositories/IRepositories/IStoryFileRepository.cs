@@ -9,5 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IStoryFileRepository : IBaseEntityRepository<StoryFile>, IDisposable
     {
+
     }
 }
