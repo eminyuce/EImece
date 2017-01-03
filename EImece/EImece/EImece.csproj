@@ -553,6 +553,10 @@
       <Project>{c46d80dd-554f-4fec-8523-df5c9ca84d70}</Project>
       <Name>EImece.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{8bc5080d-b9b0-4c23-9e54-43448916b148}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

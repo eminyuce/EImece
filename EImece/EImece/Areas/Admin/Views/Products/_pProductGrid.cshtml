@@ -4,6 +4,7 @@
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
+@using Resources;
 
 @{
 
@@ -14,11 +15,11 @@
     var gridName = "productGrid";
     var contents = Model;
 
-    var gridImagesText = Settings.GetConfigString("GridImagesText", "Media");
-    var gridEditText = Settings.GetConfigString("GridEditText", "Duzenle");
-    var gridDeleteText = Settings.GetConfigString("GridDeleteText", "Sil");
-    var gridDetailText = Settings.GetConfigString("GridDetailText", "Detay");
-    var gridMainPageImageText = Settings.GetConfigString("GridMainPageImageText", "Resim");
+    var gridImagesText = AdminResource.GridImagesText; 
+    var gridEditText = AdminResource.GridEditText; 
+    var gridDeleteText = AdminResource.GridDeleteText; 
+    var gridDetailText = AdminResource.GridDetailText; 
+    var gridMainPageImageText = AdminResource.GridMainPageImageText;
 
 }
 <div class="row">
