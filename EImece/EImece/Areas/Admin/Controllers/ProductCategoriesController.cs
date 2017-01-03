@@ -163,6 +163,6 @@ namespace EImece.Areas.Admin.Controllers
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
-
+     
     }
 }

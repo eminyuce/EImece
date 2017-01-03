@@ -49,6 +49,7 @@ namespace EImece.Areas.Admin.Controllers
                 case MediaModType.Menus:
                     returnModel.BaseContent = MenuService.GetSingle(id);
                     break;
+            
                 default:
                     break;
             }

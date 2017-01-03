@@ -197,6 +197,7 @@ namespace EImece.Domain.Services
                                 FileStorageRepository.Delete(fileStorage);
                             }
                             break;
+                      
                         default:
                             break;
                     }

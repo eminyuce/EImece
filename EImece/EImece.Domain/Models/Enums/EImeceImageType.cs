@@ -35,5 +35,6 @@ namespace EImece.Domain.Models.Enums
         MainPageImages = 9,
         [Display(Name = "MenuGallery")]
         MenuGallery = 10,
+ 
     }
 }
