@@ -88,7 +88,7 @@ namespace EImece.App_Start
             kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
             kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
             kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope();
-
+            kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope();
 
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
             kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();

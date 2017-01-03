@@ -119,7 +119,8 @@ namespace EImece.Domain.Services
         public IStoryFileRepository StoryFileRepository { get; set; }
         [Inject]
         public IProductFileRepository ProductFileRepository { get; set; }
-
+        [Inject]
+        public IMenuFileRepository MenuFileRepository { get; set; }
         [Inject]
         public FilesHelper FilesHelper { get; set; }
     }

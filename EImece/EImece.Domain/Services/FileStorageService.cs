@@ -143,6 +143,14 @@ namespace EImece.Domain.Services
                     var item1 = ProductFileRepository.FindAllIncluding(match1, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties1);
                     return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
 
+                case MediaModType.Menus:
+                    Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
+                    Expression<Func<MenuFile, object>>[] includeProperties2 = { includeProperty2 };
+                    Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
+
+                    var item2 = MenuFileRepository.FindAllIncluding(match2, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties2);
+                    return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+
                 default:
                     break;
             }
@@ -179,6 +187,13 @@ namespace EImece.Domain.Services
                             if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
+                                FileStorageRepository.Delete(fileStorage);
+                            }
+                            break;
+                        case MediaModType.Menus:
+                            if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == contentId && r.FileStorageId == fileStorageId);
                                 FileStorageRepository.Delete(fileStorage);
                             }
                             break;

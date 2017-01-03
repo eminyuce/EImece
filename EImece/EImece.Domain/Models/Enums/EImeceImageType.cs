@@ -33,5 +33,7 @@ namespace EImece.Domain.Models.Enums
         MenuMainImage = 8,
         [Display(Name = "MainPageImages")]
         MainPageImages = 9,
+        [Display(Name = "MenuGallery")]
+        MenuGallery = 10,
     }
 }

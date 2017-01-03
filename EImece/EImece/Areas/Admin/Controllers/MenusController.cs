@@ -165,5 +165,13 @@ namespace EImece.Areas.Admin.Controllers
             List<Menu> treelist = MenuService.BuildTree();
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
+
+        public ActionResult Media(int id)
+        {
+            return RedirectToAction("Index", "Media", new { contentId = id,
+                mod = MediaModType.Menus,
+                imageType = EImeceImageType.MenuGallery
+            });
+        }
     }
 }

@@ -28,5 +28,6 @@ namespace EImece.Domain.DbContext
         DbSet<FileStorageTag> FileStorageTags { get; set; }
         DbSet<Setting> Settings { get; set; }
         DbSet<Template> Templates { get; set; }
+        DbSet<MenuFile> MenuFiles { get; set; }
     }
 }
