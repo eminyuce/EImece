@@ -15,6 +15,6 @@ namespace EImece.Domain.Models.Enums
         Stories = 3,
         StoryCategories = 4,
         Menus = 5,
-        MainPageImages = 5
+        MainPageImages = 6
     }
 }

@@ -163,8 +163,7 @@ namespace EImece.Domain.Services
             try
             {
                 var deletedResult = "";
-                FilesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
-
+            
                 foreach (String v in values)
                 {
                     var parts = v.Split("-".ToCharArray());
@@ -213,6 +212,14 @@ namespace EImece.Domain.Services
             {
                 Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
+        }
+
+        public string DeleteFileStorage(int id)
+        {
+            var fileStorage = GetSingle(id);
+            var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+            DeleteEntity(fileStorage);
+            return deletedResult;
         }
     }
 }

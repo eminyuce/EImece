@@ -33,10 +33,16 @@
                     <li>@Html.ActionLink("Dashboard", "Index", "Dashboard", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("Subscribers", "Index", "Subscribers", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Templates", "Index", "Templates", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("FileUpload", "Index", "FileUpload", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink("Templates", "Index", "Templates", new { area = "admin" }, null)</li>
+
+                        </ul>
+                    </li>
+                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Tags", "Index", "Tags", new { area = "admin" }, null)</li>

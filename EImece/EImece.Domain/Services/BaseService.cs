@@ -121,7 +121,20 @@ namespace EImece.Domain.Services
         public IProductFileRepository ProductFileRepository { get; set; }
         [Inject]
         public IMenuFileRepository MenuFileRepository { get; set; }
+
+        private FilesHelper _filesHelper { get; set; }
         [Inject]
-        public FilesHelper FilesHelper { get; set; }
+        public FilesHelper FilesHelper
+        {
+            get
+            {
+                _filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+                return _filesHelper;
+            }
+            set
+            {
+                _filesHelper = value;
+            }
+        }
     }
 }

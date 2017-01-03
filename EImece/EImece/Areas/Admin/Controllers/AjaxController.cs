@@ -21,6 +21,12 @@ namespace EImece.Areas.Admin.Controllers
             StoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult StoryMainPageImageGridItem(List<String> values)
+        {
+            MainPageImageService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public ActionResult StoryCategoryGridItem(List<String> values)
@@ -59,6 +65,11 @@ namespace EImece.Areas.Admin.Controllers
             FileStorageService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ChangeMainPageImageGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            MainPageImageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeMediaGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             FileStorageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
@@ -91,7 +102,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult ChangeTagGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-           
+
             TagService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
@@ -126,6 +137,6 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
-      
+
     }
 }

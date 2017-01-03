@@ -249,6 +249,7 @@
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileUploadController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MainPageImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MediaController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
@@ -434,6 +435,10 @@
     <Content Include="Areas\Admin\Views\Templates\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\pPageThemes.cshtml" />
+    <Content Include="Areas\Admin\Views\MainPageImages\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\MainPageImages\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MainPageImages\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MainPageImages\Index.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

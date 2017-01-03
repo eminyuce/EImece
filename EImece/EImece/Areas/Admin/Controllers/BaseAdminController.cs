@@ -14,6 +14,8 @@ namespace EImece.Areas.Admin.Controllers
     public abstract class BaseAdminController : Controller
     {
         [Inject]
+        public IMainPageImageService MainPageImageService { get; set; }
+        [Inject]
         public ISettingService SettingService { get; set; }
         [Inject]
         public IProductService ProductService { get; set; }

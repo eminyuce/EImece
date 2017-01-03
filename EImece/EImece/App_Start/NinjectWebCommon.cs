@@ -89,6 +89,8 @@ namespace EImece.App_Start
             kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
             kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope();
             kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope();
+            kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();
+
 
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
             kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
@@ -101,6 +103,7 @@ namespace EImece.App_Start
             kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
             kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
             kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
+            kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
         }
     }
