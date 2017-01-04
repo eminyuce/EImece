@@ -4,11 +4,11 @@
 @using EImece.Domain.Models.Enums;
 @using SharkDev.Web.Controls.TreeView.Model;
 @using EImece.Domain;
-
+@using Resources;
 @{
     var product = Model.Product;
     var productCategory = Model.Product.ProductCategoryId > 0 ? Model.Product.ProductCategory : null;
-    var saveButtonText = Settings.GetConfigString("SaveButtonText", "Kaydet");
+    var saveButtonText = AdminResource.SaveButtonText;
 }
 
 <div class="row" style="padding:20px;">

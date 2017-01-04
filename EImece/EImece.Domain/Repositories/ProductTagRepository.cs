@@ -10,7 +10,7 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class ProductTagRepository : BaseRepository<ProductTag, int>, IProductTagRepository
+    public class ProductTagRepository : BaseRepository<ProductTag>, IProductTagRepository
     {
         public ProductTagRepository(IEImeceContext dbContext) : base(dbContext)
         {

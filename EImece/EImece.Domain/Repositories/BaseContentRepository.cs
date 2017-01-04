@@ -5,6 +5,7 @@ using GenericRepository.EntityFramework.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -42,5 +43,7 @@ namespace EImece.Domain.Repositories
                 return null;
             }
         }
+
+       
     }
 }

@@ -137,6 +137,7 @@
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\ExtensionHelper.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />

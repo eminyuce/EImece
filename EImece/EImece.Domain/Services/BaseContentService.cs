@@ -7,6 +7,7 @@ using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -22,6 +23,10 @@ namespace EImece.Domain.Services
         [Inject]
         public ITagCategoryService TagCategoryService { get; set; }
 
+
+        [Inject]
+        public IFileStorageService FileStorageService { get; set; }
+
         public IBaseContentRepository<T> BaseContentRepository { get; set; }
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) :base(baseContentRepository) 
         {
@@ -30,23 +35,34 @@ namespace EImece.Domain.Services
        
         public virtual List<T> GetActiveBaseContents(bool ?isActive, int language)
         {
+            return BaseContentRepository.GetActiveBaseContents(isActive, language);
+        }
+        public virtual new void DeleteBaseEntity(List<string> values)
+        {
             try
             {
-                Expression<Func<T, bool>> match = r2 => r2.Lang == language;
-                var predicate = PredicateBuilder.Create<T>(match);
-                if (isActive != null && isActive.HasValue)
+                foreach (String v in values)
                 {
-                    predicate = predicate.And(r => r.IsActive == isActive);
+                    var id = v.ToInt();
+                    Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+                    Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
+                    var item = BaseContentRepository.GetSingleIncluding(id, includeProperties);
+                    if (item.MainImageId.HasValue)
+                    {
+                        FileStorageService.DeleteFileStorage(item.MainImageId.Value);
+                    }
+                    BaseContentRepository.Delete(item);
                 }
-                Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = BaseContentRepository.FindAll(predicate, keySelector, OrderByType.Ascending, null, null);
-
-                return items;
+                BaseContentRepository.Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                BaseContentServiceLogger.Error(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                BaseContentServiceLogger.Error(exception);
-                return null;
+                BaseContentServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
     }

@@ -104,5 +104,23 @@ namespace Resources {
                 return ResourceManager.GetString("GridMainPageImageText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arama.
+        /// </summary>
+        public static string GridSearchButtonText {
+            get {
+                return ResourceManager.GetString("GridSearchButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kaydet.
+        /// </summary>
+        public static string SaveButtonText {
+            get {
+                return ResourceManager.GetString("SaveButtonText", resourceCulture);
+            }
+        }
     }
 }

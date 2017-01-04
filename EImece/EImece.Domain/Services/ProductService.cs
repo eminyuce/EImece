@@ -77,5 +77,26 @@ namespace EImece.Domain.Services
         {
             return ProductRepository.GetProduct(id);
         }
+
+        public void DeleteProductById(int id)
+        {
+            var product = GetProductById(id);
+            ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
+            ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
+            if (product.MainImageId.HasValue)
+            {
+                FileStorageService.DeleteFileStorage(product.MainImageId.Value);
+            }
+            if (product.ProductFiles != null)
+            {
+                foreach (var file in product.ProductFiles)
+                {
+                    FileStorageService.DeleteFileStorage(file.FileStorageId);
+                }
+                ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
+            }
+            DeleteEntity(product);
+
+        }
     }
 }

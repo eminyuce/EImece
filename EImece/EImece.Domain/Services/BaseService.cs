@@ -36,13 +36,7 @@ namespace EImece.Domain.Services
         {
             return baseRepository.GetAll().ToList();
         }
-        //public virtual IQueryable<T> LoadEntites(Expression<Func<T, bool>> whereLambda, int pageIndex, int pageSize, out int totalCount)
-        //{
-        //    var item =  this.baseRepository.Paginate(pageIndex, pageSize,r=>r.Id, whereLambda);
-        //    totalCount = item.TotalCount;
-        //    return item;
-        //}
-
+     
         public virtual T GetSingle(int id)
         {
             return baseRepository.GetSingle(id);
@@ -60,53 +54,9 @@ namespace EImece.Domain.Services
             var result = this.baseRepository.DeleteItem(entity);
             return result == 1;
         }
-
-
-
-
-        public virtual String GetDbEntityValidationExceptionDetail(DbEntityValidationException ex)
-        {
-
-            var errorMessages = (from eve in ex.EntityValidationErrors
-                                 let entity = eve.Entry.Entity.GetType().Name
-                                 from ev in eve.ValidationErrors
-                                 select new
-                                 {
-                                     Entity = entity,
-                                     PropertyName = ev.PropertyName,
-                                     ErrorMessage = ev.ErrorMessage
-                                 });
-
-            var fullErrorMessage = string.Join("; ", errorMessages.Select(e => string.Format("[Entity: {0}, Property: {1}] {2}", e.Entity, e.PropertyName, e.ErrorMessage)));
-
-            var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
-
-            return exceptionMessage;
-        }
-
-
         public virtual void DeleteBaseEntity(List<string> values)
         {
-            try
-            {
-                foreach (String v in values)
-                {
-                    var id = v.ToInt();
-                    var item = baseRepository.GetSingle(id);
-                    baseRepository.Delete(item);
-                }
-                baseRepository.Save();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                var message = GetDbEntityValidationExceptionDetail(ex);
-                BaseServiceLogger.Error(ex, "DbEntityValidationException:" + message);
-            }
-            catch (Exception exception)
-            {
-                BaseServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
-            }
+            baseRepository.DeleteBaseEntity(values);
         }
 
         [Inject]
@@ -121,6 +71,8 @@ namespace EImece.Domain.Services
         public IProductFileRepository ProductFileRepository { get; set; }
         [Inject]
         public IMenuFileRepository MenuFileRepository { get; set; }
+        [Inject]
+        public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
         [Inject]

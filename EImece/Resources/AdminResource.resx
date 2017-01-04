@@ -132,4 +132,10 @@
   <data name="GridMainPageImageText" xml:space="preserve">
     <value>Resim</value>
   </data>
+  <data name="GridSearchButtonText" xml:space="preserve">
+    <value>Arama</value>
+  </data>
+  <data name="SaveButtonText" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
 </root>

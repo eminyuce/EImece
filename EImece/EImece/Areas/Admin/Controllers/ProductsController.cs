@@ -155,7 +155,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                ProductService.DeleteEntity(product);
+                ProductService.DeleteProductById(id);
                 return RedirectToAction("Index", new { categoryId = product.ProductCategoryId });
             }
             catch (Exception ex)

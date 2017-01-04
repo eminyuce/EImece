@@ -10,7 +10,7 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class StoryTagRepository : BaseRepository<StoryTag, int>, IStoryTagRepository
+    public class StoryTagRepository : BaseRepository<StoryTag>, IStoryTagRepository
     {
         public StoryTagRepository(IEImeceContext dbContext) : base(dbContext)
         {

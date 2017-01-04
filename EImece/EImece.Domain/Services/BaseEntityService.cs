@@ -25,12 +25,7 @@ namespace EImece.Domain.Services
        
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda,String search)
         {
-            var menus = baseEntityRepository.GetAll();
-            if (!String.IsNullOrEmpty(search))
-            {
-                menus = menus.Where(whereLambda);
-            }
-            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+            return baseEntityRepository.SearchEntities(whereLambda, search); 
         }
 
         public new virtual T SaveOrEditEntity(T entity)

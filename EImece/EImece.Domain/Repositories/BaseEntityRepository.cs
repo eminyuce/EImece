@@ -9,10 +9,12 @@ using EImece.Domain.DbContext;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
 using NLog;
+using EImece.Domain.Helpers;
+using System.Data.Entity.Validation;
 
 namespace EImece.Domain.Repositories
 {
-    public abstract class BaseEntityRepository<T> : BaseRepository<T, int> where T : BaseEntity
+    public abstract class BaseEntityRepository<T> : BaseRepository<T> where T : BaseEntity
     {
         protected static readonly Logger BaseEntityLogger = LogManager.GetCurrentClassLogger();
 
@@ -35,5 +37,15 @@ namespace EImece.Domain.Repositories
                 return null;
             }
         }
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
+        {
+            var menus = GetAll();
+            if (!String.IsNullOrEmpty(search))
+            {
+                menus = menus.Where(whereLambda);
+            }
+            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+        }
+      
     }
 }

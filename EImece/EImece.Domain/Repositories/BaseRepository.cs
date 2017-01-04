@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -13,9 +14,8 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
-    public abstract class BaseRepository<T, TId> : EntityRepository<T, TId>
-       where T : class, IEntity<TId>
-       where TId : IComparable
+    public abstract class BaseRepository<T> : EntityRepository<T, int>
+       where T : class, IEntity<int> 
     {
         protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
@@ -119,6 +119,30 @@ namespace EImece.Domain.Repositories
             EntitiesContext objectContext = this.GetDbContext();
             DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
             return result.ToArray();
+        }
+   
+
+        public virtual void DeleteBaseEntity(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    var item = GetSingle(id);
+                    Delete(item);
+                }
+                Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                BaseLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
         }
 
 

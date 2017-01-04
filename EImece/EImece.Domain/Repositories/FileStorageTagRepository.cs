@@ -10,7 +10,7 @@ using EImece.Domain.GenericRepositories;
 
 namespace EImece.Domain.Repositories
 {
-    public class FileStorageTagRepository : BaseRepository<FileStorageTag, int>, IFileStorageTagRepository
+    public class FileStorageTagRepository : BaseRepository<FileStorageTag>, IFileStorageTagRepository
     {
         public FileStorageTagRepository(IEImeceContext dbContext) : base(dbContext)
         {

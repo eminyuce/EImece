@@ -163,7 +163,7 @@ namespace EImece.Domain.Services
             try
             {
                 var deletedResult = "";
-            
+
                 foreach (String v in values)
                 {
                     var parts = v.Split("-".ToCharArray());
@@ -196,7 +196,7 @@ namespace EImece.Domain.Services
                                 FileStorageRepository.Delete(fileStorage);
                             }
                             break;
-                      
+
                         default:
                             break;
                     }
@@ -205,7 +205,7 @@ namespace EImece.Domain.Services
             }
             catch (DbEntityValidationException ex)
             {
-                var message = GetDbEntityValidationExceptionDetail(ex);
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
                 Logger.Error(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
@@ -216,10 +216,26 @@ namespace EImece.Domain.Services
 
         public string DeleteFileStorage(int id)
         {
-            var fileStorage = GetSingle(id);
-            var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
-            DeleteEntity(fileStorage);
-            return deletedResult;
+            try
+            {
+                var fileStorage = GetSingle(id);
+                if (fileStorage != null)
+                {
+                    var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+                    DeleteEntity(fileStorage);
+                    return deletedResult;
+                }
+                else
+                {
+                    return "ok";
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id);
+            }
+            return "error";
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿@using EImece.Domain;
+@using Resources;
 @{
 
     string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
     string search = @Request.QueryString["search"];
-    var gridSearchButtonText = Settings.GetConfigString("gridSearchButtonText", "Arama");
+    var gridSearchButtonText = AdminResource.GridSearchButtonText;
 }
 
 @using (Html.BeginForm(action, controller, FormMethod.Get, new { @class = "" }))
