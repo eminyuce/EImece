@@ -86,7 +86,7 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     if (menuImage != null)
                     {
-                        var mainImage = ImageHelper.SaveFileFromHttpPostedFileBase(menuImage, 0, 0, EImeceImageType.MenuMainImage);
+                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(menuImage, 0, 0, EImeceImageType.MenuMainImage);
                         FileStorageService.SaveOrEditEntity(mainImage);
                         menu.MainImageId = mainImage.Id;
                     }
