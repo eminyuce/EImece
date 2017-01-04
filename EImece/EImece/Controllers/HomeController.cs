@@ -31,5 +31,10 @@ namespace EImece.Controllers
             var menus = MenuService.BuildTree();
             return PartialView("_Navigation", menus);
         }
+        public ActionResult ProductTree()
+        {
+            var tree = ProductCategoryService.BuildTree();
+            return PartialView("_ProductCategoryTree", tree);
+        }
     }
 }

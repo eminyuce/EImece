@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace EImece.Domain.Helpers
+namespace EImece.Domain.Helpers.Extensions
 {
     public static class ExtensionHelper
     {
