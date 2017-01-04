@@ -17,6 +17,7 @@ namespace EImece.App_Start
     using Domain.Services;
     using Domain.Services.IServices;
     using Domain.Helpers;
+    using Domain.Caching;
 
     public static class NinjectWebCommon 
     {
@@ -68,7 +69,14 @@ namespace EImece.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+
+            kernel.Bind<ICacheProvider>().To<MemoryCacheProvider>().InRequestScope();
+
+
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
+
+
+
             m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
             m.InRequestScope();
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();

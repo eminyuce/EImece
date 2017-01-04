@@ -9,16 +9,18 @@ using EImece.Domain.Repositories.IRepositories;
 using Ninject;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
+using System.Data.Entity.Validation;
+using EImece.Domain.Helpers;
+using NLog;
 
 namespace EImece.Domain.Services
 {
     public class ProductService : BaseContentService<Product>, IProductService
     {
+        protected static readonly Logger ProductServiceLogger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
-
-
-
 
 
         private IProductRepository ProductRepository { get; set; }
@@ -77,7 +79,26 @@ namespace EImece.Domain.Services
         {
             return ProductRepository.GetProduct(id);
         }
-
+        public virtual new void DeleteBaseEntity(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    DeleteProductById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                ProductServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                ProductServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
         public void DeleteProductById(int id)
         {
             var product = GetProductById(id);

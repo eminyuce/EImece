@@ -17,5 +17,6 @@ namespace EImece.Domain.Services.IServices
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);
         Product GetProductById(int id);
         void DeleteProductById(int id);
+        new void DeleteBaseEntity(List<string> values);
     }
 }

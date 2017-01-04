@@ -109,6 +109,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheProvider.cs" />
+    <Compile Include="Caching\ICacheProvider.cs" />
+    <Compile Include="Caching\MemoryCacheProvider.cs" />
     <Compile Include="DbContext\EImeceContext.cs" />
     <Compile Include="DbContext\IEImeceContext.cs" />
     <Compile Include="Entities\BaseContent.cs" />

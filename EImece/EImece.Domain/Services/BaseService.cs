@@ -12,6 +12,7 @@ using Ninject;
 using EImece.Domain.Helpers;
 using System.Data.Entity.Validation;
 using NLog;
+using EImece.Domain.Caching;
 
 namespace EImece.Domain.Services
 {
@@ -73,6 +74,9 @@ namespace EImece.Domain.Services
         public IMenuFileRepository MenuFileRepository { get; set; }
         [Inject]
         public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
+
+        [Inject]
+        public ICacheProvider MemoryCacheProvider { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
         [Inject]
