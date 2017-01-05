@@ -13,5 +13,27 @@ namespace EImece.Domain.Helpers.Extensions
         {
             return String.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(entity.Name), entity.Id);
         }
+        public static String GetSeoTitle(this BaseEntity entity)
+        {
+            return GeneralHelper.Capitalize(GeneralHelper.TruncateAtWord(entity.Name, 55));
+        }
+        public static String GetSeoDescription(this BaseContent entity)
+        {
+            return string.Format("{0} ", GeneralHelper.GetDescriptionWithBody(entity.Description, 150));
+        }
+        public static String GetImageTag(this BaseContent entity)
+        {
+            String imageTag = "";
+            if (entity.MainImageId.HasValue && entity.MainImage != null)
+            {
+                String imagePath = Settings.UrlBase +  entity.MainImage.FileName;
+                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name);
+
+            }
+
+            return imageTag;
+        }
+
+
     }
 }

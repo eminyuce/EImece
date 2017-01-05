@@ -12,6 +12,8 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IBaseContentRepository<T> : IBaseEntityRepository<T> where T : BaseContent
     {
         List<T> GetActiveBaseContents(bool? isActive, int language);
- 
+        T GetBaseContent(int id);
+
+
     }
 }

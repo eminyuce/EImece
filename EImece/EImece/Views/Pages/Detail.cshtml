@@ -1,7 +1,9 @@
 ﻿@model EImece.Domain.Entities.Menu
-
+@using EImece.Domain.Helpers.Extensions;
 @{
-    ViewBag.Title = "Detail";
+    var menu = Model;
+    ViewBag.Title = menu.GetSeoTitle();
+    ViewBag.Description = menu.GetSeoDescription();
     var selectedPagePath = "PageThemes/PageTheme_" + Model.PageTheme;
 }
 

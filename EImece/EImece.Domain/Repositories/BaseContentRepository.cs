@@ -22,6 +22,13 @@ namespace EImece.Domain.Repositories
         {
 
         }
+        public virtual T GetBaseContent(int id)
+        {
+            Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+            Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
+            var item = GetSingleIncluding(id, includeProperties);
+            return item;
+        }
         public virtual List<T> GetActiveBaseContents(bool? isActive, int language)
         {
             try

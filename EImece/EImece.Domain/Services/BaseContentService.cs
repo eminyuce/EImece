@@ -32,7 +32,11 @@ namespace EImece.Domain.Services
         {
             this.BaseContentRepository = baseContentRepository;
         }
-       
+        public virtual T GetBaseContent(int id)
+        {
+            var item = BaseContentRepository.GetBaseContent(id);
+            return item;
+        }
         public virtual List<T> GetActiveBaseContents(bool ?isActive, int language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
@@ -44,9 +48,7 @@ namespace EImece.Domain.Services
                 foreach (String v in values)
                 {
                     var id = v.ToInt();
-                    Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
-                    Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
-                    var item = BaseContentRepository.GetSingleIncluding(id, includeProperties);
+                    var item = GetBaseContent(id);
                     if (item.MainImageId.HasValue)
                     {
                         FileStorageService.DeleteFileStorage(item.MainImageId.Value);

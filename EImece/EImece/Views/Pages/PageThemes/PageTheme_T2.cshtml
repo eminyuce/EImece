@@ -1,10 +1,11 @@
 ﻿@model EImece.Domain.Entities.Menu
-
+@using EImece.Domain.Helpers.Extensions;
 @{
-    ViewBag.Title = "Detail";
+    var menu = Model;
 }
 
 <h2>Detail</h2>
+@Html.Raw(menu.GetImageTag())
 
 <div>
     <h4>@Html.DisplayFor(model => model.PageTheme)</h4>

@@ -32,7 +32,18 @@ namespace EImece.Domain.Helpers
             return text;
         }
 
-      
+        public static string GetDescriptionWithBody(string description,int length = 300)
+        {
+
+            var desc = WebUtility.HtmlDecode(StripHtml(description)).TruncateAtSentence(length);
+
+            if (String.IsNullOrEmpty(desc))
+            {
+                desc = "";
+            }
+
+            return desc;
+        }
 
         public static string GetMd5Hash(string input)
         {
