@@ -5,7 +5,7 @@
 }
 
 <h2>Detail</h2>
-@Html.Raw(menu.GetImageTag())
+@Html.Raw(menu.GetCroppedImageTag(150,150))
 
 <div>
     <h4>@Html.DisplayFor(model => model.PageTheme)</h4>

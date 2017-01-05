@@ -436,7 +436,21 @@ namespace EImece.Domain.Helpers
                 return ImageOrientation.Unknown;
             }
         }
-        public static byte[] MakeThumbnail(byte[] myImage, int thumbWidth, int thumbHeight)
+        public byte[] GetCroppedImage(int fileStorageId, int width, int height)
+        {
+            var fileStorage = FileStorageService.GetSingle(fileStorageId);
+            var file = fileStorage.FileName;
+            String fullPath = Path.Combine(StorageRoot, file);
+            if (System.IO.File.Exists(fullPath))
+            {
+                var fullImagePath = Path.Combine(fullPath);
+                Bitmap b = new Bitmap(fullImagePath);
+                var resizeBitmap = ResizeImage(b, width, height);
+                return GetBitmapBytes(resizeBitmap);
+            }
+            return null;
+        }
+        public byte[] MakeThumbnail(byte[] myImage, int thumbWidth, int thumbHeight)
         {
             using (MemoryStream ms = new MemoryStream())
             using (Image thumbnail = Image.FromStream(new MemoryStream(myImage)).GetThumbnailImage(thumbWidth, thumbHeight, null, new IntPtr()))
@@ -445,7 +459,7 @@ namespace EImece.Domain.Helpers
                 return ms.ToArray();
             }
         }
-        public static Bitmap Crop(Bitmap bitmap, int Width, int Height, AnchorPosition Anchor)
+        public Bitmap Crop(Bitmap bitmap, int Width, int Height, AnchorPosition Anchor)
         {
 
             int sourceWidth = bitmap.Width;
@@ -520,7 +534,7 @@ namespace EImece.Domain.Helpers
         }
         // Create a thumbnail in byte array format from the image encoded in the passed byte array.  
         // (RESIZE an image in a byte[] variable.)  
-        public static byte[] CreateThumbnail(byte[] PassedImage, int LargestSide, int Height, int Width)
+        public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide, int Height, int Width)
         {
             byte[] ReturnedThumbnail;
 
@@ -568,13 +582,13 @@ namespace EImece.Domain.Helpers
         }
 
 
-        public static byte[] ImageToByteArray(Image imageIn)
+        public byte[] ImageToByteArray(Image imageIn)
         {
             MemoryStream ms = new MemoryStream();
             imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
             return ms.ToArray();
         }
-        public static Image ByteArrayToImage(byte[] byteArrayIn)
+        public Image ByteArrayToImage(byte[] byteArrayIn)
         {
             MemoryStream ms = new MemoryStream(byteArrayIn);
             System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
@@ -585,7 +599,7 @@ namespace EImece.Domain.Helpers
 
 
         // Resize a Bitmap  
-        private static Bitmap ResizeImage(Bitmap image, int width, int height)
+        private Bitmap ResizeImage(Bitmap image, int width, int height)
         {
             Bitmap resizedImage = new Bitmap(width, height);
             using (Graphics gfx = Graphics.FromImage(resizedImage))
@@ -680,7 +694,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public static byte[] CreateGoogleImage(HttpPostedFileBase file)
+        public byte[] CreateGoogleImage(HttpPostedFileBase file)
         {
 
             var fileByte = GeneralHelper.ReadFully(file.InputStream);

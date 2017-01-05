@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.Extensions
 {
@@ -27,13 +29,25 @@ namespace EImece.Domain.Helpers.Extensions
             if (entity.MainImageId.HasValue && entity.MainImage != null)
             {
                 String imagePath = Settings.UrlBase +  entity.MainImage.FileName;
-                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name);
+                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
 
             }
 
             return imageTag;
         }
+        public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
+        {
+            String imageTag = "";
+            if (entity.MainImageId.HasValue && entity.MainImage != null)
+            {
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                String imagePath = urlHelper.Action("Index", "Images", new { id = entity.MainImageId, width, height });
+                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
 
+            }
 
+            return imageTag;
+        }
+       
     }
 }
