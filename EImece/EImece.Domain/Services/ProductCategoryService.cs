@@ -19,9 +19,9 @@ namespace EImece.Domain.Services
             ProductCategoryRepository = repository;
         }
 
-        public List<ProductCategory> BuildTree()
+        public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
         {
-            return ProductCategoryRepository.BuildTree();
+            return ProductCategoryRepository.BuildTree(isActive,language);
         }
 
         public List<Node> CreateProductCategoryTreeViewDataList()

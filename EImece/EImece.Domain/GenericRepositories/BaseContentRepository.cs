@@ -39,26 +39,6 @@ namespace EImece.Domain.GenericRepositories
 
             return exceptionMessage;
         }
-        public static List<T> GetActiveBaseContents<T>(IBaseRepository<T> repository, bool? isActive, int language) where T : BaseContent
-        {
-            try
-            {
-                Expression<Func<T, bool>> match = r2 => r2.Lang == language;
-                var predicate = PredicateBuilder.Create<T>(match);
-                if(isActive!=null && isActive.HasValue)
-                {
-                    predicate = predicate.And(r => r.IsActive == isActive);
-                }
-                Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = repository.FindAll(predicate, keySelector, OrderByType.Ascending, null, null);
-
-                return items;
-            }
-            catch (Exception exception)
-            {
-                Logger.Error(exception);
-                return null;
-            }
-        }
+     
     }
 }

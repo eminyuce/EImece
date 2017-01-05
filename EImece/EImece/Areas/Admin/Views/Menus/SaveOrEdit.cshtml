@@ -9,10 +9,7 @@
     var parentMenu = (Menu)ViewBag.ParentMenu;
 
 
-    var menuLinks = new List<SelectListItem>();
-    menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
-    menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
-    menuLinks.Add(new SelectListItem() { Text = "Blog", Value = "stories-index" });
+    var menuLinks = (List<SelectListItem>)ViewBag.MenuLinks;
 
     var productTree =(List<Node>) ViewBag.Tree;
 }
@@ -61,18 +58,7 @@ console.log(e);
                 @Html.HiddenFor(model => model.UpdatedDate)
                 @Html.HiddenFor(model => model.MainImageId)
 
-                @*<div class="form-group">
-                    @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-
-                        @Html.DropDownListFor(model => model.Lang,
-   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
-   null,
-   new { @class = "form-control" })
-
-                        @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+             
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -103,7 +89,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -191,11 +177,11 @@ console.log(e);
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div id="pageThemeWrapper" style="display: none;" class="form-group">
                     @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <div class="checkbox">
-                            @Html.Partial("pPageThemes")
+                            @Html.Partial("pPageThemes",Model)
                             @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -213,3 +199,25 @@ console.log(e);
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('Description');
+            menuChangeEvent();
+            $("#MenuLink").change(menuChangeEvent);
+            function menuChangeEvent() {
+                var selectedValue = $("#MenuLink option:selected").val();
+                if (selectedValue == 'pages-index') {
+                    $("#pageThemeWrapper").show();
+                } else {
+                    $("#pageThemeWrapper").hide();
+                }
+            }
+
+
+        });
+    </script>
+}

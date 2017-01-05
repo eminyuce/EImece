@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -33,7 +34,7 @@ namespace EImece.Controllers
         }
         public ActionResult ProductTree()
         {
-            var tree = ProductCategoryService.BuildTree();
+            var tree = ProductCategoryService.BuildTree(true,Settings.MainLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
     }

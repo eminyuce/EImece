@@ -11,7 +11,7 @@ namespace EImece.Domain.Repositories.IRepositories
 
     public interface IProductCategoryRepository : IBaseContentRepository<ProductCategory>, IDisposable
     {
-        List<ProductCategory> BuildTree();
+        List<ProductCategory> BuildTree(bool ? isActive, int language=1);
         List<Node> CreateProductCategoryTreeViewDataList();
     }
 }

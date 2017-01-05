@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
@@ -159,7 +160,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GetCategories()
         {
-            List<ProductCategory> treelist = ProductCategoryService.BuildTree();
+            List<ProductCategory> treelist = ProductCategoryService.BuildTree(null,Settings.MainLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 

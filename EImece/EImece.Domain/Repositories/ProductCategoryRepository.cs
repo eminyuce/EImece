@@ -31,9 +31,11 @@ namespace EImece.Domain.Repositories
             }
         }
        
-        public List<ProductCategory> BuildTree()
+        public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
         {
-            List<ProductCategory> list = GetAll().ToList();
+            var productCategories = GetActiveBaseContents(isActive, language);
+
+            List<ProductCategory> list = productCategories.ToList();
             List<ProductCategory> returnList = new List<ProductCategory>();
             //find top levels items
             var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();

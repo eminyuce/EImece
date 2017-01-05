@@ -50,6 +50,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = Menu.GetInstance<Menu>();
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
+            ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = Menu.GetInstance<Menu>();
 
 
@@ -63,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
             {
 
                 content = MenuService.GetSingle(id);
-                if(content.ParentId > 0)
+                if (content.ParentId > 0)
                 {
                     parentMenu = MenuService.GetSingle(content.ParentId);
                 }
@@ -158,7 +159,7 @@ namespace EImece.Areas.Admin.Controllers
 
         }
 
- 
+
 
         public ActionResult GetMenus()
         {
@@ -168,10 +169,30 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Media(int id)
         {
-            return RedirectToAction("Index", "Media", new { contentId = id,
+            return RedirectToAction("Index", "Media", new
+            {
+                contentId = id,
                 mod = MediaModType.Menus,
                 imageType = EImeceImageType.MenuGallery
             });
+        }
+        private List<SelectListItem> GetMenuPages()
+        {
+            var menus = MenuService.GetAll();
+
+            var menuLinks = new List<SelectListItem>();
+
+            if (!menus.Any(r => r.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
+            }
+
+            if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Blog", Value = "stories-index" });
+            }
+            menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
+            return menuLinks;
         }
     }
 }

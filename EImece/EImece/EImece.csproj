@@ -541,6 +541,12 @@
     <Content Include="Views\Stories\Index.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTree.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTreeChildren.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T1.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T6.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T2.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T3.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T4.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T5.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

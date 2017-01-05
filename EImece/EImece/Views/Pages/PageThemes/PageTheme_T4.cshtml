@@ -1,0 +1,142 @@
+﻿@model EImece.Domain.Entities.Menu
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.PageTheme)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Position)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Position)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MainImageId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MainImageId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Lang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lang)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParentId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MainPage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MainPage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MenuLink)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MenuLink)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Static)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Static)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PageTheme)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PageTheme)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LinkIsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LinkIsActive)
+        </dd>
+
+    </dl>
+</div>
