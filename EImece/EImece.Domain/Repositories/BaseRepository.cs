@@ -145,7 +145,10 @@ namespace EImece.Domain.Repositories
             }
         }
 
-
+        public List<Expression<Func<T, object>>> GetIncludePropertyExpressionList<T>()
+        {
+            return new List<Expression<Func<T, object>>>();
+        }
 
     }
 }
