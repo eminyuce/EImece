@@ -18,6 +18,7 @@ namespace EImece.App_Start
     using Domain.Services.IServices;
     using Domain.Helpers;
     using Domain.Caching;
+    using Domain.Helpers.EmailHelper;
 
     public static class NinjectWebCommon 
     {
@@ -71,7 +72,7 @@ namespace EImece.App_Start
         {
 
             kernel.Bind<ICacheProvider>().To<MemoryCacheProvider>().InRequestScope();
-
+            kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
 

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -37,7 +38,8 @@ namespace EImece.Controllers
         public IFileStorageService FileStorageService { get; set; }
         [Inject]
         public ITemplateService TemplateService { get; set; }
-
+        [Inject]
+        public IEmailSender EmailSender { get; set; }
         private FilesHelper _filesHelper { get; set; }
         [Inject]
         public FilesHelper FilesHelper
