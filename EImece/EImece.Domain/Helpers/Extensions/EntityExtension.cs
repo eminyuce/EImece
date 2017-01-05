@@ -38,7 +38,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.MainImage != null)
+            if (entity.MainImageId.HasValue)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 String imagePath = urlHelper.Action("Index", "Images", new { id = entity.MainImageId, width, height });

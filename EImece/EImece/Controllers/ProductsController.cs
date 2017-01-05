@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,12 @@ namespace EImece.Controllers
         {
             var products = ProductService.GetMainPageProducts(page,lang);
             return View(products);
+        }
+        public ActionResult Category(String id)
+        {
+            var categoryId = id.Split("-".ToCharArray()).Last().ToInt();
+            var productCategory = ProductCategoryService.GetProductCategory(categoryId);
+            return View(productCategory);
         }
     }
 }

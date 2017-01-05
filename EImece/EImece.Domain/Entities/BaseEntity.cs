@@ -11,6 +11,7 @@ namespace EImece.Domain.Entities
 {
     public abstract class BaseEntity : IEntity<int>
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

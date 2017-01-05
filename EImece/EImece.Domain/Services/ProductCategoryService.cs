@@ -28,5 +28,10 @@ namespace EImece.Domain.Services
         {
             return ProductCategoryRepository.CreateProductCategoryTreeViewDataList();
         }
+
+        public ProductCategory GetProductCategory(int categoryId)
+        {
+            return ProductCategoryRepository.GetProductCategory(categoryId);
+        }
     }
 }

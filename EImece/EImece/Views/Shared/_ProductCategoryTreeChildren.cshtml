@@ -10,7 +10,7 @@
     @foreach (var p in productCategories)
     {
         <li>
-            @Html.ActionLink(p.Name, "Detail", "Products", new { id = p.GetSeoUrl() }, null)
+            @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() }, null)
         </li>
         if (p.Childrens.Any())
         {

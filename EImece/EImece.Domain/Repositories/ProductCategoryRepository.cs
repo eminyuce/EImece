@@ -9,6 +9,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.GenericRepositories;
 using SharkDev.Web.Controls.TreeView.Model;
 using EImece.Domain.Helpers;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories
 {
@@ -30,7 +31,7 @@ namespace EImece.Domain.Repositories
                 GetTreeview(list, i, ref returnList);
             }
         }
-       
+
         public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
         {
             var productCategories = GetActiveBaseContents(isActive, language);
@@ -57,7 +58,16 @@ namespace EImece.Domain.Repositories
 
             return _lstTreeNodes;
         }
-
+        public ProductCategory GetProductCategory(int categoryId)
+        {
+            //EImeceDbContext.Configuration.LazyLoadingEnabled = true;
+            Expression<Func<ProductCategory, object>> includeProperty1 = r => r.MainImage;
+            Expression<Func<ProductCategory, object>> includeProperty2 = r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage));
+            Expression<Func<ProductCategory, object>> includeProperty3 = r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag));
+            Expression<Func<ProductCategory, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty3 };
+            var item = GetSingleIncluding(categoryId, includeProperties);
+            return item;
+        }
 
     }
 }

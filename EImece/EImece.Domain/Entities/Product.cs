@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ namespace EImece.Domain.Entities
 {
     public class Product: BaseContent
     {
+     
         [Display(Name = "Category")]
         [Required(ErrorMessage = "Please enter category")]
+        [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
 
         public Boolean MainPage { get; set; }

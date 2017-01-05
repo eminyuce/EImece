@@ -16,7 +16,7 @@ namespace EImece.Controllers
         public ActionResult Index(int id, int width, int height)
         {
             var fileStorageId = id;
-            var imageByte = FilesHelper.GetCroppedImage(fileStorageId, width, height);
+            var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
             if(imageByte != null)
             {
                 return File(imageByte, "image/jpg");

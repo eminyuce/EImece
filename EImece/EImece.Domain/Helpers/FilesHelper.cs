@@ -436,17 +436,20 @@ namespace EImece.Domain.Helpers
                 return ImageOrientation.Unknown;
             }
         }
-        public byte[] GetCroppedImage(int fileStorageId, int width, int height)
+        public byte[] GetResizedImage(int fileStorageId, int width, int height)
         {
             var fileStorage = FileStorageService.GetSingle(fileStorageId);
-            var file = fileStorage.FileName;
-            String fullPath = Path.Combine(StorageRoot, file);
-            if (System.IO.File.Exists(fullPath))
+            if (fileStorage != null)
             {
-                var fullImagePath = Path.Combine(fullPath);
-                Bitmap b = new Bitmap(fullImagePath);
-                var resizeBitmap = ResizeImage(b, width, height);
-                return GetBitmapBytes(resizeBitmap);
+                var file = fileStorage.FileName;
+                String fullPath = Path.Combine(StorageRoot, file);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    var fullImagePath = Path.Combine(fullPath);
+                    Bitmap b = new Bitmap(fullImagePath);
+                    var resizeBitmap = ResizeImage(b, width, height);
+                    return GetBitmapBytes(resizeBitmap);
+                }
             }
             return null;
         }

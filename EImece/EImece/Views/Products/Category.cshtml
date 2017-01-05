@@ -1,0 +1,40 @@
+﻿@model EImece.Domain.Entities.ProductCategory
+@using EImece.Domain.Helpers.Extensions;
+
+@{
+    ViewBag.Title = "Category";
+    var category = Model;
+    var products = Model.Products;
+}
+
+<h2>
+    @category.Name
+</h2>
+
+@Html.Raw(category.GetCroppedImageTag(100,200))
+
+@if (products != null)
+{
+    foreach (var p in products)
+    {
+        <div>
+            @p.Name
+          <b>
+              @p.MainImageId
+              @Html.Raw(p.GetCroppedImageTag(100, 100))
+            </b>  
+        </div>
+        foreach(var pt in p.ProductTags)
+        {
+            <div>
+                @pt.Tag.Name
+            </div>
+        }
+        foreach (var pt in p.ProductFiles)
+        {
+            <div>
+                @pt.FileStorage.FileName
+            </div>
+        }
+    }
+}
