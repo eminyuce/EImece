@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Repositories.IRepositories;
@@ -41,6 +42,8 @@ namespace EImece.Areas.Admin.Controllers
         public ITemplateService TemplateService { get; set; }
         [Inject]
         public IEmailSender EmailSender { get; set; }
+        [Inject]
+        public ICacheProvider MemoryCacheProvider { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
         [Inject]

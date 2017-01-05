@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,6 +18,20 @@ namespace EImece.Areas.Admin.Controllers
         {
             ViewBag.SearchKey = search;
             return View();
+        }
+        public ActionResult ClearCache()
+        {
+            MemoryCacheProvider.ClearAll();
+            var urlReferrer = Request.UrlReferrer;
+            if (urlReferrer != null)
+            {
+                return Redirect(urlReferrer.ToStr());
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+   
         }
     }
 }
