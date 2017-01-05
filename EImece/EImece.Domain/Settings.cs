@@ -205,6 +205,15 @@ namespace EImece.Domain
         {
             get { return Path.Combine(HostingEnvironment.MapPath(Settings.ServerMapPath)); }
         }
+
+        public static bool IsCacheActive
+        {
+            get
+            {
+                return GetConfigBool("IsCacheActive", true);
+            }
+        }
+
         public static String TempPath = "~/media/tempFiles/";
         public static String ServerMapPath = "~/media/images/";
         public static string UrlBase = "/media/images/";

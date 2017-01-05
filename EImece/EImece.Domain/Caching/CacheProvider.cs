@@ -15,6 +15,11 @@ namespace EImece.Domain.Caching
             set;
         }
 
+        public bool IsCacheProviderActive
+        {
+            get;set;
+        }
+
         private readonly int defaultCacheDurationInMinutes = 30;
 
         protected TCache _cache;

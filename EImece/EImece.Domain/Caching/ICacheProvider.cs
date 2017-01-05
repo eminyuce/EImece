@@ -8,6 +8,7 @@ namespace EImece.Domain.Caching
 {
     public interface ICacheProvider
     {
+        bool IsCacheProviderActive { get; set; }
         /// <summary>
         /// Retrieve cached item
         /// </summary>

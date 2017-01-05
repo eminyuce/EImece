@@ -19,8 +19,10 @@ namespace EImece.Domain.Services
     public abstract class BaseService<T> where T : class, IEntity<int>
     {
         protected static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
+        public bool IsCachingActive { get; set; }
 
-
+        [Inject]
+        public ICacheProvider MemoryCacheProvider { get; set; }
         private IBaseRepository<T> baseRepository { get; set; }
 
         protected BaseService(IBaseRepository<T> baseRepository)
@@ -75,8 +77,6 @@ namespace EImece.Domain.Services
         [Inject]
         public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
 
-        [Inject]
-        public ICacheProvider MemoryCacheProvider { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
         [Inject]

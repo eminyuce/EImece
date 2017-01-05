@@ -13,8 +13,6 @@ namespace EImece.Domain.Services
 {
     public class MainPageImageService : BaseContentService<MainPageImage>, IMainPageImageService
     {
-        [Inject]
-        public IFileStorageService FileStorageService { get; set; }
 
         private IMainPageImageRepository MainPageImageRepository { get; set; }
         public MainPageImageService(IMainPageImageRepository repository) : base(repository)

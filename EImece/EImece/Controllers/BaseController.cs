@@ -14,30 +14,151 @@ namespace EImece.Controllers
 {
     public abstract class BaseController : Controller
     {
+
+        private IMainPageImageService _mainPageImageService { get; set; }
         [Inject]
-        public IMainPageImageService MainPageImageService { get; set; }
+        public IMainPageImageService MainPageImageService
+        {
+            get
+            {
+                _mainPageImageService.IsCachingActive = Settings.IsCacheActive;
+                return _mainPageImageService;
+            }
+            set { _mainPageImageService = value; }
+        }
+
+        private ISettingService _settingService { get; set; }
         [Inject]
-        public ISettingService SettingService { get; set; }
+        public ISettingService SettingService
+        {
+            get
+            {
+                _settingService.IsCachingActive = Settings.IsCacheActive;
+                return _settingService;
+            }
+            set { _settingService = value; }
+        }
+
+
+        private IProductService _productService { get; set; }
         [Inject]
-        public IProductService ProductService { get; set; }
+        public IProductService ProductService
+        {
+            get
+            {
+                _productService.IsCachingActive = Settings.IsCacheActive;
+                return _productService;
+            }
+            set { _productService = value; }
+        }
+
+
+        private IProductCategoryService _productCategoryService { get; set; }
         [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
+        public IProductCategoryService ProductCategoryService
+        {
+            get
+            {
+                _productCategoryService.IsCachingActive = Settings.IsCacheActive;
+                return _productCategoryService;
+            }
+            set { _productCategoryService = value; }
+        }
+        private IMenuService _menuService { get; set; }
         [Inject]
-        public IMenuService MenuService { get; set; }
+        public IMenuService MenuService
+        {
+            get
+            {
+                _menuService.IsCachingActive = Settings.IsCacheActive;
+                return _menuService;
+            }
+            set { _menuService = value; }
+        }
+
+        private IStoryService _storyService { get; set; }
         [Inject]
-        public IStoryService StoryService { get; set; }
+        public IStoryService StoryService
+        {
+            get
+            {
+                _storyService.IsCachingActive = Settings.IsCacheActive;
+                return _storyService;
+            }
+            set { _storyService = value; }
+        }
+        private IStoryCategoryService _storyCategoryService { get; set; }
         [Inject]
-        public IStoryCategoryService StoryCategoryService { get; set; }
+        public IStoryCategoryService StoryCategoryService
+        {
+            get
+            {
+                _storyCategoryService.IsCachingActive = Settings.IsCacheActive;
+                return _storyCategoryService;
+            }
+            set { _storyCategoryService = value; }
+        }
+
+        private ITagService _tagService { get; set; }
         [Inject]
-        public ITagService TagService { get; set; }
+        public ITagService TagService
+        {
+            get
+            {
+                _tagService.IsCachingActive = Settings.IsCacheActive;
+                return _tagService;
+            }
+            set { _tagService = value; }
+        }
+
+        private ITagCategoryService _tagCategoryService { get; set; }
         [Inject]
-        public ITagCategoryService TagCategoryService { get; set; }
+        public ITagCategoryService TagCategoryService
+        {
+            get
+            {
+                _tagCategoryService.IsCachingActive = Settings.IsCacheActive;
+                return _tagCategoryService;
+            }
+            set { _tagCategoryService = value; }
+        }
+
+        private ISubsciberService _subsciberService { get; set; }
         [Inject]
-        public ISubsciberService SubsciberService { get; set; }
+        public ISubsciberService SubsciberService
+        {
+            get
+            {
+                _subsciberService.IsCachingActive = Settings.IsCacheActive;
+                return _subsciberService;
+            }
+            set { _subsciberService = value; }
+        }
+        private IFileStorageService _fileStorageService { get; set; }
         [Inject]
-        public IFileStorageService FileStorageService { get; set; }
+        public IFileStorageService FileStorageService
+        {
+            get
+            {
+                _fileStorageService.IsCachingActive = Settings.IsCacheActive;
+                return _fileStorageService;
+            }
+            set { _fileStorageService = value; }
+        }
+
+        private ITemplateService _templateService { get; set; }
         [Inject]
-        public ITemplateService TemplateService { get; set; }
+        public ITemplateService TemplateService
+        {
+            get
+            {
+                _templateService.IsCachingActive = Settings.IsCacheActive;
+                return _templateService;
+            }
+            set { _templateService = value; }
+        }
+
+
         [Inject]
         public IEmailSender EmailSender { get; set; }
         private FilesHelper _filesHelper { get; set; }

@@ -8,20 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharkDev.Web.Controls.TreeView.Model;
+using NLog;
 
 namespace EImece.Domain.Services
 {
     public class ProductCategoryService : BaseContentService<ProductCategory>, IProductCategoryService
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private IProductCategoryRepository ProductCategoryRepository { get; set; }
-        public ProductCategoryService(IProductCategoryRepository repository):base(repository)
+        public ProductCategoryService(IProductCategoryRepository repository) : base(repository)
         {
             ProductCategoryRepository = repository;
         }
 
         public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
         {
-            return ProductCategoryRepository.BuildTree(isActive,language);
+            return ProductCategoryRepository.BuildTree(isActive, language);
         }
 
         public List<Node> CreateProductCategoryTreeViewDataList()
@@ -31,7 +34,17 @@ namespace EImece.Domain.Services
 
         public ProductCategory GetProductCategory(int categoryId)
         {
-            return ProductCategoryRepository.GetProductCategory(categoryId);
+            var cacheKey = String.Format("ProductCategory-{0}", categoryId);
+            ProductCategory result = null;
+            MemoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = ProductCategoryRepository.GetProductCategory(categoryId);
+                MemoryCacheProvider.Set(cacheKey, result);
+                Logger.Trace("Data is set to cache");
+            }
+            return result;
+
         }
     }
 }

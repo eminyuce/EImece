@@ -12,12 +12,13 @@ using System.IO;
 using System.Web.Hosting;
 using Ninject;
 using EImece.Domain;
+using NLog;
 
 namespace EImece.Areas.Admin.Controllers
 {
     public class MediaController : BaseAdminController
     {
-
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public FilesHelper filesHelper;
        
         public MediaController(FilesHelper fh)
