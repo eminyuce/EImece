@@ -448,7 +448,10 @@ namespace EImece.Domain.Helpers
                     var fullImagePath = Path.Combine(fullPath);
                     Bitmap b = new Bitmap(fullImagePath);
                     var resizeBitmap = ResizeImage(b, width, height);
-                    return GetBitmapBytes(resizeBitmap);
+                    var r = GetBitmapBytes(resizeBitmap);
+                    b.Dispose();
+                    resizeBitmap.Dispose();
+                    return r;
                 }
             }
             return null;
