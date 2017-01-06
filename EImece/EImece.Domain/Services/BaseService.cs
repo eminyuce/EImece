@@ -20,9 +20,17 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
         public bool IsCachingActive { get; set; }
-
+        private ICacheProvider _memoryCacheProvider { get; set; }
         [Inject]
-        public ICacheProvider MemoryCacheProvider { get; set; }
+        public ICacheProvider MemoryCacheProvider
+        {
+            get
+            {
+                _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+                return _memoryCacheProvider;
+            }
+            set { _memoryCacheProvider = value; }
+        }
         private IBaseRepository<T> baseRepository { get; set; }
 
         protected BaseService(IBaseRepository<T> baseRepository)
@@ -39,7 +47,7 @@ namespace EImece.Domain.Services
         {
             return baseRepository.GetAll().ToList();
         }
-     
+
         public virtual T GetSingle(int id)
         {
             return baseRepository.GetSingle(id);

@@ -36,7 +36,7 @@ namespace EImece.Domain.Services
         {
             var cacheKey = String.Format("ProductCategory-{0}", categoryId);
             ProductCategory result = null;
-            MemoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.GetProductCategory(categoryId);
