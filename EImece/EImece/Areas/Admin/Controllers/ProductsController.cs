@@ -91,8 +91,6 @@ namespace EImece.Areas.Admin.Controllers
                             product.MainImageId = mainImage.Id;
 
                         }
-                        product.CreatedDate = DateTime.Now;
-                        product.UpdatedDate = DateTime.Now;
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 

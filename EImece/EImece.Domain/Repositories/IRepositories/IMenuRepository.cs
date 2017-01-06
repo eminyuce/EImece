@@ -10,7 +10,7 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IMenuRepository : IBaseContentRepository<Menu>, IDisposable
     {
-        List<Menu> BuildTree();
-        List<Node> CreateMenuTreeViewDataList();
+        List<Menu> BuildTree(bool? isActive, int language);
+        List<Node> CreateMenuTreeViewDataList(bool? isActive, int language);
     }
 }

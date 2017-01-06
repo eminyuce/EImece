@@ -29,7 +29,7 @@ namespace EImece.Controllers
         }
         public ActionResult Menu()
         {
-            var menus = MenuService.BuildTree();
+            var menus = MenuService.BuildTree(true, Settings.MainLanguage);
             return PartialView("_Navigation", menus);
         }
         public ActionResult ProductTree()

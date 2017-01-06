@@ -33,9 +33,9 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public List<Menu> BuildTree()
+        public List<Menu> BuildTree(bool? isActive, int language)
         {
-            List<Menu> list = GetAll().ToList();
+            List<Menu> list = GetActiveBaseContents(isActive, language);
             List<Menu> returnList = new List<Menu>();
             //find top levels items
             var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r=>r.Position).ToList();
@@ -47,10 +47,10 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
-        public List<Node> CreateMenuTreeViewDataList()
+        public List<Node> CreateMenuTreeViewDataList(bool? isActive, int language)
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var menus = this.GetAll().OrderBy(r => r.Position).ToList();
+            var menus = GetActiveBaseContents(isActive, language);
             foreach (var p in menus)
             {
                 _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });

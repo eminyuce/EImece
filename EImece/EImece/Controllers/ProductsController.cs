@@ -13,9 +13,9 @@ namespace EImece.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Products
-        public ActionResult Index(int page = 1, int lang = 1)
+        public ActionResult Index(int page = 1)
         {
-            var products = ProductService.GetMainPageProducts(page, lang);
+            var products = ProductService.GetMainPageProducts(page, Settings.MainLanguage);
             return View(products);
         }
         public ActionResult Category(String id)

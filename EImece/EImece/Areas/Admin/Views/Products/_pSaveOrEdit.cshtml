@@ -27,18 +27,27 @@
                 @Html.HiddenFor(model => product.UpdatedDate)
                 @Html.HiddenFor(model => product.MainImageId)
 
-                @*<div class="form-group">
-                    @Html.LabelFor(model => product.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    @Html.LabelFor(model => product.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
+                        @if (productCategory != null && productCategory.Id > 0)
+                        {
+                            <span id="OldCategoryName">
+                                @productCategory.Name
+                            </span>
+                        }
+                        else
+                        {
 
-                        @Html.DropDownListFor(model => product.Lang,
-   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
- null,
-   new { @class = "form-control" })
+                            <span id="OldCategoryName">
 
-                        @Html.ValidationMessageFor(model => product.Lang, "", new { @class = "text-danger" })
+                            </span>
+                        }
+
+                        @Html.HiddenFor(model => product.ProductCategoryId)
+                        @Html.ValidationMessageFor(model => product.ProductCategoryId, "", new { @class = "text-danger" })
                     </div>
-                </div>*@
+                </div>
 
 
                 <div class="form-group">
@@ -72,7 +81,9 @@
                 <div class="form-group">
                     @Html.LabelFor(model => product.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => product.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextAreaFor(model => product.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+
+
                         @Html.ValidationMessageFor(model => product.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -104,28 +115,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => product.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @if (productCategory != null && productCategory.Id > 0)
-                        {
-                            <span id="OldCategoryName">
-                                @productCategory.Name
-                            </span>
-                        }
-                        else
-                        {
-
-                            <span id="OldCategoryName">
-
-                            </span>
-                        }
-
-                        @Html.HiddenFor(model => product.ProductCategoryId)
-                        @Html.ValidationMessageFor(model => product.ProductCategoryId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
+         
 
                 <div class="form-group">
                     @Html.LabelFor(model => product.Price, htmlAttributes: new { @class = "control-label col-md-2" })

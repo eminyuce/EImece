@@ -20,16 +20,7 @@ namespace EImece.Domain.Services
 
         public List<Tag> GetAdminPageList(String search)
         {
-            Expression<Func<Tag, object>> includeProperty2 = r => r.TagCategory;
-            Expression<Func<Tag, object>>[] includeProperties = { includeProperty2 };
-            var tags = TagRepository.GetAllIncluding(includeProperties);
-            if (!String.IsNullOrEmpty(search))
-            {
-                tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
-            }
-            var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
-
-            return result;
+            return TagRepository.GetAdminPageList(search);
         }
     }
 }

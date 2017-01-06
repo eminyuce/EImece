@@ -38,7 +38,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
                 Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
                 Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty3 };
-                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage; //&& r2.Lang == language;
+                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
                 Expression<Func<Product, int>> keySelector = t => t.Position;
                 var items = this.PaginateDescending(pageIndex, pageSize, keySelector , match, includeProperties);
 

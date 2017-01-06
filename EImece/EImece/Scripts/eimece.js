@@ -3,7 +3,12 @@
 }
 
 $(document).ready(function () {
-
+    bindCKEDITOR();
+    function bindCKEDITOR() {
+        $('[data-ckeditor-field]').each(function () {
+            CKEDITOR.replace(this);
+        });
+    }
     function OrderingItem() {
         var item = this;
         item.Id = "";

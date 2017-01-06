@@ -21,7 +21,21 @@ namespace EImece.Domain.Repositories
         {
 
         }
-    
 
+        public List<Tag> GetAdminPageList(string search)
+        {
+            Expression<Func<Tag, object>> includeProperty2 = r => r.TagCategory;
+            Expression<Func<Tag, object>>[] includeProperties = { includeProperty2 };
+            var tags = GetAllIncluding(includeProperties);
+            if (!String.IsNullOrEmpty(search))
+            {
+                tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
+            }
+            var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+
+
+
+            return result;
+        }
     }
 }

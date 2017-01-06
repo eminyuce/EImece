@@ -11,8 +11,8 @@ namespace EImece.Domain.Entities
     public class Product: BaseContent
     {
      
-        [Display(Name = "Category")]
-        [Required(ErrorMessage = "Please enter category")]
+        [Display(Name = "Selected Category")]
+        [Required(ErrorMessage = "Please enter Category")]
         [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
 

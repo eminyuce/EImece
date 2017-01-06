@@ -50,10 +50,11 @@ namespace EImece.Domain.Repositories
         public List<Node> CreateProductCategoryTreeViewDataList()
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var productCategories = this.GetAll().OrderBy(r => r.Position).ToList();
-            foreach (var p in productCategories)
+            var prod = EImeceDbContext.ProductCategories.OrderBy(r => r.Position).Select(c => new { c.Id, c.ParentId, c.Name, ProductCount = c.Products.Count() });
+
+            foreach (var p in prod.ToList())
             {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
+                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = String.Format("{0} ({1})", p.Name, p.ProductCount), ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
             }
 
             return _lstTreeNodes;
@@ -68,6 +69,6 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
-     
+
     }
 }

@@ -10,7 +10,7 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IMenuService : IBaseContentService<Menu>
     {
-        List<Menu> BuildTree();
-        List<Node> CreateMenuTreeViewDataList();
+        List<Menu> BuildTree(bool ? isActive, int language);
+        List<Node> CreateMenuTreeViewDataList(bool? isActive, int language);
     }
 }

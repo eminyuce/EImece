@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
@@ -20,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search);
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
             return View(menus);
         }
 
@@ -49,7 +50,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = Menu.GetInstance<Menu>();
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = Menu.GetInstance<Menu>();
 
@@ -108,7 +109,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList();
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null,Settings.MainLanguage);
             return View(menu);
         }
 
@@ -163,7 +164,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult GetMenus()
         {
-            List<Menu> treelist = MenuService.BuildTree();
+            List<Menu> treelist = MenuService.BuildTree(null,Settings.MainLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
