@@ -40,7 +40,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.GetProductCategory(categoryId);
-                MemoryCacheProvider.Set(cacheKey, result);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
                 Logger.Trace("Data is set to cache");
             }
             return result;

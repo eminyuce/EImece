@@ -29,13 +29,17 @@ namespace EImece.Domain.Services
                 _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
                 return _memoryCacheProvider;
             }
-            set { _memoryCacheProvider = value; }
+            set
+            {
+                _memoryCacheProvider = value;
+            }
         }
         private IBaseRepository<T> baseRepository { get; set; }
 
         protected BaseService(IBaseRepository<T> baseRepository)
         {
             this.baseRepository = baseRepository;
+
         }
 
         public virtual List<T> LoadEntites(Expression<Func<T, bool>> whereLambda)

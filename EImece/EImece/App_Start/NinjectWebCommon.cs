@@ -71,7 +71,7 @@ namespace EImece.App_Start
         private static void RegisterServices(IKernel kernel)
         {
 
-            kernel.Bind<ICacheProvider>().To<MemoryCacheProvider>().InRequestScope();
+            kernel.Bind<ICacheProvider>().To<MemoryCacheProvider>().InSingletonScope();
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
