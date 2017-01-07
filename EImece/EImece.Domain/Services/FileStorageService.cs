@@ -124,7 +124,7 @@ namespace EImece.Domain.Services
 
         public List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType)
         {
-            bool isResult = false;
+          
             switch (enumMod.Value)
             {
                 case MediaModType.Stories:
