@@ -37,6 +37,10 @@ namespace EImece.Domain.Services
             var item = BaseContentRepository.GetBaseContent(id);
             return item;
         }
+        public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search) 
+        {
+            return BaseContentRepository.SearchEntities(whereLambda, search);
+        }
         public virtual List<T> GetActiveBaseContents(bool ?isActive, int language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);

@@ -440,6 +440,7 @@
     <Content Include="Areas\Admin\Views\MainPageImages\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\Details.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\BaseContent.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -552,7 +553,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
     <Folder Include="media\images\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Views\Images\" />

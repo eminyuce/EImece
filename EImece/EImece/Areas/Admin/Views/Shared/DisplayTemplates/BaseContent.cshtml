@@ -1,0 +1,41 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Entities;
+@model  BaseContent
+
+@{
+    var actionNameDelete = "Delete";
+    var actionNameEdit = "";
+    var controllerName = "";
+
+
+    if (Model is Product)
+    {
+        Product product = (Product)Model;
+        actionNameDelete = "Delete";
+        actionNameEdit = "SaveOrEdit";
+        controllerName = "Products";
+
+    }
+    else if (Model is Story)
+    {
+        Story item = (Story)Model;
+        actionNameDelete = "Delete";
+        actionNameEdit = "SaveOrEdit";
+        controllerName = "Stories";
+
+    }
+
+}
+<div class="row">
+    <div class="col-md-12">
+        <b>
+            @Html.DisplayFor(model => model.Name)
+        </b>
+    </div>
+    <div class="col-md-12">
+        @GeneralHelper.GetDescription(Model.Description, 200)
+        <br />
+        @Html.ActionLink("Edit", actionNameEdit, controllerName, new { id = Model.Id }, new { @class = "btn btn-primary btn-sm     glyphicon glyphicon-pencil glyphicon-white", @target = "_blank" })
+        @Html.ActionLink("Delete", actionNameDelete, controllerName, new { id = Model.Id }, new { @class = "btn btn-danger btn-sm    glyphicon glyphicon-trash glyphicon-white", @target = "_blank" })
+    </div>
+</div>

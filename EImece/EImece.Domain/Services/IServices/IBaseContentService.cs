@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,5 +13,6 @@ namespace EImece.Domain.Services.IServices
         List<T> GetActiveBaseContents(bool? isActive, int language);
         new void DeleteBaseEntity(List<string> values);
         T GetBaseContent(int id);
+        new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search);
     }
 }
