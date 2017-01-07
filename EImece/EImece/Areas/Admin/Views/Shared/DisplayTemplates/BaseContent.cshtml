@@ -4,26 +4,35 @@
 
 @{
     var actionNameDelete = "Delete";
-    var actionNameEdit = "";
+    var actionNameEdit = "SaveOrEdit";
     var controllerName = "";
-
 
     if (Model is Product)
     {
         Product product = (Product)Model;
-        actionNameDelete = "Delete";
-        actionNameEdit = "SaveOrEdit";
         controllerName = "Products";
-
     }
     else if (Model is Story)
     {
         Story item = (Story)Model;
-        actionNameDelete = "Delete";
-        actionNameEdit = "SaveOrEdit";
         controllerName = "Stories";
-
     }
+    else if (Model is Menu)
+    {
+        Menu item = (Menu)Model;
+        controllerName = "Menus";
+    }
+    else if (Model is StoryCategory)
+    {
+        StoryCategory item = (StoryCategory)Model;
+        controllerName = "StoryCategories";
+    }
+    else if (Model is ProductCategory)
+    {
+        ProductCategory item = (ProductCategory)Model;
+        controllerName = "ProductCategories";
+    }
+
 
 }
 <div class="row">
