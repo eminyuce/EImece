@@ -39,8 +39,10 @@ namespace EImece.Domain.Repositories
                 {
                     predicate = predicate.And(r => r.IsActive == isActive);
                 }
+                Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+                Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = this.FindAll(predicate, keySelector, OrderByType.Ascending, null, null);
+                var items = this.FindAllIncluding(predicate, null, null, keySelector, OrderByType.Ascending,  includeProperties);
 
                 return items;
             }

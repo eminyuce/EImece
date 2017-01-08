@@ -15,7 +15,7 @@ namespace EImece.Domain.Services
     public abstract class BaseEntityService<T> : BaseService<T> where T : BaseEntity
     {
 
-        protected static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
 
         private IBaseEntityRepository<T> baseEntityRepository { get; set; }
         protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) :base(baseEntityRepository)

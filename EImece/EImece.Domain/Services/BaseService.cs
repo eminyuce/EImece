@@ -18,7 +18,7 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseService<T> where T : class, IEntity<int>
     {
-        protected static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
         public bool IsCachingActive { get; set; }
         private ICacheProvider _memoryCacheProvider { get; set; }
         [Inject]

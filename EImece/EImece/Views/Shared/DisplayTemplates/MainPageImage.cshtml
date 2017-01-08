@@ -1,0 +1,11 @@
+﻿@model EImece.Domain.Entities.MainPageImage
+@using EImece.Domain.Helpers.Extensions;
+@{ 
+    var image = Model.MainImage;
+    var mainPageImage = Model;
+}
+@mainPageImage.Name
+<br />
+@mainPageImage.Description
+<br />
+@mainPageImage.GetCroppedImageTag(500,500)

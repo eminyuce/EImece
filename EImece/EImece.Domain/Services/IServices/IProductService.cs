@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services.IServices
 {
     public interface IProductService : IBaseContentService<Product>
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
-        List<Product> GetMainPageProducts(int page, int lang);
+      
+        List<Product> GetMainPageProducts(int pageIndex, int pageSize, int lang);
         List<ProductTag> GetProductTagsByProductId(int productId);
         void SaveProductTags(int id, int[] tags);
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);

@@ -15,7 +15,7 @@ namespace EImece.Controllers
         // GET: Products
         public ActionResult Index(int page = 1)
         {
-            var products = ProductService.GetMainPageProducts(page, Settings.MainLanguage);
+            var products = ProductService.GetMainPageProducts(page, Settings.RecordPerPage, Settings.MainLanguage);
             return View(products);
         }
         public ActionResult Category(String id)

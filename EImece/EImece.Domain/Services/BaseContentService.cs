@@ -18,7 +18,7 @@ namespace EImece.Domain.Services
    
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
-        protected static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public ITagCategoryService TagCategoryService { get; set; }

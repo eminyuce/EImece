@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace EImece.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(Settings.MainLanguage);
+            return View(mainPageModel);
         }
 
         public ActionResult About()

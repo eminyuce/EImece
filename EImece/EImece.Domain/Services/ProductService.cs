@@ -12,16 +12,18 @@ using EImece.Domain.Models.Enums;
 using System.Data.Entity.Validation;
 using EImece.Domain.Helpers;
 using NLog;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services
 {
     public class ProductService : BaseContentService<Product>, IProductService
     {
-        protected static readonly Logger ProductServiceLogger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger ProductServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
+       
 
         private IProductRepository ProductRepository { get; set; }
         public ProductService(IProductRepository repository) : base(repository)
@@ -34,9 +36,9 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, search, lang);
         }
 
-        public List<Product> GetMainPageProducts(int page, int lang)
+        public List<Product> GetMainPageProducts(int pageIndex, int pageSize, int lang)
         {
-            return ProductRepository.GetMainPageProducts(page, lang);
+            return ProductRepository.GetMainPageProducts(pageIndex,pageSize, lang);
         }
 
 
@@ -119,5 +121,7 @@ namespace EImece.Domain.Services
             DeleteEntity(product);
 
         }
+
+       
     }
 }

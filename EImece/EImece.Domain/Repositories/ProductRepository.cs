@@ -26,13 +26,11 @@ namespace EImece.Domain.Repositories
 
   
 
-        public PaginatedList<Product> GetMainPageProducts(int page, int language)
+        public PaginatedList<Product> GetMainPageProducts(int pageIndex,int pageSize, int language)
         {
             try
             {
 
-                int pageIndex = page;
-                int pageSize = Settings.RecordPerPage;
 
                 Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;

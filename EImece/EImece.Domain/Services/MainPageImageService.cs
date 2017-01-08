@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 using EImece.Domain.Repositories.IRepositories;
 using System.Linq.Expressions;
 using Ninject;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services
 {
     public class MainPageImageService : BaseContentService<MainPageImage>, IMainPageImageService
     {
+        [Inject]
+        public IProductService ProductService { get; set; }
 
         private IMainPageImageRepository MainPageImageRepository { get; set; }
         public MainPageImageService(IMainPageImageRepository repository) : base(repository)
@@ -28,6 +31,15 @@ namespace EImece.Domain.Services
                 FileStorageService.DeleteFileStorage(item.MainImageId.Value);
             }
             DeleteEntity(item);
+        }
+        public MainPageViewModel GetMainPageViewModel(int language)
+        {
+            var result = new MainPageViewModel();
+
+            result.MainPageProducts = ProductService.GetMainPageProducts(1, 5, language);
+            result.MainPageImages = MainPageImageRepository.GetActiveBaseContents(true, language);
+
+            return result;
         }
     }
 }
