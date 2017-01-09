@@ -60,6 +60,12 @@ namespace EImece.Areas.Admin.Controllers
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public ActionResult DeleteMenusGridItem(List<String> values)
+        {
+            MenuService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public ActionResult DeleteMediaGridItem(List<String> values)
         {
             FileStorageService.DeleteBaseEntity(values);

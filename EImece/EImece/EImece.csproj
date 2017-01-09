@@ -441,6 +441,8 @@
     <Content Include="Areas\Admin\Views\MainPageImages\Details.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\BaseContent.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pGridDropDown.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pGridOperations.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

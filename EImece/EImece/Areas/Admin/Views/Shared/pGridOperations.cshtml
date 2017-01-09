@@ -1,0 +1,97 @@
+﻿@using EImece.Domain.Helpers;
+
+@{
+    var controllerName = ViewData["controllerName"].ToStr();
+    var stateSelectionDropDown = ViewData["stateSelectionDropDown"].ToBool(true);
+    var orderingButton = ViewData["orderingButton"].ToBool(true);
+    var selectAll = ViewData["selectAll"].ToBool(true);
+    var deleteAll = ViewData["deleteAll"].ToBool(true);
+    var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
+}
+
+
+
+
+<div class="panel panel-info">
+    <div class="panel-body">
+
+        <div class="row">
+            <span class="col-md-3">
+                <p>
+                    @Html.ActionLink("Create", "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block glyphicon glyphicon-plus" })
+                </p>
+            </span>
+            <span class="col-md-9">
+                @Html.Partial("pSearchForm")
+            </span>
+        </div>
+        <div class="row">
+            @if (selectAll)
+            {
+                <span class="col-md-1">
+                    <span class="btn btn-xs btn-default " id="SelectAll">
+                        Select All
+                    </span>
+                </span>
+                <span class="col-md-1">
+                    <span class="btn btn-xs btn-default" id="DeselectAll">
+                        Deselect All
+                    </span>
+                </span>
+            }
+
+            @if (deleteAll)
+            {
+                <span class="col-md-2">
+                    <span class="btn btn-xs btn-default" id="DeleteAll">
+                        Delete Selected
+                    </span>
+                </span>
+            }
+
+            @if (stateSelectionDropDown)
+            {
+            
+                    <span class="col-md-2">
+                    <select name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">Durum</option>
+                        <option value="ImageState">Resim Yayında</option>
+                        <option value="MainPage">Ana Sayfa</option>
+                    </select>
+                </span>
+
+            }
+            else
+            {
+                <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+            }
+
+            @if (SetStateOnOrOff)
+            {
+                <span class="col-md-2">
+                    <span class="btn btn-xs btn-default" id="SetStateOnAll">Set Selected State True All</span>
+                </span><span class="col-md-2">
+                    <span class="btn btn-xs btn-default" id="SetStateOffAll">Set Selected State False All</span>
+                </span>
+
+            }
+        
+
+            @if (orderingButton)
+            {
+                <span class="col-md-2">
+                    <span class="btn btn-xs btn-default" id="OrderingAll">
+                        Ordering All
+                    </span>
+                </span>
+            }
+     
+
+
+        </div>
+        <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
+            <span id="ErrorMessage"></span>
+        </div>
+
+    </div>
+</div>

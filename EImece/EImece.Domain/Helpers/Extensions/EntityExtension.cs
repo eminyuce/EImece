@@ -11,6 +11,12 @@ namespace EImece.Domain.Helpers.Extensions
 {
     public static class EntityExtension
     {
+        public static List<BaseEntity> DownCasting<T>(this List<T> items) where T : BaseEntity
+        {
+            var baseList = new List<BaseEntity>();
+            items.ForEach(v => baseList.Add(v));
+            return baseList;
+        }
         public static String GetSeoUrl(this BaseEntity entity)
         {
             return String.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(entity.Name), entity.Id);
