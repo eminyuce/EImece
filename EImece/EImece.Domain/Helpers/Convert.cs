@@ -278,12 +278,19 @@ namespace EImece.Domain.Helpers
         }
 
 
-        public static string ToStr(this object arg)
+        public static string ToStr(this object arg, String defaultValue = "")
         {
             string ret = string.Empty;
             if (arg != null)
             {
                 ret = arg.ToString().Trim();
+            }
+            if (String.IsNullOrEmpty(ret))
+            {
+                if (!String.IsNullOrEmpty(defaultValue))
+                {
+                    return defaultValue;
+                }
             }
             return ret;
         }

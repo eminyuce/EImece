@@ -19,7 +19,8 @@
     var title = "ProductCategories";
     var gridName = "ProductCategoriesGrid";
     var contents = Model;
-    var baseList = contents.DownCasting<ProductCategory>();
+    var baseList = contents.DownCasting< Produc,{ "stateSelectionDropDown",true}
+    tCategory >();
 
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
@@ -53,7 +54,7 @@
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
-            ,{"stateSelectionDropDown",true}
+                     ,{"StateTypes","State,ImageState,MainPage"}
            ,{"orderingButton",true}
            ,{"selectAll",true}
            ,{"deleteAll",true}

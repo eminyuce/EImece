@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GridActiveSelectedButtonText" xml:space="preserve">
+    <value>Secilenleri Aktif</value>
+  </data>
+  <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
+    <value>Secilenler Akfif Degil</value>
+  </data>
+  <data name="GridDeleteSelectedButtonText" xml:space="preserve">
+    <value>Secilenleri Sil</value>
+  </data>
   <data name="GridDeleteText" xml:space="preserve">
     <value>Sil</value>
+  </data>
+  <data name="GridDeSelectAllButtonText" xml:space="preserve">
+    <value>Hicbiri</value>
   </data>
   <data name="GridDetailText" xml:space="preserve">
     <value>Detay</value>
@@ -132,8 +144,20 @@
   <data name="GridMainPageImageText" xml:space="preserve">
     <value>Resim</value>
   </data>
+  <data name="GridOrderingAllButtonText" xml:space="preserve">
+    <value>Siralamayi Guncelle</value>
+  </data>
+  <data name="GridPagingDropDownText" xml:space="preserve">
+    <value>Sayfalama</value>
+  </data>
+  <data name="GridResultRecordNumber" xml:space="preserve">
+    <value>Kayit Mevcut</value>
+  </data>
   <data name="GridSearchButtonText" xml:space="preserve">
     <value>Arama</value>
+  </data>
+  <data name="GridSelectAllButtonText" xml:space="preserve">
+    <value>Hepsini Sec</value>
   </data>
   <data name="NewRecordText" xml:space="preserve">
     <value>Yeni Kayit</value>

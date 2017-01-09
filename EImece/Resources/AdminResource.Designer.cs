@@ -61,11 +61,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Secilenleri Aktif.
+        /// </summary>
+        public static string GridActiveSelectedButtonText {
+            get {
+                return ResourceManager.GetString("GridActiveSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secilenler Akfif Degil.
+        /// </summary>
+        public static string GridDeActiveSelectedButtonText {
+            get {
+                return ResourceManager.GetString("GridDeActiveSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secilenleri Sil.
+        /// </summary>
+        public static string GridDeleteSelectedButtonText {
+            get {
+                return ResourceManager.GetString("GridDeleteSelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sil.
         /// </summary>
         public static string GridDeleteText {
             get {
                 return ResourceManager.GetString("GridDeleteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hicbiri.
+        /// </summary>
+        public static string GridDeSelectAllButtonText {
+            get {
+                return ResourceManager.GetString("GridDeSelectAllButtonText", resourceCulture);
             }
         }
         
@@ -106,11 +142,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Siralamayi Guncelle.
+        /// </summary>
+        public static string GridOrderingAllButtonText {
+            get {
+                return ResourceManager.GetString("GridOrderingAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sayfalama.
+        /// </summary>
+        public static string GridPagingDropDownText {
+            get {
+                return ResourceManager.GetString("GridPagingDropDownText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kayit Mevcut.
+        /// </summary>
+        public static string GridResultRecordNumber {
+            get {
+                return ResourceManager.GetString("GridResultRecordNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arama.
         /// </summary>
         public static string GridSearchButtonText {
             get {
                 return ResourceManager.GetString("GridSearchButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hepsini Sec.
+        /// </summary>
+        public static string GridSelectAllButtonText {
+            get {
+                return ResourceManager.GetString("GridSelectAllButtonText", resourceCulture);
             }
         }
         

@@ -3,12 +3,23 @@
 
 @{
     var controllerName = ViewData["controllerName"].ToStr();
-    var stateSelectionDropDown = ViewData["stateSelectionDropDown"].ToBool(true);
+    
     var orderingButton = ViewData["orderingButton"].ToBool(true);
     var selectAll = ViewData["selectAll"].ToBool(true);
     var deleteAll = ViewData["deleteAll"].ToBool(true);
     var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
+    var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
+
     var NewRecordText = AdminResource.NewRecordText;
+
+    var GridSelectAllButtonText = AdminResource.GridSelectAllButtonText;
+    var GridDeSelectAllButtonText = AdminResource.GridDeSelectAllButtonText;
+    var GridDeleteSelectedButtonText = AdminResource.GridDeleteSelectedButtonText;
+    var GridActiveSelectedButtonText = AdminResource.GridActiveSelectedButtonText;
+    var GridDeActiveSelectedButtonText = AdminResource.GridDeActiveSelectedButtonText;
+    var GridOrderingAllButtonText = AdminResource.GridOrderingAllButtonText;
+
+
 }
 
 
@@ -32,12 +43,12 @@
             {
                 <span class="col-md-1">
                     <span class="btn btn-xs btn-default " id="SelectAll">
-                        Select All
+                        @GridSelectAllButtonText
                     </span>
                 </span>
                 <span class="col-md-1">
                     <span class="btn btn-xs btn-default" id="DeselectAll">
-                        Deselect All
+                        @GridDeSelectAllButtonText
                     </span>
                 </span>
             }
@@ -46,48 +57,59 @@
             {
                 <span class="col-md-2">
                     <span class="btn btn-xs btn-default" id="DeleteAll">
-                        Delete Selected
+                        @GridDeleteSelectedButtonText
                     </span>
                 </span>
             }
 
-            @if (stateSelectionDropDown)
-            {
-            
-                    <span class="col-md-2">
-                    <select name="ItemStateSelection" id="ItemStateSelection">
-                        <option value="State">Durum</option>
-                        <option value="ImageState">Resim Yayında</option>
-                        <option value="MainPage">Ana Sayfa</option>
-                    </select>
+          
+
+                <span class="col-md-2">
+                    @if (StateTypes.Equals("State,ImageState,MainPage"))
+                    {
+                        <select name="ItemStateSelection" id="ItemStateSelection">
+                            <option value="State">Durum</option>
+                            <option value="ImageState">Resim Yayında</option>
+                            <option value="MainPage">Ana Sayfa</option>
+                        </select>
+                    }
+                    else if (StateTypes.Equals("State,ImageState"))
+                    {
+                        <select name="ItemStateSelection" id="ItemStateSelection">
+                            <option value="State">Durum</option>
+                            <option value="ImageState">Resim Yayında</option>
+                        </select>
+                    }
+                    else if (StateTypes.Equals("State"))
+                    {
+                        <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                    }
+
+
                 </span>
 
-            }
-            else
-            {
-                <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
-            }
+           
 
             @if (SetStateOnOrOff)
             {
                 <span class="col-md-2">
-                    <span class="btn btn-xs btn-default" id="SetStateOnAll">Set Selected State True All</span>
+                    <span class="btn btn-xs btn-default" id="SetStateOnAll">@GridActiveSelectedButtonText</span>
                 </span><span class="col-md-2">
-                    <span class="btn btn-xs btn-default" id="SetStateOffAll">Set Selected State False All</span>
+                    <span class="btn btn-xs btn-default" id="SetStateOffAll">@GridDeActiveSelectedButtonText</span>
                 </span>
 
             }
-        
+
 
             @if (orderingButton)
             {
                 <span class="col-md-2">
                     <span class="btn btn-xs btn-default" id="OrderingAll">
-                        Ordering All
+                        @GridOrderingAllButtonText
                     </span>
                 </span>
             }
-     
+
 
 
         </div>

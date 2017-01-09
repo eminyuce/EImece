@@ -1,8 +1,12 @@
 ﻿@using EImece.Domain.Entities;
 @model List<BaseEntity>
+@using EImece.Domain.Helpers;
+@using Resources;
 
 @{ 
     var contents = Model;
+    var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
+    var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
 }
 
 <div class="panel-heading">
@@ -10,11 +14,11 @@
         <span class="col-md-6">
             <span class="label ">
                 <span class="badge text-danger text-large">@contents.Count() </span>
-                Records exists
+                @GridResultRecordNumber
             </span>
         </span>
         <span class="col-md-3">
-            <p class="text-right">Grid Paging Number</p>
+            <p class="text-right">@GridPagingDropDownText</p>
         </span>
         <span class="col-md-3">
             <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
