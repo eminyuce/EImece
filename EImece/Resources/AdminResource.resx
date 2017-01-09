@@ -135,6 +135,9 @@
   <data name="GridSearchButtonText" xml:space="preserve">
     <value>Arama</value>
   </data>
+  <data name="NewRecordText" xml:space="preserve">
+    <value>Yeni Kayit</value>
+  </data>
   <data name="SaveButtonText" xml:space="preserve">
     <value>Kaydet</value>
   </data>

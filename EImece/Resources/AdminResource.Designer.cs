@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yeni Kayit.
+        /// </summary>
+        public static string NewRecordText {
+            get {
+                return ResourceManager.GetString("NewRecordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kaydet.
         /// </summary>
         public static string SaveButtonText {

@@ -79,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
                         FileStorageService.SaveOrEditEntity(mainImage);
                         mainpageimage.MainImageId = mainImage.Id;
                     }
-
+                    mainpageimage.ImageState = true;
                     MainPageImageService.SaveOrEditEntity(mainpageimage);
                     int contentId = mainpageimage.Id;
                     return RedirectToAction("Index");

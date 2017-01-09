@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EImece.Domain.Entities.MainPageImage>
+﻿@model List<MainPageImage>
 @using SharkDev.MVC
 @using EImece.Domain.Helpers;
 @using SharkDev.MVC
@@ -6,6 +6,9 @@
 @using GridMvc.Sorting
 @using EImece.Domain;
 @using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -16,7 +19,7 @@
     var title = "MainPageImage";
     var gridName = "MainPageImageGrid";
     var contents = Model;
-
+    var baseList = contents.DownCasting();
 
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
@@ -30,86 +33,19 @@
 
 <div  class="row" style="padding:20px;">
 
-        <div class="panel panel-info">
-            <div class="panel-body">
+    <div class="panel panel-info">
+        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+            {"controllerName",controllerName}
+            ,{"stateSelectionDropDown",false}
+           ,{"orderingButton",true}
+           ,{"selectAll",true}
+           ,{"deleteAll",true}
+            ,{"SetStateOnOrOff",true}})
+    </div>
+    <div class="panel panel-primary">
+        @Html.Partial("pGridDropDown", baseList)
 
-                <div class="row">
-                    <span class="col-md-3">
-                        <p>
-                            @Html.ActionLink("Create", "SaveOrEdit", null, new { @class = "btn btn-primary btn-block glyphicon glyphicon-plus" })
-                        </p>
-                    </span>
-                    <span class="col-md-9">
-                        @Html.Partial("pSearchForm")
-                    </span>
-                </div>
-                <div class="row">
-                    <span class="col-md-1">
-                        <span class="btn btn-xs btn-default " id="SelectAll">
-                            Select All
-                        </span>
-                    </span>
-                    <span class="col-md-1">
-                        <span class="btn btn-xs btn-default" id="DeselectAll">
-                            Deselect All
-                        </span>
-                    </span>
-                    <span class="col-md-2">
-                        <span class="btn btn-xs btn-default" id="DeleteAll">
-                            Delete Selected
-                        </span>
-                    </span>
-
-                    <span class="col-md-2">
-                        <select name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">Durum</option>
-                            <option value="ImageState">Resim Yayında</option>
-                            <option value="MainPage">Ana Sayfa</option>
-                        </select>
-                    </span><span class="col-md-2">
-                        <span class="btn btn-xs btn-default" id="SetStateOnAll">Set Selected State True All</span>
-                    </span><span class="col-md-2">
-                        <span class="btn btn-xs btn-default" id="SetStateOffAll">Set Selected State False All</span>
-                    </span>
-                    <span class="col-md-2">
-                        <span class="btn btn-xs btn-default" id="OrderingAll">
-                            Ordering All
-                        </span>
-                    </span>
-                </div>
-                <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
-                    <span id="ErrorMessage"></span>
-                </div>
-
-            </div>
-        </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <span class="col-md-6">
-                        <span class="label ">
-                            <span class="badge text-danger text-large">@contents.Count() </span>
-
-                            Records exists
-                        </span>
-                    </span>
-                    <span class="col-md-3">
-                        <p class="text-right">Grid Paging Number</p>
-                    </span>
-                    <span class="col-md-3">
-                        <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
-                            <option class="text-info" value="25">25</option>
-                            <option selected="selected" class="text-info" value="50">50</option>
-                            <option class="text-info" value="100">100</option>
-                            <option class="text-info" value="250">250</option>
-                            <option class="text-info" value="500">500</option>
-                            <option class="text-info" value="1000">1000</option>
-                        </select>
-                    </span>
-                </div>
-
-            </div>
-            @Html.Grid(contents).Named(gridName).Columns(columns =>
+        @Html.Grid(contents).Named(gridName).Columns(columns =>
                        {
 
                            columns.Add().Encoded(false).
@@ -136,7 +72,7 @@
                                 @<b>
                                     @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     " })
                                 </b>);
-         
+
 
                        columns.Add()
                                     .Encoded(false)
@@ -167,17 +103,7 @@
                               .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
                                                                 o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
 
-                       columns.Add(o => o.ImageState)
-                              .Titled("ImageState")
-                              .Sortable(true)
-                              .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                               Sanitized(false)
-                              .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                                                o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
-
-
-
-
+                 
                        columns.Add(o => o.CreatedDate)
                               .Titled("Date")
                               .Sortable(true)
@@ -201,7 +127,11 @@
 
                        }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
-        </div>
+    </div>
+
+
+
+
 
 
 
