@@ -18,20 +18,25 @@ namespace EImece.Domain.Services
         private static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
 
         private IBaseEntityRepository<T> baseEntityRepository { get; set; }
-        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) :base(baseEntityRepository)
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) : base(baseEntityRepository)
         {
             this.baseEntityRepository = baseEntityRepository;
         }
-       
-        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda,String search)
+        public virtual List<T> GetActiveBaseEntities(bool? isActive, int language)
         {
-            return baseEntityRepository.SearchEntities(whereLambda, search); 
+            return baseEntityRepository.GetActiveBaseEntities(isActive, language);
+        }
+
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
+        {
+
+            return baseEntityRepository.SearchEntities(whereLambda, search);
         }
 
         public new virtual T SaveOrEditEntity(T entity)
         {
             entity.Lang = Settings.IsMainLanguageSet ? Settings.MainLanguage : entity.Lang;
-            if(entity.Id > 0)
+            if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
             }

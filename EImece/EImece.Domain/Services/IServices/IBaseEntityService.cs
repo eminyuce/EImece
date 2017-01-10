@@ -14,6 +14,6 @@ namespace EImece.Domain.Services.IServices
     {
         void ChangeGridBaseEntityOrderingOrState(List<OrderingItem> values, String checkbox = "");
         List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search);
-
+        List<T> GetActiveBaseEntities(bool? isActive, int language);
     }
 }

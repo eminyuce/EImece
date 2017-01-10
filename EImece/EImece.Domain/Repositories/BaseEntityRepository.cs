@@ -21,11 +21,11 @@ namespace EImece.Domain.Repositories
         public BaseEntityRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-        public virtual List<T> GetActiveBaseEntities(bool? isActive) 
+        public virtual List<T> GetActiveBaseEntities(bool? isActive, int language) 
         {
             try
             {
-                Expression<Func<T, bool>> match = r2 => r2.IsActive == (isActive.HasValue ? isActive.Value : r2.IsActive);
+                Expression<Func<T, bool>> match = r2 => r2.Lang == language && r2.IsActive == (isActive.HasValue ? isActive.Value : r2.IsActive);
                 Expression<Func<T, int>> keySelector = t => t.Position;
                 var items = this.FindAll(match, keySelector, OrderByType.Ascending, null, null);
 

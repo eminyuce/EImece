@@ -44,7 +44,17 @@ namespace EImece.Areas.Admin.Controllers
             }
             return View(content);
         }
+        private List<SelectListItem> GetTemplatesDropDown()
+        {
+            var templates = TemplateService.GetActiveBaseEntities(true, Settings.MainLanguage);
 
+            var resultListItem = new List<SelectListItem>();
+            foreach (var item in templates)
+            {
+                resultListItem.Add(new SelectListItem() { Text = item.Name, Value = item.Id.ToStr() });
+            }
+            return resultListItem;
+        }
         //
         // GET: /ProductCategory/Create
 
@@ -54,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
             var content = ProductCategory.GetInstance<ProductCategory>(); 
             var parentCategory = ProductCategory.GetInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
-
+            ViewBag.Templates = GetTemplatesDropDown();
             if (id == 0)
             {
                 content.ParentId = 0;
@@ -110,6 +120,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Templates = GetTemplatesDropDown();
             return View(productCategory);
         }
 
