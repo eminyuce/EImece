@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    //[Authorize]
     public abstract class BaseAdminController : Controller
     {
         [Inject]

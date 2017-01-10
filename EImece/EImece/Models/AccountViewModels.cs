@@ -79,6 +79,25 @@ namespace EImece.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        public ApplicationUser GetUser()
+        {
+            var user = new ApplicationUser()
+            {
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                Email = this.Email,
+            };
+            return user;
+        }
     }
 
     public class ResetPasswordViewModel

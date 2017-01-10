@@ -69,6 +69,11 @@ namespace EImece.Domain.Services
                                 var product = baseContent as Product;
                                 product.MainPage = item.IsActive;
                             }
+                            else if (baseContent is Story)
+                            {
+                                var story = baseContent as Story;
+                                story.MainPage = item.IsActive;
+                            }
                         }
                         else if (checkbox.Equals("imagestate", StringComparison.InvariantCultureIgnoreCase))
                         {

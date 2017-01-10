@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    
     public class DashboardController : BaseAdminController
     {
         // GET: Admin/Dashboard

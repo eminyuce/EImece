@@ -31,7 +31,7 @@
 
 
 <div class="panel panel-info">
-   @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                      ,{"StateTypes","State,ImageState,MainPage"}
            ,{"orderingButton",true}
@@ -108,6 +108,7 @@ columns.Add(o => o.IsActive)
        .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
                                          o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
 
+
 columns.Add(o => o.ImageState)
        .Titled("ImageState")
        .Sortable(true)
@@ -117,15 +118,23 @@ columns.Add(o => o.ImageState)
                                          o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
 
 
+columns.Add(o => o.MainPage)
+            .Titled("MainPage")
+            .Sortable(true)
+            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+             Sanitized(false)
+            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
+                                              o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage));
+
 
 
 
 columns.Add(o => o.CreatedDate)
-       .Titled("Date")
-       .Sortable(true)
-       .Css("gridDateClass")
-       .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
-       .SortInitialDirection(GridSortDirection.Descending);
+   .Titled("Date")
+   .Sortable(true)
+   .Css("gridDateClass")
+   .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
+   .SortInitialDirection(GridSortDirection.Descending);
 
 
 
