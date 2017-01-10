@@ -14,7 +14,6 @@ namespace EImece.Areas.Admin.Controllers
     {
 
         private ApplicationUserManager _userManager;
- 
         public ApplicationUserManager UserManager
         {
             get
@@ -27,7 +26,35 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
+        //[Authorize(Roles = "Admin")]
+        public ActionResult Register()
+        {
+            return View();
+        }
 
+
+        [HttpPost]
+       // [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = model.GetUser();
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Users");
+                }
+                else
+                {
+                    ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault());
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
         //[Authorize(Roles = "Admin")]
         public ActionResult Index()
         {

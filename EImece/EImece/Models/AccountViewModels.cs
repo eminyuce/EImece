@@ -92,6 +92,7 @@ namespace EImece.Models
         {
             var user = new ApplicationUser()
             {
+                UserName = this.Email,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Email = this.Email,

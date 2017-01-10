@@ -81,14 +81,17 @@ namespace EImece.Models
 
         public void ClearUserRoles(string userId)
         {
+            var dbContext = new ApplicationDbContext();
             var um = new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                new UserStore<ApplicationUser>(dbContext));
             var user = um.FindById(userId);
             var currentRoles = new List<IdentityUserRole>();
             currentRoles.AddRange(user.Roles);
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
             foreach (var role in currentRoles)
             {
-                um.RemoveFromRole(userId, role.RoleId);
+                var roleObj = rm.FindById(role.RoleId);
+                um.RemoveFromRole(userId, roleObj.Name);
             }
         }
     }
