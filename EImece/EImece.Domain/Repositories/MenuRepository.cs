@@ -7,7 +7,6 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
-using EImece.Domain.GenericRepositories;
 using System.Data.Entity;
 using SharkDev.Web.Controls.TreeView.Model;
 using EImece.Domain.Helpers;

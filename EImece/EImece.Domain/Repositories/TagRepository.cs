@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
-using EImece.Domain.GenericRepositories;
 using EImece.Domain.Models.Enums;
 using GenericRepository.EntityFramework.Enums;
 using System.Linq.Expressions;

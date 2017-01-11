@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
-using EImece.Domain.GenericRepositories;
 using GenericRepository;
 using NLog;
 using Ninject;

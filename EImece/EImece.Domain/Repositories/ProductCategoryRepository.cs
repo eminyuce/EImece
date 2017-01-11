@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
-using EImece.Domain.GenericRepositories;
 using SharkDev.Web.Controls.TreeView.Model;
 using EImece.Domain.Helpers;
 using System.Linq.Expressions;

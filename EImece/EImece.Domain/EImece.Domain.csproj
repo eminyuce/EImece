@@ -139,8 +139,6 @@
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\TagCategory.cs" />
     <Compile Include="Entities\Template.cs" />
-    <Compile Include="GenericRepositories\BaseContentRepository.cs" />
-    <Compile Include="GenericRepositories\BaseEntityRepository.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />
