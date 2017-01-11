@@ -26,6 +26,26 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
+        public ActionResult Index(String search="")
+        {
+            var Db = new ApplicationDbContext();
+            var users = Db.Users.AsQueryable();
+            if (!String.IsNullOrEmpty(search.Trim()))
+            {
+                search = search.ToLower().Trim();
+                users = users.Where(r => r.Email.ToLower().Contains(search) || r.FirstName.ToLower().Contains(search) || r.LastName.ToLower().Contains(search));
+            }
+
+            //ViewModel will be posted at the end of the answer
+            var model = new List<EditUserViewModel>();
+            foreach (var user in users)
+            {
+                var u = new EditUserViewModel(user);
+                model.Add(u);
+            }
+            return View(model);
+        }
+
         //[Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
@@ -56,19 +76,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
         //[Authorize(Roles = "Admin")]
-        public ActionResult Index()
-        {
-            var Db = new ApplicationDbContext();
-            var users = Db.Users;
-            //ViewModel will be posted at the end of the answer
-            var model = new List<EditUserViewModel>();
-            foreach (var user in users)
-            {
-                var u = new EditUserViewModel(user);
-                model.Add(u);
-            }
-            return View(model);
-        }
+      
        // [Authorize(Roles = "Admin")]
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {

@@ -40,7 +40,7 @@ namespace EImece.Domain.Repositories
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
         {
             var menus = GetAll();
-            if (!String.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(search.Trim()))
             {
                 menus = menus.Where(whereLambda);
             }

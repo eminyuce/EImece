@@ -1,56 +1,125 @@
 ﻿@using EImece.Models;
-@model IEnumerable<EditUserViewModel>
+@model List<EditUserViewModel>
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
 
 @{
+    var users = Model;
+
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var users = Model;
+
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "Users";
+    var title = "Users";
+    var gridName = "UsersGrid";
+    var contents = Model;
+
+    var gridImagesText = AdminResource.GridImagesText;
+
+    var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
+    var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
 }
 
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Register")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.UserName }) |
-                @Html.ActionLink("Roles", "UserRoles", new { id = item.UserName }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
-            </td>
-        </tr>
-    }
+<div class="panel panel-info">
+    <div class="row">
+        <span class="col-md-3">
+            <p>
+                @Html.ActionLink("Create New", "Register", controllerName, null, new { @class = "btn btn-primary btn-block" })
+            </p>
+        </span>
+        <span class="col-md-9">
+            @Html.Partial("pSearchForm")
+        </span>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <span class="col-md-6">
+                <span class="label ">
+                    <span class="badge text-danger text-large">@contents.Count() </span>
+                    @GridResultRecordNumber
+                </span>
+            </span>
+            <span class="col-md-3">
+                <p class="text-right">@GridPagingDropDownText</p>
+            </span>
+            <span class="col-md-3">
+                <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
+                    <option selected="selected" class="text-info" value="50">50</option>
+                    <option class="text-info" value="500">500</option>
+                    <option class="text-info" value="1000">1000</option>
+                </select>
+            </span>
+        </div>
 
-</table>
+    </div>
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+
+    columns.Add().Encoded(false).
+         Sanitized(false).
+         SetWidth(10).
+         RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", o.UserName));
+
+    columns.Add(o => o.UserName, true);
+
+    columns.Add()
+       .Encoded(false)
+       .Sanitized(false)
+       .SetWidth(30)
+       .RenderValueAs(d =>
+    @<b>
+        @Html.ActionLink("Edit", "Edit", controllerName, new { id = d.UserName }, new { @class = "btn btn-primary btn-sm" })
+    </b>);
+
+columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.SetWidth(30)
+.RenderValueAs(d =>
+    @<b>
+        @Html.ActionLink("Delete", "Delete", controllerName, new { id = d.UserName }, new { @class = "btn btn-danger btn-sm     " })
+
+    </b>);
+columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.SetWidth(30)
+.RenderValueAs(d =>
+    @<b>
+        @Html.ActionLink("Roles", "UserRoles", controllerName, new { id = d.UserName }, new { @class = "btn btn-default btn-sm" })
+    </b>);
+
+    columns.Add(c => c.Email)
+           .Titled("Email")
+           .Filterable(true);
+
+    columns.Add(c => c.FirstName)
+         .Titled("FirstName")
+         .Filterable(true);
+
+    columns.Add(c => c.LastName)
+     .Titled("LastName")
+     .Filterable(true);
+
+
+
+
+}).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+
+</div>
+
+
+
+
