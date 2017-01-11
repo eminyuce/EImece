@@ -11,8 +11,13 @@ namespace EImece.Domain.Entities
     {
         public int ParentId { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+
+        [ForeignKey("Template")]
         public int TemplateId { get; set; }
         [NotMapped]
         public List<ProductCategory> Childrens { get; set; }
+
+
+        public virtual Template Template { get; set; }
     }
 }

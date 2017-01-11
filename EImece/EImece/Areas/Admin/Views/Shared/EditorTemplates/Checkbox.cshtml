@@ -1,0 +1,39 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@model ProductSpecification
+
+@{
+    var field = Model.FieldFormat;
+    var name = field.Attribute("name");
+    var unit = field.Attribute("unit");
+    var values = field.Attribute("values");
+    var display = field.Attribute("display");
+    var dbValue = Model.Value;
+    String valueDisplayName = "";
+    if (display != null)
+    {
+        valueDisplayName = display.Value;
+    }
+    else
+    {
+        valueDisplayName = name != null ? name.Value : "";
+    }
+}
+
+@valueDisplayName
+@if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals("on"))
+{
+    <input name="@name.Value" checked="checked" type="checkbox" />
+}
+else
+{
+    <input name="@name.Value" type="checkbox" />
+}
+
+@if (unit != null)
+{
+    @unit.Value
+}

@@ -19,14 +19,14 @@ namespace EImece.Domain.Repositories
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-       
+
         public ProductRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
 
-  
 
-        public PaginatedList<Product> GetMainPageProducts(int pageIndex,int pageSize, int language)
+
+        public PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language)
         {
             try
             {
@@ -38,19 +38,19 @@ namespace EImece.Domain.Repositories
                 Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty3 };
                 Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
                 Expression<Func<Product, int>> keySelector = t => t.Position;
-                var items = this.PaginateDescending(pageIndex, pageSize, keySelector , match, includeProperties);
+                var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties);
 
                 return items;
             }
             catch (Exception exception)
             {
-                Logger.Error(exception,exception.Message);
+                Logger.Error(exception, exception.Message);
                 throw exception;
             }
 
         }
 
-   
+
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
             var products = GetAll().Where(r => r.Lang == language);
@@ -69,13 +69,15 @@ namespace EImece.Domain.Repositories
 
         public Product GetProduct(int id)
         {
-            Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
-            Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
-            Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
-            Expression<Func<Product, object>> includeProperty4 = r => r.ProductTags;
-            Expression<Func<Product, object>> includeProperty5 = r => r.ProductSpecifications;
-            Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty3, includeProperty4, includeProperty5 };
-            return this.GetSingleIncluding(id, includeProperties);
+            var includeProperties = GetIncludePropertyExpressionList<Product>();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
+            includeProperties.Add(r => r.ProductSpecifications);
+            var item = GetSingleIncluding(id, includeProperties.ToArray());
+
+            return item;
         }
     }
 }

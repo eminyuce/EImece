@@ -121,6 +121,10 @@
       <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SharkDev.MVC, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SharkTree.1.2.1.2\lib\SharkDev.MVC.dll</HintPath>
       <Private>True</Private>
@@ -297,6 +301,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\angularTreeView\angular.treeview.css" />
+    <Content Include="Content\codemirror\codemirror.css" />
     <Content Include="Content\DataTable\jquery.dataTables.min.css" />
     <Content Include="Content\FileUpload\FileUploader.css" />
     <Content Include="Content\FileUpload\styles.css" />
@@ -456,6 +461,10 @@
     <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Register.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\SaveOrEditProductSpecs.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Checkbox.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DropDown.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\TextBox.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -470,6 +479,10 @@
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-helper.min.js.map" />
     <Content Include="Scripts\blueimp-gallery2\js\jquery.blueimp-gallery.min.js.map" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
+    <Content Include="Scripts\codemirror\codemirror.js" />
+    <Content Include="Scripts\codemirror\xml\index.html" />
+    <Content Include="Scripts\codemirror\xml\test.js" />
+    <Content Include="Scripts\codemirror\xml\xml.js" />
     <Content Include="Scripts\eimece.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
@@ -570,8 +583,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\codemirror\addon\" />
+    <Folder Include="Content\codemirror\doc\" />
     <Folder Include="media\images\" />
     <Folder Include="media\tempFiles\" />
+    <Folder Include="Scripts\codemirror\addon\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

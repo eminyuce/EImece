@@ -1,0 +1,71 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@model ProductSpecification
+
+@{
+    var field = Model.FieldFormat;
+    var name = field.Attribute("name");
+    var unit = field.Attribute("unit");
+    var values = field.Attribute("values");
+    var display = field.Attribute("display");
+    var dbValue = Model.Value;
+    String valueDisplayName = "";
+    if (display != null)
+    {
+        valueDisplayName = display.Value;
+    }
+    else
+    {
+        valueDisplayName = name != null ? name.Value : "";
+    }
+}
+@valueDisplayName
+@if (values != null)
+{
+    <select name="@name.Value">
+        @{
+            var list = DirectoryMTD.Domain.Repositories.ListRepository.GetList(values.Value);
+            if (list != null)
+            {
+                foreach (var item in list.ListItems)
+                {
+                    if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(item.Value))
+                    {
+                        <option value="@item.Value" selected="selected">@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            }
+            else
+            {
+
+                foreach (var v in values.Value.Split(",".ToCharArray()))
+                {
+                    if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(v))
+                    {
+                        <option selected="selected">@v</option>
+                    }
+                    else
+                    {
+                        <option>@v</option>
+                    }
+                }
+
+
+            }
+        }
+
+    </select>
+
+            }
+
+@if (unit != null)
+{
+    @unit.Value
+}

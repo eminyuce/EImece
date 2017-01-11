@@ -21,7 +21,21 @@ namespace EImece.Areas.Admin.Controllers
             ProductAdminModel productAdminPage = ProductService.GetProductAdminPage(catId, search, lang, id);
             return View(productAdminPage);
         }
+        public ActionResult SaveOrEditProductSpecs(int id = 0)
+        {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
+            Product content = ProductService.GetProductById(id);
+            ViewBag.Template = TemplateService.GetSingle(content.ProductCategory.TemplateId);
+            if (content == null)
+            {
+                return HttpNotFound();
+            }
+            return View(content);
+        }
         //
         // GET: /Product/Details/5
 

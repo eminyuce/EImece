@@ -47,7 +47,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TemplateXml, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TemplateXml, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.TemplateXml, new { @id = "code", @style = "margin: 0px; width: 774px; height: 787px;" })
                 @Html.ValidationMessageFor(model => model.TemplateXml, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -63,3 +63,87 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+
+ 
+    <script>
+
+        var tags = {
+            "!top": ["component"],
+            "!attrs": {
+            },
+            component: {
+                children: ["group"]
+            },
+            group: {
+                attrs: {
+                    name: ['Size', 'Power', 'Other']
+                },
+                children: ['textbox', 'dropdown', 'checkbox']
+            },
+            textbox: {
+                attrs:
+                    {
+                        name: ['Width', 'Length', 'Hight'],
+                        unit: ['Inch', 'Volt', 'Pound'],
+                        values: ['Countries', 'Colors', 'State'],
+                        display: ['Width', 'Length', 'Hight']
+                    }, children: null
+            }, dropdown: {
+                attrs: {
+                    name: ['Width', 'Length', 'Hight'],
+                    unit: ['Inch', 'Volt', 'Pound'],
+                    values: ['Countries', 'Colors', 'State'],
+                    display: ['Width', 'Length', 'Hight']
+                }, children: null
+            }, checkbox: {
+                attrs: {
+                    name: ['Width', 'Length', 'Hight'],
+                    unit: ['Inch', 'Volt', 'Pound'],
+                    values: ['Countries', 'Colors', 'State'],
+                    display: ['Width', 'Length', 'Hight']
+                }, children: null
+            }
+
+        };
+ 
+        function completeAfter(cm, pred) {
+            var cur = cm.getCursor();
+            if (!pred || pred()) setTimeout(function () {
+                if (!cm.state.completionActive)
+                    cm.showHint({ completeSingle: false });
+            }, 100);
+            return CodeMirror.Pass;
+        }
+
+        function completeIfAfterLt(cm) {
+            return completeAfter(cm, function () {
+                var cur = cm.getCursor();
+                return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+            });
+        }
+
+        function completeIfInTag(cm) {
+            return completeAfter(cm, function () {
+                var tok = cm.getTokenAt(cm.getCursor());
+                if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+                var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+                return inner.tagName;
+            });
+        }
+
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "xml",
+            lineNumbers: true,
+            extraKeys: {
+                "'<'": completeAfter,
+                "'/'": completeIfAfterLt,
+                "' '": completeIfInTag,
+                "'='": completeIfInTag,
+                "Ctrl-Space": "autocomplete"
+            },
+            hintOptions: { schemaInfo: tags }
+        });
+    </script>
+
+ 

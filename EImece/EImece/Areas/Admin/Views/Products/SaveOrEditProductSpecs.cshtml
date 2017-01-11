@@ -1,0 +1,92 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@model Product
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var template = (Template) ViewBag.Template;
+    var specs = Model.ProductSpecifications;
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        @Html.HiddenFor(model => model.Id)
+
+        @if (!String.IsNullOrEmpty(template.TemplateXml))
+        {
+            XDocument xdoc = XDocument.Parse(template.TemplateXml);
+            var groups = xdoc.Root.Descendants("group");
+
+            if (groups.Any())
+            {
+
+                @Html.HiddenFor(model => template.Id)
+                @Html.HiddenFor(model => template.TemplateXml)
+
+                foreach (var group in groups)
+                {
+                    if (group.FirstAttribute != null)
+                    {
+
+                        <h3>
+                            @group.FirstAttribute.Value
+                        </h3>
+
+                    }
+
+
+                    foreach (XElement field in group.Elements())
+                    {
+
+                        var name = field.Attribute("name");
+                        var unit = field.Attribute("unit");
+                        var values = field.Attribute("values");
+                        var display = field.Attribute("display");
+                        var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+
+                        if (dbValueObj == null)
+                        {
+                            dbValueObj = new ProductSpecification();
+                        }
+
+                        dbValueObj.FieldFormat = field;
+                        <div>
+                            @Html.EditorFor(model => dbValueObj, field.Name.LocalName)
+                        </div>
+                    }
+                }
+
+
+            }
+        }
+         
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -40,12 +41,24 @@ namespace EImece.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult SaveOrEdit(Template template)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    try
+                    {
+                        XDocument xdoc = XDocument.Parse(template.TemplateXml);
+                        var groups = xdoc.Root.Descendants("group");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("TemplateXml", "XDocument format exception while parsing it:" + ex.Message);
+                        return View(template);
+                    }
+
 
                     TemplateService.SaveOrEditEntity(template);
                     int contentId = template.Id;

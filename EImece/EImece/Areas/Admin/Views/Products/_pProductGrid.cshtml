@@ -59,6 +59,17 @@
                                     @Html.ActionLink(gridEditText, "Index", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm" })
                                 </b>);
 
+
+                       columns.Add()
+                                      .Encoded(false)
+                                      .Sanitized(false)
+                                      .SetWidth(30)
+                                      .RenderValueAs(d =>
+                                    @<b>
+                                        @Html.ActionLink("Add Specs", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
+                                    </b>);
+
+
                            columns.Add()
                                   .Encoded(false)
                                   .Sanitized(false)
