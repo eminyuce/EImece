@@ -17,8 +17,9 @@ namespace EImece.Models
             this.FirstName = user.FirstName;
             this.LastName = user.LastName;
             this.Email = user.Email;
+            this.Id = user.Id;
         }
-
+        public string Id { get; set; }
         [Required]
         [Display(Name = "User Name")]
         public string UserName { get; set; }

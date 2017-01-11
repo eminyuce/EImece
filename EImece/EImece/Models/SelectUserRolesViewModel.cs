@@ -19,7 +19,7 @@ namespace EImece.Models
             this.UserName = user.UserName;
             this.FirstName = user.FirstName;
             this.LastName = user.LastName;
-
+            this.Id = user.Id;
             var Db = new ApplicationDbContext();
 
             // Add all available roles to the list of EditorViewModels:
@@ -40,7 +40,7 @@ namespace EImece.Models
                 checkUserRole.Selected = true;
             }
         }
-
+        public string Id { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

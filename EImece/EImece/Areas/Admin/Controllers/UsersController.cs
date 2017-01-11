@@ -81,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {
             var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.UserName == id);
+            var user = Db.Users.First(u => u.Id == id);
             var model = new EditUserViewModel(user);
             ViewBag.MessageId = Message;
             return View(model);
@@ -94,11 +94,12 @@ namespace EImece.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var Db = new ApplicationDbContext();
-                var user = Db.Users.First(u => u.UserName == model.UserName);
+                var user = Db.Users.First(u => u.Id == model.Id);
                 // Update the user data:
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.Email = model.Email;
+                user.UserName = model.UserName;
                 Db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 await Db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -110,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Delete(string id = null)
         {
             var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.UserName == id);
+            var user = Db.Users.First(u => u.Id == id);
             var model = new EditUserViewModel(user);
             if (user == null)
             {
@@ -126,7 +127,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.UserName == id);
+            var user = Db.Users.First(u => u.Id == id);
             Db.Users.Remove(user);
             Db.SaveChanges();
             return RedirectToAction("Index");
@@ -136,7 +137,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult UserRoles(string id)
         {
             var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.UserName == id);
+            var user = Db.Users.First(u => u.Id == id);
             var model = new SelectUserRolesViewModel(user);
             return View(model);
         }
@@ -151,7 +152,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var idManager = new IdentityManager();
                 var Db = new ApplicationDbContext();
-                var user = Db.Users.First(u => u.UserName == model.UserName);
+                var user = Db.Users.First(u => u.Id == model.Id);
                 idManager.ClearUserRoles(user.Id);
                 foreach (var role in model.Roles)
                 {
