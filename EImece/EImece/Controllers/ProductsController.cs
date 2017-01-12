@@ -25,5 +25,11 @@ namespace EImece.Controllers
             var productCategory = ProductCategoryService.GetProductCategory(categoryId);
             return View(productCategory);
         }
+        public ActionResult Detail(String id)
+        {
+            var productId = id.Split("-".ToCharArray()).Last().ToInt();
+            var product = ProductService.GetProductById(productId);
+            return View(product);
+        }
     }
 }

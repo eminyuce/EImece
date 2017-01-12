@@ -34,11 +34,16 @@ namespace EImece.Domain.Services
         }
         public MainPageViewModel GetMainPageViewModel(int language)
         {
-            var result = new MainPageViewModel();
+            var cacheKey = String.Format("GetMainPageViewModel-{0}", language);
+            MainPageViewModel result = null;
 
-            result.MainPageProducts = ProductService.GetMainPageProducts(1, 5, language);
-            result.MainPageImages = MainPageImageRepository.GetActiveBaseContents(true, language);
-
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = new MainPageViewModel();
+                result.MainPageProducts = ProductService.GetMainPageProducts(1, 5, language);
+                result.MainPageImages = MainPageImageRepository.GetActiveBaseContents(true, language);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+            }
             return result;
         }
     }

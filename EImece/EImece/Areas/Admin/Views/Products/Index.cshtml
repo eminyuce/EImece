@@ -139,7 +139,7 @@ window.location='/admin/products/index/'+e.id;
                     .Sanitized(false)
               .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(d.Name, "ProductDetail", "Products", new { area = "", id = d.Id }, new { @class = "btn btn-link" })
+                @Html.ActionLink(d.Name, "Detail", "Products", new {  area = "", id = d.Id }, new { @class = "btn btn-link", @target="_blank" })
             </b>);
 
 

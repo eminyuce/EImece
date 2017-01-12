@@ -41,7 +41,7 @@ namespace EImece.Domain.Services
             {
                 result = ProductCategoryRepository.GetProductCategory(categoryId);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
-                Logger.Trace("Data is set to cache");
+ 
             }
             return result;
 

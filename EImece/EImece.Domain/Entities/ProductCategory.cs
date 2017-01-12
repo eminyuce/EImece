@@ -17,7 +17,7 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public List<ProductCategory> Childrens { get; set; }
 
-
+        public double? DiscountPercantage { get; set; }
         public virtual Template Template { get; set; }
     }
 }

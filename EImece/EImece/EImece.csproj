@@ -584,6 +584,7 @@
     <Content Include="Views\Shared\DisplayTemplates\MainPageImage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProduct.cshtml" />
     <Content Include="Views\Shared\pGridImageMainPage.cshtml" />
+    <Content Include="Views\Products\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

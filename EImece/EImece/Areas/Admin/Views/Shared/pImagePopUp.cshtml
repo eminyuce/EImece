@@ -8,8 +8,8 @@
 @{
     var close = AdminResource.Close;
     var fileStorage = Model;
-    var imageWidth = fileStorage.Width * Settings.GetConfigInt("AdminImageWidth", 50) / 100;
-    var imageHeight = fileStorage.Height * Settings.GetConfigInt("AdminImageHeight", 50) / 100;
+    var imageWidth = fileStorage.Width * Settings.GetConfigInt("AdminImageWidthPercantage", 50) / 100;
+    var imageHeight = fileStorage.Height * Settings.GetConfigInt("AdminImageHeightPercantage", 50) / 100;
 
 }
 
