@@ -583,12 +583,14 @@
     <Content Include="Views\Products\Category.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageImage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProduct.cshtml" />
-    <Content Include="Views\Shared\pGridImageMainPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pGridImageMainPage.cshtml" />
     <Content Include="Views\Products\Detail.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_AddSubscriber.cshtml" />
+    <Content Include="Views\Home\ThanksForSubscription.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Images\" />
     <Folder Include="Content\codemirror\addon\" />
     <Folder Include="Content\codemirror\doc\" />
     <Folder Include="media\images\" />

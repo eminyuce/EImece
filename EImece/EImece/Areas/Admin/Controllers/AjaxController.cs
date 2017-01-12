@@ -75,6 +75,11 @@ namespace EImece.Areas.Admin.Controllers
             MainPageImageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ChangeSubscriberGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            SubsciberService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeMediaGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             FileStorageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);

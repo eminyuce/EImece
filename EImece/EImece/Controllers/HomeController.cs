@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,16 @@ namespace EImece.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public ActionResult AddSubscriber(Subscriber subscriber)
+        {
+            SubsciberService.SaveOrEditEntity(subscriber);
+            return RedirectToAction("ThanksForSubscription",new { id= subscriber.Id });
+        }
+        public ActionResult ThanksForSubscription(int id)
+        {
+            var s = SubsciberService.GetSingle(id);
+            return View(s);
         }
         public ActionResult Menu()
         {

@@ -46,7 +46,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "mainPageImage", @class = "form-control" })
+                    @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "productCategory", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>
