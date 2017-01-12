@@ -39,6 +39,6 @@ namespace EImece.Domain.DbContext
         public DbSet<Template> Templates    { get; set; }
         public DbSet<MenuFile> MenuFiles { get; set; }
 
-        public System.Data.Entity.DbSet<EImece.Domain.Entities.MainPageImage> MainPageImages { get; set; }
+        public DbSet<MainPageImage> MainPageImages { get; set; }
     }
 }

@@ -52,7 +52,9 @@ namespace EImece.Domain.Repositories
 
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
-            var products = GetAll().Where(r => r.Lang == language);
+            Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Product, object>>[] includeProperties = {  includeProperty3 };
+            var products = GetAllIncluding(includeProperty3).Where(r => r.Lang == language);
             if (!String.IsNullOrEmpty(search))
             {
                 products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search));

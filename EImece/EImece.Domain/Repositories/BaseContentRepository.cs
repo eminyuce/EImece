@@ -42,7 +42,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
                 Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = this.FindAllIncluding(predicate, null, null, keySelector, OrderByType.Ascending,  includeProperties);
+                var items = this.FindAllIncluding(predicate, null, null, keySelector, OrderByType.Ascending, includeProperties);
 
                 return items;
             }
@@ -53,6 +53,19 @@ namespace EImece.Domain.Repositories
             }
         }
 
-       
+        public new virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
+        {
+            Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+            Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
+            var menus = GetAllIncluding(includeProperties);
+            if (!String.IsNullOrEmpty(search.Trim()))
+            {
+                menus = menus.Where(whereLambda);
+            }
+            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+        }
     }
+
+
+
 }

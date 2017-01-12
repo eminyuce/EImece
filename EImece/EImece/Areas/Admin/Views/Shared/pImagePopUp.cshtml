@@ -1,0 +1,35 @@
+﻿@model FileStorage
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+
+@{
+    var fileStorage = Model;
+    var imageWidth = fileStorage.Width * Settings.GetConfigInt("AdminImageWidth",50) / 100;
+    var imageHeight = fileStorage.Height * Settings.GetConfigInt("AdminImageHeight", 50) / 100;
+
+}
+
+<!-- Modal -->
+<div id="@String.Format("myModal_{0}",fileStorage.Id)" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@fileStorage.FileName</h4>
+            </div>
+            <div class="modal-body">
+                <p>@String.Format("Width={0} Height={1}", fileStorage.Width, fileStorage.Height)</p>
+                <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorage.Id, width=imageWidth, height= imageHeight })" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resim Yok.
+        /// </summary>
+        public static string GridNoMainPageImageText {
+            get {
+                return ResourceManager.GetString("GridNoMainPageImageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Siralamayi Guncelle.
         /// </summary>
         public static string GridOrderingAllButtonText {

@@ -11,6 +11,11 @@ using EImece.Domain.Repositories;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
+using System.Linq.Expressions;
+using EImece.Domain.Services;
+using System.Data.SqlClient;
+using System.Configuration;
+using EImece.Domain;
 
 namespace EImece.Tests.Controllers
 {
@@ -19,44 +24,64 @@ namespace EImece.Tests.Controllers
     public class HomeControllerTest
     {
 
-        private const String ConnectionString = "EImeceDbConnection";
+        private String ConnectionString  { get { return Settings.DbConnectionKey; } }
+
         [TestMethod]
         public void Index()
         {
-            // Arrange
-            HomeController controller = new HomeController();
+            String search = "";
+            var db = new EImeceContext(ConnectionString);
+            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db));
+            Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search);
+            foreach (var item in productCategories)
+            {
+                Console.WriteLine(item.Id);
+                Console.WriteLine(item.MainImageId);
+                Console.WriteLine(item.MainImage.FileName);
 
-            // Act
-            ViewResult result = controller.Index() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
+            }
         }
 
         [TestMethod]
         public void About()
         {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.About() as ViewResult;
-
-            // Assert
-            Assert.AreEqual("Your application description page.", result.ViewBag.Message);
+            try
+            {
+                String search = "";
+                var db = new EImeceContext(ConnectionString);
+                foreach (var item in db.ProductCategories)
+                {
+                    Console.WriteLine(item.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace.ToString());
+            }
+          
         }
 
         [TestMethod]
         public void Contact()
         {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.Contact() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
+            SqlConnection cnn;
+            string connetionString2 = ConfigurationManager.ConnectionStrings[ConnectionString].ConnectionString;
+         cnn = new SqlConnection(connetionString2);
+            try
+            {
+                cnn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = cnn;
+                cmd.CommandText = "select getdate() date";
+                cmd.ExecuteNonQuery();
+                cnn.Close();
+                Console.WriteLine("It is done.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace.ToString());
+            }
         }
         [TestMethod]
         public void GetTagsByTagType()

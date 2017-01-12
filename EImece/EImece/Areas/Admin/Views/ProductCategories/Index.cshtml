@@ -25,7 +25,8 @@
     var gridEditText = AdminResource.GridEditText;
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
-    var gridMainPageImageText = AdminResource.GridMainPageImageText;
+
+
 }
 
 <h2>Index</h2>
@@ -149,10 +150,8 @@
               .Sanitized(false)
 
               .SetWidth(30)
-              .RenderValueAs(d =>
-            @<b>
-                <a class="btn btn-info btn-sm" data-file-id="@d.Id">@gridMainPageImageText</a>
-            </b>);
+              .RenderValueAs(d =>Html.Partial("pGridImageMainPage",d));
+
 
 
        }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
@@ -164,3 +163,5 @@
     </div>
 
 </div>
+
+
