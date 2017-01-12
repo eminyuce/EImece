@@ -1,0 +1,54 @@
+﻿@model EImece.Domain.Models.AdminModels.ProductAdminModel
+@using EImece.Domain.Helpers;
+@using SharkDev.MVC
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var products = Model.Products;
+  
+
+}
+
+<h2>Index</h2>
+
+
+<div class="row" style="padding:20px;">
+
+    <div class="col-md-3">
+        @Html.Partial("_pProductCategoryTree",Model)
+    </div>
+    <div class="col-md-9">
+        <div>
+            <div>
+                @Html.Partial("_pSaveOrEdit", Model)
+            </div>
+            <div>
+                @Html.Partial("_pProductGrid", products)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            CreateTags();
+            function CreateTags() {
+                var postData = JSON.stringify({ "language": $("#product_Lang").val(), "productId": $("#product_Id").val() });
+                console.log(postData);
+                ajaxMethodCall(postData, "/Ajax/GetProductTags", function (data) {
+                    $("#productTagsHtml").html(data);
+                });
+            }
+
+
+        });
+    </script>
+}

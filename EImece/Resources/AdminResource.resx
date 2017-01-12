@@ -168,4 +168,7 @@
   <data name="GridNoMainPageImageText" xml:space="preserve">
     <value>Resim Yok</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
 </root>

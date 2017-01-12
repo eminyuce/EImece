@@ -16,10 +16,13 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(int id = 0, int catId = 0, String search = "", int lang = 1)
+  
+
+        public ActionResult Index(int id = 0, String search = "", int lang = 1)
         {
-            ProductAdminModel productAdminPage = ProductService.GetProductAdminPage(catId, search, lang, id);
-            return View(productAdminPage);
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            var products = ProductService.GetAdminPageList(id, search, lang);
+            return View(products);
         }
         public ActionResult SaveOrEditProductSpecs(int id = 0)
         {
