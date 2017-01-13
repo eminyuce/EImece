@@ -1,0 +1,25 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductsSearchViewModel
+@using GenericRepository;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@{
+    ViewBag.Title = "SearchProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PaginatedList<Product> products = Model.Products;
+}
+
+<h2>SearchProducts</h2>
+ 
+
+@Html.BootstrapPager(products.PageIndex,
+    index => Url.Action("Index", "Products", new { page = index }),
+    products.TotalCount, products.PageSize, numberOfLinks: 10)
+
+@Html.Partial("_PagingPartial", products)
+@foreach (var item in products)
+{
+    <div>
+        @Html.DisplayFor(modelItem => item, "ProductSearchItem")
+    </div>
+}
+@Html.Partial("_PagingPartial", products)

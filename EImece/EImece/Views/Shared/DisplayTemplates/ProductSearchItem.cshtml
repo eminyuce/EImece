@@ -1,0 +1,35 @@
+﻿@model EImece.Domain.Entities.Product
+ @{ 
+     var productFiles = Model.ProductFiles;
+
+ }
+
+
+<div>
+    <dl class="dl-horizontal">
+        <h2>
+            Product Category: @Model.ProductCategory.Name
+        </h2>
+        @if (Model.MainImage != null)
+        {
+            @Model.MainImage.FileName
+        }
+  
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.Id)
+        </dt>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+       
+    </dl>
+</div>
+ 

@@ -80,5 +80,18 @@ namespace EImece.Domain.Repositories
 
             return item;
         }
+
+        public PaginatedList<Product> SearchProducts(int pageIndex,int pageSize,string search, int lang)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<Product>();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.Name.Trim().ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+
+            return items;
+        }
     }
 }

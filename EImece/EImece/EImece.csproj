@@ -588,6 +588,9 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_AddSubscriber.cshtml" />
     <Content Include="Views\Home\ThanksForSubscription.cshtml" />
+    <Content Include="Views\Shared\_SearchProductForm.cshtml" />
+    <Content Include="Views\Products\SearchProducts.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ProductSearchItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

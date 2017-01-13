@@ -3,13 +3,13 @@
 
 @{
     var controllerName = ViewData["controllerName"].ToStr();
-    
+
     var orderingButton = ViewData["orderingButton"].ToBool(true);
     var selectAll = ViewData["selectAll"].ToBool(true);
     var deleteAll = ViewData["deleteAll"].ToBool(true);
     var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
     var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
-
+    var isNewRecordButtonEnabled = ViewData["IsNewRecordButtonEnabled"].ToBool(true);
     var NewRecordText = AdminResource.NewRecordText;
 
     var GridSelectAllButtonText = AdminResource.GridSelectAllButtonText;
@@ -29,14 +29,25 @@
     <div class="panel-body">
 
         <div class="row">
-            <span class="col-md-3">
-                <p>
-                    @Html.ActionLink(NewRecordText, "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block" })
-                </p>
-            </span>
-            <span class="col-md-9">
-                @Html.Partial("pSearchForm")
-            </span>
+            @if (isNewRecordButtonEnabled)
+            {
+                <span class="col-md-3">
+                    <p>
+                        @Html.ActionLink(NewRecordText, "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block" })
+                    </p>
+                </span>
+                <span class="col-md-9">
+                    @Html.Partial("pSearchForm")
+                </span>
+            }
+            else
+            {
+                <span class="col-md-12">
+                    @Html.Partial("pSearchForm")
+                </span>
+            }
+
+
         </div>
         <div class="row">
             @if (selectAll)

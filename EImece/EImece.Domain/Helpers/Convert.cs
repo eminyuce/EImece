@@ -402,16 +402,14 @@ namespace EImece.Domain.Helpers
         public static bool ToBool(this object arg, bool defaultValue = false)
         {
             bool ret = defaultValue;
-
-            if (!bool.TryParse(arg.ToStr(), out ret))
+            var m = arg.ToStr();
+            if (!String.IsNullOrEmpty(m) && !bool.TryParse(m, out ret))
             {
                 if (arg.ToStr().ToLower().Contains((!defaultValue).ToString().ToLower()))
                 {
                     ret = !defaultValue;
                 }
-
             }
-
 
 
             return ret;

@@ -59,7 +59,7 @@ namespace EImece.Domain.Services
             result.ProductCategoryTree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             if (productId > 0)
             {
-                result.Product = this.GetProductById(productId);
+                result.Product = ProductRepository.GetProduct(productId);
             }
             else
             {
@@ -77,9 +77,12 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public Product GetProductById(int id)
+        public ProductDetailViewModel GetProductById(int id)
         {
-            return ProductRepository.GetProduct(id);
+            var result = new ProductDetailViewModel();
+            var r = ProductRepository.GetProduct(id);
+            result.Product = r;
+            return result;
         }
         public virtual new void DeleteBaseEntity(List<string> values)
         {
@@ -103,7 +106,7 @@ namespace EImece.Domain.Services
         }
         public void DeleteProductById(int id)
         {
-            var product = GetProductById(id);
+            var product = ProductRepository.GetProduct(id);
             ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
             ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
             if (product.MainImageId.HasValue)
@@ -122,6 +125,13 @@ namespace EImece.Domain.Services
 
         }
 
-       
+        public ProductsSearchViewModel SearchProducts( int pageIndex, int pageSize, string search, int lang)
+        {
+            var r = new ProductsSearchViewModel();
+            r.Search = search;
+            r.Products = ProductRepository.SearchProducts(pageIndex, pageSize,search, lang);
+
+            return r;
+        }
     }
 }

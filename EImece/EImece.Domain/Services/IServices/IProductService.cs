@@ -17,8 +17,9 @@ namespace EImece.Domain.Services.IServices
         List<ProductTag> GetProductTagsByProductId(int productId);
         void SaveProductTags(int id, int[] tags);
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);
-        Product GetProductById(int id);
+        ProductDetailViewModel GetProductById(int id);
         void DeleteProductById(int id);
         new void DeleteBaseEntity(List<string> values);
+        ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,14 @@ namespace EImece.Controllers
             var productId = id.Split("-".ToCharArray()).Last().ToInt();
             var product = ProductService.GetProductById(productId);
             return View(product);
+        }
+        public ActionResult SearchProducts(String search)
+        {
+            int pageIndex = 1;
+            int pageSize = 20;
+            var lang = Settings.MainLanguage;
+            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize,search, lang);
+            return View(products);
         }
     }
 }

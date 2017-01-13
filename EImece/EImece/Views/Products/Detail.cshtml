@@ -1,8 +1,11 @@
-﻿@model EImece.Domain.Entities.Product
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
 
 @{
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var product = Model.Product;
 }
 
 <h2>Detail</h2>
@@ -12,123 +15,123 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => product.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => product.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EntityHash)
+            @Html.DisplayNameFor(model => product.EntityHash)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EntityHash)
+            @Html.DisplayFor(model => product.EntityHash)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
+            @Html.DisplayNameFor(model => product.CreatedDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
+            @Html.DisplayFor(model => product.CreatedDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
+            @Html.DisplayNameFor(model => product.UpdatedDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
+            @Html.DisplayFor(model => product.UpdatedDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => product.IsActive)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IsActive)
+            @Html.DisplayFor(model => product.IsActive)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Position)
+            @Html.DisplayNameFor(model => product.Position)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Position)
+            @Html.DisplayFor(model => product.Position)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Lang)
+            @Html.DisplayNameFor(model => product.Lang)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Lang)
+            @Html.DisplayFor(model => product.Lang)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => product.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => product.Description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ImageState)
+            @Html.DisplayNameFor(model => product.ImageState)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ImageState)
+            @Html.DisplayFor(model => product.ImageState)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.MainImageId)
+            @Html.DisplayNameFor(model => product.MainImageId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MainImageId)
+            @Html.DisplayFor(model => product.MainImageId)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ProductCategoryId)
+            @Html.DisplayNameFor(model => product.ProductCategoryId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductCategoryId)
+            @Html.DisplayFor(model => product.ProductCategoryId)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.MainPage)
+            @Html.DisplayNameFor(model => product.MainPage)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MainPage)
+            @Html.DisplayFor(model => product.MainPage)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => product.Price)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => product.Price)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Discount)
+            @Html.DisplayNameFor(model => product.Discount)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Discount)
+            @Html.DisplayFor(model => product.Discount)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ProductCode)
+            @Html.DisplayNameFor(model => product.ProductCode)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductCode)
+            @Html.DisplayFor(model => product.ProductCode)
         </dd>
 
     </dl>

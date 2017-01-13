@@ -16,6 +16,7 @@ using EImece.Domain.Services;
 using System.Data.SqlClient;
 using System.Configuration;
 using EImece.Domain;
+using EImece.Domain.Helpers;
 
 namespace EImece.Tests.Controllers
 {
@@ -111,6 +112,44 @@ namespace EImece.Tests.Controllers
             Console.WriteLine(new TagCategoryRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new TagRepository(dbContext).GetAll().ToList().Count());
 
+        }
+
+        [TestMethod]
+        public void MathLog()
+        {
+            String[] numbers = {"	1	",
+"	2	",
+"	5	",
+"	10	",
+"	100	",
+"	200	",
+"	400	",
+"	800	",
+"	1600	",
+"	3200	",
+"	6400	",
+"	12800	",
+"	25600	",
+"	51200	",
+"	102400	",
+"	204800	",
+"	409600	",
+"	819200	",
+"	1638400	",
+"	3276800	",
+"	6553600	",
+"	13107200	",
+"	26214400	",
+"	52428800	",
+"	104857600	",
+"	209715200	",
+};
+
+            foreach (var i in numbers)
+            {
+               Console.WriteLine(i.Trim().ToInt()+"   "+  Math.Floor(Math.Log(i.Trim().ToInt() + 7)));
+            }
+         
         }
     }
 }

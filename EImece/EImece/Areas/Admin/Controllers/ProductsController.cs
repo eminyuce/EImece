@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product content = ProductService.GetProductById(id);
+            Product content = ProductService.GetProductById(id).Product;
             ViewBag.Template = TemplateService.GetSingle(content.ProductCategory.TemplateId);
             if (content == null)
             {
@@ -41,7 +42,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         //
         // GET: /Product/Details/5
-
+      
         public ActionResult Details(int id = 0)
         {
             if (id == 0)
