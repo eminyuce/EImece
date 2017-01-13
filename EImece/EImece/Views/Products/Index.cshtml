@@ -19,7 +19,7 @@
 @foreach (var item in products)
 {
     <div>
-        @Html.DisplayFor(modelItem => item)
+        @Html.DisplayFor(modelItem => item,"MainPageProduct")
     </div>
 }
 @Html.Partial("_PagingPartial", products)

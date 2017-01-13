@@ -1,33 +1,29 @@
 ﻿@model EImece.Domain.Entities.Product
+@using EImece.Domain.Helpers.Extensions;
  @{ 
      var productFiles = Model.ProductFiles;
-
+     var product = Model;
  }
 
 
 <div>
     <dl class="dl-horizontal">
         <h2>
-            Product Category: @Model.ProductCategory.Name
+            Product Category: @product.ProductCategory.Name
         </h2>
-        @if (Model.MainImage != null)
+        @if (product.MainImage != null)
         {
-            @Model.MainImage.FileName
+            @product.MainImage.FileName
         }
   
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dt>
-            @Html.DisplayFor(model => model.Id)
-        </dt>
+        @Html.ActionLink(product.Name, "detail", "products", new { id = product.GetSeoUrl() }, null)
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => product.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => product.Name)
         </dd>
        
     </dl>

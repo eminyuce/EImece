@@ -21,20 +21,20 @@ namespace EImece.Domain.Helpers.Extensions
         {
             return String.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(entity.Name), entity.Id);
         }
-        public static String GetSeoTitle(this BaseEntity entity)
+        public static String GetSeoTitle(this BaseEntity entity, int length = 50)
         {
-            return GeneralHelper.Capitalize(GeneralHelper.TruncateAtWord(entity.Name, 55));
+            return GeneralHelper.Capitalize(GeneralHelper.TruncateAtWord(entity.Name, length));
         }
-        public static String GetSeoDescription(this BaseContent entity)
+        public static String GetSeoDescription(this BaseContent entity, int length = 150)
         {
-            return string.Format("{0} ", GeneralHelper.GetDescriptionWithBody(entity.Description, 150));
+            return string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
         }
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";
             if (entity.MainImageId.HasValue && entity.MainImage != null)
             {
-                String imagePath = Settings.UrlBase +  entity.MainImage.FileName;
+                String imagePath = Settings.UrlBase + entity.MainImage.FileName;
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
 
             }
@@ -54,6 +54,6 @@ namespace EImece.Domain.Helpers.Extensions
 
             return imageTag;
         }
-       
+
     }
 }
