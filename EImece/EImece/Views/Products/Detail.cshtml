@@ -73,12 +73,10 @@
             @Html.DisplayFor(model => product.Lang)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.Description)
-        </dt>
+     
 
         <dd>
-            @Html.DisplayFor(model => product.Description)
+            @Html.Raw(product.Description)
         </dd>
 
         <dt>

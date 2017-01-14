@@ -6,16 +6,20 @@
     var productCategories = Model;
 }
 
-<ul>
-    @foreach (var p in productCategories)
-    {
-        <li>
-            @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() },null)
-        </li>
-        if (p.Childrens.Any())
-        {
-            @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
-        }
-    }
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            @foreach (var p in productCategories)
+            {
+                <li>
+                    @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() }, null)
+                </li>
+                if (p.Childrens.Any())
+                {
+                    @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+                }
+            }
 
-</ul>
+        </ul>
+    </div>
+</nav>
