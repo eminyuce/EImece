@@ -1,10 +1,11 @@
-﻿@model EImece.Domain.Entities.Menu
+﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @{
-    var menu = Model;
+    var menu = Model.Menu;
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
-    var selectedPagePath = "PageThemes/PageTheme_" + Model.PageTheme;
+    var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
 }
 
-@Html.Partial(selectedPagePath)
+@Html.Partial(selectedPagePath, menu)

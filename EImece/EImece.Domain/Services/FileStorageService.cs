@@ -81,6 +81,17 @@ namespace EImece.Domain.Services
                             pf.Position = 1;
                             ProductFileRepository.SaveOrEdit(pf);
                             break;
+                        case MediaModType.Menus:
+                            var mf = new MenuFile();
+                            mf.MenuId = contentId;
+                            mf.FileStorageId = fileStorage.Id;
+                            mf.Name = fileStorage.Name;
+                            mf.CreatedDate = DateTime.Now;
+                            mf.UpdatedDate = DateTime.Now;
+                            mf.IsActive = true;
+                            mf.Position = 1;
+                            MenuFileRepository.SaveOrEdit(mf);
+                            break;
 
                         default:
                             break;

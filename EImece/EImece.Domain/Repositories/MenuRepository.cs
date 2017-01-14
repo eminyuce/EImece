@@ -10,6 +10,7 @@ using GenericRepository;
 using System.Data.Entity;
 using SharkDev.Web.Controls.TreeView.Model;
 using EImece.Domain.Helpers;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories
 {
@@ -56,6 +57,15 @@ namespace EImece.Domain.Repositories
             }
 
             return _lstTreeNodes;
+        }
+
+        public Menu GetMenuById(int menuId)
+        {
+            Expression<Func<Menu, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Menu, object>> includeProperty2 = r => r.MenuFiles;
+            Expression<Func<Menu, object>>[] includeProperties = { includeProperty2, includeProperty3 };
+
+            return GetSingleIncluding(menuId, includeProperties);
         }
     }
 }

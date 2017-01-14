@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharkDev.Web.Controls.TreeView.Model;
 using NLog;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services
 {
@@ -38,6 +39,13 @@ namespace EImece.Domain.Services
         public List<Node> CreateMenuTreeViewDataList(bool? isActive, int language)
         {
             return MenuRepository.CreateMenuTreeViewDataList(isActive, language);
+        }
+
+        public MenuPageViewModel GetPageById(int menuId)
+        {
+            var r = new MenuPageViewModel();
+            r.Menu = MenuRepository.GetMenuById(menuId);
+            return r;
         }
     }
 }

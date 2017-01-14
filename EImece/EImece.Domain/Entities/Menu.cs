@@ -19,5 +19,7 @@ namespace EImece.Domain.Entities
         public Boolean LinkIsActive { get; set; }
         [NotMapped]
         public List<Menu> Childrens { get; set; }
+
+        public virtual List<MenuFile> MenuFiles { get; set; }
     }
 }

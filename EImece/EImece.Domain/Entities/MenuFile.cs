@@ -12,5 +12,7 @@ namespace EImece.Domain.Entities
         public int FileStorageId { get; set; }
 
         public virtual FileStorage FileStorage { get; set; }
+
+        public virtual Menu Menu { get; set; }
     }
 }
