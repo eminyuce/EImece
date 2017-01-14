@@ -46,13 +46,26 @@ namespace EImece.Domain.Helpers.Extensions
             String imageTag = "";
             if (entity.MainImageId.HasValue)
             {
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                String imagePath = urlHelper.Action("Index", "Images", new { id = entity.MainImageId, width, height });
-                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
+                var urlHelper = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
 
             }
 
             return imageTag;
+        }
+        public static String GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
+        {
+            String imageTag = "";
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            String imagePath = GetCroppedImageUrl(fileStorageId, width, height);
+            imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
+
+            return imageTag;
+        }
+        public static String GetCroppedImageUrl(int fileStorageId, int width = 0, int height = 0)
+        {
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            String imagePath = urlHelper.Action("Index", "Images", new { id = fileStorageId, width, height });
+            return imagePath;
         }
 
     }

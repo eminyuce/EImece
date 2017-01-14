@@ -20,6 +20,7 @@ namespace EImece.Domain.Entities
         {
             T item = new T();
             item.IsActive = true;
+            item.Lang = Settings.MainLanguage;
             return item;
         }
     }

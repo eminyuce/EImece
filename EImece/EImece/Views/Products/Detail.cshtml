@@ -8,13 +8,16 @@
     ViewBag.Title = product.GetSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    var productFiles = product.ProductFiles;
+    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
+    var productCategory = product.ProductCategory;
 }
 
 <h2>Detail</h2>
 
+
 <div>
-    <h4>Product</h4>
+    <h4>Product @productCategory.Name</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -137,4 +140,16 @@
 
     </dl>
 </div>
- 
+@Html.Raw(product.GetCroppedImageTag(100, 200))
+ @foreach(var productTag in productTags)
+ {
+     <div>
+         @productTag.Name
+     </div>
+ }
+@foreach (var productFile in productFiles)
+{
+    <div>
+        @Html.Raw(productFile.GetCroppedImageTag(productFile.FileStorageId,100, 200))
+    </div>
+}
