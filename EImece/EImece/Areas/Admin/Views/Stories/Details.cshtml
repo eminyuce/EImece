@@ -51,12 +51,10 @@
             @Html.DisplayFor(model => model.Position)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+       
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.Raw(Model.Description)
         </dd>
 
         <dt>

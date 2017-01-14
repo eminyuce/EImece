@@ -92,6 +92,9 @@ columns.Add()
            .Titled("Title")
            .Filterable(true);
 
+    columns.Add(c => c.StoryCategory.Name)
+        .Titled("StoryCategory Name")
+        .Filterable(true);
 
 
     columns.Add(o => o.Position)

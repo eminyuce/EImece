@@ -3,12 +3,15 @@
 @using SharkDev.MVC
 @using EImece.Domain.Models.Enums;
 @using SharkDev.Web.Controls.TreeView.Model;
+@using Resources;
 
 @{
+    var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategory = (ProductCategory)ViewBag.ProductCategory;
     var productTree = (List<Node>)ViewBag.Tree;
+
 }
 
 <h2>SaveOrEdit</h2>
@@ -51,18 +54,26 @@ console.log(e);
                 @Html.HiddenFor(model => model.MainImageId)
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
+                        @if (productCategory != null && productCategory.Id > 0)
+                        {
+                            <span style="color:red;font-size:x-large" id="OldCategoryName">
+                                @productCategory.Name
+                            </span>
+                        }
+                        else
+                        {
 
-                        @Html.DropDownListFor(model => model.Lang,
-   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
- null,
-   new { @class = "form-control" })
+                            <span style="color:red;font-size:x-large" id="OldCategoryName">
 
-                        @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
+                            </span>
+                        }
+
+                        @Html.HiddenFor(model => model.ProductCategoryId)
+                        @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -130,27 +141,7 @@ console.log(e);
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @if (productCategory != null && productCategory.Id > 0)
-                        {
-                            <span id="OldCategoryName">
-                                @productCategory.Name
-                            </span>
-                        }
-                        else
-                        {
-
-                            <span id="OldCategoryName">
-
-                            </span>
-                        }
-
-                        @Html.HiddenFor(model => model.ProductCategoryId)
-                        @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+              
 
 
                 <div class="form-group">
@@ -183,7 +174,7 @@ console.log(e);
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
+                        <input type="submit" value="@saveButtonText" class="btn btn-default" />
                     </div>
                 </div>
             </div>

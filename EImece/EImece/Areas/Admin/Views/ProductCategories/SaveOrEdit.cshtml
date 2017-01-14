@@ -3,9 +3,10 @@
 @using SharkDev.MVC
 @using EImece.Domain.Models.Enums;
 @using SharkDev.Web.Controls.TreeView.Model;
-
+@using Resources;
 
 @{
+    var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentCategory = (ProductCategory)ViewBag.ParentCategory;
@@ -159,7 +160,7 @@ console.log(e);
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
+                  <input type="submit" value="@saveButtonText" class="btn btn-default" />
                     </div>
                 </div>
             </div>

@@ -19,7 +19,9 @@ namespace EImece.Domain.Services
             
         }
 
-
-
+        public List<Story> GetAdminPageList(int categoryId, string search, int lang)
+        {
+            return StoryRepository.GetAdminPageList(categoryId, search, lang);
+        }
     }
 }

@@ -171,4 +171,7 @@
   <data name="Close" xml:space="preserve">
     <value>Kapat</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Isim</value>
+  </data>
 </root>

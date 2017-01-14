@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
@@ -16,10 +17,11 @@ namespace EImece.Areas.Admin.Controllers
     public class StoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(String search = "")
+        public ActionResult Index(int id=0,String search = "")
         {
-            Expression<Func<Story, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var stories = StoryService.SearchEntities(whereLambda, search);
+            int categoryId = id;
+            int lang = Settings.MainLanguage;
+            var stories = StoryService.GetAdminPageList(categoryId, search, lang);
             return View(stories);
         }
 

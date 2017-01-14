@@ -141,7 +141,8 @@ window.location='/admin/products/index/'+e.id;
             @<b>
                 @Html.ActionLink(d.Name, "Detail", "Products", new {  area = "", id = d.Id }, new { @class = "btn btn-link", @target="_blank" })
             </b>);
-
+               columns.Add(c => c.ProductCategory.Name)
+                 .Titled("ProductCategory Name");
 
                columns.Add(o => o.Position)
                   .Encoded(false).

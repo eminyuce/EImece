@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Resources;
 
 namespace EImece.Domain.Entities
 {
@@ -18,6 +19,7 @@ namespace EImece.Domain.Entities
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
         [Column("Name")]
         [Display(Name = "Name")]
+
         public string Name { get; set; }
         public string EntityHash { get; set; }
         public DateTime? CreatedDate { get; set; }

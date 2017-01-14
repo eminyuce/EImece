@@ -9,5 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IStoryRepository : IBaseContentRepository<Story>, IDisposable
     {
+        List<Story> GetAdminPageList(int categoryId, string search, int lang);
     }
 }

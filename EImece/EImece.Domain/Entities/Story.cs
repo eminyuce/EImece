@@ -10,5 +10,7 @@ namespace EImece.Domain.Entities
     {
         public int StoryCategoryId { get; set; }
         public bool MainPage { get; set; }
+
+        public virtual StoryCategory StoryCategory { get; set; }
     }
 }

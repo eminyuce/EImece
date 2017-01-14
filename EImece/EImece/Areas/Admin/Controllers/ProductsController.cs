@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
@@ -19,8 +20,9 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
   
 
-        public ActionResult Index(int id = 0, String search = "", int lang = 1)
+        public ActionResult Index(int id = 0, String search = "")
         {
+            int lang = Settings.MainLanguage;
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             var products = ProductService.GetAdminPageList(id, search, lang);
             return View(products);
