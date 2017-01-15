@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -14,9 +15,12 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    //[Authorize]
+    //[AuthorizeRoles(Settings.AdministratorRole, Settings.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
+
+
+
         [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
         [Inject]

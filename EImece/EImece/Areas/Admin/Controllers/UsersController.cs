@@ -1,4 +1,6 @@
-﻿using EImece.Models;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,8 @@ using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class UsersController : Controller
+   // [AuthorizeRoles(Settings.AdministratorRole)]
+    public class UsersController : BaseAdminController
     {
 
         private ApplicationUserManager _userManager;

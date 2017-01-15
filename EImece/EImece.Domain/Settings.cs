@@ -13,7 +13,10 @@ namespace EImece.Domain
 {
     public class Settings
     {
-        public static String DbConnectionKey = "EImeceDbConnection";
+        public const String DbConnectionKey = "EImeceDbConnection";
+        public const String AdministratorRole = "Admin";
+        public const String EditorRole = "NormalUser";
+
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static String HttpProtocolForImages

@@ -1,5 +1,7 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
@@ -106,7 +108,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
         //
-        // GET: /StoryCategory/Delete/5
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -126,6 +128,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult DeleteConfirmed(int id)
         {
 

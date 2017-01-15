@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
@@ -14,7 +15,6 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    // [Authorize]
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -142,8 +142,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
 
-        //
-        // GET: /Product/Delete/5
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -163,6 +162,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult DeleteConfirmed(int id)
         {
 

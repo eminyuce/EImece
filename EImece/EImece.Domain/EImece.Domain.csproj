@@ -139,6 +139,7 @@
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\TagCategory.cs" />
     <Compile Include="Entities\Template.cs" />
+    <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />

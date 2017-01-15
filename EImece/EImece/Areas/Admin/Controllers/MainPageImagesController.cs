@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -101,7 +103,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
 
-        // GET: Admin/MainPageImages/Delete/5
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult Delete(int id=0)
         {
             if (id == 0)
@@ -120,6 +122,7 @@ namespace EImece.Areas.Admin.Controllers
         // POST: Admin/MainPageImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult DeleteConfirmed(int id=0)
         {
             if (id == 0)

@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using NLog;
 using SharkDev.Web.Controls.TreeView.Model;
@@ -86,6 +87,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+    
         public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase productCategoryImage=null)
         {
             try
@@ -128,6 +130,7 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /ProductCategory/Delete/5
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)

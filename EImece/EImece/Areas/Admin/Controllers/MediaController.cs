@@ -13,6 +13,7 @@ using System.Web.Hosting;
 using Ninject;
 using EImece.Domain;
 using NLog;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -114,6 +115,7 @@ namespace EImece.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        [AuthorizeRoles(Settings.AdministratorRole)]
         public JsonResult DeleteFile(string file, int contentId, String mod, String imageType)
         {
             var CurrentContext = HttpContext;
