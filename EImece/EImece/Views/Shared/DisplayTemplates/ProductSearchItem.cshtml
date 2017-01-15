@@ -1,8 +1,10 @@
 ﻿@model EImece.Domain.Entities.Product
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
  @{ 
      var productFiles = Model.ProductFiles;
      var product = Model;
+     var categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name);
  }
 
 
@@ -16,7 +18,7 @@
             @product.MainImage.FileName
         }
   
-        @Html.ActionLink(product.Name, "detail", "products", new { id = product.GetSeoUrl() }, null)
+        @Html.ActionLink(product.Name, "detail", "products", new { category= categoryName, id = product.GetSeoUrl() }, null)
 
         <dt>
             @Html.DisplayNameFor(model => product.Name)

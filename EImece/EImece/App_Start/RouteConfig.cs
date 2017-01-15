@@ -14,6 +14,7 @@ namespace EImece
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
 
+            
             routes.MapRoute(
                name: "ProductDetail",
                url: "products/detail/{category}/{id}",

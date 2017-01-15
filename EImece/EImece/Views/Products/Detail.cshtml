@@ -2,6 +2,7 @@
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
 
 @{
     var product = Model.Product;
@@ -143,11 +144,11 @@
     </dl>
 </div>
 
- @foreach(var pt in productTags)
+ @foreach (var pt in productTags)
  {
-     <div>
-       @Html.ActionLink(pt.Name, "tag", "products", new { id = pt.GetSeoUrl() }, null)
-     </div>
+    <div>
+        @Html.ActionLink(pt.Name, "tag", "products", new {  id = pt.GetSeoUrl() }, null)
+    </div>
  }
 @foreach (var productFile in productFiles)
 {

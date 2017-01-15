@@ -35,7 +35,7 @@
         foreach (var pt in p.ProductFiles)
         {
             <div>
-                @Html.Raw(pt.GetCroppedImageTag(pt.FileStorageId,, 200))
+                @Html.Raw(pt.GetCroppedImageTag(pt.FileStorageId,200, 200))
             </div>
         }
     }

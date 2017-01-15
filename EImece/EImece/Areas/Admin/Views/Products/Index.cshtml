@@ -139,7 +139,7 @@ window.location='/admin/products/index/'+e.id;
                     .Sanitized(false)
               .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(d.Name, "Detail", "Products", new {  area = "", id = d.Id }, new { @class = "btn btn-link", @target="_blank" })
+                @Html.ActionLink(d.Name, "Detail", "Products", new {  area = "", category = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target="_blank" })
             </b>);
                columns.Add(c => c.ProductCategory.Name)
                  .Titled("ProductCategory Name");

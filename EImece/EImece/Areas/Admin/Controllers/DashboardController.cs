@@ -27,8 +27,8 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search));
 
-            Expression<Func<ProductCategory, bool>> whereLambda2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda2, search));
+            Expression<Func<Product, bool>> whereLambda2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            resultList.AddRange(ProductService.SearchEntities(whereLambda2, search));
 
             Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             resultList.AddRange(StoryCategoryService.SearchEntities(whereLambda3, search));
