@@ -21,5 +21,6 @@ namespace EImece.Domain.Services.IServices
         void DeleteProductById(int id);
         new void DeleteBaseEntity(List<string> values);
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang);
+        SimiliarProductTagsViewModel GetProductByTagId(int tagId,int pageIndex, int pageSize,   int lang);
     }
 }

@@ -1,9 +1,10 @@
 ﻿@model EImece.Domain.Entities.Product
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
 @{
     var productFiles = Model.ProductFiles;
     var product = Model;
-
+    var categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name);
 
 }
 
@@ -17,11 +18,10 @@ Product Files : @product.ProductFiles.Count()
         {
             @product.MainImage.FileName
         }
-        @Html.ActionLink(product.Name, "detail", "products", new { id = product.GetSeoUrl() }, null)
-        @if (product.MainImageId > 0)
-        {
+        @Html.ActionLink(product.Name, "detail", "products", new { category = categoryName, id = product.GetSeoUrl() }, null)
+         
             @Html.Raw(product.GetCroppedImageTag(200, 200))
-        }
+         
 
 
         @foreach(var productFile in productFiles)

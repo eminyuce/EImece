@@ -23,7 +23,10 @@ namespace EImece.Domain.Services
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
-       
+        [Inject]
+        public ITagService TagService { get; set; }
+
+
 
         private IProductRepository ProductRepository { get; set; }
         public ProductService(IProductRepository repository) : base(repository)
@@ -131,6 +134,14 @@ namespace EImece.Domain.Services
             r.Search = search;
             r.Products = ProductRepository.SearchProducts(pageIndex, pageSize,search, lang);
 
+            return r;
+        }
+
+        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
+        {
+            var r = new SimiliarProductTagsViewModel();
+            r.Tag = TagService.GetSingle(tagId);
+            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang);
             return r;
         }
     }

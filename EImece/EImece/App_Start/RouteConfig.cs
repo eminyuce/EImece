@@ -13,6 +13,13 @@ namespace EImece
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
+
+            routes.MapRoute(
+               name: "ProductDetail",
+               url: "products/detail/{category}/{id}",
+               defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
+               namespaces: new[] { "EImece.Controllers" }
+           );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

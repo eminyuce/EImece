@@ -22,7 +22,7 @@ namespace EImece.Controllers
         public ActionResult Category(String id)
         {
             var categoryId = id.Split("-".ToCharArray()).Last().ToInt();
-           
+
             var productCategory = ProductCategoryService.GetProductCategory(categoryId);
             return View(productCategory);
         }
@@ -32,12 +32,21 @@ namespace EImece.Controllers
             var product = ProductService.GetProductById(productId);
             return View(product);
         }
+        public ActionResult Tag(String id)
+        {
+            var tagId = id.Split("-".ToCharArray()).Last().ToInt();
+            int pageIndex = 1;
+            int pageSize = 20;
+            var lang = Settings.MainLanguage;
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, lang);
+            return View(products);
+        }
         public ActionResult SearchProducts(String search)
         {
             int pageIndex = 1;
             int pageSize = 20;
             var lang = Settings.MainLanguage;
-            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize,search, lang);
+            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, lang);
             return View(products);
         }
     }

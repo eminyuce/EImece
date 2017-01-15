@@ -1,0 +1,22 @@
+﻿@model EImece.Domain.Models.FrontModels.SimiliarProductTagsViewModel
+@using GenericRepository;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@{
+    ViewBag.Title = "Tag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PaginatedList<ProductTag> productTags = Model.ProductTags;
+}
+
+<h2>@Model.Tag.Name</h2>
+
+@Html.BootstrapPager(productTags.PageIndex,
+    index => Url.Action("Tag", "Products", new { page = index }),
+    productTags.TotalCount, productTags.PageSize, numberOfLinks: 10)
+
+@foreach (var item in productTags)
+{
+    <div>
+        @Html.DisplayFor(modelItem => item.Product, "MainPageProduct")
+    </div>
+}

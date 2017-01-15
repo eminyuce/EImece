@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
+using GenericRepository;
 
 namespace EImece.Domain.Repositories
 {
@@ -46,6 +47,15 @@ namespace EImece.Domain.Repositories
 
             }
          
+        }
+
+        public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<ProductTag>();
+            includeProperties.Add(r => r.Product);
+            includeProperties.Add(r => r.Product.ProductCategory);
+            includeProperties.Add(r => r.Product.ProductFiles);
+            return this.Paginate(pageIndex, pageSize, r => r.Product.Position, r => r.TagId == tagId, includeProperties.ToArray());
         }
     }
 }

@@ -107,7 +107,9 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => product.MainPage)
+            @product.MainImageId.HasValue
+            @Html.DisplayFor(model => product.MainImageId)
+         @Html.Raw(product.GetCroppedImageTag(500, 500))
         </dt>
 
         <dd>
@@ -140,11 +142,11 @@
 
     </dl>
 </div>
-@Html.Raw(product.GetCroppedImageTag(100, 200))
- @foreach(var productTag in productTags)
+
+ @foreach(var pt in productTags)
  {
      <div>
-         @productTag.Name
+       @Html.ActionLink(pt.Name, "tag", "products", new { id = pt.GetSeoUrl() }, null)
      </div>
  }
 @foreach (var productFile in productFiles)

@@ -1,25 +1,25 @@
 ﻿@model EImece.Domain.Entities.ProductCategory
 @using EImece.Domain.Helpers.Extensions;
-
+@using EImece.Domain.Helpers;
 @{
     ViewBag.Title = "Category";
     var category = Model;
     var products = Model.Products;
+
 }
 
 <h2>
     @category.Name
 </h2>
  
-@Html.Raw(category.GetCroppedImageTag(100,200))
-
+@Html.Raw(category.GetCroppedImageTag(200, 200))
 @if (products != null)
 {
     foreach (var p in products)
     {
+        var categoryName = GeneralHelper.GetUrlSeoString(p.ProductCategory.Name);
         <div>
-            @Html.ActionLink(p.Name, "detail", "products", new   {  id = p.GetSeoUrl()  }, null)
-
+            @Html.ActionLink(p.Name, "detail", "products", new { category = categoryName, id = p.GetSeoUrl() }, null)
           <b>
               @p.MainImageId
             
@@ -29,13 +29,13 @@
         foreach(var pt in p.ProductTags)
         {
             <div>
-                @pt.Tag.Name
+                @Html.ActionLink(pt.Tag.Name, "tag", "products", new { id = pt.Tag.GetSeoUrl()  }, null)
             </div>
         }
         foreach (var pt in p.ProductFiles)
         {
             <div>
-                @pt.FileStorage.FileName
+                @Html.Raw(pt.GetCroppedImageTag(pt.FileStorageId,, 200))
             </div>
         }
     }

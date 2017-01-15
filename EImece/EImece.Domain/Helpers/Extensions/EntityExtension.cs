@@ -32,7 +32,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.MainImage != null)
+            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
             {
                 String imagePath = Settings.UrlBase + entity.MainImage.FileName;
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
@@ -44,9 +44,12 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue)
+            if (entity.MainImageId.HasValue && entity.ImageState)
             {
-                var urlHelper = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
+                imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
+            }
+            else
+            {
 
             }
 

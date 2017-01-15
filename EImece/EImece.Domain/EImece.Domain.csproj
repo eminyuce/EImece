@@ -165,6 +165,7 @@
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
+    <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
     <Compile Include="Models\HelperModels\FilesViewModel.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Models\HelperModels\PagedResult.cs" />
