@@ -1,8 +1,10 @@
-﻿using System;
+﻿using EImece.Domain.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,9 +15,19 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         //[OutputCache(CacheProfile = "CustomerImages")]
-        public ActionResult Index(int id, int width, int height)
+        public ActionResult Index(String id, String imageSize)
         {
-            var fileStorageId = id;
+            int height = 0;
+            int width = 0;
+            if (String.IsNullOrEmpty(imageSize))
+            {
+                imageSize = "w150h150";
+            }
+
+            width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w","").ToInt();
+            height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+
+            var fileStorageId = id.Replace(".jpg", "").ToInt();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
             if(imageByte != null)
             {
@@ -26,9 +38,19 @@ namespace EImece.Controllers
             }
 
         }
-        public ActionResult GetModifiedImage(int id, int width, int height)
+        public ActionResult GetModifiedImage(String id, String imageSize)
         {
-            var fileStorageId = id;
+            int height = 0;
+            int width = 0;
+            if (String.IsNullOrEmpty(imageSize))
+            {
+                imageSize = "w150h150";
+            }
+
+            width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
+            height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+
+            var fileStorageId = id.Replace(".jpg", "").ToInt();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
             Image image = Image.FromStream(new MemoryStream(imageByte));
 
@@ -49,9 +71,9 @@ namespace EImece.Controllers
 
             MemoryStream ms = new MemoryStream();
 
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            return File(ms.ToArray(), "image/png");
+            return File(ms.ToArray(), "image/jpeg");
         }
     }
 }

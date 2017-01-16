@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +15,24 @@ namespace EImece
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
 
-            
+
+            routes.MapRoute(
+                  name: "robots",
+                  url: "robots.txt",
+                          defaults: new
+                          {
+                              controller = "Robot",
+                              action = "RobotsText"
+                          }
+               );
+
+            routes.MapRoute(
+               name: "ImageResizing",
+               url: "images/{companyName}/{imageSize}/{id}",
+               defaults: new { controller = "images", action = Settings.ImageActionName, id = UrlParameter.Optional },
+               namespaces: new[] { "EImece.Controllers" }
+           );
+
             routes.MapRoute(
                name: "ProductDetail",
                url: "products/detail/{category}/{id}",

@@ -16,6 +16,7 @@ namespace EImece.Domain
         public const String DbConnectionKey = "EImeceDbConnection";
         public const String AdministratorRole = "Admin";
         public const String EditorRole = "NormalUser";
+        public const String ImageActionName = "Index";
 
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -57,6 +58,21 @@ namespace EImece.Domain
 
             }
         }
+        public static string CompanyNameForImage
+        {
+            get
+            {
+                return CompanyName.ToAlphaNumericOnly();
+            }
+        }
+        public static string CompanyName
+        {
+            get
+            {
+                return GetConfigString("CompanyName", "eimece");
+            }
+        }
+
         public static string SiteName
         {
             get

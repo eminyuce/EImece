@@ -273,11 +273,13 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\RobotController.cs" />
     <Compile Include="Controllers\StoriesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -592,6 +594,7 @@
     <Content Include="Views\Products\SearchProducts.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ProductSearchItem.cshtml" />
     <Content Include="Views\Products\Tag.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -600,6 +603,7 @@
     <Folder Include="media\images\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
+    <Folder Include="Views\Robots\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

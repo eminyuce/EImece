@@ -1,9 +1,78 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
+@using EImece.Domain.Helpers
+@using EImece.Domain
+
+
 
 @{
     ViewBag.Title = "Error";
+    var exception = Model.Exception;
+    var errorCode = 0;
+    if (exception is HttpException)
+    {
+        var httpEx = exception as HttpException;
+
+        errorCode = httpEx.GetHttpCode();
+    }
+
+
+    var body = string.Empty;
+
+    body += string.Format("Page: {0} \n", Request.Url.AbsoluteUri);
+
+    if (Request.UrlReferrer != null)
+    {
+        body += string.Format("Referal: {0} \n", Request.UrlReferrer.AbsoluteUri);
+    }
+
+    body += string.Format("Error: {0} \n", Model.Exception.Message);
+
+    body += string.Format("Time: {0} \n", DateTime.Now.ToLongTimeString());
+    if (User.Identity.IsAuthenticated)
+    {
+        body += string.Format("User: {0} \n", User.Identity.Name);
+    }
+    body = GeneralHelper.EncodeForEmailLink(body);
+    var subject = Settings.SiteName + "-" + errorCode;
+    // subject = GeneralHelper.EncodeForEmailLink(subject);
+    var link = String.Format("mailto:yuce@marinelink.com?subject={0}&body={1}", subject, body);
+
+}
+<img src="~/Content/compass.png" alt="404" style="float:right;" />
+@if (errorCode == 404)
+{
+    <h1 class="error">Sorry, the page your requested not found.</h1>
+}
+else
+{
+
+    <h1 class="error">We're sorry something went wrong.</h1>
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<p class="well featured">
+
+
+    @Model.Exception.Message
+
+
+
+</p>
+
+<p>
+    <span>
+        To inform us of this error click
+
+
+
+
+        <a class="button button-flat-primary" id="hlInform" href="@link">here</a>
+
+    </span>
+
+
+</p>
+
+
+
+
 

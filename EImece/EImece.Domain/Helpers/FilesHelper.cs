@@ -463,7 +463,7 @@ namespace EImece.Domain.Helpers
             using (MemoryStream ms = new MemoryStream())
             using (Image thumbnail = Image.FromStream(new MemoryStream(myImage)).GetThumbnailImage(thumbWidth, thumbHeight, null, new IntPtr()))
             {
-                thumbnail.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                thumbnail.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                 return ms.ToArray();
             }
         }
@@ -593,7 +593,7 @@ namespace EImece.Domain.Helpers
         public byte[] ImageToByteArray(Image imageIn)
         {
             MemoryStream ms = new MemoryStream();
-            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             return ms.ToArray();
         }
         public Image ByteArrayToImage(byte[] byteArrayIn)
