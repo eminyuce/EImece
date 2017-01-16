@@ -173,7 +173,7 @@ namespace EImece.Domain.Helpers
             for (int i = 0; i < request.Files.Count; i++)
             {
                 var file = request.Files[i];
-
+              //  var fileName = GeneralHelper.GetUrlSeoString(file.FileName);
                 var ext = Path.GetExtension(file.FileName);
                 var fileBase = Path.GetFileNameWithoutExtension(file.FileName);
                 Random random = new Random();
@@ -206,7 +206,7 @@ namespace EImece.Domain.Helpers
                         using (MemoryStream stream = new MemoryStream(System.IO.File.ReadAllBytes(fullPath)))
                         {
                             var thumbnail = new WebImage(stream).Resize(80, 80);
-                            thumbnail.Save(ThumbfullPath2, "jpg");
+                            thumbnail.Save(ThumbfullPath2);
                         }
 
                     }

@@ -26,9 +26,11 @@ namespace EImece.Controllers
             }
 
         }
-        public ActionResult GetModifiedImage()
+        public ActionResult GetModifiedImage(int id, int width, int height)
         {
-            Image image = Image.FromFile(Path.Combine(Server.MapPath("/Content/images"), "image.png"));
+            var fileStorageId = id;
+            var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
+            Image image = Image.FromStream(new MemoryStream(imageByte));
 
             using (Graphics g = Graphics.FromImage(image))
             {

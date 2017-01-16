@@ -24,7 +24,15 @@ namespace EImece.Domain.Services
 
         public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
         {
-            return ProductCategoryRepository.BuildTree(isActive, language);
+            var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
+            List<ProductCategory> result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = ProductCategoryRepository.BuildTree(isActive, language);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+            }
+            return result;
         }
 
         public List<Node> CreateProductCategoryTreeViewDataList()

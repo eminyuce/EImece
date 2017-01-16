@@ -11,6 +11,8 @@ namespace EImece.Domain.Helpers.Extensions
 {
     public static class EntityExtension
     {
+        private const String ImageActionName = "Index";
+
         public static List<BaseEntity> DownCasting<T>(this List<T> items) where T : BaseEntity
         {
             var baseList = new List<BaseEntity>();
@@ -67,7 +69,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageUrl(int fileStorageId, int width = 0, int height = 0)
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String imagePath = urlHelper.Action("Index", "Images", new { id = fileStorageId, width, height });
+            String imagePath = urlHelper.Action(ImageActionName, "Images", new { id = fileStorageId, width, height });
             return imagePath;
         }
 
