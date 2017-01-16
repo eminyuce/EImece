@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kapat.
+        ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Secilenleri Aktif.
+        ///   Looks up a localized string similar to Activate Selected Records.
         /// </summary>
         public static string GridActiveSelectedButtonText {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Secilenler Akfif Degil.
+        ///   Looks up a localized string similar to DeActivate Selected Records.
         /// </summary>
         public static string GridDeActiveSelectedButtonText {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Secilenleri Sil.
+        ///   Looks up a localized string similar to Delete Selected Records.
         /// </summary>
         public static string GridDeleteSelectedButtonText {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sil.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string GridDeleteText {
             get {
@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hicbiri.
+        ///   Looks up a localized string similar to Deselect All.
         /// </summary>
         public static string GridDeSelectAllButtonText {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detay.
+        ///   Looks up a localized string similar to Detail.
         /// </summary>
         public static string GridDetailText {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duzenle.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string GridEditText {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Media.
+        ///   Looks up a localized string similar to Images.
         /// </summary>
         public static string GridImagesText {
             get {
@@ -142,7 +142,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim.
+        ///   Looks up a localized string similar to Image.
         /// </summary>
         public static string GridMainPageImageText {
             get {
@@ -151,7 +151,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim Yok.
+        ///   Looks up a localized string similar to NO Image.
         /// </summary>
         public static string GridNoMainPageImageText {
             get {
@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Siralamayi Guncelle.
+        ///   Looks up a localized string similar to Edit Position.
         /// </summary>
         public static string GridOrderingAllButtonText {
             get {
@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sayfalama.
+        ///   Looks up a localized string similar to Paging.
         /// </summary>
         public static string GridPagingDropDownText {
             get {
@@ -178,7 +178,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kayit Mevcut.
+        ///   Looks up a localized string similar to Record Number.
         /// </summary>
         public static string GridResultRecordNumber {
             get {
@@ -187,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arama.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string GridSearchButtonText {
             get {
@@ -196,7 +196,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hepsini Sec.
+        ///   Looks up a localized string similar to Select All.
         /// </summary>
         public static string GridSelectAllButtonText {
             get {
@@ -205,7 +205,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Isim.
+        ///   Looks up a localized string similar to ImageState.
+        /// </summary>
+        public static string ImageState {
+            get {
+                return ResourceManager.GetString("ImageState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MainPage.
+        /// </summary>
+        public static string MainPage {
+            get {
+                return ResourceManager.GetString("MainPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
@@ -214,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yeni Kayit.
+        ///   Looks up a localized string similar to New Record.
         /// </summary>
         public static string NewRecordText {
             get {
@@ -223,11 +241,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kaydet.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SaveButtonText {
             get {
                 return ResourceManager.GetString("SaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string State {
+            get {
+                return ResourceManager.GetString("State", resourceCulture);
             }
         }
     }

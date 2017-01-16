@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ara.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string SearchProductButtonText {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ÜRÜNLERDE ARA.
+        ///   Looks up a localized string similar to Search Products.
         /// </summary>
         public static string SearchProductTextBoxPlaceHolder {
             get {

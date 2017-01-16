@@ -18,6 +18,9 @@
     var GridActiveSelectedButtonText = AdminResource.GridActiveSelectedButtonText;
     var GridDeActiveSelectedButtonText = AdminResource.GridDeActiveSelectedButtonText;
     var GridOrderingAllButtonText = AdminResource.GridOrderingAllButtonText;
+    var State = AdminResource.State;
+    var ImageState = AdminResource.ImageState;
+    var MainPage = AdminResource.MainPage;
 
 
 }
@@ -79,16 +82,16 @@
                     @if (StateTypes.Equals("State,ImageState,MainPage"))
                     {
                         <select name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">Durum</option>
-                            <option value="ImageState">Resim Yayında</option>
-                            <option value="MainPage">Ana Sayfa</option>
+                            <option value="State">@State</option>
+                            <option value="ImageState">@ImageState</option>
+                            <option value="MainPage">@MainPage</option>
                         </select>
                     }
                     else if (StateTypes.Equals("State,ImageState"))
                     {
                         <select name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">Durum</option>
-                            <option value="ImageState">Resim Yayında</option>
+                            <option value="State">@State</option>
+                            <option value="ImageState">@ImageState</option>
                         </select>
                     }
                     else if (StateTypes.Equals("State"))

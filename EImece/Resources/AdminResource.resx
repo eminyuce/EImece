@@ -118,60 +118,69 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="GridActiveSelectedButtonText" xml:space="preserve">
-    <value>Secilenleri Aktif</value>
+    <value>Activate Selected Records</value>
   </data>
   <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
-    <value>Secilenler Akfif Degil</value>
+    <value>DeActivate Selected Records</value>
   </data>
   <data name="GridDeleteSelectedButtonText" xml:space="preserve">
-    <value>Secilenleri Sil</value>
+    <value>Delete Selected Records</value>
   </data>
   <data name="GridDeleteText" xml:space="preserve">
-    <value>Sil</value>
+    <value>Delete</value>
   </data>
   <data name="GridDeSelectAllButtonText" xml:space="preserve">
-    <value>Hicbiri</value>
+    <value>Deselect All</value>
   </data>
   <data name="GridDetailText" xml:space="preserve">
-    <value>Detay</value>
+    <value>Detail</value>
   </data>
   <data name="GridEditText" xml:space="preserve">
-    <value>Duzenle</value>
+    <value>Edit</value>
   </data>
   <data name="GridImagesText" xml:space="preserve">
-    <value>Media</value>
+    <value>Images</value>
   </data>
   <data name="GridMainPageImageText" xml:space="preserve">
-    <value>Resim</value>
+    <value>Image</value>
   </data>
   <data name="GridOrderingAllButtonText" xml:space="preserve">
-    <value>Siralamayi Guncelle</value>
+    <value>Edit Position</value>
   </data>
   <data name="GridPagingDropDownText" xml:space="preserve">
-    <value>Sayfalama</value>
+    <value>Paging</value>
   </data>
   <data name="GridResultRecordNumber" xml:space="preserve">
-    <value>Kayit Mevcut</value>
+    <value>Record Number</value>
   </data>
   <data name="GridSearchButtonText" xml:space="preserve">
-    <value>Arama</value>
+    <value>Search</value>
   </data>
   <data name="GridSelectAllButtonText" xml:space="preserve">
-    <value>Hepsini Sec</value>
+    <value>Select All</value>
   </data>
   <data name="NewRecordText" xml:space="preserve">
-    <value>Yeni Kayit</value>
+    <value>New Record</value>
   </data>
   <data name="SaveButtonText" xml:space="preserve">
-    <value>Kaydet</value>
+    <value>Save</value>
   </data>
   <data name="GridNoMainPageImageText" xml:space="preserve">
-    <value>Resim Yok</value>
+    <value>NO Image</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Kapat</value>
+    <value>Close</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Isim</value>
+    <value>Name</value>
+  </data>
+  <data name="ImageState" xml:space="preserve">
+    <value>ImageState</value>
+  </data>
+  <data name="MainPage" xml:space="preserve">
+    <value>MainPage</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
   </data>
 </root>
