@@ -7,6 +7,7 @@ using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -175,7 +176,39 @@ namespace EImece.Controllers
                 _filesHelper = value;
             }
         }
+        protected override System.IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
+        {
+            string cultureName = null;
 
+            HttpCookie cultureCookie = Request.Cookies["_culture"];
+            if (cultureCookie != null)
+            {
+                cultureName = cultureCookie.Value;
+            }
+          
 
+            cultureName = CultureHelper.GetImplementedCulture(cultureName);
+
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            if (Response.Cookies["_culture"] != null)
+            {
+                Response.Cookies["_culture"].Value = cultureName;
+            }
+            else
+            {
+                Response.Cookies.Add(cultureCookie);
+            }
+
+            return base.BeginExecuteCore(callback, state);
+        }
+        protected int CurrentLanguage
+        {
+            get
+            {
+                return Settings.MainLanguage;
+            }
+        }
     }
 }

@@ -73,7 +73,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
 
-                content = ProductCategoryService.GetSingle(id);
+                content = ProductCategoryService.GetBaseContent(id);
                 parentCategory = ProductCategoryService.GetSingle(content.ParentId);
 
 

@@ -13,7 +13,7 @@ namespace EImece.Controllers
     {
         public ActionResult Index()
         {
-            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(Settings.MainLanguage);
+            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             return View(mainPageModel);
         }
 
@@ -33,7 +33,7 @@ namespace EImece.Controllers
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
             SubsciberService.SaveOrEditEntity(subscriber);
-            return RedirectToAction("ThanksForSubscription",new { id= subscriber.Id });
+            return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
         }
         public ActionResult ThanksForSubscription(int id)
         {
@@ -42,12 +42,12 @@ namespace EImece.Controllers
         }
         public ActionResult Menu()
         {
-            var menus = MenuService.BuildTree(true, Settings.MainLanguage);
+            var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
         }
         public ActionResult ProductTree()
         {
-            var tree = ProductCategoryService.BuildTree(true,Settings.MainLanguage);
+            var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
     }

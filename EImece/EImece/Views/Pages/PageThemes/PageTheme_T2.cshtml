@@ -1,7 +1,11 @@
-﻿@model EImece.Domain.Entities.Menu
+﻿@model Menu
+@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @{
     var menu = Model;
+    var files = menu.MenuFiles;
+    ViewBag.Title = menu.GetSeoTitle();
+    ViewBag.Description = menu.GetSeoDescription();
 }
 
 <h2>Detail</h2>
@@ -141,3 +145,9 @@
 
     </dl>
 </div>
+@foreach (var f in files)
+{
+    <div>
+        @Html.Raw(f.GetCroppedImageTag(f.FileStorageId, 100, 200))
+    </div>
+}

@@ -3,11 +3,12 @@
 @using SharkDev.MVC;
 @using EImece.Domain.Models.Enums;
 @using SharkDev.Web.Controls.TreeView.Model;
+@using Resources;
 @{
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentMenu = (Menu)ViewBag.ParentMenu;
-
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
 
     var menuLinks = (List<SelectListItem>)ViewBag.MenuLinks;
 
@@ -106,9 +107,16 @@ console.log(e);
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="col-md-5">
                         <input type="file" name="menuImage" />
                         @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-5">
+                        @if (Model.MainImageId.HasValue)
+                        {
+                            <b>@ExistingMainImageText :</b>
+                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                        }
                     </div>
                 </div>
 
@@ -140,6 +148,7 @@ console.log(e);
                             @Html.CheckBoxFor(model => model.MainPage)
                         </div>
                     </div>
+                   
                 </div>
 
                 <div class="form-group">

@@ -60,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = StoryService.GetSingle(id);
+                content = StoryService.GetBaseContent(id);
             }
 
 

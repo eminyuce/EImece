@@ -6,16 +6,17 @@
     var productCategories = Model;
 }
 
-<ul class="nav navbar-nav">
+<ul class="dropdown-menu">
     @foreach (var p in productCategories)
     {
         <li>
             @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() }, null)
+            @if (p.Childrens.Any())
+            {
+                @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+            }
         </li>
-        if (p.Childrens.Any())
-        {
-            @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
-        }
+        
     }
 
 </ul>

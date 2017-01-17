@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 60px;
     padding-bottom: 20px;
 }
 
@@ -17,8 +17,13 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+
+
+.main-page-product img {
+    width:100%;
+    height:auto;
+}
+.main-page-product h3,
+.main-page-product h4 {
+    margin-top:0;
 }

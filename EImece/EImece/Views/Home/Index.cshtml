@@ -7,16 +7,26 @@
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
 }
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        @Html.Partial("_CarouselMainPageImages", mainPageImages)
+    </div>
+</div>
 
+@*
+    @foreach (var mainPageImage in mainPageImages)
+    {
+        @Html.DisplayFor(i=>mainPageImage)
+    }
+*@
+<hr />
+<div class="row">
+    @foreach (var mainPageProduct in mainPageProducts)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            @Html.DisplayFor(i => mainPageProduct, "MainPageProduct")
+        </div>
+    }
+</div>
 
-@foreach (var mainPageImage in mainPageImages)
-{
-    @Html.DisplayFor(i=>mainPageImage)
-}
-<br />
-
-@foreach (var mainPageProduct in mainPageProducts)
-{
-    @Html.DisplayFor(i => mainPageProduct,"MainPageProduct")
-}
-<br />

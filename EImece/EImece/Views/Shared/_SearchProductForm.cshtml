@@ -7,21 +7,11 @@
     var SearchProductButtonText = Resource.SearchProductButtonText;
 
 }
-@using (Html.BeginForm("SearchProducts", "Products",FormMethod.Get))
+@using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get, new { style="display:inline-block;", @class = "form-inline --navbar-form --navbar-left" }))
 {
-    <div class="form-horizontal">
-      
-        <div class="form-group">
-            <div class="col-md-10">
-                <input name="search" type="text" id="Search_TextBox" 
-                       class="search-field" placeholder="@SearchProductTextBoxPlaceHolder">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@SearchProductButtonText" class="btn btn-default" />
-            </div>
-        </div>
+    <div class="form-group">
+        <input name="search" type="text" id="Search_TextBox"
+               class="search-field form-control" placeholder="@SearchProductTextBoxPlaceHolder">
     </div>
+    <input type="submit" value="@SearchProductButtonText" class="btn btn-default" />    
 }

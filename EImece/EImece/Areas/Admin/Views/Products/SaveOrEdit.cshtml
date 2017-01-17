@@ -7,6 +7,7 @@
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategory = (ProductCategory)ViewBag.ProductCategory;
@@ -40,8 +41,8 @@ console.log(e);
     </div>
     <div class="col-md-9">
 
-    @using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
+        @using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
@@ -106,7 +107,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                     
+
                         @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
 
 
@@ -126,11 +127,21 @@ console.log(e);
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="col-md-5">
                         <input type="file" name="productImage" />
                         @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                     </div>
+                    <div class="col-md-5">
+                        @if (Model.MainImageId.HasValue)
+                        {
+                            <b>@ExistingMainImageText :</b>
+                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                        }
+                    </div>
                 </div>
+
+
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -141,7 +152,7 @@ console.log(e);
                     </div>
                 </div>
 
-              
+
 
 
                 <div class="form-group">
@@ -160,7 +171,7 @@ console.log(e);
                     </div>
                 </div>
 
-              
+
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -199,8 +210,8 @@ console.log(e);
                     $("#productTagsHtml").html(data);
                 });
             }
-           
-            
+
+
         });
     </script>
 }

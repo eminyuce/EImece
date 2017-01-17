@@ -65,7 +65,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
 
-                content = MenuService.GetSingle(id);
+                content = MenuService.GetBaseContent(id);
                 if (content.ParentId > 0)
                 {
                     parentMenu = MenuService.GetSingle(content.ParentId);

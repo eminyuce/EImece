@@ -16,11 +16,13 @@
     Model.TotalCount, Model.PageSize, numberOfLinks: 10)
 
 @Html.Partial("_PagingPartial", products)
-@foreach (var item in products)
-{
-    <div>
-        @Html.DisplayFor(modelItem => item,"MainPageProduct")
-    </div>
-}
+<div class="row">
+    @foreach (var item in products)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            @Html.DisplayFor(modelItem => item, "MainPageProduct")
+        </div>
+    }
+</div>
 @Html.Partial("_PagingPartial", products)
  

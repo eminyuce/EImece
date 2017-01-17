@@ -18,7 +18,14 @@ namespace EImece.Controllers
         {
             var menuId = id.Split("-".ToCharArray()).Last().ToInt();
             var page = MenuService.GetPageById(menuId);
-            return View(page);
+            if (page.Menu.IsActive)
+            {
+                return View(page);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

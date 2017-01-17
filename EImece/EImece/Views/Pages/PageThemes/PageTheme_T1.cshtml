@@ -1,15 +1,16 @@
-﻿@model EImece.Domain.Entities.Menu
+﻿@model Menu
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 
 @{
-    ViewBag.Title = "Detail";
     var menu = Model;
     var files = menu.MenuFiles;
+    ViewBag.Title = menu.GetSeoTitle();
+    ViewBag.Description = menu.GetSeoDescription();
 }
 
 <h2>Detail</h2>
-
+@Html.Raw(menu.GetCroppedImageTag(150, 150))
 <div>
     <h4>@Html.DisplayFor(model => model.PageTheme)</h4>
     <hr />
@@ -144,7 +145,7 @@
 
     </dl>
 </div>
-@Html.Raw(Model.GetCroppedImageTag(400, 600))
+@Html.Raw(menu.GetCroppedImageTag(400, 600))
 @foreach (var f in files)
 {
     <div>

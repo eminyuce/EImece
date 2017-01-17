@@ -7,6 +7,7 @@
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentCategory = (ProductCategory)ViewBag.ParentCategory;
@@ -57,18 +58,7 @@ console.log(e);
                 @Html.HiddenFor(model => model.MainImageId)
 
 
-                @*<div class="form-group">
-                    @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-
-                        @Html.DropDownListFor(model => model.Lang,
-   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
-   null,
-   new { @class = "form-control" })
-
-                        @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+             
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -152,9 +142,16 @@ console.log(e);
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="col-md-5">
                         <input type="file" name="productCategoryImage" />
                         @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-5">
+                        @if (Model.MainImageId.HasValue)
+                        {
+                            <b>@ExistingMainImageText :</b>
+                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                        }
                     </div>
                 </div>
 

@@ -70,7 +70,7 @@ namespace EImece.Domain.Helpers.Extensions
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             var companyName =  Settings.CompanyNameForImage;
-            var imageSize = String.Format("w{0}h{0}", width, height);
+            var imageSize = String.Format("w{0}h{1}", width, height);
             String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { companyName, imageSize, id = String.Format("{0}.jpg", fileStorageId) });
             return imagePath;
         }

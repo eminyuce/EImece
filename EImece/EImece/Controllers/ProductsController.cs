@@ -16,7 +16,7 @@ namespace EImece.Controllers
         // GET: Products
         public ActionResult Index(int page = 1)
         {
-            var products = ProductService.GetMainPageProducts(page, Settings.RecordPerPage, Settings.MainLanguage);
+            var products = ProductService.GetMainPageProducts(page, Settings.RecordPerPage, CurrentLanguage);
             return View(products);
         }
         public ActionResult Category(String id)
@@ -37,16 +37,14 @@ namespace EImece.Controllers
             var tagId = id.Split("-".ToCharArray()).Last().ToInt();
             int pageIndex = 1;
             int pageSize = 20;
-            var lang = Settings.MainLanguage;
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, lang);
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
             return View(products);
         }
         public ActionResult SearchProducts(String search)
         {
             int pageIndex = 1;
             int pageSize = 20;
-            var lang = Settings.MainLanguage;
-            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, lang);
+            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);
             return View(products);
         }
     }

@@ -13,7 +13,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -24,19 +24,31 @@
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @Html.Action("Menu", "Home")
-                </ul>
-                <ul class="nav navbar-nav">
-                    @Html.Action("ProductTree", "Home")
-                </ul>
+
+                @Html.Action("Menu", "Home")
+
+
                 @Html.Partial("_LoginPartial")
+                
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                @Html.Action("ProductTree", "Home")
                 @Html.Partial("_SearchProductForm")
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
+
+        <div class="row">
+            <div class="col-md-12">
+                @RenderBody()
+            </div>
+        </div>
+        
         <hr />
         <footer>
             @Html.Partial("_Footer")

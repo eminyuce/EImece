@@ -14,9 +14,13 @@
     index => Url.Action("Tag", "Products", new { page = index }),
     productTags.TotalCount, productTags.PageSize, numberOfLinks: 10)
 
-@foreach (var item in productTags)
-{
-    <div>
-        @Html.DisplayFor(modelItem => item.Product, "MainPageProduct")
-    </div>
-}
+
+
+<div class="row">
+    @foreach (var item in productTags)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            @Html.DisplayFor(modelItem => item.Product, "MainPageProduct")
+        </div>
+    }
+</div>

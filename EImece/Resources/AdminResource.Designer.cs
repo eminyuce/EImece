@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Existing Main Image.
+        /// </summary>
+        public static string ExistingMainImageText {
+            get {
+                return ResourceManager.GetString("ExistingMainImageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Selected Records.
         /// </summary>
         public static string GridActiveSelectedButtonText {

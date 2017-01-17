@@ -141,6 +141,7 @@
     <Compile Include="Entities\Template.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />
+    <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />
     <Compile Include="Helpers\EmailHelper\EmailSender.cs" />
@@ -161,11 +162,13 @@
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\EImeceTagType.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
+    <Compile Include="Models\FrontModels\ErrorModel.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
+    <Compile Include="Models\HelperModels\ErrorModel.cs" />
     <Compile Include="Models\HelperModels\FilesViewModel.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Models\HelperModels\PagedResult.cs" />

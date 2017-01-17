@@ -6,20 +6,17 @@
     var productCategories = Model;
 }
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav">
-            @foreach (var p in productCategories)
+@foreach (var p in productCategories)
             {
-                <li>
-                    @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() }, null)
-                </li>
-                if (p.Childrens.Any())
-                {
-                    @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
-                }
-            }
-
-        </ul>
+    <div class="btn-group">
+        @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() }, new { @class = "btn btn-default" })
+        @if (p.Childrens.Any())
+        {
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+                        @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+        }
     </div>
-</nav>
+}

@@ -1,5 +1,8 @@
-﻿<p>&copy; @DateTime.Now.Year</p>
-
-
-Test
-@Html.Partial("_AddSubscriber")
+﻿<div class="row">
+    <div class="col-md-8">
+        <p>&copy; @DateTime.Now.Year</p>
+    </div>
+    <div class="col-md-4">
+        @Html.Partial("_AddSubscriber")
+    </div>
+</div>

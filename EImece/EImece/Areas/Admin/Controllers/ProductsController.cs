@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product content = ProductService.GetSingle(id);
+            Product content = ProductService.GetBaseContent(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -77,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
 
-                content = ProductService.GetSingle(id);
+                content = ProductService.GetBaseContent(id);
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;

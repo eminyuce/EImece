@@ -6,6 +6,6 @@
 }
 @mainPageImage.Name
 <br />
-@mainPageImage.Description
+@Html.Raw(@mainPageImage.Description)
 <br />
 @Html.Raw(mainPageImage.GetCroppedImageTag(500,500))
