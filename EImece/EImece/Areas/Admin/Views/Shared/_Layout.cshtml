@@ -1,4 +1,5 @@
 ﻿@using EImece.Domain.Helpers;
+@using EImece.Domain;
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,9 +50,13 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink("Templates", "Index", "Templates", new { area = "admin" }, null)</li>
-                            <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
+                            @if (UserRoleHelper.IsAdminManagementRoles())
+                            {
+                                <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
+                                <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
+                            }
+                             
                         </ul>
                     </li>
                        <li class="dropdown">

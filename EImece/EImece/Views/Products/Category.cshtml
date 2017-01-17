@@ -2,10 +2,11 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @{
-    ViewBag.Title = "Category";
+
     var category = Model;
     var products = Model.Products;
-
+    ViewBag.Title = category.GetSeoTitle();
+    ViewBag.Description = category.GetSeoDescription();
 }
 
 <h2>

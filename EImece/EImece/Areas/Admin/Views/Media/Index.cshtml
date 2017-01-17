@@ -5,6 +5,7 @@
 @using GridMvc.Sorting
 @using EImece.Domain;
 @using EImece.Domain.Helpers.Extensions;
+@using Resources;
 @model MediaAdminIndexModel
 
 @{
@@ -19,6 +20,13 @@
     var gridName = "MediaGrid";
     var contents = Model.FileStorages;
     var baseList = contents.DownCasting<FileStorage>();
+
+
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+
 }
 
 <h2>@baseContent.Name </h2>
@@ -94,18 +102,21 @@ columns.Add()
        .SetWidth(30)
        .RenderValueAs(d =>
     @<b>
-        @Html.ActionLink(" ", "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     glyphicon glyphicon-eye-open" })
+        @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     glyphicon glyphicon-eye-open" })
     </b>);
-columns.Add()
+
+if (UserRoleHelper.IsDeletedEnableRoles())
+{
+    columns.Add()
              .Encoded(false)
              .Sanitized(false)
              .SetWidth(30)
              .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(" ", "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash glyphicon-white" })
+                @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash glyphicon-white" })
             </b>);
 
-
+}
 
 columns.Add()
                              .Encoded(false)

@@ -122,8 +122,9 @@ window.location='/admin/products/index/'+e.id;
                     @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
                 </b>);
 
-
-           columns.Add()
+           if (UserRoleHelper.IsDeletedEnableRoles())
+           {
+               columns.Add()
                         .Encoded(false)
                         .Sanitized(false)
                         .SetWidth(30)
@@ -131,7 +132,7 @@ window.location='/admin/products/index/'+e.id;
                         @<b>
                             @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm" })
                         </b>);
-
+           }
            columns.Add(c => c.Name)
                   .Titled("Name")
                   .Filterable(true)

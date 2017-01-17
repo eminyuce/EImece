@@ -108,7 +108,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
         //
-        [AuthorizeRoles(Settings.AdministratorRole)]
+            [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -128,7 +128,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [AuthorizeRoles(Settings.AdministratorRole)]
+            [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
 

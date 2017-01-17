@@ -88,15 +88,15 @@ namespace EImece.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        //[Required]
+        //[Display(Name = "User Name")]
+        //public string UserName { get; set; }
 
         public ApplicationUser GetUser()
         {
             var user = new ApplicationUser()
             {
-                UserName = this.UserName,
+                UserName = this.Email,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Email = this.Email,

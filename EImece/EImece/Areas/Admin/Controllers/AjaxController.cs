@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
@@ -15,19 +16,22 @@ namespace EImece.Areas.Admin.Controllers
     {
 
         [HttpPost]
-        public ActionResult StoryGridItem(List<String> values)
+        [DeleteAuthorize()]
+        public ActionResult DeleteStoryGridItem(List<String> values)
         {
             StoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult StoryMainPageImageGridItem(List<String> values)
+        [DeleteAuthorize()]
+        public ActionResult MainPageImageGridItem(List<String> values)
         {
             MainPageImageService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult StoryCategoryGridItem(List<String> values)
         {
             StoryCategoryService.DeleteBaseEntity(values);
@@ -35,41 +39,48 @@ namespace EImece.Areas.Admin.Controllers
         }
         // GET: Admin/Ajax
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteSubscriberGridItem(List<String> values)
         {
             SubsciberService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteProductGridItem(List<String> values)
         {
             ProductService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteTemplateGridItem(List<String> values)
         {
             TemplateService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteProductCategoriesGridItem(List<String> values)
         {
             ProductCategoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteMenusGridItem(List<String> values)
         {
             MenuService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteMediaGridItem(List<String> values)
         {
             FileStorageService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeMainPageImageGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             MainPageImageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);

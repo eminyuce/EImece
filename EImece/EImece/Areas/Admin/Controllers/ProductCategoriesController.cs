@@ -130,7 +130,7 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /ProductCategory/Delete/5
-        [AuthorizeRoles(Settings.AdministratorRole)]
+            [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)

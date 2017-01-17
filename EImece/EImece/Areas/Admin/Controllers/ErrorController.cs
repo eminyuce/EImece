@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Models.HelperModels;
+﻿using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace EImece.Controllers
+namespace EImece.Areas.Admin.Controllers
 {
     /// <summary>
     /// Provides methods that respond to HTTP requests with HTTP errors.
     /// </summary>
-
-    public class ErrorController : BaseController
+    [Authorize]
+    public class ErrorController : Controller
     {
         #region Public Methods
 

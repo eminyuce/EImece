@@ -140,6 +140,7 @@
     <Compile Include="Entities\TagCategory.cs" />
     <Compile Include="Entities\Template.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
@@ -156,13 +157,13 @@
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\Extensions\QuerySortingExtensions.cs" />
+    <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
     <Compile Include="Models\Enums\EImeceImageType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\EImeceTagType.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
-    <Compile Include="Models\FrontModels\ErrorModel.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />

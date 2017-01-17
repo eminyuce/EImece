@@ -115,7 +115,7 @@ namespace EImece.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        [AuthorizeRoles(Settings.AdministratorRole)]
+            [DeleteAuthorize()]
         public JsonResult DeleteFile(string file, int contentId, String mod, String imageType)
         {
             var CurrentContext = HttpContext;

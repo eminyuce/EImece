@@ -13,16 +13,13 @@ namespace EImece.Models
         // Allow Initialization with an instance of ApplicationUser:
         public EditUserViewModel(ApplicationUser user)
         {
-            this.UserName = user.UserName;
             this.FirstName = user.FirstName;
             this.LastName = user.LastName;
             this.Email = user.Email;
             this.Id = user.Id;
         }
         public string Id { get; set; }
-        [Required]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
+     
 
         [Required]
         [Display(Name = "First Name")]

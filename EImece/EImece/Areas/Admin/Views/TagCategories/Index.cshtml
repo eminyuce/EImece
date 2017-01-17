@@ -73,9 +73,10 @@ columns.Add()
     @<b>
         @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     " })
     </b>);
- 
 
-columns.Add()
+if (UserRoleHelper.IsDeletedEnableRoles())
+{
+    columns.Add()
              .Encoded(false)
              .Sanitized(false)
              .SetWidth(30)
@@ -83,6 +84,8 @@ columns.Add()
             @<b>
                 @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
             </b>);
+
+}
 
 columns.Add(c => c.Name)
        .Titled("Title")

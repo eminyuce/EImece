@@ -12,7 +12,7 @@ using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Admin.Controllers
 {
-   // [AuthorizeRoles(Settings.AdministratorRole)]
+    [DeleteAuthorize()]
     public class UsersController : BaseAdminController
     {
 
@@ -31,6 +31,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search="")
         {
+             
             var Db = new ApplicationDbContext();
             var users = Db.Users.AsQueryable();
             if (!String.IsNullOrEmpty(search.Trim()))
@@ -78,9 +79,7 @@ namespace EImece.Areas.Admin.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        //[Authorize(Roles = "Admin")]
-      
-       // [Authorize(Roles = "Admin")]
+  
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {
             var Db = new ApplicationDbContext();
@@ -102,10 +101,15 @@ namespace EImece.Areas.Admin.Controllers
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.Email = model.Email;
-                user.UserName = model.UserName;
+                user.UserName = model.Email;
                 Db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 await Db.SaveChangesAsync();
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                
+               // ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault());
             }
             // If we got this far, something failed, redisplay form
             return View(model);
