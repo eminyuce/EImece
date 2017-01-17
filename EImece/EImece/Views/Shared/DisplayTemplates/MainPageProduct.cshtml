@@ -16,7 +16,7 @@
          *@
         @Html.Raw(product.GetCroppedImageTag(300, 300))
         <div class="panel-body">            
-            <h4>@Html.ActionLink(product.Name, "detail", "products", new { category = categoryName, id = product.GetSeoUrl() }, null)</h4>
+            <h4>@Html.ActionLink(product.Name, "detail", "products", new { categoryName = categoryName, id = product.GetSeoUrl() }, null)</h4>
         </div>
         <div class="panel-footer">
             <strong>Category: @product.ProductCategory.Name</strong>

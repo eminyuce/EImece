@@ -32,10 +32,15 @@ namespace EImece
                defaults: new { controller = "images", action = Settings.ImageActionName, id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );
-
+            routes.MapRoute(
+              name: "PageDetail",
+              url: "pages/{id}",
+              defaults: new { controller = "Pages", action = "Detail", id = UrlParameter.Optional },
+              namespaces: new[] { "EImece.Controllers" }
+          );
             routes.MapRoute(
                name: "ProductDetail",
-               url: "products/detail/{category}/{id}",
+               url: "products/{categoryName}/{id}",
                defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );

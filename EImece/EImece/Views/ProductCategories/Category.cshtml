@@ -22,7 +22,7 @@
     {
         var categoryName = GeneralHelper.GetUrlSeoString(p.ProductCategory.Name);
         <div>
-            @Html.ActionLink(p.Name, "detail", "products", new { category = categoryName, id = p.GetSeoUrl() }, null)
+            @Html.ActionLink(p.Name, "detail", "products", new { categoryName = categoryName, id = p.GetSeoUrl() }, null)
           <b>
               @p.MainImageId
             

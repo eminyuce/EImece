@@ -14,6 +14,11 @@ namespace EImece.Domain.Helpers
 {
     public static class Convert
     {
+
+        public static int GetId(this string id)
+        {
+            return id.Split("-".ToCharArray()).Last().ToInt();
+        }
         public static string ToAlphaNumericOnly(this string input)
         {
             Regex rgx = new Regex("[^a-zA-Z0-9]");

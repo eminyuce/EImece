@@ -9,7 +9,7 @@
 @foreach (var p in productCategories)
             {
     <div class="btn-group">
-        @Html.ActionLink(p.Name, "Category", "Products", new { id = p.GetSeoUrl() }, new { @class = "btn btn-default" })
+        @Html.ActionLink(p.Name, "Category", "ProductCategories", new { id = p.GetSeoUrl() }, new { @class = "btn btn-default" })
         @if (p.Childrens.Any())
         {
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

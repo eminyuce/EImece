@@ -279,6 +279,7 @@
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
+    <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\RobotController.cs" />
     <Compile Include="Controllers\StoriesController.cs" />
@@ -590,7 +591,7 @@
     <Content Include="Views\Pages\PageThemes\PageTheme_T3.cshtml" />
     <Content Include="Views\Pages\PageThemes\PageTheme_T4.cshtml" />
     <Content Include="Views\Pages\PageThemes\PageTheme_T5.cshtml" />
-    <Content Include="Views\Products\Category.cshtml" />
+    <Content Include="Views\ProductCategories\Category.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageImage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridImageMainPage.cshtml" />

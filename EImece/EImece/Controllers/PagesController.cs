@@ -16,7 +16,7 @@ namespace EImece.Controllers
         }
         public ActionResult Detail(String id="")
         {
-            var menuId = id.Split("-".ToCharArray()).Last().ToInt();
+            var menuId = id.GetId();
             var page = MenuService.GetPageById(menuId);
             if (page.Menu.IsActive)
             {

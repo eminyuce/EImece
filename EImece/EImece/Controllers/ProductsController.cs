@@ -19,22 +19,16 @@ namespace EImece.Controllers
             var products = ProductService.GetMainPageProducts(page, Settings.RecordPerPage, CurrentLanguage);
             return View(products);
         }
-        public ActionResult Category(String id)
-        {
-            var categoryId = id.Split("-".ToCharArray()).Last().ToInt();
-
-            var productCategory = ProductCategoryService.GetProductCategory(categoryId);
-            return View(productCategory);
-        }
+        
         public ActionResult Detail(String id)
         {
-            var productId = id.Split("-".ToCharArray()).Last().ToInt();
+            var productId = id.GetId();
             var product = ProductService.GetProductById(productId);
             return View(product);
         }
         public ActionResult Tag(String id)
         {
-            var tagId = id.Split("-".ToCharArray()).Last().ToInt();
+            var tagId = id.GetId();
             int pageIndex = 1;
             int pageSize = 20;
             SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
