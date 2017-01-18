@@ -296,6 +296,14 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Content\main\1.png" />
+    <Content Include="Areas\Admin\Content\main\2.png" />
+    <Content Include="Areas\Admin\Content\main\3.png" />
+    <Content Include="Areas\Admin\Content\main\4.png" />
+    <Content Include="Areas\Admin\Content\main\5.png" />
+    <Content Include="Areas\Admin\Content\main\6.png" />
+    <Content Include="Areas\Admin\Content\main\7.png" />
+    <Content Include="Areas\Admin\Content\main\8.png" />
     <Content Include="Areas\Admin\Content\PageThemes\tema-01.gif" />
     <Content Include="Areas\Admin\Content\PageThemes\tema-02.gif" />
     <Content Include="Areas\Admin\Content\PageThemes\tema-03.gif" />

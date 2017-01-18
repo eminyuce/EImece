@@ -16,7 +16,7 @@ namespace EImece.Domain.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
+        [StringLength(500, ErrorMessage = "Name cannot be longer than 500 characters.")]
         [Column("Name")]
         [Display(Name = "Name")]
 

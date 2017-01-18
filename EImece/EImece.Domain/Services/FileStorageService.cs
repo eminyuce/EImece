@@ -47,9 +47,9 @@ namespace EImece.Domain.Services
                     var fileStorage = new FileStorage();
                     fileStorage.Name = file.name;
                     fileStorage.FileName = file.name;
-                    fileStorage.Width = 1;
-                    fileStorage.Height = 1;
-                    fileStorage.MimeType = "";
+                    fileStorage.Width = file.width;
+                    fileStorage.Height = file.height;
+                    fileStorage.MimeType = file.mimeType;
                     fileStorage.CreatedDate = DateTime.Now;
                     fileStorage.UpdatedDate = DateTime.Now;
                     fileStorage.IsActive = true;
@@ -96,6 +96,11 @@ namespace EImece.Domain.Services
                         default:
                             break;
                     }
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                    Logger.Error(ex, "DbEntityValidationException:" + message);
                 }
                 catch (Exception ex)
                 {

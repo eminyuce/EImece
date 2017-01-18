@@ -15,5 +15,8 @@ namespace EImece.Domain.Models.HelperModels
         public string deleteUrl { get; set; }
         public string thumbnailUrl { get; set; }
         public string deleteType { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
+        public String mimeType { get; set; }
     }
 }

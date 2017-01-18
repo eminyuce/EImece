@@ -254,13 +254,18 @@ namespace EImece.Domain.Helpers
             var mod = EnumHelper.Parse<MediaModType>(request.Form["mod"].ToStr());
 
 
-            String getType = System.Web.MimeMapping.GetMimeMapping(FileFullPath);
-
+            String getType = MimeMapping.GetMimeMapping(FileFullPath);
+            String patchOnServer = Path.Combine(StorageRoot);
+            var fullName = Path.Combine(patchOnServer, Path.GetFileName(FileName));
+            Bitmap img = LoadImage(fullName);
             var result = new ViewDataUploadFilesResult()
             {
                 name = FileName,
                 size = fileSize,
                 type = getType,
+                width = img.Width,
+                height = img.Height,
+                mimeType = getType,
                 url = UrlBase + FileName,
                 deleteUrl = String.Format(DeleteURL, FileName, contentId, mod, imageType),
                 thumbnailUrl = CheckThumb(getType, FileName),
