@@ -13,5 +13,6 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Menu> BuildTree(bool? isActive, int language);
         List<Node> CreateMenuTreeViewDataList(bool? isActive, int language);
         Menu GetMenuById(int menuId);
+        List<Menu> GetMenuLeaves(bool? isActive, int language);
     }
 }

@@ -8,6 +8,7 @@
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
+@using SharkDev.Web.Controls.TreeView.Model;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -19,7 +20,8 @@
     var gridName = "MenusGrid";
     List<Menu> contents = Model;
     var baseList = contents.DownCasting<Menu>();
-
+    var treeNodeList = (List<Node>)ViewBag.Tree;
+    var menuTreeNodeList = (List<Menu>)ViewBag.MenuLeaves;
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
     var gridDeleteText = AdminResource.GridDeleteText;
@@ -35,17 +37,15 @@
     <div class="col-md-3">
 
         @Html.SharkDev().TreeView(settings =>
-    {
-        settings.Id = "treeViewContainer";
-        settings.Header.Text = "Tree root - Animal";
-        settings.Header.Visible = false;
-        settings.Header.Expanded = true;
-        settings.ClientHandlers.ContentSelect = "function (e) { console.log(e); }";
-        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
-        settings.Height = 300;
-        settings.Width = 270;
-        settings.DataOnClient = true;
-    }).GetContent(ViewBag.Tree)
+   {
+       settings.Id = "treeViewContainer";
+       settings.Header.Expanded = true;
+       settings.ClientHandlers.ContentSelect = "function (e) { console.log(e); }";
+       //settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
+       settings.Height = 300;
+       settings.Width = 270;
+       settings.DataOnClient = true;
+   }).GetContent(treeNodeList)
 
         <span id="treeClickContainer"></span>
 
@@ -101,15 +101,25 @@
                                         @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
                                     </b>);
 
-                       if (UserRoleHelper.IsDeletedEnableRoles())
+                       if (UserRoleHelper.IsDeletedEnableRoles() )
                        {
                            columns.Add()
                                                                .Encoded(false)
                                                                .Sanitized(false)
                                                                .SetWidth(30)
                                                                .RenderValueAs(d =>
+                                                              
                                                             @<b>
-                                                                @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
+           
+                                 
+                                    @if (menuTreeNodeList.Any(r => r.Id == d.Id))
+                                    {
+                                    @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
+                                 }else
+                                 {
+                                     @String.Format("No Delete")
+                                 }
+
                                                             </b>);
                            }
 

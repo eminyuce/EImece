@@ -47,5 +47,12 @@ namespace EImece.Domain.Services
             r.Menu = MenuRepository.GetMenuById(menuId);
             return r;
         }
+
+        public List<Menu> GetMenuLeaves(bool? isActive, int language)
+        {
+            return MenuRepository.GetMenuLeaves(isActive, language);
+        }
+
+        
     }
 }

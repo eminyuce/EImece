@@ -13,6 +13,6 @@ namespace EImece.Domain.Services.IServices
         List<ProductCategory> BuildTree(bool? isActive, int language = 1);
         List<Node> CreateProductCategoryTreeViewDataList();
         ProductCategory GetProductCategory(int categoryId);
-   
+        List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
     }
 }

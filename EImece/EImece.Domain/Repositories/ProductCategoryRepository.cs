@@ -68,6 +68,25 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
+        public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
+        {
+            var productCategories = GetActiveBaseContents(isActive, language);
+            var result = new List<ProductCategory>();
 
+            foreach (var m in productCategories)
+            {
+                if (productCategories.Any(r => r.ParentId == m.Id))
+                {
+                    continue;
+                }
+                else
+                {
+                    result.Add(m);
+                }
+            }
+
+
+            return result;
+        }
     }
 }

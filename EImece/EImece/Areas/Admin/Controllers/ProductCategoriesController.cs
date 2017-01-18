@@ -24,6 +24,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search);
+            ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
         }
 
@@ -139,13 +140,21 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             ProductCategory content = ProductCategoryService.GetSingle(id);
+            var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             if (content == null)
             {
                 return HttpNotFound();
             }
 
-
-            return View(content);
+            if(leaves.Any(r=>r.Id == id))
+            {
+                return View(content);
+            }
+            else
+            {
+                return Content("You cannot delete the parent");
+            }
+            
         }
 
         [HttpPost, ActionName("Delete")]
@@ -160,7 +169,9 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                ProductCategoryService.DeleteEntity(productCategory);
+                var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
+                if (leaves.Any(r => r.Id == id))
+                    ProductCategoryService.DeleteEntity(productCategory);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

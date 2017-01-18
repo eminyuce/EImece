@@ -81,7 +81,13 @@ namespace EImece.Areas.Admin.Controllers
                 Session["SelectedLanguage"] = value;
             }
         }
-
+        protected int CurrentLanguage
+        {
+            get
+            {
+                return Settings.MainLanguage;
+            }
+        }
         public BaseAdminController()
         {
 

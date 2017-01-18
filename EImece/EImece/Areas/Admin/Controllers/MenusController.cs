@@ -22,7 +22,8 @@ namespace EImece.Areas.Admin.Controllers
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search);
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
+            ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
             return View(menus);
         }
 
@@ -110,12 +111,12 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null,Settings.MainLanguage);
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
             return View(menu);
         }
 
 
-
+        
         //
         [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
@@ -126,13 +127,22 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             Menu content = MenuService.GetSingle(id);
+            var menuTreeNodeList = MenuService.GetMenuLeaves(null, CurrentLanguage);
+            var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == id);
+
             if (content == null)
             {
                 return HttpNotFound();
             }
+            if (leave != null)
+            {
+                return View(content);
+            }
+            else
+            {
+                return Content("You cannot delete parent");
+            }
 
-
-            return View(content);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -142,13 +152,18 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             Menu menu = MenuService.GetSingle(id);
+            var menuTreeNodeList = MenuService.GetMenuLeaves(null, CurrentLanguage);
+            var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == id);
             if (menu == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                MenuService.DeleteEntity(menu);
+                if (leave != null)
+                {
+                    MenuService.DeleteEntity(menu);
+                }
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -166,7 +181,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult GetMenus()
         {
-            List<Menu> treelist = MenuService.BuildTree(null,Settings.MainLanguage);
+            List<Menu> treelist = MenuService.BuildTree(null, Settings.MainLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 

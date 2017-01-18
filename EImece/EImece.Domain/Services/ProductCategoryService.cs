@@ -54,5 +54,10 @@ namespace EImece.Domain.Services
             return result;
 
         }
+
+        public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
+        {
+            return ProductCategoryRepository.GetProductCategoryLeaves(isActive, language);
+        }
     }
 }

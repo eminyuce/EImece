@@ -18,7 +18,7 @@ namespace EImece.Domain.Repositories
     {
         public MenuRepository(IEImeceContext dbContext) : base(dbContext)
         {
-           
+
         }
 
         private void GetTreeview(List<Menu> list, Menu current, ref List<Menu> returnList)
@@ -38,7 +38,7 @@ namespace EImece.Domain.Repositories
             List<Menu> list = GetActiveBaseContents(isActive, language);
             List<Menu> returnList = new List<Menu>();
             //find top levels items
-            var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r=>r.Position).ToList();
+            var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
             returnList.AddRange(topLevels);
             foreach (var i in topLevels)
             {
@@ -66,6 +66,28 @@ namespace EImece.Domain.Repositories
             Expression<Func<Menu, object>>[] includeProperties = { includeProperty2, includeProperty3 };
 
             return GetSingleIncluding(menuId, includeProperties);
+        }
+
+        public List<Menu> GetMenuLeaves(bool? isActive, int language)
+        {
+            var menus = GetActiveBaseContents(isActive, language);
+            var result = new List<Menu>();
+
+            foreach (var m in menus)
+            {
+                if (menus.Any(r => r.ParentId == m.Id))
+                {
+                    continue;
+                }
+                else
+                {
+                    result.Add(m);
+                }
+            }
+
+
+            return result;
+
         }
     }
 }

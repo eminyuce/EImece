@@ -20,6 +20,7 @@
     var gridName = "ProductCategoriesGrid";
     var contents = Model;
     var baseList = contents.DownCasting();
+    var productCategoryLeaves = (List<ProductCategory>)ViewBag.ProductCategoryLeaves;
 
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
@@ -102,7 +103,15 @@
                     .SetWidth(30)
                     .RenderValueAs(d =>
                     @<b>
-                        @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
+            @if (productCategoryLeaves.Any(r => r.Id == d.Id))
+            {
+                @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
+            }
+            else
+            {
+              @String.Format("No Delete")
+            }
+                       
                     </b>);
 
            }
