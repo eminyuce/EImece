@@ -28,46 +28,96 @@
     var gridDetailText = AdminResource.GridDetailText;
 
 }
-
+<style>
+    .myslider {
+        width: 3em;
+        height: 1.6em;
+        top: 50%;
+        margin-top: -.8em;
+        text-align: center;
+        line-height: 1.6em;
+    }
+</style>
 <h2>@baseContent.Name </h2>
 @Html.HiddenFor(r => Model.Id)
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)
 
 
+<input type="text" name="imageWidth" id="imageWidth" />
+<input type="text" name="imageHeight" id="imageHeight" />
+<div id="sliderWidth">
+    <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
+</div>
+<br />
+<div id="sliderHeight">
+    <div id="sliderHeightHandle" class="ui-slider-handle myslider"></div>
+</div>
+<br />
 <!-- blueimp File Upload & Gallery styles -->
 @Styles.Render("~/Content/jQuery-File-Upload")
-@*<script>
-
-        $(function () {
-            $('#fileUpload').fileupload({
-                dataType: 'json',
-                done: function (e, data) {
-                    $.each(data.result.files, function (index, file) {
-                        $('<p/>').text(file.name).appendTo(document.body);
-                    });
-                }
-            });
-        });
-    </script>*@
+<div id="target">
+    Click here
+</div>
 <script>
     var $form = null;
 
-
+    $('#fileupload').addClass('fileupload-processing');
     $(function () {
 
-        $form = $('#fileupload').fileupload({
-            dataType: 'json',
-            formData: {
-                contentId: $("#Id").val(),
-                imageType: $("#ImageType").val(),
-                mod: $("#MediaMod").val()
+ 
+        var handle1 = $("#sliderWidthHandle");
+        $("#sliderWidth").slider({
+            min: 10,
+            max: 1000,
+            value: 200,
+            create: function () {
+                handle1.text($(this).slider("value"));
+            },
+            slide: function (event, ui) {
+                handle1.text(ui.value);
+                $('#imageWidth').val(ui.value);
+            },
+            change: function (event, ui) {
+                $('#imageWidth').val(ui.value);
             }
         });
 
-    });
-    $('#fileupload').addClass('fileupload-processing');
+        var handle2 = $("#sliderHeightHandle");
+        $("#sliderHeight").slider({
+            min: 10,
+            max: 1000,
+            value: 200,
+            create: function () {
+                handle2.text($(this).slider("value"));
+            },
+            slide: function (event, ui) {
+                handle2.text(ui.value);
+                $('#imageHeight').val(ui.value);
+            },
+            change: function (event, ui) {
+                $('#imageHeight').val(ui.value);
+            }
+        });
 
+        $form = $('#fileupload').fileupload({
+            dataType: 'json'
+        });
+        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+            console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
+            data.formData = {
+                contentId: $("#Id").val(),
+                imageType: $("#ImageType").val(),
+                mod: $("#MediaMod").val(),
+                imageHeight: $("#sliderHeight").slider("option", "value"),
+                imageWidth: $("#sliderWidth").slider("option", "value")
+            } 
+        });
+
+        $("#target").click(function () {
+           
+        });
+    });
 </script>
 @Html.Partial("_Files")
 

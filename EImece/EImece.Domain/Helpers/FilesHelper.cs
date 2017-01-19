@@ -167,7 +167,10 @@ namespace EImece.Domain.Helpers
         {
 
             var request = requestContext.Request;
-
+            int imageHeight = request.Form["imageHeight"].ToInt();
+            int imageWidth = request.Form["imageWidth"].ToInt();
+            imageHeight = imageHeight == 0 ? 80 : imageHeight;
+            imageWidth = imageWidth == 0 ? 80 : imageWidth;
 
 
             for (int i = 0; i < request.Files.Count; i++)
@@ -191,7 +194,7 @@ namespace EImece.Domain.Helpers
                 if (imageArray.Length != 0)
                 {
                     String extansion = imageArray[imageArray.Length - 1];
-                    if (extansion != "jpg" && extansion != "png") //Do not create thumb if file is not an image
+                    if (!IsImage(ext)) //Do not create thumb if file is not an image
                     {
 
                     }
@@ -200,12 +203,11 @@ namespace EImece.Domain.Helpers
 
                         var newFileNameThb = string.Format(@"thb{0}_{1}{2}", fileBase, randomNumber, ext);
                         var ThumbfullPath = Path.Combine(pathOnServer, "thumbs");
-                        // String fileThumb = file.FileName + ".80x80.jpg";
                         String fileThumb = newFileNameThb;
                         var ThumbfullPath2 = Path.Combine(ThumbfullPath, fileThumb);
                         using (MemoryStream stream = new MemoryStream(System.IO.File.ReadAllBytes(fullPath)))
                         {
-                            var thumbnail = new WebImage(stream).Resize(80, 80);
+                            var thumbnail = new WebImage(stream).Resize(imageWidth, imageHeight);
                             thumbnail.Save(ThumbfullPath2);
                         }
 

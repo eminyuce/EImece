@@ -86,6 +86,8 @@ namespace EImece.Areas.Admin.Controllers
             int Id = Request.Form["contentId"].ToInt();
             var imageType = EnumHelper.Parse<EImeceImageType>(Request.Form["imageType"].ToStr());
             var mod = EnumHelper.Parse<MediaModType>(Request.Form["mod"].ToStr());
+            int imageHeight = Request.Form["imageHeight"].ToInt();
+            int imageWidth = Request.Form["imageWidth"].ToInt();
 
 
             var resultList = new List<ViewDataUploadFilesResult>();
