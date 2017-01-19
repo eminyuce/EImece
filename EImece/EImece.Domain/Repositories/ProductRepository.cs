@@ -82,7 +82,7 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
-        public PaginatedList<Product> SearchProducts(int pageIndex,int pageSize,string search, int lang)
+        public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang)
         {
             var includeProperties = GetIncludePropertyExpressionList<Product>();
             includeProperties.Add(r => r.MainImage);
@@ -95,6 +95,65 @@ namespace EImece.Domain.Repositories
             return items;
         }
 
-        
+        public IEnumerable<Product> GetData(out int totalRecords, 
+            string globalSearch,
+            String name,
+            int? limitOffset,
+            int? limitRowCount, 
+            string orderBy, 
+            bool desc)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<Product>();
+            includeProperties.Add(r => r.ProductCategory);
+            var query = GetAllIncluding(includeProperties.ToArray());
+
+            if (!String.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(p => p.Name.Contains(name.ToLower()));
+            }
+             
+
+            if (!String.IsNullOrWhiteSpace(globalSearch))
+            {
+                query = query.Where(p => (p.Name).Contains(globalSearch) || (p.ProductCode).Contains(globalSearch));
+            }
+
+            totalRecords = query.Count();
+
+            if (!String.IsNullOrWhiteSpace(orderBy))
+            {
+                switch (orderBy.ToLower())
+                {
+                    case "firstname":
+                        if (!desc)
+                            query = query.OrderBy(p => p.Name);
+                        else
+                            query = query.OrderByDescending(p => p.Name);
+                        break;
+                    case "lastname":
+                        if (!desc)
+                            query = query.OrderBy(p => p.ProductCode);
+                        else
+                            query = query.OrderByDescending(p => p.ProductCode);
+                        break;
+                    case "id":
+                        if (!desc)
+                            query = query.OrderBy(p => p.Id);
+                        else
+                            query = query.OrderByDescending(p => p.Id);
+                        break;
+                    
+                }
+            }
+
+
+            if (limitOffset.HasValue)
+            {
+                query = query.Skip(limitOffset.Value).Take(limitRowCount.Value);
+            }
+
+            return query.ToList();
+        }
+
     }
 }

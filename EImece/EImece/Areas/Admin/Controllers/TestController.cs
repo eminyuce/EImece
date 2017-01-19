@@ -10,10 +10,15 @@ using EImece.Domain.Helpers;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    [AllowAnonymous]
     public class TestController : BaseAdminController
     {
         // GET: Admin/Test
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult TestGridView()
         {
             return View();
         }

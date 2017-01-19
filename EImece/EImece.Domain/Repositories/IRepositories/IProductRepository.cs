@@ -14,6 +14,7 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Product> GetAdminPageList(int categoryId, string search, int language);
         Product GetProduct(int id);
         PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang);
+        IEnumerable<Product> GetData(out int totalRecords, string globalSearch, String name, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
 
     }
 }

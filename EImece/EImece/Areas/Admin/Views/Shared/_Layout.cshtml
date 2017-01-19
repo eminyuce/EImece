@@ -34,7 +34,8 @@
     <link href="~/Content/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
     <script src="~/Content/codemirror/addon/hint/show-hint.js"></script>
     <script src="~/Content/codemirror/addon/hint/xml-hint.js"></script>
-
+    <!-- Be sure this is after jquery reference -->
+    <script src="~/MVCGridHandler.axd/script.js"></script>
 
 </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -102,7 +103,7 @@ FormMethod.Get, new
 }))
                 {
                     <div class="form-group">
-                        <input type="text" name="search" value="@Request.QueryString["search"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
+                        <input type="text" name="searchContent" value="@Request.QueryString["searchContent"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
                     </div>
                         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
 

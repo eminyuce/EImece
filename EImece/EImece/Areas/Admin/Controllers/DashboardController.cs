@@ -19,10 +19,23 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
-        public ActionResult SearchContent(String search)
+        public ActionResult SearchContent(String searchContent)
         {
-            ViewBag.SearchKey = search;
+            String search = searchContent;
             var resultList = new List<BaseContent>();
+            ViewBag.SearchKey = search;
+            if (String.IsNullOrEmpty(search))
+            {
+                var urlReferrer = Request.UrlReferrer;
+                if (urlReferrer != null)
+                {
+                    return Redirect(urlReferrer.ToStr());
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
 
             Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search));
