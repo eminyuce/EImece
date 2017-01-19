@@ -39,6 +39,7 @@ namespace EImece
                         .WithValueExpression(i => i.Id.ToStr()); // use the Value Expression to return the cell text for this column
                     cols.Add().WithColumnName("Name")
                       .WithHeaderText("Name")
+                      .WithSorting(true)
                       .WithValueExpression(i => i.Name); // use the Value Expression to return the cell text for this column
                     cols.Add().WithColumnName("ProductCategoryName")
                     .WithHeaderText("ProductCategoryName")

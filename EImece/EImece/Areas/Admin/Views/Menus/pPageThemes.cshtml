@@ -62,6 +62,18 @@
                              @String.Format("{0}",selectedTheme.Equals("T6") ? "checked='checked'" : "")
                         type="radio" name="PageTheme" value="T6" /><label for="T6">Tema 6</label>
             </td>
+            <td>
+                @*<a href="~/Areas/Admin/Content/PageThemes/tema-07.gif" rel="prettyPhoto">
+                    <img width="150px" src="~/Areas/Admin/Content/PageThemes/tema-07.gif" />
+                </a>*@
+
+                @String.Format("Image Gallery")
+
+                <br />
+                <input id="T6"
+                       @String.Format("{0}", selectedTheme.Equals("T7") ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="T7" /><label for="T7">Tema 7</label>
+            </td>
         </tr>
     </table>
 </div>

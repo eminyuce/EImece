@@ -9,7 +9,7 @@
     ViewBag.Description = menu.GetSeoDescription();
 }
 
- <!-- Page Content -->
+<!-- Page Content -->
 <div class="container">
 
     <!-- Portfolio Item Heading -->
@@ -17,61 +17,41 @@
         <div class="col-lg-12">
             <h1 class="page-header">
                 @menu.Name
-    
             </h1>
         </div>
     </div>
-    <!-- /.row -->
-    <!-- Portfolio Item Row -->
-    <div class="row">
 
-        <div class="col-md-8">
-            @Html.Raw(menu.GetCroppedImageTag(750, 500))
-        </div>
-
-        <div class="col-md-4">
-            <p>
-                @Html.Raw(menu.Description)
-            </p>
-        </div>
-
-    </div>
-    
 
 
     @for (int i = 0; i < files.Count; i++)
     {
         var f = files[i];
         bool renderRow = i % 4 == 0 ? true : false;
-      
+
         if (renderRow)
         {
-            @: <div class="row  text-center">
+            @: <div class="row">
                 }
 
         if (i == 0)
         {
-            <div class="col-lg-12">
-                <h3 class="page-header">Related Images</h3>
-            </div>
+
         }
 
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
             <a href="#">
-                @Html.Raw(f.GetCroppedImageTag(f.FileStorageId, 500, 300))
+                @Html.Raw(f.GetCroppedImageTag(f.FileStorageId, 200, 150))
             </a>
         </div>
 
         if (renderRow)
         {
-            
-            @:</div>
-            
 
-                    }
-                }
+            @:        </div>
+        }
+    }
 
 
- 
-   
+</div>
+
 
