@@ -51,11 +51,12 @@ namespace EImece.Areas.Admin.Controllers
 
             if (id == 0)
             {
-
+                content.ImageHeight = 250;
+                content.ImageWidth = 250;
             }
             else
             {
-                content = MainPageImageService.GetSingle(id);
+                content = MainPageImageService.GetBaseContent(id);
             }
 
 
@@ -77,7 +78,13 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (mainPageImageFile != null)
                     {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(mainPageImageFile, 0, 0, EImeceImageType.MainPageImages);
+                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(mainPageImageFile, 
+                            mainpageimage.ImageHeight, mainpageimage.ImageWidth, 
+                            EImeceImageType.MainPageImages);
+
+                        mainpageimage.ImageWidth = mainImage.Width;
+                        mainpageimage.ImageHeight = mainImage.Height;
+
                         FileStorageService.SaveOrEditEntity(mainImage);
                         mainpageimage.MainImageId = mainImage.Id;
                     }

@@ -176,7 +176,7 @@ namespace EImece.Domain.Helpers
             for (int i = 0; i < request.Files.Count; i++)
             {
                 var file = request.Files[i];
-              //  var fileName = GeneralHelper.GetUrlSeoString(file.FileName);
+                //  var fileName = GeneralHelper.GetUrlSeoString(file.FileName);
                 var ext = Path.GetExtension(file.FileName);
                 var fileBase = Path.GetFileNameWithoutExtension(file.FileName);
                 Random random = new Random();
@@ -229,7 +229,7 @@ namespace EImece.Domain.Helpers
             String patchOnServer = Path.Combine(StorageRoot);
             var fullName = Path.Combine(patchOnServer, Path.GetFileName(file.FileName));
             var ThumbfullPath = Path.Combine(fullName, Path.GetFileName(file.FileName + ".80x80.jpg"));
-            
+
 
             var ImageBit = LoadImage(fullName);
             Save(ImageBit, 80, 80, 10, ThumbfullPath);
@@ -381,10 +381,30 @@ namespace EImece.Domain.Helpers
                     fs.Write(fileByteCropped);
                     fs.Close();
 
+                   
+                    double ratio = img.Width.ToDouble() / img.Height.ToDouble();
+                    if (width == 0 && height > 0)
+                    {
+                        width = (int) (ratio * height); 
+                    }
+                    else if (width > 0 && height == 0)
+                    {
+                        height = (int)((width * (1 / ratio)));
+                    }
+                    else if (width == 0 && height == 0)
+                    {
+                        //Create image from Bytes array
+                        height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
+                        width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
 
-                    //Create image from Bytes array
-                    height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
-                    width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
+                    }
+                    else if (width > 0 && height > 0)
+                    {
+
+                    }
+
+
+
                     //Resize Image - ORIGINAL
                     var byteArrayIn = CreateThumbnail(fileByte, 10000, height, width);
 
