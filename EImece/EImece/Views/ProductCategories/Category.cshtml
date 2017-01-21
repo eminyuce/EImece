@@ -24,12 +24,12 @@
         {
             <div class="col-lg-3 col-md-4 col-sm-6">
                 @Html.DisplayFor(modelItem => p, "MainPageProduct")
-                @foreach (var pt in p.ProductTags)
+                @*@foreach (var pt in p.ProductTags)
                 {
                 <div>
                     @Html.ActionLink(pt.Tag.Name, "tag", "products", new { id = pt.Tag.GetSeoUrl() }, null)
                 </div>
-                }
+                }*@
             </div>
           
             
