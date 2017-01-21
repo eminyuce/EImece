@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -28,6 +29,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string fromAddress, string fromName, string toAddress, string toName,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null);
+        void SendEmailContactingUs(ContactUsFormViewModel contact);
 
         /// <summary>
         /// Sends an email

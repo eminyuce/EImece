@@ -9,5 +9,6 @@ namespace EImece.Domain.Services.IServices
 {
     public interface ISettingService : IBaseEntityService<Setting>
     {
+        string GetSettingByKey(string key);
     }
 }

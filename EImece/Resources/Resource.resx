@@ -123,4 +123,7 @@
   <data name="SearchProductTextBoxPlaceHolder" xml:space="preserve">
     <value>Search Products</value>
   </data>
+  <data name="SendButtonText" xml:space="preserve">
+    <value>Send</value>
+  </data>
 </root>

@@ -10,8 +10,7 @@ namespace EImece.Domain.Entities
     public class Subscriber : BaseEntity
     {
         [Required]
-        [StringLength(200)]
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
     }
 }

@@ -15,7 +15,10 @@ namespace EImece.Domain.Repositories
         {
 
         }
-         
-       
+
+        public List<Setting> GetAllSettings()
+        {
+            return GetAll().ToList();
+        }
     }
 }

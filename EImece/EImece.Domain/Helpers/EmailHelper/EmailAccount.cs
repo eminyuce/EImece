@@ -66,19 +66,6 @@ namespace EImece.Domain.Helpers.EmailHelper
         }
 
 
-        public static EmailAccount GetAdminEmailAccount()
-        {
-            var emailAccount = new EmailAccount();
-            emailAccount.Username = Settings.GetConfigString("AdminEmailAccount_Username");
-            emailAccount.Email = Settings.GetConfigString("AdminEmailAccount_Email");
-            emailAccount.DisplayName = Settings.GetConfigString("AdminEmailAccount_DisplayName");
-            emailAccount.Password = Settings.GetConfigString("AdminEmailAccount_Password");
-            emailAccount.Host = Settings.GetConfigString("AdminEmailAccount_Host");
-            emailAccount.Port = Settings.GetConfigInt("AdminEmailAccount_Port");
-            emailAccount.EnableSsl = Settings.GetConfigBool("AdminEmailAccount_EnableSsl");
-            emailAccount.UseDefaultCredentials = Settings.GetConfigBool("AdminEmailAccount_UseDefaultCredentials");
-
-            return emailAccount;
-        }
+       
     }
 }

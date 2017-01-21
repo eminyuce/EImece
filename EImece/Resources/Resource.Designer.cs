@@ -77,5 +77,14 @@ namespace Resources {
                 return ResourceManager.GetString("SearchProductTextBoxPlaceHolder", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string SendButtonText {
+            get {
+                return ResourceManager.GetString("SendButtonText", resourceCulture);
+            }
+        }
     }
 }

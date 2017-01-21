@@ -16,5 +16,23 @@ namespace EImece.Domain.Services
         {
             SettingRepository = repository;
         }
+        private List<Setting> GetAllSettings()
+        {
+            var cacheKey = String.Format("Settings");
+            List<Setting> result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = SettingRepository.GetAllSettings();
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+            }
+            return result;
+        }
+        public string GetSettingByKey(string key)
+        {
+            var allSettings = GetAllSettings();
+            var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            return result.SettingValue;
+        }
     }
 }

@@ -6,6 +6,10 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Models.FrontModels;
+using Ninject;
+using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -15,6 +19,8 @@ namespace EImece.Domain.Helpers.EmailHelper
     public class EmailSender : IEmailSender
     {
 
+        [Inject]
+        public ISettingService SettingService { get; set; }
 
         /// <summary>
         /// Sends an email
@@ -106,5 +112,25 @@ namespace EImece.Domain.Helpers.EmailHelper
                 smtpClient.Send(message);
             }
         }
+        public EmailAccount GetEmailAccount()
+        {
+            var emailAccount = new EmailAccount();
+            emailAccount.Host = SettingService.GetSettingByKey("AdminEmailHost");
+            emailAccount.Password = SettingService.GetSettingByKey("AdminEmailPassword");
+            emailAccount.EnableSsl = SettingService.GetSettingByKey("AdminEmailEnableSsl").ToBool();
+            emailAccount.Port = SettingService.GetSettingByKey("AdminEmailPort").ToInt();
+            emailAccount.DisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            emailAccount.Email = SettingService.GetSettingByKey("AdminEmail");
+            emailAccount.UseDefaultCredentials = SettingService.GetSettingByKey("AdminEmailUseDefaultCredentials").ToBool();
+            emailAccount.Username = SettingService.GetSettingByKey("AdminUserName").ToStr();
+            return emailAccount;
+        }
+        public void SendEmailContactingUs(ContactUsFormViewModel contact)
+        {
+            var emailAccount = GetEmailAccount();
+            var to = SettingService.GetSettingByKey("AdminEmail");
+            var toDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            SendEmail(emailAccount, "Contact Us", contact.Message, contact.Email, contact.Name, to, toDisplayName);
+;        }
     }
 }
