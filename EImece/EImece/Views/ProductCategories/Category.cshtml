@@ -12,34 +12,27 @@
 <h2>
     @category.Name
 </h2>
- 
+
 @Html.Raw(category.GetCroppedImageTag(200, 200))
 
 
 @if (products != null)
 {
-    foreach (var p in products)
-    {
-        var categoryName = GeneralHelper.GetUrlSeoString(p.ProductCategory.Name);
-        <div>
-            @Html.ActionLink(p.Name, "detail", "products", new { categoryName = categoryName, id = p.GetSeoUrl() }, null)
-          <b>
-              @p.MainImageId
+    <div class="row">
+
+        @foreach (var p in products)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                @Html.DisplayFor(modelItem => p, "MainPageProduct")
+                @foreach (var pt in p.ProductTags)
+                {
+                <div>
+                    @Html.ActionLink(pt.Tag.Name, "tag", "products", new { id = pt.Tag.GetSeoUrl() }, null)
+                </div>
+                }
+            </div>
+          
             
-              @Html.Raw(p.GetCroppedImageTag(100, 100))
-            </b>  
-        </div>
-        foreach(var pt in p.ProductTags)
-        {
-            <div>
-                @Html.ActionLink(pt.Tag.Name, "tag", "products", new { id = pt.Tag.GetSeoUrl()  }, null)
-            </div>
         }
-        foreach (var pt in p.ProductFiles)
-        {
-            <div>
-                @Html.Raw(pt.GetCroppedImageTag(pt.FileStorageId,200, 200))
-            </div>
-        }
-    }
+    </div>
 }

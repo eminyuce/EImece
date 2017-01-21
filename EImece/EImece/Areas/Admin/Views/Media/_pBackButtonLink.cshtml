@@ -1,0 +1,48 @@
+﻿@model EImece.Domain.Models.AdminModels.MediaAdminIndexModel
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Entities;
+ 
+
+@{
+    var actionNameEdit = "Index";
+    var controllerName = "";
+    var baseContent = Model.BaseContent;
+    if (baseContent is Product)
+    {
+        Product product = (Product)baseContent;
+        controllerName = "Products";
+    }
+    else if (baseContent is Story)
+    {
+        Story item = (Story)baseContent;
+        controllerName = "Stories";
+    }
+    else if (baseContent is Menu)
+    {
+        Menu item = (Menu)baseContent;
+        controllerName = "Menus";
+    }
+    else if (baseContent is StoryCategory)
+    {
+        StoryCategory item = (StoryCategory)baseContent;
+        controllerName = "StoryCategories";
+    }
+    else if (baseContent is ProductCategory)
+    {
+        ProductCategory item = (ProductCategory)baseContent;
+        controllerName = "ProductCategories";
+    }
+
+
+}
+<div class="row">
+    <div class="col-md-12">
+        <b>
+            @Html.DisplayFor(model => baseContent.Name)
+        </b>
+    </div>
+    <div class="col-md-12">
+        <br />
+        @Html.ActionLink("Go To Back", actionNameEdit, controllerName, new { search = baseContent.Name }, new { @class = "btn btn-default" })
+    </div>
+</div>

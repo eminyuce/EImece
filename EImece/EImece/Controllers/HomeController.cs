@@ -69,6 +69,7 @@ namespace EImece.Controllers
                 s.Position = 1;
                 s.EntityHash = "";
                 s.Lang = CurrentLanguage;
+                s.Note = String.Format("{0} {1} {2} {3} ", contact.CompanyName, contact.Phone, contact.Message, contact.Address);
                 SubsciberService.SaveOrEditEntity(s);
 
             }
@@ -81,7 +82,7 @@ namespace EImece.Controllers
             {
                 HomeLogger.Error(ex, "Exception Message:" + ex.Message);
             }
-       
+
 
             EmailSender.SendEmailContactingUs(contact);
             return View("_pThankYouForContactingUs", contact);

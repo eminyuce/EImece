@@ -12,5 +12,6 @@ namespace EImece.Domain.Entities
         [Required]
         //[EmailAddress]
         public string Email { get; set; }
+        public string Note { get; set; }
     }
 }

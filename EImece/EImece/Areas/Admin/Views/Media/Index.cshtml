@@ -38,7 +38,8 @@
         line-height: 1.6em;
     }
 </style>
-<h2>@baseContent.Name </h2>
+@Html.Partial("_pBackButtonLink",Model)
+
 @Html.HiddenFor(r => Model.Id)
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)

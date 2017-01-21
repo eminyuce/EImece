@@ -56,6 +56,13 @@
      .Titled("Email")
      .Filterable(true);
 
+    columns.Add(c => c.Note)
+    .Titled("Note")
+    .Sanitized(false).
+            SetWidth(10).
+            RenderValueAs(o => String.Format("{0}", o.Note.ToStr(100)));
+
+
 
 
 
