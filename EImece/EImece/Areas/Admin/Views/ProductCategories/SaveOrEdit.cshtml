@@ -100,6 +100,7 @@ console.log(e);
                             <span id="ParentName">
                             </span>
                         }
+                        <input id="SetParentIdRoot" value="Make Main Page" type="button">
                     </div>
                 </div>
 
@@ -168,3 +169,21 @@ console.log(e);
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+            $("#SetParentIdRoot").click(function () {
+                $("#ParentId").val("0");
+                console.log("111");
+                $("#ParentName").text("");
+            });
+          
+
+
+        });
+    </script>
+}

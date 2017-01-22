@@ -58,7 +58,7 @@ namespace EImece.Domain.Repositories
             var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search));
+                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search) || r.ProductCategory.Name.ToLower().Contains(search));
             }
             if (categoryId > 0)
             {

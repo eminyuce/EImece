@@ -123,6 +123,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
+                      
                         @if (Model.ParentId > 0 && parentMenu != null)
                         {
                             <span id="ParentName">
@@ -135,6 +136,7 @@ console.log(e);
                             </span>
                         }
                         @Html.HiddenFor(model => model.ParentId)
+                        <input id="SetParentIdRoot" value="Make Main Page" type="button">
                     </div>
                 </div>
 
@@ -214,6 +216,12 @@ console.log(e);
 
     <script>
         $(document).ready(function () {
+
+            $("#SetParentIdRoot").click(function () {
+                $("#ParentId").val("0");
+                console.log("111");
+                $("#ParentName").text("");
+            });
             menuChangeEvent();
             $("#MenuLink").change(menuChangeEvent);
             function menuChangeEvent() {
