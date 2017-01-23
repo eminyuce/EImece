@@ -92,14 +92,7 @@ columns.Add(c => c.Name)
        .Filterable(true);
 
 
-columns.Add(c => c.TagType)
-.Titled("TagType")
-.Sanitized(false)
-.Encoded(false)
-.Filterable(true).RenderValueAs(d =>
-                @<span>
-                    @String.Format("{0}", (EImeceTagType)d.TagType)
-                </span>);
+ 
 
                            columns.Add(o => o.Position)
                               .Encoded(false).

@@ -74,7 +74,7 @@ namespace EImece.Domain.Services
                 }
             }
             EImeceLanguage language = (EImeceLanguage)lang;
-            result.TagCategories = TagCategoryService.GetTagsByTagType(EImeceTagType.Products, language);
+            result.TagCategories = TagCategoryService.GetTagsByTagType(language);
 
 
             return result;

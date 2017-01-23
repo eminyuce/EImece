@@ -89,7 +89,7 @@ namespace EImece.Tests.Controllers
         {
             var dbContext = new EImeceContext(ConnectionString);
             var tr = new TagCategoryRepository(dbContext);
-            var tags = tr.GetTagsByTagType(EImeceTagType.Products, EImeceLanguage.Turkish);
+            var tags = tr.GetTagsByTagType(EImeceLanguage.Turkish);
             Console.WriteLine(tags.Count);
         }
         [TestMethod]

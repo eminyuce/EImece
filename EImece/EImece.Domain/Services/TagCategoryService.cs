@@ -18,9 +18,9 @@ namespace EImece.Domain.Services
             TagCategoryRepository = repository;
         }
         
-        public List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language)
+        public List<TagCategory> GetTagsByTagType(EImeceLanguage language)
         {
-            return TagCategoryRepository.GetTagsByTagType(tagType, language);
+            return TagCategoryRepository.GetTagsByTagType(language);
         }
     }
 }

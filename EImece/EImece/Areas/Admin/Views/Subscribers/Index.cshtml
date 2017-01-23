@@ -19,10 +19,11 @@
     var contents = Model;
     var baseList = contents.DownCasting();
     var search = Request.QueryString["search"].ToStr();
+    var ExportToExcel = AdminResource.ExportToExcel;
 }
 
 <h2>@title</h2>
-
+@Html.ActionLink(ExportToExcel, "ExportSubscribers", new {  }, new { @class = "btn btn-danger btn-xs" })
 <div class="panel panel-info">
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -56,12 +57,12 @@
      .Titled("Email")
      .Filterable(true);
 
-    columns.Add(c => c.Note)
-    .Titled("Note")
-    .Sanitized(false).
-            SetWidth(10).
-            RenderValueAs(o => String.Format("{0}", o.Note.ToStr(100)));
 
+    columns.Add(o => o.Note)
+   .Encoded(false).
+        Sanitized(false).
+        SetWidth(10).
+        RenderValueAs(o => String.Format("<textarea  style='height: 50px; width: 380px;!important;'>{0}</textarea>", o.Note.ToStr(100)));
 
 
 

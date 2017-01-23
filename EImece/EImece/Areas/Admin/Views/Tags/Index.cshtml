@@ -96,15 +96,7 @@ columns.Add(c => c.TagCategory.Name)
                 @String.Format("{0}", d.Name)
             </span>);
 
-columns.Add(c => c.TagCategory.TagType)
-.Titled("TagType")
-.Sanitized(false)
-.Encoded(false)
-.Filterable(true).RenderValueAs(d =>
-            @<span>
-                @String.Format("{0}", (EImeceTagType)d.TagCategory.TagType)
-            </span>);
-
+ 
 
 
 

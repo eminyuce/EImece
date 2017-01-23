@@ -22,19 +22,7 @@
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
 
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-
-                @Html.DropDownListFor(model => model.Lang,
-   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
-   null,
-   new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+ 
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -62,21 +50,6 @@
             </div>
         </div>
  
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TagType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-
-                @Html.DropDownListFor(model => model.TagType,
-   EnumHelper.GetSelectList(typeof(EImeceTagType)),
-   "Select Tag Type",
-   new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(model => model.TagType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

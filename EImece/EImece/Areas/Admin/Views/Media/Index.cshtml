@@ -71,9 +71,10 @@
  
         var handle1 = $("#sliderWidthHandle");
         $("#sliderWidth").slider({
-            min: 10,
+            min: 0,
             max: 1000,
             value: 200,
+            step:10,
             create: function () {
                 handle1.text($(this).slider("value"));
             },
@@ -88,9 +89,10 @@
 
         var handle2 = $("#sliderHeightHandle");
         $("#sliderHeight").slider({
-            min: 10,
+            min: 0,
             max: 1000,
             value: 200,
+            step: 10,
             create: function () {
                 handle2.text($(this).slider("value"));
             },

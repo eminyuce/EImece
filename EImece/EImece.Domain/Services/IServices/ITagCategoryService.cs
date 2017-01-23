@@ -10,6 +10,6 @@ namespace EImece.Domain.Services.IServices
 {
     public interface ITagCategoryService : IBaseEntityService<TagCategory>
     {
-        List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language);
+        List<TagCategory> GetTagsByTagType(EImeceLanguage language);
     }
 }

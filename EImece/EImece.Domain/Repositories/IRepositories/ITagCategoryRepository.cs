@@ -10,6 +10,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface ITagCategoryRepository : IBaseEntityRepository<TagCategory>, IDisposable
     {
-        List<TagCategory> GetTagsByTagType(EImeceTagType tagType, EImeceLanguage language);
+        List<TagCategory> GetTagsByTagType(EImeceLanguage language);
     }
 }

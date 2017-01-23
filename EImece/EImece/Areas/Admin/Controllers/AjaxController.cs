@@ -139,7 +139,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GetProductTags(EImeceLanguage language, int productId = 0)
         {
-            var tags = TagCategoryService.GetTagsByTagType(EImeceTagType.Products, language);
+            var tags = TagCategoryService.GetTagsByTagType(language);
             var productTags = ProductService.GetProductTagsByProductId(productId).Select(r => r.TagId).ToList();
             var tempData = new TempDataDictionary();
             tempData["selectedTags"] = productTags;
@@ -149,9 +149,9 @@ namespace EImece.Areas.Admin.Controllers
             return Json(html, JsonRequestBehavior.AllowGet);
         }
         //C:\Projects\StoryEngine\_imagesSample\samples2
-        public ActionResult GetImageTags(EImeceLanguage language)
+        public ActionResult GetTags(EImeceLanguage language)
         {
-            var tags = TagCategoryService.GetTagsByTagType(EImeceTagType.Images, language);
+            var tags = TagCategoryService.GetTagsByTagType(language);
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~/Areas/Admin/Views/Shared/pImagesTag.cshtml",

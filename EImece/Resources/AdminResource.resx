@@ -186,4 +186,7 @@
   <data name="State" xml:space="preserve">
     <value>State</value>
   </data>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Export To Excel</value>
+  </data>
 </root>

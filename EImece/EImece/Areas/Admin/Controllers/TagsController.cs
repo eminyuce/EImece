@@ -49,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Text =
 
-                String.Format("{0} -- {1}", r.Name.ToStr(), (EImeceTagType)r.TagType)
+                String.Format("{0}", r.Name.ToStr())
                 ,
                 Value = r.Id.ToStr()
             }).ToList();
