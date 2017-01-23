@@ -9,6 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IStoryTagRepository : IBaseRepository<StoryTag>, IDisposable
     {
-
+        List<StoryTag> GetStoryTagsByStoryId(int storyId);
     }
 }

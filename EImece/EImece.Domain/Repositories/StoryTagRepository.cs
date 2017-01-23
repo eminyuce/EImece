@@ -14,9 +14,10 @@ namespace EImece.Domain.Repositories
         public StoryTagRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-       
-      
 
-     
+        public List<StoryTag> GetStoryTagsByStoryId(int storyId)
+        {
+            return this.GetAll().Where(r => r.StoryId == storyId).ToList();
+        }
     }
 }

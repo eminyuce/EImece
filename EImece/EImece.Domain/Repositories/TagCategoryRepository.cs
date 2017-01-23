@@ -26,7 +26,7 @@ namespace EImece.Domain.Repositories
             try
             {
                 Expression<Func<TagCategory, object>> includeProperty1 = r => r.Tags;
-                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language;
+                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language && r2.Tags.Count() > 0;
                 Expression<Func<TagCategory, int>> keySelector = t => t.Position;
                 Expression<Func<TagCategory, object>>[] includeProperties = { includeProperty1 };
                 var result = this.FindAllIncluding(match, null, null, keySelector, OrderByType.Ascending, includeProperties);

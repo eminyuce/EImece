@@ -144,7 +144,18 @@ namespace EImece.Areas.Admin.Controllers
             var tempData = new TempDataDictionary();
             tempData["selectedTags"] = productTags;
             var html = this.RenderPartialToString(
-                        @"~/Areas/Admin/Views/Shared/pProductsTag.cshtml",
+                        @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
+                        new ViewDataDictionary(tags), tempData);
+            return Json(html, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetStoryTags(EImeceLanguage language, int storyId = 0)
+        {
+            var tags = TagCategoryService.GetTagsByTagType(language);
+            var storyTags = StoryService.GetStoryTagsByStoryId(storyId).Select(r => r.TagId).ToList();
+            var tempData = new TempDataDictionary();
+            tempData["selectedTags"] = storyTags;
+            var html = this.RenderPartialToString(
+                        @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }

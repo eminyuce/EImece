@@ -595,7 +595,7 @@
     <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Shared\_NavigationChildren.cshtml" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\pProductsTag.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pSelectedTags.cshtml" />
     <Content Include="Views\Pages\Detail.cshtml" />
     <Content Include="Views\Stories\Index.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTree.cshtml" />

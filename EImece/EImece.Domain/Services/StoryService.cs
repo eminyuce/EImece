@@ -23,5 +23,10 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetAdminPageList(categoryId, search, lang);
         }
+
+        public List<StoryTag> GetStoryTagsByStoryId(int storyId)
+        {
+            return StoryTagRepository.GetStoryTagsByStoryId(storyId);
+        }
     }
 }

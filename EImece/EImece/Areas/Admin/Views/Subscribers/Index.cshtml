@@ -23,7 +23,7 @@
 }
 
 <h2>@title</h2>
-@Html.ActionLink(ExportToExcel, "ExportSubscribers", new {  }, new { @class = "btn btn-danger btn-xs" })
+@Html.ActionLink(ExportToExcel, "ExportSubscribers", new {  }, new { @class = "btn btn-default btn-xs" })
 <div class="panel panel-info">
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}

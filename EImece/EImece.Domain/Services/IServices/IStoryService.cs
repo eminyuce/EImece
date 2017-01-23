@@ -10,5 +10,6 @@ namespace EImece.Domain.Services.IServices
     public interface IStoryService : IBaseContentService<Story>
     {
         List<Story> GetAdminPageList(int categoryId, string search, int lang);
+        List<StoryTag> GetStoryTagsByStoryId(int storyId);
     }
 }

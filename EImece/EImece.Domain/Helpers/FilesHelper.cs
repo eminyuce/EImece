@@ -167,54 +167,77 @@ namespace EImece.Domain.Helpers
         {
 
             var request = requestContext.Request;
-            int imageHeight = request.Form["imageHeight"].ToInt();
-            int imageWidth = request.Form["imageWidth"].ToInt();
-            imageHeight = imageHeight == 0 ? 80 : imageHeight;
-            imageWidth = imageWidth == 0 ? 80 : imageWidth;
+            int width = request.Form["imageHeight"].ToInt();
+            int height = request.Form["imageWidth"].ToInt();
 
 
             for (int i = 0; i < request.Files.Count; i++)
             {
+
                 var file = request.Files[i];
-                //  var fileName = GeneralHelper.GetUrlSeoString(file.FileName);
                 var ext = Path.GetExtension(file.FileName);
-                var fileBase = Path.GetFileNameWithoutExtension(file.FileName);
-                Random random = new Random();
-                var randomNumber = random.Next(0, int.MaxValue).ToString();
-                var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
-
-
-                String pathOnServer = Path.Combine(StorageRoot);
-                //   var fullPath = Path.Combine(pathOnServer, Path.GetFileName(file.FileName));
-                var fullPath = Path.Combine(pathOnServer, newFileName);
-                file.SaveAs(fullPath);
-
-                //Create thumb
-                string[] imageArray = file.FileName.Split('.');
-                if (imageArray.Length != 0)
+                if (IsImage(ext))
                 {
-                    String extansion = imageArray[imageArray.Length - 1];
-                    if (!IsImage(ext)) //Do not create thumb if file is not an image
+                    var fileName = file.FileName;
+
+                    var fileBase = Path.GetFileNameWithoutExtension(fileName).Replace(" ", "_");
+                    string url = HttpContext.Current.Server.MapPath(serverMapPath);
+                    Random random = new Random();
+                    var randomNumber = random.Next(0, int.MaxValue).ToString();
+                    var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
+
+                    String fullPath = Path.Combine(StorageRoot, newFileName);
+                    System.Diagnostics.Debug.WriteLine(fullPath);
+                    System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
+                    String partThumb1 = Path.Combine(StorageRoot, "thumbs");
+                    String candidatePathThb = Path.Combine(partThumb1, "thb" + newFileName);
+
+                    var fileByte = GeneralHelper.ReadFully(file.InputStream);
+                    System.Drawing.Image img = ByteArrayToImage(fileByte);
+
+                    // var fileBitMap = Crop(new Bitmap(img), img.Height, img.Width, AnchorPosition.Center);
+                    // var byteArrayCroppped = GetBitmapBytes(fileBitMap);
+                    var fileByteCropped = CreateThumbnail(fileByte, 90000, img.Height, img.Width);
+                    var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
+                    fs.Write(fileByteCropped);
+                    fs.Close();
+
+
+                    double ratio = img.Width.ToDouble() / img.Height.ToDouble();
+                    if (width == 0 && height > 0)
+                    {
+                        width = (int)(ratio * height);
+                    }
+                    else if (width > 0 && height == 0)
+                    {
+                        height = (int)((width * (1 / ratio)));
+                    }
+                    else if (width == 0 && height == 0)
+                    {
+                        //Create image from Bytes array
+                        height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
+                        width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
+
+                    }
+                    else if (width > 0 && height > 0)
                     {
 
                     }
-                    else
-                    {
 
-                        var newFileNameThb = string.Format(@"thb{0}_{1}{2}", fileBase, randomNumber, ext);
-                        var ThumbfullPath = Path.Combine(pathOnServer, "thumbs");
-                        String fileThumb = newFileNameThb;
-                        var ThumbfullPath2 = Path.Combine(ThumbfullPath, fileThumb);
-                        using (MemoryStream stream = new MemoryStream(System.IO.File.ReadAllBytes(fullPath)))
-                        {
-                            var thumbnail = new WebImage(stream).Resize(imageWidth, imageHeight);
-                            thumbnail.Save(ThumbfullPath2);
-                        }
 
-                    }
+
+                    //Resize Image - ORIGINAL
+                    var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+
+
+                    var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                    fs1.Write(byteArrayIn);
+                    fs1.Close();
+
+
+                    // statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
+                    statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName, requestContext));
                 }
-                // statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
-                statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName, requestContext));
             }
         }
 
@@ -354,10 +377,10 @@ namespace EImece.Domain.Helpers
         private FileStorage SaveImageByte(ref int height, ref int width, string fileName, string contentType, byte[] fileByte, EImeceImageType imageType)
         {
             var fileStorage = new FileStorage();
-            if (IsImageByFileName(fileName))
+            var ext = Path.GetExtension(fileName);
+            if (IsImage(ext))
             {
-                var ext = Path.GetExtension(fileName);
-                var fileBase = Path.GetFileNameWithoutExtension(fileName);
+                var fileBase = Path.GetFileNameWithoutExtension(fileName).Replace(" ", "_");
                 string url = HttpContext.Current.Server.MapPath(serverMapPath);
 
                 Random random = new Random();
@@ -370,63 +393,62 @@ namespace EImece.Domain.Helpers
                 String partThumb1 = Path.Combine(StorageRoot, "thumbs");
                 String candidatePathThb = Path.Combine(partThumb1, "thb" + newFileName);
 
-                if (!File.Exists(fullPath))
+
+                System.Drawing.Image img = ByteArrayToImage(fileByte);
+
+                // var fileBitMap = Crop(new Bitmap(img), img.Height, img.Width, AnchorPosition.Center);
+                // var byteArrayCroppped = GetBitmapBytes(fileBitMap);
+                var fileByteCropped = CreateThumbnail(fileByte, 90000, img.Height, img.Width);
+                var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
+                fs.Write(fileByteCropped);
+                fs.Close();
+
+
+                double ratio = img.Width.ToDouble() / img.Height.ToDouble();
+                if (width == 0 && height > 0)
                 {
-                    System.Drawing.Image img = ByteArrayToImage(fileByte);
-
-                    // var fileBitMap = Crop(new Bitmap(img), img.Height, img.Width, AnchorPosition.Center);
-                    // var byteArrayCroppped = GetBitmapBytes(fileBitMap);
-                    var fileByteCropped = CreateThumbnail(fileByte, 90000, img.Height, img.Width);
-                    var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
-                    fs.Write(fileByteCropped);
-                    fs.Close();
-
-                   
-                    double ratio = img.Width.ToDouble() / img.Height.ToDouble();
-                    if (width == 0 && height > 0)
-                    {
-                        width = (int) (ratio * height); 
-                    }
-                    else if (width > 0 && height == 0)
-                    {
-                        height = (int)((width * (1 / ratio)));
-                    }
-                    else if (width == 0 && height == 0)
-                    {
-                        //Create image from Bytes array
-                        height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
-                        width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
-
-                    }
-                    else if (width > 0 && height > 0)
-                    {
-
-                    }
-
-
-
-                    //Resize Image - ORIGINAL
-                    var byteArrayIn = CreateThumbnail(fileByte, 10000, height, width);
-
-
-                    var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                    fs1.Write(byteArrayIn);
-                    fs1.Close();
-
-
-                    fileStorage.Name = fileName;
-                    fileStorage.FileName = newFileName;
-                    fileStorage.Width = width;
-                    fileStorage.Height = height;
-                    fileStorage.MimeType = contentType;
-                    fileStorage.CreatedDate = DateTime.Now;
-                    fileStorage.UpdatedDate = DateTime.Now;
-                    fileStorage.IsActive = true;
-                    fileStorage.Position = 1;
-                    fileStorage.FileSize = fileByteCropped.Length;
-                    fileStorage.Type = imageType.ToStr();
+                    width = (int)(ratio * height);
+                }
+                else if (width > 0 && height == 0)
+                {
+                    height = (int)((width * (1 / ratio)));
+                }
+                else if (width == 0 && height == 0)
+                {
+                    //Create image from Bytes array
+                    height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
+                    width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
 
                 }
+                else if (width > 0 && height > 0)
+                {
+
+                }
+
+
+
+                //Resize Image - ORIGINAL
+                var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+
+
+                var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                fs1.Write(byteArrayIn);
+                fs1.Close();
+
+
+                fileStorage.Name = fileName;
+                fileStorage.FileName = newFileName;
+                fileStorage.Width = width;
+                fileStorage.Height = height;
+                fileStorage.MimeType = contentType;
+                fileStorage.CreatedDate = DateTime.Now;
+                fileStorage.UpdatedDate = DateTime.Now;
+                fileStorage.IsActive = true;
+                fileStorage.Position = 1;
+                fileStorage.FileSize = fileByteCropped.Length;
+                fileStorage.Type = imageType.ToStr();
+
+
 
             }
             return fileStorage;
@@ -644,11 +666,22 @@ namespace EImece.Domain.Helpers
             }
             return resizedImage;
         }
+        public static Bitmap ConvertAndSaveBitmap(Bitmap bitmap, String fileName, ImageFormat imageFormat, long quality = 100L)
+        {
+            using (var encoderParameters = new EncoderParameters(1))
+            using (encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality))
+            {
+                ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
 
+                bitmap.Save(fileName, codecs.Single(codec => codec.FormatID == imageFormat.Guid), encoderParameters);
+            }
+
+            return bitmap;
+        }
 
         public static bool IsImage(string ext)
         {
-            return ext == ".gif" || ext == ".jpg" || ext == ".png";
+            return ext == ".gif" || ext == ".jpg" || ext == ".png" || ext == ".bmp" || ext == ".tiff" || ext == ".jpe";
         }
         /// <summary>
         /// Determines if a file is a known image type by checking the extension.
