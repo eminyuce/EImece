@@ -29,7 +29,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = Setting.GetInstance<Setting>(); 
+            var content = EntityFactory.GetBaseEntityInstance<Setting>(); 
 
 
             if (id == 0)

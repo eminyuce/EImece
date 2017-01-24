@@ -66,7 +66,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                result.Product = Product.GetInstance<Product>();
+                result.Product = EntityFactory.GetBaseContentInstance<Product>();
                 if (categoryId > 0)
                 {
                     result.Product.ProductCategoryId = categoryId;

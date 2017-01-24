@@ -46,13 +46,12 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = MainPageImage.GetInstance<MainPageImage>();
+            var content = EntityFactory.GetBaseContentInstance<MainPageImage>();
 
 
             if (id == 0)
             {
-                content.ImageHeight = 250;
-                content.ImageWidth = 250;
+             
             }
             else
             {
@@ -79,11 +78,9 @@ namespace EImece.Areas.Admin.Controllers
                     if (mainPageImageFile != null)
                     {
                         var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(mainPageImageFile, 
-                            mainpageimage.ImageHeight, mainpageimage.ImageWidth, 
+                            mainpageimage.ImageHeight, 
+                            mainpageimage.ImageWidth, 
                             EImeceImageType.MainPageImages);
-
-                        mainpageimage.ImageWidth = mainImage.Width;
-                        mainpageimage.ImageHeight = mainImage.Height;
 
                         FileStorageService.SaveOrEditEntity(mainImage);
                         mainpageimage.MainImageId = mainImage.Id;

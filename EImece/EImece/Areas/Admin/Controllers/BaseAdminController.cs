@@ -1,5 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Caching;
+using EImece.Domain.Factories;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -19,7 +21,9 @@ namespace EImece.Areas.Admin.Controllers
     public abstract class BaseAdminController : Controller
     {
 
-         
+        [Inject]
+        public IEntityFactory EntityFactory { get; set; }
+
         [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
         [Inject]

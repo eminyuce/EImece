@@ -60,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = Tag.GetInstance<Tag>(); 
+            var content = EntityFactory.GetBaseEntityInstance<Tag>(); 
             ViewBag.Categories = GetCategoriesSelectList();
 
             if (id == 0)

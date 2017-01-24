@@ -49,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = StoryCategory.GetInstance<StoryCategory>();  
+            var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();  
            
 
             if (id == 0)
@@ -80,7 +80,10 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (contentImage != null)
                     {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage, 0, 0, EImeceImageType.StoryCategoryMainImage);
+                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
+                            StoryCategory.ImageHeight,
+                            StoryCategory.ImageWidth,
+                            EImeceImageType.StoryCategoryMainImage);
                         FileStorageService.SaveOrEditEntity(mainImage);
                         StoryCategory.MainImageId = mainImage.Id;
                     }

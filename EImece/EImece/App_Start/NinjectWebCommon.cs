@@ -19,6 +19,8 @@ namespace EImece.App_Start
     using Domain.Helpers;
     using Domain.Caching;
     using Domain.Helpers.EmailHelper;
+    using Domain.Factories;
+    using Domain.Factories.IFactories;
 
     public static class NinjectWebCommon 
     {
@@ -77,6 +79,7 @@ namespace EImece.App_Start
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
 
 
+            kernel.Bind<IEntityFactory>().To<EntityFactory>();
 
             m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
             m.InRequestScope();

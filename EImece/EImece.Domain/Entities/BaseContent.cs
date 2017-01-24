@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,11 @@ namespace EImece.Domain.Entities
 
         public virtual FileStorage MainImage { get; set; }
 
-        public static new T GetInstance<T>() where T : BaseContent, new()
-        {
-            T item = new T();
-            item.IsActive = true;
-            item.Lang = Settings.MainLanguage;
-            return item;
-        }
+        [NotMapped]
+        public int ImageHeight { get; set; }
+        [NotMapped]
+        public int ImageWidth { get; set; }
+
+         
     }
 }

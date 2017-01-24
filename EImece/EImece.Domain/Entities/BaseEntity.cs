@@ -29,11 +29,6 @@ namespace EImece.Domain.Entities
         public int Lang { get; set; }
 
          
-        public static T GetInstance<T>() where T : BaseEntity, new()
-        {
-            T item = new T();
-            item.IsActive = true;
-            return item;
-        }
+       
     }
 }

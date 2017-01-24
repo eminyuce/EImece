@@ -51,10 +51,10 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = Menu.GetInstance<Menu>();
+            var content = EntityFactory.GetBaseContentInstance<Menu>();
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
             ViewBag.MenuLinks = GetMenuPages();
-            var parentMenu = Menu.GetInstance<Menu>();
+            var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
 
 
@@ -90,7 +90,10 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     if (menuImage != null)
                     {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(menuImage, 0, 0, EImeceImageType.MenuMainImage);
+                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(menuImage, 
+                            menu.ImageHeight, 
+                            menu.ImageWidth, 
+                            EImeceImageType.MenuMainImage);
                         FileStorageService.SaveOrEditEntity(mainImage);
                         menu.MainImageId = mainImage.Id;
                     }

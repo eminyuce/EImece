@@ -63,8 +63,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = ProductCategory.GetInstance<ProductCategory>(); 
-            var parentCategory = ProductCategory.GetInstance<ProductCategory>();
+            var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
+            var parentCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
             ViewBag.Templates = GetTemplatesDropDown();
             if (id == 0)
@@ -88,19 +88,22 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-    
-        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase productCategoryImage=null)
+
+        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase productCategoryImage = null)
         {
             try
             {
 
-   
+
                 if (ModelState.IsValid)
                 {
 
                     if (productCategoryImage != null)
                     {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(productCategoryImage, 0, 0, EImeceImageType.ProductCategoryMainImage);
+                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(productCategoryImage, 
+                            productCategory.ImageHeight,
+                            productCategory.ImageWidth, 
+                            EImeceImageType.ProductCategoryMainImage);
                         FileStorageService.SaveOrEditEntity(mainImage);
                         productCategory.MainImageId = mainImage.Id;
                     }
@@ -131,7 +134,7 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /ProductCategory/Delete/5
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -146,7 +149,7 @@ namespace EImece.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            if(leaves.Any(r=>r.Id == id))
+            if (leaves.Any(r => r.Id == id))
             {
                 return View(content);
             }
@@ -154,7 +157,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return Content("You cannot delete the parent");
             }
-            
+
         }
 
         [HttpPost, ActionName("Delete")]
@@ -185,10 +188,10 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GetCategories()
         {
-            List<ProductCategory> treelist = ProductCategoryService.BuildTree(null,Settings.MainLanguage);
+            List<ProductCategory> treelist = ProductCategoryService.BuildTree(null, Settings.MainLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
-     
+
     }
 }

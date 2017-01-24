@@ -1,4 +1,6 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Factories;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Repositories.IRepositories;
@@ -15,6 +17,8 @@ namespace EImece.Controllers
 {
     public abstract class BaseController : Controller
     {
+        [Inject]
+        public IEntityFactory EntityFactory { get; set; }
 
         private IMainPageImageService _mainPageImageService { get; set; }
         [Inject]

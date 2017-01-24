@@ -30,7 +30,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = TagCategory.GetInstance<TagCategory>();
+            var content = EntityFactory.GetBaseEntityInstance<TagCategory>();
 
 
             if (id == 0)

@@ -123,7 +123,41 @@ $(document).ready(function () {
 
         }
     });
-    
+    var handle1 = $("#sliderWidthHandle");
+    $("#sliderWidth").slider({
+        min: 0,
+        max: 2000,
+        value: parseInt($('#ImageWidth').val()),
+        create: function () {
+            handle1.text($(this).slider("value"));
+        },
+        slide: function (event, ui) {
+            handle1.text(ui.value);
+            $('#ImageWidth').val(ui.value);
+        },
+        change: function (event, ui) {
+            $('#ImageWidth').val(ui.value);
+        }
+    });
+
+    var handle2 = $("#sliderHeightHandle");
+    $("#sliderHeight").slider({
+        min: 0,
+        max: 2000,
+        value: parseInt($('#ImageHeight').val()),
+        create: function () {
+            handle2.text($(this).slider("value"));
+        },
+        slide: function (event, ui) {
+            handle2.text(ui.value);
+            $('#ImageHeight').val(ui.value);
+        },
+        change: function (event, ui) {
+            $('#ImageHeight').val(ui.value);
+        }
+    });
+
+
 });
 
 function GetSelectedCheckBoxValues() {

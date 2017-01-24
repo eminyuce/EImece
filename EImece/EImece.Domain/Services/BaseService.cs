@@ -13,11 +13,15 @@ using EImece.Domain.Helpers;
 using System.Data.Entity.Validation;
 using NLog;
 using EImece.Domain.Caching;
+using EImece.Domain.Factories;
+using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
     public abstract class BaseService<T> where T : class, IEntity<int>
     {
+  
+
         private static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
         public bool IsCachingActive { get; set; }
         private ICacheProvider _memoryCacheProvider { get; set; }
@@ -104,5 +108,8 @@ namespace EImece.Domain.Services
                 _filesHelper = value;
             }
         }
+
+        [Inject]
+        public IEntityFactory EntityFactory { get; set; }
     }
 }

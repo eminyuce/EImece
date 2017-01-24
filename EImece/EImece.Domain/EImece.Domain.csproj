@@ -159,6 +159,8 @@
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\TagCategory.cs" />
     <Compile Include="Entities\Template.cs" />
+    <Compile Include="Factories\EntityFactory.cs" />
+    <Compile Include="Factories\IFactories\IEntityFactory.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />

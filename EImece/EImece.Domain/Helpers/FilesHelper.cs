@@ -41,6 +41,25 @@ namespace EImece.Domain.Helpers
             this.serverMapPath = serverMapPath;
         }
 
+        public Tuple<int,int> GetThumbnailImageSize(FileStorage mainImage)
+        {
+            int width = 0, height = 0;
+            if (mainImage != null)
+            {
+                var file = mainImage.FileName;
+                String fullPath = Path.Combine(StorageRoot, file);
+                String thumbPath = "/thb" + file + "";
+                String partThumb1 = Path.Combine(StorageRoot, "thumbs");
+                String partThumb2 = Path.Combine(partThumb1, "thb" + file);
+                Bitmap thumpBitmap = new Bitmap(partThumb2);
+                width = thumpBitmap.Width;
+                height = thumpBitmap.Height;
+            }
+
+            var result = new Tuple<int, int>(width, height);
+            return result;
+        }
+
         public void DeleteFiles(String pathToDelete)
         {
 

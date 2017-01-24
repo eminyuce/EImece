@@ -66,8 +66,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = Product.GetInstance<Product>(); 
-            var productCategory = ProductCategory.GetInstance<ProductCategory>();
+            var content = EntityFactory.GetBaseContentInstance<Product>(); 
+            var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
 
             if (id == 0)
@@ -106,7 +106,12 @@ namespace EImece.Areas.Admin.Controllers
 
                         if (productImage != null)
                         {
-                            var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(productImage, 0, 0, EImeceImageType.ProductCategoryMainImage);
+                            var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(
+                                productImage, 
+                                product.ImageHeight, 
+                                product.ImageWidth, 
+                                EImeceImageType.ProductCategoryMainImage);
+
                             FileStorageService.SaveOrEditEntity(mainImage);
                             product.MainImageId = mainImage.Id;
 

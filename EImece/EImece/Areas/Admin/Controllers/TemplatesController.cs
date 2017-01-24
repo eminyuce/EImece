@@ -25,7 +25,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var template = Template.GetInstance<Template>();  
+            var template = EntityFactory.GetBaseEntityInstance<Template>();  
 
             if (id == 0)
             {

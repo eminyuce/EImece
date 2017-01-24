@@ -11,10 +11,7 @@ namespace EImece.Domain.Entities
     {
         public string Link { get; set; }
 
-
-        public int ImageHeight { get; set; }
-
-        public int ImageWidth { get; set; }
+     
 
     }
 }
