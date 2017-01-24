@@ -32,7 +32,15 @@ namespace EImece.Domain.Services
         {
             var allSettings = GetAllSettings();
             var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
-            return result.SettingValue;
+            if (result != null)
+            {
+                return result.SettingValue;
+            }
+            else
+            {
+                return String.Empty;
+            }
+
         }
     }
 }

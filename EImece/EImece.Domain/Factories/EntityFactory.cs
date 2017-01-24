@@ -1,5 +1,8 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +13,16 @@ namespace EImece.Domain.Factories
 {
     public class EntityFactory : IEntityFactory
     {
+        [Inject]
+        public ISettingService SettingService { get; set; }
+
         public T GetBaseContentInstance<T>() where T : BaseContent, new()
         {
             T item = new T();
             item.IsActive = true;
             item.Lang = Settings.MainLanguage;
-            item.ImageHeight = 0;
-            item.ImageWidth = 0;
+            item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
+            item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
             return item;
         }
 
@@ -26,7 +32,5 @@ namespace EImece.Domain.Factories
             item.IsActive = true;
             return item;
         }
-        
-
     }
 }
