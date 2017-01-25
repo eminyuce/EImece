@@ -21,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Admin/MainPageImages
-        public ActionResult Index(String search="")
+        public ActionResult Index(String search = "")
         {
             Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var mainPageImages = MainPageImageService.SearchEntities(whereLambda, search);
@@ -29,7 +29,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         // GET: Admin/MainPageImages/Details/5
-        public ActionResult Details(int id=0)
+        public ActionResult Details(int id = 0)
         {
             if (id == 0)
             {
@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
 
             if (id == 0)
             {
-             
+
             }
             else
             {
@@ -75,16 +75,13 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    if (mainPageImageFile != null)
-                    {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(mainPageImageFile, 
-                            mainpageimage.ImageHeight, 
-                            mainpageimage.ImageWidth, 
-                            EImeceImageType.MainPageImages);
+                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(mainPageImageFile,
+                        mainpageimage.ImageHeight,
+                        mainpageimage.ImageWidth,
+                        EImeceImageType.MainPageImages);
 
-                        FileStorageService.SaveOrEditEntity(mainImage);
-                        mainpageimage.MainImageId = mainImage.Id;
-                    }
+                    FileStorageService.SaveOrEditEntity(mainImage);
+                    mainpageimage.MainImageId = mainImage.Id;
                     mainpageimage.ImageState = true;
                     MainPageImageService.SaveOrEditEntity(mainpageimage);
                     int contentId = mainpageimage.Id;
@@ -92,7 +89,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-               
+
                 }
 
             }
@@ -107,8 +104,8 @@ namespace EImece.Areas.Admin.Controllers
         }
 
 
-            [DeleteAuthorize()]
-        public ActionResult Delete(int id=0)
+        [DeleteAuthorize()]
+        public ActionResult Delete(int id = 0)
         {
             if (id == 0)
             {
@@ -126,18 +123,18 @@ namespace EImece.Areas.Admin.Controllers
         // POST: Admin/MainPageImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-            [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id=0)
+        [DeleteAuthorize()]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-  
+
             MainPageImageService.DeleteMainPageImage(id);
             return RedirectToAction("Index");
         }
- 
+
     }
 }

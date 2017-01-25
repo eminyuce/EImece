@@ -49,12 +49,12 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();  
-           
+            var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();
+
 
             if (id == 0)
             {
-               
+
             }
             else
             {
@@ -78,15 +78,12 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    if (contentImage != null)
-                    {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
-                            StoryCategory.ImageHeight,
-                            StoryCategory.ImageWidth,
-                            EImeceImageType.StoryCategoryMainImage);
-                        FileStorageService.SaveOrEditEntity(mainImage);
-                        StoryCategory.MainImageId = mainImage.Id;
-                    }
+                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
+                        StoryCategory.ImageHeight,
+                        StoryCategory.ImageWidth,
+                        EImeceImageType.StoryCategoryMainImage);
+                    FileStorageService.SaveOrEditEntity(mainImage);
+                    StoryCategory.MainImageId = mainImage.Id;
 
                     StoryCategoryService.SaveOrEditEntity(StoryCategory);
                     int contentId = StoryCategory.Id;
@@ -102,16 +99,16 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, StoryCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message);
             }
- 
+
             return View(StoryCategory);
         }
 
 
 
         //
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -131,7 +128,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
 

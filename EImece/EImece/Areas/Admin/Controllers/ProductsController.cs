@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-  
+
 
         public ActionResult Index(int id = 0, String search = "")
         {
@@ -44,7 +44,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         //
         // GET: /Product/Details/5
-      
+
         public ActionResult Details(int id = 0)
         {
             if (id == 0)
@@ -66,7 +66,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = EntityFactory.GetBaseContentInstance<Product>(); 
+            var content = EntityFactory.GetBaseContentInstance<Product>();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
 
@@ -104,18 +104,16 @@ namespace EImece.Areas.Admin.Controllers
                     else
                     {
 
-                        if (productImage != null)
-                        {
-                            var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(
-                                productImage, 
-                                product.ImageHeight, 
-                                product.ImageWidth, 
-                                EImeceImageType.ProductCategoryMainImage);
+                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(
+                            productImage,
+                            product.ImageHeight,
+                            product.ImageWidth,
+                            EImeceImageType.ProductMainImage,
+                             product.MainImageId.HasValue ? product.MainImageId.Value : 0);
 
-                            FileStorageService.SaveOrEditEntity(mainImage);
-                            product.MainImageId = mainImage.Id;
+                        FileStorageService.SaveOrEditEntity(mainImage);
+                        product.MainImageId = mainImage.Id;
 
-                        }
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 
@@ -147,7 +145,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
 
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -167,7 +165,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
 
@@ -192,7 +190,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult Media(int id)
         {
-            return RedirectToAction("Index", "Media", new { contentId=id, mod= MediaModType.Products, imageType =EImeceImageType.ProductGallery });
+            return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
 
     }

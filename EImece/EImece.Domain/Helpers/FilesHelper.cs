@@ -41,7 +41,7 @@ namespace EImece.Domain.Helpers
             this.serverMapPath = serverMapPath;
         }
 
-        public Tuple<int,int> GetThumbnailImageSize(FileStorage mainImage)
+        public Tuple<int, int> GetThumbnailImageSize(FileStorage mainImage)
         {
             int width = 0, height = 0;
             if (mainImage != null)
@@ -93,37 +93,42 @@ namespace EImece.Domain.Helpers
 
             return fileResult;
         }
-        public String DeleteFile(String file)
+
+        public String DeleteThumbFile(String file)
         {
 
-            System.Diagnostics.Debug.WriteLine("DeleteFile");
-            //    var req = HttpContext.Current;
-            System.Diagnostics.Debug.WriteLine(file);
-
-            String fullPath = Path.Combine(StorageRoot, file);
-            System.Diagnostics.Debug.WriteLine(fullPath);
-            System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
             String thumbPath = "/thb" + file + "";
             String partThumb1 = Path.Combine(StorageRoot, "thumbs");
             String partThumb2 = Path.Combine(partThumb1, "thb" + file);
 
-            System.Diagnostics.Debug.WriteLine(partThumb2);
-            System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(partThumb2));
+            String succesMessage = "Error Delete";
+            //delete thumb 
+            if (System.IO.File.Exists(partThumb2))
+            {
+                System.IO.File.Delete(partThumb2);
+                Thread.Sleep(100);
+                succesMessage = "Ok";
+            }
+            return succesMessage;
+        }
+        public String DeleteNormalFile(String file)
+        {
+            String fullPath = Path.Combine(StorageRoot, file);
+            String succesMessage = "Error Delete";
             if (System.IO.File.Exists(fullPath))
             {
                 //delete thumb 
-                if (System.IO.File.Exists(partThumb2))
-                {
-                    System.IO.File.Delete(partThumb2);
-                }
                 System.IO.File.Delete(fullPath);
-                String succesMessage = "Ok";
-
                 Thread.Sleep(100);
+                succesMessage = "Ok";
                 return succesMessage;
             }
-            String failMessage = "Error Delete";
-            return failMessage;
+            return succesMessage;
+        }
+        public String DeleteFile(String file)
+        {
+            DeleteThumbFile(file);
+            return DeleteNormalFile(file);
         }
         public JsonFiles GetFileList(HttpContextBase ContentBase)
         {
@@ -143,7 +148,6 @@ namespace EImece.Domain.Helpers
                     int SizeInt = unchecked((int)file.Length);
                     r.Add(UploadResult(file.Name, SizeInt, file.FullName, ContentBase));
                 }
-
             }
             JsonFiles files = new JsonFiles(r);
 
@@ -180,7 +184,35 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
+        private Tuple<int, int, int, int> GetFileImageSize(int width, int height, byte [] fileByte)
+        {
+            Image img = ByteArrayToImage(fileByte);
+            int originalImageWidth = img.Width;
+            int originalImageHeight = img.Height;
+            double ratio = originalImageWidth.ToDouble() / originalImageHeight.ToDouble();
+            img.Dispose();
+            if (width == 0 && height > 0)
+            {
+                width = (int)(ratio * height);
+            }
+            else if (width > 0 && height == 0)
+            {
+                height = (int)((width * (1 / ratio)));
+            }
+            else if (width == 0 && height == 0)
+            {
+                //Create image from Bytes array
+                height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(originalImageHeight) * .7) : height;
+                width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(originalImageWidth) * .7) : width;
 
+            }
+            else if (width > 0 && height > 0)
+            {
+
+            }
+          
+            return new Tuple<int, int,int,int>(width, height, originalImageWidth, originalImageHeight);
+        }
 
         private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
         {
@@ -192,69 +224,12 @@ namespace EImece.Domain.Helpers
 
             for (int i = 0; i < request.Files.Count; i++)
             {
-
                 var file = request.Files[i];
                 var ext = Path.GetExtension(file.FileName);
                 if (IsImage(ext))
                 {
-                    var fileName = file.FileName;
-
-                    var fileBase = Path.GetFileNameWithoutExtension(fileName).Replace(" ", "_");
-                    string url = HttpContext.Current.Server.MapPath(serverMapPath);
-                    Random random = new Random();
-                    var randomNumber = random.Next(0, int.MaxValue).ToString();
-                    var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
-
-                    String fullPath = Path.Combine(StorageRoot, newFileName);
-                    System.Diagnostics.Debug.WriteLine(fullPath);
-                    System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
-                    String partThumb1 = Path.Combine(StorageRoot, "thumbs");
-                    String candidatePathThb = Path.Combine(partThumb1, "thb" + newFileName);
-
-                    var fileByte = GeneralHelper.ReadFully(file.InputStream);
-                    System.Drawing.Image img = ByteArrayToImage(fileByte);
-
-                    // var fileBitMap = Crop(new Bitmap(img), img.Height, img.Width, AnchorPosition.Center);
-                    // var byteArrayCroppped = GetBitmapBytes(fileBitMap);
-                    var fileByteCropped = CreateThumbnail(fileByte, 90000, img.Height, img.Width);
-                    var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
-                    fs.Write(fileByteCropped);
-                    fs.Close();
-
-
-                    double ratio = img.Width.ToDouble() / img.Height.ToDouble();
-                    if (width == 0 && height > 0)
-                    {
-                        width = (int)(ratio * height);
-                    }
-                    else if (width > 0 && height == 0)
-                    {
-                        height = (int)((width * (1 / ratio)));
-                    }
-                    else if (width == 0 && height == 0)
-                    {
-                        //Create image from Bytes array
-                        height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
-                        width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
-
-                    }
-                    else if (width > 0 && height > 0)
-                    {
-
-                    }
-
-
-
-                    //Resize Image - ORIGINAL
-                    var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
-
-
-                    var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                    fs1.Write(byteArrayIn);
-                    fs1.Close();
-
-
-                    // statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
+                    var result = SaveImageByte(width, height, file);
+                    var newFileName = result.Item1;
                     statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName, requestContext));
                 }
             }
@@ -369,109 +344,119 @@ namespace EImece.Domain.Helpers
             }
             return Filess;
         }
-        public FileStorage SaveFileFromUrl(string url, int height = 0, int width = 0, EImeceImageType imageType = EImeceImageType.NONE)
-        {
-            var dictionary = new Dictionary<string, string>();
-            var fileByte = DownloadHelper.GetImageFromUrl(url, dictionary);
-            String fileName = dictionary["FileName"];
-            String contentType = dictionary["ContentType"];
-            return SaveImageByte(ref height, ref width, fileName, contentType, fileByte, imageType);
-        }
 
         public FileStorage SaveFileFromHttpPostedFileBase(HttpPostedFileBase file,
             int height = 0,
             int width = 0,
-            EImeceImageType imageType = EImeceImageType.NONE)
+            EImeceImageType imageType = EImeceImageType.NONE, int mainPageImageId = 0)
         {
-            String fileName = file.FileName;
-            String contentType = file.ContentType;
-
-            fileName = Path.GetFileName(file.FileName);
-
-            var fileByte = GeneralHelper.ReadFully(file.InputStream);
-
-            return SaveImageByte(ref height, ref width, fileName, contentType, fileByte, imageType);
-        }
-
-        private FileStorage SaveImageByte(ref int height, ref int width, string fileName, string contentType, byte[] fileByte, EImeceImageType imageType)
-        {
-            var fileStorage = new FileStorage();
-            var ext = Path.GetExtension(fileName);
-            if (IsImage(ext))
+            if (file != null)
             {
-                var fileBase = Path.GetFileNameWithoutExtension(fileName).Replace(" ", "_");
-                string url = HttpContext.Current.Server.MapPath(serverMapPath);
+                var result = SaveImageByte(width, height, file);
 
-                Random random = new Random();
-                var randomNumber = random.Next(0, int.MaxValue).ToString();
-                var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
+                var fileStorage = new FileStorage();
+                fileStorage.Name = result.Item6;
+                fileStorage.FileName = result.Item1;
+                fileStorage.Width = result.Item2;
+                fileStorage.Height = result.Item3;
+                fileStorage.MimeType = result.Item5;
+                fileStorage.CreatedDate = DateTime.Now;
+                fileStorage.UpdatedDate = DateTime.Now;
+                fileStorage.IsActive = true;
+                fileStorage.Position = 1;
+                fileStorage.FileSize = result.Item4;
+                fileStorage.Type = imageType.ToStr();
 
-                String fullPath = Path.Combine(StorageRoot, newFileName);
-                System.Diagnostics.Debug.WriteLine(fullPath);
-                System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
+                return fileStorage;
+            }
+            else
+            {
+                var mainImage = FileStorageService.GetSingle(mainPageImageId);
+                DeleteThumbFile(mainImage.FileName);
+                String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
                 String partThumb1 = Path.Combine(StorageRoot, "thumbs");
-                String candidatePathThb = Path.Combine(partThumb1, "thb" + newFileName);
+                String candidatePathThb = Path.Combine(partThumb1, "thb" + mainImage.FileName);
 
+                var fileByte = File.ReadAllBytes(fullPath);
 
-                System.Drawing.Image img = ByteArrayToImage(fileByte);
+                var imageResize = GetFileImageSize(width, height, fileByte);
+                width = imageResize.Item1;
+                height = imageResize.Item2;
+                int originalImageWidth = imageResize.Item3;
+                int originalImageHeight = imageResize.Item4;
 
-                // var fileBitMap = Crop(new Bitmap(img), img.Height, img.Width, AnchorPosition.Center);
-                // var byteArrayCroppped = GetBitmapBytes(fileBitMap);
-                var fileByteCropped = CreateThumbnail(fileByte, 90000, img.Height, img.Width);
-                var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
-                fs.Write(fileByteCropped);
-                fs.Close();
-
-
-                double ratio = img.Width.ToDouble() / img.Height.ToDouble();
-                if (width == 0 && height > 0)
-                {
-                    width = (int)(ratio * height);
-                }
-                else if (width > 0 && height == 0)
-                {
-                    height = (int)((width * (1 / ratio)));
-                }
-                else if (width == 0 && height == 0)
-                {
-                    //Create image from Bytes array
-                    height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7) : height;
-                    width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7) : width;
-
-                }
-                else if (width > 0 && height > 0)
-                {
-
-                }
-
-
-
-                //Resize Image - ORIGINAL
                 var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
-
-
                 var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
                 fs1.Write(byteArrayIn);
                 fs1.Close();
 
 
-                fileStorage.Name = fileName;
-                fileStorage.FileName = newFileName;
-                fileStorage.Width = width;
-                fileStorage.Height = height;
-                fileStorage.MimeType = contentType;
-                fileStorage.CreatedDate = DateTime.Now;
-                fileStorage.UpdatedDate = DateTime.Now;
-                fileStorage.IsActive = true;
-                fileStorage.Position = 1;
-                fileStorage.FileSize = fileByteCropped.Length;
-                fileStorage.Type = imageType.ToStr();
+                return mainImage;
+            }
 
+        }
+        private Tuple<string, string, string> GetFileNames(String fileName)
+        {
+            var ext = Path.GetExtension(fileName);
+            var fileBase = Path.GetFileNameWithoutExtension(fileName).Replace(" ", "_");
+            Random random = new Random();
+            var randomNumber = random.Next(0, int.MaxValue).ToString();
+            var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
+
+            String fullPath = Path.Combine(StorageRoot, newFileName);
+            System.Diagnostics.Debug.WriteLine(fullPath);
+            System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
+            String partThumb1 = Path.Combine(StorageRoot, "thumbs");
+            String candidatePathThb = Path.Combine(partThumb1, "thb" + newFileName);
+
+            return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
+        }
+        private Tuple<string, int, int, int, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
+        {
+            String fullPath = "", candidatePathThb = "", newFileName = "";
+            int imageSize = 0;
+
+            String fileName = "";
+            String contentType = file.ContentType;
+
+            fileName = Path.GetFileName(file.FileName);
+            var ext = Path.GetExtension(fileName);
+
+            if (IsImage(ext))
+            {
+                var fileByte = GeneralHelper.ReadFully(file.InputStream);
+                var fileNames = GetFileNames(fileName);
+                fullPath = fileNames.Item1;
+                candidatePathThb = fileNames.Item2;
+                newFileName = fileNames.Item3;
+
+             
+                var imageResize = GetFileImageSize(width, height, fileByte);
+                width = imageResize.Item1;
+                height = imageResize.Item2;
+                int originalImageWidth = imageResize.Item3;
+                int originalImageHeight = imageResize.Item4;
+
+                var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth);
+                var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
+                fs.Write(fileByteCropped);
+                fs.Close();
+
+                imageSize = fileByteCropped.Length;
+
+                //Resize Image - Thumbs
+                var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+                var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                fs1.Write(byteArrayIn);
+                fs1.Close();
 
 
             }
-            return fileStorage;
+
+            return new Tuple<string, int, int, int, string, string>(newFileName, width, height, imageSize, contentType, fileName);
+
         }
+        
         public ImageOrientation GetOrientation(int width, int height)
         {
             if (width == 0 || height == 0)
@@ -652,6 +637,8 @@ namespace EImece.Domain.Helpers
 
                 // Fill the byte[] for the thumbnail from the new MemoryStream.  
                 ReturnedThumbnail = NewMemoryStream.ToArray();
+                startBitmap.Dispose();
+                newBitmap.Dispose();
             }
             // return the resized image as a string of bytes.  
             return ReturnedThumbnail;

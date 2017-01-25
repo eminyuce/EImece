@@ -98,15 +98,12 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    if (productCategoryImage != null)
-                    {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(productCategoryImage, 
-                            productCategory.ImageHeight,
-                            productCategory.ImageWidth, 
-                            EImeceImageType.ProductCategoryMainImage);
-                        FileStorageService.SaveOrEditEntity(mainImage);
-                        productCategory.MainImageId = mainImage.Id;
-                    }
+                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(productCategoryImage,
+                        productCategory.ImageHeight,
+                        productCategory.ImageWidth,
+                        EImeceImageType.ProductCategoryMainImage);
+                    FileStorageService.SaveOrEditEntity(mainImage);
+                    productCategory.MainImageId = mainImage.Id;
 
                     ProductCategoryService.SaveOrEditEntity(productCategory);
                     int contentId = productCategory.Id;

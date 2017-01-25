@@ -88,15 +88,12 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (menuImage != null)
-                    {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(menuImage, 
-                            menu.ImageHeight, 
-                            menu.ImageWidth, 
-                            EImeceImageType.MenuMainImage);
-                        FileStorageService.SaveOrEditEntity(mainImage);
-                        menu.MainImageId = mainImage.Id;
-                    }
+                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(menuImage,
+                        menu.ImageHeight,
+                        menu.ImageWidth,
+                        EImeceImageType.MenuMainImage);
+                    FileStorageService.SaveOrEditEntity(mainImage);
+                    menu.MainImageId = mainImage.Id;
 
                     MenuService.SaveOrEditEntity(menu);
                     int contentId = menu.Id;
@@ -119,7 +116,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
 
-        
+
         //
         [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)

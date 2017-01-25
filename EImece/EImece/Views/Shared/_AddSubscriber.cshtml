@@ -1,6 +1,7 @@
 ﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Factories;
 @{
-    Subscriber subscriber = Subscriber.GetInstance<Subscriber>();
+    Subscriber subscriber = new Subscriber();
 }
 
 @using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class= "form-horizontal" }))

@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
     public class StoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public ActionResult Index(int id=0,String search = "")
+        public ActionResult Index(int id = 0, String search = "")
         {
             int categoryId = id;
             int lang = Settings.MainLanguage;
@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = EntityFactory.GetBaseContentInstance<Story>();
-            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null,1);
+            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
 
             if (id == 0)
             {
@@ -81,15 +81,12 @@ namespace EImece.Areas.Admin.Controllers
                 {
 
 
-                    if (contentImage != null)
-                    {
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage, 
-                            Story.ImageHeight,
-                            Story.ImageWidth,
-                            EImeceImageType.StoryMainImage);
-                        FileStorageService.SaveOrEditEntity(mainImage);
-                        Story.MainImageId = mainImage.Id;
-                    }
+                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
+                        Story.ImageHeight,
+                        Story.ImageWidth,
+                        EImeceImageType.StoryMainImage);
+                    FileStorageService.SaveOrEditEntity(mainImage);
+                    Story.MainImageId = mainImage.Id;
 
                     StoryService.SaveOrEditEntity(Story);
                     int contentId = Story.Id;
@@ -114,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
         //
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -134,7 +131,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
 
