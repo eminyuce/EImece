@@ -136,10 +136,14 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, product);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message);
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.StackTrace);
             }
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
-            ViewBag.ProductCategory = ProductService.GetSingle(product.ProductCategoryId);
+            ViewBag.ProductCategory = ProductCategoryService.GetSingle(product.ProductCategoryId);
+            if (product.MainImageId.HasValue)
+            {
+                product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
+            }
             return View(product);
         }
 

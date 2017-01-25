@@ -40,26 +40,44 @@ namespace EImece.Domain.Helpers
             this.tempPath = tempPath;
             this.serverMapPath = serverMapPath;
         }
-
-        public Tuple<int, int> GetThumbnailImageSize(FileStorage mainImage)
+        public Tuple<int, int, int, int> GetThumbnailImageSize(int mainPageId)
         {
-            int width = 0, height = 0;
+            var mainPage = FileStorageService.GetSingle(mainPageId);
+            return GetThumbnailImageSize(mainPage);
+        }
+        public Tuple<int, int, int, int> GetThumbnailImageSize(FileStorage mainImage)
+        {
+            int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
+            int originalWidth = 0, originalHeight = 0;
             if (mainImage != null)
             {
                 var file = mainImage.FileName;
-                String fullPath = Path.Combine(StorageRoot, file);
-                String thumbPath = "/thb" + file + "";
-                String partThumb1 = Path.Combine(StorageRoot, "thumbs");
-                String partThumb2 = Path.Combine(partThumb1, "thb" + file);
-                Bitmap thumpBitmap = new Bitmap(partThumb2);
-                width = thumpBitmap.Width;
-                height = thumpBitmap.Height;
+                return GetThumbnailImageSize(file);
             }
-
-            var result = new Tuple<int, int>(width, height);
+            var result = new Tuple<int, int, int, int>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight);
             return result;
         }
+        public Tuple<int, int, int, int> GetThumbnailImageSize(String fileName)
+        {
+            int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
+            int originalWidth = 0, originalHeight = 0;
+            String fullPath = Path.Combine(StorageRoot, fileName);
+            String thumbPath = "/thb" + fileName + "";
+            String partThumb1 = Path.Combine(StorageRoot, "thumbs");
+            String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+            Bitmap thumpBitmap = new Bitmap(partThumb2);
+            Bitmap fullBitmap = new Bitmap(fullPath);
+            thumpBitmapWidth = thumpBitmap.Width;
+            thumpBitmapHeight = thumpBitmap.Height;
 
+            originalWidth = fullBitmap.Width;
+            originalHeight = fullBitmap.Height;
+
+            thumpBitmap.Dispose();
+            fullBitmap.Dispose();
+            var result = new Tuple<int, int, int, int>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight);
+            return result;
+        }
         public void DeleteFiles(String pathToDelete)
         {
 
@@ -96,16 +114,16 @@ namespace EImece.Domain.Helpers
 
         public String DeleteThumbFile(String file)
         {
-
-            String thumbPath = "/thb" + file + "";
             String partThumb1 = Path.Combine(StorageRoot, "thumbs");
             String partThumb2 = Path.Combine(partThumb1, "thb" + file);
 
             String succesMessage = "Error Delete";
             //delete thumb 
-            if (System.IO.File.Exists(partThumb2))
+            if (File.Exists(partThumb2))
             {
-                System.IO.File.Delete(partThumb2);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                File.Delete(partThumb2);
                 Thread.Sleep(100);
                 succesMessage = "Ok";
             }
@@ -115,10 +133,12 @@ namespace EImece.Domain.Helpers
         {
             String fullPath = Path.Combine(StorageRoot, file);
             String succesMessage = "Error Delete";
-            if (System.IO.File.Exists(fullPath))
+            if (File.Exists(fullPath))
             {
                 //delete thumb 
-                System.IO.File.Delete(fullPath);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                File.Delete(fullPath);
                 Thread.Sleep(100);
                 succesMessage = "Ok";
                 return succesMessage;
@@ -184,7 +204,7 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
-        private Tuple<int, int, int, int> GetFileImageSize(int width, int height, byte [] fileByte)
+        private Tuple<int, int, int, int> GetFileImageSize(int width, int height, byte[] fileByte)
         {
             Image img = ByteArrayToImage(fileByte);
             int originalImageWidth = img.Width;
@@ -210,8 +230,8 @@ namespace EImece.Domain.Helpers
             {
 
             }
-          
-            return new Tuple<int, int,int,int>(width, height, originalImageWidth, originalImageHeight);
+
+            return new Tuple<int, int, int, int>(width, height, originalImageWidth, originalImageHeight);
         }
 
         private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
@@ -372,23 +392,32 @@ namespace EImece.Domain.Helpers
             else
             {
                 var mainImage = FileStorageService.GetSingle(mainPageImageId);
-                DeleteThumbFile(mainImage.FileName);
-                String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
-                String partThumb1 = Path.Combine(StorageRoot, "thumbs");
-                String candidatePathThb = Path.Combine(partThumb1, "thb" + mainImage.FileName);
+                var imageSize = GetThumbnailImageSize(mainImage);
+                int mainImageHeight = imageSize.Item2;
+                int mainImageWidth = imageSize.Item1;
+                if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
+                {
 
-                var fileByte = File.ReadAllBytes(fullPath);
+                    DeleteThumbFile(mainImage.FileName);
+                    String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
+                    String partThumb1 = Path.Combine(StorageRoot, "thumbs");
+                    String candidatePathThb = Path.Combine(partThumb1, "thb" + mainImage.FileName);
 
-                var imageResize = GetFileImageSize(width, height, fileByte);
-                width = imageResize.Item1;
-                height = imageResize.Item2;
-                int originalImageWidth = imageResize.Item3;
-                int originalImageHeight = imageResize.Item4;
+                    var fileByte = File.ReadAllBytes(fullPath);
 
-                var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
-                var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                fs1.Write(byteArrayIn);
-                fs1.Close();
+                    var imageResize = GetFileImageSize(width, height, fileByte);
+                    width = imageResize.Item1;
+                    height = imageResize.Item2;
+                    int originalImageWidth = imageResize.Item3;
+                    int originalImageHeight = imageResize.Item4;
+
+                    var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+                    var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                    fs1.Write(byteArrayIn);
+                    fs1.Close();
+
+                }
+
 
 
                 return mainImage;
@@ -430,7 +459,7 @@ namespace EImece.Domain.Helpers
                 candidatePathThb = fileNames.Item2;
                 newFileName = fileNames.Item3;
 
-             
+
                 var imageResize = GetFileImageSize(width, height, fileByte);
                 width = imageResize.Item1;
                 height = imageResize.Item2;
@@ -456,7 +485,7 @@ namespace EImece.Domain.Helpers
             return new Tuple<string, int, int, int, string, string>(newFileName, width, height, imageSize, contentType, fileName);
 
         }
-        
+
         public ImageOrientation GetOrientation(int width, int height)
         {
             if (width == 0 || height == 0)

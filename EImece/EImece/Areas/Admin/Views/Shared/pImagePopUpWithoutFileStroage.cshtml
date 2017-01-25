@@ -1,4 +1,4 @@
-﻿@model FileStorage
+﻿@model int
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
@@ -7,28 +7,30 @@
 
 @{
     var close = AdminResource.Close;
-    var fileStorage = Model;
-    var imageWidth = fileStorage.Width * Settings.GetConfigInt("AdminImageWidthPercantage", 50) / 100;
-    var imageHeight = fileStorage.Height * Settings.GetConfigInt("AdminImageHeightPercantage", 50) / 100;
+    var fileStorageId = Model;
+    var imageWidth = 200;
+    var imageHeight = 200;
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
     filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
-    var imageSizes = filesHelper.GetThumbnailImageSize(fileStorage);
+    var imageSizes = filesHelper.GetThumbnailImageSize(fileStorageId);
 }
 
 <!-- Modal -->
-<div id="@String.Format("myModal_{0}",fileStorage.Id)" class="modal fade" role="dialog">
+<div id="@String.Format("myModal_{0}",fileStorageId)" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@fileStorage.FileName</h4>
+                <h4 class="modal-title">
+
+                </h4>
             </div>
             <div class="modal-body">
                 <p>@String.Format("Original Width={0} Height={1}", imageSizes.Item3, imageSizes.Item4)</p>
                 <p>@String.Format("Thumbs Width={0} Height={1}", imageSizes.Item1, imageSizes.Item2)</p>
-                <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorage.Id, width=imageWidth, height= imageHeight })" />
+                <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorageId, width=imageWidth, height= imageHeight })" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">@close</button>
