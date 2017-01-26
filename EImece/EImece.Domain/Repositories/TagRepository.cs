@@ -36,5 +36,13 @@ namespace EImece.Domain.Repositories
 
             return result;
         }
+
+        public Tag GetTagById(int tagId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<Tag>();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.StoryTags);
+            return GetSingleIncluding(tagId, includeProperties.ToArray());
+        }
     }
 }

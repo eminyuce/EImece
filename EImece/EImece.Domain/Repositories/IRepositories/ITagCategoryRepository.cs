@@ -11,5 +11,6 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface ITagCategoryRepository : IBaseEntityRepository<TagCategory>, IDisposable
     {
         List<TagCategory> GetTagsByTagType(EImeceLanguage language);
+        TagCategory GetTagCategoryById(int tagCategoryId);
     }
 }

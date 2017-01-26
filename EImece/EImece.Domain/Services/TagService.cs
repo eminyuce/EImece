@@ -22,5 +22,18 @@ namespace EImece.Domain.Services
         {
             return TagRepository.GetAdminPageList(search);
         }
+
+        public void DeleteTagById(int tagId)
+        {
+            var tag = GetTagById(tagId);
+            ProductTagRepository.DeleteByWhereCondition(r => r.TagId == tagId);
+            StoryTagRepository.DeleteByWhereCondition(r => r.TagId == tagId);
+            DeleteEntity(tag);
+        }
+
+        public Tag GetTagById(int tagId)
+        {
+            return TagRepository.GetTagById(tagId);
+        }
     }
 }

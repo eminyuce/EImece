@@ -11,6 +11,7 @@ namespace EImece.Domain.Entities
         public int TagCategoryId { get; set; }
         public virtual TagCategory TagCategory { get; set; }
 
-
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
+        public virtual ICollection<StoryTag> StoryTags { get; set; }
     }
 }

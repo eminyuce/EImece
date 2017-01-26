@@ -19,8 +19,16 @@ namespace EImece.Domain.Repositories
         public TagCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
- 
-      
+
+        public TagCategory GetTagCategoryById(int tagCategoryId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<TagCategory>();
+            includeProperties.Add(r => r.Tags.Select(t => t.ProductTags));
+            includeProperties.Add(r => r.Tags.Select(t => t.StoryTags));
+            var item = GetSingleIncluding(tagCategoryId, includeProperties.ToArray());
+            return item;
+        }
+
         public List<TagCategory> GetTagsByTagType(EImeceLanguage language)
         {
             try

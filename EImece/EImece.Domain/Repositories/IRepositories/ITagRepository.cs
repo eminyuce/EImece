@@ -11,5 +11,6 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface ITagRepository : IBaseEntityRepository<Tag>, IDisposable
     {
         List<Tag> GetAdminPageList(String search);
+        Tag GetTagById(int tagId);
     }
 }

@@ -80,8 +80,7 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IProductTagRepository ProductTagRepository { get; set; }
-        [Inject]
-        public IFileStorageTagRepository FileStorageTagRepository { get; set; }
+
         [Inject]
         public IStoryTagRepository StoryTagRepository { get; set; }
         [Inject]

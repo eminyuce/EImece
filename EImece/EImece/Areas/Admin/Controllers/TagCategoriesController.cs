@@ -113,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                TagCategoryService.DeleteEntity(TagCategory);
+                TagCategoryService.DeleteTagCategoryById(id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

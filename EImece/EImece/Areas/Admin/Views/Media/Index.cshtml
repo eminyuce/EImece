@@ -38,7 +38,7 @@
         line-height: 1.6em;
     }
 </style>
-@Html.Partial("_pBackButtonLink",Model)
+@Html.Partial("_pBackButtonLink", Model)
 
 @Html.HiddenFor(r => Model.Id)
 @Html.HiddenFor(r => Model.ImageType)
@@ -68,13 +68,13 @@
     $('#fileupload').addClass('fileupload-processing');
     $(function () {
 
- 
+
         var handle1 = $("#sliderWidthHandle");
         $("#sliderWidth").slider({
             min: 0,
             max: 1000,
             value: 200,
-            step:10,
+            step: 10,
             create: function () {
                 handle1.text($(this).slider("value"));
             },
@@ -116,11 +116,11 @@
                 mod: $("#MediaMod").val(),
                 imageHeight: $("#sliderHeight").slider("option", "value"),
                 imageWidth: $("#sliderWidth").slider("option", "value")
-            } 
+            }
         });
 
         $("#target").click(function () {
-           
+
         });
     });
 </script>
@@ -133,7 +133,7 @@
 <div class="panel panel-info">
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
-           ,{"StateTypes","State"}    
+           ,{"StateTypes","State"}
            ,{"IsNewRecordButtonEnabled",false}
            ,{"orderingButton",true}
            ,{"selectAll",true}
@@ -145,37 +145,15 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-columns.Add().Encoded(false).
-        Sanitized(false).
-        SetWidth(10).
-        RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
+        columns.Add().Encoded(false).
+                Sanitized(false).
+                SetWidth(10).
+                RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
 
-columns.Add(o => o.Id, true);
+        columns.Add(o => o.Id, true);
 
 
-columns.Add()
-       .Encoded(false)
-       .Sanitized(false)
-       .SetWidth(30)
-       .RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     glyphicon glyphicon-eye-open" })
-    </b>);
-
-if (UserRoleHelper.IsDeletedEnableRoles())
-{
-    columns.Add()
-             .Encoded(false)
-             .Sanitized(false)
-             .SetWidth(30)
-             .RenderValueAs(d =>
-            @<b>
-                @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash glyphicon-white" })
-            </b>);
-
-}
-
-columns.Add()
+        columns.Add()
                              .Encoded(false)
                              .Sanitized(false)
                              .SetWidth(30)

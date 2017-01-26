@@ -84,7 +84,6 @@ namespace EImece.App_Start
             m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
             m.InRequestScope();
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
-            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
             kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
             kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();

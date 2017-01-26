@@ -13,19 +13,22 @@ namespace EImece.Controllers
     public class ProductsController : BaseController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        // GET: Products
+
+        [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
             var products = ProductService.GetMainPageProducts(page, Settings.RecordPerPage, CurrentLanguage);
             return View(products);
         }
-        
+        [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
             var productId = id.GetId();
             var product = ProductService.GetProductById(productId);
             return View(product);
         }
+
+        [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {
             var tagId = id.GetId();

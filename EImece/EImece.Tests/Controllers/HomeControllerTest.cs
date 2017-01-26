@@ -98,7 +98,6 @@ namespace EImece.Tests.Controllers
             var dbContext = new EImeceContext(ConnectionString);
 
             Console.WriteLine(new FileStorageRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new FileStorageTagRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new MenuRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new ProductCategoryRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new ProductRepository(dbContext).GetAll().ToList().Count());
