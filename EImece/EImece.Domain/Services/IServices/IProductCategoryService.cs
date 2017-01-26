@@ -14,5 +14,7 @@ namespace EImece.Domain.Services.IServices
         List<Node> CreateProductCategoryTreeViewDataList();
         ProductCategory GetProductCategory(int categoryId);
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
+        void DeleteProductCategory(int productCategoryId);
+        new void DeleteProductCategories(List<string> values);
     }
 }

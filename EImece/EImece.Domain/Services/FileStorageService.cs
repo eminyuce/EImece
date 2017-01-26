@@ -243,9 +243,8 @@ namespace EImece.Domain.Services
                 }
                 else
                 {
-                    return "ok";
+                    return "error";
                 }
-
             }
             catch (Exception exception)
             {

@@ -28,5 +28,29 @@ namespace EImece.Domain.Services
         {
             return StoryTagRepository.GetStoryTagsByStoryId(storyId);
         }
+
+        public void DeleteStoryById(int storyId)
+        {
+            var story = GetStoryById(storyId);
+            StoryTagRepository.DeleteByWhereCondition(r => r.StoryId == storyId);
+            if (story.MainImageId.HasValue)
+            {
+                FileStorageService.DeleteFileStorage(story.MainImageId.Value);
+            }
+            if (story.StoryFiles != null)
+            {
+                foreach (var file in story.StoryFiles)
+                {
+                    FileStorageService.DeleteFileStorage(file.FileStorageId);
+                }
+                StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == storyId);
+            }
+            DeleteEntity(story);
+        }
+
+        public Story GetStoryById(int storyId)
+        {
+            return StoryRepository.GetStoryById(storyId);
+        }
     }
 }

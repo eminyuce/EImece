@@ -171,7 +171,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
                 if (leaves.Any(r => r.Id == id))
-                    ProductCategoryService.DeleteEntity(productCategory);
+                    ProductCategoryService.DeleteProductCategory(productCategory.Id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

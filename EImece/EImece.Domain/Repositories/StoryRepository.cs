@@ -34,5 +34,16 @@ namespace EImece.Domain.Repositories
 
             return stories.ToList();
         }
+
+        public Story GetStoryById(int storyId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<Story>();
+            includeProperties.Add(r => r.StoryCategory);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryFiles.Select(t => t.FileStorage));
+            includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+            return GetSingleIncluding(storyId, includeProperties.ToArray());
+
+        }
     }
 }

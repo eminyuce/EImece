@@ -11,5 +11,7 @@ namespace EImece.Domain.Services.IServices
     {
         List<Story> GetAdminPageList(int categoryId, string search, int lang);
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
+        void DeleteStoryById(int storyId);
+        Story GetStoryById(int storyId);
     }
 }

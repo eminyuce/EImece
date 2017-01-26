@@ -8,7 +8,6 @@ namespace EImece.Domain.Entities
 {
     public class StoryCategory : BaseContent
     {
-
-
+        public virtual List<Story> Stories { get; set; }
     }
 }

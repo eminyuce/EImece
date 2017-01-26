@@ -162,7 +162,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (leave != null)
                 {
-                    MenuService.DeleteEntity(menu);
+                    MenuService.DeleteMenu(menu.Id);
                 }
                 return RedirectToAction("Index");
             }

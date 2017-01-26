@@ -139,7 +139,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                StoryCategoryService.DeleteEntity(StoryCategory);
+                StoryCategoryService.DeleteStoryCategoryById(id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

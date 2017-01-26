@@ -9,6 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IStoryCategoryRepository : IBaseContentRepository<StoryCategory>, IDisposable
     {
-
+        StoryCategory GetStoryCategoryById(int storyCategoryId);
     }
 }

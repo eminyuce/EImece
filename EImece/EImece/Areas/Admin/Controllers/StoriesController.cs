@@ -142,7 +142,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                StoryService.DeleteEntity(Story);
+                StoryService.DeleteStoryById(id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

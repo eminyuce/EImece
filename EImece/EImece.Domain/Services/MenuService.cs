@@ -18,14 +18,14 @@ namespace EImece.Domain.Services
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private IMenuRepository MenuRepository { get; set; }
-        public MenuService(IMenuRepository repository):base(repository)
+        public MenuService(IMenuRepository repository) : base(repository)
         {
             MenuRepository = repository;
         }
 
         public List<Menu> BuildTree(bool? isActive, int language)
         {
-            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive,language);
+            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
             List<Menu> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
@@ -53,6 +53,22 @@ namespace EImece.Domain.Services
             return MenuRepository.GetMenuLeaves(isActive, language);
         }
 
-        
+        public void DeleteMenu(int menuId)
+        {
+            var menu = MenuRepository.GetMenuById(menuId);
+            if (menu.MainImageId.HasValue)
+            {
+                FileStorageService.DeleteFileStorage(menu.MainImageId.Value);
+            }
+            if (menu.MenuFiles != null)
+            {
+                foreach (var file in menu.MenuFiles)
+                {
+                    FileStorageService.DeleteFileStorage(file.FileStorageId);
+                }
+                MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
+            }
+            DeleteEntity(menu);
+        }
     }
 }

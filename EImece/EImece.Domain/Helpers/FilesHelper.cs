@@ -40,24 +40,25 @@ namespace EImece.Domain.Helpers
             this.tempPath = tempPath;
             this.serverMapPath = serverMapPath;
         }
-        public Tuple<int, int, int, int> GetThumbnailImageSize(int mainPageId)
+        public Tuple<int, int, int, int, string> GetThumbnailImageSize(int mainPageId)
         {
             var mainPage = FileStorageService.GetSingle(mainPageId);
             return GetThumbnailImageSize(mainPage);
         }
-        public Tuple<int, int, int, int> GetThumbnailImageSize(FileStorage mainImage)
+        public Tuple<int, int, int, int, string> GetThumbnailImageSize(FileStorage mainImage)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = 0, originalHeight = 0;
+            String fileName = "";
             if (mainImage != null)
             {
-                var file = mainImage.FileName;
-                return GetThumbnailImageSize(file);
+                fileName = mainImage.FileName;
+                return GetThumbnailImageSize(fileName);
             }
-            var result = new Tuple<int, int, int, int>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight);
+            var result = new Tuple<int, int, int, int, string>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
         }
-        public Tuple<int, int, int, int> GetThumbnailImageSize(String fileName)
+        public Tuple<int, int, int, int,string> GetThumbnailImageSize(String fileName)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = 0, originalHeight = 0;
@@ -75,7 +76,7 @@ namespace EImece.Domain.Helpers
 
             thumpBitmap.Dispose();
             fullBitmap.Dispose();
-            var result = new Tuple<int, int, int, int>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight);
+            var result = new Tuple<int, int, int, int, string>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
         }
         public void DeleteFiles(String pathToDelete)

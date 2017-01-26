@@ -15,5 +15,6 @@ namespace EImece.Domain.Services.IServices
         List<Node> CreateMenuTreeViewDataList(bool? isActive, int language);
         MenuPageViewModel GetPageById(int menuId);
         List<Menu> GetMenuLeaves(bool? isActive, int language);
+        void DeleteMenu(int menuId);
     }
 }
