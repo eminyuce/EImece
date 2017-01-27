@@ -104,15 +104,13 @@ namespace EImece.Areas.Admin.Controllers
                     else
                     {
 
-                        var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(
+                       FilesHelper.SaveFileFromHttpPostedFileBase(
                             productImage,
                             product.ImageHeight,
                             product.ImageWidth,
                             EImeceImageType.ProductMainImage,
-                             product.MainImageId.HasValue ? product.MainImageId.Value : 0);
+                             product);
 
-                        FileStorageService.SaveOrEditEntity(mainImage);
-                        product.MainImageId = mainImage.Id;
 
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;

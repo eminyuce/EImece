@@ -13,5 +13,6 @@ namespace EImece.Domain.Services.IServices
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
         void DeleteStoryById(int storyId);
         Story GetStoryById(int storyId);
+        void SaveStoryTags(int storyId, int[] tags);
     }
 }

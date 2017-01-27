@@ -70,7 +70,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(StoryCategory StoryCategory, HttpPostedFileBase contentImage = null)
+        public ActionResult SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase contentImage = null)
         {
             try
             {
@@ -78,15 +78,14 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
-                        StoryCategory.ImageHeight,
-                        StoryCategory.ImageWidth,
-                        EImeceImageType.StoryCategoryMainImage);
-                    FileStorageService.SaveOrEditEntity(mainImage);
-                    StoryCategory.MainImageId = mainImage.Id;
+                     FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
+                        storyCategory.ImageHeight,
+                        storyCategory.ImageWidth,
+                        EImeceImageType.StoryCategoryMainImage,
+                        storyCategory);
 
-                    StoryCategoryService.SaveOrEditEntity(StoryCategory);
-                    int contentId = StoryCategory.Id;
+                    StoryCategoryService.SaveOrEditEntity(storyCategory);
+                    int contentId = storyCategory.Id;
                     return RedirectToAction("Index");
                 }
                 else
@@ -97,12 +96,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, StoryCategory);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, storyCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message);
             }
 
-            return View(StoryCategory);
+            return View(storyCategory);
         }
 
 

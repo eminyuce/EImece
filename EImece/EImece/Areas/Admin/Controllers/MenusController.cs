@@ -88,12 +88,10 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(menuImage,
+                    FilesHelper.SaveFileFromHttpPostedFileBase(menuImage,
                         menu.ImageHeight,
                         menu.ImageWidth,
-                        EImeceImageType.MenuMainImage);
-                    FileStorageService.SaveOrEditEntity(mainImage);
-                    menu.MainImageId = mainImage.Id;
+                        EImeceImageType.MenuMainImage, menu);
 
                     MenuService.SaveOrEditEntity(menu);
                     int contentId = menu.Id;

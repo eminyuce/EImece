@@ -52,5 +52,10 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetStoryById(storyId);
         }
+
+        public void SaveStoryTags(int storyId, int[] tags)
+        {
+            StoryTagRepository.SaveStoryTags(storyId, tags);
+        }
     }
 }

@@ -72,7 +72,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Story Story, HttpPostedFileBase contentImage = null)
+        public ActionResult SaveOrEdit(Story story, int[] tags = null, HttpPostedFileBase contentImage = null)
         {
             try
             {
@@ -81,15 +81,20 @@ namespace EImece.Areas.Admin.Controllers
                 {
 
 
-                    var mainImage = FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
-                        Story.ImageHeight,
-                        Story.ImageWidth,
-                        EImeceImageType.StoryMainImage);
-                    FileStorageService.SaveOrEditEntity(mainImage);
-                    Story.MainImageId = mainImage.Id;
+                    FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
+                        story.ImageHeight,
+                        story.ImageWidth,
+                        EImeceImageType.StoryMainImage,story);
+                
 
-                    StoryService.SaveOrEditEntity(Story);
-                    int contentId = Story.Id;
+                    StoryService.SaveOrEditEntity(story);
+                    int contentId = story.Id;
+
+                    if (tags != null)
+                    {
+                        StoryService.SaveStoryTags(story.Id, tags);
+                    }
+
                     return RedirectToAction("Index");
                 }
                 else
@@ -100,12 +105,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Story);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, story);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
-            return View(Story);
+            return View(story);
         }
 
 

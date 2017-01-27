@@ -58,7 +58,7 @@ namespace EImece.Domain.Helpers
             var result = new Tuple<int, int, int, int, string>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
         }
-        public Tuple<int, int, int, int,string> GetThumbnailImageSize(String fileName)
+        public Tuple<int, int, int, int, string> GetThumbnailImageSize(String fileName)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = 0, originalHeight = 0;
@@ -66,16 +66,23 @@ namespace EImece.Domain.Helpers
             String thumbPath = "/thb" + fileName + "";
             String partThumb1 = Path.Combine(StorageRoot, "thumbs");
             String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
-            Bitmap thumpBitmap = new Bitmap(partThumb2);
-            Bitmap fullBitmap = new Bitmap(fullPath);
-            thumpBitmapWidth = thumpBitmap.Width;
-            thumpBitmapHeight = thumpBitmap.Height;
+            if (File.Exists(partThumb2))
+            {
+                Bitmap thumpBitmap = new Bitmap(partThumb2);
 
-            originalWidth = fullBitmap.Width;
-            originalHeight = fullBitmap.Height;
+                thumpBitmapWidth = thumpBitmap.Width;
+                thumpBitmapHeight = thumpBitmap.Height;
+                thumpBitmap.Dispose();
 
-            thumpBitmap.Dispose();
-            fullBitmap.Dispose();
+                if (File.Exists(partThumb2))
+                {
+                    Bitmap fullBitmap = new Bitmap(fullPath);
+                    originalWidth = fullBitmap.Width;
+                    originalHeight = fullBitmap.Height;
+                    fullBitmap.Dispose();
+                }
+            }
+
             var result = new Tuple<int, int, int, int, string>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
         }
@@ -366,14 +373,14 @@ namespace EImece.Domain.Helpers
             return Filess;
         }
 
-        public FileStorage SaveFileFromHttpPostedFileBase(HttpPostedFileBase file,
+        public void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
             int height = 0,
             int width = 0,
-            EImeceImageType imageType = EImeceImageType.NONE, int mainPageImageId = 0)
+            EImeceImageType imageType = EImeceImageType.NONE, BaseContent baseContent = null)
         {
-            if (file != null)
+            if (httpPostedFileBase != null)
             {
-                var result = SaveImageByte(width, height, file);
+                var result = SaveImageByte(width, height, httpPostedFileBase);
 
                 var fileStorage = new FileStorage();
                 fileStorage.Name = result.Item6;
@@ -388,42 +395,45 @@ namespace EImece.Domain.Helpers
                 fileStorage.FileSize = result.Item4;
                 fileStorage.Type = imageType.ToStr();
 
-                return fileStorage;
+                FileStorageService.SaveOrEditEntity(fileStorage);
+                baseContent.MainImageId = fileStorage.Id;
+
             }
             else
             {
-                var mainImage = FileStorageService.GetSingle(mainPageImageId);
-                var imageSize = GetThumbnailImageSize(mainImage);
-                int mainImageHeight = imageSize.Item2;
-                int mainImageWidth = imageSize.Item1;
-                if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
+                if (baseContent.MainImageId.HasValue && baseContent.MainImageId.Value > 0)
                 {
+                    var mainImage = FileStorageService.GetSingle(baseContent.MainImageId.Value);
+                    if (mainImage != null)
+                    {
+                        var imageSize = GetThumbnailImageSize(mainImage);
+                        int mainImageHeight = imageSize.Item2;
+                        int mainImageWidth = imageSize.Item1;
+                        if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
+                        {
 
-                    DeleteThumbFile(mainImage.FileName);
-                    String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
-                    String partThumb1 = Path.Combine(StorageRoot, "thumbs");
-                    String candidatePathThb = Path.Combine(partThumb1, "thb" + mainImage.FileName);
+                            DeleteThumbFile(mainImage.FileName);
+                            String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
+                            String partThumb1 = Path.Combine(StorageRoot, "thumbs");
+                            String candidatePathThb = Path.Combine(partThumb1, "thb" + mainImage.FileName);
 
-                    var fileByte = File.ReadAllBytes(fullPath);
+                            var fileByte = File.ReadAllBytes(fullPath);
 
-                    var imageResize = GetFileImageSize(width, height, fileByte);
-                    width = imageResize.Item1;
-                    height = imageResize.Item2;
-                    int originalImageWidth = imageResize.Item3;
-                    int originalImageHeight = imageResize.Item4;
+                            var imageResize = GetFileImageSize(width, height, fileByte);
+                            width = imageResize.Item1;
+                            height = imageResize.Item2;
+                            int originalImageWidth = imageResize.Item3;
+                            int originalImageHeight = imageResize.Item4;
 
-                    var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
-                    var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                    fs1.Write(byteArrayIn);
-                    fs1.Close();
+                            var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+                            var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                            fs1.Write(byteArrayIn);
+                            fs1.Close();
 
+                        }
+                    }
                 }
-
-
-
-                return mainImage;
             }
-
         }
         private Tuple<string, string, string> GetFileNames(String fileName)
         {
