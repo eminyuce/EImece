@@ -630,6 +630,9 @@
     <Content Include="Views\Pages\PageThemes\PageTheme_T7.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ContactUsFormViewModel.cshtml" />
     <Content Include="Views\Shared\_pThankYouForContactingUs.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Story.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\StoryShort.cshtml" />
+    <Content Include="Views\Stories\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

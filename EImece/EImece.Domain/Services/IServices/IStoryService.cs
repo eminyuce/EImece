@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace EImece.Domain.Services.IServices
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
         void DeleteStoryById(int storyId);
         Story GetStoryById(int storyId);
+        StoryIndexViewModel GetMainPageStories(int page, int currentLanguage);
         void SaveStoryTags(int storyId, int[] tags);
+        StoryDetailViewModel GetStoryDetailViewModel(int storyId);
     }
 }

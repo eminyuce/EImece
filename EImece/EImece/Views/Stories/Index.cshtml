@@ -1,77 +1,25 @@
-﻿@model IEnumerable<EImece.Domain.Entities.Story>
+﻿@model StoryIndexViewModel
+@using GenericRepository;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.FrontModels;
 
 @{
     ViewBag.Title = "Index";
+    var stories = Model.Stories;
 }
 
 <h2>Index</h2>
- 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Position)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ImageState)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MainImageId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lang)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StoryCategoryId)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ImageState)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lang)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StoryCategoryId)
-        </td>
-       
-    </tr>
+@Html.BootstrapPager(stories.PageIndex,
+    index => Url.Action("Index", "Stories", new { page = index }),
+    stories.TotalCount, stories.PageSize, numberOfLinks: 10)
+
+@foreach (var item in stories)
+{
+    @Html.DisplayFor(modelItem => item,"StoryShort")
 }
 
-</table>
+
+
+

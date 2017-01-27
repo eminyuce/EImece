@@ -1,0 +1,22 @@
+﻿@model EImece.Domain.Entities.Story
+@using EImece.Domain.Helpers.Extensions;
+
+@{
+    var story = Model;
+}
+
+
+<div class="story">
+    <h3>
+        <a href="@story.GetDetailPageUrl("Detail","Stories",story.StoryCategory.Name)">
+            @Html.DisplayFor(model => story.Name)
+        </a>
+        <small>@story.CreatedDate</small>
+    </h3>
+    <p>
+        @story.GetSeoDescription(300)
+    </p>
+</div>
+
+
+

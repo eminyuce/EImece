@@ -1,19 +1,19 @@
 ﻿@using GenericRepository;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
-
-@model PaginatedList<Product>
+@using EImece.Domain.Models.FrontModels;
+@model ProductIndexViewModel
 
 @{
     ViewBag.Title = "Index";
-    PaginatedList<Product> products = Model;
+    PaginatedList<Product> products = Model.Products;
 }
 
 <h2>Index</h2>
 
-@Html.BootstrapPager(Model.PageIndex,
+@Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),
-    Model.TotalCount, Model.PageSize, numberOfLinks: 10)
+    products.TotalCount, products.PageSize, numberOfLinks: 10)
 
 @Html.Partial("_PagingPartial", products)
 <div class="row">

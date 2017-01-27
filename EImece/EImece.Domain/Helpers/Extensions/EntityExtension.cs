@@ -11,7 +11,7 @@ namespace EImece.Domain.Helpers.Extensions
 {
     public static class EntityExtension
     {
-        
+
 
         public static List<BaseEntity> DownCasting<T>(this List<T> items) where T : BaseEntity
         {
@@ -31,6 +31,7 @@ namespace EImece.Domain.Helpers.Extensions
         {
             return string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
         }
+
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";
@@ -69,11 +70,23 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageUrl(int fileStorageId, int width = 0, int height = 0)
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            var companyName =  Settings.CompanyNameForImage;
+            var companyName = Settings.CompanyNameForImage;
             var imageSize = String.Format("w{0}h{1}", width, height);
             String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { companyName, imageSize, id = String.Format("{0}.jpg", fileStorageId) });
             return imagePath;
         }
-
+        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "")
+        {
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            if (String.IsNullOrEmpty(categoryName))
+            {
+                return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity) });
+            }
+            else
+            {
+                return urlHelper.Action(action, controller, new { categoryName, id = GetSeoUrl(entity) });
+            }
+         
+        }
     }
 }

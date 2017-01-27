@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services
 {
@@ -52,10 +53,25 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetStoryById(storyId);
         }
-
+       
         public void SaveStoryTags(int storyId, int[] tags)
         {
             StoryTagRepository.SaveStoryTags(storyId, tags);
+        }
+
+        public StoryDetailViewModel GetStoryDetailViewModel(int storyId)
+        {
+            var storyDetail = new StoryDetailViewModel();
+            storyDetail.Story = GetStoryById(storyId);
+            return storyDetail;
+        }
+
+        public StoryIndexViewModel GetMainPageStories(int page,  int language)
+        {
+            var result = new StoryIndexViewModel();
+            int pageSize = Settings.RecordPerPage;
+            result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
+            return result;
         }
     }
 }

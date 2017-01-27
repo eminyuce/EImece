@@ -190,8 +190,11 @@
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
+    <Compile Include="Models\FrontModels\ProductIndexViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
+    <Compile Include="Models\FrontModels\StoryDetailViewModel.cs" />
+    <Compile Include="Models\FrontModels\StoryIndexViewModel.cs" />
     <Compile Include="Models\HelperModels\ErrorModel.cs" />
     <Compile Include="Models\HelperModels\FilesViewModel.cs" />
     <Compile Include="Models\HelperModels\OrderingItem.cs" />

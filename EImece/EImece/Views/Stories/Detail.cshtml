@@ -1,0 +1,74 @@
+﻿@model EImece.Domain.Models.FrontModels.StoryDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+
+@{
+    var story = Model.Story;
+    ViewBag.Title = story.GetSeoTitle();
+    ViewBag.Description = story.GetSeoDescription();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var storyFiles = story.StoryFiles.ToList();
+    var storyTags = story.StoryTags.Select(r => r.Tag).ToList();
+    var storyCategory = story.StoryCategory;
+}
+
+
+<h2>@story.Name</h2>
+<h4>
+    @storyCategory.Name
+</h4>
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Jumbotron Header -->
+    <header class="jumbotron hero-spacer">
+        @Html.Raw(story.GetCroppedImageTag(400, 250))
+    </header>
+    <hr>
+    <!-- Title -->
+    <div class="row">
+        <div class="col-lg-12">
+            <p>
+                @Html.Raw(story.Description)
+            </p>
+        </div>
+    </div>
+
+    @for (int i = 0; i < storyFiles.Count; i++)
+    {
+        var f = storyFiles[i];
+        bool renderRow = i % 4 == 0 ? true : false;
+
+        if (renderRow)
+        {
+            @: <div class="row  text-center">
+                }
+
+        <div class="col-md-3 col-sm-6 hero-feature">
+            <div class="thumbnail">
+                @Html.Raw(f.GetCroppedImageTag(f.FileStorageId, 70, 70))
+                <div class="caption">
+
+                </div>
+            </div>
+        </div>
+
+        if (renderRow)
+        {
+            @:         </div>
+        }
+    }
+
+
+</div>
+
+
+@foreach (var pt in storyTags)
+{
+    <div>
+        @Html.ActionLink(pt.Name, "tag", "stories", new { id = pt.GetSeoUrl() }, null)
+    </div>
+}

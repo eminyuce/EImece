@@ -7,11 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
 using System.Linq.Expressions;
+using GenericRepository;
+using NLog;
 
 namespace EImece.Domain.Repositories
 {
     public class StoryRepository : BaseContentRepository<Story>, IStoryRepository
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public StoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
@@ -33,6 +37,28 @@ namespace EImece.Domain.Repositories
             stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.Id);
 
             return stories.ToList();
+        }
+
+        public PaginatedList<Story> GetMainPageStories(int pageIndex, int pageSize, int language)
+        {
+            try
+            {
+                var includeProperties = GetIncludePropertyExpressionList<Story>();
+                includeProperties.Add(r => r.StoryCategory);
+                includeProperties.Add(r => r.MainImage);
+                includeProperties.Add(r => r.StoryFiles);
+                includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+                Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
+                Expression<Func<Story, int>> keySelector = t => t.Position;
+                var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+
+                return items;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw exception;
+            }
         }
 
         public Story GetStoryById(int storyId)

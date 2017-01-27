@@ -12,8 +12,8 @@ namespace EImece.Domain.Services.IServices
     public interface IProductService : IBaseContentService<Product>
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
-      
-        List<Product> GetMainPageProducts(int pageIndex, int pageSize, int lang);
+
+        ProductIndexViewModel GetMainPageProducts(int pageIndex,  int lang);
         List<ProductTag> GetProductTagsByProductId(int productId);
         void SaveProductTags(int id, int[] tags);
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);

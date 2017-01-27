@@ -40,7 +40,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new MainPageViewModel();
-                result.MainPageProducts = ProductService.GetMainPageProducts(1, 5, language);
+                result.MainPageProducts = ProductService.GetMainPageProducts(1,  language).Products;
                 result.MainPageImages = MainPageImageRepository.GetActiveBaseContents(true, language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
             }

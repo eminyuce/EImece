@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,11 +11,20 @@ namespace EImece.Controllers
 {
     public class StoriesController : BaseController
     {
-        // GET: Stories
-        public ActionResult Index()
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [OutputCache(CacheProfile = "Cache20Minutes")]
+        public ActionResult Index(int page = 1)
         {
-            var stories = StoryService.GetAll().ToList();
+            var stories = StoryService.GetMainPageStories(page,  CurrentLanguage);
             return View(stories);
+        }
+        [OutputCache(CacheProfile = "Cache20Minutes")]
+        public ActionResult Detail(String id)
+        {
+            var storyId = id.GetId();
+            var story = StoryService.GetStoryDetailViewModel(storyId);
+            return View(story);
         }
     }
 }

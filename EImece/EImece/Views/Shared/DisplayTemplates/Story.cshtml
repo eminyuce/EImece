@@ -1,0 +1,30 @@
+﻿@model EImece.Domain.Entities.Story
+@using EImece.Domain.Helpers.Extensions;
+
+@{
+    var story = Model;
+}
+
+
+
+<div class="story">
+    <h3>
+        <a href="@story.GetDetailPageUrl("Detail","Stories")">
+            @Html.DisplayFor(model => story.Name)
+        </a>
+        <small>@story.CreatedDate</small>
+    </h3>
+    @if (story.MainImageId.HasValue && story.MainImageId.Value > 0)
+    {
+
+        <div class="image">
+            @Html.Raw(story.GetCroppedImageTag(300, 250))
+        </div>
+    }
+    <p>
+        @story.GetSeoDescription(300)
+    </p>
+</div>
+
+
+

@@ -39,9 +39,13 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, search, lang);
         }
 
-        public List<Product> GetMainPageProducts(int pageIndex, int pageSize, int lang)
+        public ProductIndexViewModel GetMainPageProducts(int pageIndex,  int lang)
         {
-            return ProductRepository.GetMainPageProducts(pageIndex,pageSize, lang);
+            var r = new ProductIndexViewModel();
+            int pageSize = Settings.RecordPerPage;
+            var items = ProductRepository.GetMainPageProducts(pageIndex,pageSize, lang);
+            r.Products = items;
+            return r;
         }
 
 

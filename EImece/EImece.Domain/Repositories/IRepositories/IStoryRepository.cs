@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GenericRepository;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -11,5 +12,6 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<Story> GetAdminPageList(int categoryId, string search, int lang);
         Story GetStoryById(int storyId);
+        PaginatedList<Story> GetMainPageStories(int page, int pageSize, int language);
     }
 }

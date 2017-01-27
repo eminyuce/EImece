@@ -17,7 +17,7 @@ namespace EImece.Controllers
         [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
-            var products = ProductService.GetMainPageProducts(page, Settings.RecordPerPage, CurrentLanguage);
+            var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
             return View(products);
         }
         [OutputCache(CacheProfile = "Cache20Minutes")]
