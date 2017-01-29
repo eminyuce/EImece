@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to delete it?.
+        /// </summary>
+        public static string AdminDeleteConfirmMessage {
+            get {
+                return ResourceManager.GetString("AdminDeleteConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {

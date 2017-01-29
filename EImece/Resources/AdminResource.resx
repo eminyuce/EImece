@@ -189,4 +189,7 @@
   <data name="ExportToExcel" xml:space="preserve">
     <value>Export To Excel</value>
   </data>
+  <data name="AdminDeleteConfirmMessage" xml:space="preserve">
+    <value>Do you want to delete it?</value>
+  </data>
 </root>

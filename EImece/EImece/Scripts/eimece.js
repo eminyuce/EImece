@@ -33,16 +33,32 @@ $(document).ready(function () {
         var jsonRequest = JSON.stringify({ "values": itemArray });
         return jsonRequest;
     }
+    var YOUR_MESSAGE_STRING_CONST = $("#AdminMultiSelectDeleteConfirmMessage").text();
     $("#DeleteAll").click(function () {
         console.log("DeleteAll is clicked.");
-        var postData = GetSelectedCheckBoxValues();
-        var parsedPostData = jQuery.parseJSON(postData);
-        if (parsedPostData.values.length > 0) {
-            var tableName = $("[data-gridname]").attr("data-gridname");
-            console.log("Delete" + tableName + "Item");
-            ajaxMethodCall(postData, "/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
-        }
+        confirmDialog(YOUR_MESSAGE_STRING_CONST, function () {
+            var postData = GetSelectedCheckBoxValues();
+            var parsedPostData = jQuery.parseJSON(postData);
+            if (parsedPostData.values.length > 0) {
+                var tableName = $("[data-gridname]").attr("data-gridname");
+                console.log("Delete" + tableName + "Item");
+                ajaxMethodCall(postData, "/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
+            }
+        });
+        
     });
+
+    function confirmDialog(message, onConfirm) {
+        var fClose = function () {
+            modal.modal("hide");
+        };
+        var modal = $("#confirmModal");
+        modal.modal("show");
+        $("#confirmMessage").empty().append(message);
+        $("#confirmOk").one('click', onConfirm);
+        $("#confirmOk").one('click', fClose);
+        $("#confirmCancel").one("click", fClose);
+    }
     $("#OrderingAll").click(function () {
         console.log("OrderingAll is clicked.");
         var postData = GetSelectedOrderingValues();
