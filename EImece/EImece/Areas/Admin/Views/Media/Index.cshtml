@@ -44,9 +44,15 @@
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)
 
+<span style="font-size:x-large;font-weight:bold;">
+    Image will be resized based on
+    Width:
+    <input type="text" name="imageWidth" id="imageWidth" />
+    Height:
+    <input type="text" name="imageHeight" id="imageHeight" />
+    values
+</span>
 
-<input type="text" name="imageWidth" id="imageWidth" />
-<input type="text" name="imageHeight" id="imageHeight" />
 <div id="sliderWidth">
     <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
 </div>
@@ -67,44 +73,7 @@
 
     $('#fileupload').addClass('fileupload-processing');
     $(function () {
-
-
-        var handle1 = $("#sliderWidthHandle");
-        $("#sliderWidth").slider({
-            min: 0,
-            max: 1000,
-            value: 200,
-            step: 10,
-            create: function () {
-                handle1.text($(this).slider("value"));
-            },
-            slide: function (event, ui) {
-                handle1.text(ui.value);
-                $('#imageWidth').val(ui.value);
-            },
-            change: function (event, ui) {
-                $('#imageWidth').val(ui.value);
-            }
-        });
-
-        var handle2 = $("#sliderHeightHandle");
-        $("#sliderHeight").slider({
-            min: 0,
-            max: 1000,
-            value: 200,
-            step: 10,
-            create: function () {
-                handle2.text($(this).slider("value"));
-            },
-            slide: function (event, ui) {
-                handle2.text(ui.value);
-                $('#imageHeight').val(ui.value);
-            },
-            change: function (event, ui) {
-                $('#imageHeight').val(ui.value);
-            }
-        });
-
+        
         $form = $('#fileupload').fileupload({
             dataType: 'json'
         });

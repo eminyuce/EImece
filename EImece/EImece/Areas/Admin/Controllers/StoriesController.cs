@@ -37,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Story content = StoryService.GetSingle(id);
+            Story content = StoryService.GetBaseContent(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = EntityFactory.GetBaseContentInstance<Story>();
-            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
+            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
 
             if (id == 0)
             {
@@ -124,7 +124,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Story content = StoryService.GetSingle(id);
+            Story content = StoryService.GetBaseContent(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -140,7 +140,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Story Story = StoryService.GetSingle(id);
+            Story Story = StoryService.GetBaseContent(id);
             if (Story == null)
             {
                 return HttpNotFound();

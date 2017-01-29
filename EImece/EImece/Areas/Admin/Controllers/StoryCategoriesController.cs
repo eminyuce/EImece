@@ -35,7 +35,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            StoryCategory content = StoryCategoryService.GetSingle(id);
+            StoryCategory content = StoryCategoryService.GetBaseContent(id);
             if (content == null)
             {
                 return HttpNotFound();
@@ -58,7 +58,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = StoryCategoryService.GetSingle(id);
+                content = StoryCategoryService.GetBaseContent(id);
             }
 
 
@@ -115,7 +115,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            StoryCategory content = StoryCategoryService.GetSingle(id);
+            StoryCategory content = StoryCategoryService.GetBaseContent(id);
             if (content == null)
             {
                 return HttpNotFound();

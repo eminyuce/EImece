@@ -35,9 +35,14 @@ namespace EImece.Domain.Services
         public virtual T GetBaseContent(int id)
         {
             var item = BaseContentRepository.GetBaseContent(id);
-            var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
-            item.ImageHeight = imageSize.Item2;
-            item.ImageWidth = imageSize.Item1;
+            if (item.MainImageId.HasValue && item.MainImageId > 0)
+            {
+                var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
+                item.ImageHeight = imageSize.Item2;
+                item.ImageWidth = imageSize.Item1;
+            }
+           
+
             return item;
         }
         public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search) 

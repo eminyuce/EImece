@@ -139,39 +139,62 @@ $(document).ready(function () {
 
         }
     });
+
+    var defaultValueWidth = $('#ImageWidth').val();
+    var defaultValueHeight = $('#ImageHeight').val();
+
     var handle1 = $("#sliderWidthHandle");
+    handle1.text(defaultValueWidth);
     $("#sliderWidth").slider({
         min: 0,
-        max: 2000,
-        value: parseInt($('#ImageWidth').val()),
+        max: 1000,
+        value: defaultValueWidth,
+        step: 10,
         create: function () {
             handle1.text($(this).slider("value"));
         },
         slide: function (event, ui) {
             handle1.text(ui.value);
-            $('#ImageWidth').val(ui.value);
+            $('#imageWidthTxt').val(ui.value);
         },
         change: function (event, ui) {
-            $('#ImageWidth').val(ui.value);
+            $('#imageWidthTxt').val(ui.value);
         }
     });
 
     var handle2 = $("#sliderHeightHandle");
+    handle2.text(defaultValueHeight);
     $("#sliderHeight").slider({
         min: 0,
-        max: 2000,
-        value: parseInt($('#ImageHeight').val()),
+        max: 1000,
+        value: defaultValueHeight,
+        step: 10,
         create: function () {
             handle2.text($(this).slider("value"));
         },
         slide: function (event, ui) {
             handle2.text(ui.value);
-            $('#ImageHeight').val(ui.value);
+            $('#imageHeightTxt').val(ui.value);
         },
         change: function (event, ui) {
-            $('#ImageHeight').val(ui.value);
+            $('#imageHeightTxt').val(ui.value);
         }
     });
+    $("#imageHeightTxt").val(defaultValueHeight);
+    $("#imageHeightTxt").change(function () {
+        var value = this.value;
+        console.log(value);
+        $("#sliderHeight").slider("value", parseInt(value));
+        handle2.text(parseInt(value));
+    });
+    $("#imageWidthTxt").val(defaultValueWidth);
+    $("#imageWidthTxt").change(function () {
+        var value = this.value;
+        console.log(value);
+        $("#sliderWidth").slider("value", parseInt(value));
+        handle1.text(parseInt(value));
+    });
+     
 
 
 });

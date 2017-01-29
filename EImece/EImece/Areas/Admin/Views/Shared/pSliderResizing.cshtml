@@ -1,0 +1,41 @@
+﻿@model BaseContent
+@using EImece.Domain.Helpers;
+@using Resources;
+@using EImece.Domain.Entities;  
+
+@{ 
+
+}
+
+ <div class="form-group">
+    <div class="col-md-10">
+        <div class="checkbox">
+            <span style="font-size:x-large;font-weight:bold;">
+                Width:
+                <input type="text" name="imageWidth" id="imageWidthTxt" />
+                Height:
+                <input type="text" name="imageHeight" id="imageHeightTxt" />
+                 
+            </span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ImageWidth, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.HiddenFor(model => model.ImageWidth)
+        <div id="sliderWidth">
+            <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ImageHeight, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.HiddenFor(model => model.ImageHeight)
+        <div id="sliderHeight">
+            <div id="sliderHeightHandle" class="ui-slider-handle myslider"></div>
+        </div>
+    </div>
+</div>
+ 

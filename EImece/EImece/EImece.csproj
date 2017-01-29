@@ -495,6 +495,7 @@
     <Content Include="Areas\Admin\Views\Test\TestGridView.cshtml" />
     <Content Include="Areas\Admin\Views\Media\_pBackButtonLink.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pImagePopUpWithoutFileStroage.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pSliderResizing.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
