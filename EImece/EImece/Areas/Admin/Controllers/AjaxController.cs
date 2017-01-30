@@ -61,6 +61,20 @@ namespace EImece.Areas.Admin.Controllers
         }
         [HttpPost]
         [DeleteAuthorize()]
+        public ActionResult DeleteTagGridItem(List<String> values)
+        {
+            TagService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [DeleteAuthorize()]
+        public ActionResult DeleteTagCategoryGridItem(List<String> values)
+        {
+            TagCategoryService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteProductCategoriesGridItem(List<String> values)
         {
             ProductCategoryService.DeleteProductCategories(values);

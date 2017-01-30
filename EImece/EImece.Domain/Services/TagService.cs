@@ -1,8 +1,11 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -12,6 +15,9 @@ namespace EImece.Domain.Services
 {
     public class TagService : BaseEntityService<Tag>, ITagService
     {
+
+        private static readonly Logger TagServiceLogger = LogManager.GetCurrentClassLogger();
+
         private ITagRepository TagRepository { get; set; }
         public TagService(ITagRepository repository) : base(repository)
         {
@@ -34,6 +40,26 @@ namespace EImece.Domain.Services
         public Tag GetTagById(int tagId)
         {
             return TagRepository.GetTagById(tagId);
+        }
+        public virtual new void DeleteBaseEntity(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    DeleteTagById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                TagServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                TagServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
         }
     }
 }

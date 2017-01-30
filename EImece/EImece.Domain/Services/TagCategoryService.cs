@@ -8,11 +8,16 @@ using System.Threading.Tasks;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Models.Enums;
 using Ninject;
+using NLog;
+using EImece.Domain.Helpers;
+using System.Data.Entity.Validation;
 
 namespace EImece.Domain.Services
 {
     public class TagCategoryService : BaseEntityService<TagCategory>, ITagCategoryService
     {
+        private static readonly Logger TagCategoryServiceLogger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public ITagService TagService { get; set; }
 
@@ -41,6 +46,26 @@ namespace EImece.Domain.Services
         public TagCategory GetTagCategoryById(int tagCategoryId)
         {
            return TagCategoryRepository.GetTagCategoryById(tagCategoryId);
+        }
+        public virtual new void DeleteBaseEntity(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    DeleteTagCategoryById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                TagCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                TagCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace EImece.Domain.Services
 {
     public class ProductCategoryService : BaseContentService<ProductCategory>, IProductCategoryService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected static readonly Logger ProductCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
 
         [Inject]
@@ -78,11 +78,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                ProductCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                ProductCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
         public void DeleteProductCategory(int productCategoryId)

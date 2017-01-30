@@ -8,11 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Helpers;
+using NLog;
+using System.Data.Entity.Validation;
 
 namespace EImece.Domain.Services
 {
     public class StoryService : BaseContentService<Story>, IStoryService
     {
+
+        private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
+
         private IStoryRepository StoryRepository { get; set; }
         public StoryService(IStoryRepository repository):base(repository)
         {
@@ -72,6 +78,26 @@ namespace EImece.Domain.Services
             int pageSize = Settings.RecordPerPage;
             result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
             return result;
+        }
+        public virtual new void DeleteBaseEntity(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    DeleteStoryById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                StoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                StoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
         }
     }
 }
