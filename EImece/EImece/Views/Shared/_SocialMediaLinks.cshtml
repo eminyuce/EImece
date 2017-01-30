@@ -8,26 +8,27 @@
 
 }
 
-@if (!String.IsNullOrEmpty(InstagramWebSiteLink))
-{
-    @InstagramWebSiteLink
-}
+<ul class="social-icons">
+   
+    @if (!String.IsNullOrEmpty(InstagramWebSiteLink))
+    {
+        <li><a class="instagram" href="@InstagramWebSiteLink"><i class="icon-instagram"></i></a></li>
+    }
+    @if (!String.IsNullOrEmpty(TwitterWebSiteLink))
+    {
+        <li><a class="twitter" href="@TwitterWebSiteLink"><i class="icon-twitter"></i></a></li>
+    }
+    @if (!String.IsNullOrEmpty(LinkedinWebSiteLink))
+    {
+        <li><a class="linkedin" href="@LinkedinWebSiteLink"><i class="icon-linkedin"></i></a></li>
+    }
+    @if (!String.IsNullOrEmpty(GooglePlusWebSiteLink))
+    {
+        <li><a class="google" href="@GooglePlusWebSiteLink"><i class="icon-google"></i></a></li>
+    }
+    @if (!String.IsNullOrEmpty(FacebookWebSiteLink))
+    {
+        <li><a class="facebook" href="@FacebookWebSiteLink"><i class="icon-facebook"></i></a></li>
+    }
 
-@if (!String.IsNullOrEmpty(TwitterWebSiteLink))
-{
-    @TwitterWebSiteLink
-}
-
-@if (!String.IsNullOrEmpty(LinkedinWebSiteLink))
-{
-    @LinkedinWebSiteLink
-}
-@if (!String.IsNullOrEmpty(GooglePlusWebSiteLink))
-{
-    @GooglePlusWebSiteLink
-}
-@if (!String.IsNullOrEmpty(FacebookWebSiteLink))
-{
-    @FacebookWebSiteLink
-}
- 
+</ul>

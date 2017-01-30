@@ -64,6 +64,7 @@ namespace EImece.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var user = model.GetUser();
+                user.EmailConfirmed = true;
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -101,6 +102,7 @@ namespace EImece.Areas.Admin.Controllers
                 user.LastName = model.LastName;
                 user.Email = model.Email;
                 user.UserName = model.Email;
+
                 ApplicationDbContext.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 await ApplicationDbContext.SaveChangesAsync();
                 return RedirectToAction("Index");

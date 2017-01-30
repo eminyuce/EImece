@@ -44,7 +44,8 @@ namespace EImece.Domain.Repositories
             {
                 menus = menus.Where(whereLambda);
             }
-            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+         
+            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
         }
       
     }
