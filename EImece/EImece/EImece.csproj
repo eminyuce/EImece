@@ -638,6 +638,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Story.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\StoryShort.cshtml" />
     <Content Include="Views\Stories\Detail.cshtml" />
+    <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

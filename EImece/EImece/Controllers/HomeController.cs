@@ -52,6 +52,24 @@ namespace EImece.Controllers
             var s = SubsciberService.GetSingle(id);
             return View(s);
         }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        public ActionResult SocialMediaLinks()
+        {
+            var InstagramWebSiteLink = SettingService.GetSettingByKey("InstagramWebSiteLink");
+            var TwitterWebSiteLink = SettingService.GetSettingByKey("TwitterWebSiteLink");
+            var LinkedinWebSiteLink = SettingService.GetSettingByKey("LinkedinWebSiteLink");
+            var GooglePlusWebSiteLink = SettingService.GetSettingByKey("GooglePlusWebSiteLink");
+            var FacebookWebSiteLink = SettingService.GetSettingByKey("FacebookWebSiteLink");
+
+            var resultList = new List<String>();
+            resultList.Add(InstagramWebSiteLink);
+            resultList.Add(TwitterWebSiteLink);
+            resultList.Add(LinkedinWebSiteLink);
+            resultList.Add(GooglePlusWebSiteLink);
+            resultList.Add(FacebookWebSiteLink);
+
+            return PartialView("_SocialMediaLinks", resultList);
+        }
         [ChildActionOnly]
         [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
         public ActionResult GoogleAnalyticsTrackingScript()

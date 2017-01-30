@@ -56,7 +56,7 @@
         <hr />
         <footer>
             @Html.Partial("_Footer")
-        
+            @Html.Action("SocialMediaLinks", "Home")
         </footer>
 
         @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))

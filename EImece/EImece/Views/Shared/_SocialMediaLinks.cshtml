@@ -1,0 +1,33 @@
+﻿@model List<String>
+@{
+    var InstagramWebSiteLink = Model[0];
+    var TwitterWebSiteLink = Model[1];
+    var LinkedinWebSiteLink = Model[2];
+    var GooglePlusWebSiteLink = Model[3];
+    var FacebookWebSiteLink = Model[4];
+
+}
+
+@if (!String.IsNullOrEmpty(InstagramWebSiteLink))
+{
+    @InstagramWebSiteLink
+}
+
+@if (!String.IsNullOrEmpty(TwitterWebSiteLink))
+{
+    @TwitterWebSiteLink
+}
+
+@if (!String.IsNullOrEmpty(LinkedinWebSiteLink))
+{
+    @LinkedinWebSiteLink
+}
+@if (!String.IsNullOrEmpty(GooglePlusWebSiteLink))
+{
+    @GooglePlusWebSiteLink
+}
+@if (!String.IsNullOrEmpty(FacebookWebSiteLink))
+{
+    @FacebookWebSiteLink
+}
+ 
