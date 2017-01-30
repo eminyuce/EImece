@@ -22,11 +22,12 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
-
         [Inject]
         public ITagService TagService { get; set; }
-
-
+        [Inject]
+        public IStoryService StoryService { get; set; }
+        [Inject]
+        public IStoryRepository StoryRepository { get; set; }
 
         private IProductRepository ProductRepository { get; set; }
         public ProductService(IProductRepository repository) : base(repository)
@@ -39,11 +40,11 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, search, lang);
         }
 
-        public ProductIndexViewModel GetMainPageProducts(int pageIndex,  int lang)
+        public ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
         {
             var r = new ProductIndexViewModel();
             int pageSize = Settings.RecordPerPage;
-            var items = ProductRepository.GetMainPageProducts(pageIndex,pageSize, lang);
+            var items = ProductRepository.GetMainPageProducts(pageIndex, pageSize, lang);
             r.Products = items;
             return r;
         }
@@ -86,9 +87,21 @@ namespace EImece.Domain.Services
 
         public ProductDetailViewModel GetProductById(int id)
         {
-            var result = new ProductDetailViewModel();
-            var r = ProductRepository.GetProduct(id);
-            result.Product = r;
+            var cacheKey = String.Format("ProductById-{0}", id);
+            ProductDetailViewModel result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = new ProductDetailViewModel();
+                var r = ProductRepository.GetProduct(id);
+                result.Product = r;
+                if (r.ProductTags.Any())
+                {
+                    var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
+                    result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang);
+                }
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+            }
             return result;
         }
         public virtual new void DeleteBaseEntity(List<string> values)
@@ -132,11 +145,11 @@ namespace EImece.Domain.Services
 
         }
 
-        public ProductsSearchViewModel SearchProducts( int pageIndex, int pageSize, string search, int lang)
+        public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang)
         {
             var r = new ProductsSearchViewModel();
             r.Search = search;
-            r.Products = ProductRepository.SearchProducts(pageIndex, pageSize,search, lang);
+            r.Products = ProductRepository.SearchProducts(pageIndex, pageSize, search, lang);
 
             return r;
         }

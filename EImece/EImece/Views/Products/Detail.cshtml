@@ -12,6 +12,8 @@
     var productFiles = product.ProductFiles.ToList();
     var productTags = product.ProductTags.Select(r => r.Tag).ToList();
     var productCategory = product.ProductCategory;
+
+    var relatedStories = Model.RelatedStories;
 }
 
 <h2>@product.Name</h2>
@@ -87,3 +89,14 @@
     </div>
  }
  
+@if (relatedStories.Any())
+{
+    <h3>
+        Related Stories  
+    </h3>
+    foreach (var rs in relatedStories)
+    {
+        @Html.DisplayFor(r=>rs,"StoryShort")
+    }
+}
+

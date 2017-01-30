@@ -10,5 +10,7 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductDetailViewModel
     {
         public Product Product { get; set; } 
+
+        public List<Story> RelatedStories { get; set; }
     }
 }

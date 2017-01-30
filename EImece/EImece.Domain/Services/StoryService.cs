@@ -11,6 +11,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Helpers;
 using NLog;
 using System.Data.Entity.Validation;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Services
 {
@@ -99,5 +100,8 @@ namespace EImece.Domain.Services
                 StoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
+       
+
     }
 }

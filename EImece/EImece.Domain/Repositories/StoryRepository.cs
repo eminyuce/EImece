@@ -9,6 +9,7 @@ using EImece.Domain.DbContext;
 using System.Linq.Expressions;
 using GenericRepository;
 using NLog;
+using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
@@ -60,7 +61,16 @@ namespace EImece.Domain.Repositories
                 throw exception;
             }
         }
-
+        public List<Story> GetRelatedStories(int[] tagIdList, int take, int lang)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<Story>();
+            includeProperties.Add(r => r.StoryTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryCategory);
+            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.StoryTags.Any(t=> tagIdList.Contains(t.TagId));
+            Expression<Func<Story, int>> keySelector = t => t.Position;
+            return FindAllIncluding(match, take, 0, keySelector, OrderByType.Ascending, includeProperties.ToArray());
+        }
         public Story GetStoryById(int storyId)
         {
             var includeProperties = GetIncludePropertyExpressionList<Story>();
