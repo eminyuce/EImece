@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,17 @@ namespace EImece.Domain.Helpers.Extensions
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
 
             }
+
+            return imageTag;
+        }
+        public static String GetThumpImageTag(this BaseContent entity)
+        {
+            String imageTag = "";
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            String fileName = entity.MainImage.FileName;
+            String partThumb1 = Path.Combine(Settings.UrlBase, "thumbs");
+            String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+            imageTag = String.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
 
             return imageTag;
         }

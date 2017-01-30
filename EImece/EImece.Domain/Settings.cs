@@ -235,10 +235,10 @@ namespace EImece.Domain
             }
         }
 
-        public static String TempPath = "~/media/tempFiles/";
-        public static String ServerMapPath = "~/media/images/";
+        public static string TempPath = "~/media/tempFiles/";
+        public static string ServerMapPath = "~/media/images/";
         public static string UrlBase = "/media/images/";
-        public static String DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
-        public static String DeleteType = "GET";
+        public static string DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
+        public static string DeleteType = "GET";
     }
 }
