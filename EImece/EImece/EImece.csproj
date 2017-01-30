@@ -496,6 +496,10 @@
     <Content Include="Areas\Admin\Views\Media\_pBackButtonLink.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pImagePopUpWithoutFileStroage.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSliderResizing.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ForgotPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ResetPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ResetPasswordConfirmation.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

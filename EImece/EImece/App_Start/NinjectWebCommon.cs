@@ -21,6 +21,11 @@ namespace EImece.App_Start
     using Domain.Helpers.EmailHelper;
     using Domain.Factories;
     using Domain.Factories.IFactories;
+    using Microsoft.AspNet.Identity;
+    using Models;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.Owin.Security;
 
     public static class NinjectWebCommon 
     {
@@ -116,6 +121,28 @@ namespace EImece.App_Start
             kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
             kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
+
+
+            kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
+            kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
+            kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
+            kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
+              .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
+              {
+                  DataProtectionProvider = Startup.DataProtectionProvider
+              });
+
+            kernel.Bind<IUserStore<ApplicationUser>>()
+             .ToMethod(x => new UserStore<ApplicationUser>(
+                x.Kernel.Get<ApplicationDbContext>()))
+             .InRequestScope();
+
+            kernel.Bind<IAuthenticationManager>()
+              .ToMethod(x => HttpContext.Current.GetOwinContext().Authentication)
+              .InRequestScope();
+
+            kernel.Bind<IIdentityMessageService>().To(typeof(SmsService)).InRequestScope().Named("Sms");
+            kernel.Bind<IIdentityMessageService>().To(typeof(EmailService)).InRequestScope().Named("Email");
         }
     }
 }
