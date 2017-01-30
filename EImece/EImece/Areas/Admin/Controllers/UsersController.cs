@@ -3,6 +3,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,22 +17,22 @@ namespace EImece.Areas.Admin.Controllers
     [DeleteAuthorize()]
     public class UsersController : BaseAdminController
     {
+        [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
+        [Inject]
         public ApplicationUserManager UserManager { get; set; }
+        [Inject]
+        public IdentityManager IdentityManager { get; set; }
 
-
-        public UsersController(ApplicationUserManager userManager,ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
+        [Inject]
+        public ApplicationDbContext ApplicationDbContext { get; set; }
 
 
         public ActionResult Index(String search="")
         {
              
-            var Db = new ApplicationDbContext();
-            var users = Db.Users.AsQueryable();
+ 
+            var users = ApplicationDbContext.Users.AsQueryable();
             if (!String.IsNullOrEmpty(search.Trim()))
             {
                 search = search.ToLower().Trim();
@@ -80,8 +81,8 @@ namespace EImece.Areas.Admin.Controllers
   
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {
-            var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.Id == id);
+    
+            var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new EditUserViewModel(user);
             ViewBag.MessageId = Message;
             return View(model);
@@ -93,15 +94,15 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Db = new ApplicationDbContext();
-                var user = Db.Users.First(u => u.Id == model.Id);
+               
+                var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
                 // Update the user data:
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.Email = model.Email;
                 user.UserName = model.Email;
-                Db.Entry(user).State = System.Data.Entity.EntityState.Modified;
-                await Db.SaveChangesAsync();
+                ApplicationDbContext.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                await ApplicationDbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             else
@@ -115,8 +116,8 @@ namespace EImece.Areas.Admin.Controllers
         //[Authorize(Roles = "Admin")]
         public ActionResult Delete(string id = null)
         {
-            var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.Id == id);
+          
+            var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new EditUserViewModel(user);
             if (user == null)
             {
@@ -131,18 +132,18 @@ namespace EImece.Areas.Admin.Controllers
         // [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(string id)
         {
-            var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.Id == id);
-            Db.Users.Remove(user);
-            Db.SaveChanges();
+ 
+            var user = ApplicationDbContext.Users.First(u => u.Id == id);
+            ApplicationDbContext.Users.Remove(user);
+            ApplicationDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
        // [Authorize(Roles = "Admin")]
         public ActionResult UserRoles(string id)
         {
-            var Db = new ApplicationDbContext();
-            var user = Db.Users.First(u => u.Id == id);
+     
+            var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new SelectUserRolesViewModel(user);
             return View(model);
         }
@@ -155,15 +156,15 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var idManager = new IdentityManager();
-                var Db = new ApplicationDbContext();
-                var user = Db.Users.First(u => u.Id == model.Id);
-                idManager.ClearUserRoles(user.Id);
+ 
+            
+                var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
+                IdentityManager.ClearUserRoles(user.Id);
                 foreach (var role in model.Roles)
                 {
                     if (role.Selected)
                     {
-                        idManager.AddUserToRole(user.Id, role.RoleName);
+                        IdentityManager.AddUserToRole(user.Id, role.RoleName);
                     }
                 }
                 return RedirectToAction("index");
@@ -171,9 +172,15 @@ namespace EImece.Areas.Admin.Controllers
             return View();
         }
         [AllowAnonymous]
-        public ActionResult ForgotPassword()
+        public ActionResult ForgotPassword(String id="")
         {
-            return View();
+            var m = new ForgotPasswordViewModel();
+            if (!String.IsNullOrEmpty(id))
+            {
+                var user = ApplicationDbContext.Users.First(u => u.Id == id);
+                m.Email = user.UserName;
+            }
+            return View(m);
         }
 
         //
@@ -195,7 +202,7 @@ namespace EImece.Areas.Admin.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                var callbackUrl = Url.Action("ResetPassword", "Users", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Users");
             }

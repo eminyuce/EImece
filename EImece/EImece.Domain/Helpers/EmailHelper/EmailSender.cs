@@ -132,5 +132,13 @@ namespace EImece.Domain.Helpers.EmailHelper
             var toDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
             SendEmail(emailAccount, "Contact Us", contact.Message, contact.Email, contact.Name, to, toDisplayName);
 ;        }
+
+        public void SendForgotPasswordEmail(string destination, string subject, string body)
+        {
+            var emailAccount = GetEmailAccount();
+            var to = SettingService.GetSettingByKey("AdminEmail");
+            var toDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            SendEmail(emailAccount, subject, body, destination, "", to, toDisplayName);
+        }
     }
 }

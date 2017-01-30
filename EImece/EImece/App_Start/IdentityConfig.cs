@@ -12,14 +12,20 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using EImece.Models;
 using System.Web.Mvc;
+using Ninject;
+using EImece.Domain.Helpers.EmailHelper;
 
 namespace EImece
 {
     public class EmailService : IIdentityMessageService
     {
+        [Inject]
+        public  IEmailSender EmailSender { get; set; }
+
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            EmailSender.SendForgotPasswordEmail(message.Destination, message.Subject, message.Body);
             return Task.FromResult(0);
         }
     }
@@ -41,10 +47,9 @@ namespace EImece
         //{
         //}
 
-        public ApplicationUserManager(
-    IUserStore<ApplicationUser> store,
-    IdentityFactoryOptions<ApplicationUserManager> options)
-  : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, IdentityFactoryOptions<ApplicationUserManager> options,
+             [Named("Email")] IIdentityMessageService emailService,
+                  [Named("Sms")] IIdentityMessageService smsService) : base(store)
         {
             var manager = this;
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
@@ -79,8 +84,8 @@ namespace EImece
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
             });
-            manager.EmailService = new EmailService();
-            manager.SmsService = new SmsService();
+            manager.EmailService = emailService;
+            manager.SmsService = smsService;
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
