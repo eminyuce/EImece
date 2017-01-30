@@ -8,6 +8,10 @@
     {
         <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
     }
+    @if (!string.IsNullOrEmpty(ViewBag.Keywords))
+    {
+        <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
+    }
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -54,6 +58,9 @@
             @Html.Partial("_Footer")
         
         </footer>
+
+        @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")

@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -57,6 +58,21 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ClearCache()
         {
             MemoryCacheProvider.ClearAll();
+
+            List<string> keys = new List<string>();
+
+            IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                string key = (string)enumerator.Key;
+                keys.Add(key);
+            }
+
+            foreach (string key in keys)
+            {
+                HttpRuntime.Cache.Remove(key);
+            }
+
             var urlReferrer = Request.UrlReferrer;
             if (urlReferrer != null)
             {

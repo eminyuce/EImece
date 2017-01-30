@@ -24,7 +24,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = SettingRepository.GetAllSettings();
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
             }
             return result;
         }

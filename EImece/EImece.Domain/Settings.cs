@@ -17,6 +17,7 @@ namespace EImece.Domain
         public const String AdministratorRole = "Admin";
         public const String EditorRole = "NormalUser";
         public const String ImageActionName = "Index";
+        public const int PartialViewOutputCachingDuration = 86400;
 
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -183,11 +184,12 @@ namespace EImece.Domain
                 return GetConfigInt("CacheLongSeconds", 1800);
             }
         }
+        
         public static int Cache1Hour
         {
             get
             {
-                return GetConfigInt("CacheLongSeconds", 3600);
+                return GetConfigInt("Cache1Hour", 3600);
             }
         }
 

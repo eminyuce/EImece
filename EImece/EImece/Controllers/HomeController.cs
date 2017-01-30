@@ -10,15 +10,22 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace EImece.Controllers
 {
     public class HomeController : BaseController
     {
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
+
+
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            ViewBag.Title = SettingService.GetSettingByKey("SiteIndexMetaTitle").ToStr();
+            ViewBag.Description = SettingService.GetSettingByKey("SiteIndexMetaDescription").ToStr();
+            ViewBag.Keywords = SettingService.GetSettingByKey("SiteIndexMetaKeywords").ToStr();
+
             return View(mainPageModel);
         }
 
@@ -45,11 +52,20 @@ namespace EImece.Controllers
             var s = SubsciberService.GetSingle(id);
             return View(s);
         }
+        [ChildActionOnly]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        public ActionResult GoogleAnalyticsTrackingScript()
+        {
+            var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
+            return Content(GoogleAnalyticsTrackingScript);
+        }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
         public ActionResult Menu()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
         }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
         public ActionResult ProductTree()
         {
             var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);

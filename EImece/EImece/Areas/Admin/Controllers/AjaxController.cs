@@ -14,7 +14,13 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
-
+        [HttpPost]
+        [DeleteAuthorize()]
+        public ActionResult DeleteSettingGridItem(List<String> values)
+        {
+            SettingService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteStoryGridItem(List<String> values)
