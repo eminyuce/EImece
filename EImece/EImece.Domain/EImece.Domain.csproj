@@ -142,6 +142,8 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\FileStorage.cs" />
     <Compile Include="Entities\FileStorageTag.cs" />
+    <Compile Include="Entities\List.cs" />
+    <Compile Include="Entities\ListItem.cs" />
     <Compile Include="Entities\MainPageImage.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuFile.cs" />
@@ -210,6 +212,8 @@
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositories\IFileStorageRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IListItemRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IListRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMainPageImageRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMenuFileRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMenuRepository.cs" />
@@ -227,6 +231,8 @@
     <Compile Include="Repositories\IRepositories\ITagCategoryRepository.cs" />
     <Compile Include="Repositories\IRepositories\ITagRepository.cs" />
     <Compile Include="Repositories\IRepositories\ITemplateRepository.cs" />
+    <Compile Include="Repositories\ListItemRepository.cs" />
+    <Compile Include="Repositories\ListRepository.cs" />
     <Compile Include="Repositories\MainPageImageRepository.cs" />
     <Compile Include="Repositories\MenuFileRepository.cs" />
     <Compile Include="Repositories\MenuRepository.cs" />
@@ -252,6 +258,8 @@
     <Compile Include="Services\IServices\IBaseEntityService.cs" />
     <Compile Include="Services\IServices\IBaseService.cs" />
     <Compile Include="Services\IServices\IFileStorageService.cs" />
+    <Compile Include="Services\IServices\IListItemService.cs" />
+    <Compile Include="Services\IServices\IListService.cs" />
     <Compile Include="Services\IServices\IMainPageImageService.cs" />
     <Compile Include="Services\IServices\IMenuService.cs" />
     <Compile Include="Services\IServices\IProductCategoryService.cs" />
@@ -263,6 +271,8 @@
     <Compile Include="Services\IServices\ITagCategoryService.cs" />
     <Compile Include="Services\IServices\ITagService.cs" />
     <Compile Include="Services\IServices\ITemplateService.cs" />
+    <Compile Include="Services\ListItemService.cs" />
+    <Compile Include="Services\ListService.cs" />
     <Compile Include="Services\MainPageImageService.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\ProductCategoryService.cs" />

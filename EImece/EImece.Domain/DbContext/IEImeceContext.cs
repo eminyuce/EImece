@@ -11,6 +11,8 @@ namespace EImece.Domain.DbContext
 {
     public interface IEImeceContext : IDisposable, IEntitiesContext
     {
+        DbSet<ListItem> ListItems { get; set; }
+        DbSet<List> Lists { get; set; }
         DbSet<Product> Products { get; set; }
         DbSet<ProductTag> ProductTags { get; set; }
         DbSet<ProductFile> ProductFiles { get; set; }

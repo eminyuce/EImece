@@ -49,6 +49,11 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ITemplateService TemplateService { get; set; }
         [Inject]
+        public IListService ListService { get; set; }
+        [Inject]
+        public IListItemService ListItemService { get; set; }
+
+        [Inject]
         public IEmailSender EmailSender { get; set; }
         [Inject]
         public ICacheProvider MemoryCacheProvider { get; set; }

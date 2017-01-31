@@ -263,6 +263,8 @@
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileUploadController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImagesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ListsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ListItemsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainPageImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MediaController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
@@ -502,6 +504,12 @@
     <Content Include="Areas\Admin\Views\Users\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ResetPassword.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Admin\Views\Lists\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Lists\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Lists\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\ListItems\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\ListItems\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ListItems\SaveOrEdit.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
