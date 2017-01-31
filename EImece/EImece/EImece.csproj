@@ -301,6 +301,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\xmlEditorConfiguration.txt" />
+    <Content Include="App_Data\xmlEditorRazor.txt" />
     <Content Include="Areas\Admin\Content\main\1.png" />
     <Content Include="Areas\Admin\Content\main\2.png" />
     <Content Include="Areas\Admin\Content\main\3.png" />
@@ -641,7 +643,6 @@
     <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\codemirror\addon\" />
     <Folder Include="Content\codemirror\doc\" />
     <Folder Include="media\images\" />

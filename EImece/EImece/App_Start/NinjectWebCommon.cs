@@ -123,6 +123,8 @@ namespace EImece.App_Start
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
 
 
+            kernel.Bind<XmlEditorHelper>().ToSelf().InRequestScope();
+
             kernel.Bind<IdentityManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();

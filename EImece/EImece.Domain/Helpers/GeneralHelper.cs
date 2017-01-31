@@ -23,7 +23,13 @@ namespace EImece.Domain.Helpers
     public class GeneralHelper
     {
 
-        
+        public static String GetStringTitleCase(string text)
+        {
+            // Creates a TextInfo based on the "en-US" culture.
+            TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
+            return myTI.ToTitleCase(text);
+
+        }
         public static string EncodeForEmailLink(string text)
         {
             text = text.Replace(" ", "%20");

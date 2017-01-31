@@ -5,6 +5,7 @@
 @{
     var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = "SaveOrEdit";
+    var XmlEditorConfiguration = ViewBag.XmlEditorConfiguration;
 }
 
 <h2>SaveOrEdit</h2>
@@ -71,44 +72,9 @@
  
     <script>
 
-        var tags = {
-            "!top": ["component"],
-            "!attrs": {
-            },
-            component: {
-                children: ["group"]
-            },
-            group: {
-                attrs: {
-                    name: ['Size', 'Power', 'Other']
-                },
-                children: ['textbox', 'dropdown', 'checkbox']
-            },
-            textbox: {
-                attrs:
-                    {
-                        name: ['Width', 'Length', 'Hight'],
-                        unit: ['Inch', 'Volt', 'Pound'],
-                        values: ['Countries', 'Colors', 'State'],
-                        display: ['Width', 'Length', 'Hight']
-                    }, children: null
-            }, dropdown: {
-                attrs: {
-                    name: ['Width', 'Length', 'Hight'],
-                    unit: ['Inch', 'Volt', 'Pound'],
-                    values: ['Countries', 'Colors', 'State'],
-                    display: ['Width', 'Length', 'Hight']
-                }, children: null
-            }, checkbox: {
-                attrs: {
-                    name: ['Width', 'Length', 'Hight'],
-                    unit: ['Inch', 'Volt', 'Pound'],
-                    values: ['Countries', 'Colors', 'State'],
-                    display: ['Width', 'Length', 'Hight']
-                }, children: null
-            }
 
-        };
+        @Html.Raw(XmlEditorConfiguration)
+       
  
         function completeAfter(cm, pred) {
             var cur = cm.getCursor();

@@ -95,6 +95,7 @@ namespace EImece.Domain.Services
                 result = new ProductDetailViewModel();
                 var r = ProductRepository.GetProduct(id);
                 result.Product = r;
+                result.RelatedStories = new List<Story>();
                 if (r.ProductTags.Any())
                 {
                     var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();

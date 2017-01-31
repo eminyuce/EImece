@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
+using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class TemplatesController : BaseAdminController
     {
+        [Inject]
+        public XmlEditorHelper XmlEditorHelper { get; set; }
+
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Admin/Template
         public ActionResult Index(String search="")
@@ -25,8 +29,8 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var template = EntityFactory.GetBaseEntityInstance<Template>();  
-
+            var template = EntityFactory.GetBaseEntityInstance<Template>();
+            ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             if (id == 0)
             {
       
@@ -76,6 +80,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
+            ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             return View(template);
         }
         public ActionResult Delete(int id = 0)
