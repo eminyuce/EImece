@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
+using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
@@ -25,6 +26,14 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ListItems);
             var item = GetSingleIncluding(id, includeProperties.ToArray());
             return item;
+        }
+
+        public List GetListByName(string name)
+        {
+            var includeProperties = GetIncludePropertyExpressionList<List>();
+            includeProperties.Add(r => r.ListItems);
+            var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), null, null, r => r.Position, OrderByType.Ascending, includeProperties.ToArray());
+            return item.FirstOrDefault();
         }
     }
 }

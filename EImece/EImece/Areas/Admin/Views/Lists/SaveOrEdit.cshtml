@@ -1,10 +1,12 @@
 ﻿@model EImece.Domain.Entities.List
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
 @using Resources;
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = "SaveOrEdit";
+    var itemText = Model.GetListItemText();
 }
 
 <h2>SaveOrEdit</h2>
@@ -13,7 +15,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>List</h4>
         <hr />
@@ -22,7 +24,7 @@
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
 
- 
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -69,7 +71,11 @@
                 @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
             </div>
         </div>
- 
+        List Items:
+
+        <span style="font-size: small">Put each list item on a new line. Divide the displayed text and values with a comma.</span><br />
+
+        @Html.TextAreaFor(m => itemText, new { cols = 50, rows = 10 })
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -77,6 +83,19 @@
 
             </div>
         </div>
+
+        @if (Model.ListItems != null && Model.ListItems.Any())
+        {
+
+            foreach (var item in Model.ListItems)
+            {
+                <div>
+                    Text: @(item.Name), Value: @(item.Value), Order: @(item.Position)
+                </div>
+            }
+        }
+
+      
     </div>
 }
 

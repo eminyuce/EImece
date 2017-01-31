@@ -33,5 +33,10 @@ namespace EImece.Domain.Services
             ListItemRepository.DeleteByWhereCondition(r => r.ListId == id);
             DeleteEntity(list);
         }
+
+        public List GetListByName(string name)
+        {
+            return ListRepository.GetListByName(name);
+        }
     }
 }

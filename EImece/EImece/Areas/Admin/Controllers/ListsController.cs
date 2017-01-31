@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -40,7 +41,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = ListService.GetSingle(id);
+                content = ListService.GetListById(id);
             }
 
 
@@ -52,15 +53,17 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(List List)
+        public ActionResult SaveOrEdit(List List, string itemText)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
-
                     ListService.SaveOrEditEntity(List);
+                    List.SetListItems(itemText);
+                    ListItemService.SaveListItem(List.Id, List.ListItems);
+
                     int contentId = List.Id;
                     return RedirectToAction("Index");
                 }
@@ -74,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, List);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message);
             }
 
             return View(List);

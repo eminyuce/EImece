@@ -3,6 +3,8 @@
 @using System.Text;
 @using System.Xml.Linq;
 @using EImece.Domain.Entities;
+@using EImece.Domain.Services.IServices;
+
 @model ProductSpecification
 
 @{
@@ -27,18 +29,19 @@
 {
     <select name="@name.Value">
         @{
-            var list = DirectoryMTD.Domain.Repositories.ListRepository.GetList(values.Value);
+            var listService = DependencyResolver.Current.GetService<IListService>();
+            var list = listService.GetListByName(values.Value);
             if (list != null)
             {
                 foreach (var item in list.ListItems)
                 {
                     if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(item.Value))
                     {
-                        <option value="@item.Value" selected="selected">@item.Text</option>
+                        <option value="@item.Value" selected="selected">@item.Name</option>
                     }
                     else
                     {
-                        <option value="@item.Value">@item.Text</option>
+                        <option value="@item.Value">@item.Name</option>
                     }
                 }
             }

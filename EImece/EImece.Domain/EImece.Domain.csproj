@@ -176,6 +176,7 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\Extensions\EntityExtension.cs" />
     <Compile Include="Helpers\Extensions\ExtensionHelper.cs" />
+    <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />

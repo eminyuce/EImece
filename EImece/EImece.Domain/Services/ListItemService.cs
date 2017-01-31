@@ -18,5 +18,20 @@ namespace EImece.Domain.Services
         {
             ListItemRepository = repository;
         }
+
+        public void DeleteListItemByListId(int id)
+        {
+            ListItemRepository.DeleteByWhereCondition(r => r.ListId == id);
+        }
+
+        public void SaveListItem(int listId, ICollection<ListItem> listItems)
+        {
+            DeleteListItemByListId(listId);
+            foreach (var item in listItems)
+            {
+                ListItemRepository.Add(item);
+            }
+            ListItemRepository.Save();
+        }
     }
 }
