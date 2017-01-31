@@ -162,5 +162,13 @@ namespace EImece.Domain.Services
             r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang);
             return r;
         }
+
+        public void SaveProductSpecifications(List<ProductSpecification> specifications)
+        {
+            foreach (var item in specifications)
+            {
+                ProductSpecificationRepository.SaveOrEdit(item);
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -41,6 +42,52 @@ namespace EImece.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             return View(content);
+        }
+        [HttpPost]
+        public ActionResult SaveOrEditProductSpecs(int id,int templateId)
+        {
+            var template = TemplateService.GetSingle(templateId);
+            XDocument xdoc = XDocument.Parse(template.TemplateXml);
+            var groups = xdoc.Root.Descendants("group");
+            var Specifications = new List<ProductSpecification>();
+
+            foreach (var group in groups)
+            {
+                var groupName = group.FirstAttribute.Value;
+                foreach (XElement field in group.Elements())
+                {
+
+                    var p = new  ProductSpecification();
+                    p.GroupName = groupName;
+                    p.ProductId = id;
+                    p.CreatedDate = DateTime.Now;
+                    p.UpdatedDate = DateTime.Now;
+                    p.Position = 1;
+                    p.IsActive = true;
+                    var name = field.Attribute("name");
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+
+
+                    var value = Request.Form[name.Value];
+
+                    if (name != null)
+                    {
+                        p.Name = name.Value;
+                    }
+                    if (unit != null)
+                    {
+                        p.Unit = unit.Value;
+                    }
+
+                    p.Value = value;
+                    Specifications.Add(p);
+
+                }
+            }
+
+            ProductService.SaveProductSpecifications(Specifications);
+            return RedirectToAction("SaveOrEditProductSpecs", new { id });
         }
         //
         // GET: /Product/Details/5
