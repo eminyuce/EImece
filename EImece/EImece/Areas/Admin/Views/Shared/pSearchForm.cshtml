@@ -6,6 +6,7 @@
     string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
     string search = @Request.QueryString["search"];
     var gridSearchButtonText = AdminResource.GridSearchButtonText;
+    var clear = AdminResource.Clear;
 }
 
 @using (Html.BeginForm(action, controller, FormMethod.Get, new { @class = "" }))
@@ -22,6 +23,10 @@
             <div class="input-group">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">@gridSearchButtonText</button>
+                    @if (!String.IsNullOrEmpty(search))
+                    {
+                        @Html.ActionLink(clear, action, controller, new { search = "" }, new { @class="btn btn-default" })
+                    }
                 </span>
             </div><!-- /input-group -->
         </div><!-- /.col-lg-12 -->

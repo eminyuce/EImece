@@ -12,7 +12,7 @@
     var productFiles = product.ProductFiles.ToList();
     var productTags = product.ProductTags.Select(r => r.Tag).ToList();
     var productCategory = product.ProductCategory;
-
+    var productSpecs = product.ProductSpecifications;
     var relatedStories = Model.RelatedStories;
 }
 
@@ -39,17 +39,17 @@
             </p>
         </div>
     </div>
-  <div class="row">
-      <div class="col-md-2">
-          @product.Discount
-      </div>
-      <div class="col-md-2">
-          @product.Price
-      </div>
-      <div class="col-md-2">
-          @product.ProductCode
-      </div>
-  </div>
+    <div class="row">
+        <div class="col-md-2">
+            @product.Discount
+        </div>
+        <div class="col-md-2">
+            @product.Price
+        </div>
+        <div class="col-md-2">
+            @product.ProductCode
+        </div>
+    </div>
 
 
     @for (int i = 0; i < productFiles.Count; i++)
@@ -73,7 +73,7 @@
 
         if (renderRow)
         {
-            @: </div>
+            @:      </div>
         }
     }
 
@@ -82,21 +82,35 @@
 
 
 
- @foreach (var pt in productTags)
- {
+
+@if (productSpecs.Any())
+{
+    <h3>
+        Product Specs
+    </h3>
+    foreach (var pt in productSpecs)
+    {
+        <div>
+            @String.Format("{0} -{1}", pt.Name, pt.Value)
+        </div>
+    }
+}
+
+@foreach (var pt in productTags)
+{
     <div>
-        @Html.ActionLink(pt.Name, "tag", "products", new {  id = pt.GetSeoUrl() }, null)
+        @Html.ActionLink(pt.Name, "tag", "products", new { id = pt.GetSeoUrl() }, null)
     </div>
- }
- 
+}
+
 @if (relatedStories.Any())
 {
     <h3>
-        Related Stories  
+        Related Stories
     </h3>
     foreach (var rs in relatedStories)
     {
-        @Html.DisplayFor(r=>rs,"StoryShort")
+        @Html.DisplayFor(r => rs, "StoryShort")
     }
 }
 

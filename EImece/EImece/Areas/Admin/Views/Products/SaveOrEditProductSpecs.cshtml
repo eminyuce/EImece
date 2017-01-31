@@ -20,6 +20,7 @@
     <h4>Product</h4>
     <hr />
  
+    @Html.ActionLink("Go Back", "Index","Products", new { @search=Model.Name  }, new {@class="btn btn-default" })
 
         @using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

@@ -192,4 +192,7 @@
   <data name="AdminDeleteConfirmMessage" xml:space="preserve">
     <value>Do you want to delete it?</value>
   </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
 </root>

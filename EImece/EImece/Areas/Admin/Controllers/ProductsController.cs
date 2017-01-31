@@ -64,6 +64,7 @@ namespace EImece.Areas.Admin.Controllers
                     p.UpdatedDate = DateTime.Now;
                     p.Position = 1;
                     p.IsActive = true;
+                    p.Lang = CurrentLanguage;
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
