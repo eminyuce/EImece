@@ -16,6 +16,21 @@ namespace EImece.Areas.Admin.Controllers
     {
         [HttpPost]
         [DeleteAuthorize()]
+        public ActionResult DeleteTagCategoriesGridItem(List<String> values)
+        {
+            TagCategoryService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        
+        [HttpPost]
+        [DeleteAuthorize()]
+        public ActionResult DeleteStoryCategoryGridItem(List<String> values)
+        {
+            StoryCategoryService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [DeleteAuthorize()]
         public ActionResult DeleteSettingGridItem(List<String> values)
         {
             SettingService.DeleteBaseEntity(values);
@@ -72,13 +87,7 @@ namespace EImece.Areas.Admin.Controllers
             TagService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-        [DeleteAuthorize()]
-        public ActionResult DeleteTagCategoryGridItem(List<String> values)
-        {
-            TagCategoryService.DeleteBaseEntity(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
-        }
+       
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteProductCategoriesGridItem(List<String> values)
@@ -97,7 +106,7 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteMenusGridItem(List<String> values)
         {
-            MenuService.DeleteBaseEntity(values);
+            MenuService.DeleteMenus(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using SharkDev.Web.Controls.TreeView.Model;
 using NLog;
 using EImece.Domain.Models.FrontModels;
+using System.Data.Entity.Validation;
+using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Services
 {
@@ -69,6 +71,27 @@ namespace EImece.Domain.Services
                 MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
             }
             DeleteEntity(menu);
+        }
+
+        public void DeleteMenus(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    DeleteMenu(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                Logger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
         }
     }
 }
