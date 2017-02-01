@@ -89,11 +89,19 @@ if (UserRoleHelper.IsDeletedEnableRoles())
                 @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
             </b>);
 
-    }
+}
 
-    columns.Add(c => c.Name)
-           .Titled("Title")
-           .Filterable(true);
+ 
+columns.Add(c => c.Name)
+          .Titled("Name")
+          .Filterable(true)
+           .Encoded(false)
+            .Sanitized(false)
+      .RenderValueAs(d =>
+    @<b>
+        @Html.ActionLink(d.Name, "Detail", "Stories", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.StoryCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+    </b>);
+
 
     columns.Add(c => c.StoryCategory.Name)
         .Titled("StoryCategory Name")

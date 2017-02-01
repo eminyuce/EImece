@@ -27,7 +27,7 @@ namespace EImece.Controllers
             width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w","").ToInt();
             height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
 
-            var fileStorageId = id.Replace(".jpg", "").ToInt();
+            var fileStorageId = id.Replace(".jpg", "").GetId();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
             if(imageByte != null)
             {

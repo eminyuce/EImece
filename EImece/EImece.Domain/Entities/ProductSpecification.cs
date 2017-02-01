@@ -12,7 +12,7 @@ namespace EImece.Domain.Entities
     public class ProductSpecification : BaseEntity
     {
         [NotMapped]
-        public String GroupName { get; set; }
+        public string GroupName { get; set; }
         public string Value { get; set; }
         public string Unit { get; set; }
         [ForeignKey("Product")]

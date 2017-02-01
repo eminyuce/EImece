@@ -74,17 +74,18 @@ namespace EImece.Domain.Helpers.Extensions
         {
             String imageTag = "";
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String imagePath = GetCroppedImageUrl(fileStorageId, width, height);
+            String imagePath = GetCroppedImageUrl(entity,fileStorageId, width, height);
             imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
 
             return imageTag;
         }
-        public static String GetCroppedImageUrl(int fileStorageId, int width = 0, int height = 0)
+        public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             var companyName = Settings.CompanyNameForImage;
             var imageSize = String.Format("w{0}h{1}", width, height);
-            String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { companyName, imageSize, id = String.Format("{0}.jpg", fileStorageId) });
+            var imageId= String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(entity.Name), fileStorageId);
+            String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { companyName, imageSize, id = imageId });
             return imagePath;
         }
         public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "")

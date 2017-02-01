@@ -246,8 +246,8 @@ namespace EImece.Domain.Helpers
         {
 
             var request = requestContext.Request;
-            int width = request.Form["imageHeight"].ToInt();
-            int height = request.Form["imageWidth"].ToInt();
+            int height = request.Form["imageHeight"].ToInt();
+            int width = request.Form["imageWidth"].ToInt();
 
 
             for (int i = 0; i < request.Files.Count; i++)

@@ -102,6 +102,7 @@ namespace EImece.Domain.Services
                     result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang);
                 }
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+             
             }
             return result;
         }
@@ -165,9 +166,15 @@ namespace EImece.Domain.Services
 
         public void SaveProductSpecifications(List<ProductSpecification> specifications)
         {
-            foreach (var item in specifications)
+            if (specifications.Any())
             {
-                ProductSpecificationRepository.SaveOrEdit(item);
+                int productId = specifications.First().ProductId;
+                ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == productId);
+                foreach (var item in specifications)
+                {
+                    ProductSpecificationRepository.Add(item);
+                }
+                ProductSpecificationRepository.Save();
             }
         }
     }

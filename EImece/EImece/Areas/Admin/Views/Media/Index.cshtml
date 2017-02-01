@@ -44,22 +44,8 @@
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)
 
-<span style="font-size:x-large;font-weight:bold;">
-    Image will be resized based on
-    Width:
-    <input type="text" name="imageWidth" id="imageWidth" />
-    Height:
-    <input type="text" name="imageHeight" id="imageHeight" />
-    values
-</span>
+@Html.Partial("pSliderResizing", baseContent);
 
-<div id="sliderWidth">
-    <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
-</div>
-<br />
-<div id="sliderHeight">
-    <div id="sliderHeightHandle" class="ui-slider-handle myslider"></div>
-</div>
 <br />
 <!-- blueimp File Upload & Gallery styles -->
 @Styles.Render("~/Content/jQuery-File-Upload")

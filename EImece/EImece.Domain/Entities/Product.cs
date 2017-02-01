@@ -20,7 +20,7 @@ namespace EImece.Domain.Entities
         public double Price { get; set; }
         public double Discount { get; set; }
         public string ProductCode { get; set; }
-
+        public string VideoUrl { get; set; }
 
 
 

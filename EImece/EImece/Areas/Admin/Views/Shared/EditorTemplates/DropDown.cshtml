@@ -24,7 +24,8 @@
         valueDisplayName = name != null ? name.Value : "";
     }
 }
-@valueDisplayName
+@valueDisplayName  
+
 @if (values != null)
 {
     <select name="@name.Value">
@@ -35,7 +36,7 @@
             {
                 foreach (var item in list.ListItems)
                 {
-                    if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(item.Value))
+                    if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(item.Value.Trim(),StringComparison.InvariantCultureIgnoreCase))
                     {
                         <option value="@item.Value" selected="selected">@item.Name</option>
                     }

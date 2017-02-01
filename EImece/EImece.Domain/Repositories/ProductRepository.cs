@@ -64,7 +64,7 @@ namespace EImece.Domain.Repositories
             {
                 products = products.Where(r => r.ProductCategoryId == categoryId);
             }
-            products = products.OrderBy(r => r.Position).ThenByDescending(r => r.Id);
+            products = products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return products.ToList();
         }
