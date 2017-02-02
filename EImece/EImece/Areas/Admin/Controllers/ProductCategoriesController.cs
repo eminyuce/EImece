@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         private List<SelectListItem> GetTemplatesDropDown()
         {
-            var templates = TemplateService.GetActiveBaseEntities(true, Settings.MainLanguage);
+            var templates = TemplateService.GetActiveBaseEntities(true,CurrentLanguage);
 
             var resultListItem = new List<SelectListItem>();
             foreach (var item in templates)
@@ -184,7 +184,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GetCategories()
         {
-            List<ProductCategory> treelist = ProductCategoryService.BuildTree(null, Settings.MainLanguage);
+            List<ProductCategory> treelist = ProductCategoryService.BuildTree(null, CurrentLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 

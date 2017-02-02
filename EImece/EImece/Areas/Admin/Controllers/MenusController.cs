@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             var content = EntityFactory.GetBaseContentInstance<Menu>();
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
@@ -109,7 +109,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, Settings.MainLanguage);
+            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             return View(menu);
         }
 
@@ -179,7 +179,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult GetMenus()
         {
-            List<Menu> treelist = MenuService.BuildTree(null, Settings.MainLanguage);
+            List<Menu> treelist = MenuService.BuildTree(null, CurrentLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 

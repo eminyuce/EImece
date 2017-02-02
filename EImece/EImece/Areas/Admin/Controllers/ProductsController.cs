@@ -23,9 +23,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(int id = 0, String search = "")
         {
-            int lang = Settings.MainLanguage;
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
-            var products = ProductService.GetAdminPageList(id, search, lang);
+            var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
             return View(products);
         }
         public ActionResult SaveOrEditProductSpecs(int id = 0)
