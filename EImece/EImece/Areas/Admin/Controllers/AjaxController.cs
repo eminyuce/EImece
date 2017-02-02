@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,6 +15,85 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
+
+        public ActionResult SearchAutoComplete(String term, String action, String controller)
+        {
+            String searchKey = term.Trim().ToLower();
+            var list = new List<String>();
+
+            if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+                    controller.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
+            {
+                list = ProductService.GetAdminPageList(0, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+                   controller.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                list = StoryService.GetAdminPageList(0, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+                   controller.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
+                list = ProductCategoryService.SearchEntities(whereLambda1, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+                   controller.Equals("StoryCategories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(searchKey);
+                list = StoryCategoryService.SearchEntities(whereLambda3, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+                  controller.Equals("Menus", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+                list = MenuService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+                controller.Equals("Tags", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<Tag, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+                list = TagService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+               controller.Equals("TagCategories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<TagCategory, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+                list = TagCategoryService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+            controller.Equals("Subscribers", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<Subscriber, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+                list = SubscriberService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+         controller.Equals("Settings", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<Setting, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+                list = SettingService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+        controller.Equals("MainPageImages", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Expression<Func<MainPageImage, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+                list = MainPageImageService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+            }
+            else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
+    controller.Equals("Users", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var users = ApplicationDbContext.Users.AsQueryable();
+                list = users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToList();
+
+            }
+
+
+
+
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteTagCategoriesGridItem(List<String> values)
@@ -21,7 +101,7 @@ namespace EImece.Areas.Admin.Controllers
             TagCategoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteStoryCategoryGridItem(List<String> values)
@@ -63,7 +143,7 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteSubscriberGridItem(List<String> values)
         {
-            SubsciberService.DeleteBaseEntity(values);
+            SubscriberService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -87,7 +167,7 @@ namespace EImece.Areas.Admin.Controllers
             TagService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
-       
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteProductCategoriesGridItem(List<String> values)
@@ -124,7 +204,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult ChangeSubscriberGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            SubsciberService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            SubscriberService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ChangeMediaGridOrderingOrState(List<OrderingItem> values, String checkbox = "")

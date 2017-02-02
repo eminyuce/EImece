@@ -9,11 +9,11 @@ using EImece.Domain.Repositories.IRepositories;
 
 namespace EImece.Domain.Services
 {
-    public class SubsciberService : BaseEntityService<Subscriber>, ISubsciberService
+    public class SubscriberService : BaseEntityService<Subscriber>, ISubscriberService
     {
 
         private ISubscriberRepository SubscriberRepository { get; set; }
-        public SubsciberService(ISubscriberRepository
+        public SubscriberService(ISubscriberRepository
             repository) : base(repository)
         {
             SubscriberRepository = repository;

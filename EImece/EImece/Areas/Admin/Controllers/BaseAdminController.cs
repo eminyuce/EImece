@@ -7,6 +7,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Models;
 using Ninject;
 using SharkDev.Web.Controls.TreeView.Model;
 using System;
@@ -43,7 +44,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ITagCategoryService TagCategoryService { get; set; }
         [Inject]
-        public ISubsciberService SubsciberService { get; set; }
+        public ISubscriberService SubscriberService { get; set; }
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
         [Inject]
@@ -72,7 +73,8 @@ namespace EImece.Areas.Admin.Controllers
                 _filesHelper = value;
             }
         }
-
+        [Inject]
+        public ApplicationDbContext ApplicationDbContext { get; set; }
 
         protected int SelectedLanguage
         {

@@ -116,7 +116,7 @@ namespace EImece.App_Start
             kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();
             kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();
             kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
-            kernel.Bind<ISubsciberService>().To<SubsciberService>().InRequestScope();
+            kernel.Bind<ISubscriberService>().To<SubscriberService>().InRequestScope();
             kernel.Bind<ITagService>().To<TagService>().InRequestScope();
             kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
             kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();

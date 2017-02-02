@@ -128,9 +128,9 @@ namespace EImece.Controllers
             set { _tagCategoryService = value; }
         }
 
-        private ISubsciberService _subsciberService { get; set; }
+        private ISubscriberService _subsciberService { get; set; }
         [Inject]
-        public ISubsciberService SubsciberService
+        public ISubscriberService SubsciberService
         {
             get
             {

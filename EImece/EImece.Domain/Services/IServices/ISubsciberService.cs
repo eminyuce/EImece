@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
-    public interface ISubsciberService : IBaseEntityService<Subscriber>
+    public interface ISubscriberService : IBaseEntityService<Subscriber>
     {
     }
 }

@@ -64,6 +64,13 @@ namespace EImece.Domain.Repositories
             {
                 products = products.Where(r => r.ProductCategoryId == categoryId);
             }
+            else
+            {
+                if (String.IsNullOrEmpty(search))
+                {
+                    products = products.Take(1000);
+                }
+            }
             products = products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return products.ToList();

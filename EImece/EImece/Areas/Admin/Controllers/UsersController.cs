@@ -17,6 +17,7 @@ namespace EImece.Areas.Admin.Controllers
     [DeleteAuthorize()]
     public class UsersController : BaseAdminController
     {
+
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
         [Inject]
@@ -24,9 +25,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
-        [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
-
+  
 
         public ActionResult Index(String search="")
         {

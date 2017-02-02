@@ -21,8 +21,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(int id = 0, String search = "")
         {
             int categoryId = id;
-            int lang = Settings.MainLanguage;
-            var stories = StoryService.GetAdminPageList(categoryId, search, lang);
+   
+            var stories = StoryService.GetAdminPageList(categoryId, search, CurrentLanguage);
             return View(stories);
         }
 
