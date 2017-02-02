@@ -48,18 +48,24 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetThumpImageTag(this BaseContent entity)
         {
             String imageTag = "";
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String fileName = entity.MainImage.FileName;
-            String partThumb1 = Path.Combine(Settings.UrlBase, "thumbs");
-            String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
-            imageTag = String.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
+          
+
+            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
+            {
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                String fileName = entity.MainImage.FileName;
+                String partThumb1 = Path.Combine(Settings.UrlBase, "thumbs");
+                String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                imageTag = String.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
+
+            }
 
             return imageTag;
         }
         public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.ImageState)
+            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
             {
                 imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
             }
@@ -74,9 +80,10 @@ namespace EImece.Domain.Helpers.Extensions
         {
             String imageTag = "";
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String imagePath = GetCroppedImageUrl(entity,fileStorageId, width, height);
-            imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
-
+             
+                String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
+                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
+            
             return imageTag;
         }
         public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)

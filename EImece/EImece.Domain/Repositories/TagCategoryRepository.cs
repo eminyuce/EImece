@@ -22,7 +22,7 @@ namespace EImece.Domain.Repositories
 
         public TagCategory GetTagCategoryById(int tagCategoryId)
         {
-            var includeProperties = GetIncludePropertyExpressionList<TagCategory>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Tags.Select(t => t.ProductTags));
             includeProperties.Add(r => r.Tags.Select(t => t.StoryTags));
             var item = GetSingleIncluding(tagCategoryId, includeProperties.ToArray());
@@ -44,7 +44,7 @@ namespace EImece.Domain.Repositories
             catch (Exception exception)
             {
                 Logger.Error(exception, exception.Message);
-                throw exception;
+                throw;
             }
         }
     }

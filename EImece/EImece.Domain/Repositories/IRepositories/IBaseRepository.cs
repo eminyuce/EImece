@@ -15,7 +15,7 @@ namespace EImece.Domain.Repositories.IRepositories
         int DeleteItem(T item);
         EntitiesContext GetDbContext();
         bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda);
-        T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters);
+        T[] ExecuteStoreQuery(string commandText, params object[] parameters);
         void DeleteBaseEntity(List<string> values);
     }
 }

@@ -60,7 +60,7 @@ namespace EImece.Domain.Repositories
         }
         public ProductCategory GetProductCategory(int categoryId)
         {
-            var includeProperties = GetIncludePropertyExpressionList<ProductCategory>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
             includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));

@@ -17,7 +17,7 @@ namespace EImece.Domain.Repositories
 
         public StoryCategory GetStoryCategoryById(int storyCategoryId)
         {
-            var includeProperties = GetIncludePropertyExpressionList<StoryCategory>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.Stories.Select(t => t.StoryFiles.Select(q => q.FileStorage)));
             includeProperties.Add(r => r.Stories.Select(t => t.StoryTags.Select(q => q.Tag)));

@@ -44,7 +44,7 @@ namespace EImece.Domain.Repositories
         {
             try
             {
-                var includeProperties = GetIncludePropertyExpressionList<Story>();
+                var includeProperties = GetIncludePropertyExpressionList();
                 includeProperties.Add(r => r.StoryCategory);
                 includeProperties.Add(r => r.MainImage);
                 includeProperties.Add(r => r.StoryFiles);
@@ -58,12 +58,12 @@ namespace EImece.Domain.Repositories
             catch (Exception exception)
             {
                 Logger.Error(exception, exception.Message);
-                throw exception;
+                throw;
             }
         }
         public List<Story> GetRelatedStories(int[] tagIdList, int take, int lang)
         {
-            var includeProperties = GetIncludePropertyExpressionList<Story>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.StoryTags);
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.StoryCategory);
@@ -73,7 +73,7 @@ namespace EImece.Domain.Repositories
         }
         public Story GetStoryById(int storyId)
         {
-            var includeProperties = GetIncludePropertyExpressionList<Story>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.StoryCategory);
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.StoryFiles.Select(t => t.FileStorage));

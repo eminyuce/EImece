@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.DbContext
 {
-    public interface IEImeceContext : IDisposable, IEntitiesContext
+    public interface IEImeceContext : IEntitiesContext
     {
         DbSet<ListItem> ListItems { get; set; }
         DbSet<List> Lists { get; set; }

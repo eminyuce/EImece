@@ -39,7 +39,7 @@ namespace EImece.Domain.Repositories
 
         public Tag GetTagById(int tagId)
         {
-            var includeProperties = GetIncludePropertyExpressionList<Tag>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ProductTags);
             includeProperties.Add(r => r.StoryTags);
             return GetSingleIncluding(tagId, includeProperties.ToArray());

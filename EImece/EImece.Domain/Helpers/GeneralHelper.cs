@@ -38,7 +38,7 @@ namespace EImece.Domain.Helpers
             return text;
         }
 
-        public static string GetDescriptionWithBody(string description,int length = 300)
+        public static string GetDescriptionWithBody(string description, int length = 300)
         {
 
             var desc = WebUtility.HtmlDecode(StripHtml(description)).TruncateAtSentence(length);
@@ -63,7 +63,7 @@ namespace EImece.Domain.Helpers
             }
             return sb.ToString();
         }
-        
+
 
         public static string EncodeFile(string fileName)
         {
@@ -306,7 +306,7 @@ namespace EImece.Domain.Helpers
 
             return stripedText;
         }
-     
+
         public static byte[] GetImageFromUrlFromCache(string url, Dictionary<String, String> dictionary, int minute = 100)
         {
             String key = url;
@@ -353,11 +353,10 @@ namespace EImece.Domain.Helpers
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         Stream receiveStream = response.GetResponseStream();
-                        using (BinaryReader br = new BinaryReader(receiveStream))
-                        {
-                            b = br.ReadBytes(500000);
-                            br.Close();
-                        }
+                        BinaryReader br = new BinaryReader(receiveStream);
+                        b = br.ReadBytes(500000);
+                        br.Close();
+
 
                         foreach (var h in response.Headers.AllKeys)
                         {
@@ -633,9 +632,9 @@ namespace EImece.Domain.Helpers
                     objResult = bf.Deserialize(ms);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
 
             return objResult;

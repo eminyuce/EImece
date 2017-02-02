@@ -44,7 +44,7 @@ namespace EImece.Domain.Repositories
             catch (Exception exception)
             {
                 Logger.Error(exception, exception.Message);
-                throw exception;
+                throw;
             }
 
         }
@@ -71,7 +71,7 @@ namespace EImece.Domain.Repositories
 
         public Product GetProduct(int id)
         {
-            var includeProperties = GetIncludePropertyExpressionList<Product>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
             includeProperties.Add(r => r.ProductCategory);
@@ -84,7 +84,7 @@ namespace EImece.Domain.Repositories
 
         public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang)
         {
-            var includeProperties = GetIncludePropertyExpressionList<Product>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
@@ -103,7 +103,7 @@ namespace EImece.Domain.Repositories
             string orderBy, 
             bool desc)
         {
-            var includeProperties = GetIncludePropertyExpressionList<Product>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ProductCategory);
             var query = GetAllIncluding(includeProperties.ToArray());
 

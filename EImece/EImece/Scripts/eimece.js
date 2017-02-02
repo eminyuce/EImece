@@ -302,8 +302,15 @@ function changeStateSuccess(data) {
 
     });
 }
+function refresh() {
+
+    setTimeout(function () {
+        location.reload()
+    }, 100);
+}
 function changeOrderingSuccess(data) {
     console.log(data);
+    refresh();
 }
 function ajaxMethodCall(postData, ajaxUrl, successFunction) {
 

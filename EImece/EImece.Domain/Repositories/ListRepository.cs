@@ -22,7 +22,7 @@ namespace EImece.Domain.Repositories
 
         public List GetListById(int id)
         {
-            var includeProperties = GetIncludePropertyExpressionList<List>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ListItems);
             var item = GetSingleIncluding(id, includeProperties.ToArray());
             return item;
@@ -30,7 +30,7 @@ namespace EImece.Domain.Repositories
 
         public List GetListByName(string name)
         {
-            var includeProperties = GetIncludePropertyExpressionList<List>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ListItems);
             var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), null, null, r => r.Position, OrderByType.Ascending, includeProperties.ToArray());
             return item.FirstOrDefault();

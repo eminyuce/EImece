@@ -114,7 +114,7 @@ namespace EImece.Domain.Repositories
             }
             return r;
         }
-        public T[] ExecuteStoreQuery<T>(string commandText, params object[] parameters)
+        public T[] ExecuteStoreQuery(string commandText, params object[] parameters)
         {
             EntitiesContext objectContext = this.GetDbContext();
             DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
@@ -145,7 +145,7 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public List<Expression<Func<T, object>>> GetIncludePropertyExpressionList<T>()
+        public List<Expression<Func<T, object>>> GetIncludePropertyExpressionList()
         {
             return new List<Expression<Func<T, object>>>();
         }

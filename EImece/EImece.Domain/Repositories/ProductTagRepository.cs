@@ -51,7 +51,7 @@ namespace EImece.Domain.Repositories
 
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
-            var includeProperties = GetIncludePropertyExpressionList<ProductTag>();
+            var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Product);
             includeProperties.Add(r => r.Product.ProductCategory);
             includeProperties.Add(r => r.Product.ProductFiles);
