@@ -180,7 +180,7 @@ namespace EImece.Controllers
                 _filesHelper = value;
             }
         }
-        protected override System.IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
+        protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
         {
             string cultureName = null;
 

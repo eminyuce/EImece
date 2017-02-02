@@ -13,7 +13,7 @@ using EImece.Models;
 namespace EImece.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {

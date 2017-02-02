@@ -55,6 +55,7 @@
                             @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
                         </b>
                     </li>
+                    <li>@Html.ActionLink("Change Password", "ChangePassword", "Users", new { area = "admin" }, new { @class = "btn btn-outline-primary" })</li>
                      <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class= "btn btn-outline-primary" })</li>
                      <li>
 
