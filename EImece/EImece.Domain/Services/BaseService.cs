@@ -38,6 +38,7 @@ namespace EImece.Domain.Services
                 _memoryCacheProvider = value;
             }
         }
+
         private IBaseRepository<T> baseRepository { get; set; }
 
         protected BaseService(IBaseRepository<T> baseRepository)

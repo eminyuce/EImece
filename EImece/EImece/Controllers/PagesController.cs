@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Helpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,13 @@ namespace EImece.Controllers
 {
     public class PagesController : BaseController
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Pages
         public ActionResult Index()
         {
             return View();
         }
+        [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id="")
         {
             var menuId = id.GetId();

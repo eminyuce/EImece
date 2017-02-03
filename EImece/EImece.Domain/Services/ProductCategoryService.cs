@@ -88,17 +88,22 @@ namespace EImece.Domain.Services
         public void DeleteProductCategory(int productCategoryId)
         {
             var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId);
-            var productIdList = productCategory.Products.Select(r => r.Id).ToList();
-            foreach (var id in productIdList)
+            var leaves = GetProductCategoryLeaves(null, productCategory.Lang);
+            if (leaves.Any(r => r.Id == productCategoryId))
             {
-                ProductService.DeleteProductById(id);
-            }
-            if (productCategory.MainImageId.HasValue)
-            {
-                FileStorageService.DeleteFileStorage(productCategory.MainImageId.Value);
-            }
+                var productIdList = productCategory.Products.Select(r => r.Id).ToList();
+                foreach (var id in productIdList)
+                {
+                    ProductService.DeleteProductById(id);
+                }
+                if (productCategory.MainImageId.HasValue)
+                {
+                    FileStorageService.DeleteFileStorage(productCategory.MainImageId.Value);
+                }
 
-            DeleteEntity(productCategory);  
+                DeleteEntity(productCategory);
+            }
+            
         }
     }
 }

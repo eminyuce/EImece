@@ -40,13 +40,20 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, search, lang);
         }
 
-        public ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
+        public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
-            var r = new ProductIndexViewModel();
-            int pageSize = Settings.RecordPerPage;
-            var items = ProductRepository.GetMainPageProducts(pageIndex, pageSize, lang);
-            r.Products = items;
-            return r;
+            var result = new ProductIndexViewModel();
+            var cacheKey = String.Format("GetMainPageProducts-{0}-{1}", page, language);
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                int pageSize = Settings.RecordPerPage;
+                var items = ProductRepository.GetMainPageProducts(page, pageSize, language);
+                result.Products = items;
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+
+            }
+            return result;
         }
 
 

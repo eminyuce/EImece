@@ -173,6 +173,7 @@ namespace EImece.Controllers
             get
             {
                 _filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+                _filesHelper.IsCachingActive = Settings.IsCacheActive;
                 return _filesHelper;
             }
             set

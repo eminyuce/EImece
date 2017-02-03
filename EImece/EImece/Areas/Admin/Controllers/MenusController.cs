@@ -150,18 +150,15 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             Menu menu = MenuService.GetSingle(id);
-            var menuTreeNodeList = MenuService.GetMenuLeaves(null, CurrentLanguage);
-            var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == id);
+       
             if (menu == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                if (leave != null)
-                {
-                    MenuService.DeleteMenu(menu.Id);
-                }
+                 
+                MenuService.DeleteMenu(menu.Id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

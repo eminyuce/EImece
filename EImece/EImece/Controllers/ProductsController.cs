@@ -12,7 +12,7 @@ namespace EImece.Controllers
 {
     public class ProductsController : BaseController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)

@@ -16,6 +16,7 @@ using System.Web.Hosting;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using EImece.Domain.Caching;
 
 namespace EImece.Domain.Helpers
 {
@@ -23,6 +24,23 @@ namespace EImece.Domain.Helpers
     {
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
+
+        public bool IsCachingActive { get; set; }
+        private ICacheProvider _memoryCacheProvider { get; set; }
+        [Inject]
+        public ICacheProvider MemoryCacheProvider
+        {
+            get
+            {
+                _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+                return _memoryCacheProvider;
+            }
+            set
+            {
+                _memoryCacheProvider = value;
+            }
+        }
+
 
         public String DeleteURL { get; set; }
         public String DeleteType { get; set; }
@@ -531,25 +549,31 @@ namespace EImece.Domain.Helpers
         }
         public byte[] GetResizedImage(int fileStorageId, int width, int height)
         {
-            var fileStorage = FileStorageService.GetSingle(fileStorageId);
-            if (fileStorage != null)
+            var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width,height);
+            byte[] result = null;
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                var file = fileStorage.FileName;
-                String fullPath = Path.Combine(StorageRoot, file);
-                if (System.IO.File.Exists(fullPath))
+                var fileStorage = FileStorageService.GetSingle(fileStorageId);
+                if (fileStorage != null)
                 {
-                    var fullImagePath = Path.Combine(fullPath);
-                    Bitmap b = new Bitmap(fullImagePath);
-                    width = width == 0 ? fileStorage.Width : width;
-                    height = height == 0 ? fileStorage.Height : height;
-                    var resizeBitmap = ResizeImage(b, width, height);
-                    var r = GetBitmapBytes(resizeBitmap);
-                    b.Dispose();
-                    resizeBitmap.Dispose();
-                    return r;
+                    var file = fileStorage.FileName;
+                    String fullPath = Path.Combine(StorageRoot, file);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        var fullImagePath = Path.Combine(fullPath);
+                        Bitmap b = new Bitmap(fullImagePath);
+                        width = width == 0 ? fileStorage.Width : width;
+                        height = height == 0 ? fileStorage.Height : height;
+                        var resizeBitmap = ResizeImage(b, width, height);
+                        result = GetBitmapBytes(resizeBitmap);
+                        b.Dispose();
+                        resizeBitmap.Dispose();
+                        MemoryCacheProvider.Set(cacheKey, result, Settings.CacheShortSeconds);
+                    }
                 }
             }
-            return null;
+            return result;
+          
         }
         public byte[] MakeThumbnail(byte[] myImage, int thumbWidth, int thumbHeight)
         {

@@ -21,10 +21,10 @@ namespace EImece.Domain.Services
         private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
 
         private IStoryRepository StoryRepository { get; set; }
-        public StoryService(IStoryRepository repository):base(repository)
+        public StoryService(IStoryRepository repository) : base(repository)
         {
             StoryRepository = repository;
-            
+
         }
 
         public List<Story> GetAdminPageList(int categoryId, string search, int lang)
@@ -60,7 +60,7 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetStoryById(storyId);
         }
-       
+
         public void SaveStoryTags(int storyId, int[] tags)
         {
             StoryTagRepository.SaveStoryTags(storyId, tags);
@@ -73,11 +73,18 @@ namespace EImece.Domain.Services
             return storyDetail;
         }
 
-        public StoryIndexViewModel GetMainPageStories(int page,  int language)
+        public StoryIndexViewModel GetMainPageStories(int page, int language)
         {
             var result = new StoryIndexViewModel();
-            int pageSize = Settings.RecordPerPage;
-            result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
+            var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language);
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                int pageSize = Settings.RecordPerPage;
+                result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+
+            }
             return result;
         }
         public virtual new void DeleteBaseEntity(List<string> values)
@@ -101,7 +108,7 @@ namespace EImece.Domain.Services
             }
         }
 
-       
+
 
     }
 }

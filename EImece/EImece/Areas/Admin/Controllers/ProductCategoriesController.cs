@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         private List<SelectListItem> GetTemplatesDropDown()
         {
-            var templates = TemplateService.GetActiveBaseEntities(true,CurrentLanguage);
+            var templates = TemplateService.GetActiveBaseEntities(true, CurrentLanguage);
 
             var resultListItem = new List<SelectListItem>();
             foreach (var item in templates)
@@ -101,7 +101,7 @@ namespace EImece.Areas.Admin.Controllers
                     FilesHelper.SaveFileFromHttpPostedFileBase(productCategoryImage,
                         productCategory.ImageHeight,
                         productCategory.ImageWidth,
-                        EImeceImageType.ProductCategoryMainImage, 
+                        EImeceImageType.ProductCategoryMainImage,
                         productCategory);
 
                     ProductCategoryService.SaveOrEditEntity(productCategory);
@@ -168,9 +168,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
-                if (leaves.Any(r => r.Id == id))
-                    ProductCategoryService.DeleteProductCategory(productCategory.Id);
+                ProductCategoryService.DeleteProductCategory(productCategory.Id);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

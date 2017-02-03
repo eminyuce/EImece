@@ -45,9 +45,14 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageById(int menuId)
         {
-            var r = new MenuPageViewModel();
-            r.Menu = MenuRepository.GetMenuById(menuId);
-            return r;
+            var cacheKey = String.Format("GetPageById-{0}", menuId);
+            var result = new MenuPageViewModel();
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result.Menu = MenuRepository.GetMenuById(menuId);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+            }
+            return result;
         }
 
         public List<Menu> GetMenuLeaves(bool? isActive, int language)
@@ -55,22 +60,29 @@ namespace EImece.Domain.Services
             return MenuRepository.GetMenuLeaves(isActive, language);
         }
 
-        public void DeleteMenu(int menuId)
+        public bool DeleteMenu(int menuId)
         {
             var menu = MenuRepository.GetMenuById(menuId);
-            if (menu.MainImageId.HasValue)
+            var menuTreeNodeList = GetMenuLeaves(null, menu.Lang);
+            var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == menuId);
             {
-                FileStorageService.DeleteFileStorage(menu.MainImageId.Value);
-            }
-            if (menu.MenuFiles != null)
-            {
-                foreach (var file in menu.MenuFiles)
+                if (menu.MainImageId.HasValue)
                 {
-                    FileStorageService.DeleteFileStorage(file.FileStorageId);
+                    FileStorageService.DeleteFileStorage(menu.MainImageId.Value);
                 }
-                MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
+                if (menu.MenuFiles != null)
+                {
+                    foreach (var file in menu.MenuFiles)
+                    {
+                        FileStorageService.DeleteFileStorage(file.FileStorageId);
+                    }
+                    MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
+                }
+                DeleteEntity(menu);
+
+                return true;
             }
-            DeleteEntity(menu);
+            return false;
         }
 
         public void DeleteMenus(List<string> values)
