@@ -42,11 +42,12 @@ namespace EImece.Domain.Services
 
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
-            var result = new ProductIndexViewModel();
+            ProductIndexViewModel result = null;
             var cacheKey = String.Format("GetMainPageProducts-{0}-{1}", page, language);
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
+                result = new ProductIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
                 var items = ProductRepository.GetMainPageProducts(page, pageSize, language);
                 result.Products = items;

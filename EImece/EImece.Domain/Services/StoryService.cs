@@ -75,11 +75,12 @@ namespace EImece.Domain.Services
 
         public StoryIndexViewModel GetMainPageStories(int page, int language)
         {
-            var result = new StoryIndexViewModel();
+            StoryIndexViewModel result = null;
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language);
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
+                result = new StoryIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);

@@ -101,33 +101,55 @@
                                         @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
                                     </b>);
 
-                       if (UserRoleHelper.IsDeletedEnableRoles() )
+                       if (UserRoleHelper.IsDeletedEnableRoles())
                        {
                            columns.Add()
                                                                .Encoded(false)
                                                                .Sanitized(false)
                                                                .SetWidth(30)
                                                                .RenderValueAs(d =>
-                                                              
+
                                                             @<b>
-           
-                                 
-                                    @if (menuTreeNodeList.Any(r => r.Id == d.Id))
-                                    {
-                                    @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
-                                 }else
-                                 {
-                                     @String.Format("No Delete")
-                                 }
+
+
+                                                                @if (menuTreeNodeList.Any(r => r.Id == d.Id))
+                                                                {
+                                                                    @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
+                                                                }
+                                                                else
+                                                                {
+                                                                    @String.Format("No Delete")
+                                                                }
 
                                                             </b>);
-                           }
+                       }
 
 
-                           columns.Add(c => c.Name)
-                                  .Titled("Title")
-                                  .Filterable(true);
 
+                       columns.Add(c => c.Name)
+                                       .Titled("Name")
+                                       .Filterable(true)
+                                        .Encoded(false)
+                                         .Sanitized(false)
+                                   .RenderValueAs(d =>
+                                @<b>
+                                     @{ 
+                                         var parts = d.MenuLink.Split("-".ToCharArray());
+                                         var action = parts[1];
+                                         var controller = parts[0];
+
+                                     if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                                     {
+                                         @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+                                         }
+                                         else
+                                         {
+                                            @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
+                                         }
+
+                                    }
+
+                                </b>);
 
 
                            columns.Add(o => o.Position)

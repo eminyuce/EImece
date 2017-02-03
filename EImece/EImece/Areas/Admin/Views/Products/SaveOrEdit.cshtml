@@ -12,7 +12,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategory = (ProductCategory)ViewBag.ProductCategory;
     var productTree = (List<Node>)ViewBag.Tree;
-
+    var PleaseSelectYourProductCategoryFromTree = AdminResource.PleaseSelectYourProductCategoryFromTree;
 }
 
 <h2>SaveOrEdit</h2>
@@ -68,7 +68,7 @@ console.log(e);
                         {
 
                             <span style="color:red;font-size:x-large" id="OldCategoryName">
-                                LUTFEN KATEGORI SECIMI YANDAKI AGACTAN YAPINIZ.
+                                @PleaseSelectYourProductCategoryFromTree
                             </span>
                         }
 

@@ -195,4 +195,10 @@
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
   </data>
+  <data name="PleaseSelectYourProductCategoryFromTree" xml:space="preserve">
+    <value>Please Select Your Product Category From Tree</value>
+  </data>
+  <data name="PleaseSelectYourMenuCategoryFromTree" xml:space="preserve">
+    <value>Please Select Your Menu Category From Tree</value>
+  </data>
 </root>

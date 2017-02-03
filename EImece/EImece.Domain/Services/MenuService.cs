@@ -46,9 +46,10 @@ namespace EImece.Domain.Services
         public MenuPageViewModel GetPageById(int menuId)
         {
             var cacheKey = String.Format("GetPageById-{0}", menuId);
-            var result = new MenuPageViewModel();
+            MenuPageViewModel result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
+                result = new MenuPageViewModel();
                 result.Menu = MenuRepository.GetMenuById(menuId);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
             }

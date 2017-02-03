@@ -277,6 +277,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please Select Your Menu Category From Tree.
+        /// </summary>
+        public static string PleaseSelectYourMenuCategoryFromTree {
+            get {
+                return ResourceManager.GetString("PleaseSelectYourMenuCategoryFromTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select Your Product Category From Tree.
+        /// </summary>
+        public static string PleaseSelectYourProductCategoryFromTree {
+            get {
+                return ResourceManager.GetString("PleaseSelectYourProductCategoryFromTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SaveButtonText {
