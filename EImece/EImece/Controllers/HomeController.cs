@@ -117,8 +117,19 @@ namespace EImece.Controllers
                 HomeLogger.Error(ex, "Exception Message:" + ex.Message);
             }
 
+            try
+            {
+                EmailSender.SendEmailContactingUs(contact);
 
-            EmailSender.SendEmailContactingUs(contact);
+            }
+            catch (Exception ex)
+            {
+                HomeLogger.Error(ex, "Exception Message:" + ex.Message);
+            }
+
+
+          
+
             return View("_pThankYouForContactingUs", contact);
 
         }

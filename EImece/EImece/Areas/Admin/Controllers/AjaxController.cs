@@ -24,12 +24,14 @@ namespace EImece.Areas.Admin.Controllers
             if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                     controller.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
             {
-                list = ProductService.GetAdminPageList(0, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
+                Expression<Func<Product, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
+                list = ProductService.SearchEntities(whereLambda1, searchKey).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                    controller.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
             {
-                list = StoryService.GetAdminPageList(0, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
+                Expression<Func<Story, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
+                list = StoryService.SearchEntities(whereLambda1, searchKey).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                    controller.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))

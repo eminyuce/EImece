@@ -17,6 +17,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using EImece.Domain;
 using EImece.Domain.Helpers;
+using System.Text.RegularExpressions;
 
 namespace EImece.Tests.Controllers
 {
@@ -44,6 +45,29 @@ namespace EImece.Tests.Controllers
             }
         }
 
+        [TestMethod]
+        public void RegexTest()
+        {
+            String validationDetail = @"MX:asdd.com.1.arsmtp.com.
+HELO maritimereporter.com
+
+250 inbound.appriver.com your name is not maritimereporter.com
+MAIL FROM:<update@maritimereporter.com>
+
+250 update@maritimereporter.com sender accepted
+RCPT TO:<FFogarty@asdd.com>
+
+250 FFogarty@asdd.com will 445 relay to a client 232 address 334
+QUITE
+
+";
+            Regex regex = new Regex(@"^\d{3}",RegexOptions.Multiline);
+            var d = regex.Matches(validationDetail).Cast<Match>()
+               .Select(match => match.Value)
+               .ToArray();
+
+            Console.WriteLine(d.Last());
+        }
         [TestMethod]
         public void About()
         {

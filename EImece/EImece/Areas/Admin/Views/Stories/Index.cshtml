@@ -62,14 +62,7 @@ columns.Add()
                             @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
                         </b>);
 
-columns.Add()
-       .Encoded(false)
-       .Sanitized(false)
-       .SetWidth(30)
-       .RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     " })
-    </b>);
+ 
 columns.Add()
                .Encoded(false)
                .Sanitized(false)
