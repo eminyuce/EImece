@@ -62,6 +62,13 @@ namespace EImece
               );
 
             routes.MapRoute(
+                 name: "SearchProducts",
+                 url: "products/searchproducts",
+                 defaults: new { controller = "Products", action = "searchproducts" },
+                 namespaces: new[] { "EImece.Controllers" }
+             );
+
+            routes.MapRoute(
                name: "ProductDetail",
                url: "products/{categoryName}/{id}",
                defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },

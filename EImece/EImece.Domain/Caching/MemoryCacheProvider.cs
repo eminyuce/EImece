@@ -52,11 +52,14 @@ namespace EImece.Domain.Caching
 
         public override void Set<T>(string key, T value, int duration)
         {
-            CacheItemPolicy policy = null;
-            policy = new CacheItemPolicy();
-            policy.Priority = CacheItemPriority.Default;
-            policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-            _cache.Set(key, value, policy);
+            if (value != null)
+            {
+                CacheItemPolicy policy = null;
+                policy = new CacheItemPolicy();
+                policy.Priority = CacheItemPriority.Default;
+                policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                _cache.Set(key, value, policy);
+            }
         }
 
         public override void Clear(string key)

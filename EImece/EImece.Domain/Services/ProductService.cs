@@ -104,13 +104,13 @@ namespace EImece.Domain.Services
                 var r = ProductRepository.GetProduct(id);
                 result.Product = r;
                 result.RelatedStories = new List<Story>();
-                if (r.ProductTags.Any())
+                if (r != null && r.ProductTags.Any())
                 {
                     var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
                     result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang);
                 }
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
-             
+
             }
             return result;
         }

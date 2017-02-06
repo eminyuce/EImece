@@ -39,6 +39,10 @@ namespace EImece.Controllers
         }
         public ActionResult SearchProducts(String search)
         {
+            if (String.IsNullOrEmpty(search))
+            {
+                return Content("No search key");
+            }
             int pageIndex = 1;
             int pageSize = 20;
             ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);

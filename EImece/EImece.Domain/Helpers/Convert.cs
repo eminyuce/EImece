@@ -17,6 +17,10 @@ namespace EImece.Domain.Helpers
 
         public static int GetId(this string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return 0;
+            }
             return id.Split("-".ToCharArray()).Last().ToInt();
         }
         public static string ToAlphaNumericOnly(this string input)
