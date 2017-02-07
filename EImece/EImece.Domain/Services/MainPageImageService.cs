@@ -9,11 +9,14 @@ using EImece.Domain.Repositories.IRepositories;
 using System.Linq.Expressions;
 using Ninject;
 using EImece.Domain.Models.FrontModels;
+using NLog;
 
 namespace EImece.Domain.Services
 {
     public class MainPageImageService : BaseContentService<MainPageImage>, IMainPageImageService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public IProductService ProductService { get; set; }
 

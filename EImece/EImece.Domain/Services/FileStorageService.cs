@@ -133,6 +133,10 @@ namespace EImece.Domain.Services
                     isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.ProductId == contentId);
                     FileStorageRepository.DeleteItem(f);
                     break;
+                case MediaModType.Menus:
+                    isResult = MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.MenuId == contentId);
+                    FileStorageRepository.DeleteItem(f);
+                    break;
                 default:
                     break;
             }
@@ -149,7 +153,7 @@ namespace EImece.Domain.Services
                     Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
 
                     var item = StoryFileRepository.FindAllIncluding(match, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties);
-                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r=>r.UpdatedDate).ToList();
 
                 case MediaModType.Products:
                     Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
@@ -157,7 +161,7 @@ namespace EImece.Domain.Services
                     Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
 
                     var item1 = ProductFileRepository.FindAllIncluding(match1, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties1);
-                    return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Menus:
                     Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
@@ -165,7 +169,7 @@ namespace EImece.Domain.Services
                     Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
 
                     var item2 = MenuFileRepository.FindAllIncluding(match2, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties2);
-                    return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 default:
                     break;

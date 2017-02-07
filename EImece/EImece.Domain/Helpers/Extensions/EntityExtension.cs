@@ -56,7 +56,6 @@ namespace EImece.Domain.Helpers.Extensions
 
             if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
             {
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 String fileName = entity.MainImage.FileName;
                 String partThumb1 = Path.Combine(Settings.UrlBase, "thumbs");
                 String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
@@ -83,7 +82,6 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             String imageTag = "";
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
              
                 String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
@@ -99,6 +97,15 @@ namespace EImece.Domain.Helpers.Extensions
             String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { companyName, imageSize, id = imageId });
             return imagePath;
         }
+        public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
+        {
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            var companyName = Settings.CompanyNameForImage;
+            var imageId = String.Format("{0}.jpg",  fileStorage.Id);
+            String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { area="admin", id = imageId, width, height });
+            return imagePath;
+        }
+
         public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "")
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);

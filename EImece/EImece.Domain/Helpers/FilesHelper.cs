@@ -17,6 +17,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using EImece.Domain.Caching;
+using NLog;
 
 namespace EImece.Domain.Helpers
 {
@@ -24,7 +25,7 @@ namespace EImece.Domain.Helpers
     {
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
-
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public bool IsCachingActive { get; set; }
         private ICacheProvider _memoryCacheProvider { get; set; }
         [Inject]

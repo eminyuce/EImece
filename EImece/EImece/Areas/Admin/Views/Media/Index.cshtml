@@ -121,12 +121,12 @@
                                    data-gallery="">
 
 
-                                    <img src=@String.Format("/media/images/thumbs/thb{0}",d.FileName)>
+                                    <img src=@d.GetAdminCroppedImageUrl(150,150)>
                                 </a>
 
+                    
 
-
-
+      
                             </b>);
 
     columns.Add(c => c.Name)
