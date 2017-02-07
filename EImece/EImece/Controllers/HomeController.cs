@@ -103,7 +103,11 @@ namespace EImece.Controllers
                 s.Position = 1;
                 s.EntityHash = "";
                 s.Lang = CurrentLanguage;
-                s.Note = String.Format("{0} {1} {2} {3} ", contact.CompanyName, contact.Phone, contact.Message, contact.Address);
+                s.Note = String.Format("CompanyName:{0} {4}Phone:{1} {4}Address:{2} {4}Message:{3} ", 
+                    contact.CompanyName,
+                    contact.Phone,
+                    contact.Address, 
+                    contact.Message, Environment.NewLine);
                 SubsciberService.SaveOrEditEntity(s);
 
             }
@@ -128,7 +132,7 @@ namespace EImece.Controllers
             }
 
 
-          
+
 
             return View("_pThankYouForContactingUs", contact);
 

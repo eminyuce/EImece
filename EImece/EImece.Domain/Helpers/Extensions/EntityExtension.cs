@@ -13,7 +13,11 @@ namespace EImece.Domain.Helpers.Extensions
     public static class EntityExtension
     {
 
-
+         public static double GetProductPrice(this Product product)
+        {
+            var categoryDiscount = product.ProductCategory.DiscountPercantage.HasValue ? product.ProductCategory.DiscountPercantage.Value : 0;
+            return product.Price - (product.Discount) - (product.Price * (categoryDiscount / 100));
+        }
         public static List<BaseEntity> DownCasting<T>(this List<T> items) where T : BaseEntity
         {
             var baseList = new List<BaseEntity>();

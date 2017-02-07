@@ -3,29 +3,57 @@
 @using EImece.Domain.Helpers.Extensions;
 
 @model List<Menu>
-@{ 
+@{
     var menus = Model;
 }
-<ul class="dropdown-menu">
+<ul>
     @foreach (var m in menus)
     {
-        var parts = m.MenuLink.Split("-".ToCharArray());
-        var action = parts[1];
-        var controller = parts[0];
-
-        if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-        {
-            <li>@Html.ActionLink(m.Name, "detail", controller,new { id = m.GetSeoUrl() },null)</li>
-        }
-        else
-        {
-            <li>@Html.ActionLink(m.Name, action, controller)</li>
-        }
-
 
         if (m.Childrens.Any())
         {
-            @Html.Partial("_NavigationChildren", m.Childrens)
+
+            <li class="dropdown">
+                @RenderMenuAction(m)
+                @Html.Partial("_NavigationChildren", m.Childrens)
+
+            </li>
+
         }
+        else
+        {
+            <li>
+                @RenderMenuAction(m)
+            </li>
+        }
+
+
+       
     }
 </ul>
+
+@helper RenderMenuAction(Menu m)
+{
+
+var parts = m.MenuLink.Split("-".ToCharArray());
+var action = parts[1];
+var controller = parts[0];
+if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+{
+
+
+        @Html.ActionLink(m.Name, "detail", controller, new
+       {
+           id = m.GetSeoUrl()
+       }, null)
+
+
+}
+else
+{
+
+        @Html.ActionLink(m.Name, action, controller)
+
+}
+
+}

@@ -8,8 +8,8 @@
 @{
     var close = AdminResource.Close;
     var fileStorageId = Model;
-    var imageWidth = 200;
-    var imageHeight = 200;
+    var imageWidth = 300;
+    var imageHeight = 0 ;
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
     filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
     var imageSizes = filesHelper.GetThumbnailImageSize(fileStorageId);

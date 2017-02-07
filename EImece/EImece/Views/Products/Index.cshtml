@@ -10,6 +10,7 @@
 }
 
 <h2>Index</h2>
+@Html.Action("ProductTree", "Home")
 
 @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),

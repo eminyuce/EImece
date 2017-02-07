@@ -321,7 +321,11 @@
     <Content Include="Content\adminSite.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\codemirror\addon\hint\show-hint.css" />
+    <Content Include="Content\codemirror\addon\hint\show-hint.js" />
+    <Content Include="Content\codemirror\addon\hint\xml-hint.js" />
     <Content Include="Content\codemirror\codemirror.css" />
+    <Content Include="Content\codemirror\doc\docs.css" />
     <Content Include="Content\DataTable\jquery.dataTables.min.css" />
     <Content Include="Content\FileUpload\FileUploader.css" />
     <Content Include="Content\FileUpload\styles.css" />
@@ -378,6 +382,14 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\trizzy\css\base.css" />
+    <Content Include="Content\trizzy\css\colors\green.css" />
+    <Content Include="Content\trizzy\css\font-awesome.css" />
+    <Content Include="Content\trizzy\css\responsive.css" />
+    <Content Include="Content\trizzy\css\style.css" />
+    <Content Include="Content\trizzy\css\switcher.css" />
+    <Content Include="Content\trizzy\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\trizzy\fonts\fontello.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -501,6 +513,13 @@
     <Content Include="Areas\Admin\Views\Lists\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Message.cshtml" />
+    <Content Include="Content\trizzy\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\trizzy\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\trizzy\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\trizzy\fonts\FontAwesome.otf" />
+    <Content Include="Content\trizzy\fonts\fontello.eot" />
+    <Content Include="Content\trizzy\fonts\fontello.ttf" />
+    <Content Include="Content\trizzy\fonts\fontello.woff" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -555,6 +574,32 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\restangular.min.js" />
     <Content Include="Scripts\SharkDev.treeView.js" />
+    <Content Include="Scripts\trizzy\scripts\custom.js" />
+    <Content Include="Scripts\trizzy\scripts\hoverIntent.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery-2.1.0.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.appear.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.counterup.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.flexslider-min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.gmaps.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.isotope.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.jpanelmenu.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.magnific-popup.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.pricefilter.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.pureparallax.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.royalslider.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.selectric.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.themepunch.plugins.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.themepunch.revolution.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.themepunch.showbizpro.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.tooltips.min.js" />
+    <Content Include="Scripts\trizzy\scripts\jquery.uniform.min.js" />
+    <Content Include="Scripts\trizzy\scripts\modernizr.custom.js" />
+    <Content Include="Scripts\trizzy\scripts\puregrid.js" />
+    <Content Include="Scripts\trizzy\scripts\SelectBox.js" />
+    <Content Include="Scripts\trizzy\scripts\stacktable.js" />
+    <Content Include="Scripts\trizzy\scripts\superfish.js" />
+    <Content Include="Scripts\trizzy\scripts\switcher.js" />
+    <Content Include="Scripts\trizzy\scripts\waypoints.min.js" />
     <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
@@ -636,10 +681,9 @@
     <Content Include="Views\Shared\DisplayTemplates\StoryShort.cshtml" />
     <Content Include="Views\Stories\Detail.cshtml" />
     <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
+    <Content Include="Views\Products\_ProductSpecs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\codemirror\addon\" />
-    <Folder Include="Content\codemirror\doc\" />
     <Folder Include="media\images\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />

@@ -12,60 +12,124 @@
     {
         <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
     }
-    @Styles.Render("~/Content/css")
+    @*@Styles.Render("~/Content/css")*@
     @Scripts.Render("~/bundles/modernizr")
 
+    <link href="~/Content/trizzy/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/trizzy/css/colors/green.css" id="colors">
 </head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+<body class="boxed">
+
+
+    <div id="top-bar">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Eimece", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="ten columns">
+                @Html.Partial("_LoginPartial")    
             </div>
-            <div class="navbar-collapse collapse">
+                <div class="six columns">
+                    @Html.Action("SocialMediaLinks", "Home")
+                </div>
 
-                @Html.Action("Menu", "Home")
+            </div>
+    </div>
 
+    <!-- Header
+    ================================================== -->
+    <div class="container">
 
-                @Html.Partial("_LoginPartial")
+        <!-- Logo -->
+        <div class="four columns">
+            <div id="logo">
+                <h1>
+                    @Html.ActionLink("Eimece", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="index.html">
+                    
+                    <img src="images/logo.png" alt="Trizzy" />
+                    
+                    </a>
                 
+                </h1>
             </div>
         </div>
-    </nav>
+
+ 
+        <!-- Shopping Cart -->
+        <div class="twelve columns">
+ 
+            <!-- Search -->
+            <nav class="top-search">
+                 @Html.Partial("_SearchProductForm")
+            </nav>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="container">
+        <div class="sixteen columns">
+
+           
+            <nav id="navigation">
+                @Html.Action("Menu", "Home")
+            </nav>
+        </div>
+    </div>
+
     <div class="container body-content">
-        
-        
-        <div class="row">
-            <div class="col-md-12 text-center">
-                @Html.Action("ProductTree", "Home")
-                @Html.Partial("_SearchProductForm")
-            </div>
-        </div>
+
+
 
         <div class="row">
             <div class="col-md-12">
                 @RenderBody()
             </div>
         </div>
-        
+
         <hr />
         <footer>
             @Html.Partial("_Footer")
-            @Html.Action("SocialMediaLinks", "Home")
+
         </footer>
 
         @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
 
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
+    <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.pureparallax.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.pricefilter.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.selectric.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.royalslider.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/SelectBox.js"></script>
+    <script src="~/Scripts/trizzy/scripts/modernizr.custom.js"></script>
+    <script src="~/Scripts/trizzy/scripts/waypoints.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.flexslider-min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.counterup.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.tooltips.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.isotope.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/puregrid.js"></script>
+    <script src="~/Scripts/trizzy/scripts/stacktable.js"></script>
+    <script src="~/Scripts/trizzy/scripts/custom.js"></script>
+
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>

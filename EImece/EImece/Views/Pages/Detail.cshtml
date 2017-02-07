@@ -5,7 +5,8 @@
     var menu = Model.Menu;
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
-    var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
+    menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
+   var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
 }
 
 @Html.Partial(selectedPagePath, menu)

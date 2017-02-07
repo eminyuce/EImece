@@ -23,17 +23,29 @@
     }
 }
 
-@valueDisplayName
-@if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals("on"))
-{
-    <input name="@name.Value" checked="checked" type="checkbox" />
-}
-else
-{
-    <input name="@name.Value" type="checkbox" />
-}
 
-@if (unit != null)
-{
-    @unit.Value
-}
+<div class="form-group">
+    <div class="col-md-2">
+        @valueDisplayName
+    </div>
+    <div class="col-md-5">
+        @if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals("on"))
+        {
+            <input name="@name.Value" class="form-control" checked="checked" type="checkbox" />
+        }
+        else
+        {
+            <input name="@name.Value" class="form-control" type="checkbox" />
+        }
+    </div>
+    <div class="col-md-1">
+        @if (unit != null)
+            {
+            @unit.Value
+        }
+    </div>
+</div>
+
+
+
+ 

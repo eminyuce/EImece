@@ -89,7 +89,7 @@ window.location='/admin/products/index/'+e.id;
              .SetWidth(30)
              .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm" })
+                @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
             </b>);
 
 
@@ -99,7 +99,7 @@ window.location='/admin/products/index/'+e.id;
                           .SetWidth(30)
                           .RenderValueAs(d =>
                         @<b>
-                            @Html.ActionLink("Add Specs", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
+                            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "btn btn-default   glyphicon glyphicon-plus" })
                         </b>);
 
 
@@ -111,7 +111,7 @@ window.location='/admin/products/index/'+e.id;
                   .SetWidth(30)
                   .RenderValueAs(d =>
                 @<b>
-                    @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
+                    @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default     glyphicon glyphicon-camera glyphicon-white " })
                 </b>);
 
            if (UserRoleHelper.IsDeletedEnableRoles())
@@ -122,7 +122,7 @@ window.location='/admin/products/index/'+e.id;
                         .SetWidth(30)
                         .RenderValueAs(d =>
                         @<b>
-                            @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id=d.Id }, new { @class = "btn btn-danger btn-sm" })
+                            @Html.ActionLink(" ", "Delete", controllerName, new { id=d.Id }, new { @class = "btn btn-danger   glyphicon glyphicon-trash glyphicon-white" })
                         </b>);
            }
            columns.Add(c => c.Name)
@@ -135,7 +135,7 @@ window.location='/admin/products/index/'+e.id;
                 @Html.ActionLink(d.Name, "Detail", "Products", new {  area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target="_blank" })
             </b>);
                columns.Add(c => c.ProductCategory.Name)
-                 .Titled("ProductCategory Name");
+                 .Titled("Category Name");
 
                columns.Add(o => o.Position)
                   .Encoded(false).

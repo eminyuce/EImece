@@ -1,0 +1,36 @@
+﻿@model Product
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+ 
+@{ 
+    var product = Model;
+    var productSpecs = product.ProductSpecifications;
+}
+
+<table class="basic-table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+           Value
+        </th>
+    </tr>
+
+    @foreach (var item in productSpecs)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @String.Format("{0} {1}",item.Value,item.Unit)
+            </td>
+
+        </tr>
+    }
+
+</table>

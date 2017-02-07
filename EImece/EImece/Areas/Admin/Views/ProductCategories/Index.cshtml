@@ -83,7 +83,7 @@
                           .SetWidth(30)
                           .RenderValueAs(d =>
                         @<b>
-                            @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
+                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
                         </b>);
 
       
@@ -98,7 +98,7 @@
                     @<b>
             @if (productCategoryLeaves.Any(r => r.Id == d.Id))
             {
-                @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
+                @Html.ActionLink(" ", "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash glyphicon-white " })
             }
             else
             {

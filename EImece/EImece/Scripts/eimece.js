@@ -148,7 +148,7 @@ $(document).ready(function () {
     handle1.text(defaultValueWidth);
     $("#sliderWidth").slider({
         min: 0,
-        max: 1000,
+        max: 2000,
         value: defaultValueWidth,
         step: 10,
         create: function () {
@@ -167,7 +167,7 @@ $(document).ready(function () {
     handle2.text(defaultValueHeight);
     $("#sliderHeight").slider({
         min: 0,
-        max: 1000,
+        max: 2000,
         value: defaultValueHeight,
         step: 10,
         create: function () {
@@ -289,6 +289,8 @@ function deleteItemsSuccess(data) {
         var pp = $('[gridkey-id=' + entry + ']');
         pp.parent().parent().remove();
     });
+
+    refresh();
 }
 function changeStateSuccess(data) {
     //var parsedPostData = jQuery.parseJSON(data);

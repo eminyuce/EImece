@@ -232,7 +232,11 @@ namespace EImece.Domain.Helpers
         }
         private Tuple<int, int, int, int> GetFileImageSize(int width, int height, byte[] fileByte)
         {
-            Image img = ByteArrayToImage(fileByte);
+            Bitmap img = ByteArrayToBitmap(fileByte);
+            return GetFileImageSize(width, height, img);
+        }
+        private Tuple<int, int, int, int> GetFileImageSize(int width, int height, Bitmap img)
+        {
             int originalImageWidth = img.Width;
             int originalImageHeight = img.Height;
             double ratio = originalImageWidth.ToDouble() / originalImageHeight.ToDouble();
@@ -259,7 +263,6 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<int, int, int, int>(width, height, originalImageWidth, originalImageHeight);
         }
-
         private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
         {
 
@@ -562,8 +565,15 @@ namespace EImece.Domain.Helpers
                     {
                         var fullImagePath = Path.Combine(fullPath);
                         Bitmap b = new Bitmap(fullImagePath);
-                        width = width == 0 ? fileStorage.Width : width;
-                        height = height == 0 ? fileStorage.Height : height;
+
+                        var imageResize = GetFileImageSize(width, height, b);
+                        width = imageResize.Item1;
+                        height = imageResize.Item2;
+                        int originalImageWidth = imageResize.Item3;
+                        int originalImageHeight = imageResize.Item4;
+                        b.Dispose();
+
+                        b = new Bitmap(fullImagePath);
                         var resizeBitmap = ResizeImage(b, width, height);
                         result = GetBitmapBytes(resizeBitmap);
                         b.Dispose();
@@ -721,7 +731,18 @@ namespace EImece.Domain.Helpers
             System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
             return returnImage;
         }
-
+        public byte[] BitmapToByteArray(Bitmap imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            return ms.ToArray();
+        }
+        public Bitmap ByteArrayToBitmap(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Bitmap returnImage = new Bitmap(ms);
+            return returnImage;
+        }
 
 
 

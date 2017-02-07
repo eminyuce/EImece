@@ -3,6 +3,7 @@
 @using System.Text;
 @using System.Xml.Linq;
 @using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
 @using Resources;
 @model Product
 @{
@@ -14,10 +15,7 @@
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Product</h4>
+    <h4>Product Specs</h4>
     <hr />
  
     @Html.ActionLink("Go Back", "Index","Products", new { @search=Model.Name  }, new {@class="btn btn-default" })
@@ -25,77 +23,67 @@
         @using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
 
+            <div class="form-horizontal">
+                <h2>
+                    @Html.DisplayFor(model => model.Name)
+                </h2>
+                    @GeneralHelper.GetDescription(Model.Description,400)
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
+                @Html.HiddenFor(model => model.Id)
 
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-            @Html.HiddenFor(model => model.Id)
-
-            if (!String.IsNullOrEmpty(template.TemplateXml))
-            {
+                @if (!String.IsNullOrEmpty(template.TemplateXml))
+                {
                 XDocument xdoc = XDocument.Parse(template.TemplateXml);
                 var groups = xdoc.Root.Descendants("group");
 
                 if (groups.Any())
                 {
-                    <input id="templateId" name="templateId" type="hidden" value="@template.Id">
+                <input id="templateId" name="templateId" type="hidden" value="@template.Id">
 
-                    foreach (var group in groups)
-                    {
-                        if (group.FirstAttribute != null)
-                        {
+                foreach (var group in groups)
+                {
+                if (group.FirstAttribute != null)
+                {
 
-                            <h3>
-                                @group.FirstAttribute.Value
-                            </h3>
+                <h3>
+                    @group.FirstAttribute.Value
+                </h3>
 
-                        }
+                }
 
 
-                        foreach (XElement field in group.Elements())
-                        {
+                foreach (XElement field in group.Elements())
+                {
 
-                            var name = field.Attribute("name");
-                            var unit = field.Attribute("unit");
-                            var values = field.Attribute("values");
-                            var display = field.Attribute("display");
-                            var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                var name = field.Attribute("name");
+                var unit = field.Attribute("unit");
+                var values = field.Attribute("values");
+                var display = field.Attribute("display");
+                var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
 
-                            if (dbValueObj == null)
-                            {
-                                dbValueObj = new ProductSpecification();
-                            }
+                if (dbValueObj == null)
+                {
+                dbValueObj = new ProductSpecification();
+                }
 
-                            dbValueObj.FieldFormat = field;
-                            <div>
-                                @Html.EditorFor(model => dbValueObj, field.Name.LocalName)
-                            </div>
-                        }
-                    }
+                dbValueObj.FieldFormat = field;
+
+                @Html.EditorFor(model => dbValueObj, field.Name.LocalName)
 
 
                 }
-            }
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="@saveButtonText" class="btn btn-default" />
+                }
+
+
+                }
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="@saveButtonText" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
- 
-    }
+        }
 
- 
- 
+
+

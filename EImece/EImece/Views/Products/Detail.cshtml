@@ -16,85 +16,202 @@
     var relatedStories = Model.RelatedStories;
 }
 
-<h2>@product.Name</h2>
-<h4>
-    @product.ProductCategory.Name
-</h4>
 
-<!-- Page Content -->
+
 <div class="container">
 
-    <!-- Jumbotron Header -->
-    <header class="jumbotron hero-spacer">
-        @Html.Raw(product.GetCroppedImageTag(400, 250))
-    </header>
-
-    <hr>
-
-    <!-- Title -->
-    <div class="row">
-        <div class="col-lg-12">
-            <p>
-                @Html.Raw(product.Description)
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            @product.Discount
-        </div>
-        <div class="col-md-2">
-            @product.Price
-        </div>
-        <div class="col-md-2">
-            @product.ProductCode
-        </div>
-    </div>
-
-
-    @for (int i = 0; i < productFiles.Count; i++)
-    {
-        var f = productFiles[i];
-        bool renderRow = i % 4 == 0 ? true : false;
-
-        if (renderRow)
-        {
-            @: <div class="row  text-center">
+    <!-- Slider
+    ================================================== -->
+    <div class="eight columns">
+        <div class="slider-padding">
+            <div id="product-slider" class="royalSlider rsDefault">
+                @for (int i = 0; i < productFiles.Count; i++)
+                {
+                    var f = productFiles[i];
+                    <img class="rsImg" src="@f.GetCroppedImageUrl(f.FileStorageId, 454, 513)" data-rsTmb="@f.GetCroppedImageUrl(f.FileStorageId, 95,105)" alt="" />
                 }
-
-        <div class="col-md-3 col-sm-6 hero-feature">
-            <div class="thumbnail">
-                @Html.Raw(f.GetCroppedImageTag(f.FileStorageId, 70, 70))
-                <div class="caption">
-
-                </div>
             </div>
+            <div class="clearfix"></div>
         </div>
-
-        if (renderRow)
-        {
-            @:      </div>
-        }
-    }
+    </div>
 
 
+    <!-- Content
+    ================================================== -->
+    <div class="eight columns">
+        <div class="product-page">
+
+            <!-- Headline -->
+            <section class="title">
+                <h2>@product.Name</h2>
+                <h4>
+                    @product.ProductCategory.Name
+                </h4>
+                <span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>
+
+                <div class="reviews-counter">
+                    <div class="rating five-stars">
+                        <div class="star-rating"></div>
+                        <div class="star-bg"></div>
+                    </div>
+                    <span>3 Reviews</span>
+                </div>
+            </section>
+
+            <!-- Text Parapgraph -->
+            <section>
+                <p class="margin-reset">
+                    @Html.Raw(product.Description)
+                </p>
+                <!-- Share Buttons -->
+                <div class="share-buttons">
+                    <ul>
+                        <li><a href="#">Share</a></li>
+                        <li class="share-facebook"><a href="#">Facebook</a></li>
+                        <li class="share-twitter"><a href="#">Twitter</a></li>
+                        <li class="share-gplus"><a href="#">Google Plus</a></li>
+                        <li class="share-pinit"><a href="#">Pin It</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+
+            </section>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="container">
+    <div class="sixteen columns">
+        <!-- Tabs Navigation -->
+        <ul class="tabs-nav">
+            <li class="active"><a href="#tab1">Item Description</a></li>
+            <li><a href="#tab2">Additional Information</a></li>
+            <li><a href="#tab3">Reviews <span class="tab-reviews">(3)</span></a></li>
+        </ul>
+
+        <!-- Tabs Content -->
+        <div class="tabs-container">
+
+            <div class="tab-content" id="tab1">
+                <p>
+                    @Html.Raw(product.Description)
+                </p>
+            </div>
+
+            <div class="tab-content" id="tab2">
+
+
+                @Html.Partial("_ProductSpecs", product);
+
+
+            </div>
+
+            <div class="tab-content" id="tab3">
+
+                <!-- Reviews -->
+                <section class="comments">
+
+                    <ul>
+                        <li>
+                            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
+                            <div class="comment-content">
+                                <div class="arrow-comment"></div>
+                                <div class="comment-by">
+                                    <strong>John Doe</strong><span class="date">May 28, 2014</span>
+                                    <div class="rating five-stars"><div class="star-rating"></div><div class="star-bg"></div></div>
+                                </div>
+                                <p>Maecenas dignissim euismod nunc, in commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget just.</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
+                            <div class="comment-content">
+                                <div class="arrow-comment"></div>
+                                <div class="comment-by">
+                                    <strong>Kathy Brown</strong><span class="date">May 18, 2014</span>
+                                    <div class="rating five-stars"><div class="star-rating"></div><div class="star-bg"></div></div>
+                                </div>
+                                <p>Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam posuere tristique sem, eu ultricies tortor imperdiet vitae. Curabitur lacinia neque non metus</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
+                            <div class="comment-content">
+                                <div class="arrow-comment"></div>
+                                <div class="comment-by">
+                                    <strong>John Doe</strong><span class="date">May 10, 2014</span>
+                                    <div class="rating four-stars"><div class="star-rating"></div><div class="star-bg"></div></div>
+                                </div>
+                                <p>Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris.</p>
+                            </div>
+
+                        </li>
+                    </ul>
+
+                    <a href="#small-dialog" class="popup-with-zoom-anim button color">Add Review</a>
+
+                    <div id="small-dialog" class="zoom-anim-dialog mfp-hide">
+                        <h3 class="headline">Add Review</h3><span class="line margin-bottom-25"></span><div class="clearfix"></div>
+
+                        <!-- Form -->
+                        <form id="add-comment" class="add-comment">
+                            <fieldset>
+
+                                <div>
+                                    <label>Name:</label>
+                                    <input type="text" value="" />
+                                </div>
+
+                                <div>
+                                    <label>Rating:</label>
+                                    <span class="rate">
+                                        <span class="star"></span>
+                                        <span class="star"></span>
+                                        <span class="star"></span>
+                                        <span class="star"></span>
+                                        <span class="star"></span>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="margin-top-20">
+                                    <label>Email: <span>*</span></label>
+                                    <input type="text" value="" />
+                                </div>
+
+                                <div>
+                                    <label>Review: <span>*</span></label>
+                                    <textarea cols="40" rows="3"></textarea>
+                                </div>
+
+                            </fieldset>
+
+                            <a href="#" class="button color">Add Review</a>
+                            <div class="clearfix"></div>
+
+                        </form>
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+    </div>
 </div>
 
 
 
 
-@if (productSpecs.Any())
-{
-    <h3>
-        Product Specs
-    </h3>
-    foreach (var pt in productSpecs)
-    {
-        <div>
-            @String.Format("{0} -{1}", pt.Name, pt.Value)
-        </div>
-    }
-}
+
 
 @foreach (var pt in productTags)
 {
