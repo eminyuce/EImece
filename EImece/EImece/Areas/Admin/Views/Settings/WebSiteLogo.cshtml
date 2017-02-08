@@ -1,0 +1,72 @@
+﻿@model Setting
+@using EImece.Domain.Helpers;
+@using SharkDev.MVC
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@{
+    ViewBag.Title = "WebSiteLogo";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var saveButtonText = AdminResource.SaveButtonText;
+    string fileName = Model.SettingValue;
+    string fullPath = Path.Combine(Settings.ServerMapPath, fileName);
+    string thumbPath = "/thb" + fileName + "";
+    string partThumb1 = Path.Combine(Settings.ServerMapPath, "thumbs");
+    string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+}
+
+<h2>WebSiteLogo</h2>
+@*@Model.SettingValue <br />
+
+@partThumb2 <br />*@
+
+<img src="@partThumb2.Replace("~","")" />
+@using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.HiddenFor(r => r.Id)
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <div class="checkbox">
+                <span style="font-size:x-large;font-weight:bold;">
+                    Width:
+                    <input type="text" name="imageWidth" id="imageWidthTxt" />
+                    Height:
+                    <input type="text" name="imageHeight" id="imageHeightTxt" />
+
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+         Image Width
+        <div class="col-md-10">
+            <input type="hidden" name="ImageWidth" id="ImageWidth" />
+            <div id="sliderWidth">
+                <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        Image Height
+        <div class="col-md-10">
+            <input type="hidden" name="ImageHeight" id="ImageHeight" />
+            <div id="sliderHeight">
+                <div id="sliderHeightHandle" class="ui-slider-handle myslider"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <input type="file" name="webSiteLogo" />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@saveButtonText" class="btn btn-default" />
+        </div>
+    </div>
+}

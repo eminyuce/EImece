@@ -17,6 +17,12 @@
 
     <link href="~/Content/trizzy/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/green.css" id="colors">
+
+    @{ 
+
+
+
+    }
 </head>
 <body class="boxed">
 
@@ -41,15 +47,10 @@
         <div class="four columns">
             <div id="logo">
                 <h1>
-                    @Html.ActionLink("Eimece", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                <a href="index.html">
-                    
-                    <img src="images/logo.png" alt="Trizzy" />
-                    
-                    </a>
-                
                 </h1>
+           
             </div>
+            @Html.Action("WebSiteLogo", "Home")
         </div>
 
  

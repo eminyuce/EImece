@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
 using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IProductCategoryService : IBaseContentService<ProductCategory>
     {
-        List<ProductCategory> BuildTree(bool? isActive, int language = 1);
+        List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
         List<Node> CreateProductCategoryTreeViewDataList();
         ProductCategory GetProductCategory(int categoryId);
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);

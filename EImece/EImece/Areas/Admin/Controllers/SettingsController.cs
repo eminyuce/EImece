@@ -1,6 +1,8 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -19,17 +21,18 @@ namespace EImece.Areas.Admin.Controllers
         {
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var settings = SettingService.SearchEntities(whereLambda, search);
+         
             return View(settings);
         }
 
-         
+
         //
         // GET: /Setting/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = EntityFactory.GetBaseEntityInstance<Setting>(); 
+            var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
 
             if (id == 0)
@@ -77,11 +80,55 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(Setting);
         }
+        public ActionResult AddWebSiteLogo()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
+            int id = webSiteLogo != null ? webSiteLogo.Id : 0;
+            return RedirectToAction("WebSiteLogo", new { id });
+        }
+        public ActionResult WebSiteLogo(int id = 0)
+        {
+            var content = EntityFactory.GetBaseEntityInstance<Setting>();
+
+            if (id == 0)
+            {
+
+            }
+            else
+            {
+                content = SettingService.GetSingle(id);
+            }
+
+
+            return View(content);
+        }
+        public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase webSiteLogo = null)
+        {
+
+            var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
+            if (id > 0)
+            {
+                webSiteLogoSetting = SettingService.GetSingle(id);
+                FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
+                id = webSiteLogoSetting.Id;
+            }
+            
+            var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, webSiteLogo);
+            webSiteLogoSetting.Name = Settings.WebSiteLogo;
+            webSiteLogoSetting.Description = "";
+            webSiteLogoSetting.EntityHash = "";
+            webSiteLogoSetting.SettingValue = result.Item1;
+            webSiteLogoSetting.SettingKey = Settings.WebSiteLogo;
+            webSiteLogoSetting.IsActive = true;
+            webSiteLogoSetting.Position = 1;
+            SettingService.SaveOrEditEntity(webSiteLogoSetting);
 
 
 
+            return RedirectToAction("WebSiteLogo", new { id = webSiteLogoSetting.Id });
+        }
         //
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)

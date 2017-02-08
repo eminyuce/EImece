@@ -193,6 +193,7 @@
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
+    <Compile Include="Models\FrontModels\ProductCategoryTreeModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductIndexViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />

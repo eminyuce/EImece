@@ -13,30 +13,31 @@ namespace EImece.Domain
 {
     public class Settings
     {
-        public const String DbConnectionKey = "EImeceDbConnection";
-        public const String AdministratorRole = "Admin";
-        public const String EditorRole = "NormalUser";
-        public const String ImageActionName = "Index";
+        public const string WebSiteLogo = "WebSiteLogo";
+        public const string DbConnectionKey = "EImeceDbConnection";
+        public const string AdministratorRole = "Admin";
+        public const string EditorRole = "NormalUser";
+        public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
 
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static String HttpProtocolForImages
+        public static string HttpProtocolForImages
         {
             get
             {
                 var useSll = Settings.GetConfigBool("UseSSLImages", false);
-                String httpSecure = String.Format("http{0}", useSll ? "s" : "");
+                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
 
                 return httpSecure;
             }
         }
-        public static String HttpProtocol
+        public static string HttpProtocol
         {
             get
             {
                 var useSll = GetConfigBool("UseSSL", false);
-                String httpSecure = String.Format("http{0}", useSll ? "s" : "");
+                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
 
                 return httpSecure;
             }
@@ -110,9 +111,9 @@ namespace EImece.Domain
         public static string GetConfigString(string configName, string defaultValue = "")
         {
             var appValue = ConfigurationManager.AppSettings[configName];
-            if (String.IsNullOrEmpty(appValue))
+            if (string.IsNullOrEmpty(appValue))
             {
-                Logger.Info(String.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
                 return defaultValue;
             }
             else
@@ -125,13 +126,13 @@ namespace EImece.Domain
         {
 
             var configValue = defaultValue;
-            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
             {
                 configValue = ConfigurationManager.AppSettings[configName].ToBool();
             }
             else
             {
-                Logger.Info(String.Format("Config Name {0} is using default value {1}  <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                Logger.Info(string.Format("Config Name {0} is using default value {1}  <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
             }
             return configValue;
 
@@ -140,13 +141,13 @@ namespace EImece.Domain
         public static int GetConfigInt(string configName, int defaultValue = 0)
         {
             int configValue = -1;
-            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
             {
                 configValue = ConfigurationManager.AppSettings[configName].ToInt();
             }
             else
             {
-                Logger.Info(String.Format("Config Name {0} is using default value {1}   <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                Logger.Info(string.Format("Config Name {0} is using default value {1}   <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
             }
             return configValue == -1 ? defaultValue : configValue;
         }
@@ -234,6 +235,8 @@ namespace EImece.Domain
                 return GetConfigBool("IsCacheActive", true);
             }
         }
+
+
 
         public static string TempPath = "~/media/tempFiles/";
         public static string ServerMapPath = "~/media/images/";

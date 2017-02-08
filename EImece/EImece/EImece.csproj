@@ -520,6 +520,7 @@
     <Content Include="Content\trizzy\fonts\fontello.eot" />
     <Content Include="Content\trizzy\fonts\fontello.ttf" />
     <Content Include="Content\trizzy\fonts\fontello.woff" />
+    <Content Include="Areas\Admin\Views\Settings\WebSiteLogo.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -682,6 +683,7 @@
     <Content Include="Views\Stories\Detail.cshtml" />
     <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
     <Content Include="Views\Products\_ProductSpecs.cshtml" />
+    <Content Include="Views\Shared\_WebSiteLogo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using NLog;
 using SharkDev.Web.Controls.TreeView.Model;
 using System;
@@ -180,12 +181,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(productCategory);
 
         }
-        public ActionResult GetCategories()
-        {
-            List<ProductCategory> treelist = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-        }
-
+       
 
     }
 }

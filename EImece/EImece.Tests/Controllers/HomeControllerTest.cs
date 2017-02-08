@@ -26,7 +26,7 @@ namespace EImece.Tests.Controllers
     public class HomeControllerTest
     {
 
-        private String ConnectionString  { get { return Settings.DbConnectionKey; } }
+        private String ConnectionString { get { return Settings.DbConnectionKey; } }
 
         [TestMethod]
         public void Index()
@@ -48,21 +48,22 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void RegexTest()
         {
-            String validationDetail = @"MX:asdd.com.1.arsmtp.com.
+            String validationDetail = @"MX:sitemail2.everyone.net.
 HELO maritimereporter.com
 
-250 inbound.appriver.com your name is not maritimereporter.com
+250 m0087083.mta.everyone.net
 MAIL FROM:<update@maritimereporter.com>
 
-250 update@maritimereporter.com sender accepted
-RCPT TO:<FFogarty@asdd.com>
+250 Sender okay
+RCPT TO:<gregw@traversebaymarine.com>
 
-250 FFogarty@asdd.com will 445 relay to a client 232 address 334
+999 Recipient okay
 QUITE
-
 ";
+            int startIndex = validationDetail.IndexOf("RCPT TO:");
+
             Regex regex = new Regex(@"^\d{3}",RegexOptions.Multiline);
-            var d = regex.Matches(validationDetail).Cast<Match>()
+            var d = regex.Matches(validationDetail.Substring(startIndex)).Cast<Match>()
                .Select(match => match.Value)
                .ToArray();
 
@@ -84,7 +85,7 @@ QUITE
             {
                 Console.WriteLine(ex.StackTrace.ToString());
             }
-          
+
         }
 
         [TestMethod]
@@ -92,7 +93,7 @@ QUITE
         {
             SqlConnection cnn;
             string connetionString2 = ConfigurationManager.ConnectionStrings[ConnectionString].ConnectionString;
-         cnn = new SqlConnection(connetionString2);
+            cnn = new SqlConnection(connetionString2);
             try
             {
                 cnn.Open();
@@ -170,9 +171,9 @@ QUITE
 
             foreach (var i in numbers)
             {
-               Console.WriteLine(i.Trim().ToInt()+"   "+  Math.Floor(Math.Log(i.Trim().ToInt() + 7)));
+                Console.WriteLine(i.Trim().ToInt() + "   " + Math.Floor(Math.Log(i.Trim().ToInt() + 7)));
             }
-         
+
         }
     }
 }

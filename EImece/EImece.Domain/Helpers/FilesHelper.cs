@@ -473,7 +473,7 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
         }
-        private Tuple<string, int, int, int, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
+        public Tuple<string, int, int, int, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;

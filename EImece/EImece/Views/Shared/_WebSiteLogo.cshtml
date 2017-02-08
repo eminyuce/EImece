@@ -1,0 +1,28 @@
+﻿@model Setting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+
+@{
+    if (Model != null)
+    {
+        string fileName = Model.SettingValue;
+        string fullPath = Path.Combine(Settings.ServerMapPath, fileName);
+        string thumbPath = "/thb" + fileName + "";
+        string partThumb1 = Path.Combine(Settings.ServerMapPath, "thumbs");
+        string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+
+ 
+       <a href="/">
+           <img src="@partThumb2.Replace("~","")" />
+    </a>  
+    }
+    else
+    {
+        @String.Format("NO LOGO")
+    }
+
+
+}
+
+
+

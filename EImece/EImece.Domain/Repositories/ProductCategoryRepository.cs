@@ -9,6 +9,7 @@ using EImece.Domain.DbContext;
 using SharkDev.Web.Controls.TreeView.Model;
 using EImece.Domain.Helpers;
 using System.Linq.Expressions;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Repositories
 {
@@ -19,11 +20,11 @@ namespace EImece.Domain.Repositories
         }
 
         //Recursion method for recursively get all child nodes
-        private void GetTreeview(List<ProductCategory> list, ProductCategory current, ref List<ProductCategory> returnList)
+        private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, ref List<ProductCategoryTreeModel> returnList)
         {
             //get child of current item
-            var childs = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
-            current.Childrens = new List<ProductCategory>();
+            var childs = list.Where(a => a.ProductCategory.ParentId == current.ProductCategory.Id).OrderBy(r => r.ProductCategory.Position).ToList();
+            current.Childrens = new List<ProductCategoryTreeModel>();
             current.Childrens.AddRange(childs);
             foreach (var i in childs)
             {
@@ -31,14 +32,15 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
+        public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            var productCategories = GetActiveBaseContents(isActive, language);
+            // var productCategories = GetActiveBaseContents(isActive, language);
+            var productCategories = EImeceDbContext.ProductCategories.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Count() });
+            List<ProductCategoryTreeModel> list = productCategories.Select(r=> new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount  } ).ToList();
+            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
-            List<ProductCategory> list = productCategories.ToList();
-            List<ProductCategory> returnList = new List<ProductCategory>();
             //find top levels items
-            var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
+            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
             returnList.AddRange(topLevels);
             foreach (var i in topLevels)
             {

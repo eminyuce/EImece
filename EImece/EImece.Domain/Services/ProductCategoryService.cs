@@ -11,6 +11,7 @@ using SharkDev.Web.Controls.TreeView.Model;
 using NLog;
 using EImece.Domain.Helpers;
 using System.Data.Entity.Validation;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services
 {
@@ -28,10 +29,10 @@ namespace EImece.Domain.Services
             ProductCategoryRepository = repository;
         }
 
-        public List<ProductCategory> BuildTree(bool? isActive, int language = 1)
+        public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
-            List<ProductCategory> result = null;
+            List<ProductCategoryTreeModel> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {

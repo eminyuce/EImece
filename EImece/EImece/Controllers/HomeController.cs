@@ -89,6 +89,12 @@ namespace EImece.Controllers
             var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        public ActionResult WebSiteLogo()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
+            return PartialView("_WebSiteLogo", webSiteLogo);
+        }
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
 

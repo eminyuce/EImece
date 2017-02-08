@@ -1,7 +1,9 @@
 ﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
-@model List<ProductCategory>
+@using EImece.Domain.Models.FrontModels;
+
+@model List<ProductCategoryTreeModel>
 @{
     var productCategories = Model;
 }
@@ -10,7 +12,7 @@
     @foreach (var p in productCategories)
     {
         <li>
-            @Html.ActionLink(p.Name, "Category", "ProductCategories", new { id = p.GetSeoUrl() }, null)
+            @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, null)
             @if (p.Childrens.Any())
             {
                 @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
