@@ -684,6 +684,7 @@
     <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
     <Content Include="Views\Products\_ProductSpecs.cshtml" />
     <Content Include="Views\Shared\_WebSiteLogo.cshtml" />
+    <Content Include="Views\Stories\Categories.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

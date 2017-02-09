@@ -86,7 +86,7 @@ namespace EImece.Domain.Services
                 result = new StoryIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
-                result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language); 
+                result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
 
             }
@@ -113,7 +113,16 @@ namespace EImece.Domain.Services
             }
         }
 
-
-
+        public StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page)
+        {
+            StoryCategoryViewModel result = null;
+          
+                result = new StoryCategoryViewModel();
+                int pageSize = Settings.RecordPerPage;
+                result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
+                result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
+                
+            return result;
+        }
     }
 }

@@ -10,6 +10,6 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductIndexViewModel
     {
-        public PaginatedList<Product> Products { get; internal set; }
+        public PaginatedList<Product> Products { get; set; }
     }
 }

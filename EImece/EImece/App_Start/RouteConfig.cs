@@ -41,6 +41,13 @@ namespace EImece
                );
 
             routes.MapRoute(
+                   name: "Storycategories",
+                   url: "stories/categories/{id}",
+                   defaults: new { controller = "stories", action = "categories", id = UrlParameter.Optional },
+                   namespaces: new[] { "EImece.Controllers" }
+               );
+
+            routes.MapRoute(
                    name: "StoryDetail",
                    url: "stories/{categoryName}/{id}",
                    defaults: new { controller = "stories", action = "Detail", id = UrlParameter.Optional },

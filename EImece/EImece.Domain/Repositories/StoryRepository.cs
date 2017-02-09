@@ -71,6 +71,28 @@ namespace EImece.Domain.Repositories
             Expression<Func<Story, int>> keySelector = t => t.Position;
             return FindAllIncluding(match, take, 0, keySelector, OrderByType.Ascending, includeProperties.ToArray());
         }
+
+        public PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var includeProperties = GetIncludePropertyExpressionList();
+                includeProperties.Add(r => r.MainImage);
+                includeProperties.Add(r => r.StoryFiles);
+                includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+                Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.StoryCategoryId == storyCategoryId && r2.MainPage && r2.Lang == language;
+                Expression<Func<Story, int>> keySelector = t => t.Position;
+                var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+
+                return items;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
+        }
+
         public Story GetStoryById(int storyId)
         {
             var includeProperties = GetIncludePropertyExpressionList();

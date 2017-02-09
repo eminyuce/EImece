@@ -26,5 +26,12 @@ namespace EImece.Controllers
             var story = StoryService.GetStoryDetailViewModel(storyId);
             return View(story);
         }
+        [OutputCache(CacheProfile = "Cache20Minutes")]
+        public ActionResult Categories(String id, int page=1)
+        {
+            var storyCategoryId = id.GetId();
+            var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
+            return View(storyCategory);
+        }
     }
 }

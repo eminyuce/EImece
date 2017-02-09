@@ -17,6 +17,6 @@ namespace EImece.Domain.Services.IServices
         StoryIndexViewModel GetMainPageStories(int page, int currentLanguage);
         void SaveStoryTags(int storyId, int[] tags);
         StoryDetailViewModel GetStoryDetailViewModel(int storyId);
-  
+        StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page);
     }
 }
