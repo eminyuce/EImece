@@ -11,6 +11,6 @@ namespace EImece.Domain.Models.FrontModels
     public  class StoryIndexViewModel
     {
         public PaginatedList<Story> Stories { get; set; }
-
+        public List<StoryCategory> StoryCategories { get; set; }
     }
 }

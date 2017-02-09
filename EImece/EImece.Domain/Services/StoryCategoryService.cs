@@ -63,5 +63,10 @@ namespace EImece.Domain.Services
                 StoryCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
+        public List<StoryCategory> GetActiveStoryCategories(int language)
+        {
+            return StoryCategoryRepository.GetActiveStoryCategories(language);
+        }
     }
 }

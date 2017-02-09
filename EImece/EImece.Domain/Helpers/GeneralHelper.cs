@@ -853,7 +853,7 @@ namespace EImece.Domain.Helpers
                 text = text.Replace(olds[i], news[i]);
             }
 
-            text = text.ToUpper();
+           // text = text.ToUpper();
 
             return text;
         }

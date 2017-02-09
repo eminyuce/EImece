@@ -20,6 +20,9 @@ namespace EImece.Domain.Services
 
         private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
 
+        [Inject]
+        public IStoryCategoryService StoryCategoryService { get; set; }
+
         private IStoryRepository StoryRepository { get; set; }
         public StoryService(IStoryRepository repository) : base(repository)
         {
@@ -83,6 +86,7 @@ namespace EImece.Domain.Services
                 result = new StoryIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
+                result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language); 
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
 
             }

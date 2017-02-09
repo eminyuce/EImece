@@ -31,8 +31,8 @@ namespace EImece.Domain.Repositories
         protected BaseRepository(IEImeceContext dbContext) : base(dbContext)
         {
             DbContext = dbContext;
-            EImeceDbContext.Configuration.LazyLoadingEnabled = false;
-            EImeceDbContext.Configuration.ProxyCreationEnabled = false;
+            ((EImeceContext)DbContext).Configuration.LazyLoadingEnabled = false;
+            ((EImeceContext)DbContext).Configuration.ProxyCreationEnabled = false;
         //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
 
         }

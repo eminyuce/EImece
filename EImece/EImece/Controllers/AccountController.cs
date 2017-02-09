@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EImece.Models;
+using Ninject;
 
 namespace EImece.Controllers
 {
@@ -20,6 +21,11 @@ namespace EImece.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
+        [Inject]
+        public IAuthenticationManager AuthenticationManager { get; set; }
+
+
 
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -382,13 +388,7 @@ namespace EImece.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+       
 
         private void AddErrors(IdentityResult result)
         {

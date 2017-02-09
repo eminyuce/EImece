@@ -82,12 +82,12 @@ namespace EImece.App_Start
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
-
+            m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
+            m.InRequestScope();
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
 
-            m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
-            m.InRequestScope();
+          
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
             kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();

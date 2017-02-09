@@ -3,13 +3,35 @@
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Models.FrontModels;
-
+@using EImece.Domain.Helpers.Extensions;
 @{
     ViewBag.Title = "Index";
     var stories = Model.Stories;
+    var storyCategories = Model.StoryCategories;
+
 }
 
 <h2>Index</h2>
+
+@foreach (var item in storyCategories)
+{
+   <div>
+       @Html.ActionLink(item.Name, "Categories", new { id = item.GetSeoUrl() })
+   </div>
+
+    foreach (var story in item.Stories)
+    {
+        <div>
+            @story.Name
+
+           
+        </div>
+    }
+}
+
+
+
+
 
 @Html.BootstrapPager(stories.PageIndex,
     index => Url.Action("Index", "Stories", new { page = index }),

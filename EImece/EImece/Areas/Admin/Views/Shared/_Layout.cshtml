@@ -1,7 +1,7 @@
 ﻿@using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-
+@using Microsoft.AspNet.Identity
 @{
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
@@ -51,11 +51,25 @@
                 <ul class="nav navbar-nav">
                     <li style="float:left;">
                         <b>
-                            @String.Format("{0}", User.Identity.Name)
-                            @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
+                          
+
+                            @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                            @Html.AntiForgeryToken()
+
+                            <div>
+                                <p>
+                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+                                </p>
+                                <p><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></p>
+                                <p>
+                                    @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
+
+                            </div>
+                            }
+
                         </b>
                     </li>
-                    <li>@Html.ActionLink("Change Password", "ChangePassword", "Users", new { area = "admin" }, new { @class = "btn btn-outline-primary" })</li>
                      <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class= "btn btn-outline-primary" })</li>
                      <li>
 

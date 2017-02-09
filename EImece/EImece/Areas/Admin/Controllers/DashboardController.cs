@@ -2,6 +2,9 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using Ninject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +18,8 @@ namespace EImece.Areas.Admin.Controllers
 
     public class DashboardController : BaseAdminController
     {
+        [Inject]
+        public IAuthenticationManager AuthenticationManager { get; set; }
         // GET: Admin/Dashboard
         public ActionResult Index()
         {
@@ -83,6 +88,13 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -6,13 +6,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.DbContext;
+using System.Linq.Expressions;
+using GenericRepository.EntityFramework.Enums;
+using NLog;
 
 namespace EImece.Domain.Repositories
 {
     public class StoryCategoryRepository : BaseContentRepository<StoryCategory>, IStoryCategoryRepository
     {
+
+        private static readonly Logger StoryCategoryLogger = LogManager.GetCurrentClassLogger();
+
         public StoryCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
+        }
+
+        public List<StoryCategory> GetActiveStoryCategories(int language)
+        {
+           // EImeceDbContext.Database.Log = s => StoryCategoryLogger.Trace(s);
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            // includeProperties.Add(r => r.Stories);
+            Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Count() > 0;
+            Expression<Func<StoryCategory, int>> keySelector = t => t.Position;
+            var item = FindAllIncluding(match, null, null, keySelector, OrderByType.Descending, includeProperties.ToArray());
+            //var item = FindAll(match,keySelector,OrderByType.Descending, null,null);
+            //var item =this.EImeceDbContext.StoryCategories.Where(match).OrderBy(keySelector).ThenByDescending(r => r.UpdatedDate).ToList();
+           // EImeceDbContext.Database.Log = s => StoryCategoryLogger.Trace(s);
+            return item;
         }
 
         public StoryCategory GetStoryCategoryById(int storyCategoryId)
