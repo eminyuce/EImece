@@ -1,0 +1,8 @@
+﻿@model List<String>
+@{ 
+    var arraySettings = Model.ToArray();
+}
+<ul class="top-bar-menu">
+    <li><i class="fa fa-phone"></i> @Html.Raw(arraySettings[0])</li>
+    <li><i class="fa fa-envelope"></i><a href="#">@Html.Raw(arraySettings[1])</a></li>
+</ul>

@@ -440,14 +440,14 @@ namespace EImece.Domain.Helpers
                             String candidatePathThb = Path.Combine(partThumb1, "thb" + mainImage.FileName);
 
                             var fileByte = File.ReadAllBytes(fullPath);
-
+                            var ext = Path.GetExtension(mainImage.FileName);
                             var imageResize = GetFileImageSize(width, height, fileByte);
                             width = imageResize.Item1;
                             height = imageResize.Item2;
                             int originalImageWidth = imageResize.Item3;
                             int originalImageHeight = imageResize.Item4;
 
-                            var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+                            var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
                             var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
                             fs1.Write(byteArrayIn);
                             fs1.Close();
@@ -499,7 +499,8 @@ namespace EImece.Domain.Helpers
                 int originalImageWidth = imageResize.Item3;
                 int originalImageHeight = imageResize.Item4;
 
-                var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth);
+
+                var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, GetImageFormat(ext));
                 var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
                 fs.Write(fileByteCropped);
                 fs.Close();
@@ -507,7 +508,7 @@ namespace EImece.Domain.Helpers
                 imageSize = fileByteCropped.Length;
 
                 //Resize Image - Thumbs
-                var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width);
+                var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
                 var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
                 fs1.Write(byteArrayIn);
                 fs1.Close();
@@ -517,6 +518,25 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, int, int, int, string, string>(newFileName, width, height, imageSize, contentType, fileName);
 
+        }
+
+        public ImageFormat GetImageFormat(String extension)
+        {
+            extension = extension.Replace(".", "");
+            switch (extension)
+            {
+                case "jpeg": return ImageFormat.Jpeg;
+                case "jpg": return ImageFormat.Jpeg;
+                case "png":  return ImageFormat.Png; 
+                case "icon": return ImageFormat.Icon; 
+                case "gif": return ImageFormat.Gif;
+                case "bmp": return ImageFormat.Bmp; 
+                case "tiff": return ImageFormat.Tiff; 
+                case "emf": return ImageFormat.Emf;
+                case "wmf": return ImageFormat.Wmf; 
+            }
+
+            return ImageFormat.Jpeg;
         }
 
         public ImageOrientation GetOrientation(int width, int height)
@@ -670,7 +690,7 @@ namespace EImece.Domain.Helpers
         }
         // Create a thumbnail in byte array format from the image encoded in the passed byte array.  
         // (RESIZE an image in a byte[] variable.)  
-        public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide, int Height, int Width)
+        public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide, int Height, int Width, ImageFormat format)
         {
             byte[] ReturnedThumbnail;
 
@@ -708,7 +728,7 @@ namespace EImece.Domain.Helpers
                 newBitmap = ResizeImage(startBitmap, newWidth, newHeight);
 
                 // Save this image to the specified stream in the specified format.  
-                newBitmap.Save(NewMemoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                newBitmap.Save(NewMemoryStream, format);
 
                 // Fill the byte[] for the thumbnail from the new MemoryStream.  
                 ReturnedThumbnail = NewMemoryStream.ToArray();
@@ -854,19 +874,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public byte[] CreateGoogleImage(HttpPostedFileBase file)
-        {
-
-            var fileByte = GeneralHelper.ReadFully(file.InputStream);
-            //Create image from Bytes array
-            System.Drawing.Image img = ByteArrayToImage(fileByte);
-            int height = System.Convert.ToInt32(System.Convert.ToDouble(img.Height) * .7);
-            int width = System.Convert.ToInt32(System.Convert.ToDouble(img.Width) * .7);
-            //Resize Image - ORIGINAL
-            var byteArrayIn = CreateThumbnail(fileByte, 10000, height, width);
-
-            return byteArrayIn;
-        }
+       
 
         /// <summary>
         /// Method to resize, convert and save the image.

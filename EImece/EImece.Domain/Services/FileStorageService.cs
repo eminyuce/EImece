@@ -57,6 +57,8 @@ namespace EImece.Domain.Services
                     fileStorage.FileSize = file.size;
                     fileStorage.Type = contentImageType.Value.ToStr();
                     FileStorageRepository.SaveOrEdit(fileStorage);
+                    file.fileStorageId = fileStorage.Id;
+
                     switch (contentMediaType.Value)
                     {
                         case MediaModType.Stories:

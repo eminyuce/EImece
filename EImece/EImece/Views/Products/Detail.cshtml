@@ -14,6 +14,7 @@
     var productCategory = product.ProductCategory;
     var productSpecs = product.ProductSpecifications;
     var relatedStories = Model.RelatedStories;
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
 }
 
 
@@ -25,7 +26,14 @@
     <div class="eight columns">
         <div class="slider-padding">
             <div id="product-slider" class="royalSlider rsDefault">
-                @for (int i = 0; i < productFiles.Count; i++)
+                @if (product.ImageState)
+                {
+
+                    <img class="rsImg" src="@product.GetCroppedImageUrl(productMainImageId, 454, 513)" data-rsTmb="@product.GetCroppedImageUrl(productMainImageId, 95,105)" alt="" />
+
+                }
+           
+                   @for (int i = 0; i < productFiles.Count; i++)
                 {
                     var f = productFiles[i];
                     <img class="rsImg" src="@f.GetCroppedImageUrl(f.FileStorageId, 454, 513)" data-rsTmb="@f.GetCroppedImageUrl(f.FileStorageId, 95,105)" alt="" />

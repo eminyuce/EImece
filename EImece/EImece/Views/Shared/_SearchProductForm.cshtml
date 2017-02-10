@@ -9,9 +9,7 @@
 }
 @using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get, new { style="display:inline-block;", @class = "form-inline --navbar-form --navbar-left" }))
 {
-    <div class="form-group">
-        <input name="search" type="text" id="Search_TextBox"
-               class="search-field form-control" placeholder="@SearchProductTextBoxPlaceHolder">
-    </div>
-    <input type="submit" value="@SearchProductButtonText" class="btn btn-default" />    
+    <button><i class="fa fa-search"></i></button>
+    <input class="search-field" name="search" id="Search_TextBox" type="text" placeholder="Search" value="" />
 }
+

@@ -18,7 +18,7 @@
     <link href="~/Content/trizzy/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/green.css" id="colors">
 
-    @{ 
+    @{
 
 
 
@@ -30,14 +30,18 @@
     <div id="top-bar">
         <div class="container">
             <div class="ten columns">
-                @Html.Partial("_LoginPartial")    
+ 
+                @Html.Action("WebSiteAddressInfo", "Home")
             </div>
-                <div class="six columns">
-                    @Html.Action("SocialMediaLinks", "Home")
-                </div>
+            <div class="six columns">
+                @Html.Action("SocialMediaLinks", "Home")
+            </div>
 
-            </div>
+        </div>
     </div>
+
+
+
 
     <!-- Header
     ================================================== -->
@@ -47,20 +51,30 @@
         <div class="four columns">
             <div id="logo">
                 <h1>
-                    @Html.Action("WebSiteLogo", "Home")
+          
                 </h1>
-           
+
             </div>
             @Html.Action("WebSiteLogo", "Home")
         </div>
 
- 
+        <!-- Additional Menu -->
+        <div class="twelve columns">
+            <div id="additional-menu">
+                <ul>
+      
+                    @Html.Action("ProductTree", "Home")
+                </ul>
+            </div>
+        </div>
+
+
         <!-- Shopping Cart -->
         <div class="twelve columns">
- 
+
             <!-- Search -->
             <nav class="top-search">
-                 @Html.Partial("_SearchProductForm")
+                @Html.Partial("_SearchProductForm")
             </nav>
 
         </div>
@@ -72,33 +86,26 @@
     <div class="container">
         <div class="sixteen columns">
 
-           
+
             <nav id="navigation">
                 @Html.Action("Menu", "Home")
             </nav>
         </div>
     </div>
 
+ 
+
+
+
     <div class="container body-content">
-
-
-
-        <div class="row">
-            <div class="col-md-12">
-                @RenderBody()
-            </div>
-        </div>
-
-        <hr />
-        <footer>
-            @Html.Partial("_Footer")
-
-        </footer>
-
-        @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
-
+        @RenderBody()
     </div>
+    <footer>
+        @Html.Partial("_Footer")
 
+    </footer>
+
+    @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/jqueryui")*@
     @*@Scripts.Render("~/bundles/bootstrap")*@

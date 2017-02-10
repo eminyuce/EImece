@@ -9,53 +9,17 @@
 }
 <div class="main-page-product">
     <div class="panel panel-default">
-        @*
-        <div class="panel-heading">
-            <h3 class="panel-title"></h3>
-        </div>
-         *@
-        @Html.Raw(product.GetCroppedImageTag(300, 300))
+        <a href="@product.GetDetailPageUrl("detail", "products",categoryName)">
+            @Html.Raw(product.GetCroppedImageTag(300, 300))
+        </a>
+     
         <div class="panel-body">            
             <h4>@Html.ActionLink(product.Name, "detail", "products", new { categoryName = categoryName, id = product.GetSeoUrl() }, null)</h4>
         </div>
         <div class="panel-footer">
-            <strong>Category: @product.ProductCategory.Name</strong>
-            @*
-            @foreach (var productFile in productFiles)
-            {
-                <span class="label label-default">
-                    @productFile.Name - @productFile.Position
-                </span>
-            }
-        *@
+            <strong> @product.ProductCategory.Name</strong>
+      
         </div>
     </div>
 </div>
-@*
-Product Files : @product.ProductFiles.Count()
-<div>
-    <dl class="dl-horizontal">
-        <h2>
-            Product Category: @product.ProductCategory.Name
-        </h2>
-        @if (product.MainImage != null)
-        {
-            @product.MainImage.FileName
-        }
-        @Html.ActionLink(product.Name, "detail", "products", new { category = categoryName, id = product.GetSeoUrl() }, null)
-         
-            @Html.Raw(product.GetCroppedImageTag(200, 200))
-         
-
-
-        @foreach(var productFile in productFiles)
-        {
-            <b style="color:red;">
-                @productFile.Name  @productFile.Position
-            </b>
-        }
-    </dl>
-</div>
-*@
-
  

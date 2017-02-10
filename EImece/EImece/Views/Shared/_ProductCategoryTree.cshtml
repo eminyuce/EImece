@@ -9,16 +9,15 @@
 }
 
 @foreach (var p in productCategories)
-            {
-    <div class="btn-group">
+{
+
+    <li>
         @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
         @if (p.Childrens.Any())
         {
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-                        @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+
+            @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
         }
-    </div>
+    </li>
+
 }

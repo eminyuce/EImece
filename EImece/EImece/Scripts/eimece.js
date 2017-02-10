@@ -290,7 +290,7 @@ function deleteItemsSuccess(data) {
         pp.parent().parent().remove();
     });
 
-    refresh();
+    refresh(500);
 }
 function changeStateSuccess(data) {
     //var parsedPostData = jQuery.parseJSON(data);
@@ -305,15 +305,15 @@ function changeStateSuccess(data) {
 
     });
 }
-function refresh() {
+function refresh(timeElapsed) {
 
     setTimeout(function () {
         location.reload()
-    }, 100);
+    }, timeElapsed);
 }
 function changeOrderingSuccess(data) {
     console.log(data);
-    refresh();
+    refresh(500);
 }
 function ajaxMethodCall(postData, ajaxUrl, successFunction) {
 

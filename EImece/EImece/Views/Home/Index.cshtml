@@ -3,30 +3,24 @@
 @model MainPageViewModel
 
 @{
- 
+
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
 }
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        @Html.Partial("_CarouselMainPageImages", mainPageImages)
+<!-- Slider
+================================================== -->
+<div class="container fullwidth-element home-slider">
+
+    <div class="tp-banner-container">
+        <div class="tp-banner">
+            <ul>
+                @for (int i = 0; i < mainPageImages.Count; i++)
+                {
+                    var mainPageImage = mainPageImages[i];
+                    @Html.DisplayFor(model => mainPageImage, "MainPageImage", new { index = i })
+                }
+
+            </ul>
+        </div>
     </div>
 </div>
-
-@*
-    @foreach (var mainPageImage in mainPageImages)
-    {
-        @Html.DisplayFor(i=>mainPageImage)
-    }
-*@
-<hr />
-<div class="row">
-    @foreach (var mainPageProduct in mainPageProducts)
-    {
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            @Html.DisplayFor(i => mainPageProduct, "MainPageProduct")
-        </div>
-    }
-</div>
-

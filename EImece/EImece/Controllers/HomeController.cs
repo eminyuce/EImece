@@ -95,6 +95,16 @@ namespace EImece.Controllers
             var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
             return PartialView("_WebSiteLogo", webSiteLogo);
         }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        public ActionResult WebSiteAddressInfo()
+        {
+            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");
+            var resultList = new List<String>();
+            resultList.Add(WebSiteCompanyPhoneAndLocation);
+            resultList.Add(WebSiteCompanyEmailAddress);
+            return PartialView("_WebSiteAddressInfo", resultList);
+        }
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
 
