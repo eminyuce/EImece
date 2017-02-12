@@ -15,11 +15,11 @@ namespace EImece.Domain.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(500, ErrorMessage = "Name cannot be longer than 500 characters.")]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NamePropertyRequiredErrorMessage))]
+        [StringLength(500,ErrorMessageResourceType =typeof(Resource), ErrorMessageResourceName =nameof(Resource.NamePropertyErrorMessage))]
         [Column("Name")]
-        [Display(Name = "Name")]
-
+        //[Display(Name = "Name")]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Name))]
         public string Name { get; set; }
         public string EntityHash { get; set; }
         public DateTime? CreatedDate { get; set; }
