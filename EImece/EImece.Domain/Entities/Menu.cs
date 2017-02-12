@@ -20,6 +20,6 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public List<Menu> Childrens { get; set; }
 
-        public virtual List<MenuFile> MenuFiles { get; set; }
+        public ICollection<MenuFile> MenuFiles { get; set; }
     }
 }

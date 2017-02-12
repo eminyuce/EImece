@@ -65,7 +65,9 @@ namespace EImece.Domain.Repositories
             Expression<Func<Menu, object>> includeProperty2 = r => r.MenuFiles;
             Expression<Func<Menu, object>>[] includeProperties = { includeProperty2, includeProperty3 };
 
-            return GetSingleIncluding(menuId, includeProperties);
+            var item = GetSingleIncluding(menuId, includeProperties);
+
+            return item;
         }
 
         public List<Menu> GetMenuLeaves(bool? isActive, int language)

@@ -11,6 +11,6 @@ namespace EImece.Domain.Entities
         public int StoryId { get; set; }
         public int FileStorageId { get; set; }
 
-        public virtual FileStorage FileStorage { get; set; }
+        public  FileStorage FileStorage { get; set; }
     }
 }

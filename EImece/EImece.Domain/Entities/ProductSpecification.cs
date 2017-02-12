@@ -17,7 +17,7 @@ namespace EImece.Domain.Entities
         public string Unit { get; set; }
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
+        public  Product Product { get; set; }
 
         [NotMapped]
         public XElement FieldFormat { get; set; }

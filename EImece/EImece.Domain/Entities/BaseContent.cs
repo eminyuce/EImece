@@ -15,7 +15,7 @@ namespace EImece.Domain.Entities
         public Boolean ImageState { get; set; }
         public int? MainImageId { get; set; }
 
-        public virtual FileStorage MainImage { get; set; }
+        public  FileStorage MainImage { get; set; }
 
         [NotMapped]
         public int ImageHeight { get; set; }

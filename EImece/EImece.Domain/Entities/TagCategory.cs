@@ -9,6 +9,6 @@ namespace EImece.Domain.Entities
     public class TagCategory : BaseEntity
     {
 
-        public virtual ICollection<Tag> Tags { get; set; }
+        public  ICollection<Tag> Tags { get; set; }
     }
 }

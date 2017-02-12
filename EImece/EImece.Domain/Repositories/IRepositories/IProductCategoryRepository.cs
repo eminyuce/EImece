@@ -16,5 +16,6 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Node> CreateProductCategoryTreeViewDataList();
         ProductCategory GetProductCategory(int categoryId);
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
+        List<ProductCategory> GetMainPageProductCategories(int language);
     }
 }

@@ -13,8 +13,8 @@ namespace EImece.Domain.Entities
         public int FileStorageId { get; set; }
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public virtual FileStorage FileStorage { get; set; }
-        public virtual Product Product { get; set; }
+        public  FileStorage FileStorage { get; set; }
+        public  Product Product { get; set; }
 
     }
 }

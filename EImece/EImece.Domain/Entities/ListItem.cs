@@ -14,6 +14,6 @@ namespace EImece.Domain.Entities
         public int ListId { get; set; }
         public string Value { get; set; }
 
-        public virtual List List { get; set; }
+        public  List List { get; set; }
     }
 }

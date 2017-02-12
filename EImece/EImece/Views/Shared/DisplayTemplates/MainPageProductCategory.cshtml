@@ -1,0 +1,26 @@
+﻿@model EImece.Domain.Entities.ProductCategory
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+
+@{
+    var productCategory = Model;
+}
+
+
+<div class="one-third column">
+    <a href="#" class="img-caption">
+        <figure>
+            <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")">
+                @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
+            </a>
+            <figcaption>
+                <h3>
+                    <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")">
+                        @productCategory.Name
+                    </a>
+
+                </h3>
+            </figcaption>
+        </figure>
+    </a>
+</div>

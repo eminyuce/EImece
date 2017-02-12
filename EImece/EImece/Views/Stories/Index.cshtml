@@ -18,15 +18,12 @@
    <div>
        @Html.ActionLink(item.Name, "Categories", new { id = item.GetSeoUrl() })
    </div>
+ if (item.MainImageId.HasValue && item.MainImageId.Value > 0) {
+      @item.MainImage.Name
 
-    foreach (var story in item.Stories)
-    {
-        <div>
-            @story.Name
+   }
 
-           
-        </div>
-    }
+ 
 }
 
 

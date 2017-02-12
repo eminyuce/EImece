@@ -686,6 +686,7 @@
     <Content Include="Views\Shared\_WebSiteLogo.cshtml" />
     <Content Include="Views\Stories\Categories.cshtml" />
     <Content Include="Views\Shared\_WebSiteAddressInfo.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

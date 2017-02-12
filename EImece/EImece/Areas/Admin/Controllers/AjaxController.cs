@@ -91,9 +91,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
 
-
-
-            return Json(list, JsonRequestBehavior.AllowGet);
+            return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

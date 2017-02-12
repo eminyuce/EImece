@@ -13,6 +13,6 @@ namespace EImece.Domain.Entities
         public Boolean IsService { get; set; }
         public Boolean IsValues { get; set; }
 
-        public virtual ICollection<ListItem> ListItems { get; set; }
+        public  ICollection<ListItem> ListItems { get; set; }
     }
 }

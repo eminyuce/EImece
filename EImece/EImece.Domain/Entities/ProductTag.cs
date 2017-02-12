@@ -18,8 +18,8 @@ namespace EImece.Domain.Entities
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
-        public virtual Tag Tag { get; set; }
-        public virtual Product Product { get; set; }
+        public  Tag Tag { get; set; }
+        public  Product Product { get; set; }
 
     }
 }

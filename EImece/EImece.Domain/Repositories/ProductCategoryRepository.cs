@@ -10,6 +10,7 @@ using SharkDev.Web.Controls.TreeView.Model;
 using EImece.Domain.Helpers;
 using System.Linq.Expressions;
 using EImece.Domain.Models.FrontModels;
+using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
@@ -89,6 +90,14 @@ namespace EImece.Domain.Repositories
 
 
             return result;
+        }
+
+        public List<ProductCategory> GetMainPageProductCategories(int language)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            return FindAllIncluding(r => r.MainPage && r.IsActive && r.Lang == language && r.MainImageId > 0, null, null, r => r.Position, OrderByType.Ascending,includeProperties.ToArray());
+
         }
     }
 }

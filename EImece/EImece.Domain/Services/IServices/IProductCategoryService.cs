@@ -17,5 +17,6 @@ namespace EImece.Domain.Services.IServices
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
         void DeleteProductCategory(int productCategoryId);
         void DeleteProductCategories(List<string> values);
+        List<ProductCategory> GetMainPageProductCategories(int language);
     }
 }

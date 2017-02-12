@@ -10,7 +10,8 @@ namespace EImece.Domain.Entities
     public class ProductCategory : BaseContent
     {
         public int ParentId { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public Boolean MainPage { get; set; }
+        public  ICollection<Product> Products { get; set; }
 
         [ForeignKey("Template")]
         public int TemplateId { get; set; }
@@ -18,6 +19,6 @@ namespace EImece.Domain.Entities
         public List<ProductCategory> Childrens { get; set; }
 
         public double? DiscountPercantage { get; set; }
-        public virtual Template Template { get; set; }
+        public  Template Template { get; set; }
     }
 }

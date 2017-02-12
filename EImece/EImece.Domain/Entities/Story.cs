@@ -11,9 +11,9 @@ namespace EImece.Domain.Entities
         public int StoryCategoryId { get; set; }
         public bool MainPage { get; set; }
 
-        public virtual StoryCategory StoryCategory { get; set; }
-        public virtual List<StoryTag> StoryTags { get; set; }
-        public virtual List<StoryFile> StoryFiles { get; set; }
+        public  StoryCategory StoryCategory { get; set; }
+        public ICollection<StoryTag> StoryTags { get; set; }
+        public ICollection<StoryFile> StoryFiles { get; set; }
 
     }
 }

@@ -6,6 +6,7 @@
 
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
+    var mainPageProductCategories = Model.MainPageProductCategories;
 }
 <!-- Slider
 ================================================== -->
@@ -24,3 +25,17 @@
         </div>
     </div>
 </div>
+
+
+<div class="container">
+
+@for (int i = 0; i < mainPageProductCategories.Count; i++)
+{
+    var mainPageProductCategory = mainPageProductCategories[i];
+    @Html.DisplayFor(model => mainPageProductCategory, "MainPageProductCategory")
+}
+
+
+
+</div>
+<div class="clearfix"></div>

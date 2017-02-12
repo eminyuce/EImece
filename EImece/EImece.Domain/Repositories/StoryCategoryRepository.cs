@@ -23,6 +23,7 @@ namespace EImece.Domain.Repositories
 
         public List<StoryCategory> GetActiveStoryCategories(int language)
         {
+           // EImeceDbContext.Configuration.LazyLoadingEnabled = false;
            // EImeceDbContext.Database.Log = s => StoryCategoryLogger.Trace(s);
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
@@ -31,7 +32,7 @@ namespace EImece.Domain.Repositories
             Expression<Func<StoryCategory, int>> keySelector = t => t.Position;
             var item = FindAllIncluding(match, null, null, keySelector, OrderByType.Descending, includeProperties.ToArray());
             //var item = FindAll(match,keySelector,OrderByType.Descending, null,null);
-            //var item =this.EImeceDbContext.StoryCategories.Where(match).OrderBy(keySelector).ThenByDescending(r => r.UpdatedDate).ToList();
+           // var item =this.EImeceDbContext.StoryCategories.Where(match).OrderBy(keySelector).ThenByDescending(r => r.UpdatedDate).ToList();
            // EImeceDbContext.Database.Log = s => StoryCategoryLogger.Trace(s);
             return item;
         }

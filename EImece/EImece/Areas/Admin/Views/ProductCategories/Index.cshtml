@@ -138,6 +138,14 @@
                                                     o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
 
 
+           columns.Add(o => o.MainPage)
+                 .Titled("MainPage")
+                 .Sortable(true)
+                 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                  Sanitized(false)
+                 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
+                                                   o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage));
+
 
 
            columns.Add(o => o.CreatedDate)

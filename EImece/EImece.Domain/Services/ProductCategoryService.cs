@@ -12,6 +12,7 @@ using NLog;
 using EImece.Domain.Helpers;
 using System.Data.Entity.Validation;
 using EImece.Domain.Models.FrontModels;
+using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Services
 {
@@ -105,6 +106,11 @@ namespace EImece.Domain.Services
                 DeleteEntity(productCategory);
             }
             
+        }
+
+        public List<ProductCategory> GetMainPageProductCategories(int language)
+        {
+            return ProductCategoryRepository.GetMainPageProductCategories(language);
         }
     }
 }
