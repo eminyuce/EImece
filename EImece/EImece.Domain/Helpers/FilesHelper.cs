@@ -292,6 +292,7 @@ namespace EImece.Domain.Helpers
             var request = requestContext.Request;
             if (request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
             var file = request.Files[0];
+            var ext = Path.GetExtension(fileName);
             var inputStream = file.InputStream;
             String patchOnServer = Path.Combine(StorageRoot);
             var fullName = Path.Combine(patchOnServer, Path.GetFileName(file.FileName));
@@ -299,7 +300,7 @@ namespace EImece.Domain.Helpers
 
 
             var ImageBit = LoadImage(fullName);
-            Save(ImageBit, 80, 80, 10, ThumbfullPath);
+            Save(ImageBit, 80, 80, 10, ThumbfullPath, GetImageFormat(ext));
             using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
             {
                 var buffer = new byte[1024];
@@ -499,6 +500,21 @@ namespace EImece.Domain.Helpers
                 int originalImageWidth = imageResize.Item3;
                 int originalImageHeight = imageResize.Item4;
 
+                //Bitmap img = new Bitmap(file.InputStream);
+                //Save(img, originalImageWidth, originalImageHeight, 100, fullPath, GetImageFormat(ext));
+                //img.Dispose();
+
+                //img = new Bitmap(file.InputStream);
+                //Save(img, width, height, 100, candidatePathThb, GetImageFormat(ext));
+                //img.Dispose();
+
+                //Bitmap img = new Bitmap(file.InputStream);
+                //CreateThumbnail(img, originalImageWidth, originalImageHeight, fullPath, GetImageFormat(ext));
+                //img.Dispose();
+
+                //img = new Bitmap(file.InputStream);
+                //CreateThumbnail(img, width, height, candidatePathThb, GetImageFormat(ext));
+                //img.Dispose();
 
                 var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, GetImageFormat(ext));
                 var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
@@ -507,12 +523,11 @@ namespace EImece.Domain.Helpers
 
                 imageSize = fileByteCropped.Length;
 
-                //Resize Image - Thumbs
+                // Resize Image -Thumbs
                 var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
                 var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
                 fs1.Write(byteArrayIn);
                 fs1.Close();
-
 
             }
 
@@ -527,13 +542,13 @@ namespace EImece.Domain.Helpers
             {
                 case "jpeg": return ImageFormat.Jpeg;
                 case "jpg": return ImageFormat.Jpeg;
-                case "png":  return ImageFormat.Png; 
-                case "icon": return ImageFormat.Icon; 
+                case "png": return ImageFormat.Png;
+                case "icon": return ImageFormat.Icon;
                 case "gif": return ImageFormat.Gif;
-                case "bmp": return ImageFormat.Bmp; 
-                case "tiff": return ImageFormat.Tiff; 
+                case "bmp": return ImageFormat.Bmp;
+                case "tiff": return ImageFormat.Tiff;
                 case "emf": return ImageFormat.Emf;
-                case "wmf": return ImageFormat.Wmf; 
+                case "wmf": return ImageFormat.Wmf;
             }
 
             return ImageFormat.Jpeg;
@@ -573,7 +588,7 @@ namespace EImece.Domain.Helpers
         }
         public byte[] GetResizedImage(int fileStorageId, int width, int height)
         {
-            var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width,height);
+            var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             byte[] result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
@@ -604,7 +619,7 @@ namespace EImece.Domain.Helpers
                 }
             }
             return result;
-          
+
         }
         public byte[] MakeThumbnail(byte[] myImage, int thumbWidth, int thumbHeight)
         {
@@ -738,7 +753,25 @@ namespace EImece.Domain.Helpers
             // return the resized image as a string of bytes.  
             return ReturnedThumbnail;
         }
+        public void CreateThumbnail(Bitmap startBitmap, int Width, int Height, String imageFullPath, ImageFormat format)
+        {
 
+           
+
+            // create a new Bitmap with dimensions for the thumbnail.  
+            System.Drawing.Bitmap newBitmap = new System.Drawing.Bitmap(Width, Height);
+
+            // Copy the image from the START Bitmap into the NEW Bitmap.  
+            // This will create a thumnail size of the same image.  
+            newBitmap = ResizeImage(startBitmap, Width, Height);
+
+            ConvertAndSaveBitmap(newBitmap, imageFullPath, format, 100);
+
+            //var fs1 = new BinaryWriter(new FileStream(imageFullPath, FileMode.Append, FileAccess.Write));
+            //fs1.Write(GetBitmapBytes(newBitmap));
+            //fs1.Close();
+
+        }
 
         public byte[] ImageToByteArray(Image imageIn)
         {
@@ -766,8 +799,6 @@ namespace EImece.Domain.Helpers
         }
 
 
-
-        // Resize a Bitmap  
         private Bitmap ResizeImage(Bitmap image, int width, int height)
         {
             Bitmap resizedImage = new Bitmap(width, height);
@@ -778,15 +809,42 @@ namespace EImece.Domain.Helpers
             }
             return resizedImage;
         }
+        // Resize a Bitmap  
+        private Bitmap ResizeImage1(Bitmap bitmap, int width, int height)
+        {
+
+            Bitmap bmPhoto = new Bitmap(width, height, PixelFormat.Format48bppRgb);
+            bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+
+            using (Graphics grPhoto = Graphics.FromImage(bmPhoto))
+            {
+               // grPhoto.Clear(Color.White);
+
+                grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
+                grPhoto.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                grPhoto.CompositingQuality = CompositingQuality.HighQuality;
+
+                grPhoto.DrawImage(bitmap,
+                    new Rectangle(0, 0, width, height),
+                    new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                    GraphicsUnit.Pixel);
+            }
+            return bmPhoto;
+        }
         public static Bitmap ConvertAndSaveBitmap(Bitmap bitmap, String fileName, ImageFormat imageFormat, long quality = 100L)
         {
+            string contentType = HttpContext.Current.Response.ContentType;
+            var extension = Path.GetExtension(fileName);
             using (var encoderParameters = new EncoderParameters(1))
             using (encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality))
             {
                 ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-
-                bitmap.Save(fileName, codecs.Single(codec => codec.FormatID == imageFormat.Guid), encoderParameters);
+                HttpContext.Current.Response.ContentType = codecs[1].MimeType;
+                bitmap.Save(fileName, GetImageCodecInfo(extension), encoderParameters);
             }
+            HttpContext.Current.Response.ContentType = contentType;
+
 
             return bitmap;
         }
@@ -874,7 +932,41 @@ namespace EImece.Domain.Helpers
             }
         }
 
+        public static Bitmap ScaleImage(Bitmap image, double scale)
+        {
+            int newWidth = (int)(image.Width * scale);
+            int newHeight = (int)(image.Height * scale);
+
+            Bitmap result = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+            result.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (Graphics g = Graphics.FromImage(result))
+            {
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                g.DrawImage(image, 0, 0, result.Width, result.Height);
+            }
+            return result;
+        }
        
+
+        private static ImageCodecInfo GetImageCodecInfo(string extension)
+        {
+
+            switch (extension)
+            {
+                case ".bmp": return ImageCodecInfo.GetImageEncoders()[0];
+                case ".jpg":
+                case ".jpeg": return ImageCodecInfo.GetImageEncoders()[1];
+                case ".gif": return ImageCodecInfo.GetImageEncoders()[2];
+                case ".tiff": return ImageCodecInfo.GetImageEncoders()[3];
+                case ".png": return ImageCodecInfo.GetImageEncoders()[4];
+                default: return null;
+            }
+        }
 
         /// <summary>
         /// Method to resize, convert and save the image.
@@ -884,7 +976,7 @@ namespace EImece.Domain.Helpers
         /// <param name="maxHeight">resize height.</param>
         /// <param name="quality">quality setting value.</param>
         /// <param name="filePath">file path.</param>      
-        public void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath)
+        public void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath,ImageFormat format)
         {
             // Get the image's original width and height
             int originalWidth = image.Width;
@@ -912,7 +1004,7 @@ namespace EImece.Domain.Helpers
             }
 
             // Get an ImageCodecInfo object that represents the JPEG codec.
-            ImageCodecInfo imageCodecInfo = this.GetEncoderInfo(ImageFormat.Jpeg);
+            ImageCodecInfo imageCodecInfo = this.GetEncoderInfo(format);
 
             // Create an Encoder object for the Quality parameter.
             System.Drawing.Imaging.Encoder encoder = System.Drawing.Imaging.Encoder.Quality;

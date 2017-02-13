@@ -66,6 +66,7 @@ namespace EImece.Domain.Services
             var menu = MenuRepository.GetMenuById(menuId);
             var menuTreeNodeList = GetMenuLeaves(null, menu.Lang);
             var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == menuId);
+            if (leave != null)
             {
                 if (menu.MainImageId.HasValue)
                 {
