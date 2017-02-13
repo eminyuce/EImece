@@ -86,6 +86,113 @@ namespace EImece.Areas.Admin.Controllers
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
+        public ActionResult AddTermsAndConditions()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions);
+            int id = webSiteLogo != null ? webSiteLogo.Id : 0;
+            return RedirectToAction("TermsAndConditions", new { id });
+        }
+
+        public ActionResult TermsAndConditions(int id = 0)
+        {
+            var content = EntityFactory.GetBaseEntityInstance<Setting>();
+            content.SettingKey = Settings.TermsAndConditions;
+            content.Name = Settings.TermsAndConditions;
+            content.Position = 1;
+            content.IsActive = true;
+            if (id == 0)
+            {
+
+            }
+            else
+            {
+                content = SettingService.GetSingle(id);
+            }
+
+            return View(content);
+        }
+        [HttpPost]
+        public ActionResult TermsAndConditions(Setting setting)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    SettingService.SaveOrEditEntity(setting);
+                    int contentId = setting.Id;
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, setting);
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+
+            return View(setting);
+        }
+
+        public ActionResult AddPrivacyPolicy()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy);
+            int id = webSiteLogo != null ? webSiteLogo.Id : 0;
+            return RedirectToAction("PrivacyPolicy", new { id });
+        }
+
+        public ActionResult PrivacyPolicy(int id = 0)
+        {
+            var content = EntityFactory.GetBaseEntityInstance<Setting>();
+            content.SettingKey = Settings.PrivacyPolicy;
+            content.Name = Settings.PrivacyPolicy;
+            content.Position = 1;
+            content.IsActive = true;
+            if (id == 0)
+            {
+
+            }
+            else
+            {
+                content = SettingService.GetSingle(id);
+            }
+
+            return View(content);
+        }
+        [HttpPost]
+        public ActionResult PrivacyPolicy(Setting setting)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    SettingService.SaveOrEditEntity(setting);
+                    int contentId = setting.Id;
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, setting);
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+
+            return View(setting);
+        }
         public ActionResult WebSiteLogo(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();

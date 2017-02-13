@@ -122,7 +122,9 @@
                             @if (UserRoleHelper.IsAdminManagementRoles())
                             {
                                 <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
-                                <li>@Html.ActionLink("WebSiteLogo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                                <li>@Html.ActionLink("Web Site Logo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                                <li>@Html.ActionLink("Privacy Policy", "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
+                                <li>@Html.ActionLink("Terms & Conditions", "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
                                 <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
                             }
 

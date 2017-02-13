@@ -11,5 +11,6 @@ namespace EImece.Domain.Services.IServices
     {
         string GetSettingByKey(string key);
         Setting GetSettingObjectByKey(string key);
+ 
     }
 }

@@ -13,7 +13,9 @@ namespace EImece.Domain
 {
     public class Settings
     {
+        public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";
+        public const string PrivacyPolicy = "PrivacyPolicy";
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
@@ -236,7 +238,7 @@ namespace EImece.Domain
             }
         }
 
-
+ 
 
         public static string TempPath = "~/media/tempFiles/";
         public static string ServerMapPath = "~/media/images/";

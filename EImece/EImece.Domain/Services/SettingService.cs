@@ -48,5 +48,7 @@ namespace EImece.Domain.Services
             var allSettings = GetAllSettings();
            return allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
         }
+
+    
     }
 }
