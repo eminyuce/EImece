@@ -1,0 +1,10 @@
+﻿@model EImece.Domain.Entities.Setting
+
+@{
+    ViewBag.Title = "PrivacyPolicy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PrivacyPolicy</h2>
+
+@Html.Raw(Model.SettingValue)

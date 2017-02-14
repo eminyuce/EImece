@@ -17,5 +17,6 @@ namespace EImece.Domain.Models.FrontModels
         public List<Product> LatestProducts { get; set; }
 
         public List<Story> LatestStories { get; set; }
+        public StoryIndexViewModel StoryIndexViewModel { get; set; }
     }
 }

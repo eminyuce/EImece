@@ -70,6 +70,18 @@ namespace EImece.Controllers
 
             return PartialView("_SocialMediaLinks", resultList);
         }
+        [OutputCache(CacheProfile = "Cache30Days")]
+        public ActionResult TermsAndConditions()
+        {
+            var stringContent = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions);
+            return View(stringContent);
+        }
+        [OutputCache(CacheProfile = "Cache30Days")]
+        public ActionResult PrivacyPolicy()
+        {
+           var stringContent =  SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy);
+            return View(stringContent);
+        }
         [ChildActionOnly]
         [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
         public ActionResult GoogleAnalyticsTrackingScript()

@@ -7,6 +7,8 @@
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
     var mainPageProductCategories = Model.MainPageProductCategories;
+
+    var mainPageStories = Model.StoryIndexViewModel.Stories;
 }
 <!-- Slider
 ================================================== -->
@@ -38,4 +40,33 @@
 
 
 </div>
+
+
+<div class="container">
+
+    @for (int i = 0; i < mainPageProducts.Count; i++)
+    {
+        var mainPageProduct = mainPageProducts[i];
+        @Html.DisplayFor(model => mainPageProduct, "MainPageProduct")
+    }
+
+
+
+</div>
+
+
+
+<div class="container">
+
+    @for (int i = 0; i < mainPageStories.Count; i++)
+    {
+        var mainPageStory = mainPageStories[i];
+        @Html.DisplayFor(model => mainPageStory, "StoryShort")
+    }
+
+
+
+</div>
+
+
 <div class="clearfix"></div>

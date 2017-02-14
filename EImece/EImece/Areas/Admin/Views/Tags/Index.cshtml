@@ -86,7 +86,7 @@ columns.Add(c => c.TagCategory.Name)
 .Encoded(false)
 .RenderValueAs(d =>
             @<span>
-                @String.Format("{0}", d.Name)
+                @String.Format("{0}", d.TagCategory.Name)
             </span>);
 
  

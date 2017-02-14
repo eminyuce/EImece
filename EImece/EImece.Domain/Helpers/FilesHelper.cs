@@ -420,7 +420,7 @@ namespace EImece.Domain.Helpers
 
                 FileStorageService.SaveOrEditEntity(fileStorage);
                 baseContent.MainImageId = fileStorage.Id;
-
+                baseContent.ImageState = true;
             }
             else
             {
@@ -452,6 +452,8 @@ namespace EImece.Domain.Helpers
                             var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
                             fs1.Write(byteArrayIn);
                             fs1.Close();
+
+                            baseContent.ImageState = true;
 
                         }
                     }

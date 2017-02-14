@@ -20,6 +20,10 @@ namespace EImece.Domain.Services
         [Inject]
         public IProductService ProductService { get; set; }
 
+
+        [Inject]
+        public IStoryService StoryService { get; set; }
+
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
@@ -47,6 +51,7 @@ namespace EImece.Domain.Services
             {
                 result = new MainPageViewModel();
                 result.MainPageProducts = ProductService.GetMainPageProducts(1,  language).Products;
+                result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
                 result.MainPageImages = MainPageImageRepository.GetActiveBaseContents(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);

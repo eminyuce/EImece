@@ -27,6 +27,21 @@ namespace EImece
                );
 
             routes.MapRoute(
+                 name: "privacypolicy",
+                 url: "privacypolicy",
+                 defaults: new { controller = "home", action = "privacypolicy" },
+                 namespaces: new[] { "EImece.Controllers" }
+             );
+
+
+            routes.MapRoute(
+                 name: "termsandconditions",
+                 url: "termsandconditions",
+                 defaults: new { controller = "home", action = "termsandconditions" },
+                 namespaces: new[] { "EImece.Controllers" }
+             );
+
+            routes.MapRoute(
                    name: "ImageResizing",
                    url: "images/{companyName}/{imageSize}/{id}",
                    defaults: new { controller = "images", action = Settings.ImageActionName, id = UrlParameter.Optional },
@@ -60,7 +75,7 @@ namespace EImece
                   defaults: new { controller = "Pages", action = "Detail", id = UrlParameter.Optional },
                   namespaces: new[] { "EImece.Controllers" }
               );
-           
+
             routes.MapRoute(
                   name: "ProductTagPage",
                   url: "products/tag/{id}",
