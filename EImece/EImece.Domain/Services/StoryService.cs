@@ -124,5 +124,10 @@ namespace EImece.Domain.Services
                 
             return result;
         }
+
+        public List<Story> GetLatestStories(int language, int take)
+        {
+            return StoryRepository.GetLatestStories(language, take);
+        }
     }
 }

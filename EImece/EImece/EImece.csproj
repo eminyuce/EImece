@@ -691,6 +691,7 @@
     <Content Include="Views\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />
     <Content Include="Views\Home\PrivacyPolicy.cshtml" />
     <Content Include="Views\Home\TermsAndConditions.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\LatestStory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

@@ -35,9 +35,22 @@ namespace EImece.Domain.Repositories
             {
                 stories = stories.Where(r => r.StoryCategoryId == categoryId);
             }
-            stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.Id);
+            stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return stories.ToList();
+        }
+
+        public List<Story> GetLatestStories(int language, int take)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.StoryCategory);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
+            Expression<Func<Story, DateTime>> keySelector = t => t.UpdatedDate.Value;
+            var items = this.FindAllIncluding(match, take, 0, keySelector, OrderByType.Descending, includeProperties.ToArray());
+
+            return items;
         }
 
         public PaginatedList<Story> GetMainPageStories(int pageIndex, int pageSize, int language)

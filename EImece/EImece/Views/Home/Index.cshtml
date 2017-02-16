@@ -9,6 +9,8 @@
     var mainPageProductCategories = Model.MainPageProductCategories;
 
     var mainPageStories = Model.StoryIndexViewModel.Stories;
+
+    var latestStories = Model.LatestStories;
 }
 <!-- Slider
 ================================================== -->
@@ -57,11 +59,15 @@
 
 
 <div class="container">
-
-    @for (int i = 0; i < mainPageStories.Count; i++)
+    <!-- Headline -->
+    <div class="sixteen columns">
+        <h3 class="headline">Latest Articles</h3>
+        <span class="line margin-bottom-30"></span>
+    </div>
+    @for (int i = 0; i < latestStories.Count; i++)
     {
-        var mainPageStory = mainPageStories[i];
-        @Html.DisplayFor(model => mainPageStory, "StoryShort")
+        var story = latestStories[i];
+        @Html.DisplayFor(model => story, "LatestStory")
     }
 
 
