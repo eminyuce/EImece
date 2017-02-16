@@ -64,20 +64,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             MemoryCacheProvider.ClearAll();
 
-            List<string> keys = new List<string>();
-
-            IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                string key = (string)enumerator.Key;
-                keys.Add(key);
-            }
-
-            foreach (string key in keys)
-            {
-                HttpRuntime.Cache.Remove(key);
-            }
-
+        
             var urlReferrer = Request.UrlReferrer;
             if (urlReferrer != null)
             {

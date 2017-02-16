@@ -35,8 +35,14 @@ namespace EImece.Domain.Repositories
 
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            // var productCategories = GetActiveBaseContents(isActive, language);
-            var productCategories = EImeceDbContext.ProductCategories.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Count() });
+            var pcList = GetAll();
+            if (isActive != null && isActive.HasValue)
+            {
+                pcList = pcList.Where(r => r.IsActive == isActive);
+            }
+            pcList = pcList.Where(r => r.Lang == language);
+
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Count() });
             List<ProductCategoryTreeModel> list = productCategories.Select(r=> new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount  } ).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 

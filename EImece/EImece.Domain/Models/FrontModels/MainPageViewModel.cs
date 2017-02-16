@@ -18,5 +18,6 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<Story> LatestStories { get; set; }
         public StoryIndexViewModel StoryIndexViewModel { get; set; }
+        public int CurrentLanguage { get; set; }
     }
 }

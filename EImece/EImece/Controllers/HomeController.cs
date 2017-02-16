@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -22,6 +23,7 @@ namespace EImece.Controllers
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey("SiteIndexMetaTitle").ToStr();
             ViewBag.Description = SettingService.GetSettingByKey("SiteIndexMetaDescription").ToStr();
             ViewBag.Keywords = SettingService.GetSettingByKey("SiteIndexMetaKeywords").ToStr();
@@ -164,6 +166,16 @@ namespace EImece.Controllers
 
             return View("_pThankYouForContactingUs", contact);
 
+        }
+        public ActionResult SetLanguage(string name)
+        {
+          //  name = CultureHelper.GetImplementedCulture(name);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            Response.Cookies["_culture"].Value = name;
+            MemoryCacheProvider.ClearAll();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

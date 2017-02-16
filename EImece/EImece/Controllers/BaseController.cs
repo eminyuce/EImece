@@ -1,8 +1,10 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -17,6 +19,9 @@ namespace EImece.Controllers
 {
     public abstract class BaseController : Controller
     {
+        [Inject]
+        public ICacheProvider MemoryCacheProvider { get; set; }
+
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
@@ -190,9 +195,9 @@ namespace EImece.Controllers
             {
                 cultureName = cultureCookie.Value;
             }
-          
 
-            cultureName = CultureHelper.GetImplementedCulture(cultureName);
+
+         //   cultureName = CultureHelper.GetImplementedCulture(cultureName);
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
@@ -212,8 +217,22 @@ namespace EImece.Controllers
         {
             get
             {
-                return Settings.MainLanguage;
+                string cultureName = null;
+                HttpCookie cultureCookie = Request.Cookies["_culture"];
+                if (cultureCookie != null)
+                {
+                    cultureName = cultureCookie.Value;
+                    var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, EImeceLanguage.English.GetType());
+                    return selectedLang;
+
+                }
+                else
+                {
+
+                    return Settings.MainLanguage;
+                }
             }
         }
+
     }
 }

@@ -10,10 +10,10 @@ namespace EImece.Domain.Models.Enums
 {
     public enum EImeceLanguage
     {
-        [Description("Turkish")]
+        [Description("tr-TR")]
         [Display(Name = "Turkish")]
         Turkish =1,
-        [Description("English")]
+        [Description("en-US")]
         [Display(Name = "English")]
         English =2
     }
