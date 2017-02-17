@@ -85,8 +85,8 @@ namespace EImece.Areas.Admin.Controllers
                         story.ImageHeight,
                         story.ImageWidth,
                         EImeceImageType.StoryMainImage,story);
-                
 
+                    story.Lang = CurrentLanguage;
                     StoryService.SaveOrEditEntity(story);
                     int contentId = story.Id;
 

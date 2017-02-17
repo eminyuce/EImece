@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -22,7 +24,44 @@ namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
+        public static void SetCultureCookie(HttpResponseBase request, String cultureCookieName, string cultureName = "")
+        {
+            if (String.IsNullOrEmpty(cultureName))
+            {
+                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)Settings.MainLanguage));
+            }
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            request.Cookies[cultureCookieName].Value = cultureName;
+        }
+        public static String GetCultureCookie(HttpResponseBase request, String cultureCookieName)
+        {
+           string cultureName = null;
+            // check the cookie first to get culture name
+            HttpCookie cultureCookie = request.Cookies[cultureCookieName];
+            if (cultureCookie != null)
+            {
+                cultureName = cultureCookie.Value;
+            }
+            if (String.IsNullOrEmpty(cultureName))
+            {
+                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)Settings.MainLanguage));
+            }
 
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            if (request.Cookies[cultureCookieName] != null)
+            {
+                request.Cookies[cultureCookieName].Value = cultureName;
+            }
+            else
+            {
+                request.Cookies.Add(cultureCookie);
+            }
+
+            return cultureName;
+        }
         public static String GetStringTitleCase(string text)
         {
             // Creates a TextInfo based on the "en-US" culture.

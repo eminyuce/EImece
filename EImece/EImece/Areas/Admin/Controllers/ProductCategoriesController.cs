@@ -104,7 +104,7 @@ namespace EImece.Areas.Admin.Controllers
                         productCategory.ImageWidth,
                         EImeceImageType.ProductCategoryMainImage,
                         productCategory);
-
+                    productCategory.Lang = CurrentLanguage;
                     ProductCategoryService.SaveOrEditEntity(productCategory);
                     int contentId = productCategory.Id;
 

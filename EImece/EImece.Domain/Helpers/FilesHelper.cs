@@ -41,16 +41,16 @@ namespace EImece.Domain.Helpers
                 _memoryCacheProvider = value;
             }
         }
+        public int CurrentLanguage { get; set; }
 
-
-        public String DeleteURL { get; set; }
-        public String DeleteType { get; set; }
-        public String StorageRoot { get; set; }
-        public String UrlBase { get; set; }
-        public String tempPath { get; set; }
+        public string DeleteURL { get; set; }
+        public string DeleteType { get; set; }
+        public string StorageRoot { get; set; }
+        public string UrlBase { get; set; }
+        public string tempPath { get; set; }
         //ex:"~/Files/something/";
-        public String serverMapPath { get; set; }
-        public void Init(String DeleteURL, String DeleteType, String StorageRoot, String UrlBase, String tempPath, String serverMapPath)
+        public string serverMapPath { get; set; }
+        public void Init(string DeleteURL, string DeleteType, string StorageRoot, string UrlBase, string tempPath, string serverMapPath)
         {
             this.DeleteURL = DeleteURL;
             this.DeleteType = DeleteType;
@@ -417,7 +417,7 @@ namespace EImece.Domain.Helpers
                 fileStorage.Position = 1;
                 fileStorage.FileSize = result.Item4;
                 fileStorage.Type = imageType.ToStr();
-
+                fileStorage.Lang = CurrentLanguage;
                 FileStorageService.SaveOrEditEntity(fileStorage);
                 baseContent.MainImageId = fileStorage.Id;
                 baseContent.ImageState = true;

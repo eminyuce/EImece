@@ -88,7 +88,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-
+                    Tag.Lang = CurrentLanguage;
                     TagService.SaveOrEditEntity(Tag);
                     int contentId = Tag.Id;
                     return RedirectToAction("Index");

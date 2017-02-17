@@ -60,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-
+                    Setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(Setting);
                     int contentId = Setting.Id;
                     return RedirectToAction("Index");
@@ -119,7 +119,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-
+                    setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                     int contentId = setting.Id;
                     return RedirectToAction("Index");
@@ -173,7 +173,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-
+                    setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                     int contentId = setting.Id;
                     return RedirectToAction("Index");
@@ -228,6 +228,7 @@ namespace EImece.Areas.Admin.Controllers
             webSiteLogoSetting.SettingKey = Settings.WebSiteLogo;
             webSiteLogoSetting.IsActive = true;
             webSiteLogoSetting.Position = 1;
+            webSiteLogoSetting.Lang = CurrentLanguage;
             SettingService.SaveOrEditEntity(webSiteLogoSetting);
 
 

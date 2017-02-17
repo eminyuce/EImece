@@ -93,6 +93,7 @@ namespace EImece.Areas.Admin.Controllers
                         menu.ImageWidth,
                         EImeceImageType.MenuMainImage, menu);
 
+                    menu.Lang = CurrentLanguage;
                     MenuService.SaveOrEditEntity(menu);
                     int contentId = menu.Id;
                     return RedirectToAction("Index");

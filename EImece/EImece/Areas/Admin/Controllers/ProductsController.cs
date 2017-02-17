@@ -158,7 +158,7 @@ namespace EImece.Areas.Admin.Controllers
                             EImeceImageType.ProductMainImage,
                              product);
 
-
+                        product.Lang = CurrentLanguage;
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 

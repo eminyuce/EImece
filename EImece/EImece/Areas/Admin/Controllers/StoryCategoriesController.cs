@@ -83,7 +83,7 @@ namespace EImece.Areas.Admin.Controllers
                         storyCategory.ImageWidth,
                         EImeceImageType.StoryCategoryMainImage,
                         storyCategory);
-
+                    storyCategory.Lang = CurrentLanguage;
                     StoryCategoryService.SaveOrEditEntity(storyCategory);
                     int contentId = storyCategory.Id;
                     return RedirectToAction("Index");

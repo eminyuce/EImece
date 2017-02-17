@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
                         return View(template);
                     }
 
-
+                    template.Lang = CurrentLanguage;
                     TemplateService.SaveOrEditEntity(template);
                     int contentId = template.Id;
                     return RedirectToAction("Index");

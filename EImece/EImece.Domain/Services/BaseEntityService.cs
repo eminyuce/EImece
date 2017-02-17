@@ -35,7 +35,7 @@ namespace EImece.Domain.Services
 
         public new virtual T SaveOrEditEntity(T entity)
         {
-            entity.Lang = Settings.IsMainLanguageSet ? Settings.MainLanguage : entity.Lang;
+            
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
