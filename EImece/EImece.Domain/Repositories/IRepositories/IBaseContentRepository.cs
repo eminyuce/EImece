@@ -14,7 +14,7 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<T> GetActiveBaseContents(bool? isActive, int language);
         T GetBaseContent(int id);
-        new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search);
+        new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search,int language);
 
     }
 }

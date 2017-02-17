@@ -70,6 +70,10 @@
                         </b>
                     </li>
                      <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class= "btn btn-outline-primary" })</li>
+                    <li>
+                        <a href="@Url.Action("SetLanguage", "Dashboard", new { @name = "tr-TR" })">Turkish</a>
+                        <a href="@Url.Action("SetLanguage", "Dashboard", new { @name = "en-US" })">English</a>
+                    </li>
                      <li>
 
                         @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new

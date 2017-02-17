@@ -21,7 +21,7 @@ namespace EImece.Domain.Repositories
         public BaseEntityRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-        public virtual List<T> GetActiveBaseEntities(bool? isActive, int language) 
+        public virtual List<T> GetActiveBaseEntities(bool? isActive, int language)
         {
             try
             {
@@ -37,16 +37,20 @@ namespace EImece.Domain.Repositories
                 return null;
             }
         }
-        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
-            var menus = GetAll();
+
+            Expression<Func<T, bool>> match = r2 => r2.Lang == language;
+            var predicate = PredicateBuilder.Create<T>(match);
             if (!String.IsNullOrEmpty(search.Trim()))
             {
-                menus = menus.Where(whereLambda);
+                predicate = predicate.And(whereLambda);
             }
-         
-            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+            var menus = FindAll(match, r => r.UpdatedDate, OrderByType.Descending, null, null);
+
+            return menus;
+
         }
-      
+
     }
 }

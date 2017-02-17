@@ -55,10 +55,12 @@ namespace EImece.Domain.Repositories
             }
             return returnList;
         }
-        public List<Node> CreateProductCategoryTreeViewDataList()
+        public List<Node> CreateProductCategoryTreeViewDataList(int language)
         {
+            var pcList = GetAll();
+            pcList = pcList.Where(r => r.Lang == language);
             List<Node> _lstTreeNodes = new List<Node>();
-            var prod = EImeceDbContext.ProductCategories.OrderBy(r => r.Position).Select(c => new { c.Id, c.ParentId, c.Name, ProductCount = c.Products.Count() });
+            var prod = pcList.OrderBy(r => r.Position).Select(c => new { c.Id, c.ParentId, c.Name, ProductCount = c.Products.Count() });
 
             foreach (var p in prod.ToList())
             {

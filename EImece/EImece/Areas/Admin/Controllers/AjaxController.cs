@@ -25,61 +25,61 @@ namespace EImece.Areas.Admin.Controllers
                     controller.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Product, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = ProductService.SearchEntities(whereLambda1, searchKey).Select(r => r.Name).ToList();
+                list = ProductService.SearchEntities(whereLambda1, searchKey,CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                    controller.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Story, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = StoryService.SearchEntities(whereLambda1, searchKey).Select(r => r.Name).ToList();
+                list = StoryService.SearchEntities(whereLambda1, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                    controller.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = ProductCategoryService.SearchEntities(whereLambda1, searchKey).Select(r => r.Name).ToList();
+                list = ProductCategoryService.SearchEntities(whereLambda1, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                    controller.Equals("StoryCategories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(searchKey);
-                list = StoryCategoryService.SearchEntities(whereLambda3, searchKey).Select(r => r.Name).ToList();
+                list = StoryCategoryService.SearchEntities(whereLambda3, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                   controller.Equals("Menus", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = MenuService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+                list = MenuService.SearchEntities(whereLamba5, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                 controller.Equals("Tags", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Tag, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = TagService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+                list = TagService.SearchEntities(whereLamba5, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                controller.Equals("TagCategories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<TagCategory, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = TagCategoryService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+                list = TagCategoryService.SearchEntities(whereLamba5, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
             controller.Equals("Subscribers", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Subscriber, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = SubscriberService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+                list = SubscriberService.SearchEntities(whereLamba5, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
          controller.Equals("Settings", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Setting, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = SettingService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+                list = SettingService.SearchEntities(whereLamba5, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
         controller.Equals("MainPageImages", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<MainPageImage, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = MainPageImageService.SearchEntities(whereLamba5, searchKey).Select(r => r.Name).ToList();
+                list = MainPageImageService.SearchEntities(whereLamba5, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
     controller.Equals("Users", StringComparison.InvariantCultureIgnoreCase))

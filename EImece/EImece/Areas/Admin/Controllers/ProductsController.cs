@@ -23,7 +23,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(int id = 0, String search = "")
         {
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
             return View(products);
         }
@@ -115,7 +115,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = EntityFactory.GetBaseContentInstance<Product>();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
 
             if (id == 0)
             {
@@ -183,7 +183,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.StackTrace);
             }
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.ProductCategory = ProductCategoryService.GetSingle(product.ProductCategoryId);
             if (product.MainImageId.HasValue)
             {

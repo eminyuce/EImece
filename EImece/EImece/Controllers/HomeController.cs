@@ -173,7 +173,7 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            Response.Cookies["_culture"].Value = name;
+            Response.Cookies[CultureCookieName].Value = name;
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home");
         }

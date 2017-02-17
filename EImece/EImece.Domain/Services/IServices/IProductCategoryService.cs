@@ -12,7 +12,7 @@ namespace EImece.Domain.Services.IServices
     public interface IProductCategoryService : IBaseContentService<ProductCategory>
     {
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
-        List<Node> CreateProductCategoryTreeViewDataList();
+        List<Node> CreateProductCategoryTreeViewDataList(int language);
         ProductCategory GetProductCategory(int categoryId);
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
         void DeleteProductCategory(int productCategoryId);

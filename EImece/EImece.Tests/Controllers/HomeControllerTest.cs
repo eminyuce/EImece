@@ -27,7 +27,13 @@ namespace EImece.Tests.Controllers
     {
 
         private String ConnectionString { get { return Settings.DbConnectionKey; } }
-
+        private int CurrentLanguage
+        {
+            get
+            {
+                return Settings.MainLanguage;
+            }
+        }
         [TestMethod]
         public void Index()
         {
@@ -35,7 +41,7 @@ namespace EImece.Tests.Controllers
             var db = new EImeceContext(ConnectionString);
             var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db));
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search);
+            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             foreach (var item in productCategories)
             {
                 Console.WriteLine(item.Id);

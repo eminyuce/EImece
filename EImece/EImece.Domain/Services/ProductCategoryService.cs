@@ -43,9 +43,9 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public List<Node> CreateProductCategoryTreeViewDataList()
+        public List<Node> CreateProductCategoryTreeViewDataList(int language)
         {
-            return ProductCategoryRepository.CreateProductCategoryTreeViewDataList();
+            return ProductCategoryRepository.CreateProductCategoryTreeViewDataList(language);
         }
        
         public ProductCategory GetProductCategory(int categoryId)

@@ -22,9 +22,9 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search);
+            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
         }
@@ -66,7 +66,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
             var parentCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             if (id == 0)
             {
@@ -122,7 +122,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList();
+            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             return View(productCategory);
         }

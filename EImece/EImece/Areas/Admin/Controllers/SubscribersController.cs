@@ -16,7 +16,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search="")
         {
             Expression<Func<Subscriber, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower()) || r.Email.ToLower().Contains(search.Trim().ToLower());
-            var subs = SubscriberService.SearchEntities(whereLambda, search);
+            var subs = SubscriberService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(subs);
         }
         public ActionResult ExportSubscribers()

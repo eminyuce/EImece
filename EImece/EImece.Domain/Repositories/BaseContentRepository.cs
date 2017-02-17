@@ -53,16 +53,19 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public new virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
+        public new virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
+            Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
-            var menus = GetAllIncluding(includeProperties);
+            var predicate = PredicateBuilder.Create<T>(match);
             if (!String.IsNullOrEmpty(search.Trim()))
             {
-                menus = menus.Where(whereLambda);
+                predicate = predicate.And(whereLambda);
             }
-            return menus.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+            var menus = FindAllIncluding(match,null,null,r=>r.Id,OrderByType.Descending,includeProperties.ToArray());
+
+            return menus;
         }
     }
 

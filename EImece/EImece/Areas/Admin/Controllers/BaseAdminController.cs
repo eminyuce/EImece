@@ -5,6 +5,7 @@ using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -13,6 +14,7 @@ using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -92,11 +94,50 @@ namespace EImece.Areas.Admin.Controllers
                 Session["SelectedLanguage"] = value;
             }
         }
+        protected static string AdminCultureCookieName = "_adminCulture";
+        protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
+        {
+            string cultureName = "tr-TR";
+
+            HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
+            if (cultureCookie != null)
+            {
+                cultureName = cultureCookie.Value;
+            }
+
+
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            if (Response.Cookies[AdminCultureCookieName] != null)
+            {
+                Response.Cookies[AdminCultureCookieName].Value = cultureName;
+            }
+            else
+            {
+                Response.Cookies.Add(cultureCookie);
+            }
+
+            return base.BeginExecuteCore(callback, state);
+        }
         protected int CurrentLanguage
         {
             get
             {
-                return Settings.MainLanguage;
+                string cultureName = null;
+                HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
+                if (cultureCookie != null)
+                {
+                    cultureName = cultureCookie.Value;
+                    var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, EImeceLanguage.English.GetType());
+                    return selectedLang;
+
+                }
+                else
+                {
+
+                    return Settings.MainLanguage;
+                }
             }
         }
         public BaseAdminController()

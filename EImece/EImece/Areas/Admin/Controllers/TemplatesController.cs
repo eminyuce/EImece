@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search="")
         {
             Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var templates = TemplateService.SearchEntities(whereLambda, search);
+            var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(templates);
         }
         public ActionResult SaveOrEdit(int id = 0)

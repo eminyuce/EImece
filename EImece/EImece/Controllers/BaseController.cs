@@ -186,11 +186,12 @@ namespace EImece.Controllers
                 _filesHelper = value;
             }
         }
+        protected static string CultureCookieName = "_culture";
         protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
         {
             string cultureName = null;
 
-            HttpCookie cultureCookie = Request.Cookies["_culture"];
+            HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
             if (cultureCookie != null)
             {
                 cultureName = cultureCookie.Value;
@@ -202,9 +203,9 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            if (Response.Cookies["_culture"] != null)
+            if (Response.Cookies[CultureCookieName] != null)
             {
-                Response.Cookies["_culture"].Value = cultureName;
+                Response.Cookies[CultureCookieName].Value = cultureName;
             }
             else
             {
@@ -218,7 +219,7 @@ namespace EImece.Controllers
             get
             {
                 string cultureName = null;
-                HttpCookie cultureCookie = Request.Cookies["_culture"];
+                HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
                 if (cultureCookie != null)
                 {
                     cultureName = cultureCookie.Value;

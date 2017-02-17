@@ -21,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var menus = MenuService.SearchEntities(whereLambda, search);
+            var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
             return View(menus);

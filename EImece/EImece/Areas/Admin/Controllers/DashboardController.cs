@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -44,19 +45,19 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search));
+            resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search, CurrentLanguage));
 
             Expression<Func<Product, bool>> whereLambda2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            resultList.AddRange(ProductService.SearchEntities(whereLambda2, search));
+            resultList.AddRange(ProductService.SearchEntities(whereLambda2, search, CurrentLanguage));
 
             Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            resultList.AddRange(StoryCategoryService.SearchEntities(whereLambda3, search));
+            resultList.AddRange(StoryCategoryService.SearchEntities(whereLambda3, search, CurrentLanguage));
 
             Expression<Func<Story, bool>> whereLambda4 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            resultList.AddRange(StoryService.SearchEntities(whereLambda4, search));
+            resultList.AddRange(StoryService.SearchEntities(whereLambda4, search, CurrentLanguage));
 
             Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            resultList.AddRange(MenuService.SearchEntities(whereLamba5, search));
+            resultList.AddRange(MenuService.SearchEntities(whereLamba5, search, CurrentLanguage));
 
             return View(resultList);
         }
@@ -82,6 +83,24 @@ namespace EImece.Areas.Admin.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+        }
+        public ActionResult SetLanguage(string name)
+        {
+            //  name = CultureHelper.GetImplementedCulture(name);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            Response.Cookies[AdminCultureCookieName].Value = name;
+            MemoryCacheProvider.ClearAll();
+            var urlReferrer = Request.UrlReferrer;
+            if (urlReferrer != null)
+            {
+                return Redirect(urlReferrer.ToStr());
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
     }
 }

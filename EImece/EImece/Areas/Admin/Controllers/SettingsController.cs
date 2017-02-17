@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var settings = SettingService.SearchEntities(whereLambda, search);
+            var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
          
             return View(settings);
         }

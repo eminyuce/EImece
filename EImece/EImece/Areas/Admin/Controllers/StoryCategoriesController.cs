@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var categories = StoryCategoryService.SearchEntities(whereLambda, search);
+            var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(categories);
         }
 

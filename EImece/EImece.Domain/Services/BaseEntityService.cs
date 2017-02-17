@@ -27,10 +27,10 @@ namespace EImece.Domain.Services
             return baseEntityRepository.GetActiveBaseEntities(isActive, language);
         }
 
-        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search)
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search,int language)
         {
 
-            return baseEntityRepository.SearchEntities(whereLambda, search);
+            return baseEntityRepository.SearchEntities(whereLambda, search, language);
         }
 
         public new virtual T SaveOrEditEntity(T entity)

@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var mainPageImages = MainPageImageService.SearchEntities(whereLambda, search);
+            var mainPageImages = MainPageImageService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(mainPageImages);
         }
 

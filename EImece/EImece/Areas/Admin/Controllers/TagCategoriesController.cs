@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var tags = TagCategoryService.SearchEntities(whereLambda, search);
+            var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(tags);
         }
 
