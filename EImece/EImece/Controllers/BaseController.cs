@@ -189,7 +189,7 @@ namespace EImece.Controllers
         protected static string CultureCookieName = "_culture";
         protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
         {
-            string cultureName = null;
+            string cultureName = "tr-TR";
 
             HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
             if (cultureCookie != null)

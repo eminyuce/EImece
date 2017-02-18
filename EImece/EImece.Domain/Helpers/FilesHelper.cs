@@ -453,6 +453,7 @@ namespace EImece.Domain.Helpers
                             fs1.Write(byteArrayIn);
                             fs1.Close();
 
+
                             baseContent.ImageState = true;
 
                         }
@@ -519,17 +520,37 @@ namespace EImece.Domain.Helpers
                 //img.Dispose();
 
                 var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, GetImageFormat(ext));
-                var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
-                fs.Write(fileByteCropped);
-                fs.Close();
+                //var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
+                //fs.Write(fileByteCropped);
+                //fs.Close();
 
                 imageSize = fileByteCropped.Length;
 
-                // Resize Image -Thumbs
+                //// Resize Image -Thumbs
+                 //var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                //fs1.Write(byteArrayIn);
+                //fs1.Close();
+
+                using (Image thumbnail = ByteArrayToImage(fileByteCropped))
+                {
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        thumbnail.Save(ms, GetImageFormat(ext));
+                        thumbnail.Save(fullPath, GetImageFormat(ext));
+                    }
+                }
+
                 var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
-                var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                fs1.Write(byteArrayIn);
-                fs1.Close();
+                using (Image thumbnail = ByteArrayToImage(byteArrayIn))
+                {
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        thumbnail.Save(ms, GetImageFormat(ext));
+                        thumbnail.Save(candidatePathThb, GetImageFormat(ext));
+                    }
+                }
 
             }
 
@@ -742,7 +763,7 @@ namespace EImece.Domain.Helpers
 
                 // Copy the image from the START Bitmap into the NEW Bitmap.  
                 // This will create a thumnail size of the same image.  
-                newBitmap = ResizeImage(startBitmap, newWidth, newHeight);
+                newBitmap = ResizeImage1(startBitmap, newWidth, newHeight);
 
                 // Save this image to the specified stream in the specified format.  
                 newBitmap.Save(NewMemoryStream, format);
@@ -815,17 +836,21 @@ namespace EImece.Domain.Helpers
         private Bitmap ResizeImage1(Bitmap bitmap, int width, int height)
         {
 
-            Bitmap bmPhoto = new Bitmap(width, height, PixelFormat.Format48bppRgb);
-            bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+            Bitmap bmPhoto = new Bitmap(width, height);
+           // bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
 
             using (Graphics grPhoto = Graphics.FromImage(bmPhoto))
             {
-               // grPhoto.Clear(Color.White);
+                // grPhoto.Clear(Color.White);
 
-                grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
-                grPhoto.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                grPhoto.CompositingQuality = CompositingQuality.HighQuality;
+                //grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                //grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
+                //grPhoto.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                //grPhoto.CompositingQuality = CompositingQuality.HighQuality;
+
+
+                grPhoto.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                grPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
                 grPhoto.DrawImage(bitmap,
                     new Rectangle(0, 0, width, height),

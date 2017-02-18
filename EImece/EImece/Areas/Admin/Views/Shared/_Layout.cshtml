@@ -1,10 +1,15 @@
 ﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain;
 @using Resources;
 @using Microsoft.AspNet.Identity
+@using System.Threading;
+
 @{
+    
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
+    String cultureName = Thread.CurrentThread.CurrentCulture.Name;
 }
 <!DOCTYPE html>
 <html>
@@ -71,8 +76,9 @@
                     </li>
                      <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class= "btn btn-outline-primary" })</li>
                     <li>
-                        <a href="@Url.Action("SetLanguage", "Dashboard", new { @name = "tr-TR" })">Turkish</a>
-                        <a href="@Url.Action("SetLanguage", "Dashboard", new { @name = "en-US" })">English</a>
+            
+                        @Html.ActionLink("Turkish", "SetLanguage", "Dashboard",  new { @name = "tr-TR" }, new  { @class=cultureName.Equals("tr-TR") ?  "btn btn-info" : "btn btn-default" })
+                        @Html.ActionLink("English", "SetLanguage", "Dashboard",  new { @name = "en-US" }, new { @class = cultureName.Equals("en-US") ? "btn btn-info" : "btn btn-default" })
                     </li>
                      <li>
 
@@ -161,3 +167,5 @@
 
 </body>
 </html>
+
+ 

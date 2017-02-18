@@ -222,7 +222,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigInt("MainLanguage", 0);
+                return GetConfigInt("MainLanguage",1);
             }
         }
         public static string StorageRoot

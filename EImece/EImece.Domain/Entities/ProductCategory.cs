@@ -14,7 +14,7 @@ namespace EImece.Domain.Entities
         public  ICollection<Product> Products { get; set; }
 
         [ForeignKey("Template")]
-        public int TemplateId { get; set; }
+        public int? TemplateId { get; set; }
         [NotMapped]
         public List<ProductCategory> Childrens { get; set; }
 
