@@ -75,13 +75,13 @@ namespace EImece.Controllers
         [OutputCache(CacheProfile = "Cache30Days")]
         public ActionResult TermsAndConditions()
         {
-            var stringContent = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions);
+            var stringContent = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions, CurrentLanguage);
             return View(stringContent);
         }
         [OutputCache(CacheProfile = "Cache30Days")]
         public ActionResult PrivacyPolicy()
         {
-           var stringContent =  SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy);
+            var stringContent = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy, CurrentLanguage);
             return View(stringContent);
         }
         [ChildActionOnly]
@@ -133,10 +133,10 @@ namespace EImece.Controllers
                 s.Position = 1;
                 s.EntityHash = "";
                 s.Lang = CurrentLanguage;
-                s.Note = String.Format("CompanyName:{0} {4}Phone:{1} {4}Address:{2} {4}Message:{3} ", 
+                s.Note = String.Format("CompanyName:{0} {4}Phone:{1} {4}Address:{2} {4}Message:{3} ",
                     contact.CompanyName,
                     contact.Phone,
-                    contact.Address, 
+                    contact.Address,
                     contact.Message, Environment.NewLine);
                 SubsciberService.SaveOrEditEntity(s);
 
@@ -169,7 +169,7 @@ namespace EImece.Controllers
         }
         public ActionResult SetLanguage(string name)
         {
-          //  name = CultureHelper.GetImplementedCulture(name);
+            //  name = CultureHelper.GetImplementedCulture(name);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 

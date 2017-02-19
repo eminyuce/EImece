@@ -449,10 +449,16 @@ namespace EImece.Domain.Helpers
                             int originalImageHeight = imageResize.Item4;
 
                             var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
-                            var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                            fs1.Write(byteArrayIn);
-                            fs1.Close();
 
+                            using (Image thumbnail = ByteArrayToImage(byteArrayIn))
+                            {
+
+                                using (MemoryStream ms = new MemoryStream())
+                                {
+                                    thumbnail.Save(ms, GetImageFormat(ext));
+                                    thumbnail.Save(candidatePathThb, GetImageFormat(ext));
+                                }
+                            }
 
                             baseContent.ImageState = true;
 
@@ -836,14 +842,14 @@ namespace EImece.Domain.Helpers
         private Bitmap ResizeImage1(Bitmap bitmap, int width, int height)
         {
 
-            Bitmap bmPhoto = new Bitmap(width, height);
+            Bitmap bmPhoto = new Bitmap(width, height,bitmap.PixelFormat);
            // bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
 
             using (Graphics grPhoto = Graphics.FromImage(bmPhoto))
             {
                 // grPhoto.Clear(Color.White);
 
-                //grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 //grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
                 //grPhoto.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 //grPhoto.CompositingQuality = CompositingQuality.HighQuality;

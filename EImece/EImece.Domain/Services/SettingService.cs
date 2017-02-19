@@ -49,6 +49,11 @@ namespace EImece.Domain.Services
            return allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
         }
 
-    
+        public Setting GetSettingObjectByKey(string key, int language)
+        {
+            var allSettings = GetAllSettings();
+            return allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase)  && r.Lang == language);
+
+        }
     }
 }

@@ -26,7 +26,7 @@
     @Styles.Render("~/Content/themes/base/css")
     <link href="~/Content/SharkDev.TreeView.css" rel="stylesheet" />
     <script src="~/Scripts/SharkDev.treeView.js"></script>
-    <script src="~/Scripts/eimece.js?v=4"></script>
+    <script src="~/Scripts/eimece.js?v=7"></script>
     <script src="~/Scripts/gridmvc.js"></script>
     <link href="~/Content/Gridmvc.css" rel="stylesheet" />
     <link href="~/Content/adminSite.css" rel="stylesheet" />
@@ -76,10 +76,33 @@
                     </li>
                      <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class= "btn btn-outline-primary" })</li>
                     <li>
-            
-                        @Html.ActionLink("Turkish", "SetLanguage", "Dashboard",  new { @name = "tr-TR" }, new  { @class=cultureName.Equals("tr-TR") ?  "btn btn-info" : "btn btn-default" })
-                        @Html.ActionLink("English", "SetLanguage", "Dashboard",  new { @name = "en-US" }, new { @class = cultureName.Equals("en-US") ? "btn btn-info" : "btn btn-default" })
-                    </li>
+                    
+                        @{
+                            List<SelectListItem> listItems = new List<SelectListItem>();
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Turkce",
+                                Value = "tr-TR",
+                                Selected = cultureName.Equals("tr-TR")
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "English",
+                                Value = "en-US",
+                                Selected = cultureName.Equals("en-US")
+                            });
+
+                        }
+
+                        @Html.DropDownList("CookieLanguage", listItems,               new { @onchange= "setlanguage(this.value)" })
+
+                        <script>
+                            function setlanguage(selectedLanguage)
+                                {
+                                window.location.href = "/admin/Dashboard/setlanguage?name=" + selectedLanguage;
+                                }
+                        </script>
+                      </li>
                      <li>
 
                         @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new
@@ -99,7 +122,7 @@
 
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Dashboard", "Index", "Dashboard", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Main Page", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Main Page", "Index", "Home", new { area = "" },new { @target = "_blank" })</li>
                     <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
                     <li class="dropdown">

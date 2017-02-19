@@ -3,6 +3,8 @@
 }
 
 $(document).ready(function () {
+
+  
     bindCKEDITOR();
     searchAutoComplete();
     function bindCKEDITOR() {

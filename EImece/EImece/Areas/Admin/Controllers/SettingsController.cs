@@ -21,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
-         
+
             return View(settings);
         }
 
@@ -42,6 +42,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = SettingService.GetSingle(id);
+              
             }
 
 
@@ -88,7 +89,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult AddTermsAndConditions()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("TermsAndConditions", new { id });
         }
@@ -107,6 +108,10 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = SettingService.GetSingle(id);
+                if (content.Lang != CurrentLanguage)
+                {
+                    return RedirectToAction("AddTermsAndConditions");
+                }
             }
 
             return View(content);
@@ -142,7 +147,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult AddPrivacyPolicy()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("PrivacyPolicy", new { id });
         }
@@ -161,6 +166,10 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = SettingService.GetSingle(id);
+                if (content.Lang != CurrentLanguage)
+                {
+                    return RedirectToAction("AddPrivacyPolicy");
+                }
             }
 
             return View(content);
@@ -219,7 +228,7 @@ namespace EImece.Areas.Admin.Controllers
                 FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
                 id = webSiteLogoSetting.Id;
             }
-            
+
             var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, webSiteLogo);
             webSiteLogoSetting.Name = Settings.WebSiteLogo;
             webSiteLogoSetting.Description = "";

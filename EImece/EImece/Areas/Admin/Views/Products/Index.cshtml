@@ -31,11 +31,11 @@
 <h2>Products</h2>
 
 
-<div  class="row" style="padding:20px;">
+<div class="row" style="padding:20px;">
 
     <div class="col-md-3">
 
-        @Html.ActionLink("All", "Index", "Products", new { @id = 0 }, new { @class="btn btn-link" })
+        @Html.ActionLink("All", "Index", "Products", new { @id = 0 }, new { @class = "btn btn-link" })
 
         @Html.SharkDev().TreeView(settings =>
     {
@@ -73,24 +73,24 @@ window.location='/admin/products/index/'+e.id;
             @Html.Partial("pGridDropDown", baseList)
 
             @Html.Grid(contents).Named(gridName).Columns(columns =>
-           {
+       {
 
-           columns.Add().Encoded(false).
-                   Sanitized(false).
-                   SetWidth(10).
-                   RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", o.Id));
+       columns.Add().Encoded(false).
+               Sanitized(false).
+               SetWidth(10).
+               RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", o.Id));
 
-           columns.Add(o => o.Id, true);
+       columns.Add(o => o.Id, true);
 
 
-           columns.Add()
-             .Encoded(false)
-             .Sanitized(false)
-             .SetWidth(30)
-             .RenderValueAs(d =>
-            @<b>
-                @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
-            </b>);
+       columns.Add()
+         .Encoded(false)
+         .Sanitized(false)
+         .SetWidth(30)
+         .RenderValueAs(d =>
+        @<b>
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+        </b>);
 
 
            columns.Add()
@@ -103,16 +103,16 @@ window.location='/admin/products/index/'+e.id;
                         </b>);
 
 
-            
 
-           columns.Add()
-                  .Encoded(false)
-                  .Sanitized(false)
-                  .SetWidth(30)
-                  .RenderValueAs(d =>
-                @<b>
-                    @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default     glyphicon glyphicon-camera glyphicon-white " })
-                </b>);
+
+       columns.Add()
+              .Encoded(false)
+              .Sanitized(false)
+              .SetWidth(30)
+              .RenderValueAs(d =>
+            @<b>
+                @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default     glyphicon glyphicon-camera glyphicon-white " })
+            </b>);
 
            if (UserRoleHelper.IsDeletedEnableRoles())
            {
@@ -122,7 +122,7 @@ window.location='/admin/products/index/'+e.id;
                         .SetWidth(30)
                         .RenderValueAs(d =>
                         @<b>
-                            @Html.ActionLink(" ", "Delete", controllerName, new { id=d.Id }, new { @class = "btn btn-danger   glyphicon glyphicon-trash glyphicon-white" })
+                            @Html.ActionLink(" ", "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger   glyphicon glyphicon-trash glyphicon-white" })
                         </b>);
            }
            columns.Add(c => c.Name)
@@ -132,65 +132,69 @@ window.location='/admin/products/index/'+e.id;
                     .Sanitized(false)
               .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(d.Name, "Detail", "Products", new {  area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target="_blank" })
+                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
             </b>);
-               columns.Add(c => c.ProductCategory.Name)
-                 .Titled("Category Name");
+           columns.Add(c => c.ProductCategory.Name)
+             .Titled("Category Name");
+           columns.Add(c => c.Price)
+        .Titled("Price");
+           columns.Add(c => c.ProductCode)
+           .Titled("Product Code");
 
-               columns.Add(o => o.Position)
-                  .Encoded(false).
-                       Sanitized(false).
-                       SetWidth(10).
-                       RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+           columns.Add(o => o.Position)
+              .Encoded(false).
+                   Sanitized(false).
+                   SetWidth(10).
+                   RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-               columns.Add(o => o.IsActive)
-                      .Titled("State")
-                      .Sortable(true)
-                      .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                       Sanitized(false)
-                      .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                        o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+           columns.Add(o => o.IsActive)
+                  .Titled("State")
+                  .Sortable(true)
+                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                   Sanitized(false)
+                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
 
-               columns.Add(o => o.ImageState)
-                      .Titled("ImageState")
-                      .Sortable(true)
-                      .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                       Sanitized(false)
-                      .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                                        o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
-
-
-
-               columns.Add(o => o.MainPage)
-                      .Titled("MainPage")
-                      .Sortable(true)
-                      .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                       Sanitized(false)
-                      .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
-                                                        o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage));
+           columns.Add(o => o.ImageState)
+                  .Titled("ImageState")
+                  .Sortable(true)
+                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                   Sanitized(false)
+                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
+                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
 
 
 
-               columns.Add(o => o.CreatedDate)
-                      .Titled("Date")
-                      .Sortable(true)
-                      .Css("gridDateClass")
-                      .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
-                      .SortInitialDirection(GridSortDirection.Descending);
+           columns.Add(o => o.MainPage)
+                  .Titled("MainPage")
+                  .Sortable(true)
+                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                   Sanitized(false)
+                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
+                                                    o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage));
 
 
 
-               columns.Add()
-           .Titled("Images")
-           .Encoded(false)
-           .Sanitized(false)
-
-           .SetWidth(30)
-           .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
-
+           columns.Add(o => o.CreatedDate)
+                  .Titled("Date")
+                  .Sortable(true)
+                  .Css("gridDateClass")
+                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
+                  .SortInitialDirection(GridSortDirection.Descending);
 
 
-           }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+
+           columns.Add()
+       .Titled("Images")
+       .Encoded(false)
+       .Sanitized(false)
+
+       .SetWidth(30)
+       .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+
+
+
+       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
         </div>
 
@@ -199,7 +203,7 @@ window.location='/admin/products/index/'+e.id;
     </div>
 </div>
 
- @section Scripts{
+@section Scripts{
     <script>
 
 
