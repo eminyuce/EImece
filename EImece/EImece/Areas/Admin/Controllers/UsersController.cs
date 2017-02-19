@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Admin.Controllers
@@ -114,6 +116,33 @@ namespace EImece.Areas.Admin.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        public ActionResult GenerateNewPassword(string id = null)
+        {
+            var user = ApplicationDbContext.Users.First(u => u.Id == id);
+            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+            // Send an email with this link
+            string code =  UserManager.GeneratePasswordResetToken(user.Id);
+            String newPassWord = "1"+Membership.GeneratePassword(7, 2);
+            var result = UserManager.ResetPassword(user.Id, code, newPassWord);
+
+       
+            if (result.Succeeded)
+            {
+                ViewBag.NewPassword = newPassWord;
+            }else
+            {
+                ViewBag.NewPassword = result.Errors.ToArray()[0].ToStr() + " ERROR is occured while generating the new password for user:"+user.Email;
+            }
+            AddErrors(result);
+            var model = new EditUserViewModel(user);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(model);
+        }
+
         //[Authorize(Roles = "Admin")]
         public ActionResult Delete(string id = null)
         {
@@ -315,5 +344,7 @@ namespace EImece.Areas.Admin.Controllers
              
             return View();
         }
+     
+
     }
 }

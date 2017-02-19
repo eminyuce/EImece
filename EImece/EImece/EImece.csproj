@@ -523,6 +523,7 @@
     <Content Include="Areas\Admin\Views\Settings\WebSiteLogo.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\PrivacyPolicy.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\TermsAndConditions.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\GenerateNewPassword.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

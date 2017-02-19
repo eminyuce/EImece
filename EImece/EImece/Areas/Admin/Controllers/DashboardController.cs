@@ -82,7 +82,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            MemoryCacheProvider.ClearAll();
+            return RedirectToAction("Index", "Home",new { @area="" });
         }
         public ActionResult SetLanguage(string name)
         {

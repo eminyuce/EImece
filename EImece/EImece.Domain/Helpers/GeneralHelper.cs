@@ -1023,7 +1023,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-
+        
 
         public static string GenerateRandomPassword(int length)
         {
@@ -1034,7 +1034,9 @@ namespace EImece.Domain.Helpers
             {
                 chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
             }
-            return new string(chars);
+            var m = new string(chars);
+
+            return m;
         }
 
         public static Byte[] ToByteArray(HttpPostedFileBase value)
