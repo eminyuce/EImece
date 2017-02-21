@@ -111,6 +111,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
             }
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
+            ViewBag.MenuLinks = GetMenuPages();
             return View(menu);
         }
 
@@ -205,6 +206,12 @@ namespace EImece.Areas.Admin.Controllers
             {
                 menuLinks.Add(new SelectListItem() { Text = "Blog", Value = "stories-index" });
             }
+
+            if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });
+            }
+
             menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
             return menuLinks;
         }

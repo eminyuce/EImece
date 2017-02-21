@@ -191,6 +191,7 @@
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
+    <Compile Include="Models\FrontModels\FooterViewModel.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductCategoryTreeModel.cs" />

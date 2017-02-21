@@ -8,16 +8,27 @@
     var productCategories = Model;
 }
 
-@foreach (var p in productCategories)
-{
-
+<ul class="menu" id="responsive">
     <li>
-        @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
-        @if (p.Childrens.Any())
+        @Html.ActionLink("Home", "Index", "Home", null, new { @id="current", @class = "current homepage" })
+    </li>
+    @foreach (var p in productCategories)
+    {
+       
+        if (p.Childrens.Any())
+        {
+            <li class="dropdown">
+                @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
+                @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+            </li>
+
+        }
+        else
         {
 
-            @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+            <li>
+                @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
+            </li>
         }
-    </li>
-
-}
+    }
+</ul>

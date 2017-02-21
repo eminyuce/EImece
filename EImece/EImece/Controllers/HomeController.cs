@@ -110,6 +110,12 @@ namespace EImece.Controllers
             return PartialView("_WebSiteLogo", webSiteLogo);
         }
         [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        public ActionResult Footer()
+        {
+            FooterViewModel footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
+            return PartialView("_Footer", footerViewModel);
+        }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
         public ActionResult WebSiteAddressInfo()
         {
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");

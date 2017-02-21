@@ -64,7 +64,7 @@ namespace EImece.Domain.Repositories
                 predicate = predicate.And(whereLambda);
             }
             var menus = FindAllIncluding(match,null,null,r=>r.Id,OrderByType.Descending,includeProperties.ToArray());
-
+            menus = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             return menus;
         }
     }

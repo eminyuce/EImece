@@ -1,15 +1,17 @@
 ﻿@using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
+@using EImece.Domain.Helpers;
 
 @{ 
     var SearchProductTextBoxPlaceHolder =  Resource.SearchProductTextBoxPlaceHolder;
     var SearchProductButtonText = Resource.SearchProductButtonText;
-
+    var SearchProductButtonTextPlaceHolder = Resource.SearchProductTextBoxPlaceHolder;
+    var search = Request.QueryString["search"].ToStr();
 }
 @using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get, new { style="display:inline-block;", @class = "form-inline --navbar-form --navbar-left" }))
 {
     <button><i class="fa fa-search"></i></button>
-    <input class="search-field" name="search" id="Search_TextBox" type="text" placeholder="Search" value="" />
+    <input class="search-field" name="search" id="Search_TextBox" type="text" placeholder="@SearchProductButtonTextPlaceHolder" value="@search" />
 }
 

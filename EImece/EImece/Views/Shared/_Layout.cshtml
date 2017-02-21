@@ -65,8 +65,7 @@
         <div class="twelve columns">
             <div id="additional-menu">
                 <ul>
-      
-                    @Html.Action("ProductTree", "Home")
+                    @Html.Action("Menu", "Home")
                 </ul>
             </div>
         </div>
@@ -88,10 +87,8 @@
 
     <div class="container">
         <div class="sixteen columns">
-
-
             <nav id="navigation">
-                @Html.Action("Menu", "Home")
+                @Html.Action("ProductTree", "Home")
             </nav>
         </div>
     </div>
@@ -104,8 +101,7 @@
         @RenderBody()
     </div>
     <footer>
-        @Html.Partial("_Footer")
-
+        @Html.Action("Footer", "Home")
     </footer>
 
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
