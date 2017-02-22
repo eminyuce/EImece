@@ -42,9 +42,9 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
                 Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = this.FindAllIncluding(predicate, null, null, keySelector, OrderByType.Ascending, includeProperties);
+                var items = this.FindAllIncluding(predicate,keySelector, OrderByType.Ascending, null, null, includeProperties);
 
-                return items;
+                return items.ToList();
             }
             catch (Exception exception)
             {
@@ -58,14 +58,13 @@ namespace EImece.Domain.Repositories
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
-            var predicate = PredicateBuilder.Create<T>(match);
+            var menus = GetAllIncluding(includeProperties.ToArray());
             if (!String.IsNullOrEmpty(search.Trim()))
             {
-                predicate = predicate.And(whereLambda);
+                menus = menus.Where(whereLambda);
             }
-            var menus = FindAllIncluding(match,null,null,r=>r.Id,OrderByType.Descending,includeProperties.ToArray());
-            menus = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
-            return menus;
+            var result = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+            return result;
         }
     }
 

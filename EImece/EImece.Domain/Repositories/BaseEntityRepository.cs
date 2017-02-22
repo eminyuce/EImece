@@ -29,7 +29,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, int>> keySelector = t => t.Position;
                 var items = this.FindAll(match, keySelector, OrderByType.Ascending, null, null);
 
-                return items;
+                return items.ToList();
             }
             catch (Exception exception)
             {
@@ -48,7 +48,7 @@ namespace EImece.Domain.Repositories
             }
             var menus = FindAll(match, r => r.UpdatedDate, OrderByType.Descending, null, null);
 
-            return menus;
+            return menus.ToList();
 
         }
 

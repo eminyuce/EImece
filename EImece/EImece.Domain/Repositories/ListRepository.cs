@@ -32,7 +32,7 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ListItems);
-            var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), null, null, r => r.Position, OrderByType.Ascending, includeProperties.ToArray());
+            var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase),  r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
             return item.FirstOrDefault();
         }
     }

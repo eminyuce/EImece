@@ -30,11 +30,11 @@ namespace EImece.Domain.Repositories
             // includeProperties.Add(r => r.Stories);
             Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Count() > 0;
             Expression<Func<StoryCategory, int>> keySelector = t => t.Position;
-            var item = FindAllIncluding(match, null, null, keySelector, OrderByType.Descending, includeProperties.ToArray());
+            var item = FindAllIncluding(match,  keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
             //var item = FindAll(match,keySelector,OrderByType.Descending, null,null);
            // var item =this.EImeceDbContext.StoryCategories.Where(match).OrderBy(keySelector).ThenByDescending(r => r.UpdatedDate).ToList();
            // EImeceDbContext.Database.Log = s => StoryCategoryLogger.Trace(s);
-            return item;
+            return item.ToList();
         }
 
         public StoryCategory GetStoryCategoryById(int storyCategoryId)

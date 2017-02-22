@@ -154,7 +154,7 @@ namespace EImece.Domain.Services
                     Expression<Func<StoryFile, object>>[] includeProperties = { includeProperty };
                     Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
 
-                    var item = StoryFileRepository.FindAllIncluding(match, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties);
+                    var item = StoryFileRepository.FindAllIncluding(match,  r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToList();
                     return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r=>r.UpdatedDate).ToList();
 
                 case MediaModType.Products:
@@ -162,7 +162,7 @@ namespace EImece.Domain.Services
                     Expression<Func<ProductFile, object>>[] includeProperties1 = { includeProperty1 };
                     Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
 
-                    var item1 = ProductFileRepository.FindAllIncluding(match1, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties1);
+                    var item1 = ProductFileRepository.FindAllIncluding(match1,  r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToList();
                     return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Menus:
@@ -170,7 +170,7 @@ namespace EImece.Domain.Services
                     Expression<Func<MenuFile, object>>[] includeProperties2 = { includeProperty2 };
                     Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
 
-                    var item2 = MenuFileRepository.FindAllIncluding(match2, null, null, r => r.FileStorageId, OrderByType.Ascending, includeProperties2);
+                    var item2 = MenuFileRepository.FindAllIncluding(match2,  r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToList();
                     return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 default:

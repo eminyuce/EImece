@@ -48,9 +48,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
             Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
             Expression<Func<Story, DateTime>> keySelector = t => t.UpdatedDate.Value;
-            var items = this.FindAllIncluding(match, take, 0, keySelector, OrderByType.Descending, includeProperties.ToArray());
+            var items = this.FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
 
-            return items;
+            return items.ToList();
         }
 
         public PaginatedList<Story> GetMainPageStories(int pageIndex, int pageSize, int language)
@@ -82,7 +82,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.StoryCategory);
             Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.StoryTags.Any(t=> tagIdList.Contains(t.TagId));
             Expression<Func<Story, int>> keySelector = t => t.Position;
-            return FindAllIncluding(match, take, 0, keySelector, OrderByType.Ascending, includeProperties.ToArray());
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
+
+            return result.ToList();
         }
 
         public PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)

@@ -12,6 +12,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+
 
 namespace EImece.Controllers
 {
@@ -31,13 +37,29 @@ namespace EImece.Controllers
             return View(mainPageModel);
         }
 
-        public ActionResult About()
+        public async Task<ActionResult> About(String id = "2,4")
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Your app description page.";
 
-            return View();
+
+            var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
+            var request = new HttpRequestMessage { RequestUri = new Uri("http://dev2.marinelink.com/api/podcast") };
+
+            var m = id.Split(",".ToCharArray());
+            request.Headers.Range = new RangeHeaderValue(m[0].ToInt(), m[1].ToInt());
+
+
+            var ee = request.Headers.Range.Ranges;
+            var response = await client.SendAsync(request);
+            var h = response.Headers;
+            var cl = response.Content.Headers.ContentLength;
+            var r = response.RequestMessage;
+
+            HttpContent requestContent = response.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+
+            return Json(jsonContent, JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
