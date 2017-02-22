@@ -8,6 +8,7 @@ using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -241,6 +242,39 @@ namespace EImece.Areas.Admin.Controllers
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
+        public ActionResult ExportExcel()
+        {
+            var products = ProductService.GetAdminPageList(0, "", CurrentLanguage);
+            DataTable dt = new DataTable();
+            dt.TableName = "products";
 
+            var result = from r in products
+                         select new
+                         {
+                             Id = r.Id.ToStr(250),
+                             Name = r.Name.ToStr(250),
+                             ProductCategory = r.ProductCategory.Name,
+                             CreatedDate = r.CreatedDate.ToStr(250),
+                             UpdatedDate = r.UpdatedDate.ToStr(250),
+                             IsActive = r.IsActive.ToStr(250),
+                             Position = r.Position.ToStr(250),
+                             Description = r.Description,
+                             MainPage = r.MainPage.ToStr(250),
+                             ImageState = r.ImageState.ToStr(250),
+                             MainImageId = r.MainImageId.ToStr(250),
+                             Price = r.Price.ToStr(250),
+                             Discount = r.Discount.ToStr(250),
+                             ProductCode = r.ProductCode.ToStr(250),
+                             VideoUrl = r.VideoUrl.ToStr(250)
+                         };
+            dt = GeneralHelper.LINQToDataTable(result);
+
+            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
+            return File(ms, "application/vnd.ms-excel",
+                String.Format("Products-{0}-{1}.xls", GetCurrentLanguage,
+                DateTime.Now.ToString("yyyy-MM-dd")));
+
+
+        }
     }
 }

@@ -58,6 +58,8 @@ window.location='/admin/products/index/'+e.id;
 
     </div>
     <div class="col-md-9">
+        @Html.ActionLink("Export To Excel", "ExportExcel", "Products", new { @id = 0 }, new { @class = "btn btn-link" })
+
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}

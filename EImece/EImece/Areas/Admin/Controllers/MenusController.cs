@@ -6,6 +6,7 @@ using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -214,6 +215,38 @@ namespace EImece.Areas.Admin.Controllers
 
             menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
             return menuLinks;
+        }
+        public ActionResult ExportExcel()
+        {
+            String search = "";
+            Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
+            DataTable dt = new DataTable();
+            dt.TableName = "Menus";
+
+            var result = from r in menus
+                         select new
+                         {
+                             Id = r.Id.ToStr(250),
+                             ParentId = r.ParentId.ToStr(250),
+                             Name = r.Name.ToStr(250),
+                             CreatedDate = r.CreatedDate.ToStr(250),
+                             UpdatedDate = r.UpdatedDate.ToStr(250),
+                             IsActive = r.IsActive.ToStr(250),
+                             Position = r.Position.ToStr(250),
+                             Description = r.Description,
+                             MainPage = r.MainPage.ToStr(250),
+                             ImageState = r.ImageState.ToStr(250),
+                             MainImageId = r.MainImageId.ToStr(250)
+                         };
+            dt = GeneralHelper.LINQToDataTable(result);
+
+            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
+            return File(ms, "application/vnd.ms-excel",
+                String.Format("Menus-{0}-{1}.xls", GetCurrentLanguage,
+                DateTime.Now.ToString("yyyy-MM-dd")));
+
+
         }
     }
 }

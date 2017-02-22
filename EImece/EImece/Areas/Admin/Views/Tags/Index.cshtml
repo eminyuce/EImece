@@ -33,6 +33,12 @@
 
 
 <div class="panel panel-info">
+    @Html.ActionLink("Export To Excel", "ExportExcel", "Tags", new { @id = 0 }, new { @class = "btn btn-link" })
+
+
+
+
+
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                       ,{"StateTypes","State"}

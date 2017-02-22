@@ -24,9 +24,9 @@ namespace EImece.Domain.Services
             TagRepository = repository;
         }
 
-        public List<Tag> GetAdminPageList(String search)
+        public List<Tag> GetAdminPageList(String search, int language)
         {
-            return TagRepository.GetAdminPageList(search);
+            return TagRepository.GetAdminPageList(search, language);
         }
 
         public void DeleteTagById(int tagId)

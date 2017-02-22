@@ -120,6 +120,14 @@ namespace EImece.Areas.Admin.Controllers
 
             return base.BeginExecuteCore(callback, state);
         }
+
+        protected EImeceLanguage GetCurrentLanguage
+        {
+            get
+            {
+                return (EImeceLanguage)CurrentLanguage;
+            }
+        }
         protected int CurrentLanguage
         {
             get

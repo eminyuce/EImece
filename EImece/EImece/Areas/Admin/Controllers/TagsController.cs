@@ -6,6 +6,7 @@ using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -19,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            var result = TagService.GetAdminPageList(search);
+            var result = TagService.GetAdminPageList(search, CurrentLanguage);
             return View(result);
         }
 
@@ -44,8 +45,8 @@ namespace EImece.Areas.Admin.Controllers
         private List<SelectListItem> GetCategoriesSelectList()
         {
 
-           List<TagCategory> tagCategories = TagCategoryService.GetAll().OrderBy(r => r.Position).ToList();
-           return  tagCategories.Select(r => new SelectListItem()
+            List<TagCategory> tagCategories = TagCategoryService.GetAll().OrderBy(r => r.Position).ToList();
+            return tagCategories.Select(r => new SelectListItem()
             {
                 Text =
 
@@ -60,12 +61,12 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
 
-            var content = EntityFactory.GetBaseEntityInstance<Tag>(); 
+            var content = EntityFactory.GetBaseEntityInstance<Tag>();
             ViewBag.Categories = GetCategoriesSelectList();
 
             if (id == 0)
             {
- 
+
             }
             else
             {
@@ -97,13 +98,13 @@ namespace EImece.Areas.Admin.Controllers
                 {
 
                 }
-                
+
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Tag);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.Message);
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message);
             }
             ViewBag.Categories = GetCategoriesSelectList();
             return View(Tag);
@@ -112,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
         //
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -153,6 +154,34 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(Tag);
+
+        }
+
+        public ActionResult ExportExcel()
+        {
+            String search = "";
+            var tags = TagService.GetAdminPageList(search, CurrentLanguage);
+            DataTable dt = new DataTable();
+            dt.TableName = "Tags";
+
+            var result = from r in tags
+                         select new
+                         {
+                             Id = r.Id.ToStr(250),
+                             Name = r.Name.ToStr(250),
+                             TagCategory = r.TagCategory.Name.ToStr(250),
+                             CreatedDate = r.CreatedDate.ToStr(250),
+                             UpdatedDate = r.UpdatedDate.ToStr(250),
+                             IsActive = r.IsActive.ToStr(250),
+                             Position = r.Position.ToStr(250),
+                         };
+            dt = GeneralHelper.LINQToDataTable(result);
+
+            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
+            return File(ms, "application/vnd.ms-excel",
+                String.Format("Tags-{0}-{1}.xls", GetCurrentLanguage,
+                DateTime.Now.ToString("yyyy-MM-dd")));
+
 
         }
     }

@@ -21,11 +21,11 @@ namespace EImece.Domain.Repositories
 
         }
 
-        public List<Tag> GetAdminPageList(string search)
+        public List<Tag> GetAdminPageList(string search, int language)
         {
             Expression<Func<Tag, object>> includeProperty2 = r => r.TagCategory;
             Expression<Func<Tag, object>>[] includeProperties = { includeProperty2 };
-            var tags = GetAllIncluding(includeProperties);
+            var tags = GetAllIncluding(includeProperties).Where(r=>r.Lang == language);
             if (!String.IsNullOrEmpty(search))
             {
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));

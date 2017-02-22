@@ -1,9 +1,11 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -123,6 +125,34 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(TagCategory);
+
+        }
+
+        public ActionResult ExportExcel()
+        {
+            String search = "";
+            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
+            DataTable dt = new DataTable();
+            dt.TableName = "TagCategories";
+
+            var result = from r in tags
+                         select new
+                         {
+                             Id = r.Id.ToStr(250),
+                             Name = r.Name.ToStr(250),
+                             CreatedDate = r.CreatedDate.ToStr(250),
+                             UpdatedDate = r.UpdatedDate.ToStr(250),
+                             IsActive = r.IsActive.ToStr(250),
+                             Position = r.Position.ToStr(250),
+                         };
+            dt = GeneralHelper.LINQToDataTable(result);
+
+            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
+            return File(ms, "application/vnd.ms-excel",
+                String.Format("TagCategories-{0}-{1}.xls", GetCurrentLanguage,
+                DateTime.Now.ToString("yyyy-MM-dd")));
+
 
         }
     }
