@@ -60,9 +60,9 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    List.Lang = CurrentLanguage;
                     ListService.SaveOrEditEntity(List);
-                    List.SetListItems(itemText);
-                    ListItemService.SaveListItem(List.Id, List.ListItems);
+                    ListItemService.SaveListItem(List.Id, List.SetListItems(itemText));
 
                     int contentId = List.Id;
                     return RedirectToAction("Index");

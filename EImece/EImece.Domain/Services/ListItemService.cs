@@ -24,7 +24,7 @@ namespace EImece.Domain.Services
             ListItemRepository.DeleteByWhereCondition(r => r.ListId == id);
         }
 
-        public void SaveListItem(int listId, ICollection<ListItem> listItems)
+        public void SaveListItem(int listId, List<ListItem> listItems)
         {
             DeleteListItemByListId(listId);
             foreach (var item in listItems)

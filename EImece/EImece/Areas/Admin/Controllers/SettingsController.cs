@@ -6,6 +6,7 @@ using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -286,6 +287,38 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(Setting);
+
+        }
+
+        public ActionResult ExportExcel()
+        {
+            String search = "";
+
+            Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
+
+            DataTable dt = new DataTable();
+            dt.TableName = "Settings";
+
+            var result = from r in settings
+                         select new
+                         {
+                             Id = r.Id.ToStr(250),
+                             Name = r.Name.ToStr(250),
+                             SettingKey = r.SettingKey,
+                             SettingValue = r.SettingValue,
+                             CreatedDate = r.CreatedDate.ToStr(250),
+                             UpdatedDate = r.UpdatedDate.ToStr(250),
+                             IsActive = r.IsActive.ToStr(250),
+                             Position = r.Position.ToStr(250),
+                         };
+            dt = GeneralHelper.LINQToDataTable(result);
+
+            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
+            return File(ms, "application/vnd.ms-excel",
+                String.Format("Settings-{0}-{1}.xls", GetCurrentLanguage,
+                DateTime.Now.ToString("yyyy-MM-dd")));
+
 
         }
     }

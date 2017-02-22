@@ -23,27 +23,27 @@ namespace EImece.Domain.Helpers.Extensions
             }
         }
 
-        public static void SetListItems(this List entity, String value)
+        public static List<ListItem> SetListItems(this List entity, String value)
         {
-            var strItems = value.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var strItems = value.ToStr().Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             var Items = new List<ListItem>();
             int order = 1;
             foreach (var sItem in strItems)
             {
 
                 var itemValues = sItem.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var text = itemValues[0];
+                var text = itemValues[0].ToStr();
                 var val = text;
-                if (itemValues.Length > 1 && !string.IsNullOrEmpty(itemValues[1]))
+                if (itemValues.Length > 1 && !string.IsNullOrEmpty(itemValues[1].ToStr()))
                 {
-                    val = itemValues[1];
+                    val = itemValues[1].ToStr();
                 }
 
-                Items.Add(new ListItem() { Id=0, Name = text, Value = val, Position = order++, ListId = entity.Id });
+                Items.Add(new ListItem() { Id=0, Name = text, Value = val, Position = order++, ListId = entity.Id, Lang = entity.Lang });
 
             }
 
-            entity.ListItems = Items;
+            return Items;
         }
     }
 }

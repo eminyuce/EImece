@@ -12,13 +12,6 @@ namespace EImece.Domain.Helpers
 {
     public class XmlEditorHelper
     {
-        public String GenerateRss()
-        {
-            string url = HttpContext.Current.Server.MapPath("~/App_Data/rssTemplate.txt");
-            var template = File.ReadAllText(url);
-            String result = Engine.Razor.RunCompile(template, "templateKeyRss");
-            return result;
-        }
         public String GenerateXmlEditor()
         {
             string url = HttpContext.Current.Server.MapPath("~/App_Data/xmlEditorRazor.txt");
@@ -75,13 +68,14 @@ namespace EImece.Domain.Helpers
                     return new List<string> { "Size", "Power", "Other" };
                 }
 
-                return new List<string> { "width", "length", "hight" };
+                return new List<string> { "width", "length", "height" };
             }
 
             if (atribute.Equals("units", StringComparison.InvariantCultureIgnoreCase))
             {
                 return new List<string> { "inch", "volt", "pound" };
             }
+
             if (atribute.Equals("values", StringComparison.InvariantCultureIgnoreCase))
             {
                 return new List<string> { "Countries", "Colors", "State" };
