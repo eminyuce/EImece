@@ -209,6 +209,10 @@ namespace EImece.Areas.Admin.Controllers
             {
                 menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
             }
+            if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Blogs", Value = "stories-index" });
+            }
             menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
 
 

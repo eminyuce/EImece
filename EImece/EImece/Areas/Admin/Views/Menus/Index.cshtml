@@ -52,7 +52,7 @@
 
     </div>
     <div class="col-md-9">
-        @Html.ActionLink("Export To Excel", "ExportExcel",  new { @id = 0 }, new { @class = "btn btn-link" })
+        @Html.ActionLink("Export To Excel", "ExportExcel", new { @id = 0 }, new { @class = "btn btn-link" })
 
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -85,7 +85,7 @@
                                 @<b>
                                     @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
                                 </b>);
-            
+
                        columns.Add()
                                       .Encoded(false)
                                       .Sanitized(false)
@@ -127,19 +127,28 @@
                                          .Sanitized(false)
                                    .RenderValueAs(d =>
                                 @<b>
-                                     @{ 
-                                         var parts = d.MenuLink.Split("-".ToCharArray());
-                                         var action = parts[1];
-                                         var controller = parts[0];
+                                    @{
 
-                                     if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-                                     {
-                                         @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
-                                         }
-                                         else
-                                         {
+                                        var p = d.MenuLink.Split("_".ToCharArray());
+                                        var parts = p.First().Split("-".ToCharArray());
+                                        var action = parts[1];
+                                        var controller = parts[0];
+                                        String mid = "";
+                                        mid = p.Last();
+
+                                        if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+                                        }
+                                        else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                            && action.Equals("category", StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            @Html.ActionLink(d.Name, action, controller, new { area = "",  id = mid  }, new { @class = "btn btn-link", @target = "_blank" })
+                                        }
+                                        else
+                                        {
                                             @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
-                                         }
+                                        }
 
                                     }
 

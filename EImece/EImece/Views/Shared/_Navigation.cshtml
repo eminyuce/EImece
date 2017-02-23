@@ -32,11 +32,14 @@
 @helper RenderMenuAction(Menu m)
 {
 
-var parts = m.MenuLink.Split("-".ToCharArray());
+var p = m.MenuLink.Split("_".ToCharArray());
+var parts = p.First().Split("-".ToCharArray());
 var action = parts[1];
 var controller = parts[0];
 String mid = "";
-mid = m.MenuLink.Split("_".ToCharArray()).Last();
+mid = p.Last();
+
+
 if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
 {
 
@@ -48,10 +51,11 @@ if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
 
 
 }
-else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase))
+else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                            && action.Equals("category", StringComparison.InvariantCultureIgnoreCase))
 {
 
-   
+
         @Html.ActionLink(m.Name, action, controller, new
    {
        id = mid
