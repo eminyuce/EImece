@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -20,6 +21,7 @@ namespace EImece.Domain.Entities
         public double Price { get; set; }
         public double Discount { get; set; }
         public string ProductCode { get; set; }
+        [AllowHtml]
         public string VideoUrl { get; set; }
 
 

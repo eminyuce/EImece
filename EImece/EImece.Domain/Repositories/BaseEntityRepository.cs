@@ -40,17 +40,14 @@ namespace EImece.Domain.Repositories
         }
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
-
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
-            var predicate = PredicateBuilder.Create<T>(match);
+            var menus = GetAll();
             if (!String.IsNullOrEmpty(search.Trim()))
             {
-                predicate = predicate.And(whereLambda);
+                menus = menus.Where(whereLambda);
             }
-            var menus = FindAll(match, r => r.UpdatedDate, OrderByType.Descending, null, null);
-
-            return menus.ToList();
-
+            var result = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+            return result;
         }
 
     }

@@ -23,6 +23,8 @@ namespace EImece.Domain.Services
         [Inject]
         public ITagCategoryService TagCategoryService { get; set; }
 
+        [Inject]
+        public ISettingService SettingService { get; set; }
 
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
@@ -40,6 +42,12 @@ namespace EImece.Domain.Services
                 var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
                 item.ImageHeight = imageSize.Item2;
                 item.ImageWidth = imageSize.Item1;
+            }
+            else
+            {
+
+                item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
+                item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
             }
            
 
