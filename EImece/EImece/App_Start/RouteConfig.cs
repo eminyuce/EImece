@@ -27,6 +27,12 @@ namespace EImece
                );
 
             routes.MapRoute(
+               name: "SitemapsIndex",
+               url: "sitemap.xml",
+                       defaults: new { controller = "SiteMap", action = "Index" }
+            );
+
+            routes.MapRoute(
                  name: "privacypolicy",
                  url: "privacypolicy",
                  defaults: new { controller = "home", action = "privacypolicy" },

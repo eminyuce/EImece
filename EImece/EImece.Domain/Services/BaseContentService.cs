@@ -49,7 +49,7 @@ namespace EImece.Domain.Services
         {
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
         }
-        public virtual List<T> GetActiveBaseContents(bool ?isActive, int language)
+        public virtual List<T> GetActiveBaseContents(bool ?isActive, int ? language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
         }

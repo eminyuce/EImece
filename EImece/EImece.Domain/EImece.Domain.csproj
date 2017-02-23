@@ -183,6 +183,14 @@
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\Extensions\QuerySortingExtensions.cs" />
+    <Compile Include="Helpers\SiteMap\ISitemapGenerator.cs" />
+    <Compile Include="Helpers\SiteMap\ISitemapItem.cs" />
+    <Compile Include="Helpers\SiteMap\NewsSitemapItem.cs" />
+    <Compile Include="Helpers\SiteMap\NewsSiteMapResult.cs" />
+    <Compile Include="Helpers\SiteMap\SitemapChangeFrequency.cs" />
+    <Compile Include="Helpers\SiteMap\SitemapGenerator.cs" />
+    <Compile Include="Helpers\SiteMap\SitemapItem.cs" />
+    <Compile Include="Helpers\SiteMap\SitemapResult.cs" />
     <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Helpers\XmlEditorHelper.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />

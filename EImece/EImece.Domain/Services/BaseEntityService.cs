@@ -22,11 +22,23 @@ namespace EImece.Domain.Services
         {
             this.baseEntityRepository = baseEntityRepository;
         }
-        public virtual List<T> GetActiveBaseEntities(bool? isActive, int language)
+        public virtual List<T> GetActiveBaseEntities(bool? isActive, int ? language)
         {
             return baseEntityRepository.GetActiveBaseEntities(isActive, language);
         }
+        public virtual List<T> GetActiveBaseEntitiesFromCache(bool? isActive, int? language)
+        {
+            List<T> result = null;
+            String cacheKey = String.Format(this.GetType().FullName+"-GetActiveBaseEntitiesFromCache-{0}-{1}", isActive, language);
+       
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = baseEntityRepository.GetActiveBaseEntities(isActive, language);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+            }
+            return result;
 
+        }
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search,int language)
         {
 

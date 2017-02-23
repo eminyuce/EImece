@@ -76,7 +76,7 @@ namespace EImece.Controllers
             var s = SubsciberService.GetSingle(id);
             return View(s);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
             var InstagramWebSiteLink = SettingService.GetSettingByKey("InstagramWebSiteLink");
@@ -107,37 +107,37 @@ namespace EImece.Controllers
             return View(stringContent);
         }
         [ChildActionOnly]
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()
         {
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult Menu()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult ProductTree()
         {
             var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
             return PartialView("_WebSiteLogo", webSiteLogo);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult Footer()
         {
             FooterViewModel footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none")]
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WebSiteAddressInfo()
         {
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");

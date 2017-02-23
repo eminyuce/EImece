@@ -29,11 +29,11 @@ namespace EImece.Domain.Repositories
             var item = GetSingleIncluding(id, includeProperties);
             return item;
         }
-        public virtual List<T> GetActiveBaseContents(bool? isActive, int language)
+        public virtual List<T> GetActiveBaseContents(bool? isActive, int ? language)
         {
             try
             {
-                Expression<Func<T, bool>> match = r2 => r2.Lang == language;
+                Expression<Func<T, bool>> match = r2 => r2.Lang == (language.HasValue ? language.Value : r2.Lang);
                 var predicate = PredicateBuilder.Create<T>(match);
                 if (isActive != null && isActive.HasValue)
                 {

@@ -106,16 +106,16 @@ namespace EImece.Domain.Helpers.Extensions
             return imagePath;
         }
 
-        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "")
+        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol="")
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             if (String.IsNullOrEmpty(categoryName))
             {
-                return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity) });
+                return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity) }, protocol);
             }
             else
             {
-                return urlHelper.Action(action, controller, new { categoryName, id = GetSeoUrl(entity) });
+                return urlHelper.Action(action, controller, new { categoryName, id = GetSeoUrl(entity) }, protocol);
             }
          
         }

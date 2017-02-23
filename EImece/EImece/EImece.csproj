@@ -288,6 +288,7 @@
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\RobotController.cs" />
+    <Compile Include="Controllers\SiteMapController.cs" />
     <Compile Include="Controllers\StoriesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -698,6 +699,7 @@
     <Folder Include="media\images\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
+    <Folder Include="Views\SiteMap\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
