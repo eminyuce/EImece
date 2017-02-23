@@ -28,7 +28,7 @@
         }
 
 
-       
+
     }
 </ul>
 
@@ -38,14 +38,26 @@
 var parts = m.MenuLink.Split("-".ToCharArray());
 var action = parts[1];
 var controller = parts[0];
+String mid = m.MenuLink.Split("_".ToCharArray()).Last();
 if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
 {
 
 
         @Html.ActionLink(m.Name, "detail", controller, new
-       {
-           id = m.GetSeoUrl()
-       }, null)
+   {
+       id = m.GetSeoUrl()
+   }, null)
+
+
+}
+else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase))
+{
+
+  
+        @Html.ActionLink(m.Name, action, controller, new
+   {
+       id = mid
+   }, null)
 
 
 }

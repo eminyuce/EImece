@@ -123,6 +123,15 @@ QUITE
             var tags = tr.GetTagsByTagType(EImeceLanguage.Turkish);
             Console.WriteLine(tags.Count);
         }
+
+        [TestMethod]
+        public void GetmenuLink()
+        {
+            String menuLink = "stories-category_eray-notlar-52";
+            String m =menuLink.Split("_".ToCharArray()).Last();
+
+            Console.WriteLine(m);
+        }
         [TestMethod]
         public void TestAllRepository()
         {

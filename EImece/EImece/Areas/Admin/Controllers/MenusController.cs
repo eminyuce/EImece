@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.Extensions;
+
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -153,14 +155,14 @@ namespace EImece.Areas.Admin.Controllers
         {
 
             Menu menu = MenuService.GetSingle(id);
-       
+
             if (menu == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                 
+
                 MenuService.DeleteMenu(menu.Id);
                 return RedirectToAction("Index");
             }
@@ -194,26 +196,36 @@ namespace EImece.Areas.Admin.Controllers
         }
         private List<SelectListItem> GetMenuPages()
         {
-            var menus = MenuService.GetAll();
-
+            var menus = MenuService.GetActiveBaseContents(true, CurrentLanguage);
+            var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             var menuLinks = new List<SelectListItem>();
 
-            if (!menus.Any(r => r.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase)))
-            {
-                menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
-            }
-
-            if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
-            {
-                menuLinks.Add(new SelectListItem() { Text = "Blog", Value = "stories-index" });
-            }
 
             if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });
             }
-
+            if (!menus.Any(r => r.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
+            }
             menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
+
+
+
+            foreach (var storyCategory in storyCategories)
+            {
+                string m = "stories-category_" + storyCategory.GetSeoUrl();
+                if (!menus.Any(r => r.MenuLink.Equals(m, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    menuLinks.Add(new SelectListItem() { Text = storyCategory.Name, Value = m });
+                }
+            }
+
+
+
+
+
             return menuLinks;
         }
         public ActionResult ExportExcel()

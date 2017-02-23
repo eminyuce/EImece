@@ -43,7 +43,7 @@ namespace EImece.Controllers
 
 
             var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
-            var request = new HttpRequestMessage { RequestUri = new Uri("http://dev2.marinelink.com/api/podcast") };
+            var request = new HttpRequestMessage { RequestUri = new Uri("http://dev2.marinelink.com/api/podcastapi/get") };
 
             var m = id.Split(",".ToCharArray());
             request.Headers.Range = new RangeHeaderValue(m[0].ToInt(), m[1].ToInt());
