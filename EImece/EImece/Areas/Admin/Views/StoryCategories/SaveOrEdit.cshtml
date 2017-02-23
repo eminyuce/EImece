@@ -63,7 +63,6 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -73,7 +72,15 @@
                 </div>
             </div>
         </div>
-
+        <div id="pageThemeWrapper" class="form-group">
+            @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.Partial("pPageThemes", Model)
+                    @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })

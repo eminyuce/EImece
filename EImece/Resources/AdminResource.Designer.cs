@@ -250,6 +250,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main Page Image.
+        /// </summary>
+        public static string MainImageId {
+            get {
+                return ResourceManager.GetString("MainImageId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MainPage.
         /// </summary>
         public static string MainPage {

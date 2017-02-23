@@ -201,4 +201,7 @@
   <data name="PleaseSelectYourMenuCategoryFromTree" xml:space="preserve">
     <value>Please Select Your Menu Category From Tree</value>
   </data>
+  <data name="MainImageId" xml:space="preserve">
+    <value>Main Page Image</value>
+  </data>
 </root>
