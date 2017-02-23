@@ -235,7 +235,7 @@
     <value>Price</value>
   </data>
   <data name="ProductCategoryId" xml:space="preserve">
-    <value>Selected Category</value>
+    <value>Category Name</value>
   </data>
   <data name="ProductCode" xml:space="preserve">
     <value>ProductCode</value>
@@ -287,5 +287,14 @@
   </data>
   <data name="Note" xml:space="preserve">
     <value>Note</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>CreatedDate</value>
+  </data>
+  <data name="UpdatedDate" xml:space="preserve">
+    <value>UpdatedDate</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Images</value>
   </data>
 </root>

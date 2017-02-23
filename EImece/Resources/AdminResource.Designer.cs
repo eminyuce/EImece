@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CreatedDate.
+        /// </summary>
+        public static string CreatedDate {
+            get {
+                return ResourceManager.GetString("CreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content Description.
         /// </summary>
         public static string Description {
@@ -268,6 +277,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Images.
+        /// </summary>
+        public static string Images {
+            get {
+                return ResourceManager.GetString("Images", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ImageState.
         /// </summary>
         public static string ImageState {
@@ -439,7 +457,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected Category.
+        ///   Looks up a localized string similar to Category Name.
         /// </summary>
         public static string ProductCategoryId {
             get {
@@ -561,6 +579,15 @@ namespace Resources {
         public static string TemplateXml {
             get {
                 return ResourceManager.GetString("TemplateXml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdatedDate.
+        /// </summary>
+        public static string UpdatedDate {
+            get {
+                return ResourceManager.GetString("UpdatedDate", resourceCulture);
             }
         }
         

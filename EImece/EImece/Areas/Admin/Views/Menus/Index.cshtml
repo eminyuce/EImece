@@ -122,7 +122,7 @@
 
 
                        columns.Add(c => c.Name)
-                                       .Titled("Name")
+                                        .Titled(AdminResource.Name)
                                        .Filterable(true)
                                         .Encoded(false)
                                          .Sanitized(false)
@@ -163,7 +163,7 @@
                                    RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
                            columns.Add(o => o.IsActive)
-                                  .Titled("State")
+                                      .Titled(AdminResource.State)
                                   .Sortable(true)
                                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                                    Sanitized(false)
@@ -171,7 +171,7 @@
                                                                     o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
 
                            columns.Add(o => o.ImageState)
-                                  .Titled("ImageState")
+                                      .Titled(AdminResource.ImageState)
                                   .Sortable(true)
                                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                                    Sanitized(false)
@@ -182,14 +182,14 @@
 
 
                            columns.Add(o => o.CreatedDate)
-                                  .Titled("Date")
+                                      .Titled(AdminResource.CreatedDate)
                                   .Sortable(true)
                                   .Css("gridDateClass")
                                   .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
                                   .SortInitialDirection(GridSortDirection.Descending);
 
                            columns.Add()
-                       .Titled("Images")
+                           .Titled(AdminResource.Images)
                        .Encoded(false)
                        .Sanitized(false)
 

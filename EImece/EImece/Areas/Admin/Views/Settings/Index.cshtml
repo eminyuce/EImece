@@ -104,7 +104,7 @@ columns.Add(c => c.SettingValue)
 
 
 columns.Add(o => o.UpdatedDate)
-       .Titled("Date")
+           .Titled(AdminResource.CreatedDate)
        .Sortable(true)
        .Css("gridDateClass")
        .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)

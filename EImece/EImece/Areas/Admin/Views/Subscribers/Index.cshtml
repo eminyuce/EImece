@@ -68,7 +68,7 @@
 
 
     columns.Add(o => o.IsActive)
-       .Titled("State")
+           .Titled(AdminResource.State)
        .Sortable(true)
        .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
         Sanitized(false)
@@ -78,7 +78,7 @@
 
 
     columns.Add(o => o.CreatedDate)
-           .Titled("Date")
+               .Titled(AdminResource.CreatedDate)
            .Sortable(true)
            .Css("gridDateClass")
            .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
