@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using GenericRepository;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Resources;
 
 namespace EImece.Domain.Entities
 {

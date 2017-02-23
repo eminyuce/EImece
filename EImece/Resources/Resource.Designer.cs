@@ -61,33 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name 1.
-        /// </summary>
-        public static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name cannot be longer than 500 characters 1.
-        /// </summary>
-        public static string NamePropertyErrorMessage {
-            get {
-                return ResourceManager.GetString("NamePropertyErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name is required 1.
-        /// </summary>
-        public static string NamePropertyRequiredErrorMessage {
-            get {
-                return ResourceManager.GetString("NamePropertyRequiredErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string SearchProductButtonText {

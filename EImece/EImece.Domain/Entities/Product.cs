@@ -6,22 +6,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Resources;
 
 namespace EImece.Domain.Entities
 {
     public class Product: BaseContent
     {
      
-        [Display(Name = "Selected Category")]
-        [Required(ErrorMessage = "Please enter Category")]
+
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCategoryIdErrorMessage))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryId))]
         [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
-
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
         public double Price { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Discount))]
         public double Discount { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCode))]
         public string ProductCode { get; set; }
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.VideoUrl))]
         public string VideoUrl { get; set; }
 
 

@@ -88,6 +88,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discount.
+        /// </summary>
+        public static string Discount {
+            get {
+                return ResourceManager.GetString("Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Existing Main Image.
         /// </summary>
         public static string ExistingMainImageText {
@@ -97,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export To Excel.
+        ///   Looks up a localized string similar to Export To Excel File.
         /// </summary>
         public static string ExportToExcel {
             get {
@@ -250,6 +277,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Active.
+        /// </summary>
+        public static string IsActive {
+            get {
+                return ResourceManager.GetString("IsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link.
+        /// </summary>
+        public static string Link {
+            get {
+                return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LinkIsActive.
+        /// </summary>
+        public static string LinkIsActive {
+            get {
+                return ResourceManager.GetString("LinkIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Page Image.
         /// </summary>
         public static string MainImageId {
@@ -268,6 +322,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MenuLink.
+        /// </summary>
+        public static string MenuLink {
+            get {
+                return ResourceManager.GetString("MenuLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuParentId.
+        /// </summary>
+        public static string MenuParentId {
+            get {
+                return ResourceManager.GetString("MenuParentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -277,11 +349,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name cannot be longer than 500 characters 1.
+        /// </summary>
+        public static string NamePropertyErrorMessage {
+            get {
+                return ResourceManager.GetString("NamePropertyErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is required 1.
+        /// </summary>
+        public static string NamePropertyRequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("NamePropertyRequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Record.
         /// </summary>
         public static string NewRecordText {
             get {
                 return ResourceManager.GetString("NewRecordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note.
+        /// </summary>
+        public static string Note {
+            get {
+                return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PageTheme.
+        /// </summary>
+        public static string PageTheme {
+            get {
+                return ResourceManager.GetString("PageTheme", resourceCulture);
             }
         }
         
@@ -304,6 +412,69 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price.
+        /// </summary>
+        public static string Price {
+            get {
+                return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProductCategoryDiscountPercantage.
+        /// </summary>
+        public static string ProductCategoryDiscountPercantage {
+            get {
+                return ResourceManager.GetString("ProductCategoryDiscountPercantage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Category.
+        /// </summary>
+        public static string ProductCategoryId {
+            get {
+                return ResourceManager.GetString("ProductCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Enter Category.
+        /// </summary>
+        public static string ProductCategoryIdErrorMessage {
+            get {
+                return ResourceManager.GetString("ProductCategoryIdErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProductCategoryParentId.
+        /// </summary>
+        public static string ProductCategoryParentId {
+            get {
+                return ResourceManager.GetString("ProductCategoryParentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProductCode.
+        /// </summary>
+        public static string ProductCode {
+            get {
+                return ResourceManager.GetString("ProductCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SaveButtonText {
@@ -313,11 +484,92 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SettingKey.
+        /// </summary>
+        public static string SettingKey {
+            get {
+                return ResourceManager.GetString("SettingKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SettingValue.
+        /// </summary>
+        public static string SettingValue {
+            get {
+                return ResourceManager.GetString("SettingValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to State.
         /// </summary>
         public static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Static.
+        /// </summary>
+        public static string Static {
+            get {
+                return ResourceManager.GetString("Static", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StoryCategoryId.
+        /// </summary>
+        public static string StoryCategoryId {
+            get {
+                return ResourceManager.GetString("StoryCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Story Category.
+        /// </summary>
+        public static string StoryCategoryIdErrorMessage {
+            get {
+                return ResourceManager.GetString("StoryCategoryIdErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TagCategoryId.
+        /// </summary>
+        public static string TagCategoryId {
+            get {
+                return ResourceManager.GetString("TagCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template Name.
+        /// </summary>
+        public static string TemplateId {
+            get {
+                return ResourceManager.GetString("TemplateId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TemplateXml.
+        /// </summary>
+        public static string TemplateXml {
+            get {
+                return ResourceManager.GetString("TemplateXml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VideoUrl.
+        /// </summary>
+        public static string VideoUrl {
+            get {
+                return ResourceManager.GetString("VideoUrl", resourceCulture);
             }
         }
     }

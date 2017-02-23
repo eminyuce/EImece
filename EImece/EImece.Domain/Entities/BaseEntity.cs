@@ -15,16 +15,19 @@ namespace EImece.Domain.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NamePropertyRequiredErrorMessage))]
-        [StringLength(500,ErrorMessageResourceType =typeof(Resource), ErrorMessageResourceName =nameof(Resource.NamePropertyErrorMessage))]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NamePropertyRequiredErrorMessage))]
+        [StringLength(500,ErrorMessageResourceType =typeof(AdminResource), ErrorMessageResourceName =nameof(AdminResource.NamePropertyErrorMessage))]
         [Column("Name")]
-        //[Display(Name = "Name")]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Name))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Name))]
         public string Name { get; set; }
         public string EntityHash { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsActive))]
         public bool IsActive { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Position))]
         public int Position { get; set; }
         public int Lang { get; set; }
 

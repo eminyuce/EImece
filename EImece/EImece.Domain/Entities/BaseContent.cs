@@ -13,7 +13,9 @@ namespace EImece.Domain.Entities
     public abstract class BaseContent : BaseEntity
     {
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Description))]
         public string Description { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageState))]
         public Boolean ImageState { get; set; }
 
 

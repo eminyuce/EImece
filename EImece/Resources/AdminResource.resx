@@ -187,7 +187,7 @@
     <value>State</value>
   </data>
   <data name="ExportToExcel" xml:space="preserve">
-    <value>Export To Excel</value>
+    <value>Export To Excel File</value>
   </data>
   <data name="AdminDeleteConfirmMessage" xml:space="preserve">
     <value>Do you want to delete it?</value>
@@ -203,5 +203,89 @@
   </data>
   <data name="MainImageId" xml:space="preserve">
     <value>Main Page Image</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Is Active</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Content Description</value>
+  </data>
+  <data name="ProductCategoryParentId" xml:space="preserve">
+    <value>ProductCategoryParentId</value>
+  </data>
+  <data name="TemplateId" xml:space="preserve">
+    <value>Template Name</value>
+  </data>
+  <data name="ProductCategoryDiscountPercantage" xml:space="preserve">
+    <value>ProductCategoryDiscountPercantage</value>
+  </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="NamePropertyErrorMessage" xml:space="preserve">
+    <value>Name cannot be longer than 500 characters 1</value>
+  </data>
+  <data name="NamePropertyRequiredErrorMessage" xml:space="preserve">
+    <value>Name is required 1</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="ProductCategoryId" xml:space="preserve">
+    <value>Selected Category</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>ProductCode</value>
+  </data>
+  <data name="ProductCategoryIdErrorMessage" xml:space="preserve">
+    <value>Please Enter Category</value>
+  </data>
+  <data name="VideoUrl" xml:space="preserve">
+    <value>VideoUrl</value>
+  </data>
+  <data name="MenuParentId" xml:space="preserve">
+    <value>MenuParentId</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="LinkIsActive" xml:space="preserve">
+    <value>LinkIsActive</value>
+  </data>
+  <data name="MenuLink" xml:space="preserve">
+    <value>MenuLink</value>
+  </data>
+  <data name="PageTheme" xml:space="preserve">
+    <value>PageTheme</value>
+  </data>
+  <data name="Static" xml:space="preserve">
+    <value>Static</value>
+  </data>
+  <data name="SettingValue" xml:space="preserve">
+    <value>SettingValue</value>
+  </data>
+  <data name="SettingKey" xml:space="preserve">
+    <value>SettingKey</value>
+  </data>
+  <data name="StoryCategoryId" xml:space="preserve">
+    <value>StoryCategoryId</value>
+  </data>
+  <data name="StoryCategoryIdErrorMessage" xml:space="preserve">
+    <value>Select a Story Category</value>
+  </data>
+  <data name="TemplateXml" xml:space="preserve">
+    <value>TemplateXml</value>
+  </data>
+  <data name="TagCategoryId" xml:space="preserve">
+    <value>TagCategoryId</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
   </data>
 </root>
