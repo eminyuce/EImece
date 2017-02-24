@@ -27,7 +27,7 @@
                     <button class="btn btn-primary"  id="SearchButton" type="submit">@gridSearchButtonText</button>
                     @if (!String.IsNullOrEmpty(search))
                     {
-                        @Html.ActionLink(clear, action, controller, new { search = "" }, new { @class="btn btn-default" })
+                        @Html.ActionLink(clear, action, controller, new { search = "",id="" }, new { @class="btn btn-default" })
                     }
                 </span>
             </div><!-- /input-group -->

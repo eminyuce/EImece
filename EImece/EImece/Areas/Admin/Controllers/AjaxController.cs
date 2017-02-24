@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SearchAutoComplete(String term, String action, String controller)
         {
-            String searchKey = term.Trim().ToLower();
+            String searchKey = term.ToStr().ToLower().Trim();
             var list = new List<String>();
 
             if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&

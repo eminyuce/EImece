@@ -18,5 +18,6 @@ namespace EImece.Domain.Entities
         public int Width { get; set; }
         public int Height { get; set; }
         public string Type { get; set; }
+        public bool IsFileExist { get; set; }
     }
 }

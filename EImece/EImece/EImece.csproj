@@ -695,6 +695,7 @@
     <Content Include="Views\Home\PrivacyPolicy.cshtml" />
     <Content Include="Views\Home\TermsAndConditions.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\LatestStory.cshtml" />
+    <Content Include="Views\Shared\_NavigationMenuLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

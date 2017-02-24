@@ -179,6 +179,7 @@
     <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
+    <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />

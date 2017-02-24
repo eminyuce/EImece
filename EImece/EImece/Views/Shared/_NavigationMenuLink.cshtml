@@ -1,0 +1,54 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@model Menu
+
+@{ 
+    var m = Model;
+}
+
+@RenderMenuAction(m)
+
+@helper RenderMenuAction(Menu m)
+{
+
+var p = m.MenuLink.Split("_".ToCharArray());
+var parts = p.First().Split("-".ToCharArray());
+var action = parts[1];
+var controller = parts[0];
+String mid = "";
+mid = p.Last();
+
+
+if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+{
+
+
+        @Html.ActionLink(m.Name, "detail", controller, new
+   {
+       id = m.GetSeoUrl()
+   }, null)
+
+
+}
+else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                            && action.Equals("category", StringComparison.InvariantCultureIgnoreCase))
+{
+
+
+        @Html.ActionLink(m.Name, action, controller, new
+   {
+       id = mid
+   }, null)
+
+
+}
+else
+{
+
+        @Html.ActionLink(m.Name, action, controller)
+
+
+}
+
+}

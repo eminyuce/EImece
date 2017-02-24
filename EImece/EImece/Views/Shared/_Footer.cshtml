@@ -6,32 +6,44 @@
 @model FooterViewModel
 @{ 
     var footerModel = Model;
+
 }
 <!-- Container -->
 <div class="container">
 
     <div class="four columns">
-        <img src="images/logo-footer.png" alt="" class="margin-top-10" />
-        <p class="margin-top-15">Nulla facilisis feugiat magna, ut molestie metus hendrerit vitae. Vivamus tristique lectus at varius rutrum. Integer lobortis mauris non consectetur eleifend.</p>
+
+        @Html.Partial("_WebSiteLogo", 
+       Model.FooterLogo, 
+       new ViewDataDictionary(ViewData){
+            {"isThumb","true"}})
+
+        <p class="margin-top-15">
+        
+        @Html.Raw(Model.FooterDescription.SettingValue)</p>
     </div>
 
     <div class="four columns">
 
         <!-- Headline -->
-        <h3 class="headline footer">Customer Service</h3>
+        <h3 class="headline footer">@Resource.Pages</h3>
         <span class="line"></span>
         <div class="clearfix"></div>
 
         <ul class="footer-links">
-            <li><a href="#">Order Status</a></li>
-            <li><a href="#">Payment Methods</a></li>
-            <li>
-            <a href="#">Delivery & Returns</a></li>
+            @foreach(var m in Model.Menus)
+            {
+
+                <li>
+                    @Html.Partial("_NavigationMenuLink", m)
+                </li>
+            }
+
             <li> 
-            @Html.ActionLink("Privacy Policy", "PrivacyPolicy", "Home")
+            @Html.ActionLink(Resource.PrivacyPolicy, "PrivacyPolicy", "Home")
             </li>
             <li>
-                @Html.ActionLink("Terms & Conditions", "TermsAndConditions", "Home")
+                @Html.ActionLink(Resource.TermsAndConditions, "TermsAndConditions", "Home")
            </li>
         </ul>
 
@@ -45,10 +57,16 @@
     <div class="four columns">
 
         <!-- Headline -->
-        <h3 class="headline footer">Newsletter</h3>
+        <h3 class="headline footer">@Resource.EmailList</h3>
         <span class="line"></span>
         <div class="clearfix"></div>
-        <p>Sign up to receive email updates on new product announcements, gift ideas, special promotions, sales and more.</p>
+        <p>
+        
+            @Html.Raw(Model.FooterEmailListDescription.SettingValue)
+
+       
+        
+        </p>
 
         <form action="#" method="get">
             @Html.Partial("_AddSubscriber")

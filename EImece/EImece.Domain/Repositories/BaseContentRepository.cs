@@ -59,7 +59,8 @@ namespace EImece.Domain.Repositories
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
             var menus = GetAllIncluding(includeProperties.ToArray());
-            if (!String.IsNullOrEmpty(search.Trim()))
+            search=search.ToStr().ToLower().Trim();
+            if (!String.IsNullOrEmpty(search))
             {
                 menus = menus.Where(whereLambda);
             }

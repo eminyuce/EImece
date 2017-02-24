@@ -404,7 +404,7 @@ namespace EImece.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard",new { @area="admin" });
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

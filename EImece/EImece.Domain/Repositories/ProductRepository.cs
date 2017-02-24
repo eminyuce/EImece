@@ -11,6 +11,7 @@ using GenericRepository.EntityFramework.Enums;
 using GenericRepository;
 using NLog;
 using Ninject;
+using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Repositories
 {
@@ -56,8 +57,10 @@ namespace EImece.Domain.Repositories
             Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
             Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3 };
             var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
+            search = search.ToStr().ToLower().Trim();
             if (!String.IsNullOrEmpty(search))
             {
+          
                 products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search) || r.ProductCategory.Name.ToLower().Contains(search));
             }
             if (categoryId > 0)

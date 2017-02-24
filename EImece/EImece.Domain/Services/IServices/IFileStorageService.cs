@@ -13,7 +13,11 @@ namespace EImece.Domain.Services.IServices
 
     public interface IFileStorageService : IBaseEntityService<FileStorage>
     {
-        void SaveUploadImages(int contentId, EImeceImageType? contentImageType, MediaModType? contentMediaType, List<ViewDataUploadFilesResult> resultList);
+        void SaveUploadImages(int contentId, 
+            EImeceImageType? contentImageType,
+            MediaModType? contentMediaType,
+            List<ViewDataUploadFilesResult> resultList, 
+            int language);
         void DeleteUploadImage(String fileName,int contentId, EImeceImageType? imageType, MediaModType? mod);
         List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType);
 

@@ -18,6 +18,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using EImece.Domain.Caching;
 using NLog;
+using System.Security.Cryptography;
 
 namespace EImece.Domain.Helpers
 {
@@ -64,6 +65,7 @@ namespace EImece.Domain.Helpers
             var mainPage = FileStorageService.GetSingle(mainPageId);
             return GetThumbnailImageSize(mainPage);
         }
+
         public Tuple<int, int, int, int, string> GetThumbnailImageSize(FileStorage mainImage)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
@@ -156,6 +158,12 @@ namespace EImece.Domain.Helpers
             }
             return succesMessage;
         }
+        public bool NormalFileExists(String file)
+        {
+            String fullPath = Path.Combine(StorageRoot, file);
+            return File.Exists(fullPath);
+
+        }
         public String DeleteNormalFile(String file)
         {
             String fullPath = Path.Combine(StorageRoot, file);
@@ -204,12 +212,12 @@ namespace EImece.Domain.Helpers
         public void UploadAndShowResults(HttpContextBase ContentBase, List<ViewDataUploadFilesResult> resultList)
         {
             var httpRequest = ContentBase.Request;
-            System.Diagnostics.Debug.WriteLine(Directory.Exists(tempPath));
+           // System.Diagnostics.Debug.WriteLine(Directory.Exists(tempPath));
 
             String fullPath = Path.Combine(StorageRoot);
-            Directory.CreateDirectory(fullPath);
+            //Directory.CreateDirectory(fullPath);
             // Create new folder for thumbs
-            Directory.CreateDirectory(fullPath + "/thumbs/");
+            //Directory.CreateDirectory(fullPath + "/thumbs/");
 
             foreach (String inputTagName in httpRequest.Files)
             {
@@ -217,7 +225,7 @@ namespace EImece.Domain.Helpers
                 var headers = httpRequest.Headers;
 
                 var file = httpRequest.Files[inputTagName];
-                System.Diagnostics.Debug.WriteLine(file.FileName);
+                //System.Diagnostics.Debug.WriteLine(file.FileName);
 
                 if (string.IsNullOrEmpty(headers["X-File-Name"]))
                 {
@@ -227,7 +235,7 @@ namespace EImece.Domain.Helpers
                 else
                 {
 
-                    UploadPartialFile(headers["X-File-Name"], ContentBase, resultList);
+                 //   UploadPartialFile(headers["X-File-Name"], ContentBase, resultList);
                 }
             }
         }
@@ -280,42 +288,52 @@ namespace EImece.Domain.Helpers
                 {
                     var result = SaveImageByte(width, height, file);
                     var newFileName = result.Item1;
-                    statuses.Add(UploadResult(newFileName, file.ContentLength, newFileName, requestContext));
+                    var k = UploadResult(newFileName, file.ContentLength, newFileName, requestContext);
+                    k.imageHash = result.Item7;
+                    statuses.Add(k);
                 }
             }
         }
 
 
 
-        private void UploadPartialFile(string fileName, HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
-        {
-            var request = requestContext.Request;
-            if (request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
-            var file = request.Files[0];
-            var ext = Path.GetExtension(fileName);
-            var inputStream = file.InputStream;
-            String patchOnServer = Path.Combine(StorageRoot);
-            var fullName = Path.Combine(patchOnServer, Path.GetFileName(file.FileName));
-            var ThumbfullPath = Path.Combine(fullName, Path.GetFileName(file.FileName + ".80x80.jpg"));
+        //private void UploadPartialFile(string fileName, HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
+        //{
+        //    var request = requestContext.Request;
+        //    if (request.Files.Count != 1)
+        //    {
+        //        throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+        //    }
+        //    var file = request.Files[0];
+        //    var ext = Path.GetExtension(fileName);
+        //    var inputStream = file.InputStream;
+        //    String patchOnServer = Path.Combine(StorageRoot);
+        //    var fullName = Path.Combine(patchOnServer, Path.GetFileName(file.FileName));
+        //    var ThumbfullPath = Path.Combine(fullName, Path.GetFileName(file.FileName + ".80x80.jpg"));
 
 
-            var ImageBit = LoadImage(fullName);
-            Save(ImageBit, 80, 80, 10, ThumbfullPath, GetImageFormat(ext));
-            using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
-            {
-                var buffer = new byte[1024];
+        //    var ImageBit = LoadImage(fullName);
+        //    Save(ImageBit, 80, 80, 10, ThumbfullPath, GetImageFormat(ext));
+        //    using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
+        //    {
+        //        var buffer = new byte[1024];
 
-                var l = inputStream.Read(buffer, 0, 1024);
-                while (l > 0)
-                {
-                    fs.Write(buffer, 0, l);
-                    l = inputStream.Read(buffer, 0, 1024);
-                }
-                fs.Flush();
-                fs.Close();
-            }
-            statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext));
-        }
+        //        var l = inputStream.Read(buffer, 0, 1024);
+        //        while (l > 0)
+        //        {
+        //            fs.Write(buffer, 0, l);
+        //            l = inputStream.Read(buffer, 0, 1024);
+        //        }
+        //        fs.Flush();
+        //        fs.Close();
+        //    }
+        //    statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext));
+
+        //    var k = UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext);
+     
+        //    statuses.Add(k);
+
+        //}
         public ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
         {
             var request = requestContext.Request;
@@ -418,6 +436,8 @@ namespace EImece.Domain.Helpers
                 fileStorage.FileSize = result.Item4;
                 fileStorage.Type = imageType.ToStr();
                 fileStorage.Lang = CurrentLanguage;
+                fileStorage.EntityHash = result.Item7;
+                fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
                 FileStorageService.SaveOrEditEntity(fileStorage);
                 baseContent.MainImageId = fileStorage.Id;
                 baseContent.ImageState = true;
@@ -483,12 +503,13 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
         }
-        public Tuple<string, int, int, int, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
+        public Tuple<string, int, int, int, string, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;
 
             String fileName = "";
+            String fileHash = "";
             String contentType = file.ContentType;
 
             fileName = Path.GetFileName(file.FileName);
@@ -533,7 +554,7 @@ namespace EImece.Domain.Helpers
                 imageSize = fileByteCropped.Length;
 
                 //// Resize Image -Thumbs
-                 //var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
+                //var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
                 //fs1.Write(byteArrayIn);
                 //fs1.Close();
 
@@ -546,8 +567,9 @@ namespace EImece.Domain.Helpers
                         thumbnail.Save(fullPath, GetImageFormat(ext));
                     }
                 }
-
+                fileHash = HashHelpers.GetSha256Hash(fileByte);
                 var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
+
                 using (Image thumbnail = ByteArrayToImage(byteArrayIn))
                 {
 
@@ -560,7 +582,7 @@ namespace EImece.Domain.Helpers
 
             }
 
-            return new Tuple<string, int, int, int, string, string>(newFileName, width, height, imageSize, contentType, fileName);
+            return new Tuple<string, int, int, int, string, string, string>(newFileName, width, height, imageSize, contentType, fileName, fileHash);
 
         }
 
@@ -785,7 +807,7 @@ namespace EImece.Domain.Helpers
         public void CreateThumbnail(Bitmap startBitmap, int Width, int Height, String imageFullPath, ImageFormat format)
         {
 
-           
+
 
             // create a new Bitmap with dimensions for the thumbnail.  
             System.Drawing.Bitmap newBitmap = new System.Drawing.Bitmap(Width, Height);
@@ -842,8 +864,8 @@ namespace EImece.Domain.Helpers
         private Bitmap ResizeImage1(Bitmap bitmap, int width, int height)
         {
 
-            Bitmap bmPhoto = new Bitmap(width, height,bitmap.PixelFormat);
-           // bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+            Bitmap bmPhoto = new Bitmap(width, height, bitmap.PixelFormat);
+            // bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
 
             using (Graphics grPhoto = Graphics.FromImage(bmPhoto))
             {
@@ -984,7 +1006,7 @@ namespace EImece.Domain.Helpers
             }
             return result;
         }
-       
+
 
         private static ImageCodecInfo GetImageCodecInfo(string extension)
         {
@@ -992,7 +1014,7 @@ namespace EImece.Domain.Helpers
             switch (extension)
             {
                 case ".bmp": return ImageCodecInfo.GetImageEncoders()[0];
-                case ".jpg":
+                case ".jpg": return ImageCodecInfo.GetImageEncoders()[1];
                 case ".jpeg": return ImageCodecInfo.GetImageEncoders()[1];
                 case ".gif": return ImageCodecInfo.GetImageEncoders()[2];
                 case ".tiff": return ImageCodecInfo.GetImageEncoders()[3];
@@ -1009,7 +1031,7 @@ namespace EImece.Domain.Helpers
         /// <param name="maxHeight">resize height.</param>
         /// <param name="quality">quality setting value.</param>
         /// <param name="filePath">file path.</param>      
-        public void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath,ImageFormat format)
+        public void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath, ImageFormat format)
         {
             // Get the image's original width and height
             int originalWidth = image.Width;

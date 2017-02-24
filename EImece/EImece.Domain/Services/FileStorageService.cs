@@ -36,7 +36,12 @@ namespace EImece.Domain.Services
             FileStorageRepository = repository;
         }
 
-        public void SaveUploadImages(int contentId, EImeceImageType? contentImageType, MediaModType? contentMediaType, List<ViewDataUploadFilesResult> resultList)
+        public void SaveUploadImages(int contentId, 
+            EImeceImageType? contentImageType,
+            MediaModType? contentMediaType,
+            List<ViewDataUploadFilesResult> resultList,
+            int language
+            )
         {
 
             foreach (var file in resultList)
@@ -55,7 +60,10 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
+                    fileStorage.EntityHash = file.imageHash;
+                    fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
+                    fileStorage.Lang = language;
                     FileStorageRepository.SaveOrEdit(fileStorage);
                     file.fileStorageId = fileStorage.Id;
 
@@ -70,6 +78,7 @@ namespace EImece.Domain.Services
                             sf.UpdatedDate = DateTime.Now;
                             sf.IsActive = true;
                             sf.Position = 1;
+                            sf.Lang = language;
                             StoryFileRepository.SaveOrEdit(sf);
                             break;
                         case MediaModType.Products:
@@ -81,6 +90,7 @@ namespace EImece.Domain.Services
                             pf.UpdatedDate = DateTime.Now;
                             pf.IsActive = true;
                             pf.Position = 1;
+                            pf.Lang = language;
                             ProductFileRepository.SaveOrEdit(pf);
                             break;
                         case MediaModType.Menus:
@@ -92,6 +102,7 @@ namespace EImece.Domain.Services
                             mf.UpdatedDate = DateTime.Now;
                             mf.IsActive = true;
                             mf.Position = 1;
+                            mf.Lang = language;
                             MenuFileRepository.SaveOrEdit(mf);
                             break;
 

@@ -19,7 +19,8 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IProductService ProductService { get; set; }
-
+        [Inject]
+        public IMenuService MenuService { get; set; }
 
         [Inject]
         public IStoryService StoryService { get; set; }
@@ -62,7 +63,19 @@ namespace EImece.Domain.Services
 
         public FooterViewModel GetFooterViewModel(int language)
         {
-            var result = new FooterViewModel();
+            var cacheKey = String.Format("GetFooterViewModel-{0}", language);
+            FooterViewModel result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = new FooterViewModel();
+                result.Menus = MenuService.GetActiveBaseContents(true, language).Where(r => r.ParentId == 0).ToList();
+                result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
+                result.FooterLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
+                result.FooterDescription = SettingService.GetSettingObjectByKey("FooterDescription", language);
+                result.FooterEmailListDescription = SettingService.GetSettingObjectByKey("FooterEmailListDescription", language);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+            }
             return result;
         }
     }

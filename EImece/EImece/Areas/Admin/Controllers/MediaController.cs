@@ -104,7 +104,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList);
+                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList,CurrentLanguage);
                 return Json(files);
             }
         }

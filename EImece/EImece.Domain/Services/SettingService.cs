@@ -46,14 +46,36 @@ namespace EImece.Domain.Services
         public Setting GetSettingObjectByKey(string key)
         {
             var allSettings = GetAllSettings();
-           return allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            var  result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+                setting.SettingKey = key;
+                setting.SettingValue = key;
+                return setting;
+            }
         }
 
         public Setting GetSettingObjectByKey(string key, int language)
         {
             var allSettings = GetAllSettings();
-            return allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase)  && r.Lang == language);
-
+            var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+                setting.SettingKey = key;
+                setting.SettingValue = key;
+                setting.Lang = language;
+                return setting;
+            }
         }
     }
 }
