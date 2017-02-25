@@ -4,18 +4,23 @@
     var tagCategories = Model;
     var selectedTags = (List<int>)TempData["selectedTags"];
 }
-
 @foreach (TagCategory tagCategory in tagCategories)
 {
     <h3>
         @tagCategory.Name
     </h3>
-    <div>
-        @foreach (var tag in tagCategory.Tags)
-        {
-            <div>
-                <input type="checkbox" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" /> @tag.Name
-            </div>
+    foreach (var tag in tagCategory.Tags)
+    {
+
+        <span class="tagCheckbox"> 
+            <input type="checkbox" class="checkbox checkbox-success" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" />
+
+            <label for="option"> <span>@tag.Name</span> </label>
+
+        </span>
+        
+             
+        
+               
         }
-    </div>
 }

@@ -3,7 +3,7 @@
 @{
     var tagCategories = Model;
 }
-
+111
 @foreach (TagCategory tagCategory in tagCategories)
 {
     <h3>
@@ -12,9 +12,8 @@
     <div>
         @foreach (var tag in tagCategory.Tags)
         {
-            <div>
-                <input type="checkbox"  name="tags" value="@tag.Id" /> @tag.Name
-            </div>
+
+            <label><input type="checkbox" name="tags" value="@tag.Id" /> <span>@tag.Name</span></label>
         }
     </div>
 }
