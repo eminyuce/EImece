@@ -42,10 +42,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GenericRepository">
-      <HintPath>..\..\..\GenericRepositoryDll\GenericRepository.dll</HintPath>
+      <HintPath>..\..\..\..\..\ProjectEY\EImeceDllReferences\GenericRepository.dll</HintPath>
     </Reference>
     <Reference Include="GenericRepository.EntityFramework">
-      <HintPath>..\..\..\GenericRepositoryDll\GenericRepository.EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\..\..\ProjectEY\EImeceDllReferences\GenericRepository.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />

@@ -20,6 +20,13 @@ namespace EImece.Domain.Repositories
 
         }
 
+        public List<List> GetAllListItems()
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ListItems);
+            return this.GetAllIncluding(includeProperties.ToArray()).ToList();
+        }
+
         public List GetListById(int id)
         {
             var includeProperties = GetIncludePropertyExpressionList();

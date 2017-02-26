@@ -11,5 +11,6 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List GetListById(int id);
         List GetListByName(string name);
+        List<List> GetAllListItems();
     }
 }

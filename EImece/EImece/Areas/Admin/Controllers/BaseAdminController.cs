@@ -20,7 +20,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    //[AuthorizeRoles(Settings.AdministratorRole, Settings.EditorRole)]
+    [AuthorizeRoles(Settings.AdministratorRole, Settings.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
 

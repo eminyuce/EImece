@@ -304,6 +304,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsServices.
+        /// </summary>
+        public static string IsService {
+            get {
+                return ResourceManager.GetString("IsService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsValues.
+        /// </summary>
+        public static string IsValues {
+            get {
+                return ResourceManager.GetString("IsValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link.
         /// </summary>
         public static string Link {

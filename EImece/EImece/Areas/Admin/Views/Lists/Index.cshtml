@@ -29,7 +29,7 @@
 
 }
 
-<h2>TagCategory</h2>
+<h2>List</h2>
 
 
 <div class="panel panel-info">
@@ -77,17 +77,42 @@ if (UserRoleHelper.IsDeletedEnableRoles())
                 @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
             </b>);
 
-}
+    }
 
-columns.Add(c => c.Name)
-       .Titled("Title")
-       .Filterable(true);
+    columns.Add(c => c.Name)
+           .Titled("Title")
+           .Filterable(true);
+
+    columns.Add(o => o.IsService)
+                .Titled(AdminResource.IsService)
+                .Sortable(true)
+                .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                 Sanitized(false)
+                .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
+                                                  o.Id, (o.IsService ? Settings.OkStyle : Settings.CancelStyle), o.IsService));
+
+
+
+
+    columns.Add(o => o.IsValues)
+              .Titled(AdminResource.IsValues)
+              .Sortable(true)
+              .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+               Sanitized(false)
+              .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
+                                                o.Id, (o.IsValues ? Settings.OkStyle : Settings.CancelStyle), o.IsValues));
 
 
 
 
 
 
-                       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+
+
+
+
+
+
+}).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
 </div>

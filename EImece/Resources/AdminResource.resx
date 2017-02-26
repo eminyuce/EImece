@@ -297,4 +297,10 @@
   <data name="Images" xml:space="preserve">
     <value>Images</value>
   </data>
+  <data name="IsService" xml:space="preserve">
+    <value>IsServices</value>
+  </data>
+  <data name="IsValues" xml:space="preserve">
+    <value>IsValues</value>
+  </data>
 </root>

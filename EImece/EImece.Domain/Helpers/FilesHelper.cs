@@ -530,33 +530,11 @@ namespace EImece.Domain.Helpers
                 int originalImageWidth = imageResize.Item3;
                 int originalImageHeight = imageResize.Item4;
 
-                //Bitmap img = new Bitmap(file.InputStream);
-                //Save(img, originalImageWidth, originalImageHeight, 100, fullPath, GetImageFormat(ext));
-                //img.Dispose();
-
-                //img = new Bitmap(file.InputStream);
-                //Save(img, width, height, 100, candidatePathThb, GetImageFormat(ext));
-                //img.Dispose();
-
-                //Bitmap img = new Bitmap(file.InputStream);
-                //CreateThumbnail(img, originalImageWidth, originalImageHeight, fullPath, GetImageFormat(ext));
-                //img.Dispose();
-
-                //img = new Bitmap(file.InputStream);
-                //CreateThumbnail(img, width, height, candidatePathThb, GetImageFormat(ext));
-                //img.Dispose();
+                fileHash = HashHelpers.GetSha256Hash(fileByte);
 
                 var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, GetImageFormat(ext));
-                //var fs = new BinaryWriter(new FileStream(fullPath, FileMode.Append, FileAccess.Write));
-                //fs.Write(fileByteCropped);
-                //fs.Close();
 
                 imageSize = fileByteCropped.Length;
-
-                //// Resize Image -Thumbs
-                //var fs1 = new BinaryWriter(new FileStream(candidatePathThb, FileMode.Append, FileAccess.Write));
-                //fs1.Write(byteArrayIn);
-                //fs1.Close();
 
                 using (Image thumbnail = ByteArrayToImage(fileByteCropped))
                 {
@@ -567,7 +545,7 @@ namespace EImece.Domain.Helpers
                         thumbnail.Save(fullPath, GetImageFormat(ext));
                     }
                 }
-                fileHash = HashHelpers.GetSha256Hash(fileByte);
+
                 var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
 
                 using (Image thumbnail = ByteArrayToImage(byteArrayIn))

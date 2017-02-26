@@ -38,55 +38,60 @@
         line-height: 1.6em;
     }
 </style>
-@Html.Partial("_pBackButtonLink", Model)
+<div class="form-horizontal">
 
+    @Html.Partial("_pBackButtonLink", Model)
+
+
+</div>
+<br />
 @Html.HiddenFor(r => Model.Id)
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)
+<div class="form-horizontal">
+    @Html.Partial("pSliderResizing", baseContent)
+    </div>
+    <br />
+    <!-- blueimp File Upload & Gallery styles -->
+    @Styles.Render("~/Content/jQuery-File-Upload")
+    <div id="target">
+        Click here
+    </div>
 
-@Html.Partial("pSliderResizing", baseContent);
 
-<br />
-<!-- blueimp File Upload & Gallery styles -->
-@Styles.Render("~/Content/jQuery-File-Upload")
-<div id="target">
-    Click here
-</div>
+    <script>
+        var $form = null;
 
+        $('#fileupload').addClass('fileupload-processing');
+        $(function () {
 
-<script>
-    var $form = null;
+            $form = $('#fileupload').fileupload({
+                dataType: 'json'
+            });
+            $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+                console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
+                data.formData = {
+                    contentId: $("#Id").val(),
+                    imageType: $("#ImageType").val(),
+                    mod: $("#MediaMod").val(),
+                    imageHeight: $("#sliderHeight").slider("option", "value"),
+                    imageWidth: $("#sliderWidth").slider("option", "value")
+                }
+            });
 
-    $('#fileupload').addClass('fileupload-processing');
-    $(function () {
-        
-        $form = $('#fileupload').fileupload({
-            dataType: 'json'
+            $("#target").click(function () {
+
+            });
         });
-        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-            console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
-            data.formData = {
-                contentId: $("#Id").val(),
-                imageType: $("#ImageType").val(),
-                mod: $("#MediaMod").val(),
-                imageHeight: $("#sliderHeight").slider("option", "value"),
-                imageWidth: $("#sliderWidth").slider("option", "value")
-            }
-        });
-      
-        $("#target").click(function () {
-
-        });
-    });
-</script>
+    </script>
 
 
-@Html.Partial("_Files")
+    @Html.Partial("_Files")
 
 
 
-<div class="panel panel-info">
-    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+    <div class="panel panel-info">
+        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
            ,{"StateTypes","State"}
            ,{"IsNewRecordButtonEnabled",false}
@@ -94,40 +99,40 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-</div>
-<div class="panel panel-primary">
-    @Html.Partial("pGridDropDown", baseList)
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
+    </div>
+    <div class="panel panel-primary">
+        @Html.Partial("pGridDropDown", baseList)
+        @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-        columns.Add().Encoded(false).
-                Sanitized(false).
-                SetWidth(10).
-                RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
+columns.Add().Encoded(false).
+        Sanitized(false).
+        SetWidth(10).
+        RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
 
-        columns.Add(o => o.Id, true);
-
-
-        columns.Add()
-                             .Encoded(false)
-                             .Sanitized(false)
-                             .SetWidth(30)
-                             .RenderValueAs(d =>
-                            @<b>
-
-                                <a href=@String.Format("/media/images/{0}",d.FileName)
-                                   title="@d.FileName"
-                                   download="@d.FileName"
-                                   data-gallery="">
+columns.Add(o => o.Id, true);
 
 
-                                    <img src=@d.GetAdminCroppedImageUrl(150,150)>
-                                </a>
+columns.Add()
+                     .Encoded(false)
+                     .Sanitized(false)
+                     .SetWidth(30)
+                     .RenderValueAs(d =>
+                    @<b>
 
-                    
+                        <a href=@String.Format("/media/images/{0}",d.FileName)
+                           title="@d.FileName"
+                           download="@d.FileName"
+                           data-gallery="">
 
-      
-                            </b>);
+
+                            <img src=@d.GetAdminCroppedImageUrl(150,150)>
+                        </a>
+
+
+
+
+                    </b>);
 
     columns.Add(c => c.Name)
            .Titled("Title")
@@ -165,8 +170,8 @@
 
 }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
-</div>
+    </div>
 
 
 
-@Scripts.Render("~/bundles/jQuery-File-Upload")
+    @Scripts.Render("~/bundles/jQuery-File-Upload")

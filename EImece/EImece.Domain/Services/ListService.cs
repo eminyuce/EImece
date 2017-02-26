@@ -38,5 +38,20 @@ namespace EImece.Domain.Services
         {
             return ListRepository.GetListByName(name);
         }
+
+        public List<List> GetListItems()
+        {
+            List<List> result = null;
+            var cacheKey = String.Format("GetListItems");
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = new List<List>();
+                result = ListRepository.GetAllListItems();
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+
+            }
+            return result;
+        }
     }
 }

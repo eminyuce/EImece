@@ -1,4 +1,6 @@
-﻿using RazorEngine;
+﻿using EImece.Domain.Services.IServices;
+using Ninject;
+using RazorEngine;
 using RazorEngine.Templating; // For extension methods.
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,9 @@ namespace EImece.Domain.Helpers
 {
     public class XmlEditorHelper
     {
+        [Inject]
+        public IListService ListService { get; set; }
+
         public String GenerateXmlEditor()
         {
             string url = HttpContext.Current.Server.MapPath("~/App_Data/xmlEditorRazor.txt");
@@ -19,12 +24,15 @@ namespace EImece.Domain.Helpers
             var config = GetConfiguration();
 
 
-            String result = Engine.Razor.RunCompile(template, 
-                "templateKey1", 
-                null, 
-                new { Children = config.Item1,
+            String result = Engine.Razor.RunCompile(template,
+                "templateKey1",
+                null,
+                new
+                {
+                    Children = config.Item1,
                     Configurations = config.Item2,
-                    GroupAttributes = GetValue("group", "names") });
+                    GroupAttributes = GetValue("group", "names")
+                });
             return result;
         }
 
@@ -58,6 +66,12 @@ namespace EImece.Domain.Helpers
             r = GeneralHelper.GetStringTitleCase(r);
             return r;
         }
+        private List<string> GetListItems(String name)
+        {
+            var list = ListService.GetListItems();
+
+            return list.FirstOrDefault(r => r.Name.Equals(name)).ListItems.OrderBy(r => r.Position).Select(r => r.Value).ToList();
+        }
         private List<string> GetList(string tag, string atribute)
         {
             if (atribute.Equals("names", StringComparison.InvariantCultureIgnoreCase))
@@ -65,20 +79,30 @@ namespace EImece.Domain.Helpers
 
                 if (tag.Equals("group", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return new List<string> { "Size", "Power", "Other" };
+                    return GetListItems("ComponentDisplayNames");
+                   // return new List<string> { "Size", "Power", "Other" };
                 }
 
-                return new List<string> { "width", "length", "height" };
+
+                return GetListItems("ComponentNames");
+                //return new List<string> { "width", "length", "height" };
             }
 
             if (atribute.Equals("units", StringComparison.InvariantCultureIgnoreCase))
             {
-                return new List<string> { "inch", "volt", "pound" };
+
+                return GetListItems("ComponentUnit");
+                //return new List<string> { "inch", "volt", "pound" };
             }
 
             if (atribute.Equals("values", StringComparison.InvariantCultureIgnoreCase))
             {
-                return new List<string> { "Countries", "Colors", "State" };
+
+                var list = ListService.GetListItems();
+
+                return list.Where(r => r.IsValues).OrderBy(r => r.Position).Select(r => r.Name).ToList();
+             
+                //return new List<string> { "Countries", "Colors", "State" };
             }
 
             return new List<string>

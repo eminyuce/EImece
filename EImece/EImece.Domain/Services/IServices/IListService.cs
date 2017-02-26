@@ -12,5 +12,8 @@ namespace EImece.Domain.Services.IServices
         void DeleteListById(int id);
         List GetListById(int id);
         List GetListByName(String name);
+
+        List<List> GetListItems();
+
     }
 }
