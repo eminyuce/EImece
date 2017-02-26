@@ -6,6 +6,7 @@
 
 @{
     var product = Model.Product;
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
     ViewBag.Title = product.GetSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -52,6 +53,10 @@
             <!-- Headline -->
             <section class="title">
                 <h2>@product.Name</h2>
+                @if (isUserAuthenticated)
+                {
+                    @Html.ActionLink("edit","saveoredit","Products",new { @id=product.Id, @area="admin" },new {  })
+                }
                 <h4>
                     @product.ProductCategory.Name
                 </h4>
@@ -115,7 +120,7 @@
             <div class="tab-content" id="tab2">
 
 
-                @Html.Partial("_ProductSpecs", product);
+                @Html.Partial("_ProductSpecs", Model)
 
 
             </div>

@@ -28,6 +28,8 @@ namespace EImece.Domain.Services
         public IStoryService StoryService { get; set; }
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
+        [Inject]
+        public ITemplateRepository TemplateRepository { get; set; }
 
         private IProductRepository ProductRepository { get; set; }
         public ProductService(IProductRepository repository) : base(repository)
@@ -103,6 +105,7 @@ namespace EImece.Domain.Services
                 result = new ProductDetailViewModel();
                 var r = ProductRepository.GetProduct(id);
                 result.Product = r;
+                result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);
                 result.RelatedStories = new List<Story>();
                 if (r != null && r.ProductTags.Any())
                 {

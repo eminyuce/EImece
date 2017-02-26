@@ -1,12 +1,24 @@
-﻿@model Product
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
+@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using Resources;
  
 @{ 
-    var product = Model;
-    var productSpecs = product.ProductSpecifications;
+    var product = Model.Product;
+    var productSpecs = product.ProductSpecifications.Where(r=>!String.IsNullOrEmpty(r.Value)).OrderBy(r=>r.Position).ToList();
+    var template = Model.Template;
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
+}
+@if (isUserAuthenticated)
+{
+    @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { })
 }
 
 <table class="basic-table">
@@ -15,22 +27,79 @@
             Name
         </th>
         <th>
-           Value
+            Value
         </th>
     </tr>
 
-    @foreach (var item in productSpecs)
+    @if (!String.IsNullOrEmpty(template.TemplateXml))
     {
-        <tr>
+        XDocument xdoc = XDocument.Parse(template.TemplateXml);
+        var groups = xdoc.Root.Descendants("group");
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @String.Format("{0} {1}",item.Value,item.Unit)
-            </td>
+        if (groups.Any())
+        {
 
-        </tr>
+            foreach (var group in groups)
+            {
+
+
+
+                foreach (XElement field in group.Elements())
+                {
+
+                    var name = field.Attribute("name");
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+                    var display = field.Attribute("display");
+                    var dbValueObj = productSpecs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                    var isValueExist = dbValueObj != null;
+                    if (!isValueExist)
+                    {
+                        continue;
+                    }
+                    <tr>
+
+
+                        <td>
+                            @if (display != null)
+                            {
+                                @display.Value
+                            }
+                            else
+                            {
+                                @name.Value
+                            }
+                        </td>
+                        
+                        @if (isValueExist)
+                        {
+                        if (unit != null)
+                        {
+
+                        <td>
+                            @String.Format("{0} {1}", dbValueObj.Value).Trim()
+                        </td>
+                        }
+                        else
+                        {
+                        <td>
+
+
+                            @String.Format("{0}", dbValueObj.Value).Trim()
+                        </td>
+                        }
+
+                        }
+                    </tr>
+                }
+            }
+
+
+        }
     }
+
+
+
+
 
 </table>

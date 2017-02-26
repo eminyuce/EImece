@@ -11,6 +11,8 @@ namespace EImece.Domain.Models.FrontModels
     {
         public Product Product { get; set; } 
 
+        public Template Template { get; set; }
+
         public List<Story> RelatedStories { get; set; }
     }
 }
