@@ -110,5 +110,26 @@ namespace EImece.Domain.Repositories
 
             return result.ToList();
         }
+
+        public List<ProductCategory> GetAdminProductCategories(string search, int language)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.Template);
+
+            Expression<Func<ProductCategory, bool>> match = r =>
+             r.Lang == language;
+            if (!String.IsNullOrEmpty(search))
+            {
+                //
+                Expression<Func<ProductCategory, bool>> match2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+                match = match.And(match2);
+            }
+            var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+
+
+
+            return result.ToList();
+        }
     }
 }

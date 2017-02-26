@@ -40,7 +40,7 @@
         settings.Header.Text = "Tree root - Animal";
         settings.Header.Visible = false;
         settings.Header.Expanded = true;
-        settings.ClientHandlers.ContentSelect = "function (e) { console.log(e); }";
+        settings.ClientHandlers.ContentSelect = "function (e) { window.location='productcategories/saveoredit/'+e.id; console.log(e); }";
         settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
         settings.Height = 300;
         settings.Width = 270;
@@ -116,6 +116,9 @@
                   .Titled("Title")
                   .Filterable(true);
 
+           columns.Add(c => c.Template.Name)
+            .Titled("Template Name")
+            .Filterable(true);
 
 
            columns.Add(o => o.Position)

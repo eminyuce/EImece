@@ -18,5 +18,6 @@ namespace EImece.Domain.Services.IServices
         void DeleteProductCategory(int productCategoryId);
         void DeleteProductCategories(List<string> values);
         List<ProductCategory> GetMainPageProductCategories(int language);
+        List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage);
     }
 }

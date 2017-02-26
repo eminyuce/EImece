@@ -114,5 +114,10 @@ namespace EImece.Domain.Services
         {
             return ProductCategoryRepository.GetMainPageProductCategories(language);
         }
+
+        public List<ProductCategory> GetAdminProductCategories(string search, int language)
+        {
+            return ProductCategoryRepository.GetAdminProductCategories(search, language);
+        }
     }
 }
