@@ -526,6 +526,10 @@
     <Content Include="Areas\Admin\Views\Settings\TermsAndConditions.cshtml" />
     <Content Include="Areas\Admin\Views\Users\GenerateNewPassword.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\pPageThemes.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Contact.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Contact2.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\DisplayExcel.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\DataTable.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

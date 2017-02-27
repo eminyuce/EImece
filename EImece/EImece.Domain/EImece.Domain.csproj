@@ -165,6 +165,7 @@
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
+    <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />
     <Compile Include="Helpers\EmailHelper\EmailSender.cs" />

@@ -244,3 +244,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /EImece/EImece/media/images
+/EImece/EImece/App_Data/36ProductCategories-Turkish-2017-02-22.xlsx

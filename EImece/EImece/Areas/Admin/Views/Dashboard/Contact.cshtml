@@ -1,0 +1,17 @@
+﻿
+@{
+ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Contact2</h2>
+@using (Html.BeginForm("Contact", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+       <input type="file" name="excelFile" />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Upload" class="btn btn-default" />
+        </div>
+    </div>
+}

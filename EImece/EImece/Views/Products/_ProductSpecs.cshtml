@@ -20,6 +20,9 @@
 {
     @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { })
 }
+@if (productSpecs.Any())
+{
+
 
 <table class="basic-table">
     <tr>
@@ -103,3 +106,4 @@
 
 
 </table>
+}
