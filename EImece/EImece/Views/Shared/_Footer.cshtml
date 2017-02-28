@@ -53,7 +53,7 @@
 
         
     </div>
-
+    @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
     <div class="four columns">
 
         <!-- Headline -->
@@ -72,6 +72,6 @@
             @Html.Partial("_AddSubscriber")
         </form>
     </div>
-
+   
 </div>
 @Html.Partial("_LoginPartial")

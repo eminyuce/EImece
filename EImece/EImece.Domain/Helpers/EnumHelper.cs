@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,7 +12,7 @@ namespace EImece.Domain.Helpers
 {
     public static class EnumHelper
     {
-        public static Nullable<T> Parse<T>(String value, Boolean ignoreCase=true) where T : struct
+        public static Nullable<T> Parse<T>(String value, Boolean ignoreCase = true) where T : struct
         {
             return String.IsNullOrEmpty(value) ? null : (Nullable<T>)Enum.Parse(typeof(T), value, ignoreCase);
         }
@@ -62,15 +63,57 @@ namespace EImece.Domain.Helpers
             return en.ToString();
         }
 
-        public static IEnumerable<SelectListItem> ToSelectList(this Enum enumValue)
+        public static List<SelectListItem> ToSelectList(this Enum enumValue)
         {
-            return from Enum e in Enum.GetValues(enumValue.GetType())
-                   select new SelectListItem
-                   {
-                       Selected = e.Equals(enumValue),
-                       Text = e.ToDescription(),
-                       Value = e.ToString()
-                   };
+            return (from Enum e in Enum.GetValues(enumValue.GetType())
+                    select new SelectListItem
+                    {
+                        Selected = e.Equals(enumValue),
+                        Text = e.ToDescription(),
+                        Value = e.ToString()
+                    }).ToList();
+        }
+        public static List<SelectListItem> ToSelectList2(this Enum enumValue, String selected)
+        {
+            return (from Enum e in Enum.GetValues(enumValue.GetType())
+                    select new SelectListItem
+                    {
+                        Selected = selected.Equals(e.ToDescription()),
+                        Text = e.GetDisplayValue(),
+                        Value = e.ToDescription()
+                    }).ToList();
+        }
+        public static string GetDisplayValue(this Enum value)
+        {
+            var fieldInfo = value.GetType().GetField(value.ToString());
+
+            var descriptionAttributes = fieldInfo.GetCustomAttributes(
+                typeof(DisplayAttribute), false) as DisplayAttribute[];
+
+            if (descriptionAttributes[0].ResourceType != null)
+                return lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
+
+            if (descriptionAttributes == null) return string.Empty;
+            return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+        }
+        public static IList<string> GetNames(Enum value)
+        {
+            return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
+        }
+
+
+        private static string lookupResource(Type resourceManagerProvider, string resourceKey)
+        {
+            foreach (PropertyInfo staticProperty in resourceManagerProvider.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+            {
+                if (staticProperty.PropertyType == typeof(System.Resources.ResourceManager))
+                {
+                    System.Resources.ResourceManager resourceManager = (System.Resources.ResourceManager)staticProperty.GetValue(null, null);
+                    return resourceManager.GetString(resourceKey);
+                }
+            }
+
+            return resourceKey; // Fallback with the key name
         }
 
         public static string ToDescription(this Enum value)

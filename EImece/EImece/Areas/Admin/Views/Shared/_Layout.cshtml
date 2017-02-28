@@ -4,12 +4,14 @@
 @using Resources;
 @using Microsoft.AspNet.Identity
 @using System.Threading;
-
+@using EImece.Domain.Models.Enums;
 @{
-    
+
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
     String cultureName = Thread.CurrentThread.CurrentCulture.Name;
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems = EImeceLanguage.Turkish.ToSelectList2(cultureName);
 }
 <!DOCTYPE html>
 <html>
@@ -29,7 +31,7 @@
     <script src="~/Scripts/eimece.js?v=7"></script>
     <script src="~/Scripts/gridmvc.js"></script>
     <link href="~/Content/Gridmvc.css" rel="stylesheet" />
-  
+
     <script src="//cdn.ckeditor.com/4.6.1/basic/ckeditor.js"></script>
 
     <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
@@ -53,63 +55,35 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li style="float:left;">
-                        <b>
-                          
-
-                            @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                            {
-                            @Html.AntiForgeryToken()
-
-                            <div>
-                                <p>
-                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
-                                </p>
-                                <p><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></p>
-                                <p>
-                                    @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
-
-                            </div>
-                            }
-
-                        </b>
-                    </li>
-                     <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class= "btn btn-outline-primary" })</li>
                     <li>
-                    
-                        @{
-                            List<SelectListItem> listItems = new List<SelectListItem>();
-                            listItems.Add(new SelectListItem
-                            {
-                                Text = "Turkce",
-                                Value = "tr-TR",
-                                Selected = cultureName.Equals("tr-TR")
-                            });
-                            listItems.Add(new SelectListItem
-                            {
-                                Text = "English",
-                                Value = "en-US",
-                                Selected = cultureName.Equals("en-US")
-                            });
+                        @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
 
+                            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                            @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
                         }
+                    </li>
+                    <li>@Html.ActionLink("Refresh", "ClearCache", "Dashboard", new { area = "admin" }, new { @class = "btn btn-outline-primary" })</li>
+                    <li>
 
-                        @Html.DropDownList("CookieLanguage", listItems,               new { @onchange= "setlanguage(this.value)" })
+
+
+                        @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)" })
 
                         <script>
-                            function setlanguage(selectedLanguage)
-                                {
+                            function setlanguage(selectedLanguage) {
                                 window.location.href = "/admin/Dashboard/setlanguage?name=" + selectedLanguage;
-                                }
+                            }
                         </script>
-                      </li>
-                     <li>
+                    </li>
+                    <li>
 
                         @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new
-                                                                            {
-                                                                                @class = "navbar-form navbar-left",
-                                                                                role = "search"
-                                                                            }))
+                        {
+                            @class = "navbar-form navbar-left",
+                            role = "search"
+                        }))
                         {
                             <div class="form-group">
                                 <input type="text" name="searchContent" value="@Request.QueryString["searchContent"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
@@ -122,7 +96,7 @@
 
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Dashboard", "Index", "Dashboard", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Main Page", "Index", "Home", new { area = "" },new { @target = "_blank" })</li>
+                    <li>@Html.ActionLink("Main Page", "Index", "Home", new { area = "" }, new { @target = "_blank" })</li>
                     <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
                     <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
                     <li class="dropdown">
@@ -191,4 +165,3 @@
 </body>
 </html>
 
- 

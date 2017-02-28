@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain;
+@using Resources;
+@using Microsoft.AspNet.Identity
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -19,7 +27,9 @@
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/green.css" id="colors">
 
     @{
-
+        String cultureName = Thread.CurrentThread.CurrentCulture.Name;
+        List<SelectListItem> listItems = new List<SelectListItem>();
+        listItems = EImeceLanguage.Turkish.ToSelectList2(cultureName);
 
 
     }
@@ -34,8 +44,10 @@
                 @Html.Action("WebSiteAddressInfo", "Home")
             </div>
             <div class="six columns">
-                <a href="@Url.Action("SetLanguage", "Home", new { @name = "tr-TR" })">Turkish</a>
-                <a href="@Url.Action("SetLanguage", "Home", new { @name = "en-US" })">English</a>
+                @foreach (var item in listItems)
+                {
+                    <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
+                }
      
                 @Html.Action("SocialMediaLinks", "Home")
             </div>
