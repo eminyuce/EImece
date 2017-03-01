@@ -7,10 +7,15 @@
     var products = Model.Products;
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
 }
 
 <h2>
     @category.Name
+    @if (isUserAuthenticated)
+    {
+        @Html.ActionLink("edit", "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { })
+    }
 </h2>
 
 @Html.Raw(category.GetCroppedImageTag(200, 200))
