@@ -12,8 +12,8 @@ namespace EImece.Domain.Entities
 {
     public class Product: BaseContent
     {
-     
 
+        public string NameShort { get; set; }
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCategoryIdErrorMessage))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryId))]
         [ForeignKey("ProductCategory")]

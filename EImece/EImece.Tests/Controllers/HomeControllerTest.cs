@@ -18,6 +18,7 @@ using System.Configuration;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using System.Text.RegularExpressions;
+using EImece.Domain.Caching;
 
 namespace EImece.Tests.Controllers
 {
@@ -34,6 +35,22 @@ namespace EImece.Tests.Controllers
                 return Settings.MainLanguage;
             }
         }
+
+        [TestMethod]
+        public void GetBreadCrumb()
+        {
+            String search = "";
+            var db = new EImeceContext(ConnectionString);
+            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db));
+            ProductCategoryService.MemoryCacheProvider = new MemoryCacheProvider();
+            var breadCrumb = ProductCategoryService.GetBreadCrumb(215, 1);
+            foreach (var item in breadCrumb)
+            {
+                Console.WriteLine(item.ProductCategory.Id);
+            }
+        }
+
+
         [TestMethod]
         public void Index()
         {

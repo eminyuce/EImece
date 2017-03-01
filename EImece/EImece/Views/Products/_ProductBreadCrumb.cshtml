@@ -1,0 +1,30 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using Resources;
+    @{
+        var categories = Model.BreadCrumb;
+        categories.Reverse();
+
+    }
+    <nav id="breadcrumbs">
+        <ul>
+            <li>@Html.ActionLink(Resource.MainPage, "Index", "Home")</li>
+            <li>@Html.ActionLink(Resource.Products, "Index", "Products")</li>
+            @foreach (var category in categories)
+            {
+                <li>
+                    @Html.ActionLink(category.Text, 
+                   "Category", 
+                   "ProductCategories",
+                   new { id = category.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-link" })
+                </li>
+            }
+            <li>
+                @Model.Product.Name
+            </li>
+        </ul>
+
+    </nav>

@@ -54,7 +54,7 @@ console.log(e);
                 @Html.HiddenFor(model => model.UpdatedDate)
                 @Html.HiddenFor(model => model.MainImageId)
                 @Html.HiddenFor(model => model.Lang)
-       
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -84,6 +84,15 @@ console.log(e);
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NameShort, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NameShort, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NameShort, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -132,7 +141,7 @@ console.log(e);
                     </div>
                 </div>
 
-             
+
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -165,8 +174,8 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.VideoUrl, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                            @Html.TextAreaFor(model => model.VideoUrl, 2,20,new { @style= "margin: 0px; width: 804px; height: 66px;"  })
-                            @Html.ValidationMessageFor(model => model.VideoUrl, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(model => model.VideoUrl, 2, 20, new { @style = "margin: 0px; width: 804px; height: 66px;" })
+                        @Html.ValidationMessageFor(model => model.VideoUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -188,7 +197,7 @@ console.log(e);
 
 
 
-           
+
                 <div id="productTagsHtml">
 
                 </div>

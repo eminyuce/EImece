@@ -13,7 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         public int ProductCount { get; set; }
 
         public List<ProductCategoryTreeModel> Childrens { get; set; }
-
+        public ProductCategoryTreeModel Parent { get; set; }
         public String Text
         {
             get

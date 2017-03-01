@@ -24,6 +24,9 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public List<ProductCategory> Childrens { get; set; }
 
+        [NotMapped]
+        public ProductCategory Parent { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
         public  Template Template { get; set; }

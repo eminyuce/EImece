@@ -47,7 +47,7 @@ namespace EImece.Domain.Services
         {
             return ProductCategoryRepository.CreateProductCategoryTreeViewDataList(language);
         }
-       
+
         public ProductCategory GetProductCategory(int categoryId)
         {
             var cacheKey = String.Format("ProductCategory-{0}", categoryId);
@@ -57,7 +57,7 @@ namespace EImece.Domain.Services
             {
                 result = ProductCategoryRepository.GetProductCategory(categoryId);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
- 
+
             }
             return result;
 
@@ -103,11 +103,11 @@ namespace EImece.Domain.Services
                 {
                     ProductService.DeleteProductById(id);
                 }
-            
+
 
                 DeleteEntity(productCategory);
             }
-            
+
         }
 
         public List<ProductCategory> GetMainPageProductCategories(int language)
@@ -118,6 +118,58 @@ namespace EImece.Domain.Services
         public List<ProductCategory> GetAdminProductCategories(string search, int language)
         {
             return ProductCategoryRepository.GetAdminProductCategories(search, language);
+        }
+
+        public List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language)
+        {
+            var cacheKey = String.Format("ProductCategoryGetBreadCrumb-{0}-{1}", productCategoryId,language);
+            List<ProductCategoryTreeModel> result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = new List<ProductCategoryTreeModel>();
+                var tree = BuildTree(true, language);
+                ProductCategoryTreeModel productCategoryTreeModel = null;
+                foreach (var t in tree)
+                {
+                    productCategoryTreeModel = FindNode(t, productCategoryId);
+                    if (productCategoryTreeModel != null)
+                    {
+                        break;
+                    }
+                }
+
+                AddParent(result, productCategoryTreeModel);
+
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+
+            }
+            return result;
+        }
+        private void AddParent(List<ProductCategoryTreeModel> returnList, ProductCategoryTreeModel leave)
+        {
+            if (leave != null && leave.ProductCategory != null)
+            {
+                returnList.Add(leave);
+            }
+            if (leave != null && leave.ProductCategory != null && leave.ProductCategory.Parent != null)
+            {
+                AddParent(returnList, leave.Parent);
+            }
+        }
+        private ProductCategoryTreeModel FindNode(ProductCategoryTreeModel rootNode, int Id)
+        {
+            if (rootNode.ProductCategory.Id == Id) return rootNode;
+            if(rootNode.Childrens!=null && rootNode.Childrens.Any())
+            {
+                foreach (var child in rootNode.Childrens)
+                {
+                    var n = FindNode(child, Id);
+                    if (n != null) return n;
+                }
+            }
+           
+            return null;
         }
     }
 }

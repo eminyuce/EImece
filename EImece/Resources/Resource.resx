@@ -120,6 +120,9 @@
   <data name="EmailList" xml:space="preserve">
     <value>Email List</value>
   </data>
+  <data name="MainPage" xml:space="preserve">
+    <value>Main Page</value>
+  </data>
   <data name="Pages" xml:space="preserve">
     <value>Pages</value>
   </data>

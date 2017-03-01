@@ -21,7 +21,7 @@ namespace EImece.Domain.Repositories
         }
 
         //Recursion method for recursively get all child nodes
-        private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, ref List<ProductCategoryTreeModel> returnList)
+        private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current)
         {
             //get child of current item
             var childs = list.Where(a => a.ProductCategory.ParentId == current.ProductCategory.Id).OrderBy(r => r.ProductCategory.Position).ToList();
@@ -29,7 +29,9 @@ namespace EImece.Domain.Repositories
             current.Childrens.AddRange(childs);
             foreach (var i in childs)
             {
-                GetTreeview(list, i, ref returnList);
+                i.ProductCategory.Parent = current.ProductCategory;
+                i.Parent = current;
+                GetTreeview(list, i);
             }
         }
 
@@ -51,7 +53,7 @@ namespace EImece.Domain.Repositories
             returnList.AddRange(topLevels);
             foreach (var i in topLevels)
             {
-                GetTreeview(list, i, ref returnList);
+                GetTreeview(list, i);
             }
             return returnList;
         }
@@ -131,5 +133,7 @@ namespace EImece.Domain.Repositories
 
             return result.ToList();
         }
+
+        
     }
 }

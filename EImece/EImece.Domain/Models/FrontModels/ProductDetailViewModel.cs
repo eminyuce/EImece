@@ -9,7 +9,9 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductDetailViewModel
     {
-        public Product Product { get; set; } 
+        public Product Product { get; set; }
+
+        public List<ProductCategoryTreeModel> BreadCrumb { get; set; }
 
         public Template Template { get; set; }
 

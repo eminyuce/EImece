@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using EImece.Models;
+using EImece.Domain;
 
 namespace EImece
 {
@@ -34,7 +35,7 @@ namespace EImece
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -45,24 +46,57 @@ namespace EImece
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
+
+            var microsoftAccountClientId = Settings.GetConfigString("MicrosoftAccount_ClientId");
+            var microsoftAccountClientSecret = Settings.GetConfigString("MicrosoftAccount_ClientSecret");
+
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            if (!String.IsNullOrEmpty(microsoftAccountClientId) && !String.IsNullOrEmpty(microsoftAccountClientSecret))
+            {
+                app.UseMicrosoftAccountAuthentication(
+                   clientId: microsoftAccountClientId,
+                   clientSecret: microsoftAccountClientSecret);
+            }
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            var twitterAccountConsumerKey = Settings.GetConfigString("TwitterAccount_ConsumerKey");
+            var twitterAccountConsumerSecret = Settings.GetConfigString("TwitterAccount_ConsumerSecret");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            if (!String.IsNullOrEmpty(twitterAccountConsumerKey) && !String.IsNullOrEmpty(twitterAccountConsumerSecret))
+            {
+                app.UseTwitterAuthentication(
+                       consumerKey: twitterAccountConsumerKey,
+                       consumerSecret: twitterAccountConsumerSecret);
+            }
+
+            var facebookAccountAppId = Settings.GetConfigString("FacebookAccount_AppId");
+            var facebookAccountAppSecret = Settings.GetConfigString("FacebookAccount_AppSecret");
+
+
+            if (!String.IsNullOrEmpty(facebookAccountAppId) && !String.IsNullOrEmpty(facebookAccountAppSecret))
+            {
+                app.UseFacebookAuthentication(
+                     appId: facebookAccountAppId,
+                     appSecret: facebookAccountAppSecret);
+            }
+
+
+            var googleAccountClientId = Settings.GetConfigString("GoogleAccount_ClientId");
+            var googleAccountClientSecret = Settings.GetConfigString("GoogleAccount_ClientSecret");
+
+
+            if (!String.IsNullOrEmpty(googleAccountClientId) && !String.IsNullOrEmpty(googleAccountClientSecret))
+            {
+
+                app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+                {
+                    ClientId = googleAccountClientId,
+                    ClientSecret = googleAccountClientSecret
+                });
+
+            }
+
+
         }
     }
 }

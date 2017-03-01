@@ -106,6 +106,7 @@ namespace EImece.Domain.Services
                 var r = ProductRepository.GetProduct(id);
                 result.Product = r;
                 result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);
+                result.BreadCrumb = ProductCategoryService.GetBreadCrumb(r.ProductCategoryId, r.Lang);
                 result.RelatedStories = new List<Story>();
                 if (r != null && r.ProductTags.Any())
                 {
