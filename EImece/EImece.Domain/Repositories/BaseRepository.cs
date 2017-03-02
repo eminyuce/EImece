@@ -11,6 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Domain.Repositories
 {
@@ -80,6 +81,7 @@ namespace EImece.Domain.Repositories
         }
         public virtual int SaveOrEdit(T item)
         {
+            item.TrimAllStrings();
             if (item.Id.ToInt() == 0)
             {
                 this.Add(item);
@@ -88,7 +90,7 @@ namespace EImece.Domain.Repositories
             {
                 this.Edit(item);
             }
-
+            
             return this.Save();
         }
         public virtual int DeleteItem(T item)

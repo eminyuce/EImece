@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -23,6 +24,38 @@ namespace EImece.Domain.Helpers.Extensions
             var baseList = new List<BaseEntity>();
             items.ForEach(v => baseList.Add(v));
             return baseList;
+        }
+        public static void TrimAllStrings<T>(this T obj)
+        {
+            if (obj == null)
+                return;
+
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+
+            foreach (PropertyInfo p in obj.GetType().GetProperties(flags))
+            {
+                Type currentNodeType = p.PropertyType;
+                if (currentNodeType == typeof(String))
+                {
+                    string currentValue = (string)p.GetValue(obj, null);
+                    if (currentValue != null)
+                    {
+                        p.SetValue(obj, currentValue.Trim(), null);
+                    }
+                }
+                // see http://stackoverflow.com/questions/4444908/detecting-native-objects-with-reflection
+                else if (currentNodeType != typeof(object) && Type.GetTypeCode(currentNodeType) == TypeCode.Object)
+                {
+                    if (p.GetIndexParameters().Length == 0)
+                    {
+                        p.GetValue(obj, null).TrimAllStrings();
+                    }
+                    else
+                    {
+                        p.GetValue(obj, new Object[] { 0 }).TrimAllStrings();
+                    }
+                }
+            }
         }
         public static String GetSeoUrl(this BaseEntity entity)
         {

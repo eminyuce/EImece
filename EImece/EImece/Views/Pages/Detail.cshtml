@@ -6,7 +6,11 @@
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
-   var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
+    var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
 }
-
+@if (isUserAuthenticated)
+{
+    @Html.ActionLink("edit", "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { })
+}
 @Html.Partial(selectedPagePath, menu)

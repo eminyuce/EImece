@@ -42,6 +42,8 @@ namespace EImece.Domain.Repositories
         {
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             var menus = GetAll();
+            menus = menus.Where(match);
+            search = search.ToStr().ToLower().Trim();
             if (!String.IsNullOrEmpty(search.Trim()))
             {
                 menus = menus.Where(whereLambda);

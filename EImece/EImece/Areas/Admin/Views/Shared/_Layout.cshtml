@@ -58,7 +58,7 @@
                     <li>
                         @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                         {
-
+                            @Html.AntiForgeryToken()
                             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
                             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
                             @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
