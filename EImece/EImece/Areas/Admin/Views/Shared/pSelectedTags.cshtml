@@ -11,16 +11,19 @@
     </h3>
     foreach (var tag in tagCategory.Tags)
     {
+        <div class="checkbox checkbox-danger">
 
-        <span class="tagCheckbox"> 
-            <input type="checkbox" class="checkbox checkbox-success" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" />
+            <input id="@String.Format("checkbox{0}",tag.Id)"  name="tags"  @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
 
-            <label for="option"> <span>@tag.Name</span> </label>
+            <label for="@String.Format("checkbox{0}",tag.Id)">
 
-        </span>
-        
-             
-        
-               
-        }
+                @tag.Name
+
+            </label>
+
+        </div>
+
+
+
+    }
 }

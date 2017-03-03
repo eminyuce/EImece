@@ -304,6 +304,7 @@
   <ItemGroup>
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
+    <Content Include="Content\checkBoxStyle.css" />
     <Content Include="Content\Images\check_2.png" />
     <Content Include="Areas\Admin\Content\main\1.png" />
     <Content Include="Areas\Admin\Content\main\2.png" />
