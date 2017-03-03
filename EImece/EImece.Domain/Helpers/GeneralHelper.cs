@@ -24,6 +24,7 @@ namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
+        
         public static void SetCultureCookie(HttpResponseBase request, String cultureCookieName, string cultureName = "")
         {
             if (String.IsNullOrEmpty(cultureName))

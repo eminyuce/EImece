@@ -110,12 +110,19 @@ namespace EImece.Domain
         {
             get { return 20; }
         }
+        private static void WriteLog(string configName, object defaultValue)
+        {
+            if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+            }
+        }
         public static string GetConfigString(string configName, string defaultValue = "")
         {
             var appValue = ConfigurationManager.AppSettings[configName];
             if (string.IsNullOrEmpty(appValue))
             {
-                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                WriteLog(configName, defaultValue);
                 return defaultValue;
             }
             else
@@ -134,7 +141,7 @@ namespace EImece.Domain
             }
             else
             {
-                Logger.Info(string.Format("Config Name {0} is using default value {1}  <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                WriteLog(configName, defaultValue);
             }
             return configValue;
 
@@ -149,7 +156,7 @@ namespace EImece.Domain
             }
             else
             {
-                Logger.Info(string.Format("Config Name {0} is using default value {1}   <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                WriteLog(configName, defaultValue);
             }
             return configValue == -1 ? defaultValue : configValue;
         }
@@ -187,7 +194,7 @@ namespace EImece.Domain
                 return GetConfigInt("CacheLongSeconds", 1800);
             }
         }
-        
+
         public static int Cache1Hour
         {
             get
@@ -222,7 +229,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigInt("MainLanguage",1);
+                return GetConfigInt("MainLanguage", 1);
             }
         }
         public static string StorageRoot
@@ -238,7 +245,7 @@ namespace EImece.Domain
             }
         }
 
- 
+
 
         public static string TempPath = "~/media/tempFiles/";
         public static string ServerMapPath = "~/media/images/";

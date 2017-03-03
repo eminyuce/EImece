@@ -13,7 +13,7 @@
         @foreach (var tag in tagCategory.Tags)
         {
 
-            <label><input type="checkbox" name="tags" value="@tag.Id" /> <span>@tag.Name</span></label>
+            <label><input type="checkbox" name="tags" data-image-tag="@tag.Id" value="@tag.Id" /> <span>@tag.Name</span></label>
         }
     </div>
 }

@@ -60,7 +60,20 @@
                 @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.Captcha)
+                </div>
+                <div class="col-md-2">
+                    <img width="180" height="50" src="@Url.Action("GetCaptcha", "Images", new { prefix = "ContactUsLogin" })" alt="Captcha" />
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Security Question Answer...", @autocomplete = "false" })
+                    @Html.ValidationMessageFor(model => model.Captcha)
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="@SendButtonText" class="btn btn-default" />

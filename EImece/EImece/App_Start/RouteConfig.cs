@@ -31,6 +31,13 @@ namespace EImece
                url: "sitemap.xml",
                        defaults: new { controller = "SiteMap", action = "Index" }
             );
+            routes.MapRoute(
+              name: "sendcontactus",
+              url: "home/sendContactUs",
+              defaults: new { controller = "home", action = "SendContactUs" },
+              namespaces: new[] { "EImece.Controllers" }
+          );
+
 
             routes.MapRoute(
                  name: "privacypolicy",

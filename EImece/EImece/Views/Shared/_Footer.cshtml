@@ -6,6 +6,7 @@
 @model FooterViewModel
 @{ 
     var footerModel = Model;
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
 
 }
 <!-- Container -->

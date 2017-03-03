@@ -26,6 +26,10 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
+        public ActionResult Index3()
+        {
+            return View();
+        }
         public ActionResult getData(int id=0)
         {
             //Datatable parameter

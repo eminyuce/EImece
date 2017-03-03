@@ -68,8 +68,13 @@ namespace EImece.Controllers
         }
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
+
+            //validate the captcha through the session variable stored from GetCaptcha
+
             SubsciberService.SaveOrEditEntity(subscriber);
             return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
+
+
         }
         public ActionResult ThanksForSubscription(int id)
         {
@@ -147,48 +152,62 @@ namespace EImece.Controllers
             resultList.Add(WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", resultList);
         }
+        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        public ActionResult ContactUs()
+        {
+            ContactUsFormViewModel contact = new ContactUsFormViewModel();
+            return PartialView("_ContactUsFormViewModel", contact);
+        }
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
-
-            try
+            if (Session["CaptchaContactUsLogin"] == null || !Session["CaptchaContactUsLogin"].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
-                var s = new Subscriber();
-                s.Email = contact.Email.ToStr();
-                s.CreatedDate = DateTime.Now;
-                s.IsActive = true;
-                s.Name = contact.Name.ToStr();
-                s.UpdatedDate = DateTime.Now;
-                s.Position = 1;
-                s.EntityHash = "";
-                s.Lang = CurrentLanguage;
-                s.Note = String.Format("CompanyName:{0} {4}Phone:{1} {4}Address:{2} {4}Message:{3} ",
-                    contact.CompanyName,
-                    contact.Phone,
-                    contact.Address,
-                    contact.Message, Environment.NewLine);
-                SubsciberService.SaveOrEditEntity(s);
-
+                ModelState.AddModelError("Captcha", "Wrong sum, please try again.");
+                return View("_ContactUsFormViewModel", contact);
             }
-            catch (DbEntityValidationException ex)
+            else
             {
-                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                HomeLogger.Error(ex, "DbEntityValidationException:" + message);
-            }
-            catch (Exception ex)
-            {
-                HomeLogger.Error(ex, "Exception Message:" + ex.Message);
-            }
 
-            try
-            {
-                EmailSender.SendEmailContactingUs(contact);
 
-            }
-            catch (Exception ex)
-            {
-                HomeLogger.Error(ex, "Exception Message:" + ex.Message);
-            }
+                try
+                {
+                    var s = new Subscriber();
+                    s.Email = contact.Email.ToStr();
+                    s.CreatedDate = DateTime.Now;
+                    s.IsActive = true;
+                    s.Name = contact.Name.ToStr();
+                    s.UpdatedDate = DateTime.Now;
+                    s.Position = 1;
+                    s.EntityHash = "";
+                    s.Lang = CurrentLanguage;
+                    s.Note = String.Format("CompanyName:{0} {4}Phone:{1} {4}Address:{2} {4}Message:{3} ",
+                        contact.CompanyName,
+                        contact.Phone,
+                        contact.Address,
+                        contact.Message, Environment.NewLine);
+                    SubsciberService.SaveOrEditEntity(s);
 
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                    HomeLogger.Error(ex, "DbEntityValidationException:" + message);
+                }
+                catch (Exception ex)
+                {
+                    HomeLogger.Error(ex, "Exception Message:" + ex.Message);
+                }
+
+                try
+                {
+                    EmailSender.SendEmailContactingUs(contact);
+
+                }
+                catch (Exception ex)
+                {
+                    HomeLogger.Error(ex, "Exception Message:" + ex.Message);
+                }
+            }
 
 
 

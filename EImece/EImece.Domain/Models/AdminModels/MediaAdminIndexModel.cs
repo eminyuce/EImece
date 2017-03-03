@@ -15,5 +15,6 @@ namespace EImece.Domain.Models.AdminModels
         public MediaModType MediaMod { get; set; }
         public BaseContent BaseContent { get; set; }
         public List<FileStorage> FileStorages { get; set; }
+        public EImeceLanguage Lang { get; set; }
     }
 }

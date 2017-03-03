@@ -37,6 +37,7 @@ namespace EImece.Areas.Admin.Controllers
             MediaModType? enumMod = EnumHelper.Parse<MediaModType>(mod);
             EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(imageType);
             returnModel.Id = id;
+            returnModel.Lang = GetCurrentLanguage;
             returnModel.ImageType = enumImageType.Value;
             returnModel.MediaMod = enumMod.Value;
             returnModel.FileStorages = FileStorageService.GetUploadImages(contentId, enumMod, enumImageType);

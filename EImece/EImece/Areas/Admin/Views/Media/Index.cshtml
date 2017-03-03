@@ -48,50 +48,75 @@
 @Html.HiddenFor(r => Model.Id)
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)
+@Html.HiddenFor(r => Model.Lang)
 <div class="form-horizontal">
     @Html.Partial("pSliderResizing", baseContent)
-    </div>
-    <br />
-    <!-- blueimp File Upload & Gallery styles -->
-    @Styles.Render("~/Content/jQuery-File-Upload")
-    <div id="target">
-        Click here
-    </div>
+</div>
+<br />
+<!-- blueimp File Upload & Gallery styles -->
+@Styles.Render("~/Content/jQuery-File-Upload")
+<div id="target">
+    Click here
+</div>
 
 
-    <script>
-        var $form = null;
+<script>
+    var $form = null;
 
-        $('#fileupload').addClass('fileupload-processing');
-        $(function () {
+    $('#fileupload').addClass('fileupload-processing');
+    $(function () {
 
-            $form = $('#fileupload').fileupload({
-                dataType: 'json'
-            });
-            $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-                console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
-                data.formData = {
-                    contentId: $("#Id").val(),
-                    imageType: $("#ImageType").val(),
-                    mod: $("#MediaMod").val(),
-                    imageHeight: $("#sliderHeight").slider("option", "value"),
-                    imageWidth: $("#sliderWidth").slider("option", "value")
+        $form = $('#fileupload').fileupload({
+            dataType: 'json'
+        });
+        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+
+            console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
+            data.formData = {
+                contentId: $("#Id").val(),
+                imageType: $("#ImageType").val(),
+                mod: $("#MediaMod").val(),
+                imageHeight: $("#sliderHeight").slider("option", "value"),
+                imageWidth: $("#sliderWidth").slider("option", "value")
+            }
+        });
+
+        $("#target").click(function () {
+            var arr = [];
+            $('[data-image-tag]').each(function () {
+                var m = $(this).is(':checked');
+                if (m) {
+                    arr.push($(this).val());
                 }
             });
-
-            $("#target").click(function () {
-
-            });
+            console.log(arr);
         });
-    </script>
+
+        CreateTags();
+        function CreateTags() {
+            var postData = JSON.stringify({ "language": $("#Lang").val() });
+            console.log(postData);
+            ajaxMethodCall(postData, "/Ajax/GetTags", function (data) {
+                $("#imageTagsHtml").html(data);
+            });
+        }
 
 
-    @Html.Partial("_Files")
+    });
+</script>
 
 
 
-    <div class="panel panel-info">
-        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+<div id="imageTagsHtml">
+
+</div>
+
+@Html.Partial("_Files")
+
+
+
+<div class="panel panel-info">
+    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
            ,{"StateTypes","State"}
            ,{"IsNewRecordButtonEnabled",false}
@@ -99,79 +124,79 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-    </div>
-    <div class="panel panel-primary">
-        @Html.Partial("pGridDropDown", baseList)
-        @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
+</div>
+<div class="panel panel-primary">
+    @Html.Partial("pGridDropDown", baseList)
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+   {
 
-columns.Add().Encoded(false).
-        Sanitized(false).
-        SetWidth(10).
-        RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
+   columns.Add().Encoded(false).
+           Sanitized(false).
+           SetWidth(10).
+           RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
 
-columns.Add(o => o.Id, true);
-
-
-columns.Add()
-                     .Encoded(false)
-                     .Sanitized(false)
-                     .SetWidth(30)
-                     .RenderValueAs(d =>
-                    @<b>
-
-                        <a href=@String.Format("/media/images/{0}",d.FileName)
-                           title="@d.FileName"
-                           download="@d.FileName"
-                           data-gallery="">
+   columns.Add(o => o.Id, true);
 
 
-                            <img src=@d.GetAdminCroppedImageUrl(150,150)>
-                        </a>
+   columns.Add()
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .SetWidth(30)
+                        .RenderValueAs(d =>
+                        @<b>
+
+                            <a href=@String.Format("/media/images/{0}",d.FileName)
+                               title="@d.FileName"
+                               download="@d.FileName"
+                               data-gallery="">
 
 
-
-
-                    </b>);
-
-    columns.Add(c => c.Name)
-           .Titled("Title")
-           .Filterable(true);
-
-
-
-    columns.Add(o => o.Position)
-       .Encoded(false).
-            Sanitized(false).
-            SetWidth(10).
-            RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-    columns.Add(o => o.IsActive)
-               .Titled(AdminResource.State)
-           .Sortable(true)
-           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-            Sanitized(false)
-           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                             o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+                                <img src=@d.GetAdminCroppedImageUrl(150,150)>
+                            </a>
 
 
 
 
-    columns.Add(o => o.UpdatedDate)
-               .Titled(AdminResource.UpdatedDate)
-           .Sortable(true)
-           .Css("gridDateClass")
-           .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
-           .SortInitialDirection(GridSortDirection.Descending);
+                        </b>);
+
+       columns.Add(c => c.Name)
+              .Titled("Title")
+              .Filterable(true);
+
+
+
+       columns.Add(o => o.Position)
+          .Encoded(false).
+               Sanitized(false).
+               SetWidth(10).
+               RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+
+       columns.Add(o => o.IsActive)
+                  .Titled(AdminResource.State)
+              .Sortable(true)
+              .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+               Sanitized(false)
+              .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                                o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+
+
+
+
+       columns.Add(o => o.UpdatedDate)
+                  .Titled(AdminResource.UpdatedDate)
+              .Sortable(true)
+              .Css("gridDateClass")
+              .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
+              .SortInitialDirection(GridSortDirection.Descending);
 
 
 
 
 
-}).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+   }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
-    </div>
+</div>
 
 
 
-    @Scripts.Render("~/bundles/jQuery-File-Upload")
+@Scripts.Render("~/bundles/jQuery-File-Upload")

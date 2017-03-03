@@ -60,6 +60,9 @@ namespace EImece.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Security Question")]
+        public string Captcha { get; set; }
     }
 
     public class RegisterViewModel

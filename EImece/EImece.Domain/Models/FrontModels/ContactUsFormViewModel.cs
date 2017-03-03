@@ -14,5 +14,6 @@ namespace EImece.Domain.Models.FrontModels
         public String Phone { get; set; }
         public String Address { get; set; }
         public String Message { get; set; }
+        public String Captcha { get; set; }
     }
 }

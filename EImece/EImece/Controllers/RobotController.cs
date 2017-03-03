@@ -29,7 +29,7 @@ namespace EImece.Controllers
             var fLink = String.Format("{1}{0}", "/sitemap.xml", builder.Uri.ToString().TrimEnd('/'));
             content += "Sitemap: " + fLink + Environment.NewLine;
 
-
+            content += "Disallow: /Ajax/ " + Environment.NewLine;
             if (string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase))
             {
                 content += "Disallow: /Account/ " + Environment.NewLine;

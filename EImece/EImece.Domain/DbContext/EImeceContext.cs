@@ -40,7 +40,7 @@ namespace EImece.Domain.DbContext
         public IDbSet<Setting> Settings { get; set; }
         public IDbSet<Template> Templates    { get; set; }
         public IDbSet<MenuFile> MenuFiles { get; set; }
-
         public IDbSet<MainPageImage> MainPageImages { get; set; }
+    
     }
 }

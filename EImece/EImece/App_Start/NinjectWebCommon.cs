@@ -27,20 +27,20 @@ namespace EImece.App_Start
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -48,7 +48,7 @@ namespace EImece.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -87,7 +87,7 @@ namespace EImece.App_Start
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
 
-          
+
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
             kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
@@ -108,7 +108,7 @@ namespace EImece.App_Start
             kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();
             kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();
             kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
-
+            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
 
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
             kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();

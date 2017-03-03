@@ -68,9 +68,6 @@
 
 
 
-@{ 
-    var contact = new ContactUsFormViewModel();
-}
+ 
 
-
-@Html.EditorFor(r=> contact)
+@Html.Action("ContactUs","Home")

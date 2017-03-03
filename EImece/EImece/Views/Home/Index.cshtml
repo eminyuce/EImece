@@ -11,12 +11,17 @@
     var mainPageStories = Model.StoryIndexViewModel.Stories;
 
     var latestStories = Model.LatestStories;
+
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
 }
 
 <!-- Slider
 ================================================== -->
 <div class="container fullwidth-element home-slider">
-
+    @if (isUserAuthenticated)
+    {
+        @Html.ActionLink("edit", "index", "mainpageimages", new { @area = "admin" }, new { })
+    }
     <div class="tp-banner-container">
         <div class="tp-banner">
             <ul>
@@ -25,7 +30,7 @@
                     var mainPageImage = mainPageImages[i];
                     @Html.DisplayFor(model => mainPageImage, "MainPageImage", new { index = i })
                 }
-
+              
             </ul>
         </div>
     </div>

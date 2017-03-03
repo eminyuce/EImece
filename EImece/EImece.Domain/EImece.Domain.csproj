@@ -219,11 +219,13 @@
     <Compile Include="Repositories\BaseEntityRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FileStorageRepository.cs" />
+    <Compile Include="Repositories\FileStorageTagRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseContentRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseEntityRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositories\IFileStorageRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IFileStorageTagRepository.cs" />
     <Compile Include="Repositories\IRepositories\IListItemRepository.cs" />
     <Compile Include="Repositories\IRepositories\IListRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMainPageImageRepository.cs" />

@@ -75,5 +75,33 @@ namespace EImece.Controllers
 
             return File(ms.ToArray(), "image/jpeg");
         }
+
+        //controller function to generate image
+        //returns image file (through url.action in img src attribute)
+        public ActionResult GetCaptcha(string prefix, bool noisy = true)
+        {
+            var rand = new Random((int)DateTime.Now.Ticks);
+            //generate new question 
+            int a = rand.Next(10, 99);
+            int b = rand.Next(0, 9);
+            var captcha = string.Format("{0} + {1} = ?", a, b);
+
+            //store answer 
+            Session["Captcha" + prefix] = a + b;
+
+            //image stream 
+            FileContentResult img = null;
+
+            try
+            {
+                img = this.File(FilesHelper.GenerateCaptchaImg(captcha, true), "image/Jpeg");
+            }
+            catch
+            {
+            }
+
+            return img;
+        }
+
     }
 }

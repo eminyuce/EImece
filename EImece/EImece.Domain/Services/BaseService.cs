@@ -92,7 +92,8 @@ namespace EImece.Domain.Services
         public IMenuFileRepository MenuFileRepository { get; set; }
         [Inject]
         public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
-
+        [Inject]
+        public IFileStorageTagRepository FileStorageTagRepository { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
         [Inject]
