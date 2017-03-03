@@ -21,7 +21,7 @@
 
 <div class="row" style="padding:20px;">
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         @if (productTree != null)
         {
             @Html.SharkDev().TreeView(settings =>
@@ -44,7 +44,7 @@ console.log(e);
 
 
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
 
         @using (Html.BeginForm("SaveOrEdit", "Menus", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

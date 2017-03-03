@@ -312,4 +312,7 @@
   <data name="ProductPageTitle" xml:space="preserve">
     <value>Product Page </value>
   </data>
+  <data name="AllProductLinkText" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>

@@ -44,6 +44,9 @@ namespace EImece.Domain
                 return httpSecure;
             }
         }
+
+ 
+
         public static string OkStyle
         {
             get

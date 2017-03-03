@@ -33,7 +33,7 @@
 <h2>Product Category</h2>
 <div class="row" style="padding:20px;">
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         @Html.SharkDev().TreeView(settings =>
     {
         settings.Id = "treeViewContainer";
@@ -50,7 +50,7 @@
         <span id="treeClickContainer"></span>
 
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel",   new { @id = 0 }, new { @class = "btn btn-link" })
 
 

@@ -8,6 +8,7 @@
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.Extensions;
 
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -26,6 +27,8 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
 
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+
 }
 
 <h2>Products</h2>
@@ -33,9 +36,9 @@
 
 <div class="row" style="padding:20px;">
 
-    <div class="col-md-3">
+    <div class="col-md-2">
 
-        @Html.ActionLink("All", "Index", "Products", new { @id = 0 }, new { @class = "btn btn-link" })
+        @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-link" })
 
         @Html.SharkDev().TreeView(settings =>
     {
@@ -57,8 +60,8 @@ window.location='/admin/products/index/'+e.id;
 
 
     </div>
-    <div class="col-md-9">
-        @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-link" })
+    <div class="col-md-10">
+        @Html.ActionLink(AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-link" })
 
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -140,9 +143,12 @@ window.location='/admin/products/index/'+e.id;
 
            columns.Add(c => c.ProductCategory.Name)
              .Titled(AdminResource.ProductCategoryId);
-           columns.Add(c => c.Price)
-        .Titled(AdminResource.Price);
 
+           if (isProductPriceEnable.SettingValue.ToBool(true))
+           {
+               columns.Add(c => c.Price).Titled(AdminResource.Price);
+
+           }
 
            columns.Add(c => c.ProductCode)
            .Titled(AdminResource.ProductCode);

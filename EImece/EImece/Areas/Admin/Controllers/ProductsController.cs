@@ -26,6 +26,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
             return View(products);
         }
         public ActionResult SaveOrEditProductSpecs(int id = 0)
@@ -105,6 +106,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
             return View(content);
         }
 
@@ -129,6 +131,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
             return View(content);
         }
 
