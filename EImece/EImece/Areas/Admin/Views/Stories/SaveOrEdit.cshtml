@@ -138,7 +138,7 @@
             function CreateTags() {
                 var postData = JSON.stringify({ "language": $("#Lang").val(), "storyId": $("#Id").val() });
                 console.log(postData);
-                ajaxMethodCall(postData, "/Ajax/GetStoryTags", function (data) {
+                ajaxMethodCall(postData, "/admin/Ajax/GetStoryTags", function (data) {
                     $("#storyTagsHtml").html(data);
                 });
             }

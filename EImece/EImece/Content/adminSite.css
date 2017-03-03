@@ -158,5 +158,10 @@ input.ImageResizingTextBox {
     /* height: 20px; */
 }
 
- 
+li.Tools {
+    float: right;
+    margin-top: 2px;
+    padding: 3px 2px 0 0;
+    overflow: hidden;
+}
  

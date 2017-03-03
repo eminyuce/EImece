@@ -43,7 +43,7 @@
             function CreateTags() {
                 var postData = JSON.stringify({ "language": $("#product_Lang").val(), "productId": $("#product_Id").val() });
                 console.log(postData);
-                ajaxMethodCall(postData, "/Ajax/GetProductTags", function (data) {
+                ajaxMethodCall(postData, "/admin/Ajax/GetProductTags", function (data) {
                     $("#productTagsHtml").html(data);
                 });
             }

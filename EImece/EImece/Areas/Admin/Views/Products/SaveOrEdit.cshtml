@@ -14,8 +14,8 @@
     var productTree = (List<Node>)ViewBag.Tree;
     var PleaseSelectYourProductCategoryFromTree = AdminResource.PleaseSelectYourProductCategoryFromTree;
 }
-
-<h2>SaveOrEdit</h2>
+<h4>@AdminResource.ProductPageTitle</h4>
+<hr />
 <div class="row" style="padding:20px;">
 
     <div class="col-md-3">
@@ -46,8 +46,7 @@ console.log(e);
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <h4>Product</h4>
-                <hr />
+               
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.CreatedDate)
@@ -55,166 +54,179 @@ console.log(e);
                 @Html.HiddenFor(model => model.MainImageId)
                 @Html.HiddenFor(model => model.Lang)
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @if (productCategory != null && productCategory.Id > 0)
-                        {
-                            <span style="color:red;font-size:x-large" id="OldCategoryName">
-                                @productCategory.Name
-                            </span>
-                        }
-                        else
-                        {
+                <ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="pill" href="#menu1">@AdminResource.EntityShortFields</a></li>
+                    <li><a data-toggle="pill" href="#menu2">@AdminResource.EntityDescriptionPage</a></li>
+                    <li class="Tools">
+                        <input type="submit" value="@saveButtonText" class="btn btn-success btn-lg" />
+                    </li>
+                </ul>
 
-                            <span style="color:red;font-size:x-large" id="OldCategoryName">
-                                @PleaseSelectYourProductCategoryFromTree
-                            </span>
-                        }
-
-                        @Html.HiddenFor(model => model.ProductCategoryId)
-                        @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.NameShort, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.NameShort, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.NameShort, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                <div class="tab-content">
+                    <div id="menu1"  class="tab-pane fade in active" >
 
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @style = "margin: 0px; width: 804px; height: 66px;" })
-                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.IsActive)
-                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @if (productCategory != null && productCategory.Id > 0)
+                                {
+                                    <span style="color:red;font-size:x-large" id="OldCategoryName">
+                                        @productCategory.Name
+                                    </span>
+                                }
+                                else
+                                {
+
+                                    <span style="color:red;font-size:x-large" id="OldCategoryName">
+                                        @PleaseSelectYourProductCategoryFromTree
+                                    </span>
+                                }
+
+                                @Html.HiddenFor(model => model.ProductCategoryId)
+                                @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NameShort, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.NameShort, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NameShort, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @style = "margin: 0px; width: 804px; height: 66px;" })
+                                @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.IsActive)
+                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.MainPage)
+                                    @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-5">
+                                <input type="file" name="productImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
+                                @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-5">
+                                @if (Model.MainImageId.HasValue)
+                                {
+                                    <b>@ExistingMainImageText :</b>
+                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model)
+                                }
+                            </div>
+                        </div>
+                        @Html.Partial("pSliderResizing", (BaseContent)Model)
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.ImageState)
+                                    @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VideoUrl, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.VideoUrl, 2, 20, new { @style = "margin: 0px; width: 804px; height: 66px;" })
+                                @Html.ValidationMessageFor(model => model.VideoUrl, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+
+                        <div id="productTagsHtml">
+
+
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-
-                        @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
-
-
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.MainPage)
-                            @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                    <div id="menu2" class="tab-pane fade">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
 
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-5">
-                        <input type="file" name="productImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
-                        @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col-md-5">
-                        @if (Model.MainImageId.HasValue)
-                        {
-                            <b>@ExistingMainImageText :</b>
-                            @Html.Partial("pGridImageMainPage", (BaseContent)Model)
-                        }
-                    </div>
-                </div>
-                @Html.Partial("pSliderResizing", (BaseContent)Model)
-
-
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.ImageState)
-                            @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.VideoUrl, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.VideoUrl, 2, 20, new { @style = "margin: 0px; width: 804px; height: 66px;" })
-                        @Html.ValidationMessageFor(model => model.VideoUrl, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-
-
-                <div id="productTagsHtml">
-
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="@saveButtonText" class="btn btn-default" />
-                    </div>
-                </div>
+               
             </div>
         }
     </div>
@@ -233,7 +245,7 @@ console.log(e);
             function CreateTags() {
                 var postData = JSON.stringify({ "language": $("#Lang").val(), "productId": $("#Id").val() });
                 console.log(postData);
-                ajaxMethodCall(postData, "/Ajax/GetProductTags", function (data) {
+                ajaxMethodCall(postData, "/admin/Ajax/GetProductTags", function (data) {
                     $("#productTagsHtml").html(data);
                 });
             }

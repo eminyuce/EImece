@@ -549,6 +549,7 @@
     <Content Include="Scripts\codemirror\xml\index.html" />
     <Content Include="Scripts\codemirror\xml\test.js" />
     <Content Include="Scripts\codemirror\xml\xml.js" />
+    <Content Include="Scripts\adminEimece.js" />
     <Content Include="Scripts\eimece.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />

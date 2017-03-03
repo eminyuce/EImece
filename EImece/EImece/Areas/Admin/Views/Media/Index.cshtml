@@ -96,7 +96,7 @@
         function CreateTags() {
             var postData = JSON.stringify({ "language": $("#Lang").val() });
             console.log(postData);
-            ajaxMethodCall(postData, "/Ajax/GetTags", function (data) {
+            ajaxMethodCall(postData, "/admin/Ajax/GetTags", function (data) {
                 $("#imageTagsHtml").html(data);
             });
         }

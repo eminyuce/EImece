@@ -303,4 +303,13 @@
   <data name="IsValues" xml:space="preserve">
     <value>IsValues</value>
   </data>
+  <data name="EntityDescriptionPage" xml:space="preserve">
+    <value>General Description</value>
+  </data>
+  <data name="EntityShortFields" xml:space="preserve">
+    <value>Short Properties</value>
+  </data>
+  <data name="ProductPageTitle" xml:space="preserve">
+    <value>Product Page </value>
+  </data>
 </root>

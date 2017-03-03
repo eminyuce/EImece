@@ -124,6 +124,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Description.
+        /// </summary>
+        public static string EntityDescriptionPage {
+            get {
+                return ResourceManager.GetString("EntityDescriptionPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Properties.
+        /// </summary>
+        public static string EntityShortFields {
+            get {
+                return ResourceManager.GetString("EntityShortFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Existing Main Image.
         /// </summary>
         public static string ExistingMainImageText {
@@ -507,6 +525,15 @@ namespace Resources {
         public static string ProductCode {
             get {
                 return ResourceManager.GetString("ProductCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Page .
+        /// </summary>
+        public static string ProductPageTitle {
+            get {
+                return ResourceManager.GetString("ProductPageTitle", resourceCulture);
             }
         }
         
