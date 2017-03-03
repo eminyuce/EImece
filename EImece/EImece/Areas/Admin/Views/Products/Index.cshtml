@@ -30,9 +30,8 @@
     Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
 
 }
-
-<h2>Products</h2>
-
+<h2>@AdminResource.ProductPageTitle</h2>
+<hr class="adminLine" />
 
 <div class="row" style="padding:20px;">
 
@@ -43,7 +42,6 @@
         @Html.SharkDev().TreeView(settings =>
     {
         settings.Id = "treeViewContainer";
-        settings.Header.Text = "Tree root - Animal";
         settings.Header.Visible = false;
         settings.Header.Expanded = true;
         settings.ClientHandlers.ContentSelect = @"function (e) {
@@ -51,8 +49,6 @@ console.log(e);
 window.location='/admin/products/index/'+e.id;
 }";
         settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
-        settings.Height = 300;
-        settings.Width = 270;
         settings.DataOnClient = true;
     }).GetContent(ViewBag.Tree)
 

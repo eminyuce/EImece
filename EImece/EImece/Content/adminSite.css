@@ -1,4 +1,34 @@
-﻿
+﻿body {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+
+
+.main-page-product img {
+    width: 100%;
+    height: auto;
+}
+
+.main-page-product h3,
+.main-page-product h4 {
+    margin-top: 0;
+}
+
 input.GridOrderingTextbox {
     max-width: 30px;
     width: 35px;
@@ -147,6 +177,7 @@ input[name='checkboxGrid'] {
 @media (min-width: 768px).container {
     max-width: 1200px;
 }
+
 input.ImageResizingTextBox {
     max-width: 70px;
     width: 70px;
@@ -164,4 +195,10 @@ li.Tools {
     padding: 3px 2px 0 0;
     overflow: hidden;
 }
- 
+
+.adminLine {
+    background-color: #543b3b !important;
+    border: 0 none !important;
+    color: #eee !important;
+    height: 1px !important;
+}

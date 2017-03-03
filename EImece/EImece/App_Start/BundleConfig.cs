@@ -30,6 +30,13 @@ namespace EImece
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"
                       ));
+
+
+            bundles.Add(new StyleBundle("~/Content/admincss").Include(
+                      "~/Content/bootstrap.css",
+                      "~/Content/adminSite.css"
+                      ));
+
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
         "~/Content/themes/base/accordion.css",
         "~/Content/themes/base/all.css",
