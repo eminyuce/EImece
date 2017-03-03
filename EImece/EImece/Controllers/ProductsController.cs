@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Controllers
 {
@@ -25,6 +26,8 @@ namespace EImece.Controllers
         {
             var productId = id.GetId();
             var product = ProductService.GetProductById(productId);
+            ViewBag.SeoId = product.Product.GetSeoUrl();
+         
             return View(product);
         }
 

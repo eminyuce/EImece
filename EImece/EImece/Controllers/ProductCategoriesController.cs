@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Controllers
 {
@@ -20,8 +21,9 @@ namespace EImece.Controllers
         public ActionResult Category(String id)
         {
             var categoryId = id.GetId();
-
+     
             var productCategory = ProductCategoryService.GetProductCategory(categoryId);
+            ViewBag.SeoId = productCategory.GetSeoUrl();
             return View(productCategory);
         }
     }

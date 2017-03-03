@@ -93,6 +93,15 @@ console.log(e);
                     </div>
                 </div>
 
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @style = "margin: 0px; width: 804px; height: 66px;" })
+                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -146,7 +155,7 @@ console.log(e);
                 <div class="form-group">
                     @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-5">
-                        <input type="file" name="productImage" />
+                        <input type="file" name="productImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
                         @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-5">

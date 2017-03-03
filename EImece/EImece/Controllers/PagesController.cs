@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Controllers
 {
@@ -21,6 +22,7 @@ namespace EImece.Controllers
         {
             var menuId = id.GetId();
             var page = MenuService.GetPageById(menuId);
+            ViewBag.SeoId = page.Menu.GetSeoUrl();
             if (page.Menu.IsActive)
             {
                 return View(page);

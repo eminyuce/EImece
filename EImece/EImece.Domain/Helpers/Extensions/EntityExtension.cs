@@ -69,7 +69,10 @@ namespace EImece.Domain.Helpers.Extensions
         {
             return string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
         }
-
+        public static String GetSeoKeywords(this BaseContent entity, int length = 150)
+        {
+            return string.Format("{0}", entity.MetaKeywords.ToStr(255));
+        }
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";

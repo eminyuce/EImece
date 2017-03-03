@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Controllers
 {
@@ -24,6 +25,7 @@ namespace EImece.Controllers
         {
             var storyId = id.GetId();
             var story = StoryService.GetStoryDetailViewModel(storyId);
+            ViewBag.SeoId = story.Story.GetSeoUrl();
             return View(story);
         }
         [OutputCache(CacheProfile = "Cache20Minutes")]
@@ -31,6 +33,7 @@ namespace EImece.Controllers
         {
             var storyCategoryId = id.GetId();
             var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
+            ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
             return View(storyCategory);
         }
     }

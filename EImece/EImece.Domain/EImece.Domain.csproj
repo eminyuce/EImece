@@ -183,6 +183,7 @@
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\Extensions\QuerySortingExtensions.cs" />
+    <Compile Include="Helpers\SeoUrlHelper.cs" />
     <Compile Include="Helpers\SiteMap\ISitemapGenerator.cs" />
     <Compile Include="Helpers\SiteMap\ISitemapItem.cs" />
     <Compile Include="Helpers\SiteMap\NewsSitemapItem.cs" />

@@ -9,6 +9,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated;
     ViewBag.Title = product.GetSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
     Layout = "~/Views/Shared/_Layout.cshtml";
     var productFiles = product.ProductFiles.ToList();
     var productTags = product.ProductTags.Select(r => r.Tag).ToList();
