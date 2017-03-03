@@ -80,13 +80,13 @@ namespace EImece.Domain
             }
         }
 
-        public static string SiteName
-        {
-            get
-            {
-                return GetConfigString("siteName", "Maritime Survey");
-            }
-        }
+        //public static string SiteName
+        //{
+        //    get
+        //    {
+        //        return GetConfigString("siteName", "Maritime Survey");
+        //    }
+        //}
 
         public static string Domain
         {

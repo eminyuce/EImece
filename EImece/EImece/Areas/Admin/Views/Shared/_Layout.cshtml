@@ -58,7 +58,8 @@
                 <div class="col-md-2">
                     <div class="navbar-text">
                         @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
-                    </div>
+                        <p style="font-weight:bold;">@String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))</p>
+                      </div>
                 </div>
             
                 <div class="col-md-2">
@@ -93,7 +94,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="navbar-text">
-                        @Html.ActionLink("Go To Home Page", "Index", "Home", new { area = "" }, new { @target = "_blank", @class = "btn btn-warning" })
+                        @Html.ActionLink("Go To Home Page", "Index", "Home", new { area = "" }, new { @target = "_blank", @class = "btn btn-link", @style= " text-decoration: underline;" })
                     </div>
                 </div>
                 <div class="col-md-1">
