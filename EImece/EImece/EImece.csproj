@@ -543,6 +543,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Areas\Admin\Views\Shared\pProductDetailToolTip.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

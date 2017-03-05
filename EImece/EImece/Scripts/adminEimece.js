@@ -4,7 +4,7 @@
 
 $(document).ready(function () {
 
-  
+    bindProductDetailToolTip();
     bindCKEDITOR();
     searchAutoComplete();
     function bindCKEDITOR() {
@@ -393,3 +393,25 @@ function searchAutoComplete() {
     });
 
 }
+function bindProductDetailToolTip() {
+    $('[data-product-detail]').each(function () {
+        $(this).off("click");
+        $(this).on("click", handleProductDetailToolTip);
+    });
+}
+function clearProductDetailToolTip() {
+    $('[data-product-detail]').each(function () {
+        var productID = $(this).attr('data-product-detail');
+        $('[data-product-detail-result=' + productID + ']').html("");
+    });
+}
+function handleProductDetailToolTip(e) {
+    clearProductDetailToolTip();
+    var caller = e.target;
+    var productID = $(caller).attr('data-product-detail');
+    var postData = JSON.stringify({ "productId": productID });
+    ajaxMethodCall(postData, "/Admin/Ajax/GetProductDetailToolTip", function (data) {
+        $('[data-product-detail-result=' + productID + ']').html(data);
+    });
+}
+ 

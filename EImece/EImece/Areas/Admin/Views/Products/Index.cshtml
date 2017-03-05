@@ -155,7 +155,15 @@ window.location='/admin/products/index/'+e.id;
                     .Sanitized(false)
               .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new {  @class = "btn btn-sm btn-link", @target = "_blank" })
+                 <div style="text-align: center;clear: right;">
+                     <a style="" href="javascript:void(0);" class="" 
+                        
+                        data-product-detail="@d.Id">More info...</a>
+                 </div>
+            <span data-product-detail-result="@d.Id">
+
+            </span>
             </b>);
 
 
@@ -165,10 +173,7 @@ window.location='/admin/products/index/'+e.id;
 
            }
 
-
-           columns.Add(c => c.ProductCategory.Name)
-           .Titled(AdminResource.ProductCategoryId);
-
+            
            columns.Add(c => c.ProductCode)
            .Titled(AdminResource.ProductCode);
 

@@ -275,7 +275,14 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
-     
+     public ActionResult GetProductDetailToolTip(int productId = 0)
+        {
+            var product = ProductService.GetProductById(productId);
+            var html = this.RenderPartialToString(
+                        @"~/Areas/Admin/Views/Shared/pProductDetailToolTip.cshtml",
+                        new ViewDataDictionary(product), null);
+            return Json(html, JsonRequestBehavior.AllowGet);
+        }
         //C:\Projects\StoryEngine\_imagesSample\samples2
         public ActionResult GetTags(EImeceLanguage language)
         {
