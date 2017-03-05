@@ -213,3 +213,11 @@ input[name='checkboxGrid'] {
 .smallGridColumn{
     width:5% !important;
 }
+.gridNotActiveIcon{
+    color:red;
+    font-size:1.5em;
+}
+.gridActiveIcon{
+    color:green;
+    font-size:1.5em;
+}

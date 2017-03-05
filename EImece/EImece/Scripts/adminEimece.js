@@ -299,9 +299,9 @@ function changeStateSuccess(data) {
     console.log(data);
     data.values.forEach(function (entry) {
         if (entry.IsActive) {
-            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('style', 'color:green;  font-size:2em;').attr('class', 'glyphicon  glyphicon-ok-circle');
+            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('class', 'gridActiveIcon glyphicon  glyphicon-ok-circle');
         } else {
-            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('style', 'color:red;  font-size:2em;').attr('class', 'glyphicon  glyphicon-remove-circle');
+            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('class', ' gridNotActiveIcon glyphicon  glyphicon-remove-circle');
         }
 
 

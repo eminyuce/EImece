@@ -62,7 +62,7 @@ namespace EImece.Domain
             get
             {
 
-                return "style='color:green;font-size:1.4em;' class='glyphicon glyphicon-ok-circle'";
+                return "class='gridActiveIcon glyphicon glyphicon-ok-circle'";
 
             }
         }
@@ -71,7 +71,7 @@ namespace EImece.Domain
             get
             {
 
-                return "style='color:red;  font-size:1.4em;' class='glyphicon  glyphicon-remove-circle'";
+                return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
 
             }
         }
