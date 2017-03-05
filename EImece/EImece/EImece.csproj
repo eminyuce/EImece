@@ -261,6 +261,7 @@
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileUploadController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImagesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ImportDataController.cs" />
     <Compile Include="Areas\Admin\Controllers\ListsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainPageImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MediaController.cs" />
@@ -530,9 +531,7 @@
     <Content Include="Areas\Admin\Views\Settings\TermsAndConditions.cshtml" />
     <Content Include="Areas\Admin\Views\Users\GenerateNewPassword.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\pPageThemes.cshtml" />
-    <Content Include="Areas\Admin\Views\Dashboard\Contact.cshtml" />
-    <Content Include="Areas\Admin\Views\Dashboard\Contact2.cshtml" />
-    <Content Include="Areas\Admin\Views\Dashboard\DisplayExcel.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportData\ExcelUpload.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\DataTable.cshtml" />
     <Content Include="Areas\Admin\Views\Test\Index3.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -544,8 +543,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Views\Shared\pProductDetailToolTip.cshtml" />
-    <Content Include="Areas\Admin\Views\Dashboard\Contact3.cshtml" />
-    <Content Include="Areas\Admin\Views\Dashboard\DisplayTable.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportData\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportData\DisplayTable.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -105,52 +105,7 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult Contact()
-        {
-            return View();
-        }
-        public ActionResult Contact3()
-        {
-            String path = "~/App_Data/";
-            var pathName = Server.MapPath(path);
-            var files = Directory.GetFiles(pathName).ToList();
-            ViewBag.PathName = pathName;
-            return View(files);
-        }
-        public ActionResult Contact2(HttpPostedFileBase excelFile = null)
-        {
-            ViewBag.Message = "Your contact page.";
-
-            String path = "~/App_Data/";
-            var r = new Random();
-            string fileName = r.Next(0, 1000) + excelFile.FileName;
-            var pathName = Server.MapPath(path + fileName);
-            excelFile.SaveAs(pathName);
-            //DataSet ds = ExcelHelper.GetDS(pathName, ExcelHelper.GetWorkSheets(pathName).FirstOrDefault());
-            //return View(ds.Tables[0]);
-            return RedirectToAction("DisplayTable", new { id = fileName });
-
-        }
-
-        public ActionResult DisplayTable(String id)
-        {
-            String path = "~/App_Data/";
-            var pathName = Server.MapPath(path +"/"+ id);
-            DataTable dt = ExcelHelper.Excel_To_DataTable(pathName, 0);
-            return View(dt);
-        }
-
-        public ActionResult DisplayExcel(String id)
-        {
-            String fileName = id+ ".xlsx";
-            String path = "~/App_Data/";
-            var pathName = Server.MapPath(path + fileName);
-
-            DataTable dt = ExcelHelper.Excel_To_DataTable(pathName,0);
-            List<ProductCategory> companyList = dt.ConvertToList<ProductCategory>();
-            ViewBag.DataTable = dt;
-            return View(companyList);
-        }
+       
 
     }
 }
