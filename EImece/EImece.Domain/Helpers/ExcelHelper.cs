@@ -21,8 +21,13 @@ namespace EImece.Domain.Helpers
 //THE first row must contain the names of those fields.</summary>
 //<param name = "pRutaArchivo" > full path of the file to open.</param>
 //<param name = "pHojaIndex" > number(based on zero) of the sheet that is want to open. 0 is the first sheet.</param>
-        public static DataTable Excel_To_DataTable(string pRutaArchivo, int pHojaIndex)
+        public static DataTable Excel_To_DataTable(
+
+            string fileFullPath,
+            int sheetIndex
+            )
         {
+            string pRutaArchivo = fileFullPath; int pHojaIndex = sheetIndex;
             // --------------------------------- //
             /* REFERENCIAS:
              * NPOI.dll
@@ -194,7 +199,7 @@ namespace EImece.Domain.Helpers
                 }
                 else
                 {
-                    throw new Exception("ERROR 404: El archivo especificado NO existe.");
+                    throw new Exception("ERROR 404: The specified file does NOT exist.");
                 }
             }
             catch (Exception ex)

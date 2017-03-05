@@ -1,0 +1,16 @@
+﻿@model List<String>
+@{
+    ViewBag.Title = "Contact3";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var pathName = (String)ViewBag.PathName;
+}
+
+<h2>Contact3</h2>
+@foreach (var m in Model)
+{
+
+    <div>
+@Html.ActionLink(m.Replace(pathName, ""), "DisplayTable", new { id=m.Replace(pathName,"") })
+    
+    </div>
+}

@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -108,7 +109,14 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
-
+        public ActionResult Contact3()
+        {
+            String path = "~/App_Data/";
+            var pathName = Server.MapPath(path);
+            var files = Directory.GetFiles(pathName).ToList();
+            ViewBag.PathName = pathName;
+            return View(files);
+        }
         public ActionResult Contact2(HttpPostedFileBase excelFile = null)
         {
             ViewBag.Message = "Your contact page.";
@@ -120,10 +128,16 @@ namespace EImece.Areas.Admin.Controllers
             excelFile.SaveAs(pathName);
             //DataSet ds = ExcelHelper.GetDS(pathName, ExcelHelper.GetWorkSheets(pathName).FirstOrDefault());
             //return View(ds.Tables[0]);
+            return RedirectToAction("DisplayTable", new { id = fileName });
 
-            DataTable dt = ExcelHelper.ExcelToDataTable(pathName, ExcelHelper.GetWorkSheets(pathName).FirstOrDefault());
+        }
+
+        public ActionResult DisplayTable(String id)
+        {
+            String path = "~/App_Data/";
+            var pathName = Server.MapPath(path +"/"+ id);
+            DataTable dt = ExcelHelper.Excel_To_DataTable(pathName, 0);
             return View(dt);
-
         }
 
         public ActionResult DisplayExcel(String id)

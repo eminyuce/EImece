@@ -544,6 +544,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Views\Shared\pProductDetailToolTip.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Contact3.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\DisplayTable.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
