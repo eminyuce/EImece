@@ -160,25 +160,18 @@ window.location='/admin/products/index/'+e.id;
                   .RenderValueAs(o =>
                   @<ul>
                   <li>
-                      @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
+                      @Html.Raw(String.Format("<div>Active</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
                                                     o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive))
 
 
                   </li>
             <li>
-                @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
+                @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
                                                     o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
 
 
 
-            </li>
-            <li>
-                @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
-
-
-
-            </li>
+            </li> 
                   </ul>
                                           
                                                     );
@@ -192,7 +185,20 @@ window.location='/admin/products/index/'+e.id;
        .Sanitized(false)
                .Css("smallGridColumn")
        .SetWidth(30)
-       .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+       .RenderValueAs(o => 
+       @<ul>
+            <li>
+                @Html.Raw(String.Format("<div>Image State</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
+
+
+
+            </li>
+            <li>
+                @Html.Partial("pGridImageMainPage", o)
+            </li>
+            </ul>
+       );
 
 
 
