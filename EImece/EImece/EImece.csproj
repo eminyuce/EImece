@@ -304,6 +304,10 @@
   <ItemGroup>
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\checkBoxStyle.css" />
     <Content Include="Content\Images\check_2.png" />
     <Content Include="Areas\Admin\Content\main\1.png" />
@@ -322,8 +326,6 @@
     <Content Include="Areas\Admin\Content\PageThemes\tema-06.gif" />
     <Content Include="Content\Images\uncheck.png" />
     <Content Include="Content\adminSite.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\codemirror\addon\hint\show-hint.css" />
     <Content Include="Content\codemirror\addon\hint\show-hint.js" />
     <Content Include="Content\codemirror\addon\hint\xml-hint.js" />
@@ -533,6 +535,14 @@
     <Content Include="Areas\Admin\Views\Dashboard\DisplayExcel.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\DataTable.cshtml" />
     <Content Include="Areas\Admin\Views\Test\Index3.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -713,9 +723,6 @@
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>

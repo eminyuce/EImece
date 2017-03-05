@@ -15,17 +15,17 @@
 
     @if (d.MainImageId > 0 && f != null)
     {
-        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="@String.Format("#myModal_{0}",d.MainImageId)">@gridMainPageImageText</button>
+        <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",d.MainImageId)">@gridMainPageImageText</a>
         @Html.Partial("pImagePopUp", f);
     }
     else if (d.MainImageId > 0)
     {
-        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="@String.Format("#myModal_{0}",d.MainImageId)">@gridMainPageImageText</button>
+        <button type="button" class="btn btn-outline btn-info btn-xs" data-toggle="modal" data-target="@String.Format("#myModal_{0}",d.MainImageId)">@gridMainPageImageText</button>
             @Html.Partial("pImagePopUpWithoutFileStroage", d.MainImageId);
     }
     else
     {
-        <b>
+        <b style="font-size:0.8em;">
             No Image
         </b>
     }

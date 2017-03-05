@@ -39,8 +39,9 @@ input.GridOrderingTextbox {
     max-height: 30px;
     /* height: 20px; */
 }
-/* Your grid header column style */
-.grid-header {
+
+/*/* Your grid header column style */
+/*.grid-header {
     background-color: rgb(217, 231, 255);
     border: none;
     text-align: left;
@@ -48,15 +49,15 @@ input.GridOrderingTextbox {
     font-size: 15px;
     padding: 4px;
     color: Black;
-}
+}*/
 
-.grid-header-title a {
+/*.grid-header-title a {
     text-align: left;
     font-weight: bold;
     font-size: 15px;
     padding: 4px;
     color: Black;
-}
+}*/
 
 .gridChecked {
     background-color: aqua !important;
@@ -167,12 +168,6 @@ div .roleradio {
     max-height: 120px;
 }
 
-input[name='checkboxGrid'] {
-    width: 34px;
-    height: 30px;
-    padding: 5em;
-    border: 1px solid #369;
-}
 
 @media (min-width: 768px).container {
     max-width: 1200px;
@@ -201,4 +196,20 @@ li.Tools {
     border: 0 none !important;
     color: #eee !important;
     height: 1px !important;
+}
+input[name='checkboxGrid'] {
+    width: 34px;
+    height: 30px;
+    padding: 5em;
+    border: 1px solid #369;
+}
+.gridToolBox{
+   
+  display: inline-table !important;
+  list-style: none !important;
+  margin: 5px !important;
+
+}
+.smallGridColumn{
+    width:5% !important;
 }

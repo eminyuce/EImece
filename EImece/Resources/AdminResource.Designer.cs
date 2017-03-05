@@ -313,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ImageState.
+        ///   Looks up a localized string similar to Image.
         /// </summary>
         public static string ImageState {
             get {
