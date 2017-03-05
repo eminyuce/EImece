@@ -19,7 +19,8 @@
     var title = "Products";
     var gridName = "productGrid";
     var contents = Model;
-
+    int selectedCategoryId = (int)ViewBag.SelectedCategoryId;
+    var products = Model;
     var baseList = contents.DownCasting<Product>();
 
     var gridImagesText = AdminResource.GridImagesText;
@@ -37,7 +38,6 @@
 
     <div class="col-md-2">
 
-        @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
 
         @Html.SharkDev().TreeView(settings =>
     {
@@ -57,11 +57,37 @@ window.location='/admin/products/index/'+e.id;
 
     </div>
     <div class="col-md-10">
+
+        @if (selectedCategoryId > 0)
+        {
+            <span>
+                @{
+                    var product = products.FirstOrDefault();
+                    if (product != null)
+                    {
+                        <span>
+                            Selected Category:
+                        </span>
+                        <b>
+
+                          @String.Format("{0}", product.ProductCategory.Name)
+                        </b>
+       
+                    }
+                }
+                @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
+
+
+            </span>
+
+                    }
+
+
         @Html.ActionLink(AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
 
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-            {"controllerName",controllerName}
+                            {"controllerName",controllerName}
             ,{"StateTypes","State,ImageState,MainPage"}
            ,{"orderingButton",true}
            ,{"selectAll",true}
@@ -76,7 +102,7 @@ window.location='/admin/products/index/'+e.id;
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {
 
-      
+
 
        columns.Add(o => o.Id, true);
 
@@ -90,18 +116,18 @@ window.location='/admin/products/index/'+e.id;
                       .SetWidth(30)
                       .RenderValueAs(d =>
                     @<ul class="gridToolBox">
-            <li>
-                @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
+                        <li>
+                            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
 
-            </li>
-                        <li>
-                            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs btn-default     glyphicon glyphicon-camera glyphicon-white " })
                         </li>
                         <li>
-                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-xs btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+                            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
                         </li>
                         <li>
-                            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs btn-default   glyphicon glyphicon-plus" })
+                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+                        </li>
+                        <li>
+                            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default   glyphicon glyphicon-plus" })
 
 
                         </li>
@@ -110,7 +136,7 @@ window.location='/admin/products/index/'+e.id;
                             <li>
                                 @Html.ActionLink(" ", "Delete", controllerName,
                            new { id = d.Id },
-                          new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
+                          new { @class = "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" })
 
                             </li>
 
@@ -139,6 +165,10 @@ window.location='/admin/products/index/'+e.id;
 
            }
 
+
+           columns.Add(c => c.ProductCategory.Name)
+           .Titled(AdminResource.ProductCategoryId);
+
            columns.Add(c => c.ProductCode)
            .Titled(AdminResource.ProductCode);
 
@@ -151,53 +181,54 @@ window.location='/admin/products/index/'+e.id;
 
 
 
-           columns.Add()
+           columns.Add(o => o.IsActive)
                   .Titled(AdminResource.MainPage)
                   .Sortable(true)
                   .Css("smallGridColumn")
                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                    Sanitized(false)
                   .RenderValueAs(o =>
-                  @<ul>
-                  <li>
-                      @Html.Raw(String.Format("<div>Active</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
+                @<ul>
+                    <li>
+                        @Html.Raw(String.Format("<div>Active</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
                                                     o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive))
 
 
-                  </li>
-            <li>
-                @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
+                    </li>
+                    <li>
+                        @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
                                                     o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
 
 
 
-            </li> 
-                  </ul>
-                                          
+                    </li>
+                </ul>
+
                                                     );
 
 
 
 
-           columns.Add()
-       .Titled(AdminResource.Images)
-       .Encoded(false)
-       .Sanitized(false)
-               .Css("smallGridColumn")
-       .SetWidth(30)
-       .RenderValueAs(o => 
-       @<ul>
-            <li>
-                @Html.Raw(String.Format("<div>Image State</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+       columns.Add(r => r.ImageState
+       )
+   .Titled(AdminResource.Images)
+   .Encoded(false)
+   .Sanitized(false)
+           .Css("smallGridColumn")
+   .SetWidth(30)
+   .RenderValueAs(o =>
+@<ul>
+    <li>
+        @Html.Raw(String.Format("<div>Image State</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
                                                     o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
 
 
 
-            </li>
-            <li>
-                @Html.Partial("pGridImageMainPage", o)
-            </li>
-            </ul>
+    </li>
+    <li>
+        @Html.Partial("pGridImageMainPage", o)
+    </li>
+</ul>
        );
 
 
