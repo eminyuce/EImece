@@ -197,27 +197,30 @@ li.Tools {
     color: #eee !important;
     height: 1px !important;
 }
+
 input[name='checkboxGrid'] {
     width: 34px;
     height: 30px;
     padding: 5em;
     border: 1px solid #369;
 }
-.gridToolBox{
-   
-  display: inline-table !important;
-  list-style: none !important;
-  margin: 5px !important;
 
+.gridToolBox {
+    display: inline-table !important;
+    list-style: none !important;
+    margin: 5px !important;
 }
-.smallGridColumn{
-    width:15px !important;
+
+.smallGridColumn {
+    width: 15px !important;
 }
-.gridNotActiveIcon{
-    color:red;
-    font-size:1.5em;
+
+.gridNotActiveIcon {
+    color: red;
+    font-size: 1.5em;
 }
-.gridActiveIcon{
-    color:green;
-    font-size:1.5em;
+
+.gridActiveIcon {
+    color: green;
+    font-size: 1.5em;
 }

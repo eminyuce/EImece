@@ -70,9 +70,9 @@ window.location='/admin/products/index/'+e.id;
                         </span>
                         <b>
 
-                          @String.Format("{0}", product.ProductCategory.Name)
+                            @String.Format("{0}", product.ProductCategory.Name)
                         </b>
-       
+
                     }
                 }
                 @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
@@ -113,58 +113,29 @@ window.location='/admin/products/index/'+e.id;
        columns.Add()
                       .Encoded(false)
                       .Sanitized(false)
-                      .SetWidth(30)
-                      .RenderValueAs(d =>
-                    @<ul class="gridToolBox">
-                        <li>
-                            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
-
-                        </li>
-                        <li>
-                            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
-                        </li>
-                        <li>
-                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
-                        </li>
-                        <li>
-                            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default   glyphicon glyphicon-plus" })
-
-
-                        </li>
-                        @if (UserRoleHelper.IsDeletedEnableRoles())
-                        {
-                            <li>
-                                @Html.ActionLink(" ", "Delete", controllerName,
-                           new { id = d.Id },
-                          new { @class = "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" })
-
-                            </li>
-
-                        }
-
-                    </ul>);
+                       .Css("gridButtons")
+                       .SetWidth("18%")
+                      .RenderValueAs(d => GridToolsColumn(d, controllerName));
 
 
 
+       columns.Add(c => c.Name)
+              .Titled(AdminResource.Name)
+              .Filterable(true)
+               .Encoded(false)
+                .Sanitized(false)
+          .RenderValueAs(d =>
+        @<b>
+            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+            @*<div style="text-align: center;clear: right;">
+                         <a style="" href="javascript:void(0);" class=""
 
+                            data-product-detail="@d.Id">More info...</a>
+                     </div>
+                <span data-product-detail-result="@d.Id">
 
-           columns.Add(c => c.Name)
-                  .Titled(AdminResource.Name)
-                  .Filterable(true)
-                   .Encoded(false)
-                    .Sanitized(false)
-              .RenderValueAs(d =>
-            @<b>
-                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new {  @class = "btn btn-sm btn-link", @target = "_blank" })
-                 @*<div style="text-align: center;clear: right;">
-                     <a style="" href="javascript:void(0);" class="" 
-                        
-                        data-product-detail="@d.Id">More info...</a>
-                 </div>
-            <span data-product-detail-result="@d.Id">
-
-            </span>*@
-            </b>);
+                </span>*@
+        </b>);
 
 
            if (isProductPriceEnable.SettingValue.ToBool(true))
@@ -173,7 +144,7 @@ window.location='/admin/products/index/'+e.id;
 
            }
 
-            
+
            columns.Add(c => c.ProductCode)
            .Titled(AdminResource.ProductCode);
 
@@ -192,49 +163,18 @@ window.location='/admin/products/index/'+e.id;
                   .Css("smallGridColumn")
                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                    Sanitized(false)
-                  .RenderValueAs(o =>
-                @<ul>
-                    <li>
-                        @Html.Raw(String.Format("<div>Active</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
-                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive))
-
-
-                    </li>
-                    <li>
-                        @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
-                                                    o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
+                  .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
 
 
 
-                    </li>
-                </ul>
-
-                                                    );
-
-
-
-
-       columns.Add(r => r.ImageState
-       )
-   .Titled(AdminResource.Images)
-   .Encoded(false)
-   .Sanitized(false)
-           .Css("smallGridColumn")
-   .SetWidth(30)
-   .RenderValueAs(o =>
-@<ul>
-    <li>
-        @Html.Raw(String.Format("<div>Image State</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
-
-
-
-    </li>
-    <li>
-        @Html.Partial("pGridImageMainPage", o)
-    </li>
-</ul>
-       );
+           columns.Add(r => r.ImageState
+           )
+       .Titled(AdminResource.Images)
+       .Encoded(false)
+       .Sanitized(false)
+               .Css("smallGridColumn")
+       .SetWidth(30)
+       .RenderValueAs(o => GridImageColumn(o, controllerName));
 
 
 
@@ -246,6 +186,70 @@ window.location='/admin/products/index/'+e.id;
 
     </div>
 </div>
+@helper GridImageActiveColumn(Product o, String controllerName)
+{
+    <ul>
+        <li>
+            @Html.Raw(String.Format("<div>Active</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
+                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive))
+
+
+        </li>
+        <li>
+            @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
+                                                    o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
+
+
+
+        </li>
+    </ul>
+
+}
+@helper GridImageColumn(Product o, String controllerName)
+{
+    <ul>
+        <li>
+            @Html.Raw(String.Format("<div>Image State</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
+
+        </li>
+        <li>
+            @Html.Partial("pGridImageMainPage", o)
+        </li>
+    </ul>
+
+}
+@helper GridToolsColumn(Product d, String controllerName)
+{
+
+    <div class="gridToolBox">
+        <span>
+            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
+        </span>
+        <span>
+            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
+        </span>
+        <span>
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+        </span>
+        <span>
+            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default   glyphicon glyphicon-plus" })
+        </span>
+        @if (UserRoleHelper.IsDeletedEnableRoles())
+        {
+            <span>
+                @Html.ActionLink(" ", "Delete", controllerName,
+                           new { id = d.Id },
+                          new { @class = "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" })
+
+            </span>
+        }
+    </div>
+
+}
+
+
+
 
 @section Scripts{
     <script>

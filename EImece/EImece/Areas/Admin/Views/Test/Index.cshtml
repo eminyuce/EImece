@@ -6,24 +6,27 @@
 
 <h2>Index</h2>
 
-<div ng-controller="ProductCategoriesTreeController as treeView" class="row" style="padding:20px;">
+ 
 
-    <div class="col-md-3">
-        <div data-angular-treeview="true"
-             data-tree-id="ngTree"
-             data-tree-model="ProductCategoryList"
-             data-node-id="Id"
-             data-ng-click="selectNode(ngTree.currentNode.Id)"
-             data-node-label="Name"
-             data-node-children="Childrens">
-        </div>
-    </div>
-    <input type="text" value="" id="selectedTreeId" />
-    <div class="col-md-9">
-        <div ng-controller="BindAngularDirectiveCtrl as showCase">
-            <p class="text-danger"><strong>{{ showCase.message }}</strong></p>
-            <br>
-            <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>
-        </div>
-    </div>
+<div class="gridToolBox">
+    <span>
+        <input gridkey-id="1187" class="gridCheckboxes" name="checkboxGrid" type="checkbox">
+
+    </span>
+    <span>
+        <a class="gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " href="/admin/products/media/1187"> </a>
+    </span>
+    <span>
+        <a class="gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " href="/admin/products/saveoredit/1187"> </a>
+    </span>
+    <span>
+        <a class="gridBtn btn  btn-default   glyphicon glyphicon-plus" href="/admin/products/saveoreditproductspecs/1187"> </a>
+
+
+    </span>
+    <span>
+        <a class="gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" href="/admin/products/delete/1187"> </a>
+
+    </span>
+
 </div>
