@@ -248,7 +248,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult ExportExcel()
         {
-            var products = ProductService.GetAdminPageList(0, "", CurrentLanguage);
+            var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
             DataTable dt = new DataTable();
             dt.TableName = "products";
 

@@ -28,7 +28,7 @@
     @Styles.Render("~/Content/themes/base/css")
     <link href="~/Content/SharkDev.TreeView.css" rel="stylesheet" />
     <script src="~/Scripts/SharkDev.treeView.js"></script>
-    <script src="~/Scripts/adminEimece.js?v=1"></script>
+    <script src="~/Scripts/adminEimece.js?v=2"></script>
     <script src="~/Scripts/gridmvc.js"></script>
     <link href="~/Content/Gridmvc.css" rel="stylesheet" />
 
@@ -153,8 +153,8 @@
                                     <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
                                     <li>@Html.ActionLink("Web Site Logo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
                                     <li>@Html.ActionLink("Privacy Policy", "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
-                                        <li>@Html.ActionLink("Terms & Conditions", "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
-                                                <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
+                                    <li>@Html.ActionLink("Terms & Conditions", "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
+                                    <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
                                 }
 
                             </ul>

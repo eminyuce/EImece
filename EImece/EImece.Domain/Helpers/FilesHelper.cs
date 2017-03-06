@@ -215,7 +215,7 @@ namespace EImece.Domain.Helpers
         public void UploadAndShowResults(HttpContextBase ContentBase, List<ViewDataUploadFilesResult> resultList)
         {
             var httpRequest = ContentBase.Request;
-           // System.Diagnostics.Debug.WriteLine(Directory.Exists(tempPath));
+            // System.Diagnostics.Debug.WriteLine(Directory.Exists(tempPath));
 
             String fullPath = Path.Combine(StorageRoot);
             //Directory.CreateDirectory(fullPath);
@@ -238,7 +238,7 @@ namespace EImece.Domain.Helpers
                 else
                 {
 
-                 //   UploadPartialFile(headers["X-File-Name"], ContentBase, resultList);
+                    //   UploadPartialFile(headers["X-File-Name"], ContentBase, resultList);
                 }
             }
         }
@@ -333,7 +333,7 @@ namespace EImece.Domain.Helpers
         //    statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext));
 
         //    var k = UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext);
-     
+
         //    statuses.Add(k);
 
         //}
@@ -420,10 +420,15 @@ namespace EImece.Domain.Helpers
         public void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
             int height = 0,
             int width = 0,
-            EImeceImageType imageType = EImeceImageType.NONE, BaseContent baseContent = null)
+            EImeceImageType imageType = EImeceImageType.NONE,
+            BaseContent baseContent = null)
         {
             if (httpPostedFileBase != null)
             {
+                if (baseContent.MainImageId.HasValue && baseContent.MainImageId.Value > 0)
+                {
+                    FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
+                }
                 var result = SaveImageByte(width, height, httpPostedFileBase);
 
                 var fileStorage = new FileStorage();
@@ -561,6 +566,11 @@ namespace EImece.Domain.Helpers
                     }
                 }
 
+            }
+            else
+            {
+                fileHash = "Image Extension is not CORRECT:" + file.FileName;
+                Logger.Error("Image Extension is not CORRECT:"+ file.FileName);
             }
 
             return new Tuple<string, int, int, int, string, string, string>(newFileName, width, height, imageSize, contentType, fileName, fileHash);
@@ -887,7 +897,7 @@ namespace EImece.Domain.Helpers
 
         public static bool IsImage(string ext)
         {
-            return ext == ".gif" || ext == ".jpg" || ext == ".png" || ext == ".bmp" || ext == ".tiff" || ext == ".jpe";
+            return ext == ".gif" || ext == ".jpg" || ext == ".png" || ext == ".bmp" || ext == ".tiff" || ext == ".jpe" || ext == ".jpeg";
         }
         /// <summary>
         /// Determines if a file is a known image type by checking the extension.
@@ -897,9 +907,7 @@ namespace EImece.Domain.Helpers
         public static bool IsImageByFileName(string fileName)
         {
             string ext = Path.GetExtension(fileName).ToLower();
-            string types = "|.png|.gif|.jpg|.jpeg|.bmp|.tiff|";
-
-            return types.IndexOf("|" + ext + "|") >= 0;
+            return IsImage(ext);
         }
         private string EncodeFile(string fileName)
         {

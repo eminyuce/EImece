@@ -60,7 +60,7 @@ namespace EImece.Domain.Repositories
             search = search.ToStr().ToLower().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-          
+
                 products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search) || r.ProductCategory.Name.ToLower().Contains(search));
             }
             if (categoryId > 0)
@@ -69,7 +69,8 @@ namespace EImece.Domain.Repositories
             }
             else
             {
-                if (String.IsNullOrEmpty(search))
+                // CategoryId is -1 for excel exporting.
+                if (String.IsNullOrEmpty(search) && categoryId != -1)
                 {
                     products = products.Take(1000);
                 }
@@ -105,12 +106,12 @@ namespace EImece.Domain.Repositories
             return items;
         }
 
-        public IEnumerable<Product> GetData(out int totalRecords, 
+        public IEnumerable<Product> GetData(out int totalRecords,
             string globalSearch,
             String name,
             int? limitOffset,
-            int? limitRowCount, 
-            string orderBy, 
+            int? limitRowCount,
+            string orderBy,
             bool desc)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -121,7 +122,7 @@ namespace EImece.Domain.Repositories
             {
                 query = query.Where(p => p.Name.Contains(name.ToLower()));
             }
-             
+
 
             if (!String.IsNullOrWhiteSpace(globalSearch))
             {
@@ -152,7 +153,7 @@ namespace EImece.Domain.Repositories
                         else
                             query = query.OrderByDescending(p => p.Id);
                         break;
-                    
+
                 }
             }
 
