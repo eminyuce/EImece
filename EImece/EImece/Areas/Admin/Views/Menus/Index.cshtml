@@ -27,13 +27,13 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
-   
+
 
 }
 
 <h2>Menu</h2>
 
-<div ng-controller="MenusTreeController" class="row" style="padding:20px;">
+<div  class="row" style="padding:20px;">
 
     <div class="col-md-2">
 
@@ -41,7 +41,7 @@
    {
        settings.Id = "treeViewContainer";
        settings.Header.Expanded = true;
-       settings.ClientHandlers.ContentSelect = "function (e) { console.log(e); }";
+       settings.ClientHandlers.ContentSelect = "function (e) { console.log(e);  window.location='menus/saveoredit/'+e.id; }";
        //settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
        settings.Height = 300;
        settings.Width = 270;
@@ -53,7 +53,7 @@
 
     </div>
     <div class="col-md-10">
-        @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-link" })
+        @Html.ActionLink(AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-link" })
 
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -69,136 +69,73 @@
         <div class="panel panel-primary">
             @Html.Partial("pGridDropDown", baseList)
             @Html.Grid(contents).Named(gridName).Columns(columns =>
-                       {
+       {
 
-                           columns.Add().Encoded(false).
-                                   Sanitized(false).
-                                   SetWidth(10).
-                                   RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", o.Id));
-
-                           columns.Add(o => o.Id, true);
-
-                           columns.Add()
-                                  .Encoded(false)
-                                  .Sanitized(false)
-                                  .SetWidth(30)
-                                  .RenderValueAs(d =>
-                                @<b>
-                                    @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
-                                </b>);
-
-                       columns.Add()
-                                      .Encoded(false)
-                                      .Sanitized(false)
-                                      .SetWidth(30)
-                                      .RenderValueAs(d =>
-                                    @<b>
-                                        @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
-                                    </b>);
-
-                       if (UserRoleHelper.IsDeletedEnableRoles())
-                       {
-                           columns.Add()
-                                                               .Encoded(false)
-                                                               .Sanitized(false)
-                                                               .SetWidth(30)
-                                                               .RenderValueAs(d =>
-
-                                                            @<b>
-
-
-                                                                @if (menuTreeNodeList.Any(r => r.Id == d.Id))
-                                                                {
-                                                                    @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
-                                                                }
-                                                                else
-                                                                {
-                                                                    @String.Format("No Delete")
-                                                                }
-
-                                                            </b>);
-                       }
-
-
-
-                       columns.Add(c => c.Name)
-                                        .Titled(AdminResource.Name)
-                                       .Filterable(true)
-                                        .Encoded(false)
-                                         .Sanitized(false)
-                                   .RenderValueAs(d =>
-                                @<b>
-                                    @{
-
-                                        var p = d.MenuLink.Split("_".ToCharArray());
-                                        var parts = p.First().Split("-".ToCharArray());
-                                        var action = parts[1];
-                                        var controller = parts[0];
-                                        String mid = "";
-                                        mid = p.Last();
-
-                                        if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-                                        {
-                                            @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
-                                        }
-                                        else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                                            && action.Equals("category", StringComparison.InvariantCultureIgnoreCase))
-                                        {
-                                            @Html.ActionLink(d.Name, action, controller, new { area = "",  id = mid  }, new { @class = "btn btn-link", @target = "_blank" })
-                                        }
-                                        else
-                                        {
-                                            @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
-                                        }
-
-                                    }
-
-                                </b>);
-
-
-                           columns.Add(o => o.Position)
-                              .Encoded(false).
-                                   Sanitized(false).
-                                   SetWidth(10).
-                                   RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-                           columns.Add(o => o.IsActive)
-                                      .Titled(AdminResource.State)
-                                  .Sortable(true)
-                                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                                   Sanitized(false)
-                                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
-
-                           columns.Add(o => o.ImageState)
-                                      .Titled(AdminResource.ImageState)
-                                  .Sortable(true)
-                                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                                   Sanitized(false)
-                                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
+           columns.Add(o => o.Id, true);
 
 
 
 
-                           columns.Add(o => o.UpdatedDate)
-                                      .Titled(AdminResource.UpdatedDate)
-                                  .Sortable(true)
-                                  .Css("gridDateClass")
-                                  .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
-                                  .SortInitialDirection(GridSortDirection.Descending);
-
-                           columns.Add()
-                           .Titled(AdminResource.Images)
-                       .Encoded(false)
-                       .Sanitized(false)
-
-                       .SetWidth(30)
-                       .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+           columns.Add()
+               .Encoded(false)
+               .Sanitized(false)
+              .SetWidth("18%")
+             .RenderValueAs(d => GridToolsColumn(d, menuTreeNodeList, controllerName));
 
 
 
-                       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+
+           columns.Add(c => c.Name)
+                            .Titled(AdminResource.Name)
+                           .Filterable(true)
+                            .Encoded(false)
+                             .Sanitized(false)
+                       .RenderValueAs(d => GridDetailLink(d, controllerName) );
+
+
+           columns.Add(o => o.Position)
+              .Encoded(false).
+                   Sanitized(false).
+                   SetWidth(10).
+                   RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+
+           columns.Add(o => o.IsActive)
+                      .Titled(AdminResource.State)
+                  .Sortable(true)
+                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                   Sanitized(false)
+                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+
+           columns.Add(o => o.ImageState)
+                      .Titled(AdminResource.ImageState)
+                  .Sortable(true)
+                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                   Sanitized(false)
+                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
+                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
+
+
+
+
+           columns.Add(o => o.UpdatedDate)
+                      .Titled(AdminResource.UpdatedDate)
+                  .Sortable(true)
+                  .Css("gridDateClass")
+                  .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
+                  .SortInitialDirection(GridSortDirection.Descending);
+
+           columns.Add()
+           .Titled(AdminResource.Images)
+       .Encoded(false)
+       .Sanitized(false)
+
+       .SetWidth(30)
+       .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+
+
+
+       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
         </div>
 
@@ -208,3 +145,68 @@
 
 
 </div>
+@helper GridDetailLink(Menu d, String controllerName)
+{
+
+    <b>
+        @{
+
+            var p = d.MenuLink.Split("_".ToCharArray());
+            var parts = p.First().Split("-".ToCharArray());
+            var action = parts[1];
+            var controller = parts[0];
+            String mid = "";
+            mid = p.Last();
+
+            if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+            {
+                @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+            }
+            else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                && action.Equals("category", StringComparison.InvariantCultureIgnoreCase))
+            {
+                @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
+            }
+            else
+            {
+                @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
+            }
+
+        }
+
+    </b>
+
+}
+@helper GridToolsColumn(Menu d, List<Menu> menuTreeNodeList, String controllerName)
+{
+
+    <div class="gridToolBox">
+        <span>
+            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
+        </span>
+        <span>
+            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
+        </span>
+        <span>
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+        </span>
+
+        @if (UserRoleHelper.IsDeletedEnableRoles())
+        {
+
+         if (menuTreeNodeList.Any(r => r.Id == d.Id))
+            {
+                <span>
+                    @Html.ActionLink(" ", "Delete", controllerName,
+                           new { id = d.Id },
+                          new { @class = "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" })
+
+                </span>
+            }
+            else
+            {
+                @String.Format("No Delete")
+            }
+        }
+    </div>
+}

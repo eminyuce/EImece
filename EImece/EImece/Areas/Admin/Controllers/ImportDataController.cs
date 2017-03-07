@@ -21,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
     public class ImportDataController : BaseAdminController
     {
         // GET: Admin/ImportData
-       
+
         public ActionResult Index()
         {
             String path = "~/App_Data/";
@@ -50,19 +50,24 @@ namespace EImece.Areas.Admin.Controllers
             String path = "~/App_Data/";
             var pathName = Server.MapPath(path + "/" + id);
             DataTable dt = ExcelHelper.Excel_To_DataTable(pathName, 0);
+            ViewBag.PathName = id;
             return View(dt);
         }
-
-        public ActionResult DisplayExcel(String id, String selectedTable)
+        [HttpPost]
+        public ActionResult DisplayExcel(String pathName, String selectedTable)
         {
             String path = "~/App_Data/";
-            var pathName = Server.MapPath(path + id);
+            pathName = Server.MapPath(path + pathName);
 
             DataTable dt = ExcelHelper.Excel_To_DataTable(pathName, 0);
-            if (selectedTable.Equals("ProductCategories"))
+            if (selectedTable.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
             {
-                List<ProductCategory> companyList = dt.ConvertToList<ProductCategory>();
-
+                List<ProductCategory> items = dt.ConvertToList<ProductCategory>().Where(r => !String.IsNullOrEmpty(r.Name)).ToList();
+                foreach (var item in items)
+                {
+                    item.Lang = CurrentLanguage;
+                    ProductCategoryService.SaveOrEditEntity(item);
+                }
             }
             return RedirectToAction("Index");
         }

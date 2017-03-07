@@ -3,7 +3,36 @@
 @{
     ViewBag.Title = "Contact2";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var pathName=(String) ViewBag.PathName;
 }
 
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "ProductCategories",
+        Value = "ProductCategories"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Products",
+        Value = "Products",
+        Selected = true
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Menus",
+        Value = "Menus"
+    });
+}
+@using (Html.BeginForm("DisplayExcel","ImportData"))
+{
+    <input type="hidden" name="pathName" value="@pathName" />
+    @Html.DropDownList("selectedTable", listItems, "-- Select Tables --")
+
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+}
 
 @Html.DisplayFor(r => Model)
