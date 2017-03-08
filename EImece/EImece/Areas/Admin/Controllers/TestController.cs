@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using System.Linq.Dynamic;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Helpers;
+using EImece.Domain.Repositories;
+using Ninject;
+using System.Threading.Tasks;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -29,6 +32,18 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index3()
         {
             return View();
+        }
+
+        [Inject]
+        public MigrationRepository MigrationRepository { get;set;}
+
+        public ActionResult MigrationData()
+        {
+            String siteUrl = "http://atlantiscam.com";
+            MigrationRepository.SiteUrl = siteUrl;
+            MigrationRepository.MigrateImages(CurrentLanguage);
+
+            return Content("Done");
         }
         public ActionResult getData(int id=0)
         {

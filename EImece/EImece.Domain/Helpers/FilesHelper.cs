@@ -416,7 +416,35 @@ namespace EImece.Domain.Helpers
             }
             return Filess;
         }
+        public FileStorage SaveFileFromByteArray(byte [] imageByte,String fileName, String contentType,
+            int height = 0,
+            int width = 0,
+            EImeceImageType imageType = EImeceImageType.NONE, int ? mainImageId=null)
+        {
+                if (mainImageId.HasValue && mainImageId.Value > 0)
+                {
+                    FileStorageService.DeleteFileStorage(mainImageId.Value);
+                }
+                var result = SaveImageByte(width, height, fileName, contentType, imageByte);
 
+                var fileStorage = new FileStorage();
+                fileStorage.Name = result.Item6;
+                fileStorage.FileName = result.Item1;
+                fileStorage.Width = result.Item2;
+                fileStorage.Height = result.Item3;
+                fileStorage.MimeType = result.Item5;
+                fileStorage.CreatedDate = DateTime.Now;
+                fileStorage.UpdatedDate = DateTime.Now;
+                fileStorage.IsActive = true;
+                fileStorage.Position = 1;
+                fileStorage.FileSize = result.Item4;
+                fileStorage.Type = imageType.ToStr();
+                fileStorage.Lang = CurrentLanguage;
+                fileStorage.EntityHash = result.Item7;
+                fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
+                FileStorageService.SaveOrEditEntity(fileStorage);
+              return fileStorage;
+        }
         public void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
             int height = 0,
             int width = 0,
@@ -511,21 +539,19 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
         }
-        public Tuple<string, int, int, int, string, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
+        public Tuple<string, int, int, int, string, string, string> SaveImageByte(int width, int height, String fileName, String contentType, byte [] fileByte)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;
 
-            String fileName = "";
             String fileHash = "";
-            String contentType = file.ContentType;
 
-            fileName = Path.GetFileName(file.FileName);
+            fileName = Path.GetFileName(fileName);
             var ext = Path.GetExtension(fileName);
 
             if (IsImage(ext))
             {
-                var fileByte = GeneralHelper.ReadFully(file.InputStream);
+                
                 var fileNames = GetFileNames(fileName);
                 fullPath = fileNames.Item1;
                 candidatePathThb = fileNames.Item2;
@@ -569,12 +595,17 @@ namespace EImece.Domain.Helpers
             }
             else
             {
-                fileHash = "Image Extension is not CORRECT:" + file.FileName;
-                Logger.Error("Image Extension is not CORRECT:"+ file.FileName);
+                fileHash = "Image Extension is not CORRECT:" + fileName;
+                Logger.Error("Image Extension is not CORRECT:" + fileName);
             }
 
             return new Tuple<string, int, int, int, string, string, string>(newFileName, width, height, imageSize, contentType, fileName, fileHash);
 
+        }
+        public Tuple<string, int, int, int, string, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
+        {
+            var fileByte = GeneralHelper.ReadFully(file.InputStream);
+            return SaveImageByte(width, height, file.FileName, file.ContentType, fileByte);
         }
 
         public ImageFormat GetImageFormat(String extension)

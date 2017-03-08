@@ -150,6 +150,12 @@ QUITE
             Console.WriteLine(m);
         }
         [TestMethod]
+        public void Migration()
+        {
+          
+
+        }
+        [TestMethod]
         public void TestAllRepository()
         {
             var dbContext = new EImeceContext(ConnectionString);

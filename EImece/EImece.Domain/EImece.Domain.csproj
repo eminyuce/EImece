@@ -134,6 +134,8 @@
     <Compile Include="Caching\CacheProvider.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
     <Compile Include="Caching\MemoryCacheProvider.cs" />
+    <Compile Include="DbContext\DatabaseUtility.cs" />
+    <Compile Include="DbContext\DbMigration.cs" />
     <Compile Include="DbContext\EImeceContext.cs" />
     <Compile Include="DbContext\IEImeceContext.cs" />
     <Compile Include="Entities\BaseContent.cs" />
@@ -216,6 +218,9 @@
     <Compile Include="Models\HelperModels\OrderingItem.cs" />
     <Compile Include="Models\HelperModels\PagedResult.cs" />
     <Compile Include="Models\HelperModels\ViewDataUploadFilesResult.cs" />
+    <Compile Include="Models\MigrationModels\EntityImage.cs" />
+    <Compile Include="Models\MigrationModels\EntityMainImage.cs" />
+    <Compile Include="Models\MigrationModels\EntityMediaFile.cs" />
     <Compile Include="Repositories\BaseContentRepository.cs" />
     <Compile Include="Repositories\BaseEntityRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
@@ -251,6 +256,7 @@
     <Compile Include="Repositories\MainPageImageRepository.cs" />
     <Compile Include="Repositories\MenuFileRepository.cs" />
     <Compile Include="Repositories\MenuRepository.cs" />
+    <Compile Include="Repositories\MigrationRepository.cs" />
     <Compile Include="Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Repositories\ProductFileRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />

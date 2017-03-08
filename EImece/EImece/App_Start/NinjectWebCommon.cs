@@ -128,6 +128,7 @@ namespace EImece.App_Start
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
 
+            kernel.Bind<MigrationRepository>().ToSelf().InRequestScope();
 
             kernel.Bind<XmlEditorHelper>().ToSelf().InRequestScope();
 

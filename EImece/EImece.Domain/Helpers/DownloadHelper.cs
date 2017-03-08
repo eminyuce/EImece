@@ -21,6 +21,7 @@ namespace EImece.Domain.Helpers
             }
 
             request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            request.Timeout = 99999;
             response = (System.Net.HttpWebResponse)request.GetResponse();
 
             if (request.HaveResponse)

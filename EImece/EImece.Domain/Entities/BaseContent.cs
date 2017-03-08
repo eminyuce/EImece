@@ -20,9 +20,10 @@ namespace EImece.Domain.Entities
         public string MetaKeywords { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainImageId))]
+        [ForeignKey("MainImage")]
         public int? MainImageId { get; set; }
 
-        public  FileStorage MainImage { get; set; }
+        public virtual FileStorage MainImage { get; set; }
 
         [NotMapped]
         public int ImageHeight { get; set; }
