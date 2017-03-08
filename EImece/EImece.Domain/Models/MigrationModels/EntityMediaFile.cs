@@ -18,5 +18,10 @@ namespace EImece.Domain.Models.MigrationModels
         public string File_Name { get; set; }
         public string File_Format { get; set; }
 
+
+        public override string ToString()
+        {
+            return "Name:" + Name + " CategoryName:" + CategoryName + " File_Path:" + File_Path;
+        }
     }
 }

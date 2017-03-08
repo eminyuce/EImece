@@ -69,17 +69,17 @@ namespace EImece.Domain.Repositories
             {
                 try
                 {
-                 
+
                     if (entityMainImage.EntityImageType.Equals("ProductMainImage", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        FileStorage image = InsertImage(entityMainImage.ImagePath,entityMainImage.Name);
+                        FileStorage image = InsertImage(entityMainImage.ImagePath, entityMainImage.Name);
                         FileStorage image2 = InsertImage(entityMainImage.ImagePath2, entityMainImage.Name);
-                        if (image != null&& image2 != null)
+                        if (image != null && image2 != null)
                         {
-
-                            object[] parameters = { currentLanguage, entityMainImage.Name.Trim().ToLower(), image.Id, image2.Id, image2.FileName, entityMainImage.CategoryName.Trim().ToLower(), };
-                            this.ProductRepository.GetDbContext().Database.ExecuteSqlCommand(@"exec InsertProductFiles
+                            object[] parameters = { currentLanguage, entityMainImage.Name, image.Id, image2.Id, image2.FileName, entityMainImage.CategoryName, };
+                            var result = this.ProductRepository.GetDbContext().Database.ExecuteSqlCommand(@"exec InsertProductFiles
                                 @Lang=@p0,@Name=@p1,@fileStorageId=@p2,@MainProductImageId=@p3,@fileName=@p4,@CategoryName=@p5", parameters);
+                            Logger.Info("InsertProductFiles:" + result + " parameters:" + String.Join(", ", parameters));
                         }
                     }
                 }
@@ -91,8 +91,32 @@ namespace EImece.Domain.Repositories
             }
 
 
-            foreach (var entityMainImage in images.EntityMediaFiles)
+            foreach (var entityMediaImage in images.EntityMediaFiles)
             {
+                try
+                {
+
+                    if (entityMediaImage.Mod.Equals("product", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (FilesHelper.IsImage(entityMediaImage.File_Format))
+                        {
+                            FileStorage image = InsertImage(entityMediaImage.File_Path, entityMediaImage.Name);
+                            if (image != null)
+                            {
+                                object[] parameters = { currentLanguage, entityMediaImage.Name, image.Id, 1, image.FileName, entityMediaImage.CategoryName, 1 };
+                                var result = this.ProductRepository.GetDbContext().Database.ExecuteSqlCommand(@"exec InsertProductFiles
+                                @Lang=@p0,@Name=@p1,@fileStorageId=@p2,@MainProductImageId=@p3,@fileName=@p4,@CategoryName=@p5, @SkipMainImage=@p6", parameters);
+                                Logger.Info("Media InsertProductFiles:" + result + " parameters:" + String.Join(", ", parameters));
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, ex.Message + " entityMainImage:" + entityMediaImage);
+
+                }
 
             }
 
@@ -104,19 +128,28 @@ namespace EImece.Domain.Repositories
         private FileStorage InsertImage(String imagePath, String name)
         {
             string imageFullPath = String.Format("{0}/{1}", this.SiteUrl, imagePath.Replace("thb", "").Replace("~/", ""));
-            var imageDictionary = new Dictionary<String, String>();
-            var imageBytes = DownloadHelper.GetImageFromUrl(imageFullPath, imageDictionary);
-            var imageBitmap = this.FilesHelper.ByteArrayToBitmap(imageBytes);
-            String ext = imagePath.Substring(imagePath.Length - 4);
-            string fileName = GeneralHelper.GetUrlSeoString(name) + ext;
-            string mimeType = MimeMapping.GetMimeMapping(fileName);
-            FileStorage image = this.FilesHelper.SaveFileFromByteArray(imageBytes,
-                fileName,
-                mimeType,
-                imageBitmap.Width,
-                imageBitmap.Height,
-                EImeceImageType.ProductMainImage, null);
-            return image;
+            try
+            {
+                var imageDictionary = new Dictionary<String, String>();
+                var imageBytes = DownloadHelper.GetImageFromUrl(imageFullPath, imageDictionary);
+                var imageBitmap = this.FilesHelper.ByteArrayToBitmap(imageBytes);
+                String ext = imagePath.Substring(imagePath.Length - 4);
+                string fileName = GeneralHelper.GetUrlSeoString(name) + ext;
+                string mimeType = MimeMapping.GetMimeMapping(fileName);
+                FileStorage image = this.FilesHelper.SaveFileFromByteArray(imageBytes,
+                    fileName,
+                    mimeType,
+                    imageBitmap.Width,
+                    imageBitmap.Height,
+                    EImeceImageType.ProductMainImage, null);
+                return image;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " imageFullPath: " + imageFullPath + " name:" + name);
+                return null;
+            }
+
         }
     }
 }
