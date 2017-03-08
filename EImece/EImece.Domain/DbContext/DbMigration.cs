@@ -46,7 +46,7 @@ namespace EImece.Domain.DbContext
         private static EntityMediaFile GetEntityMediaFileFromDataRow(DataRow dr)
         {
             var item = new EntityMediaFile();
-
+            item.CategoryName = dr["CategoryName"].ToStr();
             item.File_Type = dr["File_Type"].ToStr();
             item.Modul_Name = dr["Modul_Name"].ToStr();
             item.Mod = dr["Mod"].ToStr();
@@ -66,7 +66,7 @@ namespace EImece.Domain.DbContext
             item.ImagePath = dr["ImagePath"].ToStr();
             item.ImagePath2 = dr["ImagePath2"].ToStr();
             item.Name = dr["Name"].ToStr();
-
+            item.CategoryName = dr["CategoryName"].ToStr();
             return item;
         }
     }

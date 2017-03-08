@@ -8,6 +8,7 @@ namespace EImece.Domain.Models.MigrationModels
 {
     public class EntityMediaFile
     {
+        public string CategoryName { get; set; }
         public string File_Type { get; set; }
         public string Modul_Name { get; set; }
         public string Mod   { get; set; }
