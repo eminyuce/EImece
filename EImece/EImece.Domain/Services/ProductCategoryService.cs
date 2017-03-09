@@ -171,5 +171,16 @@ namespace EImece.Domain.Services
            
             return null;
         }
+
+        public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
+        {
+
+            var result = new ProductCategoryViewModel();
+
+            result.ProductCategory = GetProductCategory(categoryId);
+            var tree = BuildTree(true, result.ProductCategory.Lang);
+            result.ProductCategoryTree = tree;
+            return result;
+        }
     }
 }

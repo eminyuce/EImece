@@ -21,17 +21,19 @@ namespace EImece.Domain.Repositories
         }
 
         //Recursion method for recursively get all child nodes
-        private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current)
+        private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
         {
             //get child of current item
             var childs = list.Where(a => a.ProductCategory.ParentId == current.ProductCategory.Id).OrderBy(r => r.ProductCategory.Position).ToList();
             current.Childrens = new List<ProductCategoryTreeModel>();
+            level = level + 1;
+            childs.ForEach(r => r.TreeLevel = level);
             current.Childrens.AddRange(childs);
             foreach (var i in childs)
             {
                 i.ProductCategory.Parent = current.ProductCategory;
                 i.Parent = current;
-                GetTreeview(list, i);
+                GetTreeview(list, i, level);
             }
         }
 
@@ -45,15 +47,18 @@ namespace EImece.Domain.Repositories
             pcList = pcList.Where(r => r.Lang == language);
 
             var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Count() });
-            List<ProductCategoryTreeModel> list = productCategories.Select(r=> new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount  } ).ToList();
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
+            int level = 1;
             //find top levels items
             var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
+            topLevels.ForEach(r => r.TreeLevel = level);
             returnList.AddRange(topLevels);
+
             foreach (var i in topLevels)
             {
-                GetTreeview(list, i);
+                GetTreeview(list, i, level);
             }
             return returnList;
         }
@@ -133,6 +138,6 @@ namespace EImece.Domain.Repositories
             return result.ToList();
         }
 
-        
+
     }
 }

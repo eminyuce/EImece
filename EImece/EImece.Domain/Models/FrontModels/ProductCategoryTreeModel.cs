@@ -9,6 +9,7 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductCategoryTreeModel
     {
+        public int TreeLevel { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public int ProductCount { get; set; }
 

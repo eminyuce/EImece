@@ -1,28 +1,40 @@
 ﻿@model EImece.Domain.Entities.Product
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
+@using EImece.Domain;
 @{
     var productFiles = Model.ProductFiles;
     var product = Model;
     var categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name);
-
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
 }
-<div class="main-page-product">
-    <div class="panel panel-default">
-        <a href="@product.GetDetailPageUrl("detail", "products",categoryName)">
-            @Html.Raw(product.GetCroppedImageTag(300, 300))
-        </a>
-     
-        <div class="panel-body">            
-            <h4>@Html.ActionLink(product.Name, "detail", "products", new { categoryName = categoryName, id = product.GetSeoUrl() }, null)</h4>
-        </div>
-        <div class="panel-footer">
-            <strong> @product.ProductCategory.Name</strong>
-      
-        </div>
-        <p>
-            @product.GetSeoDescription(300)
-        </p>
-    </div>
-</div>
+
  
+
+<div class="four shop columns">
+    <figure class="product">
+        <div class="mediaholder">
+            <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+                @Html.Raw(product.GetCroppedImageTag(300, 300))
+                <div class="cover">
+                    @Html.Raw(product.GetCroppedImageTag(300, 300))
+                </div>
+            </a>
+        </div>
+        <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+            <section>
+
+                <h5>@product.Name
+                    @if (isUserAuthenticated)
+                    {
+                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { })
+                    }
+                </h5>
+                <span class="product-code">
+                    @product.ProductCode
+                </span>
+
+            </section>
+        </a>
+    </figure>
+</div>

@@ -59,13 +59,14 @@ namespace EImece.Domain.Repositories
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
             var menus = GetAllIncluding(includeProperties.ToArray());
-            menus = menus.Where(match);
-            search=search.ToStr().ToLower().Trim();
+         
+            search=search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-                menus = menus.Where(whereLambda);
+                match = match.And(whereLambda);
             }
-            var result = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+            
+            var result = menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             return result;
         }
     }

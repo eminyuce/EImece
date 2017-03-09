@@ -59,36 +59,32 @@
                     <div class="navbar-text">
                         @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
                         <p style="font-weight:bold;">@String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))</p>
-                      </div>
+                    </div>
                 </div>
-            
+
                 <div class="col-md-2">
                     <div class="navbar-text">
                         @if (listItems.Count() > 1)
                         {
                             @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
                         }
-                      
+
                     </div>
                 </div>
-             
+
                 <div class="col-md-3">
-                    <form class="navbar-form">
-                        <div class="input-group">
-                            @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new
-                            {
-                                @class = "navbar-form navbar-left",
-                                role = "search"
-                            }))
-                            {
+
+                        @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get,new { @class="navbar-form" }))
+                        {
+                            <div class="input-group">
                                 <div class="form-group">
                                     <input type="text" name="searchContent" value="@Request.QueryString["searchContent"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
                                 </div>
                                 <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                            </div>
+                        }
 
-                            }
-                        </div>
-                    </form>
+                  
                 </div>
                 <div class="col-md-1">
                     <div class="navbar-text text-right">
@@ -98,7 +94,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="navbar-text">
-                        @Html.ActionLink("Go To Home Page", "Index", "Home", new { area = "" }, new { @target = "_blank", @class = "btn btn-link", @style= " text-decoration: underline;" })
+                        @Html.ActionLink("Go To Home Page", "Index", "Home", new { area = "" }, new { @target = "_blank", @class = "btn btn-link", @style = " text-decoration: underline;" })
                     </div>
                 </div>
                 <div class="col-md-1">

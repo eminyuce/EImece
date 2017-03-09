@@ -101,7 +101,7 @@ namespace EImece.Domain.Helpers.Extensions
         }
         public static String GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
-            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
+            if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                 String imagePath = Settings.UrlBase + entity.MainImage.FileName;
                 if (isThump)
@@ -118,13 +118,13 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
+            if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                 imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
             }
             else
             {
-
+              //  imageTag = "Test";
             }
 
             return imageTag;

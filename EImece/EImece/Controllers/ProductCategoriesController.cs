@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Controllers
 {
@@ -21,9 +22,9 @@ namespace EImece.Controllers
         public ActionResult Category(String id)
         {
             var categoryId = id.GetId();
-     
-            var productCategory = ProductCategoryService.GetProductCategory(categoryId);
-            ViewBag.SeoId = productCategory.GetSeoUrl();
+
+            ProductCategoryViewModel productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
+            ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
             return View(productCategory);
         }
     }

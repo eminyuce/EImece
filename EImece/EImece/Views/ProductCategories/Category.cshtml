@@ -1,43 +1,54 @@
-﻿@model EImece.Domain.Entities.ProductCategory
+﻿@model EImece.Domain.Models.FrontModels.ProductCategoryViewModel
+@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
+@using Resources;
 @{
 
-    var category = Model;
-    var products = Model.Products;
+    ProductCategory category = Model.ProductCategory;
+    var products = category.Products.OrderBy(r=>r.Position).ThenByDescending(r=>r.UpdatedDate);
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated;
 }
 
-<h2>
-    @category.Name
-    @if (isUserAuthenticated)
-    {
-        @Html.ActionLink("edit", "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { })
-    }
-</h2>
+<div class="container">
+    <div class="four columns">
 
-@Html.Raw(category.GetCroppedImageTag(200, 200))
-
-
-@if (products != null)
-{
-    <div class="row">
-
-        @foreach (var p in products)
-        {
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                @Html.DisplayFor(modelItem => p, "MainPageProduct")
-                @*@foreach (var pt in p.ProductTags)
-                {
-                <div>
-                    @Html.ActionLink(pt.Tag.Name, "tag", "products", new { id = pt.Tag.GetSeoUrl() }, null)
-                </div>
-                }*@
+        <div class="widget margin-top-0">
+            <h3 class="headline"> @Resource.Products</h3><span class="line"></span><div class="clearfix">
             </div>
-          
+
+            @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
+
+
             
-        }
+
+            <div class="clearfix"></div>
+
+        </div>
+
     </div>
-}
+    @if (products != null)
+    {
+        <div class="twelve columns products">
+            <div class="widget margin-top-0">
+                <h3 class="headline">
+                    @category.Name
+                    @if (isUserAuthenticated)
+                    {
+                        @Html.ActionLink("edit", "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { })
+                    }
+
+                </h3>
+                <span class="line"></span>
+                <div class="clearfix">
+                </div>
+            </div>
+            @foreach (var p in products)
+            {
+                    @Html.DisplayFor(modelItem => p, "MainPageProduct")
+            }
+        </div>
+    }
+</div>
