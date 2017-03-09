@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Entities;
+using GenericRepository;
 
 namespace EImece.Controllers
 {
@@ -44,7 +46,7 @@ namespace EImece.Controllers
         {
             if (String.IsNullOrEmpty(search))
             {
-                return Content("No search key");
+                return RedirectToAction("BadRequest", "Error");
             }
             int pageIndex = 1;
             int pageSize = 20;

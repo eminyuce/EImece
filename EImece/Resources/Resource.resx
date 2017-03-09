@@ -171,6 +171,9 @@
   <data name="Products" xml:space="preserve">
     <value>ÜRÜNLERİMİZ</value>
   </data>
+  <data name="ProductSearchPageTitle" xml:space="preserve">
+    <value>Product Search Result for {0}</value>
+  </data>
   <data name="SearchProductButtonText" xml:space="preserve">
     <value>Araba</value>
   </data>
@@ -185,5 +188,14 @@
   </data>
   <data name="TermsAndConditions" xml:space="preserve">
     <value>Terms &amp; Conditions</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Ara</value>
+  </data>
+  <data name="SearchErrorMessage" xml:space="preserve">
+    <value>Lutfen birseyler yaziniz</value>
+  </data>
+  <data name="SearchRequiredErrorMessage" xml:space="preserve">
+    <value>Lutfen yaziniz</value>
   </data>
 </root>

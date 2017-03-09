@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Setting, bool>> whereLambda = r => r.SettingKey.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Setting, bool>> whereLambda = r => r.SettingKey.ToLower().Contains(search.Trim().ToLower()) || r.SettingValue.ToLower().Contains(search.Trim().ToLower());
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             return View(settings);

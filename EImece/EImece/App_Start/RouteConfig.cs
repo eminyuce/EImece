@@ -53,10 +53,15 @@ namespace EImece
                  defaults: new { controller = "home", action = "termsandconditions" },
                  namespaces: new[] { "EImece.Controllers" }
              );
-
+         routes.MapRoute(
+                   name: "getcaptcha",
+                   url: "images/getcaptcha",
+                   defaults: new { controller = "images", action = "getcaptcha" },
+                   namespaces: new[] { "EImece.Controllers" }
+               );
             routes.MapRoute(
                    name: "ImageResizing",
-                   url: "images/{companyName}/{imageSize}/{id}",
+                   url: "images/{imageSize}/{id}",
                    defaults: new { controller = "images", action = Settings.ImageActionName, id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );

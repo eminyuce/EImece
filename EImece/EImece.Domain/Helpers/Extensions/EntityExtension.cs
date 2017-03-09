@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,8 @@ namespace EImece.Domain.Helpers.Extensions
             items.ForEach(v => baseList.Add(v));
             return baseList;
         }
+        #region trimAllString
+
         public static void TrimAllStrings<T>(this T obj)
         {
             if (obj == null)
@@ -57,6 +60,9 @@ namespace EImece.Domain.Helpers.Extensions
                 }
             }
         }
+
+        #endregion
+
         public static String GetSeoUrl(this BaseEntity entity)
         {
             return String.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(entity.Name), entity.Id);
@@ -67,16 +73,29 @@ namespace EImece.Domain.Helpers.Extensions
         }
         public static String GetSeoDescription(this BaseContent entity, int length = 150)
         {
-            return string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
+            var result = string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
+            if (String.IsNullOrEmpty(result))
+            {
+                var SettingService = DependencyResolver.Current.GetService<ISettingService>();
+                result = SettingService.GetSettingByKey(Settings.SiteIndexMetaDescription).ToStr();
+            }
+            return result;
         }
         public static String GetSeoKeywords(this BaseContent entity, int length = 150)
         {
-            return string.Format("{0}", entity.MetaKeywords.ToStr(255));
+            var result = string.Format("{0}", entity.MetaKeywords.ToStr(255));
+            if (String.IsNullOrEmpty(result))
+            {
+                //TODO: Missing keywords.
+                var SettingService = DependencyResolver.Current.GetService<ISettingService>();
+                result = SettingService.GetSettingByKey(Settings.SiteIndexMetaKeywords).ToStr();
+            }
+            return result;
         }
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
+            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                 String imagePath = GetFullPathImageUrlFromFileSystem(entity, false);
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
@@ -90,7 +109,7 @@ namespace EImece.Domain.Helpers.Extensions
             String imageTag = "";
 
 
-            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.ImageState)
+            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                 String partThumb2 = GetFullPathImageUrlFromFileSystem(entity, true);
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
@@ -124,7 +143,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
             else
             {
-              //  imageTag = "Test";
+                //  imageTag = "Test";
             }
 
             return imageTag;
@@ -134,23 +153,33 @@ namespace EImece.Domain.Helpers.Extensions
             String imageTag = "";
 
             String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
-            imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
+            if (!String.IsNullOrEmpty(imagePath))
+            {
+                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
+            }
+      
 
             return imageTag;
         }
         public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            var companyName = Settings.CompanyNameForImage;
-            var imageSize = String.Format("w{0}h{1}", width, height);
-            var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(entity.Name), fileStorageId);
-            String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { companyName, imageSize, id = imageId });
-            return imagePath;
+            if (fileStorageId > 0)
+            {
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                var imageSize = String.Format("w{0}h{1}", width, height);
+                var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(entity.Name), fileStorageId);
+                String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { imageSize, id = imageId });
+                return imagePath;
+            }
+            else
+            {
+                return String.Empty;
+            }
+
         }
         public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            var companyName = Settings.CompanyNameForImage;
             var imageId = String.Format("{0}.jpg", fileStorage.Id);
             String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
             return imagePath;

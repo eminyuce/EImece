@@ -13,8 +13,15 @@ namespace EImece.Domain
 {
     public class Settings
     {
+
+        public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
+        public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
+        public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
+
+
         public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";
+        public const string CompanyName = "CompanyName";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
@@ -75,28 +82,7 @@ namespace EImece.Domain
 
             }
         }
-        public static string CompanyNameForImage
-        {
-            get
-            {
-                return CompanyName.ToAlphaNumericOnly();
-            }
-        }
-        public static string CompanyName
-        {
-            get
-            {
-                return GetConfigString("CompanyName", "eimece");
-            }
-        }
-
-        //public static string SiteName
-        //{
-        //    get
-        //    {
-        //        return GetConfigString("siteName", "Maritime Survey");
-        //    }
-        //}
+ 
 
         public static string Domain
         {

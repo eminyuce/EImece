@@ -12,6 +12,7 @@ namespace EImece.Domain.Models.FrontModels
         public List<Menu> Menus { get; set; }
         public List<ProductCategory> ProductCategories { get; set; }
         public Setting FooterLogo { get; set; }
+        public Setting CompanyName { get; set; }
         public Setting FooterDescription { get; set; }
         public Setting FooterEmailListDescription { get; set; }
     }

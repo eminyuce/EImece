@@ -2,14 +2,24 @@
 @using GenericRepository;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@using EImece.Domain.Helpers;
+
+
 @{
-    ViewBag.Title = "SearchProducts";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    String search = Model.Search;
+    ViewBag.Title = String.Format(Resource.ProductSearchPageTitle, search);
     PaginatedList<Product> products = Model.Products;
+    ViewBag.Description = String.Join(",", Model.Products.Select(r => r.Name)).ToStr(150);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 }
 
-<h2>SearchProducts</h2>
- 
+<h2>Search Products</h2>
+
 
 @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),

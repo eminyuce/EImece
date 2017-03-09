@@ -1,6 +1,7 @@
 ﻿@using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
 @model FooterViewModel
@@ -15,7 +16,7 @@
     <div class="four columns">
 
         @Html.Partial("_WebSiteLogo",
-       Model.FooterLogo,
+       new List<Setting>() { Model.FooterLogo, Model.CompanyName },
        new ViewDataDictionary(ViewData){
             {"isThumb","true"}})
 

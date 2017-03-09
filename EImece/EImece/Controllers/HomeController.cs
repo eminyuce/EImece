@@ -30,9 +30,9 @@ namespace EImece.Controllers
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey("SiteIndexMetaTitle").ToStr();
-            ViewBag.Description = SettingService.GetSettingByKey("SiteIndexMetaDescription").ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey("SiteIndexMetaKeywords").ToStr();
+            ViewBag.Title = SettingService.GetSettingByKey(Settings.SiteIndexMetaTitle).ToStr();
+            ViewBag.Description = SettingService.GetSettingByKey(Settings.SiteIndexMetaDescription).ToStr();
+            ViewBag.Keywords = SettingService.GetSettingByKey(Settings.SiteIndexMetaKeywords).ToStr();
 
             return View(mainPageModel);
         }
@@ -66,6 +66,7 @@ namespace EImece.Controllers
 
             return View();
         }
+        [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
 
@@ -134,7 +135,9 @@ namespace EImece.Controllers
         public ActionResult WebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
-            return PartialView("_WebSiteLogo", webSiteLogo);
+            var CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            var s = new List<Setting>() { webSiteLogo, CompanyName };
+            return PartialView("_WebSiteLogo", s);
         }
         [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult Footer()

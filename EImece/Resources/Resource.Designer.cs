@@ -223,6 +223,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product Search Result for {0}.
+        /// </summary>
+        public static string ProductSearchPageTitle {
+            get {
+                return ResourceManager.GetString("ProductSearchPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ara.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lutfen birseyler yaziniz.
+        /// </summary>
+        public static string SearchErrorMessage {
+            get {
+                return ResourceManager.GetString("SearchErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Araba.
         /// </summary>
         public static string SearchProductButtonText {
@@ -237,6 +264,15 @@ namespace Resources {
         public static string SearchProductTextBoxPlaceHolder {
             get {
                 return ResourceManager.GetString("SearchProductTextBoxPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lutfen yaziniz.
+        /// </summary>
+        public static string SearchRequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("SearchRequiredErrorMessage", resourceCulture);
             }
         }
         
