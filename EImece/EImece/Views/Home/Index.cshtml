@@ -12,7 +12,7 @@
 
     var latestStories = Model.LatestStories;
 
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
 <!-- Slider

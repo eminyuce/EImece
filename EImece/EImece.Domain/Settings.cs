@@ -216,6 +216,14 @@ namespace EImece.Domain
             }
         }
 
+        public static bool IsEditLinkEnable
+        {
+            get
+            {
+                return GetConfigBool("IsEditLinkEnable", true);
+            }
+        }
+
         public static bool IsDebug
         {
 

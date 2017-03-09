@@ -8,13 +8,14 @@
 @using System.Linq;
 @using System.Text;
 @using System.Xml.Linq;
+@using EImece.Domain;
 @using Resources;
  
 @{ 
     var product = Model.Product;
     var productSpecs = product.ProductSpecifications.Where(r=>!String.IsNullOrEmpty(r.Value)).OrderBy(r=>r.Position).ToList();
     var template = Model.Template;
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 @if (isUserAuthenticated)
 {

@@ -3,7 +3,7 @@
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
-
+@using EImece.Domain;
 @{
     var story = Model.Story;
     ViewBag.Title = story.GetSeoTitle();
@@ -12,10 +12,16 @@
     var storyFiles = story.StoryFiles.ToList();
     var storyTags = story.StoryTags.Select(r => r.Tag).ToList();
     var storyCategory = story.StoryCategory;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
 
-<h2>@story.Name</h2>
+<h2>@story.Name
+    @if (isUserAuthenticated)
+    {
+        @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { })
+    }
+    </h2>
 <h4>
     @storyCategory.Name
 </h4>

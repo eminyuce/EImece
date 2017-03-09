@@ -3,13 +3,14 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using Resources;
+@using EImece.Domain;
 @{
 
     ProductCategory category = Model.ProductCategory;
     var products = category.Products.OrderBy(r=>r.Position).ThenByDescending(r=>r.UpdatedDate);
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
 <div class="container">

@@ -1,13 +1,14 @@
 ﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
 @{
     var menu = Model.Menu;
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
     var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 @if (isUserAuthenticated)
 {

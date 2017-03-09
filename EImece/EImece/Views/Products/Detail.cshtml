@@ -3,10 +3,10 @@
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
-
+@using EImece.Domain;
 @{
     var product = Model.Product;
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
     ViewBag.Title = product.GetSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
     ViewBag.Keywords = product.GetSeoKeywords();
