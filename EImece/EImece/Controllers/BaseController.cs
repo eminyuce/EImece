@@ -223,7 +223,7 @@ namespace EImece.Controllers
                 if (cultureCookie != null)
                 {
                     cultureName = cultureCookie.Value;
-                    var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, EImeceLanguage.English.GetType());
+                    var selectedLang = EnumHelper.GetEnumFromDescription(cultureName,typeof(EImeceLanguage));
                     return selectedLang;
 
                 }

@@ -53,10 +53,14 @@
                 @Html.Action("WebSiteAddressInfo", "Home")
             </div>
             <div class="six columns">
-                @foreach (var item in listItems)
+                @if (listItems.Count() > 1)
                 {
-                    <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
+                    foreach (var item in listItems)
+                    {
+                        <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
+                    }
                 }
+
 
                 @Html.Action("SocialMediaLinks", "Home")
             </div>
@@ -124,7 +128,7 @@
     </footer>
 
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
- 
+
 
 
     <!-- Java Script
@@ -153,7 +157,7 @@
     <script src="~/Scripts/trizzy/scripts/puregrid.js"></script>
     <script src="~/Scripts/trizzy/scripts/stacktable.js"></script>
     <script src="~/Scripts/trizzy/scripts/custom.js"></script>
-  
+
     @RenderSection("scripts", required: false)
 
 

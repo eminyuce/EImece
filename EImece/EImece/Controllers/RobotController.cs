@@ -30,6 +30,8 @@ namespace EImece.Controllers
             content += "Sitemap: " + fLink + Environment.NewLine;
 
             content += "Disallow: /Ajax/ " + Environment.NewLine;
+            content += "Disallow: /Error/ " + Environment.NewLine;
+            content += "Disallow: /Manage/ " + Environment.NewLine;
             if (string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase))
             {
                 content += "Disallow: /Account/ " + Environment.NewLine;

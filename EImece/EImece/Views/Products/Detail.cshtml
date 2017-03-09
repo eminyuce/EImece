@@ -70,15 +70,8 @@
                 <h4>
                     @product.ProductCategory.Name
                 </h4>
-                <span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>
-
-                <div class="reviews-counter">
-                    <div class="rating five-stars">
-                        <div class="star-rating"></div>
-                        <div class="star-bg"></div>
-                    </div>
-                    <span>3 Reviews</span>
-                </div>
+                @*<span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>*@
+ 
             </section>
 
             <!-- Text Parapgraph -->
@@ -113,9 +106,9 @@
     <div class="sixteen columns">
         <!-- Tabs Navigation -->
         <ul class="tabs-nav">
-            <li class="active"><a href="#tab1">Item Description</a></li>
-            <li><a href="#tab2">Additional Information</a></li>
-            <li><a href="#tab3">Reviews <span class="tab-reviews">(3)</span></a></li>
+            <li class="active"><a href="#tab1">Ürün Bilgisi</a></li>
+            <li><a href="#tab2">Teknik Resimler</a></li>
+            <li><a href="#tab3">Bu Ürün Hakkında Bilgi İstiyorum</span></a></li>
         </ul>
 
         <!-- Tabs Content -->
@@ -138,92 +131,11 @@
             <div class="tab-content" id="tab3">
 
                 <!-- Reviews -->
-                <section class="comments">
 
-                    <ul>
-                        <li>
-                            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
-                            <div class="comment-content">
-                                <div class="arrow-comment"></div>
-                                <div class="comment-by">
-                                    <strong>John Doe</strong><span class="date">May 28, 2014</span>
-                                    <div class="rating five-stars"><div class="star-rating"></div><div class="star-bg"></div></div>
-                                </div>
-                                <p>Maecenas dignissim euismod nunc, in commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget just.</p>
-                            </div>
-                        </li>
+                @Html.Action("ContactUs", "Home")
 
-                        <li>
-                            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
-                            <div class="comment-content">
-                                <div class="arrow-comment"></div>
-                                <div class="comment-by">
-                                    <strong>Kathy Brown</strong><span class="date">May 18, 2014</span>
-                                    <div class="rating five-stars"><div class="star-rating"></div><div class="star-bg"></div></div>
-                                </div>
-                                <p>Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam posuere tristique sem, eu ultricies tortor imperdiet vitae. Curabitur lacinia neque non metus</p>
-                            </div>
-                        </li>
 
-                        <li>
-                            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
-                            <div class="comment-content">
-                                <div class="arrow-comment"></div>
-                                <div class="comment-by">
-                                    <strong>John Doe</strong><span class="date">May 10, 2014</span>
-                                    <div class="rating four-stars"><div class="star-rating"></div><div class="star-bg"></div></div>
-                                </div>
-                                <p>Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris.</p>
-                            </div>
 
-                        </li>
-                    </ul>
-
-                    <a href="#small-dialog" class="popup-with-zoom-anim button color">Add Review</a>
-
-                    <div id="small-dialog" class="zoom-anim-dialog mfp-hide">
-                        <h3 class="headline">Add Review</h3><span class="line margin-bottom-25"></span><div class="clearfix"></div>
-
-                        <!-- Form -->
-                        <form id="add-comment" class="add-comment">
-                            <fieldset>
-
-                                <div>
-                                    <label>Name:</label>
-                                    <input type="text" value="" />
-                                </div>
-
-                                <div>
-                                    <label>Rating:</label>
-                                    <span class="rate">
-                                        <span class="star"></span>
-                                        <span class="star"></span>
-                                        <span class="star"></span>
-                                        <span class="star"></span>
-                                        <span class="star"></span>
-                                    </span>
-                                    <div class="clearfix"></div>
-                                </div>
-
-                                <div class="margin-top-20">
-                                    <label>Email: <span>*</span></label>
-                                    <input type="text" value="" />
-                                </div>
-
-                                <div>
-                                    <label>Review: <span>*</span></label>
-                                    <textarea cols="40" rows="3"></textarea>
-                                </div>
-
-                            </fieldset>
-
-                            <a href="#" class="button color">Add Review</a>
-                            <div class="clearfix"></div>
-
-                        </form>
-                    </div>
-
-                </section>
 
             </div>
 

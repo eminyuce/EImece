@@ -1,5 +1,6 @@
 ﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Factories;
+@using Resources;
 @{
     Subscriber subscriber = new Subscriber();
 }
@@ -15,7 +16,7 @@
     <div class="form-group">
         @Html.LabelFor(model => subscriber.Name)
         <div class="col-md-10">
-            @Html.TextBoxFor(model => subscriber.Name, new { @placeholder = "Name", @class = "newsletter" })
+            @Html.TextBoxFor(model => subscriber.Name, new { @placeholder = @Resource.Name, @class = "newsletter" })
             @Html.ValidationMessageFor(model => subscriber.Name)
         </div>
     </div>
@@ -24,12 +25,12 @@
         <div class="form-group">
             @Html.LabelFor(model => subscriber.Email)
             <div class="col-md-10">
-                @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = "Email", @class = "newsletter" })
+                @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
                 @Html.ValidationMessageFor(model => subscriber.Email)
             </div>
         </div>
 
 
-        <button class="newsletter-btn" type="submit">Join</button>
+        <button class="newsletter-btn" type="submit">@Resource.SubscriberButtonText</button>
 
 }

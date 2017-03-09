@@ -117,29 +117,71 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ContactUsAddress" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="ContactUsCaptcha" xml:space="preserve">
+    <value>Guvenlik Sorusunu:</value>
+  </data>
+  <data name="ContactUsCaptchaErrorMessage" xml:space="preserve">
+    <value>Lutfen Guvenlik Sorunu Cevaplayiniz.</value>
+  </data>
+  <data name="ContactUsCompanyName" xml:space="preserve">
+    <value>Sirketiniz ismi</value>
+  </data>
+  <data name="ContactUsEmail" xml:space="preserve">
+    <value>E-Posta</value>
+  </data>
+  <data name="ContactUsEmailErrorMessage" xml:space="preserve">
+    <value>Lutfen E-Postanizi girin</value>
+  </data>
+  <data name="ContactUsMessage" xml:space="preserve">
+    <value>Mesajiniz</value>
+  </data>
+  <data name="ContactUsMessageErrorMessage" xml:space="preserve">
+    <value>Lutfen Mesajinizi Giriniz</value>
+  </data>
+  <data name="ContactUsName" xml:space="preserve">
+    <value>Ad / Soyad</value>
+  </data>
+  <data name="ContactUsNameErrorMessage" xml:space="preserve">
+    <value>Lutfen Ad / Soyadiniz Girin.</value>
+  </data>
+  <data name="ContactUsPhone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-Posta</value>
+  </data>
   <data name="EmailList" xml:space="preserve">
-    <value>Email List</value>
+    <value>E-POSTA LİSTESİ</value>
   </data>
   <data name="MainPage" xml:space="preserve">
-    <value>Main Page</value>
+    <value>Ana Sayfa</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Isim</value>
   </data>
   <data name="Pages" xml:space="preserve">
-    <value>Pages</value>
+    <value>Sayfalar</value>
   </data>
   <data name="PrivacyPolicy" xml:space="preserve">
     <value>Privacy Policy</value>
   </data>
   <data name="Products" xml:space="preserve">
-    <value>Products</value>
+    <value>ÜRÜNLERİMİZ</value>
   </data>
   <data name="SearchProductButtonText" xml:space="preserve">
-    <value>Search</value>
+    <value>Araba</value>
   </data>
   <data name="SearchProductTextBoxPlaceHolder" xml:space="preserve">
-    <value>Search Products</value>
+    <value>Urunlerde Ara</value>
   </data>
   <data name="SendButtonText" xml:space="preserve">
-    <value>Send</value>
+    <value>Gonder</value>
+  </data>
+  <data name="SubscriberButtonText" xml:space="preserve">
+    <value>EKLE</value>
   </data>
   <data name="TermsAndConditions" xml:space="preserve">
     <value>Terms &amp; Conditions</value>

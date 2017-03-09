@@ -64,7 +64,11 @@
             
                 <div class="col-md-2">
                     <div class="navbar-text">
-                        @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
+                        @if (listItems.Count() > 1)
+                        {
+                            @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
+                        }
+                      
                     </div>
                 </div>
              

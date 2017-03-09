@@ -70,7 +70,7 @@ namespace EImece.Domain.Services
             {
                 result = new FooterViewModel();
                 result.Menus = MenuService.GetActiveBaseContents(true, language).Where(r => r.ParentId == 0).ToList();
-                result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
+                result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language).Where(r => r.ParentId == 0).ToList();
                 result.FooterLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
                 result.FooterDescription = SettingService.GetSettingObjectByKey("FooterDescription", language);
                 result.FooterEmailListDescription = SettingService.GetSettingObjectByKey("FooterEmailListDescription", language);

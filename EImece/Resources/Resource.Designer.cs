@@ -61,7 +61,115 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email List.
+        ///   Looks up a localized string similar to Adres.
+        /// </summary>
+        public static string ContactUsAddress {
+            get {
+                return ResourceManager.GetString("ContactUsAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guvenlik Sorusunu:.
+        /// </summary>
+        public static string ContactUsCaptcha {
+            get {
+                return ResourceManager.GetString("ContactUsCaptcha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lutfen Guvenlik Sorunu Cevaplayiniz..
+        /// </summary>
+        public static string ContactUsCaptchaErrorMessage {
+            get {
+                return ResourceManager.GetString("ContactUsCaptchaErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sirketiniz ismi.
+        /// </summary>
+        public static string ContactUsCompanyName {
+            get {
+                return ResourceManager.GetString("ContactUsCompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-Posta.
+        /// </summary>
+        public static string ContactUsEmail {
+            get {
+                return ResourceManager.GetString("ContactUsEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lutfen E-Postanizi girin.
+        /// </summary>
+        public static string ContactUsEmailErrorMessage {
+            get {
+                return ResourceManager.GetString("ContactUsEmailErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesajiniz.
+        /// </summary>
+        public static string ContactUsMessage {
+            get {
+                return ResourceManager.GetString("ContactUsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lutfen Mesajinizi Giriniz.
+        /// </summary>
+        public static string ContactUsMessageErrorMessage {
+            get {
+                return ResourceManager.GetString("ContactUsMessageErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ad / Soyad.
+        /// </summary>
+        public static string ContactUsName {
+            get {
+                return ResourceManager.GetString("ContactUsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lutfen Ad / Soyadiniz Girin..
+        /// </summary>
+        public static string ContactUsNameErrorMessage {
+            get {
+                return ResourceManager.GetString("ContactUsNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telefon.
+        /// </summary>
+        public static string ContactUsPhone {
+            get {
+                return ResourceManager.GetString("ContactUsPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-Posta.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-POSTA LİSTESİ.
         /// </summary>
         public static string EmailList {
             get {
@@ -70,7 +178,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main Page.
+        ///   Looks up a localized string similar to Ana Sayfa.
         /// </summary>
         public static string MainPage {
             get {
@@ -79,7 +187,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pages.
+        ///   Looks up a localized string similar to Isim.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sayfalar.
         /// </summary>
         public static string Pages {
             get {
@@ -97,7 +214,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Products.
+        ///   Looks up a localized string similar to ÜRÜNLERİMİZ.
         /// </summary>
         public static string Products {
             get {
@@ -106,7 +223,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Araba.
         /// </summary>
         public static string SearchProductButtonText {
             get {
@@ -115,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Products.
+        ///   Looks up a localized string similar to Urunlerde Ara.
         /// </summary>
         public static string SearchProductTextBoxPlaceHolder {
             get {
@@ -124,11 +241,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send.
+        ///   Looks up a localized string similar to Gonder.
         /// </summary>
         public static string SendButtonText {
             get {
                 return ResourceManager.GetString("SendButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EKLE.
+        /// </summary>
+        public static string SubscriberButtonText {
+            get {
+                return ResourceManager.GetString("SubscriberButtonText", resourceCulture);
             }
         }
         

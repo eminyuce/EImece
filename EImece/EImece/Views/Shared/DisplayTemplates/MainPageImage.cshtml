@@ -1,6 +1,4 @@
 ﻿@model EImece.Domain.Entities.MainPageImage
-
-
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 
@@ -8,7 +6,7 @@
     var image = Model.MainImage;
     var mainPageImage = Model;
     int index = ViewData["index"].ToInt()+1;
-    var imageUrl = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId.Value, 500, 500);
+    var imageUrl = mainPageImage.GetFullPathImageUrlFromFileSystem(false);
 }
 
 <!-- Slide 1  -->

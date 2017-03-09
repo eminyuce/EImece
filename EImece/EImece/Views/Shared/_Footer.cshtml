@@ -4,7 +4,7 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
 @model FooterViewModel
-@{ 
+@{
     var footerModel = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated;
 
@@ -14,14 +14,15 @@
 
     <div class="four columns">
 
-        @Html.Partial("_WebSiteLogo", 
-       Model.FooterLogo, 
+        @Html.Partial("_WebSiteLogo",
+       Model.FooterLogo,
        new ViewDataDictionary(ViewData){
             {"isThumb","true"}})
 
         <p class="margin-top-15">
-        
-        @Html.Raw(Model.FooterDescription.SettingValue)</p>
+
+            @Html.Raw(Model.FooterDescription.SettingValue)
+        </p>
     </div>
 
     <div class="four columns">
@@ -32,7 +33,7 @@
         <div class="clearfix"></div>
 
         <ul class="footer-links">
-            @foreach(var m in Model.Menus)
+            @foreach (var m in Model.Menus)
             {
 
                 <li>
@@ -40,21 +41,30 @@
                 </li>
             }
 
-            <li> 
-            @Html.ActionLink(Resource.PrivacyPolicy, "PrivacyPolicy", "Home")
-            </li>
-            <li>
-                @Html.ActionLink(Resource.TermsAndConditions, "TermsAndConditions", "Home")
-           </li>
+            @*<li>
+                 @Html.ActionLink(Resource.PrivacyPolicy, "PrivacyPolicy", "Home")
+                 </li>
+                 <li>
+                     @Html.ActionLink(Resource.TermsAndConditions, "TermsAndConditions", "Home")
+                </li>*@
         </ul>
 
     </div>
 
     <div class="four columns">
-
-        
+        <!-- Headline -->
+        <h3 class="headline footer">@Resource.Products</h3>
+        <span class="line"></span>
+        <div class="clearfix"></div>
+        <ul class="footer-links">
+            @foreach (var m in Model.ProductCategories)
+            {
+                <li>
+                    @Html.ActionLink(m.Name, "Category", "ProductCategories", new { id = m.GetSeoUrl() }, new { @class = "" })
+                </li>
+            }
+        </ul>
     </div>
-    @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))
     <div class="four columns">
 
         <!-- Headline -->
@@ -62,17 +72,17 @@
         <span class="line"></span>
         <div class="clearfix"></div>
         <p>
-        
+
             @Html.Raw(Model.FooterEmailListDescription.SettingValue)
 
-       
-        
+
+
         </p>
 
         <form action="#" method="get">
             @Html.Partial("_AddSubscriber")
         </form>
     </div>
-   
+
 </div>
 @Html.Partial("_LoginPartial")
