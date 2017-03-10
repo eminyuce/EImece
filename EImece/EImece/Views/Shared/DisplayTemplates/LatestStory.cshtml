@@ -1,6 +1,6 @@
 ﻿@model EImece.Domain.Entities.Story
 @using EImece.Domain.Helpers.Extensions;
-
+@using EImece.Domain.Helpers;
 @{
     var story = Model;
     var storyDetailUrl = story.GetDetailPageUrl("Detail", "Stories", story.StoryCategory.Name);

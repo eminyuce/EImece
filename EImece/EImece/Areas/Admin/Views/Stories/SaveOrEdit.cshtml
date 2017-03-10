@@ -19,7 +19,7 @@
 @using (Html.BeginForm("SaveOrEdit", "Stories", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Story</h4>
         <hr />
@@ -29,7 +29,7 @@
         @Html.HiddenFor(model => model.UpdatedDate)
         @Html.HiddenFor(model => model.MainImageId)
         @Html.HiddenFor(model => model.Lang)
-    
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.StoryCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -96,11 +96,21 @@
 
         @Html.Partial("pSliderResizing", (BaseContent)Model);
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.MainPage)
+                    @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
 
 
         <div class="form-group">
             @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-5">
+      
                 <input type="file" name="contentImage" />
                 @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
             </div>
@@ -108,18 +118,21 @@
                 @if (Model.MainImageId.HasValue)
                 {
                     <b>@ExistingMainImageText :</b>
-                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                    @Html.Partial("pGridImageMainPage", (BaseContent)Model);
                 }
             </div>
 
         </div>
-        <div id="storyTagsHtml">
-
-        </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-              <input type="submit" value="@saveButtonText" class="btn btn-default" />
+                <div id="storyTagsHtml">
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@saveButtonText" class="btn btn-default" />
             </div>
         </div>
     </div>

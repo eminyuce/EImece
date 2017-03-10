@@ -5,7 +5,7 @@
 @{
     var productFiles = Model.ProductFiles;
     var product = Model;
-    var categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name);
+    var categoryName = product.ProductCategory.Name;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 

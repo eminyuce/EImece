@@ -30,7 +30,7 @@
                     var mainPageImage = mainPageImages[i];
                     @Html.DisplayFor(model => mainPageImage, "MainPageImage", new { index = i })
                 }
-              
+
             </ul>
         </div>
     </div>
@@ -39,46 +39,47 @@
 
 <div class="container">
 
-@for (int i = 0; i < mainPageProductCategories.Count; i++)
+    @for (int i = 0; i < mainPageProductCategories.Count; i++)
+    {
+        var mainPageProductCategory = mainPageProductCategories[i];
+        @Html.DisplayFor(model => mainPageProductCategory, "MainPageProductCategory")
+    }
+
+
+
+</div>
+
+
+@if (mainPageProducts.Count > 0)
 {
-    var mainPageProductCategory = mainPageProductCategories[i];
-    @Html.DisplayFor(model => mainPageProductCategory, "MainPageProductCategory")
+    <div class="container">
+
+        @for (int i = 0; i < mainPageProducts.Count; i++)
+        {
+            var mainPageProduct = mainPageProducts[i];
+            @Html.DisplayFor(model => mainPageProduct, "MainPageProduct")
+        }
+
+    </div>
 }
 
+@if (latestStories.Count > 0)
+{
+    <div class="container">
+        <!-- Headline -->
+        <div class="sixteen columns">
+            <h3 class="headline">Latest Articles</h3>
+            <span class="line margin-bottom-30"></span>
+        </div>
+        @for (int i = 0; i < latestStories.Count; i++)
+        {
+            var story = latestStories[i];
+            @Html.DisplayFor(model => story, "LatestStory")
+        }
 
-
-</div>
-
-
-<div class="container">
-
-    @for (int i = 0; i < mainPageProducts.Count; i++)
-    {
-        var mainPageProduct = mainPageProducts[i];
-        @Html.DisplayFor(model => mainPageProduct, "MainPageProduct")
-    }
-
-
-
-</div>
-
-
-
-<div class="container">
-    <!-- Headline -->
-    <div class="sixteen columns">
-        <h3 class="headline">Latest Articles</h3>
-        <span class="line margin-bottom-30"></span>
     </div>
-    @for (int i = 0; i < latestStories.Count; i++)
-    {
-        var story = latestStories[i];
-        @Html.DisplayFor(model => story, "LatestStory")
-    }
 
-
-
-</div>
+}
 
 
 <div class="clearfix"></div>
