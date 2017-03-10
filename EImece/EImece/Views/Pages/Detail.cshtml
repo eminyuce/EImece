@@ -4,7 +4,7 @@
 @using EImece.Domain;
 @{
     var menu = Model.Menu;
-    ViewBag.Title =  menu.GetSeoTitle();
+    ViewBag.Title = string.Format("{0} {1}",Model.CompanyName.SettingValue, menu.GetSeoTitle());
     ViewBag.Description =  menu.GetSeoDescription();
     menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
     var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;

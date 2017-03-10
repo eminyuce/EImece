@@ -51,6 +51,7 @@ namespace EImece.Domain.Services
             {
                 result = new MenuPageViewModel();
                 result.Menu = MenuRepository.GetMenuById(menuId);
+                result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
             }
             return result;

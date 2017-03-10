@@ -37,6 +37,16 @@ namespace EImece.Domain.Helpers
             {
                 return "";
             }
+
+
+            bool isImagePage = controller.Equals("Images", StringComparison.InvariantCultureIgnoreCase) &&
+                            action.Equals("Index", StringComparison.InvariantCultureIgnoreCase);
+
+            if (isImagePage)
+            {
+                return "";
+            }
+
             // string id = "";
             if (string.IsNullOrEmpty(id))
             {
