@@ -32,11 +32,10 @@ namespace EImece.Controllers
             content += "Disallow: /Ajax/ " + Environment.NewLine;
             content += "Disallow: /Error/ " + Environment.NewLine;
             content += "Disallow: /Manage/ " + Environment.NewLine;
+            content += "Disallow: /Account/ " + Environment.NewLine;
             if (string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase))
             {
-                content += "Disallow: /Account/ " + Environment.NewLine;
                 content += "# Allow Robots (Release)" + Environment.NewLine;
-
             }
             else
             {

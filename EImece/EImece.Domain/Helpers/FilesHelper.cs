@@ -659,13 +659,16 @@ namespace EImece.Domain.Helpers
                 return ImageOrientation.Unknown;
             }
         }
-        public byte[] GetResizedImage(int fileStorageId, int width, int height)
+        public Tuple<byte[],String> GetResizedImage(int fileStorageId, int width, int height)
         {
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
-            byte[] result = null;
+            Tuple<byte[], String> result = null;
+            String contentType = "";
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 var fileStorage = FileStorageService.GetSingle(fileStorageId);
+                contentType = fileStorage.MimeType;
+
                 if (fileStorage != null)
                 {
                     var file = fileStorage.FileName;
@@ -684,7 +687,8 @@ namespace EImece.Domain.Helpers
 
                         b = new Bitmap(fullImagePath);
                         var resizeBitmap = ResizeImage(b, width, height);
-                        result = GetBitmapBytes(resizeBitmap);
+                        byte [] imageBytes = GetBitmapBytes(resizeBitmap);
+                        result = new Tuple<byte[], String>(imageBytes, contentType);
                         b.Dispose();
                         resizeBitmap.Dispose();
                         MemoryCacheProvider.Set(cacheKey, result, Settings.CacheShortSeconds);

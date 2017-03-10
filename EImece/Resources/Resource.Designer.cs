@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NO Search Result.
+        /// </summary>
+        public static string NOSearchResult {
+            get {
+                return ResourceManager.GetString("NOSearchResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sayfalar.
         /// </summary>
         public static string Pages {
@@ -268,11 +277,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lutfen yaziniz.
+        ///   Looks up a localized string similar to Please enter a search term 2.
         /// </summary>
         public static string SearchRequiredErrorMessage {
             get {
                 return ResourceManager.GetString("SearchRequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid text 2.
+        /// </summary>
+        public static string SearchValidText {
+            get {
+                return ResourceManager.GetString("SearchValidText", resourceCulture);
             }
         }
         

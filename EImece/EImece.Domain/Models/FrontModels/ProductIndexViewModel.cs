@@ -11,5 +11,7 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductIndexViewModel
     {
         public PaginatedList<Product> Products { get; set; }
+
+        public Setting CompanyName { get; set; }
     }
 }

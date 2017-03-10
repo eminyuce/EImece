@@ -29,9 +29,9 @@ namespace EImece.Controllers
 
             var fileStorageId = id.Replace(".jpg", "").GetId();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
-            if(imageByte != null)
+            if(imageByte.Item1 != null)
             {
-                return File(imageByte, "image/jpg");
+                return File(imageByte.Item1, imageByte.Item2);
             }else
             {
                 return new EmptyResult();
@@ -52,7 +52,7 @@ namespace EImece.Controllers
 
             var fileStorageId = id.Replace(".jpg", "").ToInt();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
-            Image image = Image.FromStream(new MemoryStream(imageByte));
+            Image image = Image.FromStream(new MemoryStream(imageByte.Item1));
 
             using (Graphics g = Graphics.FromImage(image))
             {
@@ -73,7 +73,7 @@ namespace EImece.Controllers
 
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            return File(ms.ToArray(), "image/jpeg");
+            return File(ms.ToArray(), imageByte.Item2);
         }
 
         //controller function to generate image

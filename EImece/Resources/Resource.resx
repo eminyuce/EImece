@@ -196,6 +196,12 @@
     <value>Lutfen birseyler yaziniz</value>
   </data>
   <data name="SearchRequiredErrorMessage" xml:space="preserve">
-    <value>Lutfen yaziniz</value>
+    <value>Please enter a search term 2</value>
+  </data>
+  <data name="SearchValidText" xml:space="preserve">
+    <value>Please enter a valid text 2</value>
+  </data>
+  <data name="NOSearchResult" xml:space="preserve">
+    <value>NO Search Result</value>
   </data>
 </root>

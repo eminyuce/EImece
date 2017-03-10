@@ -20,16 +20,23 @@
 
 <h2>Search Products</h2>
 
-
-@Html.BootstrapPager(products.PageIndex,
+@if (String.IsNullOrEmpty(Model.Search))
+{
+    @Resource.NOSearchResult
+}
+else
+{
+    @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),
     products.TotalCount, products.PageSize, numberOfLinks: 10)
 
-@Html.Partial("_PagingPartial", products)
-@foreach (var item in products)
-{
-    <div>
-        @Html.DisplayFor(modelItem => item, "ProductSearchItem")
-    </div>
+    @Html.Partial("_PagingPartial", products)
+    foreach (var item in products)
+    {
+        <div>
+            @Html.DisplayFor(modelItem => item, "ProductSearchItem")
+        </div>
+    }
+    @Html.Partial("_PagingPartial", products)
 }
-@Html.Partial("_PagingPartial", products)
+

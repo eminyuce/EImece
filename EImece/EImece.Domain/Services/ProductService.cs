@@ -51,6 +51,7 @@ namespace EImece.Domain.Services
             {
                 result = new ProductIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
+                result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 var items = ProductRepository.GetMainPageProducts(page, pageSize, language);
                 result.Products = items;
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
@@ -163,7 +164,14 @@ namespace EImece.Domain.Services
         {
             var r = new ProductsSearchViewModel();
             r.Search = search;
-            r.Products = ProductRepository.SearchProducts(pageIndex, pageSize, search, lang);
+            if (!String.IsNullOrEmpty(search))
+            {
+                r.Products = ProductRepository.SearchProducts(pageIndex, pageSize, search, lang);
+            }
+            else
+            {
+                r.Products = new GenericRepository.PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
+            }
 
             return r;
         }

@@ -9,7 +9,7 @@
     ProductCategory category = Model.ProductCategory;
     var products = category.Products.OrderBy(r=>r.Position).ThenByDescending(r=>r.UpdatedDate);
     ViewBag.Title = category.GetSeoTitle();
-    ViewBag.Description = category.GetSeoDescription();
+    ViewBag.Description =category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
