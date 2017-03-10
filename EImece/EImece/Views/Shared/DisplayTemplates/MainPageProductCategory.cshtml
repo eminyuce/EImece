@@ -1,26 +1,24 @@
 ﻿@model EImece.Domain.Entities.ProductCategory
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
-
+@using EImece.Domain;
+@using Resources;
 @{
     var productCategory = Model;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
-
-
 <div class="one-third column">
-    <a href="#" class="img-caption">
+    <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")" class="img-caption">
         <figure>
-            <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")">
-                @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
-            </a>
+            @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
             <figcaption>
-                <h3>
-                    <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")">
-                        @productCategory.Name
-                    </a>
-
+                <h3>@productCategory.Name
+            
                 </h3>
+                <span>@Resource.NewModelsClick</span>
             </figcaption>
         </figure>
     </a>
+
+  
 </div>

@@ -29,8 +29,8 @@ namespace EImece.Domain.Entities
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.VideoUrl))]
         public string VideoUrl { get; set; }
-
-
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsCampaign))]
+        public Boolean IsCampaign { get; set; }
 
         public  ProductCategory ProductCategory { get; set; }
         public  ICollection<ProductFile> ProductFiles { get; set; }

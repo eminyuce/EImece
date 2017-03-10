@@ -155,8 +155,7 @@ window.location='/admin/products/index/'+e.id;
                    SetWidth(10).
                    RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-
-
+       
            columns.Add(o => o.IsActive)
                   .Titled(AdminResource.State)
                   .Sortable(true)
@@ -198,6 +197,13 @@ window.location='/admin/products/index/'+e.id;
         <li>
             @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
                                                     o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
+
+
+
+        </li>
+        <li>
+            @Html.Raw(String.Format("<div>IsCampaign</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span>",
+                                                    o.Id, (o.IsCampaign ? Settings.OkStyle : Settings.CancelStyle), o.IsCampaign))
 
 
 

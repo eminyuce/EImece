@@ -13,7 +13,7 @@
     <article class="from-the-blog">
         <figure class="from-the-blog-image">
             <a href="@storyDetailUrl">
-                @Html.Raw(story.GetThumpImageTag())
+                @Html.Raw(story.GetCroppedImageTag(280, 280))
             </a>
             <div class="hover-icon"></div>
         </figure>
@@ -25,7 +25,7 @@
                 </i>
             </a>
             <i>@story.UpdatedDate</i>
-            <span>@story.GetSeoDescription(50) </span>
+            <span>@story.GetSeoDescription(350) </span>
             <a class="button gray" href="@storyDetailUrl">
                 Read More
             </a>

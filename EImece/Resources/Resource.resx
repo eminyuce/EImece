@@ -204,4 +204,7 @@
   <data name="NOSearchResult" xml:space="preserve">
     <value>NO Search Result</value>
   </data>
+  <data name="NewModelsClick" xml:space="preserve">
+    <value>Yeni modellerimiz için tıklayınız</value>
+  </data>
 </root>

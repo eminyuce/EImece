@@ -125,7 +125,15 @@
         @RenderBody()
     </div>
     <footer>
-        @Html.Action("Footer", "Home")
+        <div id="footer">
+            @Html.Action("Footer", "Home")
+        </div>
+        <div id="footer-bottom">
+            <!-- Container -->
+            <div class="container">
+                <div class="eight columns">Design by <a href="http:\\www.erayweb.com"> erayweb </a> All Rights Reserved ©</div>
+            </div>
+        </div>
     </footer>
 
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))

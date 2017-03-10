@@ -315,4 +315,7 @@
   <data name="AllProductLinkText" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="IsCampaign" xml:space="preserve">
+    <value>IsCampaign</value>
+  </data>
 </root>

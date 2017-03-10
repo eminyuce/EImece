@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yeni modellerimiz için tıklayınız.
+        /// </summary>
+        public static string NewModelsClick {
+            get {
+                return ResourceManager.GetString("NewModelsClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NO Search Result.
         /// </summary>
         public static string NOSearchResult {
