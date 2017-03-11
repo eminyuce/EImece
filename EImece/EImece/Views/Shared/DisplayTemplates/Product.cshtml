@@ -1,40 +1,40 @@
 ﻿@model EImece.Domain.Entities.Product
- @{ 
-     var productFiles = Model.ProductFiles;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@{
+    var productFiles = Model.ProductFiles;
+    var product = Model;
+    var categoryName = product.ProductCategory.Name;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var tags = product.ProductTags.Select(r1 => r1.Tag).Distinct().ToList();
+    string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
+    string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
+}
 
- }
 
-Product Files : @Model.ProductFiles.Count()
-<div>
-    <dl class="dl-horizontal">
-        <h2>
-            Product Category: @Model.ProductCategory.Name
-        </h2>
-        @if (Model.MainImage != null)
-        {
-            @Model.MainImage.FileName
-        }
-  
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dt>
-            @Html.DisplayFor(model => model.Id)
-        </dt>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        @foreach(var productFile in productFiles)
-        {
-            <b style="color:red;">
-                @productFile.Name  @productFile.Position
-            </b>
-        }
-    </dl>
-</div>
  
+
+
+<div class="one-third column portfolio-item media
+      post-@product.Id portfolio type-portfolio 
+     status-publish has-post-thumbnail hentry 
+     @filters @tagsText" id="post-@product.Id" style="position: absolute; left: 320px; top: 0px;">
+
+    <figure>
+        <div class="portfolio-holder">
+            <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+                @Html.Raw(product.GetCroppedImageTag(300, 214))
+                <div class="hover-icon"></div>
+            </a>
+        </div>
+        <a href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+            <section class="item-description">
+
+                <span>@product.Name</span>
+                <h5>@categoryName</h5>
+            </section>
+        </a>
+    </figure>
+
+</div>

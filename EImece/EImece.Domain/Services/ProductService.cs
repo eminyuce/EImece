@@ -54,6 +54,7 @@ namespace EImece.Domain.Services
                 result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 var items = ProductRepository.GetMainPageProducts(page, pageSize, language);
                 result.Products = items;
+                result.Tags = TagService.GetActiveBaseEntities(true, language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
 
             }

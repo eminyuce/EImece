@@ -5,6 +5,8 @@
 @using Microsoft.AspNet.Identity
 @using System.Threading;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Services.IServices;
 @{
 
 
@@ -12,13 +14,16 @@
     String cultureName = Thread.CurrentThread.CurrentCulture.Name;
     List<SelectListItem> listItems = new List<SelectListItem>();
     listItems = EImeceLanguage.Turkish.ToSelectList2(cultureName);
+
+    var SettingService = DependencyResolver.Current.GetService<ISettingService>();
+    var companyNameSetting = SettingService.GetSettingByKey(Settings.CompanyName).ToStr();
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Settings.CompanyName Admin Panel </title>
+    <title>@companyNameSetting Admin Panel </title>
     @Styles.Render("~/Content/admincss")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -50,6 +55,10 @@
 
 </head>
 <body>
+    <span style="font-weight:bolder;">
+        @String.Format("{0} Admin Panel",companyNameSetting)
+    </span>
+ 
     <nav class="navbar navbar-default">
 
         <div class="col-md-12">

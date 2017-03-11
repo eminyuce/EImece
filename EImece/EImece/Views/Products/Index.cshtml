@@ -5,29 +5,78 @@
 @using EImece.Domain.Helpers;
 @using Resources;
 @model ProductIndexViewModel
-
+@using EImece.Domain;
 @{
-    ViewBag.Title = String.Format("{0} {1}",Model.CompanyName.SettingValue, Resource.Products);
+    ViewBag.Title = String.Format("{0} {1}", Model.CompanyName.SettingValue, Resource.Products);
     PaginatedList<Product> products = Model.Products;
     ViewBag.Description = String.Join(",", products.Select(r => r.Name)).ToStr(150);
-
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    List<Tag> tags = Model.Tags;
+    List<Tag> productTags = products.SelectMany(r => r.ProductTags.Select(r1 => r1.Tag)).Distinct().ToList();
 }
 
-<h2>Index</h2>
+<h2>@Resource.Products
+    
+    @if (isUserAuthenticated)
+    {
+        @Html.ActionLink("edit", "index", "products", new { @area = "admin" }, new { })
+    }
+    </h2>
 
 
-@Html.BootstrapPager(products.PageIndex,
+<div class="pagination-container">
+    <nav class="pagination">
+        <div class="paging">
+
+            @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),
     products.TotalCount, products.PageSize, numberOfLinks: 10)
-
-@Html.Partial("_PagingPartial", products)
-<div class="row">
-    @foreach (var item in products)
-    {
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            @Html.DisplayFor(modelItem => item, "MainPageProduct")
         </div>
-    }
+    </nav>
 </div>
-@Html.Partial("_PagingPartial", products)
- 
+
+
+
+
+<div class="container potrfolio-container">
+    <div class="sixteen columns">
+
+        <div id="filters" class="filters-dropdown headline">
+            <span></span>
+            <ul class="option-set" data-option-key="filter">
+                <li><a href="#filter" class="selected" data-filter="*">All</a></li>
+                @foreach (var t in tags)
+                {
+                    <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
+                }
+            </ul>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+
+    @*@Html.Partial("_PagingPartial", products)*@
+    <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+
+
+        @foreach (var item in products)
+        {
+
+            @Html.DisplayFor(modelItem => item, "Product")
+
+        }
+    </div>
+</div>
+    <div class="pagination-container">
+        <nav class="pagination">
+            <div class="paging">
+
+                @Html.BootstrapPager(products.PageIndex,
+    index => Url.Action("Index", "Products", new { page = index }),
+    products.TotalCount, products.PageSize, numberOfLinks: 10)
+            </div>
+        </nav>
+    </div>
+
+
+
