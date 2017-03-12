@@ -40,18 +40,21 @@
 
 <div class="container potrfolio-container">
     <div class="sixteen columns">
+        @if (productTags.Any())
+        {
 
         <div id="filters" class="filters-dropdown headline">
             <span></span>
             <ul class="option-set" data-option-key="filter">
                 <li><a href="#filter" class="selected" data-filter="*">All</a></li>
-                @foreach (var t in tags)
+                @foreach (var t in productTags)
                 {
                     <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
                 }
             </ul>
         </div>
 
+        }
     </div>
     <div class="clearfix"></div>
 

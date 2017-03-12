@@ -721,6 +721,10 @@
     <Content Include="Views\Products\_ProductBreadCrumb.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTreeHeadLine.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTreeChildrenHeadLine.cshtml" />
+    <Content Include="Views\Stories\PageThemes\PageTheme_T1.cshtml" />
+    <Content Include="Views\Stories\PageThemes\PageTheme_T3.cshtml" />
+    <Content Include="Views\Stories\PageThemes\PageTheme_T2.cshtml" />
+    <Content Include="Views\Stories\PageThemes\PageTheme_T4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

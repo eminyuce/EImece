@@ -190,7 +190,7 @@
     <value>Export To Excel File</value>
   </data>
   <data name="AdminDeleteConfirmMessage" xml:space="preserve">
-    <value>Do you want to delete it?</value>
+    <value>Secilenleri silmeyi onayliyor musunuz?</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
@@ -317,5 +317,11 @@
   </data>
   <data name="IsCampaign" xml:space="preserve">
     <value>IsCampaign</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Iptal</value>
+  </data>
+  <data name="ButtonOk" xml:space="preserve">
+    <value>Tamam</value>
   </data>
 </root>

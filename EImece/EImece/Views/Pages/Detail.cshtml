@@ -12,6 +12,6 @@
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink("edit", "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { })
+    @Html.ActionLink("edit", "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class="adminPageLink" })
 }
 @Html.Partial(selectedPagePath, menu)

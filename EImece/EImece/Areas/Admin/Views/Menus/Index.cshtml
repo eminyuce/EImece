@@ -163,7 +163,7 @@
                 @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
             }
             else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                && action.Equals("category", StringComparison.InvariantCultureIgnoreCase))
+                && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
             {
                 @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
             }

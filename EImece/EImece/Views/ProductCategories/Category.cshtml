@@ -7,11 +7,15 @@
 @{
 
     ProductCategory category = Model.ProductCategory;
-    var products = category.Products.OrderBy(r=>r.Position).ThenByDescending(r=>r.UpdatedDate);
+    var products = category.Products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+    var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+
+
     ViewBag.Title = category.GetSeoTitle();
-    ViewBag.Description =category.GetSeoDescription();
+    ViewBag.Description = category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
+
 
 <div class="container">
     <div class="four columns">
@@ -23,33 +27,40 @@
             @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
 
 
-            
+
 
             <div class="clearfix"></div>
 
         </div>
 
     </div>
-    @if (products != null)
-    {
-        <div class="twelve columns products">
-            <div class="widget margin-top-0">
-                <h3 class="headline">
-                    @category.Name
-                    @if (isUserAuthenticated)
-                    {
-                        @Html.ActionLink("edit", "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { })
-                    }
 
-                </h3>
-                <span class="line"></span>
-                <div class="clearfix">
-                </div>
+
+    <div class="twelve columns products">
+        <div class="widget margin-top-0">
+            <h3 class="headline">
+                @category.Name
+                @if (isUserAuthenticated)
+                {
+                    @Html.ActionLink("edit", "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { @class="adminPageLink" })
+                }
+
+            </h3>
+            <span class="line"></span>
+            <div class="clearfix">
             </div>
-            @foreach (var p in products)
-            {
-                    @Html.DisplayFor(modelItem => p, "MainPageProduct")
-            }
         </div>
-    }
+
+        @foreach (var p in products)
+            {
+            @Html.DisplayFor(modelItem => p, "MainPageProduct")
+        }
+
+    </div>
 </div>
+
+
+
+ 
+
+

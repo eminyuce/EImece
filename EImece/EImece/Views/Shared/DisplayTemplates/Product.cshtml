@@ -2,6 +2,7 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
+@using Resources;
 @{
     var productFiles = Model.ProductFiles;
     var product = Model;
@@ -31,7 +32,12 @@
         <a href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
             <section class="item-description">
 
-                <span>@product.Name</span>
+                <span>@product.Name
+                    @if (isUserAuthenticated)
+                    {
+                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
+                    }
+                </span>
                 <h5>@categoryName</h5>
             </section>
         </a>

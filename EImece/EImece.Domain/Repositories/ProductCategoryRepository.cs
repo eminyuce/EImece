@@ -131,13 +131,26 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductCategory, bool>> match2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
                 match = match.And(match2);
             }
-            var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var result = FindAllIncluding(match, 
+                r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
 
 
             return result.ToList();
         }
 
+        public List<ProductCategory> GetProductCategoriesByParentId(int parentId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            Expression<Func<ProductCategory, bool>> match = r =>
+          r.ParentId == parentId && r.IsActive;
 
+            var items = FindAllIncluding(match,
+                 r => r.Position, OrderByType.Ascending, null, null,
+                includeProperties.ToArray());
+            var result = items.ToList();
+            return result;
+        }
     }
 }

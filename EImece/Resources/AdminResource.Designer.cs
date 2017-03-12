@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete it?.
+        ///   Looks up a localized string similar to Secilenleri silmeyi onayliyor musunuz?.
         /// </summary>
         public static string AdminDeleteConfirmMessage {
             get {
@@ -75,6 +75,24 @@ namespace Resources {
         public static string AllProductLinkText {
             get {
                 return ResourceManager.GetString("AllProductLinkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iptal.
+        /// </summary>
+        public static string ButtonCancel {
+            get {
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tamam.
+        /// </summary>
+        public static string ButtonOk {
+            get {
+                return ResourceManager.GetString("ButtonOk", resourceCulture);
             }
         }
         

@@ -180,6 +180,7 @@ namespace EImece.Domain.Services
             result.ProductCategory = GetProductCategory(categoryId);
             var tree = BuildTree(true, result.ProductCategory.Lang);
             result.ProductCategoryTree = tree;
+            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
             return result;
         }
     }

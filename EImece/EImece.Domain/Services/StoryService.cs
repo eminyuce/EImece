@@ -21,6 +21,9 @@ namespace EImece.Domain.Services
         private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
+        public ITagService TagService { get; set; }
+
+        [Inject]
         public IStoryCategoryService StoryCategoryService { get; set; }
 
         private IStoryRepository StoryRepository { get; set; }
@@ -119,8 +122,12 @@ namespace EImece.Domain.Services
           
                 result = new StoryCategoryViewModel();
                 int pageSize = Settings.RecordPerPage;
+
                 result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
-                result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
+            int lang = result.StoryCategory.Lang;
+            result.StoryCategories = StoryCategoryService.GetActiveBaseContents(true, result.StoryCategory.Lang);
+            result.Tags = TagService.GetActiveBaseEntities(true, lang);
+            result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
                 
             return result;
         }

@@ -1,0 +1,86 @@
+﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+
+@{
+    var category = Model.StoryCategory;
+    var stories = Model.Stories;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+
+}
+ 
+<h2>
+    @category.Name
+ 
+</h2>
+<!-- Container -->
+<div class="container">
+
+    <div class="twelve columns">
+        <div class="extra-padding">
+
+            @foreach (var story in stories)
+            {
+                @Html.DisplayFor(modelItem => story, "Stories")
+            }
+
+        </div>
+
+    </div>
+
+    <div class="four columns">
+
+        <!-- About -->
+        <div class="widget margin-top-0">
+            <h3 class="headline">About</h3><span class="line">
+            </span>
+            <div class="clearfix"></div>
+            <p>
+                @Html.Raw(Model.StoryCategory.Description)
+            </p>
+        </div>
+
+
+        <!-- Categories -->
+        <div class="widget">
+            <h3 class="headline">Categories</h3><span class="line"></span><div class="clearfix"></div>
+            <nav class="categories">
+                <ul>
+
+                    @foreach (var cstory in Model.StoryCategories)
+            {
+                        <li>
+
+                            @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
+                        </li>
+                    }
+
+                </ul>
+            </nav>
+        </div>
+
+
+
+        <!-- Tags -->
+        <div class="widget margin-top-10">
+            <h3 class="headline">Tags</h3><span class="line"></span><div class="clearfix"></div>
+
+            <nav class="tags">
+                @foreach (var t in Model.Tags)
+                {
+                    @Html.ActionLink(t.Name, "Tag", new { id = t.GetSeoUrl() })
+                }
+            </nav>
+        </div>
+
+        <br>
+        <br>
+
+    </div>
+
+
+</div>

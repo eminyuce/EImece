@@ -18,5 +18,6 @@ namespace EImece.Domain.Repositories.IRepositories
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
         List<ProductCategory> GetMainPageProductCategories(int language);
         List<ProductCategory> GetAdminProductCategories(string search, int language);
+        List<ProductCategory> GetProductCategoriesByParentId(int parentId);
     }
 }

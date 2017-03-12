@@ -19,7 +19,7 @@
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { })
+    @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
 }
 @if (productSpecs.Any())
 {

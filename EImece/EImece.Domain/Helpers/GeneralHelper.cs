@@ -880,13 +880,23 @@ namespace EImece.Domain.Helpers
 
             return listItems;
         }
+        public string ConvertUTF8(string text)
+        {
+            Encoding iso = Encoding.GetEncoding(text);
+            Encoding utf8 = Encoding.UTF8;
+            byte[] utfBytes = utf8.GetBytes(text);
+            byte[] isoBytes = Encoding.Convert(utf8, iso, utfBytes);
+            string msg = iso.GetString(isoBytes);
+
+            return msg;
+        }
         public static string ConvertTurkishChars(string text)
         {
             if (String.IsNullOrEmpty(text))
                 return "";
-            String[] olds = { "Ğ", "ğ", "Ü", "ü", "Ş", "ş", "İ", "ı", "Ö", "ö", "Ç", "ç" };
+            String[] olds = { "Ğ", "ğ", "Ü", "ü", "Ş", "ş", "İ", "ı", "I", "Ö", "ö", "Ç", "ç" };
             // String[] news = { "G", "g", "U", "u", "S", "s", "I", "i", "O", "o", "C", "c" };
-            String[] news = { "G", "g", "U", "u", "S", "s", "i", "i", "O", "o", "C", "c" };
+            String[] news = { "G", "g", "U", "u", "S", "s", "i", "i","i", "O", "o", "C", "c" };
 
             for (int i = 0; i < olds.Length; i++)
             {
@@ -899,7 +909,8 @@ namespace EImece.Domain.Helpers
         }
         public static string GetUrlSeoString(string p)
         {
-            p = ConvertTurkishChars(p);
+             p = ConvertTurkishChars(p);
+            //p = EncodeUTF8(p);
             return GetUrlString(p);
         }
         public static string GetUrlString(string strIn)

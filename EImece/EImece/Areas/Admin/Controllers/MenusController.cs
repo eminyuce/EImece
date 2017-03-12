@@ -219,7 +219,7 @@ namespace EImece.Areas.Admin.Controllers
 
             foreach (var storyCategory in storyCategories)
             {
-                string m = "stories-category_" + storyCategory.GetSeoUrl();
+                string m = "stories-categories_" + storyCategory.GetSeoUrl();
                 if (!menus.Any(r => r.MenuLink.Equals(m, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     menuLinks.Add(new SelectListItem() { Text = storyCategory.Name, Value = m });

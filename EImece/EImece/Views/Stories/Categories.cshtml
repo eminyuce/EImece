@@ -1,19 +1,24 @@
 ﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
 
 @{
-    ViewBag.Title = "Categories";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var category = Model.StoryCategory;
     var stories = Model.Stories;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    ViewBag.Title = category.GetSeoTitle();
+    ViewBag.Description = category.GetSeoDescription();
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    category.PageTheme = String.IsNullOrEmpty(category.PageTheme) ? "T1" : category.PageTheme;
+    var selectedPagePath = "PageThemes/PageTheme_" + category.PageTheme;
 }
-
-<h2>
-    @category.Name
-</h2>
-
-@foreach(var story in stories)
+@if (isUserAuthenticated)
 {
-    <div>
-        @story.Name
-    </div>
+    @Html.ActionLink("edit", "saveoredit", "storyCategories", new { @id = category.Id, @area = "admin" }, new { @class="adminPageLink" })
 }
+@Html.Partial(selectedPagePath, Model)
+ 

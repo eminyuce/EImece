@@ -27,7 +27,7 @@
                 <h5>@product.Name
                     @if (isUserAuthenticated)
                     {
-                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { })
+                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
                     }
                 </h5>
                 <span class="product-code">

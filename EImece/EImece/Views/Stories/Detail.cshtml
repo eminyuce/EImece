@@ -4,6 +4,7 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
+@using Resources;
 @{
     var story = Model.Story;
     ViewBag.Title = story.GetSeoTitle();
@@ -19,7 +20,7 @@
 <h2>@story.Name
     @if (isUserAuthenticated)
     {
-        @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { })
+        @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink" })
     }
     </h2>
 <h4>
