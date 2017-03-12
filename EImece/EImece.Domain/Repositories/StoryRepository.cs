@@ -74,13 +74,13 @@ namespace EImece.Domain.Repositories
                 throw;
             }
         }
-        public List<Story> GetRelatedStories(int[] tagIdList, int take, int lang)
+        public List<Story> GetRelatedStories(int[] tagIdList, int take, int lang, int excludedStoryId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.StoryTags);
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.StoryCategory);
-            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.StoryTags.Any(t=> tagIdList.Contains(t.TagId));
+            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.StoryTags.Any(t=> tagIdList.Contains(t.TagId)) && r2.Id != excludedStoryId;
             Expression<Func<Story, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
 

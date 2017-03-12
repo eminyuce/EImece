@@ -23,6 +23,14 @@ namespace EImece.Domain.Services
         [Inject]
         public ITagService TagService { get; set; }
 
+
+        [Inject]
+        public IProductService ProductService { get; set; }
+
+        [Inject]
+        public IProductRepository ProductRepository { get; set; }
+
+
         [Inject]
         public IStoryCategoryService StoryCategoryService { get; set; }
 
@@ -74,9 +82,21 @@ namespace EImece.Domain.Services
 
         public StoryDetailViewModel GetStoryDetailViewModel(int storyId)
         {
-            var storyDetail = new StoryDetailViewModel();
-            storyDetail.Story = GetStoryById(storyId);
-            return storyDetail;
+            var result = new StoryDetailViewModel();
+            result.Story = GetStoryById(storyId);
+            result.RelatedStories = new List<Story>();
+            if (result.Story != null && result.Story.StoryTags.Any())
+            {
+                var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
+                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, result.Story.Lang,storyId);
+            }
+            result.RelatedProducts = new List<Product>();
+            if (result.Story != null && result.Story.StoryTags.Any())
+            {
+                var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
+                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, result.Story.Lang, 0);
+            }
+            return result;
         }
 
         public StoryIndexViewModel GetMainPageStories(int page, int language)

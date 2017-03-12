@@ -113,7 +113,7 @@ namespace EImece.Domain.Services
                 if (r != null && r.ProductTags.Any())
                 {
                     var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
-                    result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang);
+                    result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang, 0);
                 }
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
 

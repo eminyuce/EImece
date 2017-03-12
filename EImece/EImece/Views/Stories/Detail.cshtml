@@ -17,12 +17,13 @@
 }
 
 
-<h2>@story.Name
-    @if (isUserAuthenticated)
-    {
-        @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink" })
-    }
-    </h2>
+<h2>
+    @story.Name
+@if (isUserAuthenticated)
+{
+    @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
+}
+</h2>
 <h4>
     @storyCategory.Name
 </h4>
@@ -65,13 +66,60 @@
 
         if (renderRow)
         {
-            @:         </div>
+            @:</div>
         }
     }
 
 
 </div>
 
+@if (Model.RelatedStories.Any())
+{
+    <h3>
+        Related Stories
+    </h3>
+foreach (var rstory in Model.RelatedStories)
+{
+    <div>
+
+
+        <a href="@rstory.GetDetailPageUrl("Detail","Stories",rstory.StoryCategory.Name)">
+            @Html.DisplayFor(model => rstory.Name)
+            @if (isUserAuthenticated)
+            {
+                @Html.ActionLink("edit", "saveoredit", "stories", new { @id = rstory.Id, @area = "admin" }, new { @class = "adminPageLink" })
+            }
+        </a>
+
+    </div>
+}
+}
+@if (Model.RelatedProducts.Any())
+{
+    <h3>
+        Related Products
+    </h3>
+    foreach (var product in Model.RelatedProducts)
+    {
+        <div>
+
+            <a href="@product.GetDetailPageUrl("Detail", "Products", product.ProductCategory.Name, Settings.HttpProtocol)">
+
+                    <span>
+                        @product.Name
+                    @if (isUserAuthenticated)
+                    {
+                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                    }
+                </span>
+                <h5>@product.ProductCategory.Name</h5>
+        </a>
+
+        </div>
+    }
+
+
+}
 
 @foreach (var pt in storyTags)
 {

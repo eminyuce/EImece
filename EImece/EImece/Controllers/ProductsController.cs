@@ -40,6 +40,7 @@ namespace EImece.Controllers
             int pageIndex = 1;
             int pageSize = 20;
             SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+            ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
         }
         public ActionResult SearchProducts(String search)

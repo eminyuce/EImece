@@ -2,13 +2,28 @@
 @using GenericRepository;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
 @{
-    ViewBag.Title = "Tag";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     PaginatedList<ProductTag> productTags = Model.ProductTags;
+    var tag = Model.Tag;
+    ViewBag.Title = tag.GetSeoTitle();
+    ViewBag.Description = String.Join(",", productTags.Select(r => r.Product.Name)).ToStr(150);
+
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
-<h2>@Model.Tag.Name</h2>
+<h2>@tag.Name
+    @if (isUserAuthenticated)
+    {
+        @Html.ActionLink("edit", "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
+    }
+    </h2>
 
 @Html.BootstrapPager(productTags.PageIndex,
     index => Url.Action("Tag", "Products", new { page = index }),

@@ -167,5 +167,19 @@ namespace EImece.Domain.Repositories
             return query.ToList();
         }
 
+        public List<Product> GetRelatedProducts(int[] tagIdList, int take, int lang, int excludedProductId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang 
+            && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId)) 
+            && r2.Id != excludedProductId;
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
+
+            return result.ToList();
+        }
     }
 }
