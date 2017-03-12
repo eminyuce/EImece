@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = EntityFactory.GetBaseEntityInstance<Tag>();
             ViewBag.Categories = GetCategoriesSelectList();
-
+            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             if (id == 0)
             {
 
@@ -92,7 +92,7 @@ namespace EImece.Areas.Admin.Controllers
                     Tag.Lang = CurrentLanguage;
                     TagService.SaveOrEditEntity(Tag);
                     int contentId = Tag.Id;
-                    return RedirectToAction("Index");
+                    return ReturnTempUrl("Index");
                 }
                 else
                 {

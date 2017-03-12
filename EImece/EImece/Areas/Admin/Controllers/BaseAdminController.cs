@@ -23,7 +23,7 @@ namespace EImece.Areas.Admin.Controllers
     [AuthorizeRoles(Settings.AdministratorRole, Settings.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
-
+        protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer"; 
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
@@ -117,7 +117,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Response.Cookies.Add(cultureCookie);
             }
-
+            
             return base.BeginExecuteCore(callback, state);
         }
 
@@ -148,6 +148,34 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
         }
+
+
+        protected ActionResult RequestReturn(RedirectToRouteResult returnDefault)
+        {
+            var urlReferrer = Request.UrlReferrer;
+            if (urlReferrer != null)
+            {
+                return Redirect(urlReferrer.ToStr());
+            }
+            else
+            {
+                return returnDefault;
+            }
+        }
+
+        protected ActionResult ReturnTempUrl(String name)
+        {
+            if (!String.IsNullOrEmpty(TempData[TempDataReturnUrlReferrer].ToStr()))
+            {
+                MemoryCacheProvider.ClearAll();
+                return Redirect(TempData[TempDataReturnUrlReferrer].ToStr());
+            }
+            else
+            {
+                return RedirectToAction(name);
+            }
+        }
+
         public BaseAdminController()
         {
 

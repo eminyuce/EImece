@@ -59,7 +59,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
-
+            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
 
 
             if (id == 0)
@@ -99,7 +99,7 @@ namespace EImece.Areas.Admin.Controllers
                     menu.Lang = CurrentLanguage;
                     MenuService.SaveOrEditEntity(menu);
                     int contentId = menu.Id;
-                    return RedirectToAction("Index");
+                    return ReturnTempUrl("Index");
                 }
                 else
                 {

@@ -31,7 +31,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
+            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseEntityInstance<TagCategory>();
 
 
@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
                     TagCategory.Lang = CurrentLanguage;
                     TagCategoryService.SaveOrEditEntity(TagCategory);
                     int contentId = TagCategory.Id;
-                    return RedirectToAction("Index");
+                    return ReturnTempUrl("Index");
                 }
                 else
                 {

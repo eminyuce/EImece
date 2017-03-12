@@ -116,7 +116,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
+            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Product>();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -132,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Settings.IsProductPriceEnable);
             return View(content);
         }
 
@@ -171,7 +171,10 @@ namespace EImece.Areas.Admin.Controllers
                         {
                             ProductService.SaveProductTags(product.Id, tags);
                         }
-                        return RedirectToAction("Index");
+
+
+                        return ReturnTempUrl("Index");
+                       
                     }
 
 
@@ -188,12 +191,15 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.StackTrace);
             }
+
+
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.ProductCategory = ProductCategoryService.GetSingle(product.ProductCategoryId);
             if (product.MainImageId.HasValue)
             {
                 product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
             }
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Settings.IsProductPriceEnable);
             return View(product);
         }
 

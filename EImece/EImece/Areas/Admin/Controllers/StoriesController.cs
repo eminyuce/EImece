@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
+            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Story>();
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
 
@@ -96,7 +96,7 @@ namespace EImece.Areas.Admin.Controllers
                         StoryService.SaveStoryTags(story.Id, tags);
                     }
 
-                    return RedirectToAction("Index");
+                    return ReturnTempUrl("Index");
                 }
                 else
                 {

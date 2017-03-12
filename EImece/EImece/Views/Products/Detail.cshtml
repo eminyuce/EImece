@@ -65,7 +65,7 @@
                 <h2>@product.Name</h2>
                 @if (isUserAuthenticated)
                 {
-                    @Html.ActionLink("edit","saveoredit","Products",new { @id=product.Id, @area="admin" },new {  })
+                    @Html.ActionLink("edit","saveoredit","Products",new { @id=product.Id, @area="admin" },new {  @class="adminPageLink"  })
                 }
                 <h4>
                     @product.ProductCategory.Name

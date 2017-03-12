@@ -95,16 +95,10 @@ namespace EImece.Areas.Admin.Controllers
 
             Response.Cookies[AdminCultureCookieName].Value = name;
             MemoryCacheProvider.ClearAll();
-            var urlReferrer = Request.UrlReferrer;
-            if (urlReferrer != null)
-            {
-                return Redirect(urlReferrer.ToStr());
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
+            var returnDefault = RedirectToAction("Index");
+            return RequestReturn(returnDefault);
         }
+
        
 
     }

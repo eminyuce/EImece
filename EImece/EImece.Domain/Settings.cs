@@ -26,6 +26,7 @@ namespace EImece.Domain
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
+        public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
 
