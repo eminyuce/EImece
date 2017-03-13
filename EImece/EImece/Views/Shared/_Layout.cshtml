@@ -144,20 +144,22 @@
     ================================================== -->
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="~/Scripts/eimece.js?v=7"></script>
+
+
+    <script src="~/Scripts/eimece.js?v=1"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
-    <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
-    <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
+<script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
+   <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.pureparallax.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.pricefilter.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.selectric.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.royalslider.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/SelectBox.js"></script>
-    <script src="~/Scripts/trizzy/scripts/modernizr.custom.js"></script>
+    @*<script src="~/Scripts/trizzy/scripts/modernizr.custom.js"></script>*@
     <script src="~/Scripts/trizzy/scripts/waypoints.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.flexslider-min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.counterup.min.js"></script>
@@ -168,27 +170,7 @@
     <script src="~/Scripts/trizzy/scripts/custom.js"></script>
 
     @RenderSection("scripts", required: false)
-    <script>
-        jQuery(function () {
-            $("#btn-search").click(function () {
-                console.log("eee");
-                $(".error").hide();
-                var hasError = false;
-                var searchReg = /^[a-zA-Z0-9-]+$/;
-                var searchVal = $("#Search_TextBox").val();
-                if (searchVal == '') {
-                    $("#errorMessage").text($("#SearchRequiredErrorMessage").val());
-                  //  $("#Search_TextBox").after('<span class="error">' + $("#SearchRequiredErrorMessage").val() + '</span>');
-                    hasError = true;
-                } else if (!searchReg.test(searchVal)) {
-                    $("#errorMessage").text($("#SearchValidText").val());
-                   // $("#Search_TextBox").after('<span class="error">' + $("#SearchValidText").val() + '</span>');
-                    hasError = true;
-                }
-                if (hasError == true) { return false; }
-            });
-        });
-    </script>
+   
 
 
 </body>

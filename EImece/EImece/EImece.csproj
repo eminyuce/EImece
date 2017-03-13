@@ -395,6 +395,9 @@
     <Content Include="Content\trizzy\css\switcher.css" />
     <Content Include="Content\trizzy\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\trizzy\fonts\fontello.svg" />
+    <Content Include="Content\trizzy\images\home%402x.png.png" />
+    <Content Include="Content\trizzy\images\home.png" />
+    <Content Include="Content\trizzy\images\loader.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
