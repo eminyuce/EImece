@@ -211,6 +211,7 @@
     <Compile Include="Models\FrontModels\ProductIndexViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
+    <Compile Include="Models\FrontModels\SimiliarStoryTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\StoryCategoryViewModel.cs" />
     <Compile Include="Models\FrontModels\StoryDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\StoryIndexViewModel.cs" />

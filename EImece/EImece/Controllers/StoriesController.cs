@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Controllers
 {
@@ -35,6 +36,16 @@ namespace EImece.Controllers
             var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
             ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
             return View(storyCategory);
+        }
+        [OutputCache(CacheProfile = "Cache20Minutes")]
+        public ActionResult Tag(String id)
+        {
+            var tagId = id.GetId();
+            int pageIndex = 1;
+            int pageSize = 20;
+            SimiliarStoryTagsViewModel stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+            ViewBag.SeoId = stories.Tag.GetSeoUrl();
+            return View(stories);
         }
     }
 }

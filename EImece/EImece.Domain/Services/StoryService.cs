@@ -156,5 +156,15 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetLatestStories(language, take);
         }
+
+        public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang)
+        {
+            var result = new SimiliarStoryTagsViewModel();
+            result.Tag = TagService.GetSingle(tagId);
+            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 0, 10, lang);
+            result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
+
+            return result;
+        }
     }
 }

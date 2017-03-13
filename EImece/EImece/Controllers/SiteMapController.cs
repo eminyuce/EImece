@@ -124,6 +124,29 @@ namespace EImece.Controllers
             }
 
 
+            var tags = TagService.GetActiveBaseEntitiesFromCache(true, null);
+
+            foreach (var item in tags)
+            {
+                DateTime? lastModified = item.UpdatedDate;
+                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
+                         Settings.HttpProtocol),
+                               lastModified,
+                               SitemapChangeFrequency.Daily,
+                               priority: 1.0);
+
+                sitemapItems.Add(sm);
+
+                  sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                    Settings.HttpProtocol),
+                          lastModified,
+                          SitemapChangeFrequency.Daily,
+                          priority: 1.0);
+
+                sitemapItems.Add(sm);
+
+            }
+
             return new SitemapResult(sitemapItems);
 
         }

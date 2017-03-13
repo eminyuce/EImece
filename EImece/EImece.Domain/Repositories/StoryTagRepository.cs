@@ -8,6 +8,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using System.Linq.Expressions;
 using GenericRepository.EntityFramework.Enums;
+using GenericRepository;
 
 namespace EImece.Domain.Repositories
 {
@@ -46,6 +47,15 @@ namespace EImece.Domain.Repositories
             }
         }
 
-         
+        public PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, object lang)
+        {
+
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.Story);
+            includeProperties.Add(r => r.Story.StoryCategory);
+            includeProperties.Add(r => r.Story.StoryFiles);
+            return this.Paginate(pageIndex, pageSize, r => r.Story.Position, r => r.TagId == tagId, includeProperties.ToArray());
+
+        }
     }
 }

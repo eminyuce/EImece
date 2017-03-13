@@ -19,5 +19,6 @@ namespace EImece.Domain.Services.IServices
         StoryDetailViewModel GetStoryDetailViewModel(int storyId);
         StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page);
         List<Story> GetLatestStories(int language, int take);
+        SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int currentLanguage);
     }
 }

@@ -182,6 +182,7 @@ namespace EImece.Domain.Services
             var r = new SimiliarProductTagsViewModel();
             r.Tag = TagService.GetSingle(tagId);
             r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang);
+            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 0, 10, lang);
             return r;
         }
 

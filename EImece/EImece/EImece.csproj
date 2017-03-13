@@ -725,6 +725,7 @@
     <Content Include="Views\Stories\PageThemes\PageTheme_T3.cshtml" />
     <Content Include="Views\Stories\PageThemes\PageTheme_T2.cshtml" />
     <Content Include="Views\Stories\PageThemes\PageTheme_T4.cshtml" />
+    <Content Include="Views\Stories\Tag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />
