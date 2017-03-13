@@ -161,7 +161,7 @@ namespace EImece.Domain.Services
         {
             var result = new SimiliarStoryTagsViewModel();
             result.Tag = TagService.GetSingle(tagId);
-            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 0, 10, lang);
+            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, lang);
             result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
 
             return result;

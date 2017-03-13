@@ -12,6 +12,6 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
         void SaveStoryTags(int storyId, int[] tags);
-        PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, object lang);
+        PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang);
     }
 }

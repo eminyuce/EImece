@@ -47,14 +47,18 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, object lang)
+        public PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
 
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Story);
             includeProperties.Add(r => r.Story.StoryCategory);
             includeProperties.Add(r => r.Story.StoryFiles);
-            return this.Paginate(pageIndex, pageSize, r => r.Story.Position, r => r.TagId == tagId, includeProperties.ToArray());
+            return this.Paginate(pageIndex, 
+                pageSize, 
+                r => r.Story.Position, 
+                r => r.TagId == tagId && r.Tag.Lang == lang,
+                includeProperties.ToArray());
 
         }
     }
