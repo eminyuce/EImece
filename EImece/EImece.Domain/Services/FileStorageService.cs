@@ -40,7 +40,8 @@ namespace EImece.Domain.Services
             EImeceImageType? contentImageType,
             MediaModType? contentMediaType,
             List<ViewDataUploadFilesResult> resultList,
-            int language
+            int language,
+            string selectedTags
             )
         {
 
@@ -66,6 +67,22 @@ namespace EImece.Domain.Services
                     fileStorage.Lang = language;
                     FileStorageRepository.SaveOrEdit(fileStorage);
                     file.fileStorageId = fileStorage.Id;
+
+
+
+                    var sTags = selectedTags.Split(",".ToCharArray()).Select(r => r.ToInt());
+                    if (sTags.Any())
+                    {
+                        FileStorageTagRepository.DeleteByWhereCondition(r => r.FileStorageId == file.fileStorageId);
+                        foreach (var imageTag in sTags)
+                        {
+                            var iTag = new FileStorageTag();
+                            iTag.TagId = imageTag;
+                            iTag.FileStorageId = file.fileStorageId;
+                            FileStorageTagRepository.SaveOrEdit(iTag);
+                        }
+
+                    }
 
                     switch (contentMediaType.Value)
                     {
@@ -123,7 +140,7 @@ namespace EImece.Domain.Services
 
                 }
 
-
+               
 
             }
 
@@ -139,16 +156,16 @@ namespace EImece.Domain.Services
             {
                 case MediaModType.Stories:
                     isResult = StoryFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.StoryId == contentId);
-                    FileStorageRepository.DeleteItem(f);
+                    this.DeleteFileStorage(f.Id);
                     break;
 
                 case MediaModType.Products:
                     isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.ProductId == contentId);
-                    FileStorageRepository.DeleteItem(f);
+                    this.DeleteFileStorage(f.Id);
                     break;
                 case MediaModType.Menus:
                     isResult = MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.MenuId == contentId);
-                    FileStorageRepository.DeleteItem(f);
+                    this.DeleteFileStorage(f.Id);
                     break;
                 default:
                     break;
@@ -195,7 +212,6 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var deletedResult = "";
 
                 foreach (String v in values)
                 {
@@ -204,30 +220,21 @@ namespace EImece.Domain.Services
                     int contentId = parts[1].ToInt();
                     MediaModType? enumMod = EnumHelper.Parse<MediaModType>(parts[2].ToStr());
                     EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(parts[3].ToStr());
-                    var fileStorage = FileStorageRepository.GetSingle(fileStorageId);
-                    deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+
                     switch (enumMod.Value)
                     {
                         case MediaModType.Stories:
-                            if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
-                            {
                                 StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == contentId && r.FileStorageId == fileStorageId);
-                                FileStorageRepository.Delete(fileStorage);
-                            }
+                                this.DeleteFileStorage(fileStorageId);
                             break;
                         case MediaModType.Products:
-                            if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
-                            {
                                 ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
-                                FileStorageRepository.Delete(fileStorage);
-                            }
+                                this.DeleteFileStorage(fileStorageId);
                             break;
                         case MediaModType.Menus:
-                            if (deletedResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
-                            {
                                 MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == contentId && r.FileStorageId == fileStorageId);
-                                FileStorageRepository.Delete(fileStorage);
-                            }
+                                this.DeleteFileStorage(fileStorageId);
+                            
                             break;
 
                         default:
@@ -254,6 +261,8 @@ namespace EImece.Domain.Services
                 var fileStorage = GetSingle(id);
                 if (fileStorage != null)
                 {
+                    FileStorageTagRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorage.Id);
+
                     var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
                     DeleteEntity(fileStorage);
                     return deletedResult;

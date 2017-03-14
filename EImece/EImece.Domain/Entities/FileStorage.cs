@@ -19,5 +19,7 @@ namespace EImece.Domain.Entities
         public int Height { get; set; }
         public string Type { get; set; }
         public bool IsFileExist { get; set; }
+
+        public ICollection<FileStorageTag> FileStorageTags { get; set; }
     }
 }

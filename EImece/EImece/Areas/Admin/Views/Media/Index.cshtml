@@ -77,11 +77,15 @@
                 imageType: $("#ImageType").val(),
                 mod: $("#MediaMod").val(),
                 imageHeight: $("#sliderHeight").slider("option", "value"),
-                imageWidth: $("#sliderWidth").slider("option", "value")
+                imageWidth: $("#sliderWidth").slider("option", "value"),
+                selectedTags : GetSelectedTag()
             }
         });
 
         $("#target").click(function () {
+            console.log(GetSelectedTag());
+        });
+        function GetSelectedTag() {
             var arr = [];
             $('[data-image-tag]').each(function () {
                 var m = $(this).is(':checked');
@@ -89,9 +93,10 @@
                     arr.push($(this).val());
                 }
             });
-            console.log(arr);
-        });
+         
 
+            return arr;
+        }
         CreateTags();
         function CreateTags() {
             var postData = JSON.stringify({ "language": $("#Lang").val() });

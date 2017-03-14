@@ -17,5 +17,7 @@ namespace EImece.Domain.Entities
 
         public  ICollection<ProductTag> ProductTags { get; set; }
         public  ICollection<StoryTag> StoryTags { get; set; }
+
+        public ICollection<FileStorageTag> FileStorageTags { get; set; }
     }
 }

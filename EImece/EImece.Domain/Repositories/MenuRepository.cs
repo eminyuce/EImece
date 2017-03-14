@@ -61,11 +61,10 @@ namespace EImece.Domain.Repositories
 
         public Menu GetMenuById(int menuId)
         {
-            Expression<Func<Menu, object>> includeProperty3 = r => r.MainImage;
-            Expression<Func<Menu, object>> includeProperty2 = r => r.MenuFiles;
-            Expression<Func<Menu, object>>[] includeProperties = { includeProperty2, includeProperty3 };
-
-            var item = GetSingleIncluding(menuId, includeProperties);
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
+            includeProperties.Add(r => r.MainImage);
+            var item = GetSingleIncluding(menuId, includeProperties.ToArray());
 
             return item;
         }

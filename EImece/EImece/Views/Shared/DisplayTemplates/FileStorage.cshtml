@@ -1,0 +1,31 @@
+﻿@model EImece.Domain.Entities.FileStorage
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    EImece.Domain.Entities.FileStorage fileStorage = Model;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var tags = fileStorage.FileStorageTags.Select(r1 => r1.Tag).Distinct().ToList();
+    string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
+    string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
+}
+
+
+
+
+
+<div class="one-third column portfolio-item media
+      post-@fileStorage.Id portfolio type-portfolio
+     status-publish has-post-thumbnail hentry
+     @filters @tagsText" id="post-@fileStorage.Id" style="position: absolute; left: 320px; top: 0px;">
+
+    <figure>
+        <div class="portfolio-holder">
+                @Html.Raw(fileStorage.GetCroppedImageTag(fileStorage.Id,300, 214))
+                <div class="hover-icon"></div>
+        </div>
+    </a>
+</figure>
+
+</div>

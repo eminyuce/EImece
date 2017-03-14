@@ -90,6 +90,7 @@ namespace EImece.Areas.Admin.Controllers
             int imageHeight = Request.Form["imageHeight"].ToInt();
             int imageWidth = Request.Form["imageWidth"].ToInt();
 
+            string selectedTags = Request.Form["selectedTags"];
 
             var resultList = new List<ViewDataUploadFilesResult>();
 
@@ -105,7 +106,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList,CurrentLanguage);
+                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList,CurrentLanguage,selectedTags);
                 return Json(files);
             }
         }

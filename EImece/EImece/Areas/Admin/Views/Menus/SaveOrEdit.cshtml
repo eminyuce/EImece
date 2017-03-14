@@ -210,7 +210,7 @@ console.log(e);
                         </div>
                     </div>
                 </div>
-                <div id="pageThemeWrapper" style="display: none;" class="form-group">
+                <div id="pageThemeWrapper" style="@String.Format("{0}", (Model.Id>0 && Model.MenuLink.Equals("pages-index") ) ? "" : "display: none;")" class="form-group">
                     @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <div class="checkbox">
@@ -244,7 +244,7 @@ console.log(e);
                 console.log("111");
                 $("#ParentName").text("");
             });
-            menuChangeEvent();
+           // menuChangeEvent();
             $("#MenuLink").change(menuChangeEvent);
             function menuChangeEvent() {
                 var selectedValue = $("#MenuLink option:selected").val();

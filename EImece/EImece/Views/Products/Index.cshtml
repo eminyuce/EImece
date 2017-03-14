@@ -3,6 +3,7 @@
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
 @using Resources;
 @model ProductIndexViewModel
 @using EImece.Domain;
@@ -46,7 +47,7 @@
         <div id="filters" class="filters-dropdown headline">
             <span></span>
             <ul class="option-set" data-option-key="filter">
-                <li><a href="#filter" class="selected" data-filter="*">All</a></li>
+                <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
                 @foreach (var t in productTags)
                 {
                     <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>

@@ -100,9 +100,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
-            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.Name.Trim().Contains(search.Trim());
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.Name.Contains(search.Trim());
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+            var items = this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
 
             return items;
         }

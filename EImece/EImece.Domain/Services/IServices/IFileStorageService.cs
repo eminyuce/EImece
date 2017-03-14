@@ -17,7 +17,7 @@ namespace EImece.Domain.Services.IServices
             EImeceImageType? contentImageType,
             MediaModType? contentMediaType,
             List<ViewDataUploadFilesResult> resultList, 
-            int language);
+            int language, string selectedTags);
         void DeleteUploadImage(String fileName,int contentId, EImeceImageType? imageType, MediaModType? mod);
         List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType);
 

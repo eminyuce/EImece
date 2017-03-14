@@ -130,18 +130,14 @@ namespace EImece.Domain.Helpers
         }
         public String DeleteFile(String file, HttpContextBase ContentBase)
         {
-            var fileResult = DeleteFile(file);
-            if (fileResult.Equals("ok", StringComparison.InvariantCultureIgnoreCase))
-            {
                 var request = ContentBase.Request;
                 int contentId = request.QueryString["contentId"].ToInt();
                 var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
                 var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
 
                 FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
-            }
 
-            return fileResult;
+            return "OK";
         }
 
         public String DeleteThumbFile(String file)

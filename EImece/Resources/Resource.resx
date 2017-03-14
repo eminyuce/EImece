@@ -207,4 +207,7 @@
   <data name="NewModelsClick" xml:space="preserve">
     <value>Yeni modellerimiz için tıklayınız</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>Hepsi</value>
+  </data>
 </root>

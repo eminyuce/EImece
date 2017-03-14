@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hepsi.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adres.
         /// </summary>
         public static string ContactUsAddress {
