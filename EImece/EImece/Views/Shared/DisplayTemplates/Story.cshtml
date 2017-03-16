@@ -10,6 +10,9 @@
     var categoryName = story.StoryCategory.Name;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
     var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
+    int Width = ViewData["Width"].ToInt(300);
+    int Height = ViewData["Height"].ToInt(250);
+    var storyImageTag = story.GetCroppedImageTag(Width, Height);
 }
 
 
@@ -21,7 +24,7 @@
     <figure class="post-img">
          
         <a href="@story.GetDetailPageUrl("Detail","Stories")">
-            @Html.Raw(story.GetCroppedImageTag(300, 250))
+            @Html.Raw(storyImageTag)
         </a>
     </figure>
 

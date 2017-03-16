@@ -6,11 +6,14 @@
 @{
     var productCategory = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(380);
+    int Height = ViewData["Height"].ToInt(185);
+    var imageTag = productCategory.GetCroppedImageTag(Width, Height);
 }
 <div class="one-third column">
     <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")" class="img-caption">
         <figure>
-            @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
+            @Html.Raw(imageTag)
             <figcaption>
                 <h3>@productCategory.Name
             

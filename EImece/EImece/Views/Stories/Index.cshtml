@@ -36,7 +36,7 @@
 
 @foreach (var item in stories)
 {
-    @Html.DisplayFor(modelItem => item,"StoryShort")
+    @Html.DisplayFor(modelItem => item,"StoryShort", new { Width = 300, Height = 300 })
 }
 
 

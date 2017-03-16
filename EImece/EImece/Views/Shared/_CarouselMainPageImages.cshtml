@@ -1,12 +1,16 @@
 ﻿@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
 @model List<MainPageImage>
 
 @{
     var mainPageImages = Model;
     var cnt1 = 0;
     var cnt2 = 0;
+    int Width = ViewData["Width"].ToInt(1140);
+    int Height = ViewData["Height"].ToInt(500);
+
 }
 @if (mainPageImages.Any())
 {
@@ -27,7 +31,7 @@
             {
                 var cssClass = cnt2 == 0 ? "item active" : "item";
                 <div class="@cssClass">
-                    @Html.Raw(mainPageImage.GetCroppedImageTag(1140, 500))
+                    @Html.Raw(mainPageImage.GetCroppedImageTag(Width, Height))
                     <div class="carousel-caption">
                         <h3>@mainPageImage.Name</h3>
                         @Html.Raw(@mainPageImage.Description)

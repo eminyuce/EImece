@@ -7,6 +7,9 @@
     var product = Model;
     var categoryName = product.ProductCategory.Name;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(200);
+    int Height = ViewData["Height"].ToInt(200);
+    var imageTag = product.GetCroppedImageTag(Width, Height);
 }
 
  
@@ -15,9 +18,9 @@
     <figure class="product">
         <div class="mediaholder">
             <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
-                @Html.Raw(product.GetCroppedImageTag(300, 300))
+                @Html.Raw(imageTag)
                 <div class="cover">
-                    @Html.Raw(product.GetCroppedImageTag(300, 300))
+                    @Html.Raw(imageTag)
                 </div>
             </a>
         </div>

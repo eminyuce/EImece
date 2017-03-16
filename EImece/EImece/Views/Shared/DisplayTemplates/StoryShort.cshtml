@@ -8,12 +8,15 @@
 @{
     var story = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(200);
+    int Height = ViewData["Height"].ToInt(200);
 }
 
 
 <div class="story">
     <h3>
-        @Html.Raw(story.GetThumpImageTag())
+        @*@Html.Raw(story.GetThumpImageTag())*@
+        @Html.Raw(story.GetCroppedImageTag(Width, Height))
 
         <a href="@story.GetDetailPageUrl("Detail","Stories",story.StoryCategory.Name)">
             @Html.DisplayFor(model => story.Name)

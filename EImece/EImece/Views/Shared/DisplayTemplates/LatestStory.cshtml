@@ -11,6 +11,8 @@
     var story = Model;
     var storyDetailUrl = story.GetDetailPageUrl("Detail", "Stories", story.StoryCategory.Name);
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(280);
+    int Height = ViewData["Height"].ToInt(280);
 }
 
 
@@ -20,7 +22,7 @@
     <article class="from-the-blog">
         <figure class="from-the-blog-image">
             <a href="@storyDetailUrl">
-                @Html.Raw(story.GetCroppedImageTag(280, 280))
+                @Html.Raw(story.GetCroppedImageTag(Width, Height))
             </a>
             <div class="hover-icon"></div>
         </figure>
