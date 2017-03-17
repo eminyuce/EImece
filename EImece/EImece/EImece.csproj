@@ -730,6 +730,7 @@
     <Content Include="Views\Stories\PageThemes\PageTheme_T4.cshtml" />
     <Content Include="Views\Stories\Tag.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FileStorage.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MainPageProductShort.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

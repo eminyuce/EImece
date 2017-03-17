@@ -187,6 +187,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsCampaign.
+        /// </summary>
+        public static string IsCampaign {
+            get {
+                return ResourceManager.GetString("IsCampaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ana Sayfa.
         /// </summary>
         public static string MainPage {

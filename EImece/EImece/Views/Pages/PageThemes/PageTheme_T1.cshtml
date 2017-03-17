@@ -13,7 +13,8 @@
     ViewBag.Description = menu.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
     var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
-
+    int Width = ViewData["Width"].ToInt(300);
+    int Height = ViewData["Height"].ToInt(214);
 }
 
 <h2>
@@ -48,7 +49,7 @@
 
     <!-- Jumbotron Header -->
     <header class="jumbotron hero-spacer">
-        @Html.Raw(menu.GetCroppedImageTag(400, 250))
+        @Html.Raw(menu.GetCroppedImageTag(Width, Height))
     </header>
 
     <hr>

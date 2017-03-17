@@ -105,6 +105,14 @@ namespace EImece.Domain.Services
                                 product.ImageState = item.IsActive;
                             }
                         }
+                        else if (checkbox.Equals("IsCampaign", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (baseContent is Product)
+                            {
+                                var product = baseContent as Product;
+                                product.IsCampaign = item.IsActive;
+                            }
+                        }
 
                     }
                     baseEntityRepository.Edit(t);

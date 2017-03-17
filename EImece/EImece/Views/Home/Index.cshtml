@@ -1,7 +1,9 @@
 ﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Models.FrontModels;
-@model MainPageViewModel
+@using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
+@using EImece.Domain.Helpers
+@model MainPageViewModel
 @{
 
     var mainPageImages = Model.MainPageImages;
@@ -50,19 +52,109 @@
 </div>
 
 
-@if (mainPageProducts.Count > 0)
-{
-    <div class="container">
 
-        @for (int i = 0; i < mainPageProducts.Count; i++)
-        {
-            var mainPageProduct = mainPageProducts[i];
-            @Html.DisplayFor(model => mainPageProduct, "MainPageProduct")
-        }
+<div class="parallax-banner fullwidth-element" data-background="#000" data-opacity="0.45" data-height="200" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
+    @Html.Raw(Model.MainPageMenu.GetImageTag())
+    <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
+    <div class="parallax-title" style="top: 68.5px;">@Model.MainPageMenu.Name <span>@Model.MainPageMenu.MetaKeywords</span></div>
+</div>
+
+
+
+<div class="container margin-bottom-25">
+
+    <div class="one-third column">
+
+        <!-- Headline -->
+        <h3 class="headline">VİTRİN ÜRÜNLERİ</h3>
+        <span class="line margin-bottom-0"></span>
+        <div class="clearfix"></div>
+
+        <ul class="product-list">
+ 
+
+            @for (int i = 0; i < mainPageProducts.Count; i++)
+            {
+                var p = mainPageProducts[i];
+                @Html.DisplayFor(model => p, "MainPageProductShort",new { Width=80, Height=80 })
+            }
+
+
+            <li>
+                <div class="clearfix"></div>
+            </li>
+        </ul>
 
     </div>
-}
 
+
+
+
+
+
+
+    <div class="one-third column">
+
+        <!-- Headline -->
+        <h3 class="headline">KAMPANYALI ÜRÜNLER</h3>
+        <span class="line margin-bottom-0"></span>
+        <div class="clearfix"></div>
+
+        <ul class="product-list">
+
+
+
+            @for (int i = 0; i < Model.CampaignProducts.Count; i++)
+            {
+                var p = Model.CampaignProducts[i];
+                @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+
+            }
+
+
+
+            <li>
+                <div class="clearfix"></div>
+            </li>
+        </ul>
+
+    </div>
+
+
+
+
+
+
+
+    <div class="one-third column">
+        <!-- Headline -->
+        <h3 class="headline">YENİ ÜRÜNLER</h3>
+        <span class="line margin-bottom-0"></span>
+        <div class="clearfix"></div>
+        <ul class="product-list">
+ 
+
+            @for (int i = 0; i < Model.LatestProducts.Count; i++)
+            {
+                var p = Model.LatestProducts[i];
+                @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+
+            }
+
+
+            <li>
+                <div class="clearfix"></div>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+</div>
+
+
+ 
 @if (latestStories.Count > 0)
 {
     var p = latestStories.OrderBy(r => r.Position).ToList();

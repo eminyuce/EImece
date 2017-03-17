@@ -210,4 +210,7 @@
   <data name="All" xml:space="preserve">
     <value>Hepsi</value>
   </data>
+  <data name="IsCampaign" xml:space="preserve">
+    <value>IsCampaign</value>
+  </data>
 </root>

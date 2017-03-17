@@ -181,5 +181,18 @@ namespace EImece.Domain.Repositories
 
             return result.ToList();
         }
+
+        public IQueryable<Product> GetActiveProducts(bool? isActive, int? language)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language;
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, null,null, includeProperties.ToArray());
+
+            return result;
+        }
     }
 }

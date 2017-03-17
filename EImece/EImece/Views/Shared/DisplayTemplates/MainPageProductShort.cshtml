@@ -1,0 +1,26 @@
+﻿@model EImece.Domain.Entities.Product
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@{
+    var productFiles = Model.ProductFiles;
+    var product = Model;
+    var categoryName = product.ProductCategory.Name;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(200);
+    int Height = ViewData["Height"].ToInt(200);
+    var imageTag = product.GetCroppedImageTag(Width, Height);
+}
+
+ 
+<li>
+    <a href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+        @Html.Raw(imageTag)
+        <div class="product-list-desc">@product.Name
+            @if (isUserAuthenticated)
+            {
+                @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink" })
+            }
+        <i></i></div>
+    </a>
+</li>

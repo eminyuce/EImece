@@ -17,5 +17,6 @@ namespace EImece.Domain.Services.IServices
         List<Menu> GetMenuLeaves(bool? isActive, int language);
         bool DeleteMenu(int menuId);
         void DeleteMenus(List<string> values);
+ 
     }
 }

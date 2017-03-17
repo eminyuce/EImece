@@ -22,6 +22,7 @@
     var State = AdminResource.State;
     var ImageState = AdminResource.ImageState;
     var MainPage = AdminResource.MainPage;
+    var IsCampaign = AdminResource.IsCampaign;
     var AdminDeleteConfirmMessage = AdminResource.AdminDeleteConfirmMessage;
 
 }
@@ -77,33 +78,43 @@
                 </span>
             }
 
-          
-
-                <span class="col-md-2">
-                    @if (StateTypes.Equals("State,ImageState,MainPage"))
-                    {
-                        <select name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">@State</option>
-                            <option value="ImageState">@ImageState</option>
-                            <option value="MainPage">@MainPage</option>
-                        </select>
-                    }
-                    else if (StateTypes.Equals("State,ImageState"))
-                    {
-                        <select name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">@State</option>
-                            <option value="ImageState">@ImageState</option>
-                        </select>
-                    }
-                    else if (StateTypes.Equals("State"))
-                    {
-                        <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
-                    }
 
 
-                </span>
+            <span class="col-md-2">
 
-           
+                @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
+                {
+                    <select name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">@State</option>
+                        <option value="ImageState">@ImageState</option>
+                        <option value="MainPage">@MainPage</option>
+                        <option value="IsCampaign">@IsCampaign</option>
+                    </select>
+                }
+                else if (StateTypes.Equals("State,ImageState,MainPage"))
+                {
+                    <select name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">@State</option>
+                        <option value="ImageState">@ImageState</option>
+                        <option value="MainPage">@MainPage</option>
+                    </select>
+                }
+                else if (StateTypes.Equals("State,ImageState"))
+                {
+                    <select name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">@State</option>
+                        <option value="ImageState">@ImageState</option>
+                    </select>
+                }
+                else if (StateTypes.Equals("State"))
+                {
+                    <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                }
+
+
+            </span>
+
+
 
             @if (SetStateOnOrOff)
             {

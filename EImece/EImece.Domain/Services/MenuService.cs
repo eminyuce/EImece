@@ -108,5 +108,7 @@ namespace EImece.Domain.Services
                 Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
+      
     }
 }

@@ -23,5 +23,6 @@ namespace EImece.Domain.Services.IServices
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang);
         SimiliarProductTagsViewModel GetProductByTagId(int tagId,int pageIndex, int pageSize,   int lang);
         void SaveProductSpecifications(List<ProductSpecification> specifications);
+        IQueryable<Product> GetActiveProducts(bool ? isActive, int ? language);
     }
 }

@@ -199,5 +199,10 @@ namespace EImece.Domain.Services
                 ProductSpecificationRepository.Save();
             }
         }
+
+        public IQueryable<Product> GetActiveProducts(bool? isActive, int? language)
+        {
+            return ProductRepository.GetActiveProducts(isActive, language);
+        }
     }
 }
