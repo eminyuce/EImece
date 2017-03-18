@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
+using System.ServiceModel.Syndication;
 
 namespace EImece.Domain.Services.IServices
 {
     public interface IProductService : IBaseContentService<Product>
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
-
+        Rss20FeedFormatter GetProductsRss(int take, int language, int description,int width,int height);
         ProductIndexViewModel GetMainPageProducts(int pageIndex,  int lang);
         List<ProductTag> GetProductTagsByProductId(int productId);
         void SaveProductTags(int id, int[] tags);

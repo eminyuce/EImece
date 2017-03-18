@@ -11,8 +11,11 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using System.Data.Entity.Validation;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using NLog;
 using EImece.Domain.Models.FrontModels;
+using System.ServiceModel.Syndication;
+using System.Web;
 
 namespace EImece.Domain.Services
 {
@@ -209,6 +212,24 @@ namespace EImece.Domain.Services
         public IQueryable<Product> GetActiveProducts(bool? isActive, int? language)
         {
             return ProductRepository.GetActiveProducts(isActive, language);
+        }
+
+        public Rss20FeedFormatter GetProductsRss(int take, int language, int description, int width, int height)
+        {
+            var items = this.GetActiveProducts(true, language).Take(take).ToList();
+            var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+            String title = SettingService.GetSettingByKey(Settings.CompanyName);
+            var feed = new SyndicationFeed(title, "", new Uri(url))
+            {
+                Language = "en-US"
+            };
+            feed.AddNamespace("products", url + "/products");
+
+            feed.Items = items.Select(s => s.GetProductSyndicationItem(url, description, width, height));
+
+            return new Rss20FeedFormatter(feed);
+
         }
     }
 }

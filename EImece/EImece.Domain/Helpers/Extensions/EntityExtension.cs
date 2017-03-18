@@ -1,10 +1,12 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Services.IServices;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,6 +16,46 @@ namespace EImece.Domain.Helpers.Extensions
 {
     public static class EntityExtension
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+
+        public static SyndicationItem GetProductSyndicationItem(this Product product, string url, int description, int width, int height)
+        {
+            String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Products", product.ProductCategory.Name,
+                         Settings.HttpProtocol));
+
+            var desc = GeneralHelper.StripHtml(product.Description).ToStr(description);
+            var si = new SyndicationItem(product.Name, desc, new Uri(link));
+            si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
+
+            if (!String.IsNullOrEmpty(product.ProductCategory.Name))
+            {
+                si.ElementExtensions.Add("Category", String.Empty, product.ProductCategory.Name);
+            }
+
+
+            String imageSrc = product.GetCroppedImageUrl(width, height);
+            if (!String.IsNullOrEmpty(imageSrc))
+            {
+
+                string imageUrl = String.Format("{0}{1}", url, imageSrc);
+
+                try
+                {
+                    SyndicationLink imageLink =
+                        SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
+                    si.Links.Add(imageLink);
+                }
+                catch (Exception e)
+                {
+                     Logger.Error(e,e.Message+" : "+ String.Format("url={0} imageSrc={1}", url, imageSrc));
+                }
+
+            }
+
+            return si;
+
+        }
 
         public static double GetProductPrice(this Product product)
         {
@@ -95,8 +137,8 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";
-            if (entity!= null &&  entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
-                
+            if (entity != null && entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
+
             {
                 String imagePath = GetFullPathImageUrlFromFileSystem(entity, false);
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
@@ -157,9 +199,9 @@ namespace EImece.Domain.Helpers.Extensions
             if (!String.IsNullOrEmpty(imagePath))
             {
                 imageTag = String.Format("<img src='{0}' alt='{1}' width='{2}' height='{3}'  />",
-                    imagePath, entity.Name,width,height).ToLower();
+                    imagePath, entity.Name, width, height).ToLower();
             }
-      
+
 
             return imageTag;
         }

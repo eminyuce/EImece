@@ -98,6 +98,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -163,6 +164,7 @@
     <Compile Include="Entities\Template.cs" />
     <Compile Include="Factories\EntityFactory.cs" />
     <Compile Include="Factories\IFactories\IEntityFactory.cs" />
+    <Compile Include="Helpers\ActionResultHelpers\FeedResult.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Helpers\Extensions\EntityExtension.cs" />
     <Compile Include="Helpers\Extensions\ExtensionHelper.cs" />
     <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
+    <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
