@@ -69,8 +69,16 @@ namespace EImece.Domain.Helpers
         private List<string> GetListItems(String name)
         {
             var list = ListService.GetListItems();
-
-            return list.FirstOrDefault(r => r.Name.Equals(name)).ListItems.OrderBy(r => r.Position).Select(r => r.Value).ToList();
+            var listItem = list.FirstOrDefault(r => r.Name.Equals(name));
+            if (listItem != null)
+            {
+                var i = listItem.ListItems.OrderBy(r => r.Position).Select(r => r.Value).ToList();
+                return i;
+            }
+            else
+            {
+                return new List<string>();
+            }
         }
         private List<string> GetList(string tag, string atribute)
         {
@@ -80,7 +88,7 @@ namespace EImece.Domain.Helpers
                 if (tag.Equals("group", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return GetListItems("ComponentDisplayNames");
-                   // return new List<string> { "Size", "Power", "Other" };
+                    // return new List<string> { "Size", "Power", "Other" };
                 }
 
 
@@ -101,7 +109,7 @@ namespace EImece.Domain.Helpers
                 var list = ListService.GetListItems();
 
                 return list.Where(r => r.IsValues).OrderBy(r => r.Position).Select(r => r.Name).ToList();
-             
+
                 //return new List<string> { "Countries", "Colors", "State" };
             }
 
