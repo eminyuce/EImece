@@ -16,8 +16,35 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
- 
- 
+@if (Model.ProductMenu != null && Model.ProductMenu.IsActive)
+{
+
+
+    <section class="parallax-titlebar fullwidth-element" data-background="#000" data-opacity="0.45" data-height="160" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
+        
+        <img src="@Model.ProductMenu.GetFullPathImageUrlFromFileSystem(false)" alt="@Model.ProductMenu.Name" style="top: -160.939px;">
+
+
+        <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
+        <div class="parallax-content">
+
+            <h2>
+                @Model.ProductMenu.Name
+                <span>Atlantis Cam @DateTime.Now.Year Ürünleri</span>
+            </h2>
+
+            <nav id="breadcrumbs">
+                    <ul>
+                        @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                        {
+                            <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                        }
+                        <li>@Model.ProductMenu.Name</li>
+                    </ul>
+            </nav>
+        </div>
+    </section>
+}
 
 <div class="container">
     <div class="four columns">
@@ -70,7 +97,7 @@
         {
 
             <div class="four shop columns">
-                <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")" >
+                <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")">
                     <figure>
                         @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
                         <figcaption>
@@ -91,7 +118,7 @@
 
 
 
-         
+
 
         <div class="clearfix"></div>
 

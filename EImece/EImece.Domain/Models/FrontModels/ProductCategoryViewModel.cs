@@ -11,8 +11,11 @@ namespace EImece.Domain.Models.FrontModels
     {
         public ProductCategory ProductCategory { get; set; }
 
+        public Menu ProductMenu { get; set; }
+
         public List<ProductCategory> ChildrenProductCategories { get; set; }
 
         public  List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
+        public Menu MainPageMenu { get;  set; }
     }
 }

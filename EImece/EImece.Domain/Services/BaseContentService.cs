@@ -29,6 +29,9 @@ namespace EImece.Domain.Services
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
 
+        [Inject]
+        public IMenuService MenuService { get; set; }
+
         public IBaseContentRepository<T> BaseContentRepository { get; set; }
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) :base(baseContentRepository) 
         {
@@ -56,6 +59,19 @@ namespace EImece.Domain.Services
         public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language) 
         {
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
+        }
+        public virtual List<T> GetActiveBaseContentsFromCache(bool? isActive, int? language)
+        {
+            List<T> result = null;
+            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseContentsFromCache-{0}-{1}", isActive, language);
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = BaseContentRepository.GetActiveBaseContents(isActive, language);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+            }
+            return result;
+
         }
         public virtual List<T> GetActiveBaseContents(bool ?isActive, int ? language)
         {

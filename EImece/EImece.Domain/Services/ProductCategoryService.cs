@@ -174,13 +174,23 @@ namespace EImece.Domain.Services
 
         public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
+            var cacheKey = String.Format("GetProductCategoryViewModel-{0}", categoryId);
+            ProductCategoryViewModel result = null;
 
-            var result = new ProductCategoryViewModel();
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = new ProductCategoryViewModel();
+                result.ProductCategory = GetProductCategory(categoryId);
+                var tree = BuildTree(true, result.ProductCategory.Lang);
 
-            result.ProductCategory = GetProductCategory(categoryId);
-            var tree = BuildTree(true, result.ProductCategory.Lang);
-            result.ProductCategoryTree = tree;
-            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.ProductCategory.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, result.ProductCategory.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
+                result.ProductCategoryTree = tree;
+                result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
+                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+
+            }
             return result;
         }
     }

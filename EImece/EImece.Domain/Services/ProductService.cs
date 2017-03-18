@@ -27,8 +27,6 @@ namespace EImece.Domain.Services
         [Inject]
         public IStoryService StoryService { get; set; }
 
-        [Inject]
-        public IMenuService MenuService { get; set; }
 
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
@@ -111,8 +109,8 @@ namespace EImece.Domain.Services
                 result = new ProductDetailViewModel();
                 var r = ProductRepository.GetProduct(id);
 
-                result.MainPageMenu = MenuService.GetActiveBaseContents(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                result.ProductMenu = MenuService.GetActiveBaseContents(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
                 result.Product = r;
                 result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);

@@ -20,9 +20,6 @@ namespace EImece.Domain.Services
         [Inject]
         public IProductService ProductService { get; set; }
         [Inject]
-        public IMenuService MenuService { get; set; }
-
-        [Inject]
         public IStoryService StoryService { get; set; }
 
         [Inject]
