@@ -95,7 +95,8 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetImageTag(this BaseContent entity)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
+            if (entity!= null &&  entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
+                
             {
                 String imagePath = GetFullPathImageUrlFromFileSystem(entity, false);
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();

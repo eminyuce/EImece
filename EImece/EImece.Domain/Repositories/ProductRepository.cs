@@ -24,7 +24,30 @@ namespace EImece.Domain.Repositories
         {
         }
 
+        public PaginatedList<Product> GetActiveProducts(int pageIndex, int pageSize, int language)
+        {
+            try
+            {
 
+
+                Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
+                Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
+                Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
+                Expression<Func<Product, object>> includeProperty4 = r => r.ProductTags.Select(t => t.Tag);
+                Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty4, includeProperty3 };
+                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language;
+                Expression<Func<Product, int>> keySelector = t => t.Position;
+                var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties);
+
+                return items;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
+
+        }
 
         public PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language)
         {

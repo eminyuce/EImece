@@ -14,8 +14,14 @@
 </h2>
     <nav id="breadcrumbs">
         <ul>
-            <li>@Html.ActionLink(Resource.MainPage, "Index", "Home")</li>
-            <li>@Html.ActionLink(Resource.Products, "Index", "Products")</li>
+            @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+            {
+                <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+            }
+            @if (Model.ProductMenu != null && Model.ProductMenu.IsActive)
+            {
+                <li>@Html.ActionLink(Model.ProductMenu.Name, "Index", "Products")</li>
+            }
             @for(int i=categories.Count()-1; i >= 0; i--)
             {
                 var category = categories[i];

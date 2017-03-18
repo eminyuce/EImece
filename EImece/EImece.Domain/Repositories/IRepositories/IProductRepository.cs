@@ -10,6 +10,7 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IProductRepository : IBaseContentRepository<Product>, IDisposable
     {
+        PaginatedList<Product> GetActiveProducts(int pageIndex, int pageSize, int language);
         PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language);
         List<Product> GetAdminPageList(int categoryId, string search, int language);
         Product GetProduct(int id);

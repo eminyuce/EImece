@@ -26,6 +26,10 @@ namespace EImece.Domain.Services
         public ITagService TagService { get; set; }
         [Inject]
         public IStoryService StoryService { get; set; }
+
+        [Inject]
+        public IMenuService MenuService { get; set; }
+
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
         [Inject]
@@ -52,7 +56,7 @@ namespace EImece.Domain.Services
                 result = new ProductIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
                 result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
-                var items = ProductRepository.GetMainPageProducts(page, pageSize, language);
+                var items = ProductRepository.GetActiveProducts(page, pageSize, language);
                 result.Products = items;
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
@@ -106,6 +110,10 @@ namespace EImece.Domain.Services
             {
                 result = new ProductDetailViewModel();
                 var r = ProductRepository.GetProduct(id);
+
+                result.MainPageMenu = MenuService.GetActiveBaseContents(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.ProductMenu = MenuService.GetActiveBaseContents(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
                 result.Product = r;
                 result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);
                 result.BreadCrumb = ProductCategoryService.GetBreadCrumb(r.ProductCategoryId, r.Lang);
