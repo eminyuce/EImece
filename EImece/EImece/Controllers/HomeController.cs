@@ -25,7 +25,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-
+        [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
