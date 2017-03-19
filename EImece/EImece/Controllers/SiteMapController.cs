@@ -78,6 +78,10 @@ namespace EImece.Controllers
             foreach (var product in products)
             {
                 var productCategory = productCategories.FirstOrDefault(r => r.Id == product.ProductCategoryId);
+                if (productCategory==null || !productCategory.IsActive)
+                {
+                    continue;
+                }
                 string productCategoryName = productCategory != null ? GeneralHelper.GetUrlSeoString(productCategory.Name) : "";
               
                 DateTime? lastModified = product.UpdatedDate;
@@ -110,7 +114,11 @@ namespace EImece.Controllers
             foreach (var story in stories)
             {
                 var storyCategory = storyCategories.FirstOrDefault(r => r.Id == story.StoryCategoryId);
-                string storyCategoryName = storyCategory!=null ? GeneralHelper.GetUrlSeoString(storyCategory.Name) : "";
+                if (storyCategory== null || !storyCategory.IsActive)
+                {
+                    continue;
+                }
+                string storyCategoryName = storyCategory.Name;
 
                 DateTime? lastModified = story.UpdatedDate;
                 SitemapItem sm = new SitemapItem(story.GetDetailPageUrl("Detail", "Stories", storyCategoryName,
