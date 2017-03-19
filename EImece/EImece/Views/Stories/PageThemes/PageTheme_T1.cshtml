@@ -13,10 +13,29 @@
 
 }
  
-<h2>
-    @category.Name
- 
-</h2>
+
+<section class="titlebar margin-bottom-0">
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>
+                @category.Name
+            </h2>
+
+            <nav id="breadcrumbs">
+
+                    <ul>
+                        @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                        {
+                            <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                        }
+                        <li>@category.Name</li>
+                    </ul>
+            </nav>
+
+        </div>
+    </div>
+</section>
+
 <!-- Container -->
 <div class="container">
 
@@ -33,7 +52,9 @@
     </div>
 
     <div class="four columns">
-
+        @if (!String.IsNullOrEmpty(Model.StoryCategory.Description))
+        {
+            
         <!-- About -->
         <div class="widget margin-top-0">
             <h3 class="headline">About</h3><span class="line">
@@ -45,6 +66,10 @@
         </div>
 
 
+        }
+
+        @if (Model.StoryCategories.Count > 1)
+        {
         <!-- Categories -->
         <div class="widget">
             <h3 class="headline">Categories</h3><span class="line"></span><div class="clearfix"></div>
@@ -62,12 +87,14 @@
                 </ul>
             </nav>
         </div>
+        }
 
-
+        @if(Model.Tags.Count > 0)
+        {
 
         <!-- Tags -->
         <div class="widget margin-top-10">
-            <h3 class="headline">Tags</h3><span class="line"></span><div class="clearfix"></div>
+            <h3 class="headline">ETİKETLER</h3><span class="line"></span><div class="clearfix"></div>
 
             <nav class="tags">
                 @foreach (var t in Model.Tags)
@@ -79,6 +106,8 @@
 
         <br>
         <br>
+
+        }
 
     </div>
 

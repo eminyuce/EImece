@@ -51,6 +51,7 @@ namespace EImece.Domain.Services
             {
                 result = new MenuPageViewModel();
                 result.Menu = MenuRepository.GetMenuById(menuId);
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
             }

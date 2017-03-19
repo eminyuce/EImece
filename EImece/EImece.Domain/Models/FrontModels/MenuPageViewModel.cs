@@ -12,5 +12,6 @@ namespace EImece.Domain.Models.FrontModels
         public Menu Menu {get;set;}
 
         public Setting CompanyName { get; set; }
+        public Menu MainPageMenu { get;  set; }
     }
 }

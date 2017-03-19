@@ -1,4 +1,4 @@
-﻿@model Menu
+﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
@@ -7,7 +7,7 @@
 @using EImece.Domain.Helpers;
 @{
 
-    var menu = Model;
+    var menu = Model.Menu;
     var files = menu.MenuFiles.ToList();
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
@@ -17,12 +17,28 @@
     int Height = ViewData["Height"].ToInt(214);
 }
 
-<h2>
-    @menu.Name
+<section class="titlebar margin-bottom-20">
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>
+                @menu.Name
+            </h2>
 
-</h2>
+            <nav id="breadcrumbs">
 
+                <ul>
+                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                    {
+                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                    }
+                    <li>@Model.Menu.Name</li>
+                </ul>
 
+            </nav>
+
+        </div>
+    </div>
+</section>
 
 <div class="container potrfolio-container">
     <div class="sixteen columns">
