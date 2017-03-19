@@ -2,6 +2,7 @@
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
+@using Resources;
 @{
     var menu = Model.Menu;
     ViewBag.Title = string.Format("{0} {1}",Model.CompanyName.SettingValue, menu.GetSeoTitle());
@@ -12,6 +13,6 @@
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink("edit", "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class="adminPageLink" })
+    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class="adminPageLink" })
 }
 @Html.Partial(selectedPagePath, Model)

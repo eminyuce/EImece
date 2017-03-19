@@ -20,7 +20,7 @@
     
     @if (isUserAuthenticated)
     {
-        @Html.ActionLink("edit", "index", "products", new { @area = "admin" }, new { })
+        @Html.ActionLink(Resource.AdminEdit, "index", "products", new { @area = "admin" }, new { })
     }
     </h2>
 

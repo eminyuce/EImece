@@ -82,7 +82,7 @@ namespace EImece.Controllers
                 {
                     continue;
                 }
-                string productCategoryName = productCategory != null ? GeneralHelper.GetUrlSeoString(productCategory.Name) : "";
+                string productCategoryName = productCategory.Name;
               
                 DateTime? lastModified = product.UpdatedDate;
                 SitemapItem sm = new SitemapItem(product.GetDetailPageUrl("Detail", "Products", productCategoryName,

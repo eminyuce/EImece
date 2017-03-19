@@ -76,7 +76,7 @@
                 @category.Name
                 @if (isUserAuthenticated)
                 {
-                    @Html.ActionLink("edit", "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { @class = "adminPageLink" })
                 }
 
             </h3>
@@ -128,7 +128,8 @@
 
             foreach (var p in products)
             {
-                @Html.DisplayFor(modelItem => p, "MainPageProductShort")
+
+                @Html.DisplayFor(modelItem => p, "MainPageProduct")
             }
 
         }

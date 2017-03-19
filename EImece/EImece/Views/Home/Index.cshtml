@@ -3,6 +3,7 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
 @using EImece.Domain.Helpers
+@using Resources;
 @model MainPageViewModel
 @{
 
@@ -23,7 +24,7 @@
 <div class="container fullwidth-element home-slider">
     @if (isUserAuthenticated)
     {
-        @Html.ActionLink("edit", "index", "mainpageimages", new { @area = "admin" }, new { })
+        @Html.ActionLink(Resource.AdminEdit, "index", "mainpageimages", new { @area = "admin" }, new { })
     }
     <div class="tp-banner-container">
         <div class="tp-banner">

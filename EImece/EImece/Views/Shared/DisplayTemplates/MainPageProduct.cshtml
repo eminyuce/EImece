@@ -2,6 +2,7 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
+@using Resources;
 @{
     var productFiles = Model.ProductFiles;
     var product = Model;
@@ -30,7 +31,7 @@
                 <h5>@product.Name
                     @if (isUserAuthenticated)
                     {
-                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
+                        @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
                     }
                 </h5>
                 <span class="product-code">

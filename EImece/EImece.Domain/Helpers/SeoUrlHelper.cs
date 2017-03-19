@@ -39,8 +39,7 @@ namespace EImece.Domain.Helpers
             }
 
 
-            bool isImagePage = controller.Equals("Images", StringComparison.InvariantCultureIgnoreCase) &&
-                            action.Equals("Index", StringComparison.InvariantCultureIgnoreCase);
+            bool isImagePage = controller.Equals("Images", StringComparison.InvariantCultureIgnoreCase);
 
             if (isImagePage)
             {

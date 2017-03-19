@@ -22,7 +22,7 @@
     @tag.Name
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink("edit", "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
+    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
 }
 </h2>
 

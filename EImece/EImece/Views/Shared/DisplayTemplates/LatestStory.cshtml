@@ -31,7 +31,7 @@
             <h5>@story.Name
                 @if (isUserAuthenticated)
             {
-                    @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
                 }
                 </h5>
                 <i>

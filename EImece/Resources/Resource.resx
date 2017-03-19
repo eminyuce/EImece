@@ -213,4 +213,7 @@
   <data name="IsCampaign" xml:space="preserve">
     <value>IsCampaign</value>
   </data>
+  <data name="AdminEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
 </root>

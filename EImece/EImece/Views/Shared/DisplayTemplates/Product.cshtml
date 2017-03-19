@@ -38,7 +38,7 @@
                 <span>@product.Name
                     @if (isUserAuthenticated)
                     {
-                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
+                        @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink" })
                     }
                 </span>
                 <h5>@categoryName</h5>

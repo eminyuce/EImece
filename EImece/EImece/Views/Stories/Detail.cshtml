@@ -21,7 +21,7 @@
     @story.Name
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
+    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
 }
 </h2>
 <h4>
@@ -87,7 +87,7 @@ foreach (var rstory in Model.RelatedStories)
             @Html.DisplayFor(model => rstory.Name)
             @if (isUserAuthenticated)
             {
-                @Html.ActionLink("edit", "saveoredit", "stories", new { @id = rstory.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = rstory.Id, @area = "admin" }, new { @class = "adminPageLink" })
             }
         </a>
 
@@ -109,7 +109,7 @@ foreach (var rstory in Model.RelatedStories)
                         @product.Name
                     @if (isUserAuthenticated)
                     {
-                        @Html.ActionLink("edit", "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                        @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink" })
                     }
                 </span>
                 <h5>@product.ProductCategory.Name</h5>

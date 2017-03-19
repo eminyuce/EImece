@@ -22,7 +22,7 @@
             @Html.DisplayFor(model => story.Name)
             @if (isUserAuthenticated)
             {
-                @Html.ActionLink("edit", "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink" })
+                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink" })
             }
         </a>
         <small>@story.CreatedDate</small>
