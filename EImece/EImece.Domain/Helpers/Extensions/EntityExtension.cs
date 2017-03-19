@@ -17,6 +17,44 @@ namespace EImece.Domain.Helpers.Extensions
     public static class EntityExtension
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public static SyndicationItem GetStorySyndicationItem(this Story product, string categoryName, string url, int description, int width, int height)
+        {
+            String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
+                         Settings.HttpProtocol));
+
+            var desc = GeneralHelper.StripHtml(product.Description).ToStr(description);
+            var si = new SyndicationItem(product.Name, desc, new Uri(link));
+            si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
+
+            if (!String.IsNullOrEmpty(categoryName))
+            {
+                si.ElementExtensions.Add("Category", String.Empty, categoryName);
+            }
+
+
+            String imageSrc = product.GetCroppedImageUrl(width, height);
+            if (!String.IsNullOrEmpty(imageSrc))
+            {
+
+                string imageUrl = String.Format("{0}{1}", url, imageSrc);
+
+                try
+                {
+                    SyndicationLink imageLink =
+                        SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
+                    si.Links.Add(imageLink);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
+                }
+
+            }
+
+            return si;
+
+        }
+
 
 
         public static SyndicationItem GetProductSyndicationItem(this Product product, string url, int description, int width, int height)

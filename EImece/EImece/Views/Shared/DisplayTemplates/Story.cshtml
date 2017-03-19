@@ -23,7 +23,7 @@
 
     <figure class="post-img">
          
-        <a href="@story.GetDetailPageUrl("Detail","Stories")">
+        <a href="@story.GetDetailPageUrl("Detail","Stories",categoryName)">
             @Html.Raw(storyImageTag)
         </a>
     </figure>
@@ -36,7 +36,7 @@
     <section class="post-content">
 
         <header class="meta">
-            <h2><a href="@story.GetDetailPageUrl("Detail","Stories")">
+            <h2><a href="@story.GetDetailPageUrl("Detail","Stories",categoryName)">
                 
                 @story.Name</a>
                 @if (isUserAuthenticated)
@@ -62,7 +62,7 @@
 
         </p>
 
-        <a href="@story.GetDetailPageUrl("Detail","Stories")" class="button color">Read More</a>
+        <a href="@story.GetDetailPageUrl("Detail","Stories",categoryName)" class="button color">Read More</a>
 
     </section>
 

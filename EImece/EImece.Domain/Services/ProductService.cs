@@ -220,9 +220,11 @@ namespace EImece.Domain.Services
             var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Settings.CompanyName);
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)language);
+
             var feed = new SyndicationFeed(title, "", new Uri(url))
             {
-                Language = "en-US"
+                Language = lang
             };
             feed.AddNamespace("products", url + "/products");
 
