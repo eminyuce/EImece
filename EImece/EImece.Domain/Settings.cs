@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Hosting;
 
 namespace EImece.Domain
@@ -36,20 +37,21 @@ namespace EImece.Domain
         {
             get
             {
-                var useSll = Settings.GetConfigBool("UseSSLImages", false);
-                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
+                //var useSll = Settings.GetConfigBool("UseSSLImages", false);
+                //string httpSecure = string.Format("http{0}", useSll ? "s" : "");
 
-                return httpSecure;
+                //return httpSecure;
+                return HttpContext.Current.Request.Url.Scheme;
             }
         }
         public static string HttpProtocol
         {
             get
             {
-                var useSll = GetConfigBool("UseSSL", false);
-                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
-
-                return httpSecure;
+                //var useSll = GetConfigBool("UseSSL", false);
+                //string httpSecure = string.Format("http{0}", useSll ? "s" : "");
+                //return httpSecure;
+                return HttpContext.Current.Request.Url.Scheme;
             }
         }
 

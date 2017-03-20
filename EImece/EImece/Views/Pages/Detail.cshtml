@@ -13,6 +13,6 @@
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class="adminPageLink" })
+    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"     })
 }
 @Html.Partial(selectedPagePath, Model)

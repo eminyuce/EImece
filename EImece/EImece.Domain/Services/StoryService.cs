@@ -168,7 +168,7 @@ namespace EImece.Domain.Services
             result.Tag = TagService.GetSingle(tagId);
             result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, lang);
             result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
-
+            result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
             return result;
         }
 

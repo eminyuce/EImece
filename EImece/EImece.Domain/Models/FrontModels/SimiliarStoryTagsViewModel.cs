@@ -15,6 +15,6 @@ namespace EImece.Domain.Models.FrontModels
 
         public PaginatedList<ProductTag> ProductTags { get; set; }
 
-
+        public Setting CompanyName { get; set; }
     }
 }

@@ -10,7 +10,7 @@
     PaginatedList<StoryTag> StoryTags = Model.StoryTags;
     var tag = Model.Tag;
     ViewBag.Title = tag.GetSeoTitle();
-    ViewBag.Description = String.Join(",", StoryTags.Select(r => r.Story.Name)).ToStr(150);
+    ViewBag.Description = (Model.CompanyName.SettingValue + " - "+ String.Join(",", StoryTags.Select(r => r.Story.Name))).ToStr(150);
 
 
     Layout = "~/Views/Shared/_Layout.cshtml";

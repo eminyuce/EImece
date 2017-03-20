@@ -41,7 +41,7 @@
                 @story.Name</a>
                 @if (isUserAuthenticated)
                 {
-                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink" })
+                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
                 }
             </h2>
             <span><i class="fa fa-tag"></i>
