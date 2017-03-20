@@ -1,5 +1,5 @@
 # EImece
- The Content management application development with EF 6, Ninject, Asp.net MVC 5.2.3, Jquery technologies. <br>
+ The Content management application development with EF 6, Ninject, Asp.net MVC 5.2.3, Jquery technology. <br>
  Repository Pattern and Service Layer approach is the structure of the application.  <br>
 
 
