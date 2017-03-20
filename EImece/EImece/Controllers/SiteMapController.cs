@@ -22,9 +22,13 @@ namespace EImece.Controllers
 
             foreach (var c in menus)
             {
-                var parts = c.MenuLink.Split("-".ToCharArray());
+                var p = c.MenuLink.Split("_".ToCharArray());
+                var parts = p.First().Split("-".ToCharArray());
                 var action = parts[1];
                 var controller = parts[0];
+                String mid = "";
+                mid = p.Last();
+
                 DateTime? lastModified = c.UpdatedDate;
 
                 if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
@@ -41,17 +45,34 @@ namespace EImece.Controllers
 
                     sitemapItems.Add(siteMap);
                 }
-                else
-                {
+                else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                            && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+                { 
+
 
                     var siteMap = new SitemapItem(
                          Url.Action(action,
                          controller,
-                         null,
+                         new { id= mid },
                          Settings.HttpProtocol),
                          lastModified,
                          changeFrequency: SitemapChangeFrequency.Daily,
                          priority: 1.0);
+
+
+                    sitemapItems.Add(siteMap);
+
+                }
+                else
+                {
+                    var siteMap = new SitemapItem(
+                        Url.Action(action,
+                        controller,
+                        null,
+                        Settings.HttpProtocol),
+                        lastModified,
+                        changeFrequency: SitemapChangeFrequency.Daily,
+                        priority: 1.0);
 
 
                     sitemapItems.Add(siteMap);
@@ -101,7 +122,7 @@ namespace EImece.Controllers
             {
 
                 DateTime? lastModified = storyCategory.UpdatedDate;
-                SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Category", "Stories", "",
+                SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
                          Settings.HttpProtocol),
                                lastModified,
                                SitemapChangeFrequency.Daily,
