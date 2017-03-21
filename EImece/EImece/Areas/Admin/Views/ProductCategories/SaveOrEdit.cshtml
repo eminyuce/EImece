@@ -15,7 +15,7 @@
     var templates = (List<SelectListItem>)ViewBag.Templates;
 }
 
-<h2>SaveOrEdit</h2>
+<h2>Product Categories</h2>
 <div ng-controller="ProductCategoriesTreeController" class="row" style="padding:20px;">
 
     <div class="col-md-2">
@@ -25,13 +25,20 @@
             @Html.SharkDev().TreeView(settings =>
    {
        settings.Id = "treeViewContainer";
-       settings.Header.Text = "Tree root - Animal";
+       settings.Header.Text = @AdminResource.ProductCategoryTreeName;
        settings.Header.Visible = false;
        settings.Header.Expanded = true;
        settings.ClientHandlers.ContentSelect = @"function (e) {
 console.log(e);
-   $('#ParentName').text(e.name);
+
+
+  if(e.id != $('#Id').val()){
+          $('#ParentName').text(e.name);
    $('#ParentId').val(e.id);
+   }else{
+        alert( $('#errorMessageForSameSelection').val());
+    }
+
 }";
        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
        settings.Height = 300;
@@ -43,7 +50,7 @@ console.log(e);
 
     </div>
     <div class="col-md-10">
-
+        <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.ProductSameSelectionErrorMessage" />
         @using (Html.BeginForm("SaveOrEdit", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()

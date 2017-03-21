@@ -71,7 +71,7 @@ namespace EImece.Controllers
         {
 
             //validate the captcha through the session variable stored from GetCaptcha
-
+            subscriber.Name = subscriber.Email;
             SubsciberService.SaveOrEditEntity(subscriber);
             return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
 

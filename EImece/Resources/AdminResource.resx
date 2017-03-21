@@ -327,4 +327,16 @@
   <data name="String1" xml:space="preserve">
     <value>IsCampaign</value>
   </data>
+  <data name="MenuSameSelectionErrorMessage" xml:space="preserve">
+    <value>You cannot select same menu for parent</value>
+  </data>
+  <data name="ProductSameSelectionErrorMessage" xml:space="preserve">
+    <value>You cannot select select product category for parent</value>
+  </data>
+  <data name="MenuTreeName" xml:space="preserve">
+    <value>MenuTreeName</value>
+  </data>
+  <data name="ProductCategoryTreeName" xml:space="preserve">
+    <value>ProductCategoryTreeName</value>
+  </data>
 </root>

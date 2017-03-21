@@ -430,6 +430,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot select same menu for parent.
+        /// </summary>
+        public static string MenuSameSelectionErrorMessage {
+            get {
+                return ResourceManager.GetString("MenuSameSelectionErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuTreeName.
+        /// </summary>
+        public static string MenuTreeName {
+            get {
+                return ResourceManager.GetString("MenuTreeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -556,6 +574,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProductCategoryTreeName.
+        /// </summary>
+        public static string ProductCategoryTreeName {
+            get {
+                return ResourceManager.GetString("ProductCategoryTreeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ProductCode.
         /// </summary>
         public static string ProductCode {
@@ -570,6 +597,15 @@ namespace Resources {
         public static string ProductPageTitle {
             get {
                 return ResourceManager.GetString("ProductPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot select select product category for parent.
+        /// </summary>
+        public static string ProductSameSelectionErrorMessage {
+            get {
+                return ResourceManager.GetString("ProductSameSelectionErrorMessage", resourceCulture);
             }
         }
         

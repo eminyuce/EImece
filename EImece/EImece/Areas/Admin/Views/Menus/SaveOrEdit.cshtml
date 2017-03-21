@@ -17,7 +17,7 @@
 
 
 
-<h2>SaveOrEdit</h2>
+<h2>Menu</h2>
 
 <div class="row" style="padding:20px;">
 
@@ -27,15 +27,20 @@
             @Html.SharkDev().TreeView(settings =>
    {
        settings.Id = "treeViewContainer";
-       settings.Header.Text = "Tree root - Animal";
+       settings.Header.Text = AdminResource.MenuTreeName;
        settings.Header.Visible = false;
        settings.Header.Expanded = true;
        settings.ClientHandlers.ContentSelect = @"function (e) {
 console.log(e);
-   $('#ParentName').text(e.name);
-   $('#ParentId').val(e.id);
+   if(e.id != $('#Id').val()){
+        $('#ParentName').text(e.name);
+           $('#ParentId').val(e.id);
+   }else{
+        alert( $('#errorMessageForSameSelection').val());
+    }
+   
+
 }";
-       settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
        settings.Height = 300;
        settings.Width = 270;
        settings.DataOnClient = true;
@@ -45,7 +50,7 @@ console.log(e);
 
     </div>
     <div class="col-md-10">
-
+        <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.MenuSameSelectionErrorMessage" />
         @using (Html.BeginForm("SaveOrEdit", "Menus", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
