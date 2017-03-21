@@ -249,7 +249,7 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageSize = String.Format("w{0}h{1}", width, height);
-                var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(entity.Name), fileStorageId);
+                var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
                 String imagePath = urlHelper.Action(Settings.ImageActionName, "Images", new { imageSize, id = imageId });
                 return imagePath;
             }
@@ -258,6 +258,24 @@ namespace EImece.Domain.Helpers.Extensions
                 return String.Empty;
             }
 
+        }
+        /// <summary>
+        /// Get the extension from the given filename
+        /// </summary>
+        /// <param name="fileName">the given filename ie:abc.123.txt</param>
+        /// <returns>the extension ie:txt</returns>
+        private static string RemoveFileExtension(string fileName)
+        {
+            string ext = string.Empty;
+            int fileExtPos = fileName.LastIndexOf(".", StringComparison.Ordinal);
+            if (fileExtPos >= 0)
+            {
+                ext = fileName.Substring(fileExtPos, fileName.Length - fileExtPos);
+                return fileName.Replace(ext,"");
+            }
+
+            return fileName;
+                
         }
         public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
         {

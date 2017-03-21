@@ -1,57 +1,94 @@
-﻿@model Menu
+﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
-
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
 @{
-    var menu = Model;
+
+    var menu = Model.Menu;
     var files = menu.MenuFiles.ToList();
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
+    int Width = ViewData["Width"].ToInt(300);
+    int Height = ViewData["Height"].ToInt(214);
 }
 
+<section class="titlebar margin-bottom-20">
+
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>
+                @menu.Name
+            </h2>
+
+            <nav id="breadcrumbs">
+
+                <ul>
+                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                    {
+                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                    }
+                    <li>@Model.Menu.Name</li>
+                </ul>
+
+            </nav>
+
+        </div>
+    </div>
+</section>
+
+<div class="container potrfolio-container">
+    <div class="sixteen columns">
+        @if (menuTags.Any())
+        {
+
+            <div id="filters" class="filters-dropdown headline">
+                <span></span>
+                <ul class="option-set" data-option-key="filter">
+                    <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
+                    @foreach (var t in menuTags)
+                {
+                        <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
+                    }
+                </ul>
+            </div>
+
+        }
+    </div>
+    <div class="clearfix"></div>
+</div>
 <!-- Page Content -->
 <div class="container">
 
-    <!-- Portfolio Item Heading -->
+    <!-- Jumbotron Header -->
+    <header class="jumbotron hero-spacer">
+        @Html.Raw(menu.GetCroppedImageTag(Width, Height))
+    </header>
+
+    <hr>
+
+    <!-- Title -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">
-                @menu.Name
-            </h1>
+            <p>
+                @Html.Raw(menu.Description)
+            </p>
         </div>
+    </div>
+    <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+
+
+        @for (int i = 0; i < files.Count; i++)
+        {
+            var f = files[i].FileStorage;
+            @Html.DisplayFor(modelItem => f, "FileStorage")
+        }
+
     </div>
 
 
-
-    @for (int i = 0; i < files.Count; i++)
-    {
-        var f = files[i];
-        bool renderRow = i % 4 == 0 ? true : false;
-
-        if (renderRow)
-        {
-            @: <div class="row">
-                }
-
-        if (i == 0)
-        {
-
-        }
-
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-            <a href="#">
-                @Html.Raw(f.GetCroppedImageTag(f.FileStorageId, 200, 150))
-            </a>
-        </div>
-
-        if (renderRow)
-        {
-
-            @:        </div>
-        }
-    }
-
-
 </div>
-
-
