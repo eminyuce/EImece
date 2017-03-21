@@ -17,6 +17,7 @@ namespace EImece.Controllers
         [OutputCache(CacheProfile = "ImageProxyCaching")]
         public ActionResult Index(String id, String imageSize)
         {
+
             int height = 0;
             int width = 0;
             if (String.IsNullOrEmpty(imageSize))
@@ -29,7 +30,8 @@ namespace EImece.Controllers
 
             var fileStorageId = id.Replace(".jpg", "").GetId();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
-            if(imageByte.Item1 != null)
+           
+            if (imageByte.Item1 != null)
             {
                 return File(imageByte.Item1, imageByte.Item2);
             }else
