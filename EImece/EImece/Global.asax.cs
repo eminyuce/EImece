@@ -46,23 +46,23 @@ namespace EImece
 
         protected void Application_BeginRequest()
         {
-            if (!Context.Request.IsSecureConnection)
-            {
-                // This is an insecure connection, so redirect to the secure version
-                UriBuilder uri = new UriBuilder(Context.Request.Url);
-                uri.Scheme = "https";
-                if (uri.Port > 32000 && uri.Host.Equals("localhost"))
-                {
-                    // Development box - set uri.Port to 44300 by default
-                    uri.Port = 44300;
-                }
-                else
-                {
-                    uri.Port = 443;
-                }
+            //if (!Context.Request.IsSecureConnection)
+            //{
+            //    // This is an insecure connection, so redirect to the secure version
+            //    UriBuilder uri = new UriBuilder(Context.Request.Url);
+            //    uri.Scheme = "https";
+            //    if (uri.Port > 32000 && uri.Host.Equals("localhost"))
+            //    {
+            //        // Development box - set uri.Port to 44300 by default
+            //        uri.Port = 44300;
+            //    }
+            //    else
+            //    {
+            //        uri.Port = 443;
+            //    }
 
-                Response.Redirect(uri.ToString());
-            }
+            //    Response.Redirect(uri.ToString());
+            //}
         }
 
         protected void Application_Error(object sender, EventArgs e)

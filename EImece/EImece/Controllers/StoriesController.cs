@@ -18,34 +18,68 @@ namespace EImece.Controllers
         [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
-            var stories = StoryService.GetMainPageStories(page,  CurrentLanguage);
-            return View(stories);
+            try
+            {
+                var stories = StoryService.GetMainPageStories(page, CurrentLanguage);
+                return View(stories);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " page:" + page);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
         [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
-            var storyId = id.GetId();
-            var story = StoryService.GetStoryDetailViewModel(storyId);
-            ViewBag.SeoId = story.Story.GetSeoUrl();
-            return View(story);
+            try
+            {
+                var storyId = id.GetId();
+                var story = StoryService.GetStoryDetailViewModel(storyId);
+                ViewBag.SeoId = story.Story.GetSeoUrl();
+                return View(story);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " id:" + id);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
         [OutputCache(CacheProfile = "Cache20Minutes")]
-        public ActionResult Categories(String id, int page=1)
+        public ActionResult Categories(String id, int page = 1)
         {
-            var storyCategoryId = id.GetId();
-            var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
-            ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
-            return View(storyCategory);
+            try
+            {
+                var storyCategoryId = id.GetId();
+                var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
+                ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
+                return View(storyCategory);
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " id:" + id);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
         [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {
-            var tagId = id.GetId();
-            int pageIndex = 1;
-            int pageSize = 20;
-            SimiliarStoryTagsViewModel stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
-            ViewBag.SeoId = stories.Tag.GetSeoUrl();
-            return View(stories);
+            try
+            {
+                var tagId = id.GetId();
+                int pageIndex = 1;
+                int pageSize = 20;
+                SimiliarStoryTagsViewModel stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+                ViewBag.SeoId = stories.Tag.GetSeoUrl();
+                return View(stories);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " id:" + id);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
     }
 }

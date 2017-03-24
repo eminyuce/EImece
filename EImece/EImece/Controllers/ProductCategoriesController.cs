@@ -21,11 +21,20 @@ namespace EImece.Controllers
         [OutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Category(String id)
         {
-            var categoryId = id.GetId();
+            try
+            {
+                var categoryId = id.GetId();
 
-            ProductCategoryViewModel productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
-            ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
-            return View(productCategory);
+                ProductCategoryViewModel productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
+                ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
+                return View(productCategory);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " id:" + id);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
     }
 }

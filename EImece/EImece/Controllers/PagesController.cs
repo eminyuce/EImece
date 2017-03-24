@@ -18,18 +18,26 @@ namespace EImece.Controllers
             return View();
         }
         [OutputCache(CacheProfile = "Cache20Minutes")]
-        public ActionResult Detail(String id="")
+        public ActionResult Detail(String id = "")
         {
-            var menuId = id.GetId();
-            var page = MenuService.GetPageById(menuId);
-            ViewBag.SeoId = page.Menu.GetSeoUrl();
-            if (page.Menu.IsActive)
+            try
             {
-                return View(page);
+                var menuId = id.GetId();
+                var page = MenuService.GetPageById(menuId);
+                ViewBag.SeoId = page.Menu.GetSeoUrl();
+                if (page.Menu.IsActive)
+                {
+                    return View(page);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                Logger.Error(ex, ex.Message + " id:" + id);
+                return RedirectToAction("InternalServerError", "Error");
             }
         }
     }
