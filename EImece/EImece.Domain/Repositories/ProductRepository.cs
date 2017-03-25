@@ -12,6 +12,11 @@ using GenericRepository;
 using NLog;
 using Ninject;
 using EImece.Domain.Helpers;
+using System.Data;
+using EImece.Domain.Models.FrontModels;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
 
 namespace EImece.Domain.Repositories
 {
@@ -196,8 +201,8 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductTags);
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
-            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang 
-            && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId)) 
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang
+            && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId))
             && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
@@ -213,9 +218,122 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, null,null, includeProperties.ToArray());
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result;
         }
+
+        public static ItemType ProductsItem
+        {
+            get
+            {
+                return new ItemType()
+                {
+                    Name = "Products/Products Directory",
+                    Type = typeof(Product),
+                    SearchAction = "Index",
+                    Controller = "Products",
+                    ItemTypeID = 1
+                };
+
+            }
+        }
+
+        public ProductsSearchResult GetProductsSearchResult(
+          string search,
+          string filters,
+          int top,
+          int skip,
+          int language)
+        {
+            var fltrs = FilterHelper.ParseFiltersFromString(filters);
+
+            return GetProductsSearchResult(search, fltrs, top, skip, language);
+        }
+
+        private ProductsSearchResult GetProductsSearchResult(
+           string search,
+           List<Filter> filters,
+           int top,
+           int skip,
+           int language)
+        {
+            var searchResult = new ProductsSearchResult();
+
+            var dtFilters = new DataTable("med_tpt_Filter");
+
+            dtFilters.Columns.Add("FieldName");
+            dtFilters.Columns.Add("ValueFirst");
+            dtFilters.Columns.Add("ValueLast");
+
+            if (filters != null && filters.Any())
+            {
+                foreach (var filter in filters)
+                {
+                    DataRow dr = dtFilters.NewRow();
+                    dr["FieldName"] = filter.FieldName;
+                    dr["ValueFirst"] = filter.ValueFirst;
+                    dr["ValueLast"] = filter.ValueLast;
+                    dtFilters.Rows.Add(dr);
+                }
+            }
+            var db = this.EImeceDbContext;
+            // If using Code First we need to make sure the model is built before we open the connection
+            // This isn't required for models created with the EF Designer
+            // db.Database.Initialize(force: false);
+            var connection = db.Database.Connection;
+            try
+            {
+
+                connection.Open();
+
+
+                // Create a SQL command to execute the sproc
+                SqlCommand cmd = (SqlCommand)connection.CreateCommand();
+                cmd.CommandText = @"test_SearchProducts";
+                cmd.CommandType = CommandType.StoredProcedure;
+                var parameterList = new List<SqlParameter>();
+                parameterList.Add(DatabaseUtility.GetSqlParameter("search", search.ToStr(), SqlDbType.NVarChar));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("filter", dtFilters, SqlDbType.Structured));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("top", top, SqlDbType.Int));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("skip", skip, SqlDbType.Int));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("language", language, SqlDbType.Int));
+
+
+                cmd.Parameters.AddRange(parameterList.ToArray());
+                // Run the sproc 
+                var reader = cmd.ExecuteReader();
+
+                // Read Blogs from the first result set
+                var products = ((IObjectContextAdapter)db)
+                    .ObjectContext
+                    .Translate<Product>(reader, "Products", MergeOption.AppendOnly);
+
+                searchResult.Products = products.ToList();
+
+                // Move to second result set and read Posts
+                reader.NextResult();
+                var productCategories = ((IObjectContextAdapter)db)
+                    .ObjectContext
+                    .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
+
+                searchResult.ProductCategories = productCategories.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            searchResult.PageSize = top;
+            return searchResult;
+        }
+
+
+
     }
 }

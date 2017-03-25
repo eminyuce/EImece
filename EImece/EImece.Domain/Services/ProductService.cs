@@ -233,5 +233,16 @@ namespace EImece.Domain.Services
             return new Rss20FeedFormatter(feed);
 
         }
+
+        public ProductsSearchResult GetProductsSearchResult(
+         string search,
+         string filters,
+         string page,
+         int language)
+        {
+            int top = 10;
+            int skip = 0;
+            return ProductRepository.GetProductsSearchResult(search, filters, top, skip, language);
+        }
     }
 }

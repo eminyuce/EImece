@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
 using GenericRepository;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,11 @@ namespace EImece.Domain.Repositories.IRepositories
         IEnumerable<Product> GetData(out int totalRecords, string globalSearch, String name, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
         List<Product> GetRelatedProducts(int[] tagIdList, int take, int lang, int excludedProductId);
         IQueryable<Product> GetActiveProducts(bool? isActive, int? language);
+         ProductsSearchResult GetProductsSearchResult(
+    string search,
+    string filters,
+    int top,
+    int skip,
+    int language);
     }
 }

@@ -182,6 +182,7 @@
     <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
     <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
+    <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
@@ -206,14 +207,19 @@
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
+    <Compile Include="Models\FrontModels\Filter.cs" />
+    <Compile Include="Models\FrontModels\FilterGroup.cs" />
     <Compile Include="Models\FrontModels\FooterViewModel.cs" />
+    <Compile Include="Models\FrontModels\ItemType.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductCategoryTreeModel.cs" />
     <Compile Include="Models\FrontModels\ProductCategoryViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductIndexViewModel.cs" />
+    <Compile Include="Models\FrontModels\ProductsSearchResult.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
+    <Compile Include="Models\FrontModels\RecordsStats.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarStoryTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\StoryCategoryViewModel.cs" />

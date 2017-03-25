@@ -111,6 +111,13 @@ namespace EImece
                  defaults: new { controller = "Products", action = "searchproducts" },
                  namespaces: new[] { "EImece.Controllers" }
              );
+            routes.MapRoute(
+               name: "SearchProducts2",
+               url: "products/advancedsearchproducts",
+               defaults: new { controller = "Products", action = "advancedsearchproducts" },
+               namespaces: new[] { "EImece.Controllers" }
+           );
+
 
             routes.MapRoute(
                name: "ProductDetail",

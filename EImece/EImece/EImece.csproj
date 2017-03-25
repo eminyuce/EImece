@@ -734,6 +734,7 @@
     <Content Include="Views\Pages\PageThemes\PageTheme_T5.cshtml" />
     <Content Include="Views\Pages\PageThemes\PageTheme_T4.cshtml" />
     <Content Include="Views\Pages\PageThemes\PageTheme_T3.cshtml" />
+    <Content Include="Views\Products\AdvancedSearchProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />
@@ -773,7 +774,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>28600</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44300/</IISUrl>
+          <IISUrl>http://localhost:31544</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
