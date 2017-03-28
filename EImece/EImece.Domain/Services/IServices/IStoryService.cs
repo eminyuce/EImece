@@ -20,7 +20,7 @@ namespace EImece.Domain.Services.IServices
         StoryDetailViewModel GetStoryDetailViewModel(int storyId);
         StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page);
         List<Story> GetLatestStories(int language, int take);
-        Rss20FeedFormatter GetStoryCategoriesRss(int categoryId, int take, int language, int description, int width, int height);
+        Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams);
         SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, 
             int pageSize, int currentLanguage);
     }

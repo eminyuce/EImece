@@ -172,24 +172,24 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public Rss20FeedFormatter GetStoryCategoriesRss(int storyCategoryId, int take, int language, int description, int width, int height)
+        public Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams)
         {
-            var storyCategory = StoryCategoryService.GetSingle(storyCategoryId);
-            var items = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, language, 1, 9999).Take(take).ToList();
+            var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
+            var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
             
             var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Settings.CompanyName);
-            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)language);
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
             var feed = new SyndicationFeed(title, "", new Uri(url))
             {
                 Language = lang
             };
 
-            feed.AddNamespace("StoryCategories", url + "/stories/categories/"+storyCategoryId);
+            feed.AddNamespace("StoryCategories", url + "/stories/categories/"+rssParams.CategoryId);
 
-            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name,url, description, width, height));
+            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name,url, rssParams));
 
             return new Rss20FeedFormatter(feed);
         }

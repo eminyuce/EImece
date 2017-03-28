@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System;
@@ -17,13 +18,20 @@ namespace EImece.Domain.Helpers.Extensions
     public static class EntityExtension
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static SyndicationItem GetStorySyndicationItem(this Story product, string categoryName, string url, int description, int width, int height)
+        public static SyndicationItem GetStorySyndicationItem(this Story product, string categoryName, string url, RssParams rssParams)
         {
             String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
                          Settings.HttpProtocol));
 
-            var desc = GeneralHelper.StripHtml(product.Description).ToStr(description);
-            var si = new SyndicationItem(product.Name, desc, new Uri(link));
+            var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
+
+            var pageLink = new Uri(link.ToLower());
+            var ub = new UriBuilder(pageLink);
+            if (!string.IsNullOrEmpty(rssParams.GetAnalyticsQueryString()))
+            {
+                ub.Query = rssParams.GetAnalyticsQueryString();
+            }
+            var si = new SyndicationItem(product.Name, desc, ub.Uri);
             si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(categoryName))
@@ -32,7 +40,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
 
 
-            String imageSrc = product.GetCroppedImageUrl(width, height);
+            String imageSrc = product.GetCroppedImageUrl(rssParams.Width, rssParams.Height);
             if (!String.IsNullOrEmpty(imageSrc))
             {
 
@@ -57,13 +65,19 @@ namespace EImece.Domain.Helpers.Extensions
 
 
 
-        public static SyndicationItem GetProductSyndicationItem(this Product product, string url, int description, int width, int height)
+        public static SyndicationItem GetProductSyndicationItem(this Product product, string url, RssParams rssParams)
         {
             String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Products", product.ProductCategory.Name,
                          Settings.HttpProtocol));
 
-            var desc = GeneralHelper.StripHtml(product.Description).ToStr(description);
-            var si = new SyndicationItem(product.Name, desc, new Uri(link));
+            var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
+            var pageLink = new Uri(link.ToLower());
+            var ub = new UriBuilder(pageLink);
+            if (!string.IsNullOrEmpty(rssParams.GetAnalyticsQueryString()))
+            {
+                ub.Query = rssParams.GetAnalyticsQueryString();
+            }
+            var si = new SyndicationItem(product.Name, desc, ub.Uri);
             si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(product.ProductCategory.Name))
@@ -72,7 +86,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
 
 
-            String imageSrc = product.GetCroppedImageUrl(width, height);
+            String imageSrc = product.GetCroppedImageUrl(rssParams.Width, rssParams.Height);
             if (!String.IsNullOrEmpty(imageSrc))
             {
 

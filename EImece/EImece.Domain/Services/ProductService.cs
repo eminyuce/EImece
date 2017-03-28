@@ -214,13 +214,13 @@ namespace EImece.Domain.Services
             return ProductRepository.GetActiveProducts(isActive, language);
         }
 
-        public Rss20FeedFormatter GetProductsRss(int take, int language, int description, int width, int height)
+        public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
-            var items = this.GetActiveProducts(true, language).Take(take).ToList();
+            var items = this.GetActiveProducts(true, rssParams.Language).Take(rssParams.Take).ToList();
             var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Settings.CompanyName);
-            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)language);
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
             var feed = new SyndicationFeed(title, "", new Uri(url))
             {
@@ -228,7 +228,7 @@ namespace EImece.Domain.Services
             };
             feed.AddNamespace("products", url + "/products");
 
-            feed.Items = items.Select(s => s.GetProductSyndicationItem(url, description, width, height));
+            feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
 
             return new Rss20FeedFormatter(feed);
 
