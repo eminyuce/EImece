@@ -44,98 +44,98 @@
 
     }
 </head>
-<body class="boxed">
+<body class="fullwidth">
+    <div id="wrapper">
 
+        <div id="top-bar">
+            <div class="container">
+                <div class="ten columns">
 
-    <div id="top-bar">
-        <div class="container">
-            <div class="ten columns">
-
-                @Html.Action("WebSiteAddressInfo", "Home")
-            </div>
-            <div class="six columns">
-                @if (listItems.Count() > 1)
+                    @Html.Action("WebSiteAddressInfo", "Home")
+                </div>
+                <div class="six columns">
+                    @if (listItems.Count() > 1)
                 {
                     foreach (var item in listItems)
                     {
-                        <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
+                    <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
                     }
                 }
 
 
-                @Html.Action("SocialMediaLinks", "Home")
+                    @Html.Action("SocialMediaLinks", "Home")
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <!-- Header
+        ================================================== -->
+        <div class="container">
+
+            <!-- Logo -->
+            <div class="four columns">
+                <div id="logo">
+                    <h1></h1>
+
+                </div>
+                @Html.Action("WebSiteLogo", "Home")
+            </div>
+
+            <!-- Additional Menu -->
+            <div class="twelve columns">
+                <div id="additional-menu">
+                    <ul>
+                        @Html.Action("Menu", "Home")
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- Shopping Cart -->
+            <div class="twelve columns">
+
+                <!-- Search -->
+                <nav class="top-search">
+                    @Html.Partial("_SearchProductForm")
+                </nav>
+
             </div>
 
         </div>
-    </div>
 
 
 
-
-    <!-- Header
-    ================================================== -->
-    <div class="container">
-
-        <!-- Logo -->
-        <div class="four columns">
-            <div id="logo">
-                <h1></h1>
-
-            </div>
-            @Html.Action("WebSiteLogo", "Home")
-        </div>
-
-        <!-- Additional Menu -->
-        <div class="twelve columns">
-            <div id="additional-menu">
-                <ul>
-                    @Html.Action("Menu", "Home")
-                </ul>
+        <div class="container">
+            <div class="sixteen columns">
+                <nav id="navigation">
+                    @Html.Action("ProductTree", "Home")
+                </nav>
             </div>
         </div>
 
 
-        <!-- Shopping Cart -->
-        <div class="twelve columns">
 
-            <!-- Search -->
-            <nav class="top-search">
-                @Html.Partial("_SearchProductForm")
-            </nav>
 
+
+        <div>
+            @RenderBody()
         </div>
-
-    </div>
-
-
-
-    <div class="container">
-        <div class="sixteen columns">
-            <nav id="navigation">
-                @Html.Action("ProductTree", "Home")
-            </nav>
-        </div>
-    </div>
-
-
-
-
-
-    <div class="container body-content">
-        @RenderBody()
-    </div>
-    <footer>
-        <div id="footer">
-            @Html.Action("Footer", "Home")
-        </div>
-        <div id="footer-bottom">
-            <!-- Container -->
-            <div class="container">
-                <div class="eight columns">Design by <a href="http:\\www.erayweb.com"> erayweb </a> All Rights Reserved ©</div>
+        <footer>
+            <div id="footer">
+                @Html.Action("Footer", "Home")
             </div>
-        </div>
-    </footer>
-
+            <div id="footer-bottom">
+                <!-- Container -->
+                <div class="container">
+                    <div class="eight columns">Design by <a href="http:\\www.erayweb.com"> erayweb </a> All Rights Reserved ©</div>
+                </div>
+            </div>
+        </footer>
+    </div>
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
 
 
@@ -155,8 +155,8 @@
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
-<script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
-   <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
+    <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
+    <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.pureparallax.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.pricefilter.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.selectric.min.js"></script>
@@ -173,7 +173,7 @@
     <script src="~/Scripts/trizzy/scripts/custom.js"></script>
 
     @RenderSection("scripts", required: false)
-   
+
 
 
 </body>
