@@ -30,7 +30,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             ul.InnerHtml += AddLink(currentPageIndex - 1, action, !hasPreviousPage, "disabled", "<", "Previous Page");
             for (int i = firstPageNumber; i <= lastPageNumber; i++)
             {
-                ul.InnerHtml += AddLink(i, action, i == currentPageIndex, "active", i.ToString(), i.ToString());
+                ul.InnerHtml += AddLink(i, action, i == currentPageIndex, "current-page", i.ToString(), i.ToString());
             }
             ul.InnerHtml += AddLink(currentPageIndex + 1, action, !hasNextPage, "disabled", ">", "Next Page");
             ul.InnerHtml += AddLink(totalPages, action, currentPageIndex == totalPages, "disabled", ">>", "Last Page");
@@ -43,10 +43,17 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             li.MergeAttribute("title", tooltip);
             if (condition)
             {
-                li.AddCssClass(classToAdd);
+              //  li.AddCssClass(classToAdd);
             }
             var a = new TagBuilder("a");
             a.MergeAttribute("href", !condition ? action(index) : "javascript:");
+            if (condition)
+            {
+                //  li.AddCssClass(classToAdd);
+                a.MergeAttribute("class", classToAdd);
+            }
+        
+
             a.SetInnerText(linkText);
             li.InnerHtml = a.ToString();
             return li;

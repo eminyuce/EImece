@@ -16,5 +16,9 @@ namespace EImece.Domain.Models.FrontModels
 
         public  List<Tag> Tags { get; set; }
 
+        public Menu ProductMenu { get; set; }
+
+        public Menu MainPageMenu { get; set; }
+
     }
 }

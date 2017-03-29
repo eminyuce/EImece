@@ -259,7 +259,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ÜRÜNLERİMİZ.
+        ///   Looks up a localized string similar to Ürünler.
         /// </summary>
         public static string Products {
             get {

@@ -57,6 +57,9 @@ namespace EImece.Domain.Services
                 result = new ProductIndexViewModel();
                 int pageSize = Settings.RecordPerPage;
                 result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
                 var items = ProductRepository.GetActiveProducts(page, pageSize, language);
                 result.Products = items;
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
