@@ -390,6 +390,7 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\trizzy\css\base.css" />
+    <Content Include="Content\trizzy\css\colors\blue.css" />
     <Content Include="Content\trizzy\css\colors\green.css" />
     <Content Include="Content\trizzy\css\font-awesome.css" />
     <Content Include="Content\trizzy\css\responsive.css" />
@@ -735,6 +736,7 @@
     <Content Include="Views\Pages\PageThemes\PageTheme_T4.cshtml" />
     <Content Include="Views\Pages\PageThemes\PageTheme_T3.cshtml" />
     <Content Include="Views\Products\AdvancedSearchProducts.cshtml" />
+    <Content Include="Views\Pages\PageThemes\PageTheme_T8.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\images\" />

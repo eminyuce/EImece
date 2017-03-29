@@ -1,0 +1,206 @@
+﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+@{
+
+    var menu = Model.Menu;
+    var files = menu.MenuFiles.ToList();
+    ViewBag.Title = menu.GetSeoTitle();
+    ViewBag.Description = menu.GetSeoDescription();
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
+    int Width = ViewData["Width"].ToInt(300);
+    int Height = ViewData["Height"].ToInt(214);
+
+
+}
+
+<section class="titlebar margin-bottom-20">
+
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>
+                Bize Ulaşın
+            </h2>
+
+            <nav id="breadcrumbs">
+
+                <ul>
+                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                    {
+                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                    }
+                    <li>@Model.Menu.Name</li>
+                </ul>
+
+            </nav>
+
+        </div>
+    </div>
+</section>
+
+<!-- Container -->
+<div class="container fullwidth-element">
+    <!-- Google Maps -->
+    <section class="google-map-container">
+        <div id="googlemaps" class="google-map google-map-full"></div>
+    </section>
+    <!-- Google Maps / End -->
+</div>
+<!-- Container / End -->
+
+
+<div class="container">
+    <div class="five columns">
+
+        <!-- Information -->
+        <div class="widget margin-top-10">
+            <div class="accordion">
+
+                <!-- Section 1 -->
+                <h3><span class="ui-accordion-header-icon ui-icon ui-accordion-icon"></span><i class="fa fa-file-text"></i>Bilgiler </h3>
+                <div>
+                    <p>
+                        <span id="ctl00_Cp_Content_ctl00_SayfaDetay" class="PageDetay"></span>
+                    </p>
+                </div>
+
+                <!-- Section 2 -->
+                <h3><span class="ui-accordion-header-icon ui-icon ui-accordion-icon"></span><i class="fa fa-thumb-tack"></i>Adres</h3>
+                <div>
+                    <ul class="contact-informations margin-top-0">
+                        <li><span class="address">ATL AMBALAJ KOZ. GIDA VE</span></li>
+                        <li><span class="address">HEDİYE. EŞYA SAN. VE TİC. LTD. ŞTİ.</span></li>
+                        <li><span class="address">1595 Sk. No:225 K:4 D:406</span></li>
+                        <li><span class="address">Kazım Sop İş Merkezi </span></li>
+                        <li><span class="address">Karşıyaka - İzmir / TÜRKİYE</span></li>
+                    </ul>
+                </div>
+
+                <!-- Section 3 -->
+                <h3><span class="ui-accordion-header-icon ui-icon ui-accordion-icon"></span><i class="fa fa-user"></i>İletişim</h3>
+                <div>
+                    <ul class="contact-informations second">
+                        <li>
+                            <i class="fa fa-phone"></i>
+                            <p>(+90) 232 833 41 17</p>
+                        <li>
+                            <i class="fa fa-phone"></i>
+                            <p>(+90) 232 833 41 18</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-fax"></i>
+                            <p>(+90) 232 833 41 16</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope"></i>
+                            <p>atlantis@atlantiscam.com</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope"></i>
+                            <p>info@atlantiscam.com</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-globe"></i>
+                            <p>www.atlantiscam.com</p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Social -->
+        <div class="widget">
+            <h3 class="headline">Sosyal Medya</h3>
+            <span class="line margin-bottom-25"></span>
+            <div class="clearfix"></div>
+            <ul class="social-icons">
+                <li><a class="facebook" href="https://www.facebook.com/profile.php?id=100002670911379"><i class="icon-facebook"></i></a></li>
+
+                <li><a class="instagram" href="https://www.instagram.com/atlantiscamambalaj"><i class="icon-instagram"></i></a></li>
+
+            </ul>
+            <div class="clearfix"></div>
+            <br>
+        </div>
+    </div>
+    <div class="eleven columns">
+        <div class="extra-padding left">
+            <h3 class="headline">İLETİŞİM FORMU</h3>
+            <span class="line margin-bottom-25"></span>
+            <div class="clearfix"></div>
+            <!-- Contact Form -->
+            <div id="ctl00_Cp_Content_ctl00_Panel1">
+
+                <section id="contact">
+                    <!-- Success Message -->
+                    <mark id="message"></mark>
+                    <span id="ctl00_Cp_Content_ctl00_Label1"></span>
+                    <!-- Form -->
+
+                    @Html.Action("ContactUs", "Home")
+                    <br />
+                    <br />
+                    <div id="result"></div>
+
+                    <div class="clearfix"></div>
+
+
+                </section>
+
+            </div>
+            <div id="ctl00_Cp_Content_ctl00_ValidationSummary1" style="color:Red;display:none;">
+
+            </div>
+            <!-- Contact Form / End -->
+        </div>
+    </div>
+ </div>
+
+
+
+
+
+
+ 
+
+        <script type="text/javascript">
+
+            function initMap() {
+                var uluru = { lat: 38.4753001, lng: 27.1024924 };
+                var map = new google.maps.Map(document.getElementById('googlemaps'), {
+                    zoom: 16,
+                    center: uluru
+                });
+
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map,
+                    title: 'Atlantis Cam Ambalaj'
+                });
+                var contentString = 'Atlantis Cam Ambalaj <br> 1595 Sk. No:225 K:4 D:406 <br> Kazım Sop İş Merkezi <br> Karşıyaka - İzmir / TÜRKİYE'
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString,
+                    maxWidth: 200
+                });
+                infowindow.open(map, marker);
+                marker.addListener('click', function () {
+
+                });
+            }
+
+ 
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqL8JaOtgzBlHIleIgvIeXIxlAQ4f2cEI&callback=initMap"></script>
+
+
+
+
+   
