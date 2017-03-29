@@ -11,7 +11,9 @@
 
 
 
-    @Html.HiddenFor(model => subscriber.IsActive)
+ 
+    @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
+    <button class="newsletter-btn" type="submit">@Resource.SubscriberButtonText</button>
 
     @*<div class="form-group">
         @Html.LabelFor(model => subscriber.Name)
@@ -22,15 +24,21 @@
     </div>*@
 
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => subscriber.Email)
             <div class="col-md-10">
-                @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
+           
                 @Html.ValidationMessageFor(model => subscriber.Email)
             </div>
-        </div>
+        </div>*@
 
 
-        <button class="newsletter-btn" type="submit">@Resource.SubscriberButtonText</button>
+
 
 }
+ 
+ 
+
+
+
+ 
