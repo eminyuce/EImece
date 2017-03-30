@@ -17,6 +17,7 @@
     var productCategory = product.ProductCategory;
     var productSpecs = product.ProductSpecifications;
     var relatedStories = Model.RelatedStories;
+    var relatedProducts = Model.RelatedProducts;
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
 }
 
@@ -94,7 +95,7 @@
                 <div class="share-buttons">
 
                     @Html.Partial("_SocialMediaShareLinks", new ViewDataDictionary(ViewData){
-                              {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } } )
+                              {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } })
                 </div>
                 <div class="clearfix"></div>
 
@@ -150,25 +151,74 @@
 </div>
 
 
-
-
-
-
-@foreach (var pt in productTags)
+@if (relatedProducts.Any())
 {
-    <div>
-        @Html.ActionLink(pt.Name, "tag", "products", new { id = pt.GetSeoUrl() }, null)
+
+    <div class="container margin-top-15">
+        <div class="sixteen columns products">
+
+            <h3 class="headline">Benzer Ürünler</h3>
+            <span class="line margin-bottom-0"></span>
+
+
+            @foreach (var product2 in relatedProducts)
+            {
+                @Html.DisplayFor(modelItem => product2, "MainPageProduct", new { Width = 80, Height = 80 })
+            }
+        </div>
     </div>
 }
 
-@if (relatedStories.Any())
-{
-    <h3>
-        Related Stories
-    </h3>
-    foreach (var rs in relatedStories)
+
+<!-- Container -->
+<div class="container">
+
+    @if (relatedStories.Any())
     {
-        @Html.DisplayFor(r => rs, "StoryShort")
+        <div class="twelve columns">
+            <div class="extra-padding">
+
+                @foreach (var story in relatedStories)
+                {
+                    @Html.DisplayFor(modelItem => story, "Story", new { Width = 80, Height = 80 })
+                }
+
+            </div>
+
+        </div>
     }
-}
+
+    <div class="four columns">
+
+
+        @if (productTags.Count > 0)
+        {
+
+        <!-- Tags -->
+            <div class="widget margin-top-10">
+                <h3 class="headline">ETİKETLER</h3><span class="line"></span><div class="clearfix"></div>
+
+                <nav class="tags">
+                    @foreach (var t in productTags)
+                {
+                        @Html.ActionLink(t.Name, "Tag", "products", new { id = t.GetSeoUrl() })
+                    }
+                </nav>
+            </div>
+
+            <br>
+            <br>
+
+        }
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
 

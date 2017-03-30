@@ -79,26 +79,28 @@ namespace EImece.Domain.Caching
 
         public override void ClearAll()
         {
-            List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
-            foreach (String key in cacheKeys)
+            if (!IsCacheProviderActive)
             {
-                Clear(key);
+                List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
+                foreach (String key in cacheKeys)
+                {
+                    Clear(key);
+                }
+
+                List<string> keys = new List<string>();
+
+                IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    string key = (string)enumerator.Key;
+                    keys.Add(key);
+                }
+
+                foreach (string key in keys)
+                {
+                    System.Web.HttpRuntime.Cache.Remove(key);
+                }
             }
-
-            List<string> keys = new List<string>();
-
-            IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                string key = (string)enumerator.Key;
-                keys.Add(key);
-            }
-
-            foreach (string key in keys)
-            {
-               System.Web.HttpRuntime.Cache.Remove(key);
-            }
-
         }
     }
 }

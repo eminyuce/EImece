@@ -167,10 +167,8 @@ namespace EImece.Areas.Admin.Controllers
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 
-                        if (tags != null)
-                        {
                             ProductService.SaveProductTags(product.Id, tags);
-                        }
+                        
 
 
                         return ReturnTempUrl("Index");

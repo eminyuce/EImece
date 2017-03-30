@@ -110,26 +110,30 @@ namespace EImece.Domain.Services
             var cacheKey = String.Format("ProductById-{0}", id);
             ProductDetailViewModel result = null;
 
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+
+            result = new ProductDetailViewModel();
+            var r = ProductRepository.GetProduct(id);
+
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
+            result.Product = r;
+            result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);
+            result.BreadCrumb = ProductCategoryService.GetBreadCrumb(r.ProductCategoryId, r.Lang);
+            result.RelatedStories = new List<Story>();
+            if (r != null && r.ProductTags.Any())
             {
-                result = new ProductDetailViewModel();
-                var r = ProductRepository.GetProduct(id);
-
-                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-
-                result.Product = r;
-                result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);
-                result.BreadCrumb = ProductCategoryService.GetBreadCrumb(r.ProductCategoryId, r.Lang);
-                result.RelatedStories = new List<Story>();
-                if (r != null && r.ProductTags.Any())
-                {
-                    var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
-                    result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang, 0);
-                }
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
-
+                var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
+                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang, 0);
             }
+            result.RelatedProducts = new List<Product>();
+            if (r != null && r.ProductTags.Any())
+            {
+                var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
+                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, r.Lang, id);
+            }
+            MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+
             return result;
         }
         public virtual new void DeleteBaseEntity(List<string> values)

@@ -11,31 +11,56 @@
     var tag = Model.Tag;
     ViewBag.Title = tag.GetSeoTitle();
     ViewBag.Description = String.Join(",", productTags.Select(r => r.Product.Name)).ToStr(150);
-
-
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 
-<h2>@tag.Name
-    @if (isUserAuthenticated)
-    {
-        @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
-    }
-    </h2>
+ 
+ 
+<div class="container potrfolio-container">
 
-@Html.BootstrapPager(productTags.PageIndex,
+    <section class="title">
+        <h2>
+        @tag.Name
+
+        @if (isUserAuthenticated)
+        {
+            @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
+        }
+        
+        </h2>
+    </section>
+
+
+ 
+    <div class="clearfix"></div>
+
+
+
+    @if (productTags.TotalCount > productTags.PageSize)
+    {
+        <div class="pagination-container">
+            <nav class="pagination">
+                <div class="paging">
+
+                    @Html.BootstrapPager(productTags.PageIndex,
     index => Url.Action("Tag", "Products", new { page = index }),
     productTags.TotalCount, productTags.PageSize, numberOfLinks: 10)
 
-
-
-<div class="row">
-    @foreach (var item in productTags)
-    {
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            @Html.DisplayFor(modelItem => item.Product, "MainPageProduct")
+                </div>
+            </nav>
         </div>
+
     }
+
+
+    <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+
+
+        @foreach (var item in productTags)
+        {
+              @Html.DisplayFor(modelItem => item.Product, "Product")
+        }
+    </div>
 </div>
