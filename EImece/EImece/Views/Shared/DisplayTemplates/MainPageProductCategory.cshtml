@@ -6,8 +6,8 @@
 @{
     var productCategory = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
-    int Width = ViewData["Width"].ToInt(380);
-    int Height = ViewData["Height"].ToInt(185);
+    int Width = ViewData["Width"].ToInt(0);
+    int Height = ViewData["Height"].ToInt(0);
     var imageTag = productCategory.GetCroppedImageTag(Width, Height);
 }
 <div class="one-third column">

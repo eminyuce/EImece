@@ -16,8 +16,8 @@
     var productTags = product.ProductTags.Select(r => r.Tag).ToList();
     var productCategory = product.ProductCategory;
     var productSpecs = product.ProductSpecifications;
-    var relatedStories = Model.RelatedStories;
-    var relatedProducts = Model.RelatedProducts;
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
+    var relatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
 }
 
@@ -52,6 +52,7 @@
                 }
             </div>
             <div class="clearfix"></div>
+         
         </div>
     </div>
 
@@ -59,7 +60,7 @@
 
     <!-- Content
     ================================================== -->
-    <div class="eight columns">
+    <div class="six columns">
         <div class="product-page">
 
             <!-- Headline -->
@@ -106,7 +107,27 @@
 
         </div>
     </div>
+    <div class="two columns">
+        @if (productTags.Count > 0)
+            {
 
+        <!-- Tags -->
+            <div class="widget margin-top-10">
+                <h3 class="headline">ETİKETLER</h3><span class="line"></span><div class="clearfix"></div>
+
+                <nav class="tags">
+                    @foreach (var t in productTags)
+                {
+                        @Html.ActionLink(t.Name, "Tag", "products", new { id = t.GetSeoUrl() },null)
+                    }
+                </nav>
+            </div>
+
+                <br>
+                <br>
+
+        }
+    </div>
 </div>
 
 
@@ -163,20 +184,23 @@
 
             @foreach (var product2 in relatedProducts)
             {
-                @Html.DisplayFor(modelItem => product2, "MainPageProduct", new { Width = 80, Height = 80 })
+                @Html.DisplayFor(modelItem => product2, "MainPageProduct", new { Width = 273 })
             }
         </div>
     </div>
 }
 
-
-<!-- Container -->
+ <!-- Container -->
 <div class="container">
 
     @if (relatedStories.Any())
     {
-        <div class="twelve columns">
-            <div class="extra-padding">
+        <div class="container margin-top-15">
+            <div class="sixteen columns products">
+
+                <h3 class="headline">Ilgili Blog</h3>
+                <span class="line margin-bottom-0"></span>
+
 
                 @foreach (var story in relatedStories)
                 {
@@ -187,36 +211,7 @@
 
         </div>
     }
-
-    <div class="four columns">
-
-
-        @if (productTags.Count > 0)
-        {
-
-        <!-- Tags -->
-            <div class="widget margin-top-10">
-                <h3 class="headline">ETİKETLER</h3><span class="line"></span><div class="clearfix"></div>
-
-                <nav class="tags">
-                    @foreach (var t in productTags)
-                {
-                        @Html.ActionLink(t.Name, "Tag", "products", new { id = t.GetSeoUrl() })
-                    }
-                </nav>
-            </div>
-
-            <br>
-            <br>
-
-        }
-
-    </div>
-
-
 </div>
-
-
 
 
 

@@ -10,8 +10,8 @@
     var categoryName = story.StoryCategory.Name;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
     var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
-    int Width = ViewData["Width"].ToInt(300);
-    int Height = ViewData["Height"].ToInt(250);
+    int Width = ViewData["Width"].ToInt(0);
+    int Height = ViewData["Height"].ToInt(0);
     var storyImageTag = story.GetCroppedImageTag(Width, Height);
 }
 

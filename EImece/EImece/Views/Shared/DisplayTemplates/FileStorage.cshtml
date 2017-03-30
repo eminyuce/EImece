@@ -9,8 +9,8 @@
     var tags = fileStorage.FileStorageTags.Select(r1 => r1.Tag).Distinct().ToList();
     string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
     string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
-    int Width = ViewData["Width"].ToInt(300);
-    int Height = ViewData["Height"].ToInt(214);
+    int Width = ViewData["Width"].ToInt(0);
+    int Height = ViewData["Height"].ToInt(0);
 }
 
 

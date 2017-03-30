@@ -657,6 +657,8 @@ namespace EImece.Domain.Helpers
         }
         public Tuple<byte[],String> GetResizedImage(int fileStorageId, int width, int height)
         {
+
+
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Tuple<byte[], String> result = null;
             String contentType = "";

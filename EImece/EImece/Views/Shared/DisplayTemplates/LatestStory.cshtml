@@ -11,8 +11,8 @@
     var story = Model;
     var storyDetailUrl = story.GetDetailPageUrl("Detail", "Stories", story.StoryCategory.Name);
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
-    int Width = ViewData["Width"].ToInt(280);
-    int Height = ViewData["Height"].ToInt(280);
+    int Width = ViewData["Width"].ToInt(0);
+    int Height = ViewData["Height"].ToInt(0);
 }
 
 

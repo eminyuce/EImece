@@ -250,7 +250,7 @@ namespace EImece.Domain.Helpers.Extensions
             String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
             if (!String.IsNullOrEmpty(imagePath))
             {
-                imageTag = String.Format("<img src='{0}' alt='{1}' width='{2}' height='{3}'  />",
+                imageTag = String.Format("<img src='{0}' alt='{1}'   />",
                     imagePath, entity.Name, width, height).ToLower();
             }
 

@@ -8,8 +8,8 @@
     var product = Model;
     var categoryName = product.ProductCategory.Name;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
-    int Width = ViewData["Width"].ToInt(200);
-    int Height = ViewData["Height"].ToInt(200);
+    int Width = ViewData["Width"].ToInt(0);
+    int Height = ViewData["Height"].ToInt(0);
     var imageTag = product.GetCroppedImageTag(Width, Height);
 }
 
@@ -19,7 +19,8 @@
     <figure class="product">
         <div class="mediaholder">
             <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
-                <div class="cover">
+                @Html.Raw(imageTag)
+                 <div class="cover">
                     @Html.Raw(imageTag)
                 </div>
             </a>
