@@ -1,8 +1,9 @@
 ﻿@model EImece.Domain.Models.FrontModels.ContactUsFormViewModel
+@using EImece.Domain.Helpers;
 @using Resources;
 @{
     var SendButtonText = Resource.SendButtonText;
-
+    Model.ContactFormType = ViewData["ContactFormType"].ToStr("normal");
 }
 
 @using (Html.BeginForm("SendContactUs", "Home", FormMethod.Post))

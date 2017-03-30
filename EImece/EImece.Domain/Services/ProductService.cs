@@ -185,6 +185,8 @@ namespace EImece.Domain.Services
             {
                 r.Products = new GenericRepository.PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
             }
+            r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
             return r;
         }

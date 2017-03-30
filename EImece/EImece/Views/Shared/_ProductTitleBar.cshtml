@@ -1,0 +1,41 @@
+﻿@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Entities;
+@using EImece.Domain;
+@using Resources;
+
+
+@{ 
+    var ProductMenu = (Menu)ViewData["ProductMenu"];
+    var MainPageMenu = (Menu)ViewData["MainPageMenu"];
+}
+
+@if (ProductMenu != null && ProductMenu.IsActive)
+{
+
+
+    <section class="parallax-titlebar fullwidth-element" data-background="#000" data-opacity="0.45" data-height="160" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
+        
+        <img src="@ProductMenu.GetFullPathImageUrlFromFileSystem(false)" alt="@ProductMenu.Name" style="top: -160.939px;">
+
+
+        <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
+        <div class="parallax-content">
+
+            <h2>
+                @ProductMenu.Name
+                <span>Atlantis Cam @DateTime.Now.Year Ürünleri</span>
+            </h2>
+
+            <nav id="breadcrumbs">
+                    <ul>
+                        @if (MainPageMenu != null && MainPageMenu.IsActive)
+                        {
+                            <li>@Html.ActionLink(MainPageMenu.Name, "Index", "Home")</li>
+                        }
+                        <li>@ProductMenu.Name</li>
+                    </ul>
+            </nav>
+        </div>
+    </section>
+}

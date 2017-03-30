@@ -248,7 +248,9 @@ namespace EImece.Domain.Repositories
         {
             var fltrs = FilterHelper.ParseFiltersFromString(filters);
 
-            return GetProductsSearchResult(search, fltrs, top, skip, language);
+            var  result = GetProductsSearchResult(search, fltrs, top, skip, language);
+           
+            return result;
         }
 
         private ProductsSearchResult GetProductsSearchResult(

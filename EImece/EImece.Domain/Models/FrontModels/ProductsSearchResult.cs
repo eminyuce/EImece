@@ -49,6 +49,6 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
         public int PageSize { get; set; }
-
+      
     }
 }

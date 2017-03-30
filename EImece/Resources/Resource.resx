@@ -216,4 +216,10 @@
   <data name="AdminEdit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="ProductCodeNo" xml:space="preserve">
+    <value>Ürün No :</value>
+  </data>
+  <data name="SearchResultText" xml:space="preserve">
+    <value>Search Result for {0}</value>
+  </data>
 </root>

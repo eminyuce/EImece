@@ -259,6 +259,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün No :.
+        /// </summary>
+        public static string ProductCodeNo {
+            get {
+                return ResourceManager.GetString("ProductCodeNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürünler.
         /// </summary>
         public static string Products {
@@ -318,6 +327,15 @@ namespace Resources {
         public static string SearchRequiredErrorMessage {
             get {
                 return ResourceManager.GetString("SearchRequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Result for {0}.
+        /// </summary>
+        public static string SearchResultText {
+            get {
+                return ResourceManager.GetString("SearchResultText", resourceCulture);
             }
         }
         

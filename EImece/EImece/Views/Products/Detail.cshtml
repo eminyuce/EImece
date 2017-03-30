@@ -9,7 +9,7 @@
     var product = Model.Product;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
     ViewBag.Title = product.GetSeoTitle();
-    ViewBag.Description =product.GetSeoDescription();
+    ViewBag.Description = product.GetSeoDescription();
     ViewBag.Keywords = product.GetSeoKeywords();
     Layout = "~/Views/Shared/_Layout.cshtml";
     var productFiles = product.ProductFiles.ToList();
@@ -43,8 +43,8 @@
                     <img class="rsImg" src="@product.GetCroppedImageUrl(productMainImageId, 454, 513)" data-rsTmb="@product.GetCroppedImageUrl(productMainImageId, 95,105)" alt="" />
 
                 }
-           
-                   @for (int i = 0; i < productFiles.Count; i++)
+
+                @for (int i = 0; i < productFiles.Count; i++)
                 {
                     var f = productFiles[i];
                     <img class="rsImg" src="@f.GetCroppedImageUrl(f.FileStorageId, 454, 513)" data-rsTmb="@f.GetCroppedImageUrl(f.FileStorageId, 95,105)" alt="" />
@@ -53,8 +53,8 @@
             <div class="clearfix"></div>
         </div>
     </div>
-    
-    
+
+
 
     <!-- Content
     ================================================== -->
@@ -66,29 +66,35 @@
                 <h2>@product.Name</h2>
                 @if (isUserAuthenticated)
                 {
-                    @Html.ActionLink(Resource.AdminEdit,"saveoredit","Products",new { @id=product.Id, @area="admin" },new {  @class="adminPageLink", @target="_blank"    })
+                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
                 }
                 <h4>
                     @product.ProductCategory.Name
                 </h4>
                 @*<span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>*@
- 
+                @if (!String.IsNullOrEmpty(product.ProductCode))
+                {
+                    <span class="product-code">
+                        <i>
+                            @Resource.ProductCodeNo @product.ProductCode
+                        </i>
+                    </span>
+                }
+
+
             </section>
 
             <!-- Text Parapgraph -->
             <section>
                 <p class="margin-reset">
-                    @Html.Raw(product.Description)
+
+                    @Html.Partial("_ProductSpecs", Model)
                 </p>
                 <!-- Share Buttons -->
                 <div class="share-buttons">
-                    <ul>
-                        <li><a href="#">Share</a></li>
-                        <li class="share-facebook"><a href="#">Facebook</a></li>
-                        <li class="share-twitter"><a href="#">Twitter</a></li>
-                        <li class="share-gplus"><a href="#">Google Plus</a></li>
-                        <li class="share-pinit"><a href="#">Pin It</a></li>
-                    </ul>
+
+                    @Html.Partial("_SocialMediaShareLinks", new ViewDataDictionary(ViewData){
+                              {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } } )
                 </div>
                 <div class="clearfix"></div>
 
@@ -124,7 +130,6 @@
             <div class="tab-content" id="tab2">
 
 
-                @Html.Partial("_ProductSpecs", Model)
 
 
             </div>

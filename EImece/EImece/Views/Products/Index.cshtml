@@ -17,36 +17,8 @@
 }
 
 
-
-@if (Model.ProductMenu != null && Model.ProductMenu.IsActive)
-{
-
-
-    <section class="parallax-titlebar fullwidth-element" data-background="#000" data-opacity="0.45" data-height="160" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
-
-        <img src="@Model.ProductMenu.GetFullPathImageUrlFromFileSystem(false)" alt="@Model.ProductMenu.Name" style="top: -160.939px;">
-
-
-        <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
-        <div class="parallax-content">
-
-            <h2>
-                @Model.ProductMenu.Name
-                <span>Atlantis Cam @DateTime.Now.Year Ürünleri</span>
-            </h2>
-
-            <nav id="breadcrumbs">
-                <ul>
-                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
-                    {
-                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
-                    }
-                    <li>@Model.ProductMenu.Name</li>
-                </ul>
-            </nav>
-        </div>
-    </section>
-}
+@Html.Partial("_ProductTitleBar", new ViewDataDictionary(ViewData){
+                              {"ProductMenu",Model.ProductMenu}, {"MainPageMenu",Model.MainPageMenu } })
 
 
 <div class="pagination-container">
@@ -68,16 +40,16 @@
         @if (productTags.Any())
         {
 
-        <div id="filters" class="filters-dropdown headline">
-            <span></span>
-            <ul class="option-set" data-option-key="filter">
-                <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
-                @foreach (var t in productTags)
+            <div id="filters" class="filters-dropdown headline">
+                <span></span>
+                <ul class="option-set" data-option-key="filter">
+                    <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
+                    @foreach (var t in productTags)
                 {
-                    <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
-                }
-            </ul>
-        </div>
+                        <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
+                    }
+                </ul>
+            </div>
 
         }
     </div>
@@ -95,6 +67,9 @@
         }
     </div>
 </div>
+
+@if (products.TotalCount > products.PageSize)
+{
     <div class="pagination-container">
         <nav class="pagination">
             <div class="paging">
@@ -102,9 +77,9 @@
                 @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),
     products.TotalCount, products.PageSize, numberOfLinks: 10)
+
             </div>
         </nav>
     </div>
 
-
-
+}

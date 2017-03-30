@@ -1,33 +1,44 @@
 ﻿@model EImece.Domain.Entities.Product
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
- @{ 
-     var productFiles = Model.ProductFiles;
-     var product = Model;
-     var categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name);
- }
+@using EImece.Domain;
+@using Resources;
+@{
+    var productFiles = Model.ProductFiles;
+    var product = Model;
+    var categoryName = product.ProductCategory.Name;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(200);
+    int Height = ViewData["Height"].ToInt(200);
+    var imageTag = product.GetCroppedImageTag(Width, Height);
+}
 
 
-<div>
-    <dl class="dl-horizontal">
-        <h2>
-            Product Category: @product.ProductCategory.Name
-        </h2>
-        @if (product.MainImage != null)
-        {
-            @product.MainImage.FileName
-        }
-  
-        @Html.ActionLink(product.Name, "detail", "products", new { categoryName = categoryName, id = product.GetSeoUrl() }, null)
+<div class="four shop columns">
+    <figure class="product">
+        <div class="mediaholder">
+            <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+                @Html.Raw(imageTag)
+                <div class="cover">
+                    @Html.Raw(imageTag)
+                </div>
+            </a>
+        </div>
+        <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, Settings.HttpProtocol)">
+            <section>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.Name)
-        </dt>
+                <h5>
+                    @product.Name
+                @if (isUserAuthenticated)
+                {
+                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
+                }
+            </h5>
+            <span class="product-code">
+                @product.ProductCode
+            </span>
 
-        <dd>
-            @Html.DisplayFor(model => product.Name)
-        </dd>
-       
-    </dl>
+        </section>
+    </a>
+</figure>
 </div>
- 

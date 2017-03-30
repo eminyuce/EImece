@@ -12,6 +12,9 @@ namespace EImece.Domain.Models.FrontModels
     {
         public String Search { get; set; }
         public PaginatedList<Product> Products { get; set; }
- 
+
+        public Menu ProductMenu { get; set; }
+        public Menu MainPageMenu { get; set; }
+
     }
 }

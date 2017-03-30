@@ -10,32 +10,22 @@
 @using System.Xml.Linq;
 @using EImece.Domain;
 @using Resources;
- 
-@{ 
+
+@{
     var product = Model.Product;
-    var productSpecs = product.ProductSpecifications.Where(r=>!String.IsNullOrEmpty(r.Value)).OrderBy(r=>r.Position).ToList();
+    var productSpecs = product.ProductSpecifications.Where(r => !String.IsNullOrEmpty(r.Value)).OrderBy(r => r.Position).ToList();
     var template = Model.Template;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
+    @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
 }
 @if (productSpecs.Any())
 {
 
 
-<table class="basic-table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Value
-        </th>
-    </tr>
-
-    @if (!String.IsNullOrEmpty(template.TemplateXml))
+    if (!String.IsNullOrEmpty(template.TemplateXml))
     {
         XDocument xdoc = XDocument.Parse(template.TemplateXml);
         var groups = xdoc.Root.Descendants("group");
@@ -61,40 +51,25 @@
                     {
                         continue;
                     }
-                    <tr>
+                    string attributeName = "";
+                    if (display != null)
+                    {
+                        attributeName = display.Value;
+                    }
+                    else
+                    {
+                        attributeName = name.Value;
+                    }
 
 
-                        <td>
-                            @if (display != null)
-                            {
-                                @display.Value
-                            }
-                            else
-                            {
-                                @name.Value
-                            }
-                        </td>
-                        
-                        @if (isValueExist)
-                        {
-                        if (unit != null)
-                        {
+                    if (isValueExist)
+                    {
+                        <div>
+                            @String.Format("{0} : {1}", attributeName, dbValueObj.Value).Trim()
+                        </div>
 
-                        <td>
-                            @String.Format("{0} {1}", dbValueObj.Value).Trim()
-                        </td>
-                        }
-                        else
-                        {
-                        <td>
+                    }
 
-
-                            @String.Format("{0}", dbValueObj.Value).Trim()
-                        </td>
-                        }
-
-                        }
-                    </tr>
                 }
             }
 
@@ -105,6 +80,4 @@
 
 
 
-
-</table>
 }
