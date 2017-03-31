@@ -11,6 +11,7 @@ namespace EImece.Domain.DbContext
 {
     public interface IEImeceContext : IEntitiesContext
     {
+        IDbSet<MailTemplate> MailTemplates { get; set; }
         IDbSet<ListItem> ListItems { get; set; }
         IDbSet<List> Lists { get; set; }
         IDbSet<Product> Products { get; set; }

@@ -265,6 +265,7 @@
     <Compile Include="Areas\Admin\Controllers\ImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImportDataController.cs" />
     <Compile Include="Areas\Admin\Controllers\ListsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MailTemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainPageImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MediaController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
@@ -551,6 +552,9 @@
     <Content Include="Areas\Admin\Views\Shared\pProductDetailToolTip.cshtml" />
     <Content Include="Areas\Admin\Views\ImportData\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ImportData\DisplayTable.cshtml" />
+    <Content Include="Areas\Admin\Views\MailTemplates\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\MailTemplates\Delete.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

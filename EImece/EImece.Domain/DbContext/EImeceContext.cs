@@ -20,6 +20,7 @@ namespace EImece.Domain.DbContext
             this.Database.CommandTimeout = int.MaxValue;
             this.Configuration.LazyLoadingEnabled = false;
         }
+        public IDbSet<MailTemplate> MailTemplates { get; set; }
         public IDbSet<List> Lists { get; set; }
         public IDbSet<ListItem> ListItems { get; set; }
         public IDbSet<Menu> Menus { get; set; }

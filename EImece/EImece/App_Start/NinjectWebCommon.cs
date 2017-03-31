@@ -109,6 +109,8 @@ namespace EImece.App_Start
             kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
             kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
 
+            kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();
+
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
             kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
             kernel.Bind<IStoryCategoryService>().To<StoryCategoryService>().InRequestScope();
@@ -121,6 +123,8 @@ namespace EImece.App_Start
             kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
             kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
             kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
+
+            kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();
 
             kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
             kernel.Bind<IListService>().To<ListService>().InRequestScope();

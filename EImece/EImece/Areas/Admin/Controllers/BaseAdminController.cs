@@ -61,6 +61,10 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ICacheProvider MemoryCacheProvider { get; set; }
 
+        [Inject]
+        public IMailTemplateService MailTemplateService { get; set; }
+
+
         private FilesHelper _filesHelper { get; set; }
         [Inject]
         public FilesHelper FilesHelper
