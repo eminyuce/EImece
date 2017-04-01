@@ -113,7 +113,7 @@
 
         <!-- Tags -->
             <div class="widget margin-top-10">
-                <h3 class="headline">ETİKETLER</h3><span class="line"></span><div class="clearfix"></div>
+                <h3 class="headline">@Resource.Tags</h3><span class="line"></span><div class="clearfix"></div>
 
                 <nav class="tags">
                     @foreach (var t in productTags)
@@ -135,9 +135,9 @@
     <div class="sixteen columns">
         <!-- Tabs Navigation -->
         <ul class="tabs-nav">
-            <li class="active"><a href="#tab1">Ürün Bilgisi</a></li>
-            <li><a href="#tab2">Teknik Resimler</a></li>
-            <li><a href="#tab3">Bu Ürün Hakkında Bilgi İstiyorum</span></a></li>
+            <li class="active">   <a href="#tab1">@Resource.ProductsInfo</a></li>
+            <li><a href="#tab2"> @Resource.TechnicalPictures </a></li>
+            <li><a href="#tab3">  @Resource.WantMoreInfoAboutProduct</a></li>
         </ul>
 
         <!-- Tabs Content -->
@@ -158,10 +158,23 @@
 
             <div class="tab-content" id="tab3">
 
-                <!-- Reviews -->
 
-                @Html.Partial("_ContactUsFormViewModel",Model.Contact)
+                <!-- Contact Form -->
+                <section id="contact">
+                    <!-- Success Message -->
+                    <!-- Form -->
 
+                    @Html.Partial("_ContactUsFormViewModel", Model.Contact)
+                    <br />
+                    <br />
+                    <div id="result"></div>
+
+                    <div class="clearfix"></div>
+
+
+                </section>
+
+                <!-- Contact Form / End -->
 
 
 
@@ -178,7 +191,7 @@
     <div class="container margin-top-15">
         <div class="sixteen columns products">
 
-            <h3 class="headline">Benzer Ürünler</h3>
+            <h3 class="headline"> @Resource.SimilairProducts</h3>
             <span class="line margin-bottom-0"></span>
 
 
@@ -198,7 +211,10 @@
         <div class="container margin-top-15">
             <div class="sixteen columns products">
 
-                <h3 class="headline">Ilgili Blog</h3>
+                <h3 class="headline">
+                    @Resource.RelatedBlogsForProducts
+
+                </h3>
                 <span class="line margin-bottom-0"></span>
 
 

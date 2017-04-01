@@ -24,12 +24,15 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">
-                    @imageSizes.Item5
+                    @imageSizes.Item5    333333
                 </h4>
             </div>
             <div class="modal-body">
                 <p>@String.Format("Original Width={0} Height={1}", imageSizes.Item3, imageSizes.Item4)</p>
                 <p>@String.Format("Thumbs Width={0} Height={1}", imageSizes.Item1, imageSizes.Item2)</p>
+                <p>
+                    <a href=@String.Format("../media/images/{0}",imageSizes.Item1) target="_blank">Full Image</a>
+                </p>
                 <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorageId, width=imageWidth, height= imageHeight })" />
             </div>
             <div class="modal-footer">

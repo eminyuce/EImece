@@ -295,6 +295,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Bilgisi.
+        /// </summary>
+        public static string ProductsInfo {
+            get {
+                return ResourceManager.GetString("ProductsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ilgili Blogs.
+        /// </summary>
+        public static string RelatedBlogsForProducts {
+            get {
+                return ResourceManager.GetString("RelatedBlogsForProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ara.
         /// </summary>
         public static string Search {
@@ -367,6 +385,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Benzer Urunler.
+        /// </summary>
+        public static string SimilairProducts {
+            get {
+                return ResourceManager.GetString("SimilairProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EKLE.
         /// </summary>
         public static string SubscriberButtonText {
@@ -376,11 +403,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Etiketler.
+        /// </summary>
+        public static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teknik Resimler.
+        /// </summary>
+        public static string TechnicalPictures {
+            get {
+                return ResourceManager.GetString("TechnicalPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Terms &amp; Conditions.
         /// </summary>
         public static string TermsAndConditions {
             get {
                 return ResourceManager.GetString("TermsAndConditions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu Ürün Hakkında Bilgi İstiyorum.
+        /// </summary>
+        public static string WantMoreInfoAboutProduct {
+            get {
+                return ResourceManager.GetString("WantMoreInfoAboutProduct", resourceCulture);
             }
         }
     }

@@ -225,4 +225,22 @@
   <data name="ContactUsWrongSumForSecurityQuestion" xml:space="preserve">
     <value>Wrong Sum, Please try it again.</value>
   </data>
+  <data name="ProductsInfo" xml:space="preserve">
+    <value>Ürün Bilgisi</value>
+  </data>
+  <data name="RelatedBlogsForProducts" xml:space="preserve">
+    <value>Ilgili Blogs</value>
+  </data>
+  <data name="SimilairProducts" xml:space="preserve">
+    <value>Benzer Urunler</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Etiketler</value>
+  </data>
+  <data name="TechnicalPictures" xml:space="preserve">
+    <value>Teknik Resimler</value>
+  </data>
+  <data name="WantMoreInfoAboutProduct" xml:space="preserve">
+    <value>Bu Ürün Hakkında Bilgi İstiyorum</value>
+  </data>
 </root>

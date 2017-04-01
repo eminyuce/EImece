@@ -402,6 +402,7 @@
     <Content Include="Content\trizzy\images\comments-divider.png" />
     <Content Include="Content\trizzy\images\home%402x.png" />
     <Content Include="Content\trizzy\images\home.png" />
+    <Content Include="Content\trizzy\images\preloader.gif" />
     <Content Include="Content\trizzy\images\loader.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
