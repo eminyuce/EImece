@@ -17,7 +17,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Controllers
 {
@@ -166,8 +166,21 @@ namespace EImece.Controllers
         {
             if (Session["CaptchaContactUsLogin"] == null || !Session["CaptchaContactUsLogin"].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
-                ModelState.AddModelError("Captcha", "Wrong sum, please try again.");
+                ModelState.AddModelError("Captcha", Resources.Resource.ContactUsWrongSumForSecurityQuestion);
+                if (contact.ItemType == EImeceItemType.Product)
+                {
+                    var product = ProductService.GetProductById(contact.ItemId);
+                    product.Contact = contact;
+                    return View("../Products/Detail", product);
+                }
+                else if (contact.ItemType == EImeceItemType.Menu)
+                {
+                    var page = MenuService.GetPageById(contact.ItemId);
+                    page.Contact = contact;
+                    return View("../Pages/Detail", page);
+                }
                 return View("_ContactUsFormViewModel", contact);
+
             }
             else
             {

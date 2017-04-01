@@ -12,6 +12,7 @@ using NLog;
 using EImece.Domain.Models.FrontModels;
 using System.Data.Entity.Validation;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Domain.Services
 {
@@ -50,6 +51,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new MenuPageViewModel();
+                result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
                 result.Menu = MenuRepository.GetMenuById(menuId);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);

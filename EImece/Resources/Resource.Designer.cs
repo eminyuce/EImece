@@ -178,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrong Sum, Please try it again..
+        /// </summary>
+        public static string ContactUsWrongSumForSecurityQuestion {
+            get {
+                return ResourceManager.GetString("ContactUsWrongSumForSecurityQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-Posta.
         /// </summary>
         public static string Email {

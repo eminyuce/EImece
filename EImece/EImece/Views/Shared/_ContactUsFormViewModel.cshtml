@@ -3,13 +3,14 @@
 @using Resources;
 @{
     var SendButtonText = Resource.SendButtonText;
-    Model.ContactFormType = ViewData["ContactFormType"].ToStr("normal");
 }
 
 @using (Html.BeginForm("SendContactUs", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-
+    @Html.HiddenFor(model => model.ContactFormType)
+    @Html.HiddenFor(model => model.ItemId)
+    @Html.HiddenFor(model => model.ItemType)
     <div class="form-horizontal">
          
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -81,4 +82,3 @@
         </div>
     </div>
 }
-

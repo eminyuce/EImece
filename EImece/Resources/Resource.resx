@@ -222,4 +222,7 @@
   <data name="SearchResultText" xml:space="preserve">
     <value>Search Result for {0}</value>
   </data>
+  <data name="ContactUsWrongSumForSecurityQuestion" xml:space="preserve">
+    <value>Wrong Sum, Please try it again.</value>
+  </data>
 </root>

@@ -13,5 +13,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public Setting CompanyName { get; set; }
         public Menu MainPageMenu { get;  set; }
+
+        public ContactUsFormViewModel Contact { get; set; }
     }
 }

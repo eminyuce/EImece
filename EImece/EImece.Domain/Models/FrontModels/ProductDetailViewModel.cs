@@ -22,5 +22,7 @@ namespace EImece.Domain.Models.FrontModels
         public List<Story> RelatedStories { get; set; }
 
         public List<Product> RelatedProducts { get; set; }
+
+        public ContactUsFormViewModel Contact { get; set; }
     }
 }

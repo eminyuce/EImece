@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Resources;
 using System.ComponentModel.DataAnnotations;
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -36,5 +37,16 @@ namespace EImece.Domain.Models.FrontModels
         public String Captcha { get; set; }
 
         public String ContactFormType { get; set; }
+        public int ItemId { get; set; }
+        public EImeceItemType ItemType { get; set; }
+
+        public static ContactUsFormViewModel CreateContactUsFormViewModel(string contactFormType, int itemId, EImeceItemType itemType)
+        {
+            var result = new ContactUsFormViewModel();
+            result.ContactFormType = contactFormType;
+            result.ItemId = itemId;
+            result.ItemType = itemType;
+            return result;
+        }
     }
 }

@@ -113,7 +113,8 @@ namespace EImece.Domain.Services
 
             result = new ProductDetailViewModel();
             var r = ProductRepository.GetProduct(id);
-
+            result.Contact =  ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail",id,EImeceItemType.Product);
+           
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
