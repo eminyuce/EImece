@@ -1086,6 +1086,7 @@
     <Content Include="Views\Shared\PageThemes\PageTheme_T8.cshtml" />
     <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Shared\_ProductTitleBar.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="media\tempFiles\" />

@@ -88,11 +88,12 @@ namespace EImece.Domain.Services
         {
             var result = new StoryDetailViewModel();
             result.Story = GetStoryById(storyId);
+            int language = result.Story.Lang;
             result.RelatedStories = new List<Story>();
             if (result.Story != null && result.Story.StoryTags.Any())
             {
                 var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
-                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, result.Story.Lang,storyId);
+                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, language, storyId);
             }
             result.RelatedProducts = new List<Product>();
             if (result.Story != null && result.Story.StoryTags.Any())
@@ -100,6 +101,11 @@ namespace EImece.Domain.Services
                 var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
                 result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, result.Story.Lang, 0);
             }
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
+            result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.Tags = TagService.GetActiveBaseEntities(true, language);
+
             return result;
         }
 

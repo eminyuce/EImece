@@ -14,5 +14,11 @@ namespace EImece.Domain.Models.FrontModels
         public List<Story> RelatedStories { get; set; }
 
         public List<Product> RelatedProducts { get; set; }
+
+        public Menu BlogMenu { get; set; }
+
+        public Menu MainPageMenu { get; set; }
+
+        public List<Tag> Tags { get; set; }
     }
 }

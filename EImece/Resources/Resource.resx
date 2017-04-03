@@ -243,4 +243,10 @@
   <data name="WantMoreInfoAboutProduct" xml:space="preserve">
     <value>Bu Ürün Hakkında Bilgi İstiyorum</value>
   </data>
+  <data name="SocialMedia" xml:space="preserve">
+    <value>Social Media</value>
+  </data>
+  <data name="RelatedProductsForBlog" xml:space="preserve">
+    <value>Ilgili Urunler</value>
+  </data>
 </root>

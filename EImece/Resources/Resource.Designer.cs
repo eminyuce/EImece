@@ -313,6 +313,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ilgili Urunler.
+        /// </summary>
+        public static string RelatedProductsForBlog {
+            get {
+                return ResourceManager.GetString("RelatedProductsForBlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ara.
         /// </summary>
         public static string Search {
@@ -390,6 +399,15 @@ namespace Resources {
         public static string SimilairProducts {
             get {
                 return ResourceManager.GetString("SimilairProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Social Media.
+        /// </summary>
+        public static string SocialMedia {
+            get {
+                return ResourceManager.GetString("SocialMedia", resourceCulture);
             }
         }
         
