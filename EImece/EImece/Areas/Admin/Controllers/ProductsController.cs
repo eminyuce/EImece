@@ -27,7 +27,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
-            ViewBag.SelectedCategoryId = id;
+            ViewBag.SelectedCategory  = ProductCategoryService.GetSingle(id);
             return View(products);
         }
         public ActionResult SaveOrEditProductSpecs(int id = 0)

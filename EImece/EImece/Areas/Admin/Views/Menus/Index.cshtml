@@ -41,7 +41,11 @@
    {
        settings.Id = "treeViewContainer";
        settings.Header.Expanded = true;
-       settings.ClientHandlers.ContentSelect = "function (e) { console.log(e);  window.location='menus/saveoredit/'+e.id; }";
+       settings.ClientHandlers.ContentSelect = @"function (e)
+{ 
+console.log(e);  
+window.location='/admin/menus/saveoredit/'+e.id; 
+}";
        //settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
        settings.Height = 300;
        settings.Width = 270;

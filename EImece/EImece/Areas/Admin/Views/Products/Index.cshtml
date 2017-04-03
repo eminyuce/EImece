@@ -19,7 +19,7 @@
     var title = "Products";
     var gridName = "productGrid";
     var contents = Model;
-    int selectedCategoryId = (int)ViewBag.SelectedCategoryId;
+    ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
     var products = Model;
     var baseList = contents.DownCasting<Product>();
 
@@ -58,22 +58,18 @@
     </div>
     <div class="col-md-10">
 
-        @if (selectedCategoryId > 0)
+        @if (selectedCategory != null)
         {
             <span>
                 @{
-                    var product = products.FirstOrDefault();
-                    if (product != null)
-                    {
-                        <span>
-                            @AdminResource.SelectedCategory
-                        </span>
+
+                    <span>
+                        @AdminResource.SelectedCategory
+                    </span>
                         <b style="color:red;">
 
-                            @String.Format("{0}", product.ProductCategory.Name)
+                            @String.Format("{0}", selectedCategory.Name)
                         </b>
-
-                    }
                 }
                 @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
 
@@ -155,7 +151,7 @@
                    SetWidth(10).
                    RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-       
+
            columns.Add(o => o.IsActive)
                   .Titled(AdminResource.State)
                   .Sortable(true)
