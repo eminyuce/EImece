@@ -249,4 +249,7 @@
   <data name="RelatedProductsForBlog" xml:space="preserve">
     <value>Ilgili Urunler</value>
   </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Devami...</value>
+  </data>
 </root>

@@ -11,28 +11,11 @@
 
 
 
- 
-    @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
     <button class="newsletter-btn" type="submit">@Resource.SubscriberButtonText</button>
 
-    @*<div class="form-group">
-        @Html.LabelFor(model => subscriber.Name)
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => subscriber.Name, new { @placeholder = @Resource.Name, @class = "newsletter" })
-            @Html.ValidationMessageFor(model => subscriber.Name)
-        </div>
-    </div>*@
-
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => subscriber.Email)
-            <div class="col-md-10">
-           
-                @Html.ValidationMessageFor(model => subscriber.Email)
-            </div>
-        </div>*@
-
-
+    @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
+   
+ 
 
 
 }

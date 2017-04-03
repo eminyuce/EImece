@@ -36,6 +36,7 @@ namespace EImece.Controllers
         }
 
         [OutputCache(CacheProfile = "Cache20Minutes")]
+
         public ActionResult Detail(String id)
         {
             

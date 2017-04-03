@@ -339,4 +339,7 @@
   <data name="ProductCategoryTreeName" xml:space="preserve">
     <value>ProductCategoryTreeName</value>
   </data>
+  <data name="SelectedCategory" xml:space="preserve">
+    <value>Selected Category:</value>
+  </data>
 </root>

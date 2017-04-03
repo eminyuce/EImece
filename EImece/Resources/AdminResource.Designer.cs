@@ -619,6 +619,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected Category:.
+        /// </summary>
+        public static string SelectedCategory {
+            get {
+                return ResourceManager.GetString("SelectedCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SettingKey.
         /// </summary>
         public static string SettingKey {

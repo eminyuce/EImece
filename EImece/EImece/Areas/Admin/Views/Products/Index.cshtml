@@ -45,9 +45,9 @@
         settings.Header.Visible = false;
         settings.Header.Expanded = true;
         settings.ClientHandlers.ContentSelect = @"function (e) {
-console.log(e);
-window.location='/admin/products/index/'+e.id;
-}";
+            console.log(e);
+            window.location='/admin/products/index/'+e.id;
+            }";
         settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
         settings.DataOnClient = true;
     }).GetContent(ViewBag.Tree)
@@ -66,9 +66,9 @@ window.location='/admin/products/index/'+e.id;
                     if (product != null)
                     {
                         <span>
-                            Selected Category:
+                            @AdminResource.SelectedCategory
                         </span>
-                        <b>
+                        <b style="color:red;">
 
                             @String.Format("{0}", product.ProductCategory.Name)
                         </b>
