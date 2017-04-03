@@ -13,12 +13,16 @@ using EImece.Domain.Models.FrontModels;
 using System.Data.Entity.Validation;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Domain.Services
 {
     public class MenuService : BaseContentService<Menu>, IMenuService
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public IStoryCategoryService StoryCategoryService { get; set; }
 
         private IMenuRepository MenuRepository { get; set; }
         public MenuService(IMenuRepository repository) : base(repository)
@@ -112,6 +116,21 @@ namespace EImece.Domain.Services
             }
         }
 
-      
+        public void UpdateStoryCategoryMenuLink(int storyCategoryId, int lang)
+        {
+            var items = MenuService.GetActiveBaseContentsFromCache(null, lang).Where(r1 => r1.MenuLink.Contains("stories-categories")).ToList();
+            foreach (var item in items)
+            {
+                var menuLink = item.MenuLink;
+                if(menuLink.GetId() == storyCategoryId)
+                {
+                    var storyCategory = StoryCategoryService.GetSingle(storyCategoryId);
+                    string m = "stories-categories_" + storyCategory.GetSeoUrl();
+                    item.MenuLink = m;
+                    MenuService.SaveOrEditEntity(item);
+                }
+            }
+             
+        }
     }
 }

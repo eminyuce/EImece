@@ -16,8 +16,8 @@
     var storyCategory = story.StoryCategory;
     var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 
-    var relatedStories = Model.RelatedStories;
-    var RelatedProducts = Model.RelatedProducts;
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
+    var RelatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(8).ToList();
     var tags = Model.Tags;
 }
 

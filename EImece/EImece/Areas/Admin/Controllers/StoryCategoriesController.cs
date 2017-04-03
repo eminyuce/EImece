@@ -87,6 +87,8 @@ namespace EImece.Areas.Admin.Controllers
                     storyCategory.Lang = CurrentLanguage;
                     StoryCategoryService.SaveOrEditEntity(storyCategory);
                     int contentId = storyCategory.Id;
+
+                    MenuService.UpdateStoryCategoryMenuLink(contentId, CurrentLanguage);
                     return ReturnTempUrl("Index");
                 }
                 else
