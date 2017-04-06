@@ -34,8 +34,7 @@
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
 
-<div class="row" style="padding:20px;">
-
+<div class="row">
     <div class="col-md-2">
 
 
@@ -62,21 +61,17 @@
         {
             <span>
                 @{
-
                     <span>
                         @AdminResource.SelectedCategory
                     </span>
-                        <b style="color:red;">
-
-                            @String.Format("{0}", selectedCategory.Name)
-                        </b>
+                    <b style="color:red;">
+                        @String.Format("{0}", selectedCategory.Name)
+                    </b>
                 }
                 @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
-
-
             </span>
 
-                    }
+        }
 
 
         @Html.ActionLink(AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
@@ -110,8 +105,8 @@
                       .Encoded(false)
                       .Sanitized(false)
                        .Css("gridButtons")
-                       .SetWidth("18%")
-                      .RenderValueAs(d => GridToolsColumn(d, controllerName));
+                       @*.SetWidth("18%")*@
+                      .RenderValueAs(d => GridToolsColumnAlt1(d, controllerName));
 
 
 
@@ -121,8 +116,11 @@
                .Encoded(false)
                 .Sanitized(false)
           .RenderValueAs(d =>
-        @<b>
+        @<div>
             @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+             <div>
+                 @GridToolsColumnAlt2(d, controllerName)
+             </div>
             @*<div style="text-align: center;clear: right;">
                          <a style="" href="javascript:void(0);" class=""
 
@@ -131,7 +129,10 @@
                 <span data-product-detail-result="@d.Id">
 
                 </span>*@
-        </b>);
+        </div>
+        
+            
+            );
 
 
            if (isProductPriceEnable.SettingValue.ToBool(true))
@@ -148,7 +149,7 @@
               .Encoded(false).
                    Sanitized(false).
                    Css("smallGridColumn").
-                   SetWidth(10).
+                   @*SetWidth(10). *@
                    RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 
@@ -168,7 +169,7 @@
        .Encoded(false)
        .Sanitized(false)
                .Css("smallGridColumn")
-       .SetWidth(30)
+       @*.SetWidth(30) *@
        .RenderValueAs(o => GridImageColumn(o, controllerName));
 
 
@@ -185,20 +186,20 @@
 {
     <ul>
         <li>
-            @Html.Raw(String.Format("<div>Active</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>Active</span>",
                                                     o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive))
 
 
         </li>
         <li>
-            @Html.Raw(String.Format("<div>Main Page</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span>",
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>Main Page</span>",
                                                     o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
 
 
 
         </li>
         <li>
-            @Html.Raw(String.Format("<div>IsCampaign</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span>",
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>IsCampaign</span>",
                                                     o.Id, (o.IsCampaign ? Settings.OkStyle : Settings.CancelStyle), o.IsCampaign))
 
 
@@ -211,7 +212,7 @@
 {
     <ul>
         <li>
-            @Html.Raw(String.Format("<div>Image State</div><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+            @Html.Raw(String.Format("<span>Image State</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
                                                     o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
 
         </li>
@@ -229,20 +230,56 @@
             @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
         </span>
         <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
+            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
         </span>
         <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
         </span>
         <span>
-            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default   glyphicon glyphicon-plus" })
+            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
         </span>
         @if (UserRoleHelper.IsDeletedEnableRoles())
         {
             <span>
                 @Html.ActionLink(" ", "Delete", controllerName,
                            new { id = d.Id },
-                          new { @class = "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" })
+                           new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
+
+            </span>
+        }
+    </div>
+
+}
+
+@helper GridToolsColumnAlt1(Product d, String controllerName)
+{
+
+    <div class="gridToolBox">
+        <span>
+            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
+        </span>
+    </div>
+
+}
+@helper GridToolsColumnAlt2(Product d, String controllerName)
+{
+
+    <div class="gridToolBox">
+        <span>
+            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
+        </span>
+        <span>
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
+        </span>
+        <span>
+            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
+        </span>
+        @if (UserRoleHelper.IsDeletedEnableRoles())
+        {
+            <span>
+                @Html.ActionLink(" ", "Delete", controllerName,
+                           new { id = d.Id },
+                           new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
 
             </span>
         }

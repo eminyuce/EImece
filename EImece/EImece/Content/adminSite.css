@@ -199,8 +199,8 @@ li.Tools {
 }
 
 input[name='checkboxGrid'] {
-    width: 34px;
-    height: 30px;
+    /* width: 34px;
+    height: 30px; */
     padding: 5em;
     border: 1px solid #369;
 }
@@ -212,7 +212,7 @@ input[name='checkboxGrid'] {
 }
 
 .smallGridColumn {
-    width: 15px !important;
+    /*width: 15px !important;*/
 }
 
 .gridNotActiveIcon {
@@ -223,4 +223,46 @@ input[name='checkboxGrid'] {
 .gridActiveIcon {
     color: green;
     font-size: 1.5em;
+}
+
+
+.MainPage > div {
+    text-align:center;
+}
+.MainPage > div > a {
+    display:inline-block;
+    margin:5px;
+}
+
+#nav-1, #nav-2 {
+    border-radius: 0;
+}
+#nav-1 {
+    border:0;
+    background:#A0AEC4; 
+    margin-bottom:0;   
+}
+#nav-1 .navbar-text {
+    color:black;
+}
+
+#treeViewContainer_rootUl {
+    margin-left:0;
+    padding-left:20px;
+}
+
+#treeViewContainer_rootUl > li > ul {
+    padding-left:20px;
+}
+
+.grid-table td ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+.grid-table td ul  span {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 5px;
 }

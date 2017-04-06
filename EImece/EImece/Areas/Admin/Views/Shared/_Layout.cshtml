@@ -55,128 +55,141 @@
 
 </head>
 <body>
-    <span style="font-weight:bolder;">
-        @String.Format("{0} Admin Panel",companyNameSetting)
-    </span>
- 
-    <nav class="navbar navbar-default">
 
-        <div class="col-md-12">
-            <div class="row">
-
-                <div class="col-md-2">
-                    <div class="navbar-text">
+    <nav class="navbar navbar-default" id="nav-1">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>                
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <p class="navbar-text" style="font-weight:bolder;">@String.Format("{0} Admin Panel", companyNameSetting)</p>                
+                
+                <ul class="nav navbar-nav">
+                    <li>
                         @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
-                        <p style="font-weight:bold;">@String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))</p>
-                    </div>
-                </div>
+                    </li>
+                </ul>
 
-                <div class="col-md-2">
-                    <div class="navbar-text">
-                        @if (listItems.Count() > 1)
-                        {
-                            @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
-                        }
-
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-
-                        @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get,new { @class="navbar-form" }))
-                        {
-                            <div class="input-group">
-                                <div class="form-group">
-                                    <input type="text" name="searchContent" value="@Request.QueryString["searchContent"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
-                                </div>
-                                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                            </div>
-                        }
-
-                  
-                </div>
-                <div class="col-md-1">
-                    <div class="navbar-text text-right">
-                        @Html.ActionLink(" ", "Index", "Dashboard", new { area = "admin" }, new { @class = "glyphicon glyphicon-dashboard", @style = "font-size:2em;padding:3px;" })
-                        @Html.ActionLink(" ", "ClearCache", "Dashboard", new { area = "admin" }, new { @class = "glyphicon glyphicon-refresh", @style = "font-size:2em;padding:3px;" })
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="navbar-text">
-                        @Html.ActionLink("Go To Home Page", "Index", "Home", new { area = "" }, new { @target = "_blank", @class = "btn btn-link", @style = " text-decoration: underline;" })
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="navbar-text">
-
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
+                            Refresh <span class="glyphicon glyphicon-refresh"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })">
+                            Admin Home
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/" target="_blank">
+                            Web Site <span class="glyphicon glyphicon-globe"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Logout <span class="glyphicon glyphicon-log-out"></span></a>
                         @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                         {
                             @Html.AntiForgeryToken()
 
-                            <a class="glyphicon glyphicon-log-out" style="font-size:2em; padding:3px;" href="javascript:document.getElementById('logoutForm').submit()"> </a>
+
 
                         }
-
-                    </div>
-                </div>
-
-            </div>
-
-
-
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="nav navbar-nav pull-right">
-
-                        <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Products", "Index", "Products", new { area = "admin" }, null)</li>
-                                <li>@Html.ActionLink("Product Categories", "Index", "ProductCategories", new { area = "admin" }, null)</li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Tags", "Index", "Tags", new { area = "admin" }, null)</li>
-                                <li>@Html.ActionLink("TagCategories", "Index", "TagCategories", new { area = "admin" }, null)</li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stories <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Stories", "Index", "Stories", new { area = "admin" }, null)</li>
-                                <li>@Html.ActionLink("StoryCategories", "Index", "StoryCategories", new { area = "admin" }, null)</li>
-                            </ul>
-                        </li>
-                        <li>@Html.ActionLink("Subscribers", "Index", "Subscribers", new { area = "admin" }, null)</li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Templates", "Index", "Templates", new { area = "admin" }, null)</li>
-                                <li>@Html.ActionLink("Lists", "Index", "Lists", new { area = "admin" }, null)</li>
-                                @if (UserRoleHelper.IsAdminManagementRoles())
-                                {
-                                    <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
-                                    <li>@Html.ActionLink("Web Site Logo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
-                                    <li>@Html.ActionLink("Privacy Policy", "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
-                                    <li>@Html.ActionLink("Terms & Conditions", "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
-                                    <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
-                                }
-
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
-
     </nav>
 
-    <div class="">
-        @RenderBody()
+    <nav class="navbar navbar-default" id="nav-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>            
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-2">
+
+            <p class="navbar-text" style="font-weight:bold;">
+                @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy"))
+            </p>
+
+            @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {                
+                    <div class="form-group">
+                        <input type="text" name="searchContent" value="@Request.QueryString["searchContent"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+             
+            }
+
+            <ul class="nav navbar-nav pull-right">
+                @if (listItems.Count() > 1)
+                {
+                    <li>
+                        @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
+                    </li>
+                }
+                <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
+                <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Products", "Index", "Products", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink("Product Categories", "Index", "ProductCategories", new { area = "admin" }, null)</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Tags", "Index", "Tags", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink("TagCategories", "Index", "TagCategories", new { area = "admin" }, null)</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stories <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Stories", "Index", "Stories", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink("StoryCategories", "Index", "StoryCategories", new { area = "admin" }, null)</li>
+                    </ul>
+                </li>
+                <li>@Html.ActionLink("Subscribers", "Index", "Subscribers", new { area = "admin" }, null)</li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Management <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Templates", "Index", "Templates", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink("Lists", "Index", "Lists", new { area = "admin" }, null)</li>
+                        @if (UserRoleHelper.IsAdminManagementRoles())
+                        {
+                            <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink("Web Site Logo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink("Privacy Policy", "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink("Terms & Conditions", "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink("Users", "Index", "Users", new { area = "admin" }, null)</li>
+                        }
+
+                    </ul>
+                </li>
+            </ul>
+            
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @RenderBody()
+            </div>
+        </div>
         <hr />
         <footer>
             <p>@String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy dddd"))</p>

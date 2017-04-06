@@ -324,9 +324,6 @@
   <data name="ButtonOk" xml:space="preserve">
     <value>Tamam</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>IsCampaign</value>
-  </data>
   <data name="MenuSameSelectionErrorMessage" xml:space="preserve">
     <value>You cannot select same menu for parent</value>
   </data>
