@@ -45,21 +45,24 @@
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
-       {
+{
+
+columns.Add(o => o.Id, true);
+
+columns.Add()
+       .Encoded(false)
+       .Sanitized(false)
+        .Css("gridButtons")
+       .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
 
 
-       columns.Add().Encoded(false).
-        Sanitized(false).
-        SetWidth(10).
-        RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", o.Id));
 
-       columns.Add(o => o.Id, true);
-
-       columns.Add()
-              .Encoded(false)
-              .Sanitized(false)
-              .SetWidth(30)
-              .RenderValueAs(d =>
+columns.Add()
+       .Encoded(false)
+       .Sanitized(false)
+       .SetWidth(30)
+       .RenderValueAs(d =>
             @<b>
                 @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
             </b>);
@@ -82,57 +85,57 @@
                     @<b>
                         @Html.ActionLink(gridDeleteText, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm " })
                     </b>);
-           }
-           columns.Add(c => c.Name)
-                  .Titled("Title")
-                  .Filterable(true);
+    }
+    columns.Add(c => c.Name)
+           .Titled("Title")
+           .Filterable(true);
 
 
 
-           columns.Add(o => o.Position)
-              .Encoded(false).
-                   Sanitized(false).
-                   SetWidth(10).
-                   RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+    columns.Add(o => o.Position)
+       .Encoded(false).
+            Sanitized(false).
+            SetWidth(10).
+            RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-           columns.Add(o => o.IsActive)
-                      .Titled(AdminResource.State)
-                  .Sortable(true)
-                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                   Sanitized(false)
-                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+    columns.Add(o => o.IsActive)
+               .Titled(AdminResource.State)
+           .Sortable(true)
+           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+            Sanitized(false)
+           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                             o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
 
-           columns.Add(o => o.ImageState)
-                      .Titled(AdminResource.ImageState)
-                  .Sortable(true)
-                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                   Sanitized(false)
-                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
-
-
-
-
-           columns.Add(o => o.UpdatedDate)
-                      .Titled(AdminResource.UpdatedDate)
-                  .Sortable(true)
-                  .Css("gridDateClass")
-                  .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
-                  .SortInitialDirection(GridSortDirection.Descending);
-
-
-           columns.Add()
-                  .Titled(AdminResource.Images)
-              .Encoded(false)
-              .Sanitized(false)
-
-              .SetWidth(30)
-              .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+    columns.Add(o => o.ImageState)
+               .Titled(AdminResource.ImageState)
+           .Sortable(true)
+           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+            Sanitized(false)
+           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
+                                             o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
 
 
 
-       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+
+    columns.Add(o => o.UpdatedDate)
+               .Titled(AdminResource.UpdatedDate)
+           .Sortable(true)
+           .Css("gridDateClass")
+           .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
+           .SortInitialDirection(GridSortDirection.Descending);
+
+
+    columns.Add()
+           .Titled(AdminResource.Images)
+       .Encoded(false)
+       .Sanitized(false)
+
+       .SetWidth(30)
+       .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+
+
+
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
 </div>
 

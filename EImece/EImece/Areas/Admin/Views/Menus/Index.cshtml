@@ -79,6 +79,13 @@ window.location='/admin/menus/saveoredit/'+e.id;
 
 
 
+           columns.Add()
+                          .Encoded(false)
+                          .Sanitized(false)
+                           .Css("gridButtons")
+                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
+
 
            columns.Add()
                .Encoded(false)
@@ -139,7 +146,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
 
 
 
-       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+       }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
         </div>
 
@@ -185,9 +192,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
 {
 
     <div class="gridToolBox">
-        <span>
-            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
-        </span>
+        
         <span>
             @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
         </span>
