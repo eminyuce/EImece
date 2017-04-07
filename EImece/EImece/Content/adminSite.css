@@ -60,7 +60,7 @@ input.GridOrderingTextbox {
 }*/
 
 .gridChecked {
-    background-color: #eae3dd !important;
+    background: rgba(38,185,154,.16) !important;
 }
 
 .container {
