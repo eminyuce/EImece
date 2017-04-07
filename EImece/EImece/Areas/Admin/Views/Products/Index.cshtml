@@ -105,8 +105,8 @@
                       .Encoded(false)
                       .Sanitized(false)
                        .Css("gridButtons")
-                       @*.SetWidth("18%")*@
-                      .RenderValueAs(d => GridToolsColumnAlt1(d, controllerName));
+                      .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
 
 
 
@@ -121,14 +121,7 @@
              <div>
                  @GridToolsColumnAlt2(d, controllerName)
              </div>
-            @*<div style="text-align: center;clear: right;">
-                         <a style="" href="javascript:void(0);" class=""
-
-                            data-product-detail="@d.Id">More info...</a>
-                     </div>
-                <span data-product-detail-result="@d.Id">
-
-                </span>*@
+         
         </div>
         
             
@@ -174,7 +167,7 @@
 
 
 
-       }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+       }).SetRowCssClasses(item => item.IsActive ? "" : "warning").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
         </div>
 
@@ -251,16 +244,7 @@
 
 }
 
-@helper GridToolsColumnAlt1(Product d, String controllerName)
-{
-
-    <div class="gridToolBox">
-        <span>
-            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
-        </span>
-    </div>
-
-}
+ 
 @helper GridToolsColumnAlt2(Product d, String controllerName)
 {
 

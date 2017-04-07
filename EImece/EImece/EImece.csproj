@@ -898,6 +898,7 @@
     <Content Include="Areas\Admin\Views\MailTemplates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

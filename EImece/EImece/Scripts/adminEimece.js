@@ -7,6 +7,17 @@ $(document).ready(function () {
     bindProductDetailToolTip();
     bindCKEDITOR();
     searchAutoComplete();
+    $("input[name=checkboxGrid]").each(function () {
+        $(this).off("click");
+        $(this).on("click", function (e) {
+            var m = $(this).is(':checked');
+            if (m) {
+                $(this).parents("tr:first").addClass('gridChecked');
+            } else {
+                $(this).parents("tr:first").removeClass('gridChecked');
+            }
+        });
+    });
     function bindCKEDITOR() {
         $('[data-ckeditor-field]').each(function () {
             CKEDITOR.replace(this);
@@ -38,17 +49,17 @@ $(document).ready(function () {
     }
     var YOUR_MESSAGE_STRING_CONST = $("#AdminMultiSelectDeleteConfirmMessage").text();
     $("#DeleteAll").click(function () {
-       ////  console.log("DeleteAll is clicked.");
+        ////  console.log("DeleteAll is clicked.");
         confirmDialog(YOUR_MESSAGE_STRING_CONST, function () {
             var postData = GetSelectedCheckBoxValues();
             var parsedPostData = jQuery.parseJSON(postData);
             if (parsedPostData.values.length > 0) {
                 var tableName = $("[data-gridname]").attr("data-gridname");
-               //  console.log("Delete" + tableName + "Item");
+                //  console.log("Delete" + tableName + "Item");
                 ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
             }
         });
-        
+
     });
 
     function confirmDialog(message, onConfirm) {
@@ -63,9 +74,9 @@ $(document).ready(function () {
         $("#confirmCancel").one("click", fClose);
     }
     $("#OrderingAll").click(function () {
-       //  console.log("OrderingAll is clicked.");
+        //  console.log("OrderingAll is clicked.");
         var postData = GetSelectedOrderingValues();
-       //  console.log(postData);
+        //  console.log(postData);
         var tableName = $("[data-gridname]").attr("data-gridname");
         ajaxMethodCall(postData, "/admin/Ajax/Change" + tableName + "OrderingOrState", changeOrderingSuccess);
     });
@@ -89,28 +100,28 @@ $(document).ready(function () {
     }
 
     $("#DeselectAll").click(function () {
-       //  console.log("DeselectAll is clicked.");
         var i = 0;
         $("input[name=checkboxGrid]").each(function () {
-            $(this).parent().parent().removeClass('gridChecked');
+            $(this).parents("tr:first").removeClass('gridChecked');
             var m = $(this).prop('checked', false);
         });
     });
     $("#SelectAll").click(function () {
-       //  console.log("SelectAll is clicked.");
+        //  console.log("SelectAll is clicked.");
         var i = 0;
         $("input[name=checkboxGrid]").each(function () {
-            $(this).parent().parent().addClass('gridChecked');
+            var selectedId = $(this).attr('gridkey-id');
+            $(this).parents("tr:first").addClass('gridChecked');
             var m = $(this).prop('checked', true);
         });
     });
 
     $("#SetStateOffAll").click(function () {
-       //  console.log("SetStateOffAll is clicked.");
+        //  console.log("SetStateOffAll is clicked.");
         changeState(false);
     });
     $("#SetStateOnAll").click(function () {
-       //  console.log("SetStateOnAll is clicked.");
+        //  console.log("SetStateOnAll is clicked.");
         changeState(true);
     });
     function changeState(state) {
@@ -118,7 +129,7 @@ $(document).ready(function () {
         var selectedValues = GetSelectedStateValues("span" + ppp, state);
         if (selectedValues.length > 0) {
             var postData = JSON.stringify({ "values": selectedValues, "checkbox": ppp });
-           //  console.log(postData);
+            //  console.log(postData);
             var tableName = $("[data-gridname]").attr("data-gridname");
             ajaxMethodCall(postData, "/admin/Ajax/Change" + tableName + "OrderingOrState", changeStateSuccess);
             displayMessage("hide", "");
@@ -186,18 +197,18 @@ $(document).ready(function () {
     $("#imageHeightTxt").val(defaultValueHeight);
     $("#imageHeightTxt").change(function () {
         var value = this.value;
-       //  console.log(value);
+        //  console.log(value);
         $("#sliderHeight").slider("value", parseInt(value));
         handle2.text(parseInt(value));
     });
     $("#imageWidthTxt").val(defaultValueWidth);
     $("#imageWidthTxt").change(function () {
         var value = this.value;
-       //  console.log(value);
+        //  console.log(value);
         $("#sliderWidth").slider("value", parseInt(value));
         handle1.text(parseInt(value));
     });
-     
+
 
 
 });
@@ -263,7 +274,7 @@ function getQueryStringParameter(originalURL, param) {
     return "";
 }
 function updateUrlParameter(originalURL, param, value) {
-   //  console.log(value);
+    //  console.log(value);
     var windowUrl = originalURL.split('?')[0];
     var qs = originalURL.split('?')[1];
     //3- get list of query strings
@@ -296,7 +307,7 @@ function deleteItemsSuccess(data) {
 }
 function changeStateSuccess(data) {
     //var parsedPostData = jQuery.parseJSON(data);
-   //  console.log(data);
+    //  console.log(data);
     data.values.forEach(function (entry) {
         if (entry.IsActive) {
             $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('class', 'gridActiveIcon glyphicon  glyphicon-ok-circle');
@@ -314,7 +325,7 @@ function refresh(timeElapsed) {
     }, timeElapsed);
 }
 function changeOrderingSuccess(data) {
-   //  console.log(data);
+    //  console.log(data);
     refresh(500);
 }
 function ajaxMethodCall(postData, ajaxUrl, successFunction) {
@@ -368,18 +379,18 @@ function searchAutoComplete() {
 
     $("#searchTxtInput").autocomplete({
         source: function (request, response) {
-           //  console.log("auto complate");
+            //  console.log("auto complate");
             var items = new Array();
-            
+
 
             var jsonRequest = JSON.stringify({ "term": request.term, "action": $("#action").val(), "controller": $("#controller").val() });
-           //  console.log(jsonRequest);
+            //  console.log(jsonRequest);
             if (request.term.length > 2) {
                 ajaxMethodCall(jsonRequest, "/admin/Ajax/SearchAutoComplete", function (data) {
                     for (var i = 0; i < data.length ; i++) {
                         items[i] = { text: data[i], value: data[i] };
                     }
-                   //  console.log(items);
+                    //  console.log(items);
                     response(sortInputFirst(request.term, items));
                 });
 
@@ -414,4 +425,4 @@ function handleProductDetailToolTip(e) {
         $('[data-product-detail-result=' + productID + ']').html(data);
     });
 }
- 
+
