@@ -16,20 +16,17 @@
 
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="input-group">
                 <input type="text" class="form-control" id="searchTxtInput" name="search" value="@search" placeholder="Search for...">
-            </div><!-- /input-group -->
-        </div><!-- /.col-lg-12 -->
-        <div class="col-md-3">
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <button class="btn btn-primary"  id="SearchButton" type="submit">@gridSearchButtonText</button>
+
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" id="SearchButton" type="submit">@gridSearchButtonText</button>
                     @if (!String.IsNullOrEmpty(search))
                     {
-                        @Html.ActionLink(clear, action, controller, new { search = "",id="" }, new { @class="btn btn-default" })
+                        @Html.ActionLink(clear, action, controller, new { search = "", id = "" }, new { @class = "btn btn-default" })
                     }
-                </span>
+                </div>
             </div><!-- /input-group -->
         </div><!-- /.col-lg-12 -->
     </div><!-- /.row -->

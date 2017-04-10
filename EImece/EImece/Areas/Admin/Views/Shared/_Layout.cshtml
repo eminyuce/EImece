@@ -170,6 +170,7 @@
                         <li>@Html.ActionLink("Lists", "Index", "Lists", new { area = "admin" }, null)</li>
                         @if (UserRoleHelper.IsAdminManagementRoles())
                         {
+                            <li>@Html.ActionLink("MailTemplates", "Index", "MailTemplates", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink("Settings", "Index", "Settings", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink("Web Site Logo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink("Privacy Policy", "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>

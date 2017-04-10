@@ -1,5 +1,9 @@
-﻿@using EImece.Domain.Helpers;
-@using EImece.Domain.Entities;
+﻿@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+
 @model  BaseContent
 
 @{
@@ -33,23 +37,46 @@
         controllerName = "ProductCategories";
     }
 
+    int Width = ViewData["Width"].ToInt(150);
+    int Height = ViewData["Height"].ToInt(0);
+    var baseContent = Model;
 
 }
+
 <div class="row">
-    <div class="col-md-12">
-        <b>
-            @Html.DisplayFor(model => model.Name)
-        </b>
-    </div>
-    <div class="col-md-12">
-        @GeneralHelper.GetDescription(Model.Description, 200)
-        <br />
-        @Html.ActionLink("Edit", actionNameEdit, controllerName, new { id = Model.Id }, new { @class = "btn btn-primary btn-sm     glyphicon glyphicon-pencil glyphicon-white", @target = "_blank" })
-    
-        @if (UserRoleHelper.IsDeletedEnableRoles())
+    <div class="col-md-1">
+
+        @if (baseContent.MainImageId > 0)
         {
-            @Html.ActionLink("Delete", actionNameDelete, controllerName, new { id = Model.Id }, new { @class = "btn btn-danger btn-sm    glyphicon glyphicon-trash glyphicon-white", @target = "_blank" })
+            <img src="@Html.Raw(baseContent.MainImage.GetAdminCroppedImageUrl(Width, Height))" />
         }
-           
-     </div>
+
+    </div>
+    <div class="col-md-5">
+
+        <div class="row">
+            <div class="col-md-3">
+                <b>
+                    @Html.DisplayFor(model => baseContent.Name)
+                </b>
+            </div>
+            <div class="col-md-1">
+
+                @Html.ActionLink("Edit", actionNameEdit, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-primary btn-sm     glyphicon glyphicon-pencil glyphicon-white", @target = "_blank" })
+            </div>
+            <div class="col-md-1">
+                @if (UserRoleHelper.IsDeletedEnableRoles())
+            {
+                    @Html.ActionLink("Delete", actionNameDelete, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-danger btn-sm    glyphicon glyphicon-trash glyphicon-white", @target = "_blank" })
+                }
+            </div>
+            <div class="col-md-3">
+                @GeneralHelper.GetDescription(baseContent.Description, 200)
+            </div>
+        </div>
+
+
+    </div>
 </div>
+
+

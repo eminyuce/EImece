@@ -177,6 +177,49 @@ QUITE
         }
 
         [TestMethod]
+        public void TestTotalDayOutsideOfUSA()
+        {
+            int totalDayOutsideOfUSA = 1; //Bahama trip
+            DateTime startTime = "04/02/2013".ToDateTime();
+            DateTime endTime = "04/29/2013".ToDateTime();
+
+            TimeSpan span = endTime.Subtract(startTime);
+            totalDayOutsideOfUSA += span.Days;
+
+
+            startTime = "09/11/2014".ToDateTime();
+            endTime = "09/28/2014".ToDateTime();
+
+            span = endTime.Subtract(startTime);
+            totalDayOutsideOfUSA += span.Days;
+
+
+            startTime = "11/11/2015".ToDateTime();
+            endTime = "11/27/2015".ToDateTime();
+
+            span = endTime.Subtract(startTime);
+            totalDayOutsideOfUSA += span.Days;
+
+
+            startTime = "11/14/2016".ToDateTime();
+            endTime = "11/27/2016".ToDateTime();
+
+            span = endTime.Subtract(startTime);
+            totalDayOutsideOfUSA += span.Days;
+
+            DateTime firstUsaEntrance = "07/03/2012".ToDateTime();
+            DateTime fiveYearsLaterUsaEntrance = "07/03/2017".ToDateTime();
+            DateTime fiveYearsLaterUsaEntrance2 = "04/03/2017".ToDateTime();
+
+            DateTime todayDate = DateTime.Now;
+            TimeSpan t = todayDate.Subtract(firstUsaEntrance);
+
+            Console.WriteLine("Total Days of outside of USA:" + totalDayOutsideOfUSA);
+            Console.WriteLine("Total Days I spent in USA:" + (t.Days - totalDayOutsideOfUSA) + "  "+fiveYearsLaterUsaEntrance2.Subtract(firstUsaEntrance).Days);
+            Console.WriteLine("Application Date:" + fiveYearsLaterUsaEntrance2.AddDays(totalDayOutsideOfUSA).ToShortDateString());
+
+        }
+        [TestMethod]
         public void MathLog()
         {
             String[] numbers = {"	1	",

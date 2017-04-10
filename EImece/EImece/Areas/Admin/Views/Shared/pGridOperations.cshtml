@@ -51,94 +51,106 @@
                     @Html.Partial("pSearchForm")
                 </span>
             }
-
-
         </div>
+
         <div class="row">
-            @if (selectAll)
-            {
-                <span class="col-md-1">
-                    <span class="btn btn-xs btn-default " id="SelectAll">
-                        @GridSelectAllButtonText
-                    </span>
-                </span>
-                <span class="col-md-1">
-                    <span class="btn btn-xs btn-default" id="DeselectAll">
-                        @GridDeSelectAllButtonText
-                    </span>
-                </span>
-            }
+            <div class="col-md-12">
+                <div class="btn-toolbar" role="toolbar" aria-label="...">
+                    @if (selectAll)
+                    {
+                        <div class="btn-group" role="group">
+                            <span class="btn btn-sm btn-default " id="SelectAll">
+                                @GridSelectAllButtonText
+                            </span>
+                            <span class="btn btn-sm btn-default" id="DeselectAll">
+                                @GridDeSelectAllButtonText
+                            </span>
+                        </div>
+                    }
 
-            @if (deleteAll)
-            {
-                <span class="col-md-2">
-                    <span class="btn btn-xs btn-default" id="DeleteAll">
-                        @GridDeleteSelectedButtonText
-                    </span>
-                </span>
-            }
+                    @if (deleteAll || SetStateOnOrOff)
+                    {
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                With Selected
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                @if (deleteAll)
+                                {
+                                    <li>
+                                        <a href="#" id="DeleteAll">
+                                            @GridDeleteSelectedButtonText
+                                        </a>
+                                    </li>
+                                }
+                                @if (SetStateOnOrOff)
+                                {
+                                    <li>
+                                        <a href="#" id="SetStateOnAll">@GridActiveSelectedButtonText</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="SetStateOffAll">@GridDeActiveSelectedButtonText</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    
+                        
+
+                        @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
+                        {
+                            <div class="btn-group" role="group">
+                                <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                    <option value="State">@State</option>
+                                    <option value="ImageState">@ImageState</option>
+                                    <option value="MainPage">@MainPage</option>
+                                    <option value="IsCampaign">@IsCampaign</option>
+                                </select>
+                            </div>
+                        }
+                        else if (StateTypes.Equals("State,ImageState,MainPage"))
+                        {
+                            <div class="btn-group" role="group">
+                                <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                    <option value="State">@State</option>
+                                    <option value="ImageState">@ImageState</option>
+                                    <option value="MainPage">@MainPage</option>
+                                </select>
+                            </div>
+                        }
+                        else if (StateTypes.Equals("State,ImageState"))
+                        {
+                            <div class="btn-group" role="group">
+                                <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                    <option value="State">@State</option>
+                                    <option value="ImageState">@ImageState</option>
+                                </select>
+                            </div>
+                        }
+                        else if (StateTypes.Equals("State"))
+                        {
+                            <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                        }
 
 
 
-            <span class="col-md-2">
+                        @if (orderingButton)
+                        {
+                            <div class="btn-group" role="group">
+                                <span class="btn btn-sm btn-default" id="OrderingAll">
+                                    @GridOrderingAllButtonText
+                                </span>
+                            </div>
+                        }
 
-                @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
-                {
-                    <select name="ItemStateSelection" id="ItemStateSelection">
-                        <option value="State">@State</option>
-                        <option value="ImageState">@ImageState</option>
-                        <option value="MainPage">@MainPage</option>
-                        <option value="IsCampaign">@IsCampaign</option>
-                    </select>
-                }
-                else if (StateTypes.Equals("State,ImageState,MainPage"))
-                {
-                    <select name="ItemStateSelection" id="ItemStateSelection">
-                        <option value="State">@State</option>
-                        <option value="ImageState">@ImageState</option>
-                        <option value="MainPage">@MainPage</option>
-                    </select>
-                }
-                else if (StateTypes.Equals("State,ImageState"))
-                {
-                    <select name="ItemStateSelection" id="ItemStateSelection">
-                        <option value="State">@State</option>
-                        <option value="ImageState">@ImageState</option>
-                    </select>
-                }
-                else if (StateTypes.Equals("State"))
-                {
-                    <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
-                }
+                    </div>
 
-
-            </span>
-
-
-
-            @if (SetStateOnOrOff)
-            {
-                <span class="col-md-2">
-                    <span class="btn btn-xs btn-default" id="SetStateOnAll">@GridActiveSelectedButtonText</span>
-                </span><span class="col-md-2">
-                    <span class="btn btn-xs btn-default" id="SetStateOffAll">@GridDeActiveSelectedButtonText</span>
-                </span>
-
-            }
-
-
-            @if (orderingButton)
-            {
-                <span class="col-md-2">
-                    <span class="btn btn-xs btn-default" id="OrderingAll">
-                        @GridOrderingAllButtonText
-                    </span>
-                </span>
-            }
-
-
+            </div>
 
         </div>
+
         <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
             <span id="ErrorMessage"></span>
         </div>

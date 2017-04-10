@@ -6,36 +6,27 @@
     ViewBag.Title = "SearchContent";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var searchKey = (String)ViewBag.SearchKey;
+    var searchList = Model;
 }
 
 
-<div class="col-md-12">
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="text-muted bootstrap-admin-box-title">Admin Search Result For @searchKey</div>
-            </div>
-            <div class="bootstrap-admin-panel-content">
-                <h2>Admin Search Result For @searchKey</h2>
-                @if (Model.Any())
+<div class="row">
+    <div class="panel panel-default">
+        <div class="bootstrap-admin-panel-content">
+            <h2>Admin Search Result For @searchKey</h2>
+
+            @if (Model.Any())
+            {
+                <h4>Search Result Total Items:@searchList.Count</h4>
+                for (int i = 0; i < searchList.Count; i++)
                 {
-                    foreach (var baseContent in Model)
-                    {
+                    var baseContent = searchList[i];
+                    @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
 
-                        <div>
-
-                            @Html.DisplayFor(item => baseContent,"BaseContentSearchItem")
-
-
-
-                        </div>
-                    }
                 }
-            </div>
+            }
+
         </div>
+
     </div>
 </div>
-
-
-
-

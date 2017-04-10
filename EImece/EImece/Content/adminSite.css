@@ -266,3 +266,12 @@ input[name='checkboxGrid'] {
     vertical-align: top;
     margin-right: 5px;
 }
+
+
+.input-xs {
+    height: 22px;
+    padding: 2px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}

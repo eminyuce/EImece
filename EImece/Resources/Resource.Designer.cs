@@ -313,6 +313,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recover Password.
+        /// </summary>
+        public static string RecoverPassword {
+            get {
+                return ResourceManager.GetString("RecoverPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your e-mail address below. We&apos;ll send you an e-mail with a link to reset your password..
+        /// </summary>
+        public static string RecoverPasswordText {
+            get {
+                return ResourceManager.GetString("RecoverPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ilgili Blogs.
         /// </summary>
         public static string RelatedBlogsForProducts {

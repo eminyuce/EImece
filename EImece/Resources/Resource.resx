@@ -252,4 +252,10 @@
   <data name="ReadMore" xml:space="preserve">
     <value>Devami...</value>
   </data>
+  <data name="RecoverPassword" xml:space="preserve">
+    <value>Recover Password</value>
+  </data>
+  <data name="RecoverPasswordText" xml:space="preserve">
+    <value>Enter your e-mail address below. We'll send you an e-mail with a link to reset your password.</value>
+  </data>
 </root>
