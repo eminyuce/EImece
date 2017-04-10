@@ -1,5 +1,6 @@
 ﻿@using EImece.Models
 @model LoginViewModel
+@using Resources;
 @{
     ViewBag.Title = "Log in";
 }
@@ -10,14 +11,7 @@
 <section class="titlebar">
     <div class="container">
         <div class="sixteen columns">
-            <h2>My Account</h2>
-
-            <nav id="breadcrumbs">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li>My Account</li>
-                </ul>
-            </nav>
+            <h2>@Resource.AdminPanelLoginPage</h2>
         </div>
     </div>
 </section>
@@ -36,7 +30,7 @@
 
 
                 <p class="lost_password">
-                    @Html.ActionLink("Lost Your Password?", "ForgotPassword")
+                    @Html.ActionLink(@Resource.LostYourPassword, "ForgotPassword")
                 </p>
 
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
@@ -72,7 +66,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Log in" class="btn btn-default" />
+                            <input type="submit" value="@Resource.Login" class="btn btn-default" />
                         </div>
                     </div>
                    

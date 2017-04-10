@@ -70,11 +70,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admin Panel Login.
+        /// </summary>
+        public static string AdminPanelLoginPage {
+            get {
+                return ResourceManager.GetString("AdminPanelLoginPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hepsi.
         /// </summary>
         public static string All {
             get {
                 return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to click here to log in.
+        /// </summary>
+        public static string ClickHereToLogin {
+            get {
+                return ResourceManager.GetString("ClickHereToLogin", resourceCulture);
             }
         }
         
@@ -214,6 +232,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lost Your Password?.
+        /// </summary>
+        public static string LostYourPassword {
+            get {
+                return ResourceManager.GetString("LostYourPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ana Sayfa.
         /// </summary>
         public static string MainPage {
@@ -313,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recover.
+        /// </summary>
+        public static string Recover {
+            get {
+                return ResourceManager.GetString("Recover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recover Password.
         /// </summary>
         public static string RecoverPassword {
@@ -345,6 +390,33 @@ namespace Resources {
         public static string RelatedProductsForBlog {
             get {
                 return ResourceManager.GetString("RelatedProductsForBlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ResetPassword.
+        /// </summary>
+        public static string ResetPassword {
+            get {
+                return ResourceManager.GetString("ResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset password confirmation.
+        /// </summary>
+        public static string ResetPasswordConfirmation {
+            get {
+                return ResourceManager.GetString("ResetPasswordConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password has been reset. Please click to link below to login..
+        /// </summary>
+        public static string ResetPasswordConfirmationText {
+            get {
+                return ResourceManager.GetString("ResetPasswordConfirmationText", resourceCulture);
             }
         }
         
@@ -417,6 +489,15 @@ namespace Resources {
         public static string SendButtonText {
             get {
                 return ResourceManager.GetString("SendButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send E-Mail.
+        /// </summary>
+        public static string SendEmail {
+            get {
+                return ResourceManager.GetString("SendEmail", resourceCulture);
             }
         }
         

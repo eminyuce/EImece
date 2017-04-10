@@ -258,4 +258,31 @@
   <data name="RecoverPasswordText" xml:space="preserve">
     <value>Enter your e-mail address below. We'll send you an e-mail with a link to reset your password.</value>
   </data>
+  <data name="AdminPanelLoginPage" xml:space="preserve">
+    <value>Admin Panel Login</value>
+  </data>
+  <data name="ClickHereToLogin" xml:space="preserve">
+    <value>click here to log in</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="LostYourPassword" xml:space="preserve">
+    <value>Lost Your Password?</value>
+  </data>
+  <data name="Recover" xml:space="preserve">
+    <value>Recover</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>ResetPassword</value>
+  </data>
+  <data name="ResetPasswordConfirmation" xml:space="preserve">
+    <value>Reset password confirmation</value>
+  </data>
+  <data name="ResetPasswordConfirmationText" xml:space="preserve">
+    <value>Your password has been reset. Please click to link below to login.</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Send E-Mail</value>
+  </data>
 </root>
