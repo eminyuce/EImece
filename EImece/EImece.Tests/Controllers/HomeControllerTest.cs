@@ -179,7 +179,7 @@ QUITE
         [TestMethod]
         public void TestTotalDayOutsideOfUSA()
         {
-            int totalDayOutsideOfUSA = 1; //Bahama trip
+            int totalDayOutsideOfUSA = 1; //Bahama trip 9 mayis 2014
             DateTime startTime = "04/02/2013".ToDateTime();
             DateTime endTime = "04/29/2013".ToDateTime();
 

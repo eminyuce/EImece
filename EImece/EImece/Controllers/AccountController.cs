@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using EImece.Models;
 using Ninject;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Entities;
 
 namespace EImece.Controllers
 {
@@ -39,7 +41,7 @@ namespace EImece.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Dashboard",new { @area="admin" });
+                return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
             }
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -59,7 +61,7 @@ namespace EImece.Controllers
             }
 
             //validate the captcha through the session variable stored from GetCaptcha
-            if (Session["CaptchaAdminLogin"] == null || !Session["CaptchaAdminLogin"].ToString().Equals(model.Captcha,StringComparison.InvariantCultureIgnoreCase))
+            if (Session["CaptchaAdminLogin"] == null || !Session["CaptchaAdminLogin"].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("Captcha", "Wrong sum, please try again.");
                 return View(model);
@@ -115,7 +117,7 @@ namespace EImece.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -152,7 +154,7 @@ namespace EImece.Controllers
         //        if (result.Succeeded)
         //        {
         //            await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
         //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
         //            // Send an email with this link
         //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -209,7 +211,13 @@ namespace EImece.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                String emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                emailBody = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", emailBody);
+
+
+
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
@@ -399,12 +407,12 @@ namespace EImece.Controllers
             return View();
         }
 
-        
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-       
+
 
         private void AddErrors(IdentityResult result)
         {
@@ -420,7 +428,7 @@ namespace EImece.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Dashboard",new { @area="admin" });
+            return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

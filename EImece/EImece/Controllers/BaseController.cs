@@ -169,8 +169,22 @@ namespace EImece.Controllers
         }
 
 
+        private IMailTemplateService _mailTemplateService { get; set; }
+        [Inject]
+        public IMailTemplateService MailTemplateService
+        {
+            get
+            {
+                _mailTemplateService.IsCachingActive = Settings.IsCacheActive;
+                return _mailTemplateService;
+            }
+            set { _mailTemplateService = value; }
+        }
+
         [Inject]
         public IEmailSender EmailSender { get; set; }
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
         private FilesHelper _filesHelper { get; set; }
         [Inject]
         public FilesHelper FilesHelper

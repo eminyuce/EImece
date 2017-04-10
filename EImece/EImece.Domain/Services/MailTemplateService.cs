@@ -20,5 +20,10 @@ namespace EImece.Domain.Services
         {
             MailTemplateRepository = repository;
         }
+
+        public MailTemplate GetMailTemplateByName(string templatename)
+        {
+            return MailTemplateRepository.GetMailTemplateByName(templatename);
+        }
     }
 }

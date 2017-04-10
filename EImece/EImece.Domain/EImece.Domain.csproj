@@ -175,6 +175,7 @@
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />
     <Compile Include="Helpers\EmailHelper\EmailSender.cs" />
     <Compile Include="Helpers\EmailHelper\IEmailSender.cs" />
+    <Compile Include="Helpers\EmailHelper\RazorEngineHelper.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />

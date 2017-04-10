@@ -16,6 +16,12 @@ namespace EImece.Domain.Repositories
 
         public MailTemplateRepository(IEImeceContext dbContext) : base(dbContext)
         {
+
+        }
+
+        public MailTemplate GetMailTemplateByName(string templatename)
+        {
+            return GetAll().FirstOrDefault(r => r.Name.Equals(templatename));
         }
     }
 }
