@@ -130,7 +130,7 @@ namespace EImece.App_Start
             kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
             kernel.Bind<IListService>().To<ListService>().InRequestScope();
 
-            kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
+      
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
 
@@ -160,9 +160,9 @@ namespace EImece.App_Start
             kernel.Bind<IIdentityMessageService>().To(typeof(SmsService)).InRequestScope().Named("Sms");
             kernel.Bind<IIdentityMessageService>().To(typeof(EmailService)).InRequestScope().Named("Email");
 
-            kernel.Bind<HttpContext>().ToMethod(ctx => HttpContext.Current).InRequestScope();
-            kernel.Bind<HttpContextBase>().ToMethod(ctx => new HttpContextWrapper(HttpContext.Current)).InRequestScope();
-            kernel.Bind<IIdentity>().ToMethod(ctx => HttpContext.Current.User.Identity);
+            kernel.Bind<IHttpContextFactory>().To<HttpContextFactory>();
+
+            kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
 
         }        
     }

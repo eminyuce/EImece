@@ -264,6 +264,9 @@
   <data name="ClickHereToLogin" xml:space="preserve">
     <value>click here to log in</value>
   </data>
+  <data name="ForgotPasswordConfirmation" xml:space="preserve">
+    <value>Forgot Password Confirmation</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Log in</value>
   </data>
@@ -284,5 +287,8 @@
   </data>
   <data name="SendEmail" xml:space="preserve">
     <value>Send E-Mail</value>
+  </data>
+  <data name="ForgotPasswordConfirmationText" xml:space="preserve">
+    <value>Please check your email to reset your password</value>
   </data>
 </root>
