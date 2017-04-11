@@ -339,4 +339,34 @@
   <data name="SelectedCategory" xml:space="preserve">
     <value>Selected Category:</value>
   </data>
+  <data name="Story" xml:space="preserve">
+    <value>Story</value>
+  </data>
+  <data name="StoryCategory" xml:space="preserve">
+    <value>StoryCategory</value>
+  </data>
+  <data name="Tag" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="TagCategory" xml:space="preserve">
+    <value>TagCategory</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>ProductCategory</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="MainPageImages" xml:space="preserve">
+    <value>MainPageImages</value>
+  </data>
+  <data name="Subscribers" xml:space="preserve">
+    <value>Subscribers</value>
+  </data>
+  <data name="MailTemplates" xml:space="preserve">
+    <value>MailTemplates</value>
+  </data>
 </root>

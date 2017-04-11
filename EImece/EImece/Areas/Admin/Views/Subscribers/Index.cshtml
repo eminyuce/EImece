@@ -8,7 +8,7 @@
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Subscribers";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
@@ -22,9 +22,9 @@
     var ExportToExcel = AdminResource.ExportToExcel;
 }
 
-<h2>@title</h2>
-@Html.ActionLink(ExportToExcel, "ExportSubscribers", new {  }, new { @class = "btn btn-default btn-xs" })
-<div class="panel panel-info">
+<h2>@AdminResource.Subscribers</h2>
+<hr class="adminLine" />
+@Html.ActionLink(ExportToExcel, "ExportSubscribers", new {  }, new { @class = "" })
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
             ,{"StateTypes","State"}
@@ -33,7 +33,6 @@
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true},
     { "IsNewRecordButtonEnabled",false}})
-</div>
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
 

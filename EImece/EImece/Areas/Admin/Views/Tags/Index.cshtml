@@ -29,10 +29,10 @@
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
 }
 
-<h2>Tag</h2>
+<h2>@AdminResource.Tag</h2>
+<hr class="adminLine" />
 
 
-<div class="panel panel-info">
     @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel",   new { @id = 0 }, new { @class = "btn btn-link" })
 
 
@@ -46,7 +46,6 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-</div>
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>

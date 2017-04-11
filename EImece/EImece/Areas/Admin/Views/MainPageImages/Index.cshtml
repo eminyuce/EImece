@@ -29,11 +29,11 @@
 
 }
 
-<h2>MainPageImages</h2>
+<h2>@AdminResource.MainPageImages</h2>
+<hr class="adminLine" />
 
 <div  class="row" style="padding:20px;">
 
-    <div class="panel panel-info">
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                       ,{"StateTypes","State"}
@@ -41,7 +41,6 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-    </div>
     <div class="panel panel-primary">
         @Html.Partial("pGridDropDown", baseList)
 

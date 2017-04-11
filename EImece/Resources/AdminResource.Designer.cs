@@ -394,6 +394,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MailTemplates.
+        /// </summary>
+        public static string MailTemplates {
+            get {
+                return ResourceManager.GetString("MailTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Page Image.
         /// </summary>
         public static string MainImageId {
@@ -408,6 +417,24 @@ namespace Resources {
         public static string MainPage {
             get {
                 return ResourceManager.GetString("MainPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MainPageImages.
+        /// </summary>
+        public static string MainPageImages {
+            get {
+                return ResourceManager.GetString("MainPageImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu.
+        /// </summary>
+        public static string Menu {
+            get {
+                return ResourceManager.GetString("Menu", resourceCulture);
             }
         }
         
@@ -538,6 +565,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProductCategory.
+        /// </summary>
+        public static string ProductCategory {
+            get {
+                return ResourceManager.GetString("ProductCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ProductCategoryDiscountPercantage.
         /// </summary>
         public static string ProductCategoryDiscountPercantage {
@@ -664,6 +700,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Story.
+        /// </summary>
+        public static string Story {
+            get {
+                return ResourceManager.GetString("Story", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StoryCategory.
+        /// </summary>
+        public static string StoryCategory {
+            get {
+                return ResourceManager.GetString("StoryCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to StoryCategoryId.
         /// </summary>
         public static string StoryCategoryId {
@@ -682,6 +736,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subscribers.
+        /// </summary>
+        public static string Subscribers {
+            get {
+                return ResourceManager.GetString("Subscribers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag.
+        /// </summary>
+        public static string Tag {
+            get {
+                return ResourceManager.GetString("Tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TagCategory.
+        /// </summary>
+        public static string TagCategory {
+            get {
+                return ResourceManager.GetString("TagCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TagCategoryId.
         /// </summary>
         public static string TagCategoryId {
@@ -696,6 +777,15 @@ namespace Resources {
         public static string TemplateId {
             get {
                 return ResourceManager.GetString("TemplateId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Templates.
+        /// </summary>
+        public static string Templates {
+            get {
+                return ResourceManager.GetString("Templates", resourceCulture);
             }
         }
         
