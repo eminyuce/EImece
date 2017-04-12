@@ -159,7 +159,7 @@ columns.Add(c => c.Name)
            .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
 
-}).SetRowCssClasses(item => item.IsActive ? "" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+}).SetRowCssClasses(item =>  item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
 </div>
 

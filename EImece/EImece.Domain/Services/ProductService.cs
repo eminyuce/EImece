@@ -133,7 +133,7 @@ namespace EImece.Domain.Services
                 var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
                 result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, r.Lang, id);
             }
-            MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+        
 
             return result;
         }

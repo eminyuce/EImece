@@ -118,7 +118,7 @@ if (UserRoleHelper.IsDeletedEnableRoles())
 
 
 
-}).SetRowCssClasses(item => item.IsActive == 0 ? "" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
 </div>
 

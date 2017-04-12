@@ -10,6 +10,7 @@ using EImece.Domain.Models.FrontModels;
 using Ninject;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using NLog;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -21,6 +22,8 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         [Inject]
         public ISettingService SettingService { get; set; }
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Sends an email
@@ -63,53 +66,63 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
-            var message = new MailMessage();
-            message.From = from;
-            message.To.Add(to);
-            if (bcc != null)
-            {
-                foreach (var address in bcc.Where(bccValue => !String.IsNullOrWhiteSpace(bccValue)))
-                {
-                    message.Bcc.Add(address.Trim());
-                }
-            }
-            if (cc != null)
-            {
-                foreach (var address in cc.Where(ccValue => !String.IsNullOrWhiteSpace(ccValue)))
-                {
-                    message.CC.Add(address.Trim());
-                }
-            }
-            message.Subject = subject;
-            message.Body = body;
-            message.IsBodyHtml = true;
 
-            //create  the file attachment for this e-mail message
-            if (!String.IsNullOrEmpty(attachmentFilePath) &&
-                File.Exists(attachmentFilePath))
+            try
             {
-                var attachment = new Attachment(attachmentFilePath);
-                attachment.ContentDisposition.CreationDate = File.GetCreationTime(attachmentFilePath);
-                attachment.ContentDisposition.ModificationDate = File.GetLastWriteTime(attachmentFilePath);
-                attachment.ContentDisposition.ReadDate = File.GetLastAccessTime(attachmentFilePath);
-                if (!String.IsNullOrEmpty(attachmentFileName))
-                {
-                    attachment.Name = attachmentFileName;
-                }
-                message.Attachments.Add(attachment);
-            }
 
-            using (var smtpClient = new SmtpClient())
+
+                var message = new MailMessage();
+                message.From = from;
+                message.To.Add(to);
+                if (bcc != null)
+                {
+                    foreach (var address in bcc.Where(bccValue => !String.IsNullOrWhiteSpace(bccValue)))
+                    {
+                        message.Bcc.Add(address.Trim());
+                    }
+                }
+                if (cc != null)
+                {
+                    foreach (var address in cc.Where(ccValue => !String.IsNullOrWhiteSpace(ccValue)))
+                    {
+                        message.CC.Add(address.Trim());
+                    }
+                }
+                message.Subject = subject;
+                message.Body = body;
+                message.IsBodyHtml = true;
+
+                //create  the file attachment for this e-mail message
+                if (!String.IsNullOrEmpty(attachmentFilePath) &&
+                    File.Exists(attachmentFilePath))
+                {
+                    var attachment = new Attachment(attachmentFilePath);
+                    attachment.ContentDisposition.CreationDate = File.GetCreationTime(attachmentFilePath);
+                    attachment.ContentDisposition.ModificationDate = File.GetLastWriteTime(attachmentFilePath);
+                    attachment.ContentDisposition.ReadDate = File.GetLastAccessTime(attachmentFilePath);
+                    if (!String.IsNullOrEmpty(attachmentFileName))
+                    {
+                        attachment.Name = attachmentFileName;
+                    }
+                    message.Attachments.Add(attachment);
+                }
+
+                using (var smtpClient = new SmtpClient())
+                {
+                    smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
+                    smtpClient.Host = emailAccount.Host;
+                    smtpClient.Port = emailAccount.Port;
+                    smtpClient.EnableSsl = emailAccount.EnableSsl;
+                    if (emailAccount.UseDefaultCredentials)
+                        smtpClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    else
+                        smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
+                    smtpClient.Send(message);
+                }
+            }
+            catch (Exception ex)
             {
-                smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
-                smtpClient.Host = emailAccount.Host;
-                smtpClient.Port = emailAccount.Port;
-                smtpClient.EnableSsl = emailAccount.EnableSsl;
-                if (emailAccount.UseDefaultCredentials)
-                    smtpClient.Credentials = CredentialCache.DefaultNetworkCredentials;
-                else
-                    smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                smtpClient.Send(message);
+                Logger.Error(ex, ex.Message);
             }
         }
         public EmailAccount GetEmailAccount()
@@ -131,7 +144,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             var to = SettingService.GetSettingByKey("AdminEmail");
             var toDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
             SendEmail(emailAccount, "Contact Us", contact.Message, contact.Email, contact.Name, to, toDisplayName);
-;        }
+            ;
+        }
 
         public void SendForgotPasswordEmail(string destination, string subject, string body)
         {

@@ -13,6 +13,8 @@ using EImece.Domain.Services.IServices;
 using System.Web;
 using EImece.Domain.Factories.IFactories;
 using System.Web.Mvc;
+using EImece.Domain.Models.FrontModels;
+using System.Dynamic;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -27,6 +29,8 @@ namespace EImece.Domain.Helpers.EmailHelper
         //public HttpContextBase HttpContextBase { get; set; }
         public IHttpContextFactory HttpContext { get; set; }
 
+        [Inject]
+        public IEmailSender EmailSender { get; set; }
 
         public string ForgotPasswordEmailBody(string email,string callbackUrl)
         {
@@ -49,6 +53,35 @@ namespace EImece.Domain.Helpers.EmailHelper
 
 
             return result;
+        }
+
+        public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
+        {
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ContactUsAboutProductInfo");
+            String companyname = SettingService.GetSettingByKey(Settings.CompanyName);
+            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");
+
+
+            var Request = HttpContext.Create().Request;
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+
+            dynamic model = new ExpandoObject();
+            model.ContactUs = contact;
+            model.CompanyName = companyname;
+            model.ProductPageLink = baseurl;
+
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string body = Engine.Razor.RunCompile(template, templateKey, null, (object)model);
+            EmailSender.SendEmail(EmailSender.GetEmailAccount(),
+                emailTemplate.Subject,
+                body,
+                WebSiteCompanyEmailAddress,
+                companyname,
+                WebSiteCompanyEmailAddress,
+                companyname);
         }
     }
 }

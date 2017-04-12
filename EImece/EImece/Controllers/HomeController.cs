@@ -156,12 +156,12 @@ namespace EImece.Controllers
             resultList.Add(WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", resultList);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public ActionResult ContactUs()
-        {
-            ContactUsFormViewModel contact = new ContactUsFormViewModel();
-            return PartialView("_ContactUsFormViewModel", contact);
-        }
+        //[OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        //public ActionResult ContactUs()
+        //{
+        //    ContactUsFormViewModel contact = new ContactUsFormViewModel();
+        //    return PartialView("_ContactUsFormViewModel", contact);
+        //}
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
             if (Session["CaptchaContactUsLogin"] == null || !Session["CaptchaContactUsLogin"].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
@@ -204,6 +204,8 @@ namespace EImece.Controllers
                         contact.Message, Environment.NewLine);
                     SubsciberService.SaveOrEditEntity(s);
 
+                    
+
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -217,7 +219,16 @@ namespace EImece.Controllers
 
                 try
                 {
-                    EmailSender.SendEmailContactingUs(contact);
+                    if (contact.ItemType == EImeceItemType.Product)
+                    {
+                        // Sending email.
+                        RazorEngineHelper.SendContactUsAboutProductDetailEmail(contact);
+                    }
+                    else
+                    {
+                        EmailSender.SendEmailContactingUs(contact);
+                    }
+                
 
                 }
                 catch (Exception ex)
