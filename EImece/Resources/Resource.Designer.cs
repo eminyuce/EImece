@@ -574,6 +574,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thank You For Contacting Us.
+        /// </summary>
+        public static string ThankYouForContactingUs {
+            get {
+                return ResourceManager.GetString("ThankYouForContactingUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bu Ürün Hakkında Bilgi İstiyorum.
         /// </summary>
         public static string WantMoreInfoAboutProduct {

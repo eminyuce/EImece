@@ -291,4 +291,7 @@
   <data name="ForgotPasswordConfirmationText" xml:space="preserve">
     <value>Please check your email to reset your password</value>
   </data>
+  <data name="ThankYouForContactingUs" xml:space="preserve">
+    <value>Thank You For Contacting Us</value>
+  </data>
 </root>
