@@ -19,9 +19,18 @@
         @if (Model.Any())
         {
             <h1>@AdminResource.SearchResults</h1>
-            <h2 class="lead"><strong class="text-danger">@searchList.Count</strong> 
-        @AdminResource.SearchResultsText
-                <strong class="text-danger">@searchKey</strong></h2>
+            <h2 class="lead">
+                <strong class="text-danger">@searchList.Count</strong>
+                @AdminResource.SearchResultsText
+                <strong class="text-danger">@searchKey</strong>
+            </h2>
+        }
+        else
+        {
+            <h2 class="lead">
+                @AdminResource.NoSearchResultsText
+                <strong class="text-danger">@searchKey</strong>
+            </h2>
         }
     </hgroup>
     @if (Model.Any())

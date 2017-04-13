@@ -124,13 +124,21 @@
             </p>
 
             @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
-            {                
-                    <div class="form-group">
-                        <input type="text" name="searchContent" value="@Request.QueryString["searchContent"].ToStr()" id="searchTxt" data-provide="typehead" class="form-control" placeholder="@GridSearchButtonText" autocomplete="off">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-             
+            {
+                <div class="form-group" style="display:inline;">
+                        <input type="text" name="searchContent"
+                               value="@Request.QueryString["searchContent"].ToStr()"
+                               id="searchTxt"
+                               data-provide="typehead"
+                               class="form-control"
+                               placeholder="@AdminResource.AdminMainSeachPlaceHolder"
+                               autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+
             }
+ 
 
             <ul class="nav navbar-nav pull-right">
                 @if (listItems.Count() > 1)

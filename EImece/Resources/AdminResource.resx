@@ -378,4 +378,10 @@
   <data name="SearchResultsText" xml:space="preserve">
     <value>results were found for the search for</value>
   </data>
+  <data name="NoSearchResultsText" xml:space="preserve">
+    <value>No Search Results For</value>
+  </data>
+  <data name="AdminMainSeachPlaceHolder" xml:space="preserve">
+    <value>Search for Products, Stories, Menus and more</value>
+  </data>
 </root>

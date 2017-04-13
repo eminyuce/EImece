@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search for Products, Stories, Menus and more.
+        /// </summary>
+        public static string AdminMainSeachPlaceHolder {
+            get {
+                return ResourceManager.GetString("AdminMainSeachPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string AllProductLinkText {
@@ -507,6 +516,15 @@ namespace Resources {
         public static string NewRecordText {
             get {
                 return ResourceManager.GetString("NewRecordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Search Results For.
+        /// </summary>
+        public static string NoSearchResultsText {
+            get {
+                return ResourceManager.GetString("NoSearchResultsText", resourceCulture);
             }
         }
         
