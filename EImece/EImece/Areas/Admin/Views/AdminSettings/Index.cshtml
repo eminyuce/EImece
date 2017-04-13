@@ -221,7 +221,7 @@
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.GoogleAnalyticsTrackingScript, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.GoogleAnalyticsTrackingScript, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.TextAreaFor(model => model.GoogleAnalyticsTrackingScript, 3, 20, new { @style = "margin: 0px; width: 1263px; height: 212px;" })
                                         @Html.ValidationMessageFor(model => model.GoogleAnalyticsTrackingScript, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
