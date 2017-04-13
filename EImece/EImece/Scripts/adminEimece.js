@@ -99,6 +99,7 @@ $(document).ready(function () {
         return itemArray;
     }
 
+     
     $("#DeselectAll").click(function () {
         var i = 0;
         $("input[name=checkboxGrid]").each(function () {

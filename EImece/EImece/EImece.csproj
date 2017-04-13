@@ -309,6 +309,7 @@
   <ItemGroup>
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
+    <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />

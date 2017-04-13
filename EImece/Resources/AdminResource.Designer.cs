@@ -565,6 +565,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product.
+        /// </summary>
+        public static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ProductCategory.
         /// </summary>
         public static string ProductCategory {
@@ -651,6 +660,24 @@ namespace Resources {
         public static string SaveButtonText {
             get {
                 return ResourceManager.GetString("SaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Results.
+        /// </summary>
+        public static string SearchResults {
+            get {
+                return ResourceManager.GetString("SearchResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to results were found for the search for.
+        /// </summary>
+        public static string SearchResultsText {
+            get {
+                return ResourceManager.GetString("SearchResultsText", resourceCulture);
             }
         }
         

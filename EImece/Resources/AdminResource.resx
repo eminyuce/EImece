@@ -369,4 +369,13 @@
   <data name="MailTemplates" xml:space="preserve">
     <value>MailTemplates</value>
   </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="SearchResultsText" xml:space="preserve">
+    <value>results were found for the search for</value>
+  </data>
 </root>
