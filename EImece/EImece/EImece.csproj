@@ -257,6 +257,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
@@ -900,6 +901,7 @@
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminSettings\Index.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

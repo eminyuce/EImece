@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Helpers;
+using System.Reflection;
 
 namespace EImece.Domain.Services
 {
@@ -75,6 +78,67 @@ namespace EImece.Domain.Services
                 setting.SettingValue = key;
                 setting.Lang = language;
                 return setting;
+            }
+        }
+
+        public SettingModel GetSettingModel(int language)
+        {
+            var result = new SettingModel();
+           
+
+            Type type = typeof(SettingModel);
+            List<Setting> Settings = GetAllSettings();
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+               
+                // Get value on the target instance.
+            
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting != null)
+                {
+                    if (propertyInfo.PropertyType == typeof(int))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(bool))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                    }
+                }
+
+            }
+
+            return result;
+        }
+
+        public void SaveSettingModel(SettingModel settingModel)
+        {
+            List<Setting> Settings = GetAllSettings();
+            // Get type.
+            Type type = typeof(SettingModel);
+
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+
+                // Get value on the target instance.
+                object value = propertyInfo.GetValue(settingModel, null);
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting != null)
+                {
+                    setting.SettingValue = value.ToStr();
+                    SaveOrEditEntity(setting);
+                }
+
             }
         }
     }

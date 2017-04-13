@@ -384,4 +384,7 @@
   <data name="AdminMainSeachPlaceHolder" xml:space="preserve">
     <value>Search for Products, Stories, Menus and more</value>
   </data>
+  <data name="AdminGeneralSettings" xml:space="preserve">
+    <value>AdminGeneralSettings</value>
+  </data>
 </root>

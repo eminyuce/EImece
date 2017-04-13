@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AdminGeneralSettings.
+        /// </summary>
+        public static string AdminGeneralSettings {
+            get {
+                return ResourceManager.GetString("AdminGeneralSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search for Products, Stories, Menus and more.
         /// </summary>
         public static string AdminMainSeachPlaceHolder {
