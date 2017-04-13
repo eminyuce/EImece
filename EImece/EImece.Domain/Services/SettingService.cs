@@ -81,7 +81,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public SettingModel GetSettingModel(int language)
+        public SettingModel GetSettingModel()
         {
             var result = new SettingModel();
            

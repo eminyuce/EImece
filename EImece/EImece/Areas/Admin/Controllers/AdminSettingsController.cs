@@ -12,7 +12,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/AdminSettings
         public ActionResult Index()
         {
-            SettingModel r = SettingService.GetSettingModel(CurrentLanguage);
+            SettingModel r = SettingService.GetSettingModel();
             return View(r);
         }
         [HttpPost]

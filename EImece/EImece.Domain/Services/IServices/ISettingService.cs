@@ -13,7 +13,7 @@ namespace EImece.Domain.Services.IServices
         string GetSettingByKey(string key);
         Setting GetSettingObjectByKey(string key);
         Setting GetSettingObjectByKey(string key, int language);
-        SettingModel GetSettingModel(int language);
+        SettingModel GetSettingModel();
         void SaveSettingModel(SettingModel settingModel);
     }
 }
