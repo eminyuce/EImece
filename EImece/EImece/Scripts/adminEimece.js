@@ -20,7 +20,17 @@ $(document).ready(function () {
     });
     function bindCKEDITOR() {
         $('[data-ckeditor-field]').each(function () {
-            CKEDITOR.replace(this);
+           // CKEDITOR.replace(this);
+            CKEDITOR.replace(this, {
+                //uiColor: '#14B8C4',
+                //toolbar: [
+                //    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
+                //    ['FontSize', 'TextColor', 'BGColor']
+                //],
+                height: ['550px']
+
+            });
+
         });
     }
     function OrderingItem() {
