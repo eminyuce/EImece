@@ -27,6 +27,10 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
 
+
+    var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
+    filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+
 }
 <style>
     .myslider {
@@ -78,7 +82,7 @@
                 mod: $("#MediaMod").val(),
                 imageHeight: $("#sliderHeight").slider("option", "value"),
                 imageWidth: $("#sliderWidth").slider("option", "value"),
-                selectedTags : GetSelectedTag()
+                selectedTags: GetSelectedTag()
             }
         });
 
@@ -93,7 +97,7 @@
                     arr.push($(this).val());
                 }
             });
-         
+
 
             return arr;
         }
@@ -120,8 +124,8 @@
 
 
 
-<div class="panel panel-info">
-    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
            ,{"StateTypes","State"}
            ,{"IsNewRecordButtonEnabled",false}
@@ -129,79 +133,105 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-</div>
+
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
-   {
+{
 
-   columns.Add().Encoded(false).
-           Sanitized(false).
-           SetWidth(10).
-           RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
-
-   columns.Add(o => o.Id, true);
-
-
-   columns.Add()
-                        .Encoded(false)
-                        .Sanitized(false)
-                        .SetWidth(30)
-                        .RenderValueAs(d =>
-                        @<b>
-
-                            <a href=@String.Format("/media/images/{0}",d.FileName)
-                               title="@d.FileName"
-                               download="@d.FileName"
-                               data-gallery="">
+columns.Add().Encoded(false).
+        Sanitized(false).
+        SetWidth(10)
+                       //.RenderValueAs(o => CheckBoxHtml(String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
+                       .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",String.Format("{0}-{1}-{2}-{3}", d.Id, Model.Id, Model.MediaMod, Model.ImageType)}}));
 
 
-                                <img src=@d.GetAdminCroppedImageUrl(150,150)>
-                            </a>
+columns.Add(o => o.Id, true);
 
 
+columns.Add()
+                     .Encoded(false)
+                     .Sanitized(false)
+                     .SetWidth(30)
+                     .RenderValueAs(d =>
+                    @<b>
+
+                        <a href=@String.Format("/media/images/{0}",d.FileName)
+                           title="@d.FileName"
+                           download="@d.FileName"
+                           data-gallery="">
 
 
-                        </b>);
-
-       columns.Add(c => c.Name)
-              .Titled("Title")
-              .Filterable(true);
-
-
-
-       columns.Add(o => o.Position)
-          .Encoded(false).
-               Sanitized(false).
-               SetWidth(10).
-               RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-       columns.Add(o => o.IsActive)
-                  .Titled(AdminResource.State)
-              .Sortable(true)
-              .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-               Sanitized(false)
-              .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+                            <img src=@d.GetAdminCroppedImageUrl(150,150)>
+                        </a>
 
 
 
 
-       columns.Add(o => o.UpdatedDate)
-                  .Titled(AdminResource.UpdatedDate)
-              .Sortable(true)
-              .Css("gridDateClass")
-              .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
-              .SortInitialDirection(GridSortDirection.Descending);
+                    </b>);
+
+    columns.Add(c => c.Name)
+           .Titled("Title")
+           .Filterable(true);
+
+    columns.Add()
+                         .Encoded(false)
+                         .Sanitized(false)
+                         .SetWidth(30)
+                         .RenderValueAs(d => ImageLinkColumn(d, filesHelper));
+
+
+
+
+    columns.Add(o => o.Position)
+       .Encoded(false).
+            Sanitized(false).
+            SetWidth(10).
+            RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+
+    columns.Add(o => o.IsActive)
+               .Titled(AdminResource.State)
+           .Sortable(true)
+           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+            Sanitized(false)
+           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                             o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+
+
+
+
+    columns.Add(o => o.UpdatedDate)
+               .Titled(AdminResource.UpdatedDate)
+           .Sortable(true)
+           .Css("gridDateClass")
+           .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
+           .SortInitialDirection(GridSortDirection.Descending);
 
 
 
 
 
-   }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+}).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
 </div>
+
+
 
 
 
 @Scripts.Render("~/bundles/jQuery-File-Upload")
+
+@helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
+{
+var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
+    <p>
+        @String.Format("Original Width={0} Height={1}", imageSizes.Item3, imageSizes.Item4)
+        <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Settings.UrlBase) target="_blank">Full Image</a>
+    </p>
+    <p>
+        @String.Format("Thumbs Width={0} Height={1}", imageSizes.Item1, imageSizes.Item2)
+        <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Settings.UrlBase) target="_blank">Thumps Image</a>
+    </p>
+}
+ 

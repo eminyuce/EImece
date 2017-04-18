@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <input type="submit" value="Save" class="btn btn-default" />
+    <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-default btn-success btn-lg" />
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

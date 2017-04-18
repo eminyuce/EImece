@@ -815,7 +815,7 @@ namespace EImece.Domain.Helpers
 
                 // Copy the image from the START Bitmap into the NEW Bitmap.  
                 // This will create a thumnail size of the same image.  
-                newBitmap = ResizeImage1(startBitmap, newWidth, newHeight);
+                newBitmap = ResizeImage(startBitmap, newWidth, newHeight);
 
                 // Save this image to the specified stream in the specified format.  
                 newBitmap.Save(NewMemoryStream, format);
