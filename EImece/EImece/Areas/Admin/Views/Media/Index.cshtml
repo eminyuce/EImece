@@ -53,15 +53,11 @@
 @Html.HiddenFor(r => Model.ImageType)
 @Html.HiddenFor(r => Model.MediaMod)
 @Html.HiddenFor(r => Model.Lang)
-<div class="form-horizontal">
-    @Html.Partial("pSliderResizing", baseContent)
-</div>
-<br />
+
+ 
 <!-- blueimp File Upload & Gallery styles -->
 @Styles.Render("~/Content/jQuery-File-Upload")
-<div id="target">
-    Click here
-</div>
+ 
 
 
 <script>
@@ -114,18 +110,42 @@
     });
 </script>
 
+<div class="panel with-nav-tabs panel-default">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1default" data-toggle="tab">File Uploading</a></li>
+            <li><a href="#tab2default" data-toggle="tab">Uploaded Files</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="tab1default">
 
 
-<div id="imageTagsHtml">
+                <div class="row">
+                    <div style="border:2px black" class="col-md-2">
+                        <div id="imageTagsHtml">
 
-</div>
+                        </div>
+                    </div>
+                    <div style="border:2px black" class="col-md-7">
+                        <div class="form-horizontal">
+                            @Html.Partial("pSliderResizing", baseContent)
+                        </div>
+                        @Html.Partial("_Files")
 
-@Html.Partial("_Files")
+                    </div>
+                </div>
 
 
 
 
-@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+
+
+            </div>
+            <div class="tab-pane fade" id="tab2default">
+
+                @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
            ,{"StateTypes","State"}
            ,{"IsNewRecordButtonEnabled",false}
@@ -134,15 +154,13 @@
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
 
-<div class="panel panel-primary">
-    @Html.Partial("pGridDropDown", baseList)
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
+                <div class="panel panel-primary">
+                    @Html.Partial("pGridDropDown", baseList)
+                    @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
 columns.Add().Encoded(false).
-        Sanitized(false).
-        SetWidth(10)
-                       //.RenderValueAs(o => CheckBoxHtml(String.Format("{0}-{1}-{2}-{3}", o.Id, Model.Id, Model.MediaMod, Model.ImageType)));
+        Sanitized(false)
                        .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",String.Format("{0}-{1}-{2}-{3}", d.Id, Model.Id, Model.MediaMod, Model.ImageType)}}));
 
@@ -214,7 +232,21 @@ columns.Add()
 
 }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
+                </div>
+
+
+
+            </div>
+         
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
 
 
 

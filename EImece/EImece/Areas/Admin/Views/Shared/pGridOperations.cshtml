@@ -11,6 +11,7 @@
     var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
     var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
     var isNewRecordButtonEnabled = ViewData["IsNewRecordButtonEnabled"].ToBool(true);
+    var IsExcelButtonEnabled = ViewData["IsExcelButtonEnabled"].ToBool(false);
     var NewRecordText = AdminResource.NewRecordText;
 
     var GridSelectAllButtonText = AdminResource.GridSelectAllButtonText;
@@ -96,56 +97,69 @@
                             </ul>
                         </div>
                     }
-                    
-                        
-
-                        @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
-                        {
-                            <div class="btn-group" role="group">
-                                <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                                    <option value="State">@State</option>
-                                    <option value="ImageState">@ImageState</option>
-                                    <option value="MainPage">@MainPage</option>
-                                    <option value="IsCampaign">@IsCampaign</option>
-                                </select>
-                            </div>
-                        }
-                        else if (StateTypes.Equals("State,ImageState,MainPage"))
-                        {
-                            <div class="btn-group" role="group">
-                                <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                                    <option value="State">@State</option>
-                                    <option value="ImageState">@ImageState</option>
-                                    <option value="MainPage">@MainPage</option>
-                                </select>
-                            </div>
-                        }
-                        else if (StateTypes.Equals("State,ImageState"))
-                        {
-                            <div class="btn-group" role="group">
-                                <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                                    <option value="State">@State</option>
-                                    <option value="ImageState">@ImageState</option>
-                                </select>
-                            </div>
-                        }
-                        else if (StateTypes.Equals("State"))
-                        {
-                            <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
-                        }
 
 
 
-                        @if (orderingButton)
-                        {
-                            <div class="btn-group" role="group">
-                                <span class="btn btn-sm btn-default" id="OrderingAll">
-                                    @GridOrderingAllButtonText
+                    @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
+                    {
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                                <option value="IsCampaign">@IsCampaign</option>
+                            </select>
+                        </div>
+                    }
+                    else if (StateTypes.Equals("State,ImageState,MainPage"))
+                    {
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                            </select>
+                        </div>
+                    }
+                    else if (StateTypes.Equals("State,ImageState"))
+                    {
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                            </select>
+                        </div>
+                    }
+                    else if (StateTypes.Equals("State"))
+                    {
+                        <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                    }
+
+
+
+                    @if (orderingButton)
+                    {
+                        <div class="btn-group" role="group">
+                            <span class="btn btn-sm btn-default" id="OrderingAll">
+                                @GridOrderingAllButtonText
+                            </span>
+                        </div>
+                    }
+                    @if (IsExcelButtonEnabled)
+                    {
+                        <div class="btn-group pull-right" role="group">
+                            <a href="@Url.Action("ExportExcel", controllerName)">
+                                <span>
+                                    <img src="~/Areas/Admin/Content/main/excel.jpg" />
+                                    @AdminResource.Excel
                                 </span>
-                            </div>
-                        }
+                            </a>
 
-                    </div>
+                        </div>
+                    }
+                   
+
+                </div>
 
             </div>
 

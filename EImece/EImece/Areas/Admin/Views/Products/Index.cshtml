@@ -74,7 +74,6 @@
         }
 
 
-        @Html.ActionLink(AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
 
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -83,7 +82,7 @@
            ,{"orderingButton",true}
            ,{"selectAll",true}
            ,{"deleteAll",true}
-            ,{"SetStateOnOrOff",true}})
+            ,{"SetStateOnOrOff",true} ,{"IsExcelButtonEnabled",true}})
 
 
 

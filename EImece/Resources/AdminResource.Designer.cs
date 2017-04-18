@@ -187,6 +187,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel.
+        /// </summary>
+        public static string Excel {
+            get {
+                return ResourceManager.GetString("Excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Existing Main Image.
         /// </summary>
         public static string ExistingMainImageText {

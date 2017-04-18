@@ -57,8 +57,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
 
     </div>
     <div class="col-md-10">
-        @Html.ActionLink(AdminResource.ExportToExcel, "ExportExcel", new { @id = 0 }, new { @class = "btn btn-link" })
-
+      
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -66,7 +65,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
            ,{"orderingButton",true}
            ,{"selectAll",true}
            ,{"deleteAll",true}
-            ,{"SetStateOnOrOff",true}})
+            ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
 
 
 

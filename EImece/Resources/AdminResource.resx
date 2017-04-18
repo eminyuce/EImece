@@ -387,4 +387,7 @@
   <data name="AdminGeneralSettings" xml:space="preserve">
     <value>AdminGeneralSettings</value>
   </data>
+  <data name="Excel" xml:space="preserve">
+    <value>Excel</value>
+  </data>
 </root>

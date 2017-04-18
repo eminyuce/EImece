@@ -24,7 +24,7 @@
 
 <h2>@AdminResource.Subscribers</h2>
 <hr class="adminLine" />
-@Html.ActionLink(ExportToExcel, "ExportSubscribers", new {  }, new { @class = "" })
+ 
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
             ,{"StateTypes","State"}
@@ -32,7 +32,7 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true},
-    { "IsNewRecordButtonEnabled",false}})
+    { "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
 

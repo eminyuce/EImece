@@ -310,6 +310,7 @@
   <ItemGroup>
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
+    <Content Include="Areas\Admin\Content\main\excel.jpg" />
     <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
