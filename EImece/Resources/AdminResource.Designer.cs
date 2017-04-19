@@ -214,6 +214,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Uploading Page.
+        /// </summary>
+        public static string FileUploadingPage {
+            get {
+                return ResourceManager.GetString("FileUploadingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Selected Records.
         /// </summary>
         public static string GridActiveSelectedButtonText {
@@ -687,6 +696,15 @@ namespace Resources {
         public static string ProductSameSelectionErrorMessage {
             get {
                 return ResourceManager.GetString("ProductSameSelectionErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Ek Özellikleri.
+        /// </summary>
+        public static string ProductSpecs {
+            get {
+                return ResourceManager.GetString("ProductSpecs", resourceCulture);
             }
         }
         

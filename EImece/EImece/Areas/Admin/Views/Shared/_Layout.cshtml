@@ -76,6 +76,12 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
+                    @if (listItems.Count() > 1)
+                    {
+                        <li>
+                            @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
+                        </li>
+                    }
                     <li>
                         <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
                             Refresh <span class="glyphicon glyphicon-refresh"></span>
@@ -141,12 +147,7 @@
  
 
             <ul class="nav navbar-nav pull-right">
-                @if (listItems.Count() > 1)
-                {
-                    <li>
-                        @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
-                    </li>
-                }
+            
                 <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
                 <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
                 <li class="dropdown">

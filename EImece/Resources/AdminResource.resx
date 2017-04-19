@@ -390,4 +390,10 @@
   <data name="Excel" xml:space="preserve">
     <value>Excel</value>
   </data>
+  <data name="FileUploadingPage" xml:space="preserve">
+    <value>File Uploading Page</value>
+  </data>
+  <data name="ProductSpecs" xml:space="preserve">
+    <value>Ürün Ek Özellikleri</value>
+  </data>
 </root>
