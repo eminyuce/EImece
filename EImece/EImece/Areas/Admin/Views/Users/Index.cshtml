@@ -27,8 +27,8 @@
 }
 
 
-<h2>Users</h2>
-
+<h2>@AdminResource.Users</h2>
+<hr class="adminLine" />
 
 <div class="panel panel-info">
     <div class="row">
@@ -54,25 +54,13 @@
             <span class="col-md-3">
                 <p class="text-right">@GridPagingDropDownText</p>
             </span>
-            <span class="col-md-3">
-                <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
-                    <option selected="selected" class="text-info" value="50">50</option>
-                    <option class="text-info" value="500">500</option>
-                    <option class="text-info" value="1000">1000</option>
-                </select>
-            </span>
         </div>
 
     </div>
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-//columns.Add().Encoded(false).
-//     Sanitized(false).
-//     SetWidth(10).
-//     RenderValueAs(o => String.Format("<input gridkey-id='{0}'  class='gridCheckboxes'  name='checkboxGrid' type='checkbox'>", o.Id));
-
-
+ 
 
 columns.Add()
    .Encoded(false)

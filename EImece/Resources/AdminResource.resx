@@ -396,4 +396,7 @@
   <data name="ProductSpecs" xml:space="preserve">
     <value>Ürün Ek Özellikleri</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
 </root>
