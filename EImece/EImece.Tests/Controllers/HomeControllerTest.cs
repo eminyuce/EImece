@@ -132,15 +132,7 @@ QUITE
                 Console.WriteLine(ex.StackTrace.ToString());
             }
         }
-        [TestMethod]
-        public void GetTagsByTagType()
-        {
-            var dbContext = new EImeceContext(ConnectionString);
-            var tr = new TagCategoryRepository(dbContext);
-            var tags = tr.GetTagsByTagType(EImeceLanguage.Turkish);
-            Console.WriteLine(tags.Count);
-        }
-
+       
         [TestMethod]
         public void GetmenuLink()
         {

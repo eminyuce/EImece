@@ -1,10 +1,13 @@
-﻿using System;
+﻿using EImece.Domain.Models.Enums;
+using EImece.Domain.Services.IServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -73,16 +76,49 @@ namespace EImece.Domain.Helpers
                         Value = e.ToString()
                     }).ToList();
         }
-        public static List<SelectListItem> ToSelectList2(this Enum enumValue, String selected)
+        public static List<SelectListItem> ToSelectList3(String selected)
         {
-            return (from Enum e in Enum.GetValues(enumValue.GetType())
+
+            var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
+            var SettingService = DependencyResolver.Current.GetService<ISettingService>();
+            var languagesText = SettingService.GetSettingByKey(Settings.Languages).ToStr();
+  
+            if (String.IsNullOrEmpty(languagesText))
+            {
+                values.RemoveAll(r => r != EImeceLanguage.Turkish);
+            }
+            else
+            {
+                List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
+                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+                foreach (var lang in languages)
+                {
+                    try
+                    {
+                        var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
+                        selectedLanguages.Add((EImeceLanguage)eImageLang);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                values = selectedLanguages;
+            }
+
+            return (from Enum e in values
                     select new SelectListItem
                     {
                         Selected = selected.Equals(e.ToDescription()),
                         Text = e.GetDisplayValue(),
                         Value = e.ToDescription()
                     }).ToList();
+
+
+
+
         }
+        
         public static string GetDisplayValue(this Enum value)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());

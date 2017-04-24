@@ -53,16 +53,20 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    try
+                    if (!String.IsNullOrEmpty(template.TemplateXml))
                     {
-                        XDocument xdoc = XDocument.Parse(template.TemplateXml);
-                        var groups = xdoc.Root.Descendants("group");
+                        try
+                        {
+                            XDocument xdoc = XDocument.Parse(template.TemplateXml);
+                            var groups = xdoc.Root.Descendants("group");
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("TemplateXml", "XDocument format exception while parsing it:" + ex.Message);
+                            return View(template);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("TemplateXml", "XDocument format exception while parsing it:" + ex.Message);
-                        return View(template);
-                    }
+                  
 
                     template.Lang = CurrentLanguage;
                     TemplateService.SaveOrEditEntity(template);

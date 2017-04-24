@@ -39,10 +39,10 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
-            }
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+            //}
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

@@ -23,6 +23,7 @@ namespace EImece.Domain
         public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
+        public const string Languages = "Languages";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";

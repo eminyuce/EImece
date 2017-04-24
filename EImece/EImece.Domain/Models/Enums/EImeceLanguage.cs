@@ -12,7 +12,7 @@ namespace EImece.Domain.Models.Enums
     {
         [Description("tr-TR")]
         [Display(Name = "Türkçe")]
-        Turkish =1,
+        Turkish = 1,
         [Description("en-US")]
         [Display(Name = "English")]
         English = 2,

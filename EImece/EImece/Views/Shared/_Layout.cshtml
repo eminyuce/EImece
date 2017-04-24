@@ -39,8 +39,8 @@
     @{
         String cultureName = Thread.CurrentThread.CurrentCulture.Name;
         List<SelectListItem> listItems = new List<SelectListItem>();
-        listItems = EImeceLanguage.Turkish.ToSelectList2(cultureName);
-
+        listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
+       
 
     }
 </head>
