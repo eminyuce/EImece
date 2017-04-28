@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -14,7 +15,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Rss
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Products(RssParams rssParams)
         {
             var comment = new StringBuilder();
@@ -32,7 +33,7 @@ namespace EImece.Controllers
             }
         }
  
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult StoryCategories(RssParams rssParams)
         {
             var comment = new StringBuilder();

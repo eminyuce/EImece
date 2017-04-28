@@ -169,6 +169,7 @@
     <Compile Include="Factories\IFactories\IHttpContextFactory.cs" />
     <Compile Include="Helpers\ActionResultHelpers\FeedResult.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\CustomOutputCacheAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />

@@ -18,6 +18,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -25,7 +26,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
@@ -101,13 +102,13 @@ namespace EImece.Controllers
 
             return PartialView("_SocialMediaLinks", resultList);
         }
-        [OutputCache(CacheProfile = "Cache30Days")]
+        [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult TermsAndConditions()
         {
             var stringContent = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions, CurrentLanguage);
             return View(stringContent);
         }
-        [OutputCache(CacheProfile = "Cache30Days")]
+        [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult PrivacyPolicy()
         {
             var stringContent = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy, CurrentLanguage);

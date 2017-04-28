@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -14,7 +15,7 @@ namespace EImece.Controllers
     {
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
-        [OutputCache(CacheProfile = "ImageProxyCaching")]
+        [CustomOutputCache(CacheProfile = "ImageProxyCaching")]
         public ActionResult Index(String id, String imageSize)
         {
 

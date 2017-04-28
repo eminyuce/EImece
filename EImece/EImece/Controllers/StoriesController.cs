@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -15,7 +16,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
             try
@@ -29,7 +30,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
             try
@@ -45,7 +46,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Categories(String id, int page = 1)
         {
             try
@@ -63,7 +64,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {
             try

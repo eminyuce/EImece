@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
     public class RobotController : Controller
     {
         // GET: Robots
-        [OutputCache(CacheProfile = "Cache30Days")]
+        [CustomOutputCache(CacheProfile = "Cache30Days")]
         public FileContentResult RobotsText()
         {
             var content = "";

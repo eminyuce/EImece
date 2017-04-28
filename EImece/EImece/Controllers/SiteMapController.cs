@@ -9,6 +9,7 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers;
 using NLog;
 using EImece.Domain.Entities;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -17,7 +18,7 @@ namespace EImece.Controllers
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [OutputCache(CacheProfile = "Cache1Hour")]
+        [CustomOutputCache(CacheProfile = "Cache1Hour")]
         public ActionResult Index()
         {
 

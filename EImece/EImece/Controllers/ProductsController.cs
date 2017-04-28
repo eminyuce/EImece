@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Entities;
 using GenericRepository;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -17,7 +18,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-       // [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
              
@@ -26,7 +27,7 @@ namespace EImece.Controllers
             
         }
 
-       // [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult AdvancedSearchProducts(String search="",string filters="",String page = "")
         {
              
@@ -35,8 +36,7 @@ namespace EImece.Controllers
            
         }
 
-        [OutputCache(CacheProfile = "Cache20Minutes")]
-
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
             
@@ -49,7 +49,7 @@ namespace EImece.Controllers
            
         }
 
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {
             

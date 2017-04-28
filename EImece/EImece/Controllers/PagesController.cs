@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -17,7 +18,7 @@ namespace EImece.Controllers
         {
             return View();
         }
-        [OutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id = "")
         {
             try

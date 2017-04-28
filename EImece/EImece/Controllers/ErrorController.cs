@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -24,7 +25,7 @@ namespace EImece.Controllers
         /// Returns a HTTP 400 Bad Request error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full bad request view.</returns>
-        [OutputCache(CacheProfile = "BadRequest")]
+        [CustomOutputCache(CacheProfile = "BadRequest")]
         public ActionResult BadRequest()
         {
             return this.GetErrorView(HttpStatusCode.BadRequest, "badrequest");
@@ -35,7 +36,7 @@ namespace EImece.Controllers
         /// Unlike a 401 Unauthorized response, authenticating will make no difference.
         /// </summary>
         /// <returns>The partial or full forbidden view.</returns>
-        [OutputCache(CacheProfile = "Forbidden")]
+        [CustomOutputCache(CacheProfile = "Forbidden")]
         public ActionResult Forbidden()
         {
             return this.GetErrorView(HttpStatusCode.Forbidden, "forbidden");
@@ -45,7 +46,7 @@ namespace EImece.Controllers
         /// Returns a HTTP 500 Internal Server Error error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full internal server error view.</returns>
-        [OutputCache(CacheProfile = "InternalServerError")]
+        [CustomOutputCache(CacheProfile = "InternalServerError")]
         public ActionResult InternalServerError()
         {
             return this.GetErrorView(HttpStatusCode.InternalServerError, "internalservererror");
@@ -55,7 +56,7 @@ namespace EImece.Controllers
         /// Returns a HTTP 405 Method Not Allowed error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full method not allowed view.</returns>
-        [OutputCache(CacheProfile = "MethodNotAllowed")]
+        [CustomOutputCache(CacheProfile = "MethodNotAllowed")]
         public ActionResult MethodNotAllowed()
         {
             return this.GetErrorView(HttpStatusCode.MethodNotAllowed, "methodnotallowed");
@@ -65,7 +66,7 @@ namespace EImece.Controllers
         /// Returns a HTTP 404 Not Found error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full not found view.</returns>
-        [OutputCache(CacheProfile = "NotFound")]
+        [CustomOutputCache(CacheProfile = "NotFound")]
         public ActionResult NotFound()
         {
             return this.GetErrorView(HttpStatusCode.NotFound, "notfound");
@@ -75,7 +76,7 @@ namespace EImece.Controllers
         /// Returns a HTTP 401 Unauthorized error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full unauthorized view.</returns>
-        [OutputCache(CacheProfile = "Unauthorized")]
+        [CustomOutputCache(CacheProfile = "Unauthorized")]
         public ActionResult Unauthorized()
         {
             return this.GetErrorView(HttpStatusCode.Unauthorized, "unauthorized");
