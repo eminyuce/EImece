@@ -17,7 +17,7 @@ namespace EImece
             // Imprive SEO by stopping duplicate URL's due to case or trailing slashes.
             routes.AppendTrailingSlash = true;
             routes.LowercaseUrls = true;
-
+            routes.MapMvcAttributeRoutes(); //Enables Attribute Routing
 
 
             routes.MapRoute(

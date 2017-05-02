@@ -11,6 +11,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
+    [RoutePrefix("pc")]
     public class ProductCategoriesController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -19,6 +20,7 @@ namespace EImece.Controllers
         {
             return View();
         }
+        [Route("category/{id}")]
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Category(String id)
         {
