@@ -437,3 +437,13 @@ function handleProductDetailToolTip(e) {
     });
 }
 
+function setPreSelectedTreeNode(preSelectedNode) {
+    var productCategoryId = preSelectedNode.val();
+    if (productCategoryId != "0") {
+        var textSpan = $("#Content_" + productCategoryId).text();
+        $("#Content_" + productCategoryId).text("");
+        $("#Content_" + productCategoryId).addClass("hover2");
+        $("#Content_" + productCategoryId).append("<span id='contentInside' class='contentSelected'>" + textSpan + "</span>");
+    }
+
+}
