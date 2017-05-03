@@ -95,14 +95,16 @@
             padding-left: 19px;
         }
 
-            #treeViewContainer2.sharkTreeView .tree ul li a:hover {
+            #treeViewContainer.sharkTreeView .tree ul li a:hover {
                 cursor: pointer;
             }
 
-            #treeViewContainer2.sharkTreeView .tree ul .contentSelected {
-                background-color: #2093E3;
-                color: #EBEBED;
-                border: 1px solid #105282;
+            #treeViewContainer.sharkTreeView .tree ul .contentSelected {
+                /*background-color: #2093E3;*/
+                /*color: #EBEBED;*/
+                /*border: 1px solid #105282;*/
+                color:red;
+                font-weight:bold;
             }
 
         #treeViewContainer2.sharkTreeView .tree .hiddenUl li {
