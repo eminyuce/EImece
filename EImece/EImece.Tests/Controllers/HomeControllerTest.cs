@@ -19,6 +19,8 @@ using EImece.Domain;
 using EImece.Domain.Helpers;
 using System.Text.RegularExpressions;
 using EImece.Domain.Caching;
+using System.IO;
+using System.Web;
 
 namespace EImece.Tests.Controllers
 {
@@ -136,15 +138,49 @@ QUITE
         [TestMethod]
         public void GetmenuLink()
         {
-            String menuLink = "stories-category_eray-notlar-52";
-            String m =menuLink.Split("_".ToCharArray()).Last();
 
-            Console.WriteLine(m);
+            Console.WriteLine(HttpUtility.UrlEncode("Maritime Reporter"));
+//            var theDate = new DateTime();
+//            string m = "20161118";
+//            DateTime.TryParseExact(m, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture,
+//System.Globalization.DateTimeStyles.None, out theDate);
+//            // "Sun, Mar 9, 2008"
+//            Console.WriteLine(theDate);
+//            Console.WriteLine(String.Format("{0:MMM d, yyyy}", theDate));
         }
         [TestMethod]
-        public void Migration()
+        public void TestParsing()
         {
-          
+            String _contacts = File.ReadAllText(@"C:\Users\Yuce\Downloads\testFile.txt");
+            var lines = Regex.Split(_contacts, @"\n").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+
+            foreach (var line in lines)
+            {
+                int firstComma = line.IndexOf(",");
+                var email = firstComma > 0 ? line.Substring(0, firstComma).Trim() : line.Trim();
+
+
+                int secondComma = firstComma > 0 ? line.IndexOf(",", firstComma + 1) : -1;
+
+                var name = "";
+                if (firstComma > 0)
+                {
+                    name = secondComma > 0 ? 
+                        line.Substring(firstComma +1, secondComma - firstComma).Trim() : 
+                        line.Substring(firstComma + 1).Trim();
+                }
+
+
+                var description = "";
+                if (secondComma > 0)
+                {
+                    description = line.Substring(secondComma + 1).Trim();
+                }
+
+                Console.WriteLine("Email =" + email + " name= " + name + "  description=  " + description);
+                //_destOtherContacts.Add(new NwmDestOtherContact() { Email = email, Name = name, Description = description });
+
+            }
 
         }
         [TestMethod]
@@ -176,6 +212,7 @@ QUITE
             DateTime endTime = "04/29/2013".ToDateTime();
 
             TimeSpan span = endTime.Subtract(startTime);
+            Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
 
 
@@ -183,6 +220,7 @@ QUITE
             endTime = "09/28/2014".ToDateTime();
 
             span = endTime.Subtract(startTime);
+            Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
 
 
@@ -190,6 +228,7 @@ QUITE
             endTime = "11/27/2015".ToDateTime();
 
             span = endTime.Subtract(startTime);
+            Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
 
 
@@ -197,6 +236,7 @@ QUITE
             endTime = "11/27/2016".ToDateTime();
 
             span = endTime.Subtract(startTime);
+            Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
 
             DateTime firstUsaEntrance = "07/03/2012".ToDateTime();

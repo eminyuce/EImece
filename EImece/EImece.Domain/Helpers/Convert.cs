@@ -21,7 +21,9 @@ namespace EImece.Domain.Helpers
             {
                 return 0;
             }
-            return id.Split("-".ToCharArray()).Last().ToInt();
+  
+            var m = id.Split("-".ToCharArray()).Last();
+            return Base32Custom.DecodeRnd(m).ToInt();
         }
         public static string ToAlphaNumericOnly(this string input)
         {

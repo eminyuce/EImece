@@ -159,7 +159,9 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetSeoUrl(this BaseEntity entity)
         {
-            return String.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(entity.Name), entity.Id);
+            return String.Format("{0}-{1}", 
+                GeneralHelper.GetUrlSeoString(entity.Name), 
+                Base32Custom.EncodeRnd(entity.Id));
         }
         public static String GetSeoTitle(this BaseEntity entity, int length = 50)
         {
