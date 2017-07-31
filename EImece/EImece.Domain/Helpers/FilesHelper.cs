@@ -294,45 +294,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-
-
-        //private void UploadPartialFile(string fileName, HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
-        //{
-        //    var request = requestContext.Request;
-        //    if (request.Files.Count != 1)
-        //    {
-        //        throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
-        //    }
-        //    var file = request.Files[0];
-        //    var ext = Path.GetExtension(fileName);
-        //    var inputStream = file.InputStream;
-        //    String patchOnServer = Path.Combine(StorageRoot);
-        //    var fullName = Path.Combine(patchOnServer, Path.GetFileName(file.FileName));
-        //    var ThumbfullPath = Path.Combine(fullName, Path.GetFileName(file.FileName + ".80x80.jpg"));
-
-
-        //    var ImageBit = LoadImage(fullName);
-        //    Save(ImageBit, 80, 80, 10, ThumbfullPath, GetImageFormat(ext));
-        //    using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
-        //    {
-        //        var buffer = new byte[1024];
-
-        //        var l = inputStream.Read(buffer, 0, 1024);
-        //        while (l > 0)
-        //        {
-        //            fs.Write(buffer, 0, l);
-        //            l = inputStream.Read(buffer, 0, 1024);
-        //        }
-        //        fs.Flush();
-        //        fs.Close();
-        //    }
-        //    statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext));
-
-        //    var k = UploadResult(file.FileName, file.ContentLength, file.FileName, requestContext);
-
-        //    statuses.Add(k);
-
-        //}
+       
         public ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
         {
             var request = requestContext.Request;
@@ -665,10 +627,11 @@ namespace EImece.Domain.Helpers
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 var fileStorage = FileStorageService.GetSingle(fileStorageId);
-                contentType = fileStorage.MimeType;
+           
 
                 if (fileStorage != null)
                 {
+                    contentType = fileStorage.MimeType;
                     var file = fileStorage.FileName;
                     String fullPath = Path.Combine(StorageRoot, file);
                     if (System.IO.File.Exists(fullPath))
