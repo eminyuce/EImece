@@ -68,7 +68,11 @@
                         @String.Format("{0}", selectedCategory.Name)
                     </b>
                 }
-                @Html.ActionLink(AdminResource.AllProductLinkText, "Index", "Products", new { @id = 0 }, new { @class = "btn btn-sm btn-link" })
+    
+                <a href="@Url.Action("Index", "Products",new { id=0 })" >
+                    <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
+                </a>
+
             </span>
 
         }
