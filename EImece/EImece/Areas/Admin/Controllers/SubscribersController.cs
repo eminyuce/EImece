@@ -22,8 +22,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ExportSubscribers()
         {
             var subscibers = SubscriberService.GetAll().ToList();
-            DataTable dt = new DataTable();
-            dt.TableName = "subscibers";
+          
 
             var result = from r in subscibers
                          select new
@@ -33,12 +32,8 @@ namespace EImece.Areas.Admin.Controllers
                              r.CreatedDate,
                              r.Note 
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Subscibers-{0}.xls",
-                DateTime.Now.ToString("yyyy-MM-dd")));
+            return DownloadFile(result, String.Format("subscibers-{0}", GetCurrentLanguage));
         }
     }
 }

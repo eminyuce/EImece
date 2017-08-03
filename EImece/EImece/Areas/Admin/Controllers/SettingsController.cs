@@ -297,9 +297,7 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
-            DataTable dt = new DataTable();
-            dt.TableName = "Settings";
-
+         
             var result = from r in settings
                          select new
                          {
@@ -312,13 +310,9 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
+  
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Settings-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
-
+            return DownloadFile(result, String.Format("Settings-{0}", GetCurrentLanguage));
 
         }
     }

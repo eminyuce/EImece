@@ -253,8 +253,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ExportExcel()
         {
             var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
-            DataTable dt = new DataTable();
-            dt.TableName = "products";
+          
 
             var result = from r in products
                          select new
@@ -275,13 +274,9 @@ namespace EImece.Areas.Admin.Controllers
                              ProductCode = r.ProductCode.ToStr(250),
                              VideoUrl = r.VideoUrl.ToStr(250)
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Products-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
 
+            return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage));
 
         }
     }

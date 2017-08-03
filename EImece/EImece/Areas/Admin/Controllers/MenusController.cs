@@ -207,13 +207,13 @@ namespace EImece.Areas.Admin.Controllers
             }
             if (!menus.Any(r => r.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase)))
             {
-                menuLinks.Add(new SelectListItem() { Text = "Urunler", Value = "products-index" });
+                menuLinks.Add(new SelectListItem() { Text = "Urunler Ana Sayfa", Value = "products-index" });
             }
             if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
             {
-                menuLinks.Add(new SelectListItem() { Text = "Blogs", Value = "stories-index" });
+                menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
             }
-            menuLinks.Add(new SelectListItem() { Text = "Sayfalar", Value = "pages-index" });
+            menuLinks.Add(new SelectListItem() { Text = "Farkli Sayfa Temalari", Value = "pages-index" });
 
 
 
@@ -222,7 +222,7 @@ namespace EImece.Areas.Admin.Controllers
                 string m = "stories-categories_" + storyCategory.GetSeoUrl();
                 if (!menus.Any(r => r.MenuLink.Equals(m, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    menuLinks.Add(new SelectListItem() { Text = storyCategory.Name, Value = m });
+                    menuLinks.Add(new SelectListItem() { Text = String.Format("Blog Alt Kategori: {0}", storyCategory.Name), Value = m });
                 }
             }
 
@@ -237,8 +237,7 @@ namespace EImece.Areas.Admin.Controllers
             String search = "";
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
-            DataTable dt = new DataTable();
-            dt.TableName = "Menus";
+         
 
             var result = from r in menus
                          select new
@@ -255,14 +254,8 @@ namespace EImece.Areas.Admin.Controllers
                              ImageState = r.ImageState.ToStr(250),
                              MainImageId = r.MainImageId.ToStr(250)
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Menus-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
-
-
+            return DownloadFile(result, String.Format("Menus-{0}", GetCurrentLanguage));
         }
     }
 }

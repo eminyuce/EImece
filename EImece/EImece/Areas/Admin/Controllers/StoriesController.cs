@@ -169,8 +169,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             String search = "";
             var stories = StoryService.GetAdminPageList(0, search, CurrentLanguage);
-            DataTable dt = new DataTable();
-            dt.TableName = "Stories";
 
             var result = from r in stories
                          select new
@@ -184,12 +182,9 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Stories-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
+
+            return DownloadFile(result, String.Format("Stories-{0}", GetCurrentLanguage));
 
 
         }

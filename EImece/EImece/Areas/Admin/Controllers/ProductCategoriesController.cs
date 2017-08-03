@@ -186,8 +186,6 @@ namespace EImece.Areas.Admin.Controllers
             String search = "";
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
-            DataTable dt = new DataTable();
-            dt.TableName = "ProductCategories";
 
             var result = from r in productCategories
                          select new
@@ -204,13 +202,8 @@ namespace EImece.Areas.Admin.Controllers
                              ImageState = r.ImageState.ToStr(250),
                              MainImageId = r.MainImageId.ToStr(250)
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
-
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("ProductCategories-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
-
+           
+            return DownloadFile(result, String.Format("ProductCategories-{0}", GetCurrentLanguage));
 
         }
 

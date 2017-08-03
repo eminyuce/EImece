@@ -161,8 +161,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             String search = "";
             var tags = TagService.GetAdminPageList(search, CurrentLanguage);
-            DataTable dt = new DataTable();
-            dt.TableName = "Tags";
 
             var result = from r in tags
                          select new
@@ -175,13 +173,9 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
+         
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Tags-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
-
+            return DownloadFile(result, String.Format("Tags-{0}", GetCurrentLanguage));
 
         }
     }

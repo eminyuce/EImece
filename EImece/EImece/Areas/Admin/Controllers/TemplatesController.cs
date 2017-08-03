@@ -135,8 +135,7 @@ namespace EImece.Areas.Admin.Controllers
             String search = "";
             Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
-            DataTable dt = new DataTable();
-            dt.TableName = "Templates";
+          
 
             var result = from r in templates
                          select new
@@ -149,13 +148,9 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-            dt = GeneralHelper.LINQToDataTable(result);
+       
 
-            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-            return File(ms, "application/vnd.ms-excel",
-                String.Format("Templates-{0}-{1}.xls", GetCurrentLanguage,
-                DateTime.Now.ToString("yyyy-MM-dd")));
-
+            return DownloadFile(result, String.Format("Templates-{0}", GetCurrentLanguage));
 
         }
     }

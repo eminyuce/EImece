@@ -13,6 +13,7 @@ using Ninject;
 using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -178,6 +179,27 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return RedirectToAction(name);
             }
+        }
+        protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
+        {
+            DataTable dt = new DataTable();
+            dt.TableName = fileName;
+            dt = GeneralHelper.LINQToDataTable(result);
+            if (dt.Rows.Count < 65534)
+            {
+                var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
+                return File(ms, "application/vnd.ms-excel", String.Format("{1}-{0}.xls",
+                    DateTime.Now.ToString("yyyy-MM-dd"), fileName));
+
+            }
+            else
+            {
+                byte[] data = ExcelHelper.Export(dt, true);
+                return File(data, "text/csv", String.Format("{1}-{0}.csv",
+                    DateTime.Now.ToString("yyyy-MM-dd"), fileName));
+
+            }
+
         }
 
         public BaseAdminController()

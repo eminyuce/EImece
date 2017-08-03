@@ -11,6 +11,7 @@ using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Data.OleDb;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -536,6 +537,24 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
+        public static byte[] Export(DataTable dt, bool exportColumnHeadings)
+        {
+            var myExport = new CsvExport();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                myExport.AddRow();
+                var row = dt.Rows[i];
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    var column = dt.Columns[j];
+                    myExport[column.ColumnName] = row[column];
+                }
+            }
+
+            return myExport.ExportToBytes();
+
+        }
+      
         public static byte[] GetExcelByteArrayFromDataTable(DataTable dt)
         {
             var dtList = new List<DataTable>();
