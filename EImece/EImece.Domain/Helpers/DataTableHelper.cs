@@ -11,6 +11,14 @@ namespace EImece.Domain.Helpers
 {
     public static class DataTableHelper
     {
+        public static DataTable RemoveEmptyRows(DataTable dt)
+        {
+            DataTable filteredRows = dt.Rows.Cast<DataRow>()
+.Where(row => !row.ItemArray.All(field => String.IsNullOrEmpty(field.ToString().Trim())))
+.CopyToDataTable();
+
+            return filteredRows;
+        }
         public static T ConvertToEntity<T>(this DataRow tableRow) where T : new()
         {
             // Create a new type of the entity I want
