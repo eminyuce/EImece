@@ -14,8 +14,8 @@ Technologies and Pattern  <br>
 •Bootstrap front-end framework  <br>
 
 Donations are welcome & appreciated! <br>
-STRATIS:  SkC6s79MGRD2yDfFWherxorrtGq2jimAXM   <br>
 BTC:      1E9gcaqbdroPKxgtKfJUyTTw1dbSU2qP39    <br>
 LTC:      LSi5w7bC46px3AaBebLY8gvunSCNhfRT8Q     <br>
 ETH:      0x823ffa65534fa8dab937e31930ca4d7ef8a448f0    <br>
+STRATIS:  SkC6s79MGRD2yDfFWherxorrtGq2jimAXM   <br>
 DASH:     Xi7zZDp3CQvBnTnfetqrxCYN4JWziLsS8M   <br>
