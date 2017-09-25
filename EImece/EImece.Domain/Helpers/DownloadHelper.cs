@@ -45,5 +45,31 @@ namespace EImece.Domain.Helpers
 
             return b;
         }
+        public static String GetStringFromUrl(string url)
+        {
+            System.Net.HttpWebRequest request = null;
+            System.Net.HttpWebResponse response = null;
+            byte[] b = null;
+ 
+            request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            request.Timeout = 99999;
+            response = (System.Net.HttpWebResponse)request.GetResponse();
+
+            if (request.HaveResponse)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var encoding = ASCIIEncoding.ASCII;
+                    using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
+                    {
+                        string responseText = reader.ReadToEnd();
+
+                        return responseText;
+                    }
+                }
+            }
+
+            return String.Empty;
+        }
     }
 }

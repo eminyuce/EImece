@@ -12,6 +12,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Data.OleDb;
 using System.Web.Mvc;
+using System.Data.SqlClient;
 
 namespace EImece.Domain.Helpers
 {
@@ -756,6 +757,29 @@ namespace EImece.Domain.Helpers
             }
 
             return strConn;
+        }
+
+        public static void SaveTable(string connectionString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+                {
+                    foreach (DataColumn c in myDataTable.Columns)
+                        bulkCopy.ColumnMappings.Add(c.ColumnName, c.ColumnName);
+
+                    bulkCopy.DestinationTableName = myDataTable.TableName;
+                    try
+                    {
+                        bulkCopy.WriteToServer(myDataTable);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
         }
 
     }
