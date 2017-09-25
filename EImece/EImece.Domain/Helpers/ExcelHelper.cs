@@ -759,7 +759,7 @@ namespace EImece.Domain.Helpers
             return strConn;
         }
 
-        public static void SaveTable(string connectionString)
+        public static void SaveTable(DataTable myDataTable, string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
