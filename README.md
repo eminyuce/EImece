@@ -13,9 +13,9 @@ Technologies and Pattern  <br>
 •jQuery  <br>
 •Bootstrap front-end framework  <br>
 
-Donations are welcome & appreciated!
-STRATIS:  SkC6s79MGRD2yDfFWherxorrtGq2jimAXM
-BTC:      1E9gcaqbdroPKxgtKfJUyTTw1dbSU2qP39
-LTC:      LSi5w7bC46px3AaBebLY8gvunSCNhfRT8Q
-ETH:      0x823ffa65534fa8dab937e31930ca4d7ef8a448f0
-DASH:     Xi7zZDp3CQvBnTnfetqrxCYN4JWziLsS8M
+Donations are welcome & appreciated! <br>
+STRATIS:  SkC6s79MGRD2yDfFWherxorrtGq2jimAXM   <br>
+BTC:      1E9gcaqbdroPKxgtKfJUyTTw1dbSU2qP39    <br>
+LTC:      LSi5w7bC46px3AaBebLY8gvunSCNhfRT8Q     <br>
+ETH:      0x823ffa65534fa8dab937e31930ca4d7ef8a448f0    <br>
+DASH:     Xi7zZDp3CQvBnTnfetqrxCYN4JWziLsS8M   <br>
