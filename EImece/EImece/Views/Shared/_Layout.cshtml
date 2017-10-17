@@ -28,7 +28,7 @@
         String seoId = (String)ViewBag.SeoId;
     }
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
-
+    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId,"amp"))
 
     @Scripts.Render("~/bundles/modernizr")
 

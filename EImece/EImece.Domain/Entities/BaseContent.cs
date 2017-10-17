@@ -30,6 +30,9 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public int ImageWidth { get; set; }
 
-         
+        public string UpdateUserId { get; set; }
+        public string AddUserId { get; set; }
+
+
     }
 }

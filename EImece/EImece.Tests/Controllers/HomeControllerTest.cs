@@ -52,6 +52,15 @@ namespace EImece.Tests.Controllers
             }
         }
 
+        [TestMethod]
+        public void GetActiveBaseContents()
+        {
+            String search = "";
+            var db = new EImeceContext(ConnectionString);
+            var MainPageImageService = new MainPageImageService(new MainPageImageRepository(db));
+            var breadCrumb = MainPageImageService.GetActiveBaseContents(true, 1);
+            
+        }
 
         [TestMethod]
         public void Index()
@@ -73,17 +82,30 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void RegexTest()
         {
-            String validationDetail = @"MX:sitemail2.everyone.net.
-HELO maritimereporter.com
-
-250 m0087083.mta.everyone.net
-MAIL FROM:<update@maritimereporter.com>
-
-250 Sender okay
-RCPT TO:<gregw@traversebaymarine.com>
-
-999 Recipient okay
-QUITE
+            String validationDetail = @"
+
+MX:sitemail2.everyone.net.
+
+HELO maritimereporter.com
+
+
+
+250 m0087083.mta.everyone.net
+
+MAIL FROM:<update@maritimereporter.com>
+
+
+
+250 Sender okay
+
+RCPT TO:<gregw@traversebaymarine.com>
+
+
+
+999 Recipient okay
+
+QUITE
+
 ";
             int startIndex = validationDetail.IndexOf("RCPT TO:");
 

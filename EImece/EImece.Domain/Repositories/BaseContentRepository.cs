@@ -44,7 +44,9 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, int>> keySelector = t => t.Position;
                 var items = this.FindAllIncluding(predicate,keySelector, OrderByType.Ascending, null, null, includeProperties);
 
-                return items.ToList();
+                var result =  items.ToList();
+
+                return result == null ? new List<T>() : result;
             }
             catch (Exception exception)
             {

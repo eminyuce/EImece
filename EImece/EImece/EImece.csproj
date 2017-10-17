@@ -281,6 +281,10 @@
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Amp\AmpAreaRegistration.cs" />
+    <Compile Include="Areas\Amp\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Amp\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Amp\Controllers\StoriesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -903,6 +907,11 @@
     <Content Include="Areas\Admin\Views\MailTemplates\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\Index.cshtml" />
+    <Content Include="Areas\Amp\Views\web.config" />
+    <Content Include="Areas\Amp\Views\Stories\Detail.cshtml" />
+    <Content Include="Areas\Amp\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Amp\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Amp\Views\Stories\Index.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1095,6 +1104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
+    <Folder Include="Areas\Amp\Models\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
     <Folder Include="Views\Shared\EditorTemplates\" />

@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -31,6 +32,7 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IMenuService MenuService { get; set; }
+
 
         public IBaseContentRepository<T> BaseContentRepository { get; set; }
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) :base(baseContentRepository) 
@@ -68,7 +70,11 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = BaseContentRepository.GetActiveBaseContents(isActive, language);
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+                if (result != null)
+                {
+                    MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+                }
+                return new List<T>();
             }
             return result;
 
@@ -76,6 +82,25 @@ namespace EImece.Domain.Services
         public virtual List<T> GetActiveBaseContents(bool ?isActive, int ? language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
+        }
+        public new virtual T SaveOrEditEntity(T entity)
+        {
+
+            if (entity.Id > 0)
+            {
+                entity.UpdatedDate = DateTime.Now;
+                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
+            }
+            else
+            {
+                entity.UpdatedDate = DateTime.Now;
+                entity.CreatedDate = DateTime.Now;
+                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
+                entity.AddUserId = HttpContextFactory.GetCurrentUserId();
+            }
+            var tmp = BaseContentRepository.SaveOrEdit(entity);
+            this.MemoryCacheProvider.ClearAll();
+            return entity;
         }
         public virtual new void DeleteBaseEntity(List<string> values)
         {

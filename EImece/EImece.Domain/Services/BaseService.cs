@@ -20,7 +20,10 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseService<T> where T : class, IEntity<int>
     {
-  
+
+
+        [Inject]
+        public IHttpContextFactory HttpContextFactory { get; set; }
 
         private static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
         public bool IsCachingActive { get; set; }

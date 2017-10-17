@@ -43,6 +43,7 @@ namespace EImece.Controllers
             //{
             //    return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
             //}
+            // AuthenticationManager.User.Identity.GetUserId();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

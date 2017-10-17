@@ -23,17 +23,19 @@ namespace EImece
             routes.MapRoute(
                   name: "robots",
                   url: "robots.txt",
-                          defaults: new
+                  defaults: new
                           {
                               controller = "Robot",
                               action = "RobotsText"
-                          }
+                          },
+                    namespaces: new[] { "EImece.Controllers" }
                );
 
             routes.MapRoute(
                name: "SitemapsIndex",
                url: "sitemap.xml",
-                       defaults: new { controller = "SiteMap", action = "Index" }
+                       defaults: new { controller = "SiteMap", action = "Index" },
+              namespaces: new[] { "EImece.Controllers" }
             );
             routes.MapRoute(
               name: "sendcontactus",
@@ -111,6 +113,9 @@ namespace EImece
                  defaults: new { controller = "Products", action = "searchproducts" },
                  namespaces: new[] { "EImece.Controllers" }
              );
+
+
+
             routes.MapRoute(
                name: "SearchProducts2",
                url: "products/advancedsearchproducts",

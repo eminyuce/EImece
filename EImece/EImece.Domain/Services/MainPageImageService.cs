@@ -45,7 +45,7 @@ namespace EImece.Domain.Services
             var cacheKey = String.Format("GetMainPageViewModel-{0}", language);
             MainPageViewModel result = null;
 
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+           // if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new MainPageViewModel();
                 result.MainPageProducts = ProductService.GetActiveProducts(true, language).Where(r => r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(3).ToList();
@@ -55,7 +55,7 @@ namespace EImece.Domain.Services
                 result.MainPageMenu = MenuService.GetActiveBaseContents(true,language).FirstOrDefault(r=>r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
                 result.LatestStories = StoryService.GetLatestStories(language, 4);
-                result.MainPageImages = MainPageImageRepository.GetActiveBaseContents(true, language);
+                result.MainPageImages = GetActiveBaseContents(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
             }

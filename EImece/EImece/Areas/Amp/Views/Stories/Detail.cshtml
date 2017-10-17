@@ -1,0 +1,173 @@
+﻿@model EImece.Domain.Models.FrontModels.StoryDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var story = Model.Story;
+    ViewBag.Title = story.GetSeoTitle();
+    ViewBag.Description = story.GetSeoDescription();
+    ViewBag.Keywords = story.GetSeoKeywords();
+    Layout = "~/Areas/Amp/Views/Shared/_Layout.cshtml";
+    var storyFiles = story.StoryFiles.ToList();
+    var storyTags = story.StoryTags.Select(r => r.Tag).ToList();
+    var storyCategory = story.StoryCategory;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
+    var RelatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(8).ToList();
+    var tags = Model.Tags;
+}
+
+
+<section class="titlebar">
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>@story.Name</h2>
+
+            <nav id="breadcrumbs">
+                <ul>
+                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                    {
+                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                    }
+                    @if (Model.BlogMenu != null && Model.BlogMenu.IsActive)
+                    {
+                        var m = Model.BlogMenu;
+                        var p = m.MenuLink.Split("_".ToCharArray());
+                        var parts = p.First().Split("-".ToCharArray());
+                        var action = parts[1];
+                        var controller = parts[0];
+                        String mid = "";
+                        mid = p.Last();
+                        <li>
+
+                            @Html.ActionLink(m.Name, action, controller, new
+                       {
+                           id = mid
+                       }, null)
+
+                        </li>
+                    }
+                    <li>@story.Name</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- Container -->
+<div class="container">
+
+    <div class="twelve columns">
+        <div class="extra-padding">
+
+            <!-- Post -->
+            <article class="post single">
+
+                <figure class="post-img">
+                    @Html.Raw(story.GetCroppedImageTag(860, 405))
+                </figure>
+
+                <section class="date">
+                    <span class="day">@story.CreatedDate.Value.Day</span>
+                    <span class="month">@story.CreatedDate.Value.ToString("MMM")</span>
+                </section>
+
+                <section class="post-content">
+
+                    <header class="meta">
+                        <h2>
+                            @story.Name
+                    </h2>
+                    <h4>
+                        @storyCategory.Name
+                    </h4>
+                    <span>
+                        <i class="fa fa-tag"></i>
+                        @for (int i = 0; i < storyTags.Count; i++)
+                        {
+                            var pt = storyTags[i];
+                            @Html.ActionLink(pt.Name, "tag", "stories", new { id = pt.GetSeoUrl() }, null) @:&nbsp;
+                           }
+
+                    </span>
+                </header>
+                @Html.Raw(story.Description)
+
+
+                <div class="clearfix"></div>
+
+            </section>
+
+        </article>
+
+
+        <div class="clearfix"></div>
+        <br>
+
+
+
+    </div>
+</div>
+
+<!-- Sidebar
+================================================== -->
+<div class="four columns">
+
+
+    <!-- Tags -->
+    <div class="widget margin-top-10">
+        <h3 class="headline">Tags</h3><span class="line"></span><div class="clearfix"></div>
+
+        <nav class="tags">
+            @foreach (var pt in tags)
+            {
+                @Html.ActionLink(pt.Name, "tag", "stories", new { id = pt.GetSeoUrl() }, null)
+            }
+        </nav>
+    </div>
+    <!-- Share Buttons -->
+
+    <div class="widget">
+        <h3 class="headline">@Resource.SocialMedia</h3><span class="line"></span><div class="clearfix"></div>
+        <div class="share-buttons">
+            @Html.Partial("_SocialMediaShareLinks", new ViewDataDictionary(ViewData){
+                              {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",story.Name  } })
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+</div>
+
+
+</div>
+
+
+
+@if (RelatedProducts.Any())
+{
+    <div class="container">
+        <div class="sixteen columns products">
+
+            <h3 class="headline">
+                @Resource.RelatedProductsForBlog
+            </h3>
+            <span class="line margin-bottom-0"></span>
+
+            @foreach (var product in RelatedProducts)
+            {
+                @Html.DisplayFor(modelItem => product, "RelatedProduct", new { Width = 273 })
+            }
+        </div>
+    </div>
+
+
+}
