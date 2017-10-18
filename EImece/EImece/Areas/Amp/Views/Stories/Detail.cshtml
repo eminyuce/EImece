@@ -5,6 +5,7 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
+@using EImece.Domain.Helpers.Infrastructure;
 @{
     var story = Model.Story;
     ViewBag.Title = story.GetSeoTitle();
@@ -152,3 +153,57 @@
 
 
  
+@*@section top_head {
+        @{String seoId = (String)ViewBag.SeoId;
+            var canonical = SeoUrlHelper.GetCanonicalUrl(this.ViewContext, seoId);
+            var image = story.Images.FirstOrDefault();
+            var imgJson = image != null ?
+                String.Format(",\"image\": {{ \"@type\": \"ImageObject\", \"url\": \"{0}\",\"height\": {1},\"width\": {2} }}", image.OriginalSrc, image.OriginalHeight, image.OriginalWidth)
+                : "";
+
+        }
+        <script type="application/ld+json">
+            {
+            "@@context": "http://schema.org",
+            "@@type": "NewsArticle",
+            "mainEntityOfPage": "@canonical",
+            "headline": "@story.Title",
+            "datePublished": "@story.DateUpdated.ToString("u")",
+            "dateModified": "@story.DateUpdated.ToString("u")",
+            "description": "@story.Description",
+            "author": {
+            "@@type": "Person",
+            "name": "@story.Author"
+            },
+            "publisher": {
+            "@@type": "Organization",
+            "name": "My web site News",
+            "logo": {
+            "@@type": "ImageObject",
+            "url": "https://www.blog.google/images/download/DvujqGIr46dew-phGARpDy8bMSQ=/1095/original/Google_Logo.png",
+            "width": 137,
+            "height": 60
+            }
+            }@Html.Raw(imgJson)
+            }
+        </script>
+
+
+    }*@
+
+@section delayed_head {
+
+    @*
+
+    Scripts inserted from partial, ex:  if 2 partial on page it will be inserted twice…
+    So this helps prevents duplicates, probably copied from:
+
+            https://stackoverflow.com/questions/7556400/injecting-content-into-specific-sections-from-a-partial-view-asp-net-mvc-3-with
+        
+        *@
+
+    @Html.RenderDelayed()
+    @Html.RenderDelayed("amp", onlyUnique: true)
+
+}
+

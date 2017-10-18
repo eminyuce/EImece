@@ -193,6 +193,7 @@
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\Infrastructure\HtmlRenderExtensions.cs" />
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\Extensions\QuerySortingExtensions.cs" />
