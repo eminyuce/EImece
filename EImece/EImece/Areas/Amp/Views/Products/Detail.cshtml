@@ -1,0 +1,115 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var product = Model.Product;
+    ViewBag.Title = product.GetSeoTitle();
+    ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
+    Layout = "~/Areas/Amp/Views/Shared/_Layout.cshtml";
+    var productFiles = product.ProductFiles.ToList();
+    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
+    var productCategory = product.ProductCategory;
+    var productSpecs = product.ProductSpecifications;
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
+    var relatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
+}
+
+ 
+<div class="container">
+
+    <!-- Slider
+    ================================================== -->
+    <div class="eight columns">
+        <div class="slider-padding">
+            <div id="product-slider" class="royalSlider rsDefault">
+                @if (product.ImageState)
+                {
+                    <img class="rsImg" src="@product.GetCroppedImageUrl(productMainImageId, 454, 513)" data-rsTmb="@product.GetCroppedImageUrl(productMainImageId, 95,105)" alt="" />
+                }
+
+                @for (int i = 0; i < productFiles.Count; i++)
+                {
+                    var f = productFiles[i];
+                    <img class="rsImg" src="@f.GetCroppedImageUrl(f.FileStorageId, 454, 513)" data-rsTmb="@f.GetCroppedImageUrl(f.FileStorageId, 95,105)" alt="" />
+                }
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+    </div>
+
+
+
+    <!-- Content
+    ================================================== -->
+    <div class="six columns">
+        <div class="product-page">
+
+            <!-- Headline -->
+            <section class="title">
+                <h2>@product.Name</h2>
+                <h4>
+                    @product.ProductCategory.Name
+                </h4>
+                @*<span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>*@
+                @if (!String.IsNullOrEmpty(product.ProductCode))
+                {
+                    <span class="product-code">
+                        <i>
+                            @Resource.ProductCodeNo @product.ProductCode
+                        </i>
+                    </span>
+                }
+
+
+            </section>
+
+            <!-- Text Parapgraph -->
+            <section>
+                <p class="margin-reset">
+
+                    @Html.Partial("_ProductSpecs", Model)
+                </p>
+                <!-- Share Buttons -->
+                <div class="share-buttons">
+
+                    @Html.Partial("_SocialMediaShareLinks", new ViewDataDictionary(ViewData){
+                              {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } })
+                </div>
+                <div class="clearfix"></div>
+
+            </section>
+
+
+
+
+        </div>
+    </div>
+    <div class="two columns">
+        @if (productTags.Count > 0)
+            {
+
+        <!-- Tags -->
+            <div class="widget margin-top-10">
+                <h3 class="headline">@Resource.Tags</h3><span class="line"></span><div class="clearfix"></div>
+
+                <nav class="tags">
+                    @foreach (var t in productTags)
+                {
+                        @Html.ActionLink(t.Name, "Tag", "products", new { id = t.GetSeoUrl() }, null)
+                    }
+                </nav>
+            </div>
+
+            <br>
+            <br>
+
+        }
+    </div>
+</div>

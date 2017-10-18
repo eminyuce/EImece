@@ -151,23 +151,4 @@
 </div>
 
 
-
-@if (RelatedProducts.Any())
-{
-    <div class="container">
-        <div class="sixteen columns products">
-
-            <h3 class="headline">
-                @Resource.RelatedProductsForBlog
-            </h3>
-            <span class="line margin-bottom-0"></span>
-
-            @foreach (var product in RelatedProducts)
-            {
-                @Html.DisplayFor(modelItem => product, "RelatedProduct", new { Width = 273 })
-            }
-        </div>
-    </div>
-
-
-}
+ 

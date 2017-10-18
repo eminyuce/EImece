@@ -16,7 +16,13 @@ namespace EImece.Domain.Helpers
             String url = GetCanonicalUrl(viewContext, SeoId, linkArea);
             if (!String.IsNullOrEmpty(url))
             {
-                url = String.Format("<link href='{0}' rel='canonical'/>", url);
+                string canonicalRel = "canonical";
+                if (linkArea.Equals("amp", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    canonicalRel = "amphtml";
+                }
+
+                url = String.Format("<link href='{0}' rel='{1}'/>", url, canonicalRel);
                 return url;
             }
             else
@@ -87,7 +93,7 @@ namespace EImece.Domain.Helpers
         private static List<AmpCanonical> GetAmpCanonicalPage()
         {
             var p = new List<AmpCanonical>();
-            p.Add(new AmpCanonical() { actionName = "Details", controllerName = "Stories" });
+            p.Add(new AmpCanonical() { actionName = "Detail", controllerName = "Stories" });
             return p;
         }
         public static bool IsRightAmpPages(string action, string controller)

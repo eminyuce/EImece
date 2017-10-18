@@ -284,6 +284,7 @@
     <Compile Include="Areas\Amp\AmpAreaRegistration.cs" />
     <Compile Include="Areas\Amp\Controllers\BaseController.cs" />
     <Compile Include="Areas\Amp\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Amp\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Amp\Controllers\StoriesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
@@ -912,6 +913,7 @@
     <Content Include="Areas\Amp\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Amp\Views\Home\Index.cshtml" />
     <Content Include="Areas\Amp\Views\Stories\Index.cshtml" />
+    <Content Include="Areas\Amp\Views\Products\Detail.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
