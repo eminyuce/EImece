@@ -16,6 +16,7 @@ using NLog;
 using EImece.Domain.Models.FrontModels;
 using System.ServiceModel.Syndication;
 using System.Web;
+using System.Xml.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -30,6 +31,8 @@ namespace EImece.Domain.Services
         [Inject]
         public IStoryService StoryService { get; set; }
 
+        [Inject]
+        public ITemplateService TemplateService { get; set; }
 
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
@@ -253,6 +256,53 @@ namespace EImece.Domain.Services
             int top = 10;
             int skip = 0;
             return ProductRepository.GetProductsSearchResult(search, filters, top, skip, language);
+        }
+
+        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int language,HttpRequestBase request)
+        {
+            var template = TemplateService.GetSingle(templateId);
+            XDocument xdoc = XDocument.Parse(template.TemplateXml);
+            var groups = xdoc.Root.Descendants("group");
+            var Specifications = new List<ProductSpecification>();
+
+            foreach (var group in groups)
+            {
+                var groupName = group.FirstAttribute.Value;
+                int position = 1;
+                foreach (XElement field in group.Elements())
+                {
+
+                    var p = new ProductSpecification();
+                    p.GroupName = groupName;
+                    p.ProductId = productId;
+                    p.CreatedDate = DateTime.Now;
+                    p.UpdatedDate = DateTime.Now;
+                    p.Position = position++;
+                    p.IsActive = true;
+                    p.Lang = language;
+                    var name = field.Attribute("name");
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+
+
+                    var value = request.Form[name.Value];
+
+                    if (name != null)
+                    {
+                        p.Name = name.Value;
+                    }
+                    if (unit != null)
+                    {
+                        p.Unit = unit.Value;
+                    }
+
+                    p.Value = value;
+                    Specifications.Add(p);
+
+                }
+            }
+
+            SaveProductSpecifications(Specifications);
         }
     }
 }

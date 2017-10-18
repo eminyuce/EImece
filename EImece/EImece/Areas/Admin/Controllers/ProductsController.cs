@@ -48,48 +48,9 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult SaveOrEditProductSpecs(int id,int templateId)
         {
-            var template = TemplateService.GetSingle(templateId);
-            XDocument xdoc = XDocument.Parse(template.TemplateXml);
-            var groups = xdoc.Root.Descendants("group");
-            var Specifications = new List<ProductSpecification>();
+            int productId = id;
+            ProductService.ParseTemplateAndSaveProductSpecifications(productId,templateId,CurrentLanguage,Request);
 
-            foreach (var group in groups)
-            {
-                var groupName = group.FirstAttribute.Value;
-                foreach (XElement field in group.Elements())
-                {
-
-                    var p = new  ProductSpecification();
-                    p.GroupName = groupName;
-                    p.ProductId = id;
-                    p.CreatedDate = DateTime.Now;
-                    p.UpdatedDate = DateTime.Now;
-                    p.Position = 1;
-                    p.IsActive = true;
-                    p.Lang = CurrentLanguage;
-                    var name = field.Attribute("name");
-                    var unit = field.Attribute("unit");
-                    var values = field.Attribute("values");
-
-
-                    var value = Request.Form[name.Value];
-
-                    if (name != null)
-                    {
-                        p.Name = name.Value;
-                    }
-                    if (unit != null)
-                    {
-                        p.Unit = unit.Value;
-                    }
-
-                    p.Value = value;
-                    Specifications.Add(p);
-
-                }
-            }
-
-            ProductService.SaveProductSpecifications(Specifications);
             return RedirectToAction("SaveOrEditProductSpecs", new { id });
         }
         //
@@ -253,7 +214,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ExportExcel()
         {
             var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
-          
+            
 
             var result = from r in products
                          select new

@@ -182,9 +182,14 @@ namespace EImece.Areas.Admin.Controllers
         }
         protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
         {
-            DataTable dt = new DataTable();
+            DataTable dt = GeneralHelper.LINQToDataTable(result);
             dt.TableName = fileName;
-            dt = GeneralHelper.LINQToDataTable(result);
+            return DownloadFileDataTable(dt, fileName);
+
+        }
+        protected ActionResult DownloadFileDataTable(DataTable result, string fileName)
+        {
+            var dt = result;
             if (dt.Rows.Count < 65534)
             {
                 var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);

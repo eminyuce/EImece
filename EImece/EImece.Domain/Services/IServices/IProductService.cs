@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using System.ServiceModel.Syndication;
+using System.Web;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -31,5 +32,7 @@ namespace EImece.Domain.Services.IServices
          string filters,
          string page,
          int language);
+        void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request);
+
     }
 }
