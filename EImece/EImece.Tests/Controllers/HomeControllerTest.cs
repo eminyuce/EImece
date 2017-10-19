@@ -21,6 +21,8 @@ using System.Text.RegularExpressions;
 using EImece.Domain.Caching;
 using System.IO;
 using System.Web;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace EImece.Tests.Controllers
 {
@@ -36,6 +38,37 @@ namespace EImece.Tests.Controllers
             {
                 return Settings.MainLanguage;
             }
+        }
+        [TestMethod]
+        public void ParallelProccesing()
+        {
+            object locker = new object();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Test1");
+            for (int i = 0; i < 100000; i++)
+            {
+                var p = dt.NewRow();
+                p["Test1"] = i.ToString();
+                dt.Rows.Add(p);
+            }
+            List<DataRow> newTable = dt.AsEnumerable().ToList();
+            int numberOfThread = 1000;
+            Parallel.ForEach(
+               newTable,
+               new ParallelOptions { MaxDegreeOfParallelism = numberOfThread },
+                   (row, n, i) =>
+                   {
+                       lock (locker)
+                       {
+                           int index = i.ToInt();
+                           DataRow dataRow = newTable[index];
+                           Console.WriteLine(index + " = " + dataRow["Test1"]);
+
+                       }
+                       //  Thread.Sleep(sleepTime);
+                   }
+            );
+            Console.WriteLine("Test");
         }
 
         [TestMethod]
