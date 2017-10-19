@@ -41,8 +41,7 @@ namespace EImece.Domain.Helpers
         {
             foreach (var field in enumType.GetFields())
             {
-                DescriptionAttribute attribute
-                    = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
                 if (attribute == null)
                     continue;
                 if (attribute.Description == description)
@@ -123,8 +122,7 @@ namespace EImece.Domain.Helpers
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
 
-            var descriptionAttributes = fieldInfo.GetCustomAttributes(
-                typeof(DisplayAttribute), false) as DisplayAttribute[];
+            var descriptionAttributes = fieldInfo.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
 
             if (descriptionAttributes[0].ResourceType != null)
                 return lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
@@ -154,8 +152,17 @@ namespace EImece.Domain.Helpers
 
         public static string ToDescription(this Enum value)
         {
-            var attributes = (DescriptionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
+            try
+            {
+                var attributes = (DescriptionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
+                return attributes.Length > 0 ? attributes[0].Description : value.ToString();
+            }
+            catch (Exception ex)
+            {
+
+                return String.Empty;
+            }
+
         }
 
         public static IEnumerable<SelectListItem> ToSelectListWithId(this Enum enumValue)

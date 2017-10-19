@@ -94,6 +94,7 @@ namespace EImece.Domain.Helpers
         {
             var p = new List<AmpCanonical>();
             p.Add(new AmpCanonical() { actionName = "Detail", controllerName = "Stories" });
+            p.Add(new AmpCanonical() { actionName = "Detail", controllerName = "Products" });
             return p;
         }
         public static bool IsRightAmpPages(string action, string controller)

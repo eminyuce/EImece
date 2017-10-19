@@ -1106,7 +1106,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
-    <Folder Include="Areas\Amp\Models\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
