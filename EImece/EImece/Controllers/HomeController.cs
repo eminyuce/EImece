@@ -121,10 +121,11 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public ActionResult Menu()
+       // [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        public PartialViewResult Menu(int id=0)
         {
-            var menus = MenuService.BuildTree(true, CurrentLanguage);
+            int selectedLanguage = id;
+            var menus = MenuService.BuildTree(true, selectedLanguage);
             return PartialView("_Navigation", menus);
         }
         [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]

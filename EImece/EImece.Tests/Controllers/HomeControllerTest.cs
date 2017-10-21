@@ -23,9 +23,16 @@ using System.IO;
 using System.Web;
 using System.Data;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace EImece.Tests.Controllers
 {
+    public class TestClass
+    {
+        public int CurrentTaskId { get; set; }
+        public int Index { get; set; }
+        public string JobId { get; set; }
+    }
     [TestClass]
     [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class HomeControllerTest
@@ -45,30 +52,43 @@ namespace EImece.Tests.Controllers
             object locker = new object();
             DataTable dt = new DataTable();
             dt.Columns.Add("Test1");
-            for (int i = 0; i < 100000; i++)
+            var r = new Random();
+            for (int i = 0; i < 1000; i++)
             {
+
                 var p = dt.NewRow();
-                p["Test1"] = i.ToString();
+                p["Test1"] = r.Next(0, 1000);
                 dt.Rows.Add(p);
             }
             List<DataRow> newTable = dt.AsEnumerable().ToList();
-            int numberOfThread = 1000;
+            StringBuilder built = new StringBuilder();
+            int numberOfThread = 10;
+            var jobsList = new List<TestClass>();
             Parallel.ForEach(
                newTable,
                new ParallelOptions { MaxDegreeOfParallelism = numberOfThread },
                    (row, n, i) =>
                    {
-                       lock (locker)
+                       
+                      // lock (locker)
                        {
-                           int index = i.ToInt();
+                           int index = (int)i;
                            DataRow dataRow = newTable[index];
-                           Console.WriteLine(index + " = " + dataRow["Test1"]);
-
+                           var item = new TestClass() { CurrentTaskId = Task.CurrentId.Value, Index = index, JobId = dataRow["Test1"].ToString() };
+                           jobsList.Add(item);
+                           Console.WriteLine(item.CurrentTaskId + " " + item.Index + " = " + item.JobId);
                        }
                        //  Thread.Sleep(sleepTime);
                    }
             );
             Console.WriteLine("Test");
+            Thread.Sleep(10000);
+            foreach (var item in jobsList)
+            {
+                built.AppendLine(item.CurrentTaskId + " " + item.Index + " = " + item.JobId);
+            }
+            File.WriteAllText(@"D:\ProjectEY\Test\task.txt", built.ToString());
+            Console.ReadLine();
         }
 
         [TestMethod]

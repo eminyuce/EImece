@@ -18,28 +18,35 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "ImageProxyCaching")]
         public ActionResult Index(String id, String imageSize)
         {
-
-            int height = 0;
-            int width = 0;
-            if (String.IsNullOrEmpty(imageSize))
-            {
-                imageSize = "w150h150";
-            }
-
-            width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w","").ToInt();
-            height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
-
             var fileStorageId = id.Replace(".jpg", "").GetId();
-            var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
-           
-            if (imageByte.Item1 != null)
+
+            if (fileStorageId > 0)
             {
-                return File(imageByte.Item1, imageByte.Item2);
-            }else
+                int height = 0;
+                int width = 0;
+                if (String.IsNullOrEmpty(imageSize))
+                {
+                    imageSize = "w150h150";
+                }
+
+                width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
+                height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+
+                var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
+
+                if (imageByte.Item1 != null)
+                {
+                    return File(imageByte.Item1, imageByte.Item2);
+                }
+                else
+                {
+                    return new EmptyResult();
+                }
+            }
+            else
             {
                 return new EmptyResult();
             }
-
         }
         public ActionResult GetModifiedImage(String id, String imageSize)
         {

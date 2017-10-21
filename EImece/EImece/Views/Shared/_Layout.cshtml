@@ -28,7 +28,7 @@
         String seoId = (String)ViewBag.SeoId;
     }
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
-    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId,"amp"))
+    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
 
     @Scripts.Render("~/bundles/modernizr")
 
@@ -40,11 +40,13 @@
         String cultureName = Thread.CurrentThread.CurrentCulture.Name;
         List<SelectListItem> listItems = new List<SelectListItem>();
         listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
-       
+        var selectedLang = EImece.Domain.Helpers.EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
+
 
     }
 </head>
 <body class="fullwidth">
+    @selectedLang
     <div id="wrapper">
 
         <div id="top-bar">
@@ -55,12 +57,12 @@
                 </div>
                 <div class="six columns">
                     @if (listItems.Count() > 1)
-                {
-                    foreach (var item in listItems)
                     {
+                        foreach (var item in listItems)
+                        {
                     <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
+                        }
                     }
-                }
 
 
                     @Html.Action("SocialMediaLinks", "Home")
@@ -89,7 +91,8 @@
             <div class="twelve columns">
                 <div id="additional-menu">
                     <ul>
-                        @Html.Action("Menu", "Home")
+
+                        @{Html.RenderAction("Menu", "Home", new { id = selectedLang }); }
                     </ul>
                 </div>
             </div>

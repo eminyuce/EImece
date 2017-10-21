@@ -89,15 +89,7 @@
                     <h4>
                         @storyCategory.Name
                     </h4>
-                    <span>
-                        <i class="fa fa-tag"></i>
-                        @for (int i = 0; i < storyTags.Count; i++)
-                        {
-                            var pt = storyTags[i];
-                            @Html.ActionLink(pt.Name, "tag", "stories", new { id = pt.GetSeoUrl() }, null) @:&nbsp;
-                           }
-
-                    </span>
+                   
                 </header>
                 @Html.Raw(story.Description)
 
@@ -122,17 +114,7 @@
 <div class="four columns">
 
 
-    <!-- Tags -->
-    <div class="widget margin-top-10">
-        <h3 class="headline">Tags</h3><span class="line"></span><div class="clearfix"></div>
-
-        <nav class="tags">
-            @foreach (var pt in tags)
-            {
-                @Html.ActionLink(pt.Name, "tag", "stories", new { id = pt.GetSeoUrl() }, null)
-            }
-        </nav>
-    </div>
+   
     <!-- Share Buttons -->
 
     <div class="widget">
