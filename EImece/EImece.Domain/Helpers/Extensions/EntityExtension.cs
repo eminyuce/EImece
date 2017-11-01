@@ -82,9 +82,10 @@ namespace EImece.Domain.Helpers.Extensions
 
             if (!String.IsNullOrEmpty(product.ProductCategory.Name))
             {
-                si.ElementExtensions.Add("Category", String.Empty, product.ProductCategory.Name);
+                si.ElementExtensions.Add("category", String.Empty, product.ProductCategory.Name);
             }
 
+            si.SetGuid(link, true);
 
             String imageSrc = product.GetCroppedImageUrl(rssParams.Width, rssParams.Height);
             if (!String.IsNullOrEmpty(imageSrc))

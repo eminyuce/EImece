@@ -17,6 +17,8 @@ using EImece.Domain.Models.FrontModels;
 using System.ServiceModel.Syndication;
 using System.Web;
 using System.Xml.Linq;
+using System.Xml;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Services
 {
@@ -232,6 +234,7 @@ namespace EImece.Domain.Services
             var items = this.GetActiveProducts(true, rssParams.Language).Take(rssParams.Take).ToList();
             var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+      
             String title = SettingService.GetSettingByKey(Settings.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
@@ -239,11 +242,18 @@ namespace EImece.Domain.Services
             {
                 Language = lang
             };
-            feed.AddNamespace("products", url + "/products");
+
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, HttpContext.Current.Request.Url.Scheme);
 
             feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
+            var formatter = new Rss20FeedFormatter(feed);
+            formatter.SerializeExtensionsAsAtom = false;
+            XNamespace atom = "http://www.w3.org/2005/Atom";
+            formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
 
-            return new Rss20FeedFormatter(feed);
+            return formatter;
 
         }
 

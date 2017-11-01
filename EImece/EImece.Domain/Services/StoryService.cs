@@ -193,7 +193,7 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            feed.AddNamespace("StoryCategories", url + "/stories/categories/"+rssParams.CategoryId);
+            //feed.AddNamespace("StoryCategories", url + "/stories/categories/"+rssParams.CategoryId);
 
             feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name,url, rssParams));
 
