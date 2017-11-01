@@ -115,7 +115,8 @@
         <div class="container">
             <div class="sixteen columns">
                 <nav id="navigation">
-                    @Html.Action("ProductTree", "Home")
+                    @*@Html.Action("ProductTree", "Home")*@
+                    @{Html.RenderAction("ProductTree", "Home", new { id = selectedLang }); }
                 </nav>
             </div>
         </div>

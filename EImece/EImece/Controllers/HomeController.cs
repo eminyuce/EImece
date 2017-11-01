@@ -121,17 +121,16 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
-       // [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public PartialViewResult Menu(int id=0)
         {
             int selectedLanguage = id;
             var menus = MenuService.BuildTree(true, selectedLanguage);
             return PartialView("_Navigation", menus);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public ActionResult ProductTree()
+        public ActionResult ProductTree(int id = 0)
         {
-            var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
+            int selectedLanguage = id;
+            var tree = ProductCategoryService.BuildTree(true, selectedLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
         [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
@@ -142,13 +141,11 @@ namespace EImece.Controllers
             var s = new List<Setting>() { webSiteLogo, CompanyName };
             return PartialView("_WebSiteLogo", s);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult Footer()
         {
             FooterViewModel footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WebSiteAddressInfo()
         {
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
