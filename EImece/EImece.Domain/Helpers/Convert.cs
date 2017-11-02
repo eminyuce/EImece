@@ -14,7 +14,16 @@ namespace EImece.Domain.Helpers
 {
     public static class Convert
     {
+        public static int GetIdWithoutDecode(this string id)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                return 0;
+            }
 
+            var m = id.Split("-".ToCharArray()).Last();
+            return m.ToInt();
+        }
         public static int GetId(this string id)
         {
             if (String.IsNullOrEmpty(id))

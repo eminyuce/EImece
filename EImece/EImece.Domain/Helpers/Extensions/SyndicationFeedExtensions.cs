@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-
 namespace EImece.Domain.Helpers.Extensions
 {
+
     /// <summary>
     /// <see cref="SyndicationFeed"/> extension methods.
     /// </summary>
@@ -17,6 +17,10 @@ namespace EImece.Domain.Helpers.Extensions
     {
         private const string YahooMediaNamespacePrefix = "media";
         private const string YahooMediaNamespace = "http://search.yahoo.com/mrss/";
+
+
+        private const string GoogleContentNamespacePrefix = "content";
+        private const string GoogleContentNamespace = "http://purl.org/rss/1.0/modules/content/";
 
         /// <summary>
         /// Adds a namespace to the specified feed.
@@ -37,7 +41,10 @@ namespace EImece.Domain.Helpers.Extensions
         {
             AddNamespace(feed, YahooMediaNamespacePrefix, YahooMediaNamespace);
         }
-
+        public static void AddGoogleContentNameSpace(this SyndicationFeed feed)
+        {
+            AddNamespace(feed, GoogleContentNamespacePrefix, GoogleContentNamespace);
+        }
         /// <summary>
         /// Gets the icon URL for the feed.
         /// </summary>
@@ -74,6 +81,18 @@ namespace EImece.Domain.Helpers.Extensions
                     new XAttribute("url", url),
                     width.HasValue ? new XAttribute("width", width) : null,
                     height.HasValue ? new XAttribute("height", height) : null)));
+        }
+
+        public static void SetCDataHtml(this SyndicationItem item, string bodyHtml)
+        {
+            XNamespace ns = GoogleContentNamespace;
+            var element = new XElement(ns + "encoded", new XCData(bodyHtml));
+            var p = new SyndicationElementExtension(element);
+            item.ElementExtensions.Add(p);
+        }
+        public static void SetGuid(this SyndicationItem item, string id, bool isPermaLink)
+        {
+            item.ElementExtensions.Add(new SyndicationElementExtension(new XElement("guid", new XAttribute("isPermaLink", isPermaLink), id)));
         }
     }
 }

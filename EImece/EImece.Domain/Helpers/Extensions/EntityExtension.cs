@@ -39,30 +39,68 @@ namespace EImece.Domain.Helpers.Extensions
                 si.ElementExtensions.Add("Category", String.Empty, categoryName);
             }
 
-
-            String imageSrc = product.GetCroppedImageUrl(rssParams.Width, rssParams.Height);
-            if (!String.IsNullOrEmpty(imageSrc))
+            if (product.MainImageId.HasValue)
             {
-
-                string imageUrl = String.Format("{0}{1}", url, imageSrc);
-
-                try
+                String imageSrc = product.GetCroppedImageUrl(product.MainImageId.Value, rssParams.Width, rssParams.Height);
+                if (!String.IsNullOrEmpty(imageSrc))
                 {
-                    SyndicationLink imageLink =
-                        SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
-                    si.Links.Add(imageLink);
-                }
-                catch (Exception e)
-                {
-                    Logger.Error(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
-                }
 
+                    string imageUrl = String.Format("{0}{1}", url, imageSrc);
+
+                    try
+                    {
+                        SyndicationLink imageLink =
+                            SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
+                        si.Links.Add(imageLink);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
+                    }
+
+                }
             }
 
             return si;
 
         }
+        public static SyndicationItem GetStorySyndicationItemFull(this Story product, string categoryName, string url, RssParams rssParams)
+        {
+            String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
+                         Settings.HttpProtocol));
 
+            var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
+
+            var pageLink = new Uri(link.ToLower());
+            var ub = new UriBuilder(pageLink);
+            if (!string.IsNullOrEmpty(rssParams.GetAnalyticsQueryString()))
+            {
+                ub.Query = rssParams.GetAnalyticsQueryString();
+            }
+            var si = new SyndicationItem(product.Name, desc, ub.Uri);
+            si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
+
+            if (!String.IsNullOrEmpty(categoryName))
+            {
+                si.ElementExtensions.Add("category", String.Empty, categoryName);
+            }
+            si.SetGuid(link.ToLower(), true);
+            String imageUrlSrcHtml = "";
+            if (product.MainImageId.HasValue)
+            {
+                String imageSrc = product.GetCroppedImageUrl(product.MainImageId.Value, rssParams.Width, rssParams.Height);
+                if (!String.IsNullOrEmpty(imageSrc))
+                {
+                    string imageUrl = String.Format("{0}{1}", url, imageSrc);
+                    imageUrlSrcHtml = String.Format("<div><img src='{0}'  /></div>", imageUrl);
+                }
+            }
+
+
+            si.SetCDataHtml(imageUrlSrcHtml + product.Description);
+            return si;
+
+        }
 
 
         public static SyndicationItem GetProductSyndicationItem(this Product product, string url, RssParams rssParams)
@@ -86,24 +124,26 @@ namespace EImece.Domain.Helpers.Extensions
             }
 
             si.SetGuid(link, true);
-
-            String imageSrc = product.GetCroppedImageUrl(rssParams.Width, rssParams.Height);
-            if (!String.IsNullOrEmpty(imageSrc))
+            if (product.MainImageId.HasValue)
             {
-
-                string imageUrl = String.Format("{0}{1}", url, imageSrc);
-
-                try
+                String imageSrc = product.GetCroppedImageUrl(product.MainImageId.Value, rssParams.Width, rssParams.Height);
+                if (!String.IsNullOrEmpty(imageSrc))
                 {
-                    SyndicationLink imageLink =
-                        SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
-                    si.Links.Add(imageLink);
-                }
-                catch (Exception e)
-                {
-                     Logger.Error(e,e.Message+" : "+ String.Format("url={0} imageSrc={1}", url, imageSrc));
-                }
 
+                    string imageUrl = String.Format("{0}{1}", url, imageSrc);
+
+                    try
+                    {
+                        SyndicationLink imageLink =
+                            SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
+                        si.Links.Add(imageLink);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
+                    }
+
+                }
             }
 
             return si;
@@ -160,8 +200,8 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetSeoUrl(this BaseEntity entity)
         {
-            return String.Format("{0}-{1}", 
-                GeneralHelper.GetUrlSeoString(entity.Name), 
+            return String.Format("{0}-{1}",
+                GeneralHelper.GetUrlSeoString(entity.Name),
                 Base32Custom.EncodeRnd(entity.Id));
         }
         public static String GetSeoTitle(this BaseEntity entity, int length = 50)
@@ -288,11 +328,11 @@ namespace EImece.Domain.Helpers.Extensions
             if (fileExtPos >= 0)
             {
                 ext = fileName.Substring(fileExtPos, fileName.Length - fileExtPos);
-                return fileName.Replace(ext,"");
+                return fileName.Replace(ext, "");
             }
 
             return fileName;
-                
+
         }
         public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
         {

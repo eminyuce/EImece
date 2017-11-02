@@ -18,7 +18,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "ImageProxyCaching")]
         public ActionResult Index(String id, String imageSize)
         {
-            var fileStorageId = id.Replace(".jpg", "").GetId();
+            var fileStorageId = id.Replace(".jpg", "").GetIdWithoutDecode();
 
             if (fileStorageId > 0)
             {

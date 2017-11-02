@@ -16,6 +16,9 @@ using System.ServiceModel.Syndication;
 using System.Web;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using System.Xml.Linq;
+using System.Xml;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Services
 {
@@ -198,6 +201,38 @@ namespace EImece.Domain.Services
             feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name,url, rssParams));
 
             return new Rss20FeedFormatter(feed);
+        }
+
+        public Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams)
+        {
+            var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
+            var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
+
+            var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+            String title = SettingService.GetSettingByKey(Settings.CompanyName);
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
+
+            var feed = new SyndicationFeed(title, "", new Uri(url))
+            {
+                Language = lang
+            };
+
+
+            feed.AddGoogleContentNameSpace();
+            feed.AddYahooMediaNamespace();
+            feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
+
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss",null,Settings.HttpProtocol);
+
+            var formatter = new Rss20FeedFormatter(feed);
+            formatter.SerializeExtensionsAsAtom = false;
+            XNamespace atom = "http://www.w3.org/2005/Atom";
+            formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", imagePath.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+
+            return formatter;
         }
     }
 }

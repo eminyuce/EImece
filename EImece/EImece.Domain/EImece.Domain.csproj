@@ -187,7 +187,6 @@
     <Compile Include="Helpers\Extensions\EntityExtension.cs" />
     <Compile Include="Helpers\Extensions\ExtensionHelper.cs" />
     <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
-    <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
@@ -206,7 +205,7 @@
     <Compile Include="Helpers\SiteMap\SitemapGenerator.cs" />
     <Compile Include="Helpers\SiteMap\SitemapItem.cs" />
     <Compile Include="Helpers\SiteMap\SitemapResult.cs" />
-    <Compile Include="Helpers\SyndicationFeedExtensions.cs" />
+    <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
     <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Helpers\XmlEditorHelper.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />

@@ -23,5 +23,6 @@ namespace EImece.Domain.Services.IServices
         Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams);
         SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, 
             int pageSize, int currentLanguage);
+        Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams);
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Resources;
+using EImece.Domain.Models.FrontModels;
+using System.ServiceModel.Syndication;
 
 namespace EImece.Domain.Entities
 {
@@ -21,5 +23,6 @@ namespace EImece.Domain.Entities
         public ICollection<StoryTag> StoryTags { get; set; }
         public ICollection<StoryFile> StoryFiles { get; set; }
 
+     
     }
 }

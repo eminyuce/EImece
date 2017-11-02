@@ -915,6 +915,7 @@
     <Content Include="Areas\Amp\Views\Stories\Index.cshtml" />
     <Content Include="Areas\Amp\Views\Products\Detail.cshtml" />
     <Content Include="Content\Web.config" />
+    <Content Include="manifest.json" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

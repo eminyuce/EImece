@@ -23,9 +23,9 @@ namespace EImece.Controllers
             var comment = new StringBuilder();
             try
             {
-                var items = ProductService.GetProductsRss(rssParams);
 
-                comment.AppendLine("");
+                var items = ProductService.GetProductsRss(rssParams);
+                comment.AppendLine("/rss/products?take=10&language=1&description=250");
                 return new FeedResult(items, comment);
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ namespace EImece.Controllers
             try
             {
                 var items = StoryService.GetStoryCategoriesRss(rssParams);
-                comment.AppendLine("");
+                comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
                 return new FeedResult(items, comment);
 
             }
@@ -52,7 +52,23 @@ namespace EImece.Controllers
                 return Content(ex.Message);
             }
         }
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+        public ActionResult StoryCategoriesFull(RssParams rssParams)
+        {
+            var comment = new StringBuilder();
+            //try
+            //{
+                var items = StoryService.GetStoryCategoriesRssFull(rssParams);
+                comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
+                return new FeedResult(items, comment);
 
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.Error(ex, ex.Message);
+            //    return Content(ex.Message);
+            //}
+        }
         //public void ShoutBox()
         //{
         //    Response.Buffer = false;
