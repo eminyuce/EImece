@@ -260,6 +260,8 @@
     <Compile Include="Areas\Admin\Controllers\AdminSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BrowserSubscribersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BrowserSubscriptionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileUploadController.cs" />
@@ -975,6 +977,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\restangular.min.js" />
+    <Content Include="Scripts\serviceWorker\mainToReplace.js" />
+    <Content Include="Scripts\serviceWorker\sw.js" />
     <Content Include="Scripts\SharkDev.treeView.js" />
     <Content Include="Scripts\trizzy\scripts\custom.js" />
     <Content Include="Scripts\trizzy\scripts\hoverIntent.js" />
@@ -1110,8 +1114,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
+    <Folder Include="Areas\Admin\Views\BrowserSubscribers\" />
+    <Folder Include="Areas\Admin\Views\BrowserSubscriptions\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
+    <Folder Include="Views\Ajax\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>

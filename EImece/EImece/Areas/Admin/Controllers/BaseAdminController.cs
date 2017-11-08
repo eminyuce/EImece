@@ -29,6 +29,11 @@ namespace EImece.Areas.Admin.Controllers
         public IEntityFactory EntityFactory { get; set; }
 
         [Inject]
+        public IBrowserSubscriberService BrowserSubscriberService { get; set; }
+        [Inject]
+        public IBrowserSubscriptionService BrowserSubscriptionService { get; set; }
+
+        [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
         [Inject]
         public ISettingService SettingService { get; set; }

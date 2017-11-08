@@ -36,7 +36,7 @@ namespace EImece.Domain.Helpers.Extensions
 
             if (!String.IsNullOrEmpty(categoryName))
             {
-                si.ElementExtensions.Add("Category", String.Empty, categoryName);
+                si.ElementExtensions.Add("category", String.Empty, categoryName);
             }
 
             if (product.MainImageId.HasValue)

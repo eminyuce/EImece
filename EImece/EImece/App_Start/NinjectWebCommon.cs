@@ -87,7 +87,7 @@ namespace EImece.App_Start
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
 
-
+            kernel.Bind<IBrowserSubscriptionRepository>().To<BrowserSubscriptionRepository>().InRequestScope();
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
             kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
             kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
@@ -109,7 +109,7 @@ namespace EImece.App_Start
             kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();
             kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
             kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
-
+            kernel.Bind<IBrowserSubscriberRepository>().To<BrowserSubscriberRepository>().InRequestScope();
             kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();
 
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
@@ -127,6 +127,8 @@ namespace EImece.App_Start
 
             kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();
 
+            kernel.Bind<IBrowserSubscriptionService>().To<BrowserSubscriptionService>().InRequestScope();
+            kernel.Bind<IBrowserSubscriberService>().To<BrowserSubscriberService>().InRequestScope();
             kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
             kernel.Bind<IListService>().To<ListService>().InRequestScope();
 

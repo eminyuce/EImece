@@ -32,5 +32,7 @@ namespace EImece.Domain.DbContext
         IDbSet<Setting> Settings { get; set; }
         IDbSet<Template> Templates { get; set; }
         IDbSet<MenuFile> MenuFiles { get; set; }
+        IDbSet<BrowserSubscriber> BrowserSubscribers { get; set; }
+        IDbSet<BrowserSubscription> BrowserSubscriptions { get; set; }
     }
 }
