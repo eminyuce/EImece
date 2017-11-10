@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,9 @@ namespace EImece.Controllers
 
 
         }
+
+        [CompressContent]
+        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult ServiceWorkerScript()
         {
             var keys = BrowserSubscriptionService.GetAll();
@@ -73,7 +77,7 @@ namespace EImece.Controllers
                 BrowserSubscription safariItem = keys.FirstOrDefault(i => i.BrowserType == (int)BrowserType.Safari);
                 safariPublicKey = (safariItem != null ? safariItem.PublicKey : "");
             }
-            string jsFileText = System.IO.File.ReadAllText(HttpContext.Server.MapPath("~/Scripts/serviceWorker/mainToReplace.js"));
+            string jsFileText = FileManagerHelper.GetServiceWorkerScript();
             jsFileText = jsFileText.Replace("[ChromePublicKey]", chromePublicKey);
             jsFileText = jsFileText.Replace("[FirefoxPublickKey]", firefoxPublicKey);
             jsFileText = jsFileText.Replace("[SafariPublicKey]", safariPublicKey);

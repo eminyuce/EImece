@@ -221,6 +221,7 @@ namespace EImece.Domain.Services
 
             feed.AddGoogleContentNameSpace();
             feed.AddYahooMediaNamespace();
+            feed.LastUpdatedTime = new DateTimeOffset(items.Max(t => t.UpdatedDate.Value));
             feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
 
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);

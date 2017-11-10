@@ -205,6 +205,7 @@
     <Compile Include="Factories\IFactories\IHttpContextFactory.cs" />
     <Compile Include="Helpers\ActionResultHelpers\FeedResult.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizeRolesAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\CompressContentAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\CustomOutputCacheAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\Base32Custom.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Helpers\Extensions\EntityExtension.cs" />
     <Compile Include="Helpers\Extensions\ExtensionHelper.cs" />
     <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
+    <Compile Include="Helpers\FileManagerHelper.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />

@@ -24,6 +24,7 @@ using System.Web;
 using System.Data;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Globalization;
 
 namespace EImece.Tests.Controllers
 {
@@ -209,7 +210,14 @@ QUITE
                 Console.WriteLine(ex.StackTrace.ToString());
             }
         }
-       
+        [TestMethod]
+        public void DateTimeOffsetParse()
+        {
+        
+            Console.WriteLine(DateTimeOffset.ParseExact("2014-12-11T04:44:16Z", "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                                       CultureInfo.InvariantCulture));
+    
+        }
         [TestMethod]
         public void GetmenuLink()
         {
