@@ -11,7 +11,8 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/BrowserSubscribers
         public ActionResult Index()
         {
-            return View();
+            var browserSubscribers = BrowserSubscriberService.GetAll();
+            return View(browserSubscribers);
         }
     }
 }

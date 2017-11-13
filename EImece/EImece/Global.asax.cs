@@ -44,27 +44,29 @@ namespace EImece
 
         }
 
-        protected void Application_BeginRequest()
+       
+        protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            //if (!Context.Request.IsSecureConnection)
-            //{
-            //    // This is an insecure connection, so redirect to the secure version
-            //    UriBuilder uri = new UriBuilder(Context.Request.Url);
-            //    uri.Scheme = "https";
-            //    if (uri.Port > 32000 && uri.Host.Equals("localhost"))
-            //    {
-            //        // Development box - set uri.Port to 44300 by default
-            //        uri.Port = 44300;
-            //    }
-            //    else
-            //    {
-            //        uri.Port = 443;
-            //    }
-
-            //    Response.Redirect(uri.ToString());
-            //}
+            Redirect301();
         }
+        private void Redirect301()
+        {
+            var domain = Settings.Domain;
 
+
+            if (domain.StartsWith("www") && !Request.Url.Host.StartsWith("www") && !Request.Url.IsLoopback
+                && Request.Url.Host.IndexOf('.') > Request.Url.Host.Length / 2
+                )
+            {
+                UriBuilder builder = new UriBuilder(Request.Url);
+                // builder.Host = "www." + Request.Url.Host;
+                builder.Host =  Request.Url.Host;
+                Response.StatusCode = 301;
+                builder.Scheme = Settings.HttpProtocol;
+                Response.AddHeader("Location", builder.ToString());
+                Response.End();
+            }
+        }
         protected void Application_Error(object sender, EventArgs e)
         {
 

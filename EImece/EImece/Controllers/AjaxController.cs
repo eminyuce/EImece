@@ -37,9 +37,10 @@ namespace EImece.Controllers
                 item.UserAgent = userAgent;
                 item.UserAddress = GeneralHelper.GetRemoteIP(Request.ServerVariables);
                 item.IsActive = true;
-                item.Name = "";
+                item.Name = "Testing";
+                item.EntityHash = "EntityHash";
                 item.Position = 1;
-                item.Lang = 0;
+                item.Lang = 1;
                 BrowserSubscriberService.SaveOrEditEntity(item);
                 return Json("true", JsonRequestBehavior.AllowGet);
             }

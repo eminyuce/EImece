@@ -27,15 +27,31 @@ self.addEventListener('push', function (event) {
 
 
     var jsonDataObj = JSON.parse(event.data.text());
+
+
     var title = jsonDataObj.title;
+    var body = jsonDataObj.body;
+    var imageUrl = jsonDataObj.imageurl;
+    var notificationType = jsonDataObj.notificationtype;
     redirectionUrl = jsonDataObj.redirectionurl;
-    var options = {
-        body: jsonDataObj.body,
-        icon: jsonDataObj.imageurl
-    };
 
-    event.waitUntil(self.registration.showNotification(title, options));
+    if (notificationType == "Debugging") {
 
+        console.log('Service Worker Push Received For Debugging');
+        console.log('Title:' + title);
+        console.log('Body:' + body);
+        console.log('ImageUrl:' + imageUrl);
+
+    } else {
+
+        var options = {
+            body: body,
+            icon: imageUrl
+        };
+
+        event.waitUntil(self.registration.showNotification(title, options));
+
+    }
 
 
 

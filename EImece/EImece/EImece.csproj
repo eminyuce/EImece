@@ -418,6 +418,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="localSw.js" />
     <Content Include="media\images\thumbs\thb10-lt-sepetli_1305531829.jpg" />
     <Content Include="media\images\thumbs\thb10-lt-sepetli_1612291191.jpg" />
     <Content Include="media\images\thumbs\thb10-ml-pet_1405447156.jpg" />
@@ -918,6 +919,11 @@
     <Content Include="Areas\Amp\Views\Products\Detail.cshtml" />
     <Content Include="Content\Web.config" />
     <Content Include="manifest.json" />
+    <Content Include="Areas\Admin\Views\BrowserSubscribers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserSubscriptions\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserSubscriptions\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserSubscriptions\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserSubscriptions\Details.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1114,8 +1120,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
-    <Folder Include="Areas\Admin\Views\BrowserSubscribers\" />
-    <Folder Include="Areas\Admin\Views\BrowserSubscriptions\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
     <Folder Include="Views\Ajax\" />

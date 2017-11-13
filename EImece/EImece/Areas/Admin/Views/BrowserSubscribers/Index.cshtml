@@ -1,0 +1,102 @@
+﻿@model IEnumerable<EImece.Domain.Entities.BrowserSubscriber>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntityHash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrowserSubscriptionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndPoint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Auth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.P256dh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAgent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAddress)
+        </th>
+   
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntityHash)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Position)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lang)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BrowserSubscriptionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndPoint)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Auth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.P256dh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAgent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAddress)
+        </td>
+   
+    </tr>
+}
+
+</table>
