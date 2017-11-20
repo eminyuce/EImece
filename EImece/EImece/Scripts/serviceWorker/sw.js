@@ -24,7 +24,7 @@
 var redirectionUrl = '';
 var notificationSubscriberId = 0;
 const NOTIFICATION_DELAY = 2500;
-const PushNotificationApplicationServerUrl = 'https://pn.sarts.com';
+const PushNotificationApplicationServerUrl = 'https://emin.fastcraft.com';
 
 
 
