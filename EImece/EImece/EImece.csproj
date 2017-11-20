@@ -1122,7 +1122,6 @@
     <Folder Include="App_Data\logs\" />
     <Folder Include="media\tempFiles\" />
     <Folder Include="Scripts\codemirror\addon\" />
-    <Folder Include="Views\Ajax\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>

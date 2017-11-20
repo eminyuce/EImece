@@ -25,6 +25,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Globalization;
+using HtmlAgilityPack;
 
 namespace EImece.Tests.Controllers
 {
@@ -46,6 +47,52 @@ namespace EImece.Tests.Controllers
             {
                 return Settings.MainLanguage;
             }
+        }
+
+
+
+        public static String HtmlToFBHtml(string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+
+            var brtags = doc.DocumentNode.SelectNodes("//br");
+            var divNodes = doc.DocumentNode.SelectSingleNode("//div");
+
+            HtmlNode paragraghNode = doc.CreateElement("p");
+            var DivTags = doc.DocumentNode.SelectNodes("div");
+            for (int i = 0; i < DivTags.Count; i++)
+            {
+                if (i > 0)
+                {
+                    doc.DocumentNode.InsertBefore(paragraghNode, DivTags[i]);
+                }
+                doc.DocumentNode.InsertBefore(HtmlNode.CreateNode(DivTags[i].InnerHtml), DivTags[i]);
+                DivTags[i].ParentNode.RemoveChild(DivTags[i]);
+            }
+
+
+            if (brtags.Count <= 5)
+            {
+                return html;
+            }
+            else
+            {
+                foreach (var br in brtags)
+                {
+                    br.OuterHtml.Replace("<br>", "\n");
+                }
+            }
+            return doc.DocumentNode.OuterHtml;
+        }
+        [TestMethod]
+        public void HtmlToFBHtmlTesting()
+        {
+            String html = "";
+            var html2 = HtmlToFBHtml(html);
+
+            Console.WriteLine(html2);
+
         }
         [TestMethod]
         public void ParallelProccesing()

@@ -48,6 +48,10 @@
     <Reference Include="GenericRepository.EntityFramework">
       <HintPath>..\..\..\..\..\ProjectEY\EImeceDllReferences\GenericRepository.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.6.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.6.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
@@ -255,6 +259,7 @@
     <Compile Include="Models\Enums\EImeceItemType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
+    <Compile Include="Models\Enums\NotificationType.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
     <Compile Include="Models\FrontModels\Filter.cs" />
     <Compile Include="Models\FrontModels\FilterGroup.cs" />
