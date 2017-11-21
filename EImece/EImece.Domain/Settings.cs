@@ -117,7 +117,10 @@ namespace EImece.Domain
         {
             if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)))
             {
-                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                if (!String.IsNullOrEmpty(defaultValue.ToString()))
+                {
+                    Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+                }
             }
         }
         public static string GetConfigString(string configName, string defaultValue = "")

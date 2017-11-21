@@ -13,12 +13,15 @@ using Ninject;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Entities;
+using NLog;
 
 namespace EImece.Controllers
 {
     [Authorize]
     public class AccountController : BaseController
     {
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -58,35 +61,41 @@ namespace EImece.Controllers
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError("", "Model is not correct.");
                 return View(model);
             }
 
             //validate the captcha through the session variable stored from GetCaptcha
-            if (Session["CaptchaAdminLogin"] == null || !Session["CaptchaAdminLogin"].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
-            {
-                ModelState.AddModelError("Captcha", "Wrong sum, please try again.");
-                return View(model);
-            }
-            else
-            {
+            //if (Session["CaptchaAdminLogin"] == null || !Session["CaptchaAdminLogin"].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    ModelState.AddModelError("Captcha", "Wrong sum, please try again.");
+            //    return View(model);
+            //}
+            //else
+            //{
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
-                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-                switch (result)
-                {
-                    case SignInStatus.Success:
-                        return RedirectToLocal(returnUrl);
-                    case SignInStatus.LockedOut:
-                        return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                    case SignInStatus.Failure:
-                    default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
-                }
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            Logger.Debug("The account " + model.Email + "   " + result.ToString());
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    Logger.Debug("The account  " + model.Email + " LockedOut ");
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    Logger.Debug("The account  " + model.Email + " RequiresVerification ");
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+
+                default:
+                    Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
             }
+            //}
         }
 
         //
@@ -344,7 +353,7 @@ namespace EImece.Controllers
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
-                    
+
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
@@ -426,6 +435,10 @@ namespace EImece.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
+            if (returnUrl.Contains("login"))
+            {
+                return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+            }
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
