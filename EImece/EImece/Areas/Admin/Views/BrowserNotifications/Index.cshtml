@@ -13,7 +13,7 @@
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
-    var controllerName = "BrowserNotification";
+    var controllerName = "BrowserNotifications";
     var title = "BrowserNotification";
     var gridName = "BrowserNotificationGrid";
     var contents = Model;

@@ -261,6 +261,7 @@
     <Compile Include="Models\Enums\EImeceItemType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
+    <Compile Include="Models\Enums\NotificationStatus.cs" />
     <Compile Include="Models\Enums\NotificationType.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
     <Compile Include="Models\FrontModels\Filter.cs" />

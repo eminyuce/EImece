@@ -12,6 +12,6 @@ namespace EImece.Domain.Entities
         public int BrowserSubscriberId { get; set; }
         public int NotificationStatus { get; set; }
         public DateTime DateSend { get; set; }
-        public DateTime DateTracked { get; set; }
+        public DateTime ? DateTracked { get; set; }
     }
 }

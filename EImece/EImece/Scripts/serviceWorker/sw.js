@@ -22,7 +22,7 @@
 
 
 var redirectionUrl = '';
-var notificationSubscriberId = 0;
+var BrowserNotificationFeedBackId = 0;
 const NOTIFICATION_DELAY = 2500;
 const PushNotificationApplicationServerUrl = '';
 
@@ -51,7 +51,7 @@ self.addEventListener('push', function (event) {
         var body = jsonDataObj.body;
         var imageUrl = jsonDataObj.imageurl;
         var notificationType = jsonDataObj.notificationtype;
-        notificationSubscriberId = jsonDataObj.notificationSubscriberId;
+        BrowserNotificationFeedBackId = jsonDataObj.BrowserNotificationFeedBackId;
         redirectionUrl = jsonDataObj.redirectionurl;
 
 
@@ -64,14 +64,14 @@ self.addEventListener('push', function (event) {
             console.log('Title:' + title);
             console.log('Body:' + body);
             console.log('ImageUrl:' + imageUrl);
-            sendFeedBack(notificationSubscriberId, 3);
+            sendFeedBack(BrowserNotificationFeedBackId, 3);
 
             return new Promise((resolve) => { });
 
         } else if (notificationType == "SimpleNotification") {
             console.log('[Service Worker] Push Received.1');
 
-            sendFeedBack(notificationSubscriberId, 1);
+            sendFeedBack(BrowserNotificationFeedBackId, 1);
 
             var options = {
                 body: body,
@@ -85,7 +85,7 @@ self.addEventListener('push', function (event) {
             //https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/update
             console.log('Service Worker has been updated.');
 
-            sendFeedBack(notificationSubscriberId, 8);
+            sendFeedBack(BrowserNotificationFeedBackId, 8);
 
             return self.registration.update();
         } else if (notificationType == "UnRegisterServiceWorker") {
@@ -97,7 +97,7 @@ self.addEventListener('push', function (event) {
                 console.log('Registration result:' + boolean);
                 if (boolean) {
 
-                    sendFeedBack(notificationSubscriberId, 2);
+                    sendFeedBack(BrowserNotificationFeedBackId, 2);
                 } else {
 
                 }
@@ -112,9 +112,9 @@ self.addEventListener('push', function (event) {
     }());
 
 });
-function sendFeedBack(notificationSubscriberId, notificationStatus) {
+function sendFeedBack(BrowserNotificationFeedBackId, notificationStatus) {
     var postData = JSON.stringify({
-        "notificationSubscriberId": notificationSubscriberId,
+        "BrowserNotificationFeedBackId": BrowserNotificationFeedBackId,
         "notificationStatus": notificationStatus
     });
 
@@ -128,7 +128,7 @@ self.addEventListener('notificationclick', function (event) {
     console.log('[Service Worker] Notification click Received.');
     console.log(event);
     event.notification.close();
-    sendFeedBack(notificationSubscriberId, 9);
+    sendFeedBack(BrowserNotificationFeedBackId, 9);
 
     event.waitUntil(
 

@@ -14,7 +14,7 @@ using System.Data.Entity.Validation;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Helpers.Extensions;
-
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Services
 {
@@ -27,5 +27,13 @@ namespace EImece.Domain.Services
             BrowserSubscriberRepository = browserSubscriberRepository;
         }
 
+        public List<BrowserSubscriber> GetBrowserSubscribers()
+        {
+            Expression<Func<BrowserSubscriber, object>> includeProperty3 = r => r.BrowserSubscription;
+            Expression<Func<BrowserSubscriber, object>>[] includeProperties = { includeProperty3 };
+            var items = BrowserSubscriberRepository.GetAllIncluding(includeProperties);
+            items = items.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            return items.ToList();
+        }
     }
 }

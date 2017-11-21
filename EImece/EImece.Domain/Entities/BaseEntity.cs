@@ -31,7 +31,7 @@ namespace EImece.Domain.Entities
         public int Position { get; set; }
         public int Lang { get; set; }
 
-         
        
+
     }
 }

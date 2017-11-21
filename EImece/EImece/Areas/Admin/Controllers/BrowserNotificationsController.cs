@@ -1,6 +1,8 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<BrowserNotification, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var result = BrowserNotificationService.SearchEntities(whereLambda, search,1);
+            var result = BrowserNotificationService.SearchEntities(whereLambda, search, 1);
             return View(result);
         }
 
@@ -59,9 +61,52 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-
                     BrowserNotificationService.SaveOrEditEntity(BrowserNotification);
+
                     int itemId = BrowserNotification.Id;
+
+                    if (BrowserNotification.IsSend)
+                    {
+
+                        var payLoad = new Dictionary<string, object>();
+                        payLoad["body"] = BrowserNotification.Body;
+                        payLoad["title"] = BrowserNotification.Name;
+                        payLoad["imageurl"] = BrowserNotification.ImageUrl;
+                        payLoad["redirectionurl"] = BrowserNotification.RedirectionUrl;
+                        payLoad["notificationtype"] = ((NotificationType)BrowserNotification.NotificationType).ToString();
+
+                        var subscribers = BrowserSubscriberService.GetBrowserSubscribers();
+                        foreach (var subscriber in subscribers)
+                        {
+                            try
+                            {
+                                var item = new BrowserNotificationFeedBack();
+                                item.Name = "Testing";
+                                item.EntityHash = "";
+                                item.IsActive = true;
+                                item.Position = 1;
+                                item.Lang = 1;
+                                item.BrowserNotificationId = BrowserNotification.Id;
+                                item.BrowserSubscriberId = subscriber.Id;
+                                item.NotificationStatus = (int)NotificationStatus.NotTracked;
+                                item.DateSend = DateTime.Now;
+                                item.DateTracked = null;
+                                BrowserNotificationFeedBackService.SaveOrEditEntity(item);
+                                payLoad["BrowserNotificationFeedBackId"] = item.Id;
+                                WebPushHelper.SendPushNotification(subscriber, payLoad);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error(ex);
+                            }
+
+
+                        }
+
+                    }
+
+
                     return RedirectToAction("Index");
                 }
                 else

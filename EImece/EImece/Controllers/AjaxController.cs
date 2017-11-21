@@ -18,15 +18,12 @@ namespace EImece.Controllers
         {
             return View();
         }
-        public ActionResult GetSubscribersTracking(int notificationSubscriberId, int notificationStatus)
+        public ActionResult GetSubscribersTracking(int browserNotificationFeedBackId, int notificationStatus)
         {
-            //var item = NotificationSubscriberRepository.GetNwmNotificationSubscriber(notificationSubscriberId);
-            //item.DateTracked = DateTime.Now;
-            //item.NotificationStatus = notificationStatus;
-            //NotificationSubscriberRepository.SaveOrUpdateNwmNotificationSubscriber(item);
-
-            //NotificationSubscriberRepository.UpdateNotificationSubscriber(notificationSubscriberId, notificationStatus);
-
+            var item = BrowserNotificationFeedBackService.GetSingle(browserNotificationFeedBackId);
+            item.NotificationStatus = notificationStatus;
+            item.DateTracked = DateTime.Now;
+            BrowserNotificationFeedBackService.SaveOrEditEntity(item);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
         // GET: Ajax{ "endpoint": endpoint, "p256dh": p256dh, "auth": auth, 

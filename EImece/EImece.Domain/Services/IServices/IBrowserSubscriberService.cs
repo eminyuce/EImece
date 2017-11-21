@@ -12,7 +12,6 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IBrowserSubscriberService : IBaseEntityService<BrowserSubscriber>
     {
-
-
+        List<BrowserSubscriber> GetBrowserSubscribers();
     }
 }

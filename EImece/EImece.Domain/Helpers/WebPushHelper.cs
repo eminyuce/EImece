@@ -13,6 +13,8 @@ namespace EImece.Domain.Helpers
     public class WebPushHelper
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+ 
         public static String SendPushNotification(BrowserSubscriber p, Dictionary<string, object> payLoad)
         {
 
