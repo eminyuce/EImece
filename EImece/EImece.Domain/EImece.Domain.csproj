@@ -179,6 +179,8 @@
     <Compile Include="DbContext\IEImeceContext.cs" />
     <Compile Include="Entities\BaseContent.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\BrowserNotification.cs" />
+    <Compile Include="Entities\BrowserNotificationFeedBack.cs" />
     <Compile Include="Entities\BrowserSubscriber.cs" />
     <Compile Include="Entities\BrowserSubscription.cs" />
     <Compile Include="Entities\FileStorage.cs" />
@@ -291,6 +293,8 @@
     <Compile Include="Repositories\BaseContentRepository.cs" />
     <Compile Include="Repositories\BaseEntityRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\BrowserNotificationFeedBackRepository.cs" />
+    <Compile Include="Repositories\BrowserNotificationRepository.cs" />
     <Compile Include="Repositories\BrowserSubscriberRepository.cs" />
     <Compile Include="Repositories\BrowserSubscriptionRepository.cs" />
     <Compile Include="Repositories\FileStorageRepository.cs" />
@@ -299,6 +303,8 @@
     <Compile Include="Repositories\IRepositories\IBaseEntityRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IRepositories\IBrowserNotificationFeedBackRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IBrowserNotificationRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBrowserSubscriberRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBrowserSubscriptionRepository.cs" />
     <Compile Include="Repositories\IRepositories\IFileStorageRepository.cs" />
@@ -347,12 +353,16 @@
     <Compile Include="Services\BaseContentService.cs" />
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\BrowserNotificationFeedBackService.cs" />
+    <Compile Include="Services\BrowserNotificationService.cs" />
     <Compile Include="Services\BrowserSubscriberService.cs" />
     <Compile Include="Services\BrowserSubscriptionService.cs" />
     <Compile Include="Services\FileStorageService.cs" />
     <Compile Include="Services\IServices\IBaseContentService.cs" />
     <Compile Include="Services\IServices\IBaseEntityService.cs" />
     <Compile Include="Services\IServices\IBaseService.cs" />
+    <Compile Include="Services\IServices\IBrowserNotificationFeedBackService.cs" />
+    <Compile Include="Services\IServices\IBrowserNotificationService.cs" />
     <Compile Include="Services\IServices\IBrowserSubscriberService.cs" />
     <Compile Include="Services\IServices\IBrowserSubscriptionService.cs" />
     <Compile Include="Services\IServices\IFileStorageService.cs" />

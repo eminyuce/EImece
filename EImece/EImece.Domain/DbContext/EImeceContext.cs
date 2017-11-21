@@ -44,5 +44,7 @@ namespace EImece.Domain.DbContext
         public IDbSet<MainPageImage> MainPageImages { get; set; }
         public IDbSet<BrowserSubscriber> BrowserSubscribers { get; set; }
         public IDbSet<BrowserSubscription> BrowserSubscriptions { get; set; }
+        public IDbSet<BrowserNotificationFeedBack> BrowserNotificationFeedBacks { get; set; }
+        public IDbSet<BrowserNotification> BrowserNotifications { get; set; }
     }
 }

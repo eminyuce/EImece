@@ -37,6 +37,11 @@ namespace EImece.Controllers
             set { _mainPageImageService = value; }
         }
 
+        [Inject]
+        public IBrowserNotificationService BrowserNotificationService { get; set; }
+        [Inject]
+        public IBrowserNotificationFeedBackService BrowserNotificationFeedBackService { get; set; }
+
         private IBrowserSubscriberService _browserSubscriberService { get; set; }
         [Inject]
         public IBrowserSubscriberService BrowserSubscriberService

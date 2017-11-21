@@ -129,6 +129,12 @@ namespace EImece.App_Start
 
             kernel.Bind<IBrowserSubscriptionService>().To<BrowserSubscriptionService>().InRequestScope();
             kernel.Bind<IBrowserSubscriberService>().To<BrowserSubscriberService>().InRequestScope();
+            kernel.Bind<IBrowserNotificationFeedBackRepository>().To<BrowserNotificationFeedBackRepository>().InRequestScope();
+            kernel.Bind<IBrowserNotificationFeedBackService>().To<BrowserNotificationFeedBackService>().InRequestScope();
+
+            kernel.Bind<IBrowserNotificationRepository>().To<BrowserNotificationRepository>().InRequestScope();
+            kernel.Bind<IBrowserNotificationService>().To<BrowserNotificationService>().InRequestScope();
+
             kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
             kernel.Bind<IListService>().To<ListService>().InRequestScope();
 

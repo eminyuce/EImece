@@ -34,5 +34,8 @@ namespace EImece.Domain.DbContext
         IDbSet<MenuFile> MenuFiles { get; set; }
         IDbSet<BrowserSubscriber> BrowserSubscribers { get; set; }
         IDbSet<BrowserSubscription> BrowserSubscriptions { get; set; }
+        IDbSet<BrowserNotificationFeedBack> BrowserNotificationFeedBacks { get; set; }
+        IDbSet<BrowserNotification> BrowserNotifications { get; set; }
+
     }
 }

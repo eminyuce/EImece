@@ -260,6 +260,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BrowserNotificationsController.cs" />
     <Compile Include="Areas\Admin\Controllers\BrowserSubscribersController.cs" />
     <Compile Include="Areas\Admin\Controllers\BrowserSubscriptionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
@@ -924,6 +925,9 @@
     <Content Include="Areas\Admin\Views\BrowserSubscriptions\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\BrowserSubscriptions\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\BrowserSubscriptions\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserNotifications\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserNotifications\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\BrowserNotifications\SaveOrEdit.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
