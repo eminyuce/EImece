@@ -47,9 +47,10 @@ namespace EImece
         //{
         //}
 
-        public ApplicationUserManager(IUserStore<ApplicationUser> store, IdentityFactoryOptions<ApplicationUserManager> options,
-             [Named("Email")] IIdentityMessageService emailService,
-                  [Named("Sms")] IIdentityMessageService smsService) : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, 
+            IdentityFactoryOptions<ApplicationUserManager> options,
+            [Named("Email")] IIdentityMessageService emailService,
+            [Named("Sms")] IIdentityMessageService smsService) : base(store)
         {
             var manager = this;
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)

@@ -118,6 +118,8 @@ namespace EImece.Domain.Helpers.EmailHelper
                     else
                         smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
                     smtpClient.Send(message);
+                    Logger.Info("Email Body" + message.Body);
+                    Logger.Trace("Email is sent to " + emailAccount.Username);
                 }
             }
             catch (Exception ex)
@@ -141,18 +143,21 @@ namespace EImece.Domain.Helpers.EmailHelper
         public void SendEmailContactingUs(ContactUsFormViewModel contact)
         {
             var emailAccount = GetEmailAccount();
-            var to = SettingService.GetSettingByKey("AdminEmail");
-            var toDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
-            SendEmail(emailAccount, "Contact Us", contact.Message, contact.Email, contact.Name, to, toDisplayName);
-            ;
+            var fromAddress = SettingService.GetSettingByKey("AdminEmail");
+            var fromAddressDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            var from = new MailAddress(fromAddress, fromAddressDisplayName);
+            var to = new MailAddress(contact.Email, contact.Name);
+            SendEmail(emailAccount, "Contact Us", contact.Message,from, to);
         }
 
         public void SendForgotPasswordEmail(string destination, string subject, string body)
         {
             var emailAccount = GetEmailAccount();
-            var to = SettingService.GetSettingByKey("AdminEmail");
-            var toDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
-            SendEmail(emailAccount, subject, body, destination, "", to, toDisplayName);
+            var fromAddress = SettingService.GetSettingByKey("AdminEmail");
+            var fromAddressDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            var from = new MailAddress(fromAddress, fromAddressDisplayName);
+            var to = new MailAddress(destination);
+            SendEmail(emailAccount, subject, body, from, to);
         }
     }
 }

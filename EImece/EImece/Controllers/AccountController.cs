@@ -220,7 +220,9 @@ namespace EImece.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                var callbackUrl = Url.Action("ResetPassword", "Account", 
+                    new { userId = user.Id, code = code }, 
+                    protocol: Request.Url.Scheme);
 
                 String emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
                 emailBody = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
@@ -246,8 +248,10 @@ namespace EImece.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string userId, string code)
         {
+            Logger.Info("UserId:"+ userId);
+            Logger.Info("Code:" + code);
             return code == null ? View("Error") : View();
         }
 
@@ -433,13 +437,13 @@ namespace EImece.Controllers
             }
         }
 
-        private ActionResult RedirectToLocal(string returnUrl)
+        private ActionResult RedirectToLocal(string returnUrl="")
         {
-            if (returnUrl.Contains("login"))
+            if (!String.IsNullOrEmpty(returnUrl) && returnUrl.Contains("login"))
             {
                 return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
             }
-            if (Url.IsLocalUrl(returnUrl))
+            if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }

@@ -3,9 +3,12 @@
 @using EImece.Domain
 
 
-
-@{
+   @if (Model != null)
+    {
     ViewBag.Title = "Error";
+ 
+
+
     var exception = Model.Exception;
     var errorCode = 0;
     if (exception is HttpException)
@@ -33,13 +36,12 @@
         body += string.Format("User: {0} \n", User.Identity.Name);
     }
     body = GeneralHelper.EncodeForEmailLink(body);
-    var subject = Settings.SiteName + "-" + errorCode;
+    var subject = errorCode;
     // subject = GeneralHelper.EncodeForEmailLink(subject);
     var link = String.Format("mailto:yuce@marinelink.com?subject={0}&body={1}", subject, body);
 
-}
 <img src="~/Content/compass.png" alt="404" style="float:right;" />
-@if (errorCode == 404)
+if (errorCode == 404)
 {
     <h1 class="error">Sorry, the page your requested not found.</h1>
 }
@@ -76,3 +78,4 @@ else
 
 
 
+}
