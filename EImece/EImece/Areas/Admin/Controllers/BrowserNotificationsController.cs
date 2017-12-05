@@ -124,22 +124,22 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(BrowserNotification);
         }
-        public ActionResult GetStats(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //public ActionResult GetStats(int id = 0)
+        //{
+        //    if (id == 0)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            BrowserNotification item = BrowserNotificationService.GetStats(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
+        //    BrowserNotification item = BrowserNotificationService.GetStats(id);
+        //    if (item == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
 
-            return View(item);
-        }
+        //    return View(item);
+        //}
 
 
         //

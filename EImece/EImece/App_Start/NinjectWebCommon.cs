@@ -27,6 +27,8 @@ namespace EImece.App_Start
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
     using System.Security.Principal;
+    using System.Reflection;
+    using System.Linq;
 
     public static class NinjectWebCommon 
     {
@@ -86,58 +88,36 @@ namespace EImece.App_Start
             m.InRequestScope();
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
+            var baseRepoTypes = Assembly.GetAssembly(typeof(IBaseRepository<>)).GetTypes().Where(t => t.Name.Contains("Repository")).ToList();
+            foreach (var type in baseRepoTypes)
+            {
+                var interfaceType = type.GetInterface("I" + type.Name);
+                if (interfaceType != null)
+                {
+                     kernel.Bind(interfaceType).To(type).InRequestScope();
+                }
+            }
+            var baseServiceTypes = Assembly.GetAssembly(typeof(IBaseService<>))
+                .GetTypes().Where(t => t.Name.Contains("Service")).ToList();
 
-            kernel.Bind<IBrowserSubscriptionRepository>().To<BrowserSubscriptionRepository>().InRequestScope();
-            kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
-            kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
-            kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
-            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
-            kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
-            kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
-            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
-            kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
-            kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
-            kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();
-            kernel.Bind<IStoryTagRepository>().To<StoryTagRepository>().InRequestScope();
-            kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();
-            kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
-            kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
-            kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
-            kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope();
-            kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope();
-            kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();
-            kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();
-            kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
-            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
-            kernel.Bind<IBrowserSubscriberRepository>().To<BrowserSubscriberRepository>().InRequestScope();
-            kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();
+            foreach (var type in baseServiceTypes)
+            {
+                var intefa = type.GetInterfaces();
+                var isClass = type.IsClass;
+                var IsAbstract = type.IsAbstract;
+                var co = intefa.Any(t => t.Name
+                .Equals(typeof(IBaseEntityService<>).Name,
+                StringComparison.InvariantCultureIgnoreCase));
+                if (isClass && !IsAbstract && co)
+                {
+                    var interfaceType = type.GetInterface("I" + type.Name);
+                    if (interfaceType != null)
+                    {
+                        kernel.Bind(interfaceType).To(type).InRequestScope();
+                    }
+                }
 
-            kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
-            kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
-            kernel.Bind<IStoryCategoryService>().To<StoryCategoryService>().InRequestScope();
-            kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();
-            kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();
-            kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
-            kernel.Bind<ISubscriberService>().To<SubscriberService>().InRequestScope();
-            kernel.Bind<ITagService>().To<TagService>().InRequestScope();
-            kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
-            kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
-            kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
-            kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
-
-            kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();
-
-            kernel.Bind<IBrowserSubscriptionService>().To<BrowserSubscriptionService>().InRequestScope();
-            kernel.Bind<IBrowserSubscriberService>().To<BrowserSubscriberService>().InRequestScope();
-            kernel.Bind<IBrowserNotificationFeedBackRepository>().To<BrowserNotificationFeedBackRepository>().InRequestScope();
-            kernel.Bind<IBrowserNotificationFeedBackService>().To<BrowserNotificationFeedBackService>().InRequestScope();
-
-            kernel.Bind<IBrowserNotificationRepository>().To<BrowserNotificationRepository>().InRequestScope();
-            kernel.Bind<IBrowserNotificationService>().To<BrowserNotificationService>().InRequestScope();
-
-            kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
-            kernel.Bind<IListService>().To<ListService>().InRequestScope();
-
+            }
       
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();

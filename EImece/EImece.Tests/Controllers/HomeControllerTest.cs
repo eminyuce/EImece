@@ -26,6 +26,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Globalization;
 using HtmlAgilityPack;
+using NLog;
+using GenericRepository;
+using System.Reflection;
+using EImece.Domain.Services.IServices;
 
 namespace EImece.Tests.Controllers
 {
@@ -35,10 +39,18 @@ namespace EImece.Tests.Controllers
         public int Index { get; set; }
         public string JobId { get; set; }
     }
+
     [TestClass]
     [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class HomeControllerTest
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        [TestMethod]
+        public void ReflectRepositoryBindings()
+        {
+            Console.WriteLine("Reflecting Repository Assemblies");
+            
+        }
 
         private String ConnectionString { get { return Settings.DbConnectionKey; } }
         private int CurrentLanguage
