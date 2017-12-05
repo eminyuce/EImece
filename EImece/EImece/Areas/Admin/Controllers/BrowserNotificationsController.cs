@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             Expression<Func<BrowserNotification, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
-            var result = BrowserNotificationService.SearchEntities(whereLambda, search, 1);
+            var result = BrowserNotificationService.SearchEntities(whereLambda, search, 0);
             return View(result);
         }
 
@@ -124,7 +124,22 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(BrowserNotification);
         }
+        public ActionResult GetStats(int id = 0)
+        {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
+            BrowserNotification item = BrowserNotificationService.GetStats(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            return View(item);
+        }
 
 
         //

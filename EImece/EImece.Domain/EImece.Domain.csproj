@@ -236,6 +236,7 @@
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\ImageUtilities.cs" />
     <Compile Include="Helpers\Infrastructure\HtmlRenderExtensions.cs" />
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Helpers\WebPushHelper.cs" />
     <Compile Include="Helpers\XmlEditorHelper.cs" />
+    <Compile Include="Models\AdminModels\BrowserNotificationStatistic.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
     <Compile Include="Models\AdminModels\SettingModel.cs" />
