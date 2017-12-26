@@ -88,37 +88,9 @@ namespace EImece.App_Start
             m.InRequestScope();
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
-            var baseRepoTypes = Assembly.GetAssembly(typeof(IBaseRepository<>)).GetTypes().Where(t => t.Name.Contains("Repository")).ToList();
-            foreach (var type in baseRepoTypes)
-            {
-                var interfaceType = type.GetInterface("I" + type.Name);
-                if (interfaceType != null)
-                {
-                     kernel.Bind(interfaceType).To(type).InRequestScope();
-                }
-            }
-            var baseServiceTypes = Assembly.GetAssembly(typeof(IBaseService<>))
-                .GetTypes().Where(t => t.Name.Contains("Service")).ToList();
 
-            foreach (var type in baseServiceTypes)
-            {
-                var intefa = type.GetInterfaces();
-                var isClass = type.IsClass;
-                var IsAbstract = type.IsAbstract;
-                var co = intefa.Any(t => t.Name
-                .Equals(typeof(IBaseEntityService<>).Name,
-                StringComparison.InvariantCultureIgnoreCase));
-                if (isClass && !IsAbstract && co)
-                {
-                    var interfaceType = type.GetInterface("I" + type.Name);
-                    if (interfaceType != null)
-                    {
-                        kernel.Bind(interfaceType).To(type).InRequestScope();
-                    }
-                }
-
-            }
-      
+            BindByReflection(kernel, typeof(IBaseEntityService<>), "Service");
+            BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
 
@@ -152,6 +124,21 @@ namespace EImece.App_Start
 
             kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
 
-        }        
+        }
+
+        private static void BindByReflection(IKernel kernel, Type typeOfInterface, string typeofText)
+        {
+            var baseServiceTypes = Assembly.GetAssembly(typeOfInterface)
+                .GetTypes().Where(t => t.Name.Contains(typeofText)).ToList();
+
+            foreach (var type in baseServiceTypes)
+            {
+                var interfaceType = type.GetInterface("I" + type.Name);
+                if (interfaceType != null)
+                {
+                    kernel.Bind(interfaceType).To(type).InRequestScope();
+                }
+            }
+        }
     }
 }

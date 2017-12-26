@@ -45,11 +45,34 @@ namespace EImece.Tests.Controllers
     public class HomeControllerTest
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static void BindByReflection( Type typeOfInterface, string typeofText)
+        {
+            var baseServiceTypes = Assembly.GetAssembly(typeOfInterface)
+                .GetTypes().Where(t => t.Name.Contains(typeofText)).ToList();
+
+            foreach (var type in baseServiceTypes)
+            {
+                var interfaceType = type.GetInterface("I" + type.Name);
+                if (interfaceType != null)
+                {
+                    Console.WriteLine("interfaceType:" + interfaceType.Name+"  Name: "+type.Name);
+                }
+            }
+        }
+
         [TestMethod]
         public void ReflectRepositoryBindings()
         {
             Console.WriteLine("Reflecting Repository Assemblies");
-            
+
+            var typeOfInterface = typeof(IBaseEntityService<>);
+            var typeofText = "Service";
+            BindByReflection( typeOfInterface, typeofText);
+            typeOfInterface = typeof(IBaseRepository<>);
+            typeofText = "Repository";
+            BindByReflection( typeOfInterface, typeofText);
+
+
         }
 
         private String ConnectionString { get { return Settings.DbConnectionKey; } }
