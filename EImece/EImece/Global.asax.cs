@@ -23,6 +23,9 @@ namespace EImece
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            MvcHandler.DisableMvcResponseHeader = true;
+  
         }
 
         public override string GetVaryByCustomString(HttpContext context, string arg)
