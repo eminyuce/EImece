@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,16 @@ namespace EImece.Tests.Helpers
             var actual = ImageUtilities.GetImageDimensions(url);
             Console.WriteLine(actual.Item1 + "  "+ actual.Item2);
         }
-        
+        [TestMethod]
+        public void GetPngDimensionsTes2t()
+        {
+            string url = "https://www.dropbox.com/s/29r2qyxe510om7i/ADA-BLANK.jpg?raw=1";
+            var bytesArr = DownloadHelper.GetImageFromUrl(url,new Dictionary<string, string>());
+            MemoryStream memstr = new MemoryStream(bytesArr);
+            Image img = Image.FromStream(memstr);
+            Console.WriteLine(img.Width + "  " + img.Height);
+        }
+
         [TestMethod]
         public void GetJpgDimensionsTest()
         {
