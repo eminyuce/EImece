@@ -12,6 +12,11 @@ namespace EImece.Areas.Amp.Controllers
 {
     public class ProductsController : BaseController
     {
+
+        public ActionResult Index()
+        {
+            return View();
+        }
         // GET: Amp/Products
         public ActionResult Detail(string id)
         {

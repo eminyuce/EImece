@@ -586,6 +586,7 @@
     <Content Include="Areas\Admin\Views\BrowserNotifications\Index.cshtml" />
     <Content Include="Areas\Admin\Views\BrowserNotifications\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\BrowserNotifications\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Amp\Views\Products\Index.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -682,6 +683,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />

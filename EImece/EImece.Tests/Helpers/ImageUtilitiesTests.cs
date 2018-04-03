@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,10 +43,45 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public void GetGifDimensionsTest()
         {
-            string url = "https://upload.wikimedia.org/wikipedia/commons/a/a0/Sunflower_as_gif_websafe.gif";
+            string url = "https://gdb.voanews.com/0FAABDC3-D51B-4F7E-B051-1CC4C81CAB21_cx0_cy6_cw0_w1023_r1_s.jpg";
             Uri uri = new Uri(url);
             var actual = ImageUtilities.GetWebDimensions(uri);
             Assert.AreEqual(new Size(250, 297), actual);
         }
+
+        [TestMethod]
+        public void IsActionExistsTest()
+        {
+            //var ttt = IsActionExists("Index", "Products");
+            //Console.WriteLine(ttt);
+            //ttt = IsActionExists("Detail", "Products");
+            //Console.WriteLine(ttt);
+
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var item in assemblies)
+            {
+                Console.WriteLine(item.FullName);
+            }
+
+        }
+        public bool IsActionExists(String action, String controller)
+        {
+
+            //var controllerFullName = string.Format("EImece.Areas.Amp.Controllers.{0}Controller", controller);
+            //var assembly = Assembly.GetAssembly(typeof("EImece"));
+            //var cont = assembly.GetType(controllerFullName);
+
+            //if (cont != null)
+            //{
+            //    if (cont.GetMethod(action) != null)
+            //    {
+            //        return true;
+            //    }
+            //}
+            return false;
+        }
+
     }
+
+  
 }

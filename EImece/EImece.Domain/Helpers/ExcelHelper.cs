@@ -726,7 +726,7 @@ namespace EImece.Domain.Helpers
             myCommand.Fill(ds);
             return ds;
         }
-        public static DataTable ExcelToDataTable(string pathName, string sheetName)
+        public static DataTable ExcelToDataTable(string pathName, string sheetName="")
         {
             DataTable tbContainer = new DataTable();
             String strConn = GetConnectionString(pathName);

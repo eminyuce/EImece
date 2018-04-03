@@ -30,6 +30,7 @@ using NLog;
 using GenericRepository;
 using System.Reflection;
 using EImece.Domain.Services.IServices;
+using System.Diagnostics;
 
 namespace EImece.Tests.Controllers
 {
@@ -123,10 +124,37 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void HtmlToFBHtmlTesting()
         {
-            String html = "";
-            var html2 = HtmlToFBHtml(html);
+            //String html = "";
+            //var html2 = HtmlToFBHtml(html);
 
-            Console.WriteLine(html2);
+            //Console.WriteLine(html2);
+
+            //Parallel.For(0, 1000, i =>
+            //{
+            //    Console.WriteLine("i = {0}, thread = {1}", i,
+            //    Thread.CurrentThread.ManagedThreadId);
+            //     Thread.Sleep(10);
+            //});
+
+
+            int size = 1000000;
+            double[] data = new double[size];
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            for (int i = 0; i < size; i++)
+            {
+                data[i] = Math.Pow(new Random().NextDouble(), 0.6);
+            }
+            Console.WriteLine("done " +    sw.Elapsed.TotalMilliseconds.ToString());
+            sw.Reset();
+
+
+            sw.Start();
+            Parallel.For(0, size, i => {
+                data[i] = Math.Pow(new Random().NextDouble(), 0.6);
+            });
+            sw.Stop();
+            Console.WriteLine("done " + sw.Elapsed.TotalMilliseconds.ToString());
 
         }
         [TestMethod]
@@ -157,7 +185,12 @@ namespace EImece.Tests.Controllers
                        {
                            int index = (int)i;
                            DataRow dataRow = newTable[index];
-                           var item = new TestClass() { CurrentTaskId = Task.CurrentId.Value, Index = index, JobId = dataRow["Test1"].ToString() };
+                           var item = new TestClass()
+                           {
+                               CurrentTaskId = Task.CurrentId.Value,
+                               Index = index,
+                               JobId = dataRow["Test1"].ToString()
+                           };
                            jobsList.Add(item);
                            Console.WriteLine(item.CurrentTaskId + " " + item.Index + " = " + item.JobId);
                        }
@@ -452,6 +485,15 @@ QUITE
                 Console.WriteLine(i.Trim().ToInt() + "   " + Math.Floor(Math.Log(i.Trim().ToInt() + 7)));
             }
 
+        }
+
+        [TestMethod]
+        public void SaveExcelFile()
+        {
+            var filePath = @"C:\Users\Yuce\Desktop\winFarms.xlsx";
+            var dt = ExcelHelper.ExcelToDataTable(filePath, ExcelHelper.GetWorkSheets(filePath).FirstOrDefault());
+            dt.TableName = "WindFarms";
+            ExcelHelper.SaveTable(dt, "data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");
         }
     }
 }
