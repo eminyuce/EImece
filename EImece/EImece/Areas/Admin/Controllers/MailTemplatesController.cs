@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Models.AdminModels;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,8 @@ namespace EImece.Areas.Admin.Controllers
                 item = MailTemplateService.GetSingle(id);
             }
 
-
+            RazorRenderResult result = RazorEngineHelper.GetRenderOutput(item.Body);
+            ViewBag.RazorRenderResult = result;
             return View(item);
         }
 
@@ -76,7 +78,8 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
-
+            RazorRenderResult result = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
+            ViewBag.RazorRenderResult = result;
             return View(MailTemplate);
         }
 

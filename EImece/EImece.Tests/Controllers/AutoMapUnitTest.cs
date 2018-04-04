@@ -3,17 +3,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
+using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
+using EImece.Domain;
+using System.Linq;
 namespace EImece.Tests.Controllers
 {
     [TestClass]
+    [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class AutoMapUnitTest
     {
         [TestInitialize]
         public void Setup()
         {
-            Mapper.Initialize(cfg => {
+            Mapper.Initialize(cfg =>
+            {
                 cfg.AddProfile<MapProfile>();
+                cfg.CreateMap<Product, ProductDTO>();
                 cfg.CreateMap<Team, TeamDTO>()
                 .ForMember(x => x.Name3, x => x.Ignore()).ReverseMap();
                 //cfg.CreateMap<ApplicantSkillVM, ApplicantSkill>().ForMember(x => x.Skill, x => x.Ignore()).ReverseMap();
@@ -23,21 +29,37 @@ namespace EImece.Tests.Controllers
                 cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
             });
         }
+        private String ConnectionString { get { return Settings.DbConnectionKey; } }
+        [TestMethod]
+        public void TestMethodProduct()
+        {
+            var context = new EImeceContext(ConnectionString);
+
+            var ProductList = context.Products
+             .Where(p => p.Name.StartsWith("ven"))
+             .ToList();
+
+            var ProductDTOList = ProductList.Select(p => Mapper.Map<ProductDTO>(p));
+            foreach (var item in ProductDTOList)
+            {
+                Console.WriteLine(item.Name);
+            }
+        }
 
         [TestMethod]
         public void TestMethod1()
         {
-          
+
             var team = new Team();
             team.Id = 1;
             team.Name = "EMIN YUCE";
             team.OrganizationDate = DateTime.Now.AddMonths(-2);
             var teamDto = Mapper.Map<TeamDTO>(team);
-           
+
             Console.WriteLine(teamDto);
 
 
-   
+
 
         }
         #region Methods
@@ -73,70 +95,70 @@ namespace EImece.Tests.Controllers
 
     /// Your source classes
     public class Applicant
-{
-    #region Properties
-
-    public List<ApplicantSkill> ApplicantSkills { get; set; }
-
-    public string Name { get; set; }
-
-    #endregion
-}
-
-public class ApplicantSkill
-{
-    #region Properties
-
-    public Skill Skill { get; set; }
-
-    public int SomeInt { get; set; }
-    public string SomeString { get; set; }
-
-    #endregion
-}
-
-// Your VM classes
-public class ApplicantVM
-{
-    #region Properties
-
-    public List<ApplicantSkillVM> ApplicantSkills { get; set; }
-
-    public string Description { get; set; }
-    public string Name { get; set; }
-
-    #endregion
-}
-
-
-public class ApplicantSkillVM
-{
-    #region Properties
-
-    public Skill Skill { get; set; }
-
-    public int SomeInt { get; set; }
-    public string SomeString { get; set; }
-
-    #endregion
-}
-
-public class Skill
-{
-    #region Properties
-
-    public int SomeInt { get; set; }
-
-    #endregion
-}
-
-public class MapProfile : Profile
     {
-      
+        #region Properties
+
+        public List<ApplicantSkill> ApplicantSkills { get; set; }
+
+        public string Name { get; set; }
+
+        #endregion
+    }
+
+    public class ApplicantSkill
+    {
+        #region Properties
+
+        public Skill Skill { get; set; }
+
+        public int SomeInt { get; set; }
+        public string SomeString { get; set; }
+
+        #endregion
+    }
+
+    // Your VM classes
+    public class ApplicantVM
+    {
+        #region Properties
+
+        public List<ApplicantSkillVM> ApplicantSkills { get; set; }
+
+        public string Description { get; set; }
+        public string Name { get; set; }
+
+        #endregion
+    }
+
+
+    public class ApplicantSkillVM
+    {
+        #region Properties
+
+        public Skill Skill { get; set; }
+
+        public int SomeInt { get; set; }
+        public string SomeString { get; set; }
+
+        #endregion
+    }
+
+    public class Skill
+    {
+        #region Properties
+
+        public int SomeInt { get; set; }
+
+        #endregion
+    }
+
+    public class MapProfile : Profile
+    {
+
     }
     //Mapping
 
-  
+
 
     //Logical
     public class TestClassPLogical
@@ -168,7 +190,7 @@ public class MapProfile : Profile
     {
         //defined prop
     }
-    
+
     public class Team
     {
         public int SomeInt { get; set; }
@@ -183,10 +205,42 @@ public class MapProfile : Profile
 
         public override string ToString()
         {
-            return Id + " " + Name + " " + OrganizationDate.ToLongDateString()+" "+ SomeInt + " " + SomeString;
+            return Id + " " + Name + " " + OrganizationDate.ToLongDateString() + " " + SomeInt + " " + SomeString;
         }
 
     }
+
+    public class ProductDTO
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public string EntityHash { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+
+        public bool IsActive { get; set; }
+        //public int Position { get; set; }
+        //public int Lang { get; set; }
+        //public string Description { get; set; }
+        //public Boolean ImageState { get; set; }
+        //public string MetaKeywords { get; set; }
+        //public int? MainImageId { get; set; }
+        //public int ImageHeight { get; set; }
+        //public int ImageWidth { get; set; }
+        //public string UpdateUserId { get; set; }
+        //public string AddUserId { get; set; }
+        //public string NameShort { get; set; }
+        //public int ProductCategoryId { get; set; }
+        //public Boolean MainPage { get; set; }
+        //public double Price { get; set; }
+        //public double Discount { get; set; }
+        //public string ProductCode { get; set; }
+        //public string VideoUrl { get; set; }
+        //public Boolean IsCampaign { get; set; }
+
+    }
+
     [DataContract]
     public class TeamDTO
     {

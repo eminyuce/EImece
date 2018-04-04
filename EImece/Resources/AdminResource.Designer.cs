@@ -430,6 +430,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MailBody.
+        /// </summary>
+        public static string MailBody {
+            get {
+                return ResourceManager.GetString("MailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Body is required.
+        /// </summary>
+        public static string MailBodyPropertyRequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("MailBodyPropertyRequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MailSubject.
+        /// </summary>
+        public static string MailSubject {
+            get {
+                return ResourceManager.GetString("MailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail subject should have proper error message.
+        /// </summary>
+        public static string MailSubjectPropertyErrorMessage {
+            get {
+                return ResourceManager.GetString("MailSubjectPropertyErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail Subject is required.
+        /// </summary>
+        public static string MailSubjectPropertyRequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("MailSubjectPropertyRequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MailTemplates.
         /// </summary>
         public static string MailTemplates {

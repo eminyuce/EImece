@@ -1,13 +1,14 @@
 ﻿@model EImece.Domain.Entities.MailTemplate
-
+@using EImece.Domain.Models.AdminModels
 @{
     ViewBag.Title = "Mail Template";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var RazorRenderResult = (RazorRenderResult) ViewBag.RazorRenderResult;
 }
 
 <h2>Mail Template</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editor-form" }))
 {
     @Html.AntiForgeryToken()
     
@@ -49,8 +50,30 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Body, new { @data_ckeditor_field = "mailtemplate", @class = "form-control" })
+                <div style="min-height:800px;" id="reditor"></div>
+                @Html.EditorFor(model => model.Body,
+             new { htmlAttributes = new { rows = "1",
+                 @style = "visibility:hidden;margin: 0px; width: 100px; height: 50px;" } })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+                <div class="bg-warning">
+                    @if (RazorRenderResult.RazorErrors.Any())
+                    {
+                        foreach (RazorError ce in RazorRenderResult.RazorErrors)
+                        {
+                            @Html.DisplayFor(model => ce)
+                        }
+                    }
+                    else
+                    {
+                        if (RazorRenderResult.GeneralError != null)
+                        {
+                            <b>
+                                ErrorMessage: @RazorRenderResult.GeneralError.Message
+                            </b>
+                        }
+                    }
+                </div>
+            
             </div>
         </div>
 
@@ -84,3 +107,37 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+
+@Html.Raw(RazorRenderResult.Result)
+
+ 
+   <script src="/Areas/Admin/Content/vs/loader.js"></script>
+ 
+    <script>
+        require.config({ paths: { 'vs': '/Areas/Admin/Content/vs' } });
+	    require(['vs/editor/editor.main'], function() {
+            window.meditor = monaco.editor.create(document.getElementById("reditor"), {
+                value: $("#Body").val(),
+                language: "razor",
+                automaticLayout: true,
+                wordWrap: 'wordWrapColumn',
+                wordWrapColumn: 300,
+                wrappingIndent: "indent",
+                scrollbar: {
+                    vertical: 'auto',
+                    horizontal: 'auto'
+                }
+            });
+        });
+        // monaco.editor.setTheme("vs"); // 'hc-black' | 'vs-dark'
+        // meditor.updateOptions({wordWrapColumn: 80, renderLineHighlight: "all"})
+        // https://github.com/Microsoft/monaco-editor/blob/2680c7133d3b833bcf4bba51166b82bd29ffc3b4/monaco.d.ts
+        // monaco-editor/monaco.d.ts
+        // export interface IEditorOptions {
+        $("#editor-form").submit(function (event) {
+            var code = meditor.getValue();
+            $('#Body').val(code);
+        });
+    </script>
+ 

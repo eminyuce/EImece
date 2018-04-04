@@ -399,4 +399,19 @@
   <data name="Users" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="MailBody" xml:space="preserve">
+    <value>MailBody</value>
+  </data>
+  <data name="MailBodyPropertyRequiredErrorMessage" xml:space="preserve">
+    <value>Body is required</value>
+  </data>
+  <data name="MailSubject" xml:space="preserve">
+    <value>MailSubject</value>
+  </data>
+  <data name="MailSubjectPropertyErrorMessage" xml:space="preserve">
+    <value>Mail subject should have proper error message</value>
+  </data>
+  <data name="MailSubjectPropertyRequiredErrorMessage" xml:space="preserve">
+    <value>Mail Subject is required</value>
+  </data>
 </root>

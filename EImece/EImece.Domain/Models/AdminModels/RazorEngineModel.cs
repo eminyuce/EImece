@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EImece.Domain.Models.AdminModels
+{
+    public class RazorEngineModel
+    {
+        public string Email { get; set; }
+    }
+}

@@ -102,8 +102,8 @@
       <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharkDev.MVC, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -166,6 +166,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TidyManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TidyManaged.1.0.0.0\lib\net20\TidyManaged.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebPush, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WebPush.1.0.9\lib\net40\WebPush.dll</HintPath>
       <Private>True</Private>
@@ -243,6 +247,11 @@
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
     <Compile Include="Helpers\Extensions\QuerySortingExtensions.cs" />
+    <Compile Include="Helpers\RazorCustomRssTemplate\AnonymousHelper.cs" />
+    <Compile Include="Helpers\RazorCustomRssTemplate\RssInEmail.cs" />
+    <Compile Include="Helpers\RazorCustomRssTemplate\SI.cs" />
+    <Compile Include="Helpers\RazorCustomRssTemplate\VBCustomTemplateBase.cs" />
+    <Compile Include="Helpers\RssHelper.cs" />
     <Compile Include="Helpers\SeoUrlHelper.cs" />
     <Compile Include="Helpers\SiteMap\ISitemapGenerator.cs" />
     <Compile Include="Helpers\SiteMap\ISitemapItem.cs" />
@@ -253,6 +262,7 @@
     <Compile Include="Helpers\SiteMap\SitemapItem.cs" />
     <Compile Include="Helpers\SiteMap\SitemapResult.cs" />
     <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
+    <Compile Include="Helpers\TidyManagedHtmlHelper.cs" />
     <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Helpers\WebPushHelper.cs" />
     <Compile Include="Helpers\XmlEditorHelper.cs" />
@@ -260,6 +270,9 @@
     <Compile Include="Models\AdminModels\BrowserNotificationStatistic.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
+    <Compile Include="Models\AdminModels\RazorEngineModel.cs" />
+    <Compile Include="Models\AdminModels\RazorError.cs" />
+    <Compile Include="Models\AdminModels\RazorRenderResult.cs" />
     <Compile Include="Models\AdminModels\SettingModel.cs" />
     <Compile Include="Models\Enums\BrowserType.cs" />
     <Compile Include="Models\Enums\EImeceImageType.cs" />

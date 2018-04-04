@@ -15,6 +15,10 @@ using EImece.Domain.Factories.IFactories;
 using System.Web.Mvc;
 using EImece.Domain.Models.FrontModels;
 using System.Dynamic;
+using EImece.Domain.Models.AdminModels;
+using RazorEngine.Configuration;
+using System.IO;
+using EImece.Domain.Helpers.RazorCustomRssTemplate;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -83,5 +87,52 @@ namespace EImece.Domain.Helpers.EmailHelper
                 WebSiteCompanyEmailAddress,
                 companyname);
         }
+
+        public RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
+        {
+            var result = new RazorRenderResult();
+
+            if (String.IsNullOrEmpty(razorTemplate))
+            {
+                return result;
+            }
+            try
+            {
+
+                result.Source = razorTemplate;
+                var configuration = new TemplateServiceConfiguration { Debug = true };
+                configuration.Namespaces.Add("EImece.Domain.Helpers");
+                configuration.Namespaces.Add("EImece.Domain.Helpers.RazorCustomRssTemplate");
+                configuration.Namespaces.Add("System.Xml");
+                configuration.Namespaces.Add("System.Web.Mvc");
+                configuration.Namespaces.Add("System.Web.Mvc.Html");
+                configuration.Namespaces.Add("System.Xml.Linq");
+                configuration.Namespaces.Add("System.Linq");
+                configuration.Namespaces.Add("System.ServiceModel.Syndication");
+                configuration.BaseTemplateType = typeof(VBCustomTemplateBase<>);
+
+                using (var service = RazorEngineService.Create(configuration))
+                using (var writer = new StringWriter())
+                {
+
+                    var runner = service.CompileRunner<RazorEngineModel>(result.Source);
+                    razorEngineModel = razorEngineModel == null ? new RazorEngineModel() : razorEngineModel;
+                    runner.Run(razorEngineModel, writer);
+                    result.Result = writer.ToString();
+
+                }
+            }
+            catch (TemplateCompilationException ex)
+            {
+                result.templateCompilationException = ex;
+            }
+            catch (Exception ex)
+            {
+                result.GeneralError = ex;
+            }
+            return result;
+        }
+
+      
     }
 }

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using EImece.Domain.Models.AdminModels;
+using Resources;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +12,19 @@ namespace EImece.Domain.Entities
 {
     public class MailTemplate : BaseEntity
     {
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailSubjectPropertyRequiredErrorMessage))]
+        [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailSubjectPropertyErrorMessage))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MailSubject))]
         public String Subject { get; set; }
+
+
         [AllowHtml]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailBodyPropertyRequiredErrorMessage))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MailBody))]
+        [DataType(DataType.MultilineText)]
         public String Body { get; set; }
+
+      
 
     }
 }

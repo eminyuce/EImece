@@ -127,8 +127,8 @@
       <HintPath>..\packages\NLog.4.4.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharkDev.MVC, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -319,6 +319,70 @@
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
     <Content Include="Areas\Admin\Content\main\excel.jpg" />
+    <Content Include="Areas\Admin\Content\vs\base\worker\workerMain.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\bat\bat.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\coffee\coffee.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\cpp\cpp.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\csharp\csharp.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\csp\csp.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\css\css.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\dockerfile\dockerfile.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\fsharp\fsharp.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\go\go.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\handlebars\handlebars.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\html\html.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\ini\ini.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\java\java.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\less\less.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\lua\lua.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\markdown\markdown.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\msdax\msdax.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\mysql\mysql.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\objective-c\objective-c.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\pgsql\pgsql.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\php\php.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\postiats\postiats.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\powershell\powershell.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\pug\pug.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\python\python.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\razor\razor.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\redis\redis.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\redshift\redshift.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\ruby\ruby.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\r\r.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\sb\sb.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\scss\scss.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\solidity\solidity.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\sql\sql.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\swift\swift.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\vb\vb.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\xml\xml.js" />
+    <Content Include="Areas\Admin\Content\vs\basic-languages\yaml\yaml.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\contrib\suggest\media\String_16x.svg" />
+    <Content Include="Areas\Admin\Content\vs\editor\contrib\suggest\media\String_inverse_16x.svg" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.css" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.de.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.es.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.fr.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.it.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.ja.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.ko.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.ru.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.zh-cn.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\editor.main.nls.zh-tw.js" />
+    <Content Include="Areas\Admin\Content\vs\editor\standalone\browser\quickOpen\symbol-sprite.svg" />
+    <Content Include="Areas\Admin\Content\vs\language\css\cssMode.js" />
+    <Content Include="Areas\Admin\Content\vs\language\css\cssWorker.js" />
+    <Content Include="Areas\Admin\Content\vs\language\html\htmlMode.js" />
+    <Content Include="Areas\Admin\Content\vs\language\html\htmlWorker.js" />
+    <Content Include="Areas\Admin\Content\vs\language\json\jsonMode.js" />
+    <Content Include="Areas\Admin\Content\vs\language\json\jsonWorker.js" />
+    <Content Include="Areas\Admin\Content\vs\language\typescript\lib\typescriptServices.js" />
+    <Content Include="Areas\Admin\Content\vs\language\typescript\tsMode.js" />
+    <Content Include="Areas\Admin\Content\vs\language\typescript\tsWorker.js" />
+    <Content Include="Areas\Admin\Content\vs\loader.js" />
     <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -587,6 +651,7 @@
     <Content Include="Areas\Admin\Views\BrowserNotifications\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\BrowserNotifications\SaveOrEdit.cshtml" />
     <Content Include="Areas\Amp\Views\Products\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

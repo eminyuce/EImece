@@ -93,6 +93,9 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
+
         protected int SelectedLanguage
         {
             get
