@@ -44,7 +44,9 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             RazorRenderResult result = RazorEngineHelper.GetRenderOutput(item.Body);
-            ViewBag.RazorRenderResult = result;
+            ViewBag.RazorRenderResultBody = result;
+            result = RazorEngineHelper.GetRenderOutput(item.Subject);
+            ViewBag.RazorRenderResultSubject = result;
             return View(item);
         }
 

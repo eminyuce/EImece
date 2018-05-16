@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "Mail Template";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var RazorRenderResult = (RazorRenderResult) ViewBag.RazorRenderResult;
+    var RazorRenderResultBody = (RazorRenderResult) ViewBag.RazorRenderResultBody;
+    var RazorRenderResultSubject = (RazorRenderResult)ViewBag.RazorRenderResultSubject;
 }
 
 <h2>Mail Template</h2>
@@ -55,25 +56,9 @@
              new { htmlAttributes = new { rows = "1",
                  @style = "visibility:hidden;margin: 0px; width: 100px; height: 50px;" } })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
-                <div class="bg-warning">
-                    @if (RazorRenderResult.RazorErrors.Any())
-                    {
-                        foreach (RazorError ce in RazorRenderResult.RazorErrors)
-                        {
-                            @Html.DisplayFor(model => ce)
-                        }
-                    }
-                    else
-                    {
-                        if (RazorRenderResult.GeneralError != null)
-                        {
-                            <b>
-                                ErrorMessage: @RazorRenderResult.GeneralError.Message
-                            </b>
-                        }
-                    }
-                </div>
-            
+            @WriteErrorMessage(RazorRenderResultSubject)
+            @WriteErrorMessage(RazorRenderResultBody)
+
             </div>
         </div>
 
@@ -108,10 +93,32 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+@Html.Raw(RazorRenderResultSubject.Result)
+@Html.Raw(RazorRenderResultBody.Result)
 
-@Html.Raw(RazorRenderResult.Result)
+ @helper WriteErrorMessage(RazorRenderResult renderResult)
+ {
+    <div class="bg-warning">
+        @if (renderResult.RazorErrors.Any())
+        {
+            foreach (RazorError ce in renderResult.RazorErrors)
+            {
+                @Html.DisplayFor(model => ce)
+            }
+        }
+        else
+        {
+            if (renderResult.GeneralError != null)
+            {
+                <b>
+                    ErrorMessage: @renderResult.GeneralError.Message
+                </b>
+            }
+        }
+    </div>
+    }
 
- 
+
    <script src="/Areas/Admin/Content/vs/loader.js"></script>
  
     <script>

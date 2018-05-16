@@ -522,6 +522,7 @@
     <Content Include="Areas\Admin\Views\Test\Index2.cshtml" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribers\Index.cshtml" />
