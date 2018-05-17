@@ -15,14 +15,27 @@ namespace EImece.MyConsole
 
         static void Main(string[] args)
         {
+            //ImportCSVFiles();
+            string path = @"C:\Users\Yuce\Desktop\Atomic E-mail";
+            var files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories);
+            foreach (var f in files)
+            {
+                var dt = ExcelHelper.ExcelToDataTable(f, ExcelHelper.GetWorkSheets(f).FirstOrDefault());
+                Console.WriteLine(dt.Rows.Count);
+            }
+            System.Console.ReadLine();
+        }
+
+        private static void ImportCSVFiles()
+        {
             string csvFilePath = @"C:\Users\Yuce\Desktop\GeoDatabase\GeoIP-134_20180515\GeoIPCity-134-Blocks.csv";
             string primaryKeyColumnName = "";
             String tableName = "geo18_IPCityBlocks";
 
             // ExcelHelper.ImportCVSFileToDatabase(connectionStringM, path, primaryKeyColumnName, tableName);
-          //  var csvData = File.ReadAllText(csvFilePath);
+            //  var csvData = File.ReadAllText(csvFilePath);
             System.Console.WriteLine("File is read.");
-           // var reader = new CSVReader(csvData);
+            // var reader = new CSVReader(csvData);
             System.Console.WriteLine("CSVReader read text");
             DataTable dt = DataTableHelper.ConvertCSVtoDataTable(csvFilePath);
             System.Console.WriteLine("DataTable is created.");
@@ -34,7 +47,7 @@ namespace EImece.MyConsole
             // var sqlCreate = DataTableHelper.GetCreateTableSql(dt);
             // Console.WriteLine(sqlCreate);
             // ExcelHelper.ExecuteSqlCommand(connectionString, sqlCreate);
-            System.Console.WriteLine("DataTable is begun saving."+dt.Rows.Count);
+            System.Console.WriteLine("DataTable is begun saving." + dt.Rows.Count);
             ExcelHelper.SaveTable(dt, connectionString);
             System.Console.WriteLine("DataTable is done.Press any key to exit.");
             System.Console.ReadLine();

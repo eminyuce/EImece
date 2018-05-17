@@ -58,12 +58,51 @@ namespace EImece.Tests.Helpers
             //ttt = IsActionExists("Detail", "Products");
             //Console.WriteLine(ttt);
 
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var item in assemblies)
+            //Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            //foreach (var item in assemblies)
+            //{
+            //    Console.WriteLine(item.FullName);
+            //}
+            string path = @"C:\Users\Yuce\Desktop\Atomic E-mail";
+            var files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories);
+            var p = new List<String>();
+            DataTable emails = new DataTable();
+            emails.Columns.Add("Email");
+            foreach (var f in files)
             {
-                Console.WriteLine(item.FullName);
-            }
+                try
+                {
+                    var dt = ExcelHelper.ExcelToDataTable(f, ExcelHelper.GetWorkSheets(f).FirstOrDefault());
+                    Console.WriteLine(dt.Rows.Count);
+                    p.Add(f);
 
+                    var dataRow = dt.AsEnumerable()
+                  .Select(x => new
+                  {
+                      Email = x.Field<string>("E-mail address")
+                  });
+                    foreach (var dr in dataRow)
+                    {
+                        emails.Rows.Add(dr.Email);
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+
+                  
+                }
+
+            }
+            string connectionString = @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY";
+            emails.TableName = "_temp_Emails_Kathleen201805";
+            ExcelHelper.SaveTable(emails, connectionString);
+          //  Console.WriteLine("emails:" + emails.Rows.Count);
+            foreach (var item in p)
+            {
+                Console.WriteLine(item);
+             File.Delete(item);
+            }
         }
      
 
