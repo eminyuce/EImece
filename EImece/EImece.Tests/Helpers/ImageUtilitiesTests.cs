@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -64,9 +65,13 @@ namespace EImece.Tests.Helpers
             }
 
         }
+     
+
+       
+
         public bool IsActionExists(String action, String controller)
         {
-
+     
             //var controllerFullName = string.Format("EImece.Areas.Amp.Controllers.{0}Controller", controller);
             //var assembly = Assembly.GetAssembly(typeof("EImece"));
             //var cont = assembly.GetType(controllerFullName);

@@ -758,14 +758,47 @@ namespace EImece.Domain.Helpers
 
             return strConn;
         }
-
+        public static void ExecuteSqlCommand(string connectionString, String sql)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand c = new SqlCommand(sql,connection))
+                {
+                    c.CommandType = CommandType.Text;
+                    c.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+        public static void ImportCVSFileToDatabase(String connectionString,
+            string csvFilePath, 
+            string primaryKeyColumnName="", string tableName="")
+        {
+            var csvData = File.ReadAllText(csvFilePath);
+            var reader = new CSVReader(csvData);
+            DataTable dt = reader.CreateDataTable(true);
+            if (!String.IsNullOrEmpty(primaryKeyColumnName))
+            {
+                dt.PrimaryKey = new DataColumn[] { dt.Columns[primaryKeyColumnName] };
+            }
+            dt.TableName = tableName;
+            var sqlCreate = DataTableHelper.GetCreateTableSql(dt);
+            Console.WriteLine(sqlCreate);
+            ExcelHelper.ExecuteSqlCommand(connectionString, sqlCreate);
+            ExcelHelper.SaveTable(dt, connectionString);
+        }
         public static void SaveTable(DataTable myDataTable, string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
+        
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
                 {
+                    bulkCopy.BulkCopyTimeout = 1000000;
+                    bulkCopy.BatchSize = myDataTable.Rows.Count + 1;
+                    
                     foreach (DataColumn c in myDataTable.Columns)
                         bulkCopy.ColumnMappings.Add(c.ColumnName, c.ColumnName);
 

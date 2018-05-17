@@ -223,6 +223,7 @@
     <Compile Include="Helpers\Base32Custom.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\CsvExport.cs" />
+    <Compile Include="Helpers\CSVReader.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
@@ -262,6 +263,8 @@
     <Compile Include="Helpers\SiteMap\SitemapItem.cs" />
     <Compile Include="Helpers\SiteMap\SitemapResult.cs" />
     <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
+    <Compile Include="Helpers\SqlTableCreator.cs" />
+    <Compile Include="Helpers\StringConverter.cs" />
     <Compile Include="Helpers\TidyManagedHtmlHelper.cs" />
     <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Helpers\WebPushHelper.cs" />
