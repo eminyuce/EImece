@@ -11,7 +11,7 @@ namespace EImece.MyConsole
 {
     class Program
     {
-        private static String connectionString = @"data source=SQL11\SQL2008R2;Integrated Security=SSPI;Initial Catalog=Miscellaneous";
+        private static String connectionString = @"";
 
         static void Main(string[] args)
         {
