@@ -58,18 +58,16 @@ namespace EImece.Domain.Models.FrontModels
         }
 
 
-
-
         public int PageLast
         {
             get
             {
-
-                return RecordsTotal / (RecordLast - RecordFirst + 1) + 1;
-
-
+                // return RecordsTotal / (RecordLast - RecordFirst + 1) + 1;
+                double doubleVal = (double)RecordsTotal / ((double)RecordLast - (double)RecordFirst + 1);
+                return (int)Math.Round(doubleVal, 0, MidpointRounding.AwayFromZero);
             }
         }
+
 
 
         private ItemType _ownerType;
