@@ -89,8 +89,7 @@ namespace EImece.Tests.Helpers
                 }
                 catch (Exception ex)
                 {
-
-                  
+                    Console.WriteLine(ex.Message);
                 }
 
             }
