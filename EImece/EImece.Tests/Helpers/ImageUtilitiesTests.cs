@@ -68,6 +68,7 @@ namespace EImece.Tests.Helpers
             var p = new List<String>();
             DataTable emails = new DataTable();
             emails.Columns.Add("Email");
+
             foreach (var f in files)
             {
                 try
