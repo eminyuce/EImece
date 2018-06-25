@@ -210,7 +210,6 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void GetBreadCrumb()
         {
-            String search = "";
             var db = new EImeceContext(ConnectionString);
             var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db));
             ProductCategoryService.MemoryCacheProvider = new MemoryCacheProvider();
@@ -224,7 +223,6 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void GetActiveBaseContents()
         {
-            String search = "";
             var db = new EImeceContext(ConnectionString);
             var MainPageImageService = new MainPageImageService(new MainPageImageRepository(db));
             var breadCrumb = MainPageImageService.GetActiveBaseContents(true, 1);
@@ -290,7 +288,6 @@ QUITE
         {
             try
             {
-                String search = "";
                 var db = new EImeceContext(ConnectionString);
                 foreach (var item in db.ProductCategories)
                 {
