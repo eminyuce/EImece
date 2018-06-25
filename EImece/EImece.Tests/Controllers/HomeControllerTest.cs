@@ -490,10 +490,10 @@ QUITE
         [TestMethod]
         public void SaveExcelFile()
         {
-            var filePath = @"C:\Users\Yuce\Desktop\winFarms.xlsx";
+            var filePath = @"C:\Users\Yuce\Desktop\MTN_ErrorPages.xls";
             var dt = ExcelHelper.ExcelToDataTable(filePath, ExcelHelper.GetWorkSheets(filePath).FirstOrDefault());
-            dt.TableName = "WindFarms";
-            ExcelHelper.SaveTable(dt, "data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");
+            dt.TableName = "_temp_MTN_error_pages";
+            ExcelHelper.SaveTable(dt, @"data source=sql11\sql2008r2;Integrated Security=SSPI;Initial Catalog=Miscellaneous");
         }
     }
 }

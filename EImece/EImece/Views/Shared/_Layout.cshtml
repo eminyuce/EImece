@@ -175,10 +175,15 @@
     <script src="~/Scripts/trizzy/scripts/puregrid.js"></script>
     <script src="~/Scripts/trizzy/scripts/stacktable.js"></script>
     <script src="~/Scripts/trizzy/scripts/custom.js"></script>
+    <script src="~/Scripts/cookie-consent.js"></script>
+
 
     @RenderSection("scripts", required: false)
 
-
+    <script src="~/Scripts/cookie-consent.js?v=1"></script>
+    <script>
+             CookieConsent();
+    </script>
 
 </body>
 </html>

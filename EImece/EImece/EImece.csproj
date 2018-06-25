@@ -669,6 +669,7 @@
     <Content Include="Scripts\codemirror\xml\test.js" />
     <Content Include="Scripts\codemirror\xml\xml.js" />
     <Content Include="Scripts\adminEimece.js" />
+    <Content Include="Scripts\cookie-consent.js" />
     <Content Include="Scripts\eimece.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
@@ -742,7 +743,9 @@
     <Content Include="Scripts\trizzy\scripts\waypoints.min.js" />
     <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
