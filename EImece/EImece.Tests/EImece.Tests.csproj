@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AutoMapUnitTest.cs" />
+    <Compile Include="Controllers\ParallelPocessingTest.cs" />
     <Compile Include="Helpers\ImageUtilitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

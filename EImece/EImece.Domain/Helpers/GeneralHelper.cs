@@ -104,6 +104,15 @@ namespace EImece.Domain.Helpers
             return myTI.ToTitleCase(text);
 
         }
+        public static String ConvertToDateTimeOffset(DateTime t)
+        {
+            TimeZoneInfo TargetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+
+            DateTimeOffset outputDate = new DateTimeOffset(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second,
+                                     TargetTimeZone.BaseUtcOffset);
+            string format = "yyyy-MM-ddTHH:mm:sszzz";
+            return outputDate.ToString(format, new CultureInfo("en-US"));
+        }
         public static string EncodeForEmailLink(string text)
         {
             text = text.Replace(" ", "%20");

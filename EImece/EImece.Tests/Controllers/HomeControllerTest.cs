@@ -31,6 +31,7 @@ using GenericRepository;
 using System.Reflection;
 using EImece.Domain.Services.IServices;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 
 namespace EImece.Tests.Controllers
 {
@@ -121,6 +122,7 @@ namespace EImece.Tests.Controllers
             }
             return doc.DocumentNode.OuterHtml;
         }
+  
         [TestMethod]
         public void HtmlToFBHtmlTesting()
         {
@@ -157,55 +159,7 @@ namespace EImece.Tests.Controllers
             Console.WriteLine("done " + sw.Elapsed.TotalMilliseconds.ToString());
 
         }
-        [TestMethod]
-        public void ParallelProccesing()
-        {
-            object locker = new object();
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Test1");
-            var r = new Random();
-            for (int i = 0; i < 1000; i++)
-            {
-
-                var p = dt.NewRow();
-                p["Test1"] = r.Next(0, 1000);
-                dt.Rows.Add(p);
-            }
-            List<DataRow> newTable = dt.AsEnumerable().ToList();
-            StringBuilder built = new StringBuilder();
-            int numberOfThread = 10;
-            var jobsList = new List<TestClass>();
-            Parallel.ForEach(
-               newTable,
-               new ParallelOptions { MaxDegreeOfParallelism = numberOfThread },
-                   (row, n, i) =>
-                   {
-                       
-                      // lock (locker)
-                       {
-                           int index = (int)i;
-                           DataRow dataRow = newTable[index];
-                           var item = new TestClass()
-                           {
-                               CurrentTaskId = Task.CurrentId.Value,
-                               Index = index,
-                               JobId = dataRow["Test1"].ToString()
-                           };
-                           jobsList.Add(item);
-                           Console.WriteLine(item.CurrentTaskId + " " + item.Index + " = " + item.JobId);
-                       }
-                       //  Thread.Sleep(sleepTime);
-                   }
-            );
-            Console.WriteLine("Test");
-            Thread.Sleep(10000);
-            foreach (var item in jobsList)
-            {
-                built.AppendLine(item.CurrentTaskId + " " + item.Index + " = " + item.JobId);
-            }
-            File.WriteAllText(@"D:\ProjectEY\Test\task.txt", built.ToString());
-            Console.ReadLine();
-        }
+      
 
         [TestMethod]
         public void GetBreadCrumb()
