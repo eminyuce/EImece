@@ -696,7 +696,7 @@ namespace EImece.Domain.Helpers
         public static List<String> GetWorkSheets(String filePath)
         {
             string strConn = GetConnectionString(filePath);
-            //string strConn = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=\"Excel 12.0 Xml;HDR=YES\";", filePath);
+           // string strConn = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=\"Excel 12.0 Xml;HDR=YES\";", filePath);
             OleDbConnection conn = new OleDbConnection(strConn);
             conn.Open();
             var schemaTable = conn.GetOleDbSchemaTable(

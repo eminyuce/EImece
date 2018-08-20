@@ -15,6 +15,17 @@ namespace EImece.MyConsole
 
         static void Main(string[] args)
         {
+
+            var filePath = @"D:\Projects\Temp\hubspot-contacts-everyone-2018-01-17\contacts.xlsx";
+            var dt = ExcelHelper.ExcelToDataTable(filePath, "contacts$");
+            dt.TableName = "Atcom_Contact_201801_5";
+            ExcelHelper.SaveTable(dt, @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");
+
+
+        }
+
+        private static void NewMethod()
+        {
             //ImportCSVFiles();
             string path = @"C:\Users\Yuce\Desktop\Atomic E-mail";
             var files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories);
