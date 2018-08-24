@@ -29,6 +29,10 @@ namespace EImece.App_Start
     using System.Security.Principal;
     using System.Reflection;
     using System.Linq;
+    using Quartz.Impl;
+    using Domain.Scheduler;
+    using Quartz;
+    using System.Threading.Tasks;
 
     public static class NinjectWebCommon 
     {
@@ -102,6 +106,22 @@ namespace EImece.App_Start
             kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
+
+            //kernel.Bind<StdSchedulerFactory>().ToSelf().InRequestScope();
+            kernel.Bind<QuartzService>().ToSelf().InRequestScope();
+
+            // setup Quartz scheduler that uses our NinjectJobFactory
+
+
+            kernel.Bind<Task<IScheduler>>().ToMethod(x =>
+            {
+                StdSchedulerFactory factory = new StdSchedulerFactory();
+                // get a scheduler
+                var sched =   factory.GetScheduler();
+                return sched;
+            });
+
+          
             kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
               .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
               {
@@ -123,6 +143,8 @@ namespace EImece.App_Start
             kernel.Bind<IHttpContextFactory>().To<HttpContextFactory>();
 
             kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
+
+
 
         }
 

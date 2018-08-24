@@ -24,7 +24,8 @@ namespace EImece.Domain.Entities
         [DataType(DataType.MultilineText)]
         public String Body { get; set; }
 
-      
+        public bool TrackWithBitly { get; set; }
+        public bool TrackWithMlnk { get; set; }
 
     }
 }

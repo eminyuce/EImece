@@ -1,6 +1,7 @@
 ﻿using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
+using EImece.Domain.Scheduler;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,8 @@ namespace EImece
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             MvcHandler.DisableMvcResponseHeader = true;
-  
+            var quartzService = DependencyResolver.Current.GetService<QuartzService>();
+            quartzService.StartSchedulerService();
         }
 
         public override string GetVaryByCustomString(HttpContext context, string arg)
