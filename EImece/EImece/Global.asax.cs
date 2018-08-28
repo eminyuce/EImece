@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Http;
+using System.Web.Routing;
 
 namespace EImece
 {
@@ -28,6 +30,8 @@ namespace EImece
             MvcHandler.DisableMvcResponseHeader = true;
             var quartzService = DependencyResolver.Current.GetService<QuartzService>();
             quartzService.StartSchedulerService();
+
+            GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
         public override string GetVaryByCustomString(HttpContext context, string arg)

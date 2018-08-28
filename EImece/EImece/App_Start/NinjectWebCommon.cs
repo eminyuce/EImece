@@ -33,6 +33,7 @@ namespace EImece.App_Start
     using Domain.Scheduler;
     using Quartz;
     using System.Threading.Tasks;
+    using Domain.ApiRepositories;
 
     public static class NinjectWebCommon 
     {
@@ -101,6 +102,8 @@ namespace EImece.App_Start
             kernel.Bind<MigrationRepository>().ToSelf().InRequestScope();
 
             kernel.Bind<XmlEditorHelper>().ToSelf().InRequestScope();
+
+            kernel.Bind<BitlyRepository>().ToSelf().InRequestScope();
 
             kernel.Bind<IdentityManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();

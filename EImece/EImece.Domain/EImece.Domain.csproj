@@ -233,6 +233,7 @@
     <Compile Include="Entities\ProductSpecification.cs" />
     <Compile Include="Entities\ProductTag.cs" />
     <Compile Include="Entities\Setting.cs" />
+    <Compile Include="Entities\ShortUrl.cs" />
     <Compile Include="Entities\Story.cs" />
     <Compile Include="Entities\StoryCategory.cs" />
     <Compile Include="Entities\StoryFile.cs" />
@@ -375,6 +376,7 @@
     <Compile Include="Repositories\IRepositories\IProductSpecificationRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductTagRepository.cs" />
     <Compile Include="Repositories\IRepositories\ISettingRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IShortUrlRepository.cs" />
     <Compile Include="Repositories\IRepositories\IStoryCategoryRepository.cs" />
     <Compile Include="Repositories\IRepositories\IStoryFileRepository.cs" />
     <Compile Include="Repositories\IRepositories\IStoryRepository.cs" />
@@ -396,6 +398,7 @@
     <Compile Include="Repositories\ProductSpecificationRepository.cs" />
     <Compile Include="Repositories\ProductTagRepository.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />
+    <Compile Include="Repositories\ShortUrlRepository.cs" />
     <Compile Include="Repositories\StoryCategoryRepository.cs" />
     <Compile Include="Repositories\StoryFileRepository.cs" />
     <Compile Include="Repositories\StoryRepository.cs" />

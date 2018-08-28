@@ -19,6 +19,7 @@ using EImece.Domain.Models.AdminModels;
 using RazorEngine.Configuration;
 using System.IO;
 using EImece.Domain.Helpers.RazorCustomRssTemplate;
+using EImece.Domain.ApiRepositories;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -35,6 +36,9 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         [Inject]
         public IEmailSender EmailSender { get; set; }
+
+        [Inject]
+        public BitlyRepository BitlyRepository { get; set; }
 
         public string ForgotPasswordEmailBody(string email,string callbackUrl)
         {
@@ -62,6 +66,9 @@ namespace EImece.Domain.Helpers.EmailHelper
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ContactUsAboutProductInfo");
+            string groupName = string.Format("{0} | {1} | {2}","ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+
             String companyname = SettingService.GetSettingByKey(Settings.CompanyName);
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
             var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");

@@ -9,12 +9,19 @@ using System.Linq;
 using System.Text;
 using EImece.Domain.Models.UrlShortenModels;
 using EImece.Domain.Helpers;
+using Ninject;
+using EImece.Domain.Repositories;
+using EImece.Domain.Entities;
+using EImece.Domain.Repositories.IRepositories;
 
 namespace EImece.Domain.ApiRepositories
 {
     public class BitlyRepository
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public IShortUrlRepository ShortUrlRepository { get; set; }
 
         public static string BitlyAPIAccessToken
         {
@@ -34,7 +41,7 @@ namespace EImece.Domain.ApiRepositories
             IRestResponse response = client.Execute(request);
             return response;
         }
-        public static string GetGroup()
+        public string GetGroup()
         {
             var client = new RestClient("https://api-ssl.bitly.com/v4/groups");
             var request = new RestRequest(Method.GET);
@@ -58,7 +65,7 @@ namespace EImece.Domain.ApiRepositories
         /// <param name="code"></param>
         /// <param name="redirectionUrl"></param>
         /// <returns></returns>
-        public static string GetOAuthAccessToken(string clientId, string clientSecret, string code, string redirectionUrl)
+        public string GetOAuthAccessToken(string clientId, string clientSecret, string code, string redirectionUrl)
         {
             clientId = !String.IsNullOrEmpty(clientId) ? clientId : "cfc00f82f891ea8f3b449571cd5161f49cabc1b1";
             clientSecret = "c8688e0ed49a5bf39cbecacee841c650e14fe734";
@@ -85,7 +92,7 @@ namespace EImece.Domain.ApiRepositories
         /// </summary>
         /// <param name="shortUrl"></param>
         /// <returns></returns>
-        public static BitlyShortUrl ShortenUrl(BitlyShortUrlRequest shortUrl)
+        public BitlyShortUrl ShortenUrl(BitlyShortUrlRequest shortUrl)
         {
             string json = JsonConvert.SerializeObject(shortUrl, Formatting.Indented);
 
@@ -115,7 +122,7 @@ namespace EImece.Domain.ApiRepositories
         /// </summary>
         /// <param name="bitLink">A Bitlink made of the domain and hash</param>
         /// <returns></returns>
-        public static BitlyUrlClickStats GetBitlyUrlStats(string bitLink)
+        public BitlyUrlClickStats GetBitlyUrlStats(string bitLink)
         {
             var requestUrl = String.Format("https://api-ssl.bitly.com/v4/bitlinks/{0}/clicks", bitLink);
             IRestResponse response = MakeGetRequest(requestUrl);
@@ -132,7 +139,7 @@ namespace EImece.Domain.ApiRepositories
         /// </summary>
         /// <param name="bitLink">A Bitlink made of the domain and hash</param>
         /// <returns></returns>
-        public static BitlyUrlClickSummaryStats GetBitlyUrlSummaryStats(string bitLink)
+        public BitlyUrlClickSummaryStats GetBitlyUrlSummaryStats(string bitLink)
         {
             var requestUrl = String.Format("https://api-ssl.bitly.com/v4/bitlinks/{0}/clicks/summary", bitLink);
             IRestResponse response = MakeGetRequest(requestUrl);
@@ -149,7 +156,7 @@ namespace EImece.Domain.ApiRepositories
 
         }
 
-        public static EmailShortenUrlsResult ConvertEmailLinkstoBitlyShortLinks(string emailContent)
+        public EmailShortenUrlsResult ConvertEmailLinkstoBitlyShortLinks(string emailContent)
         {
             var sGuid = Settings.GetConfigString("BitlyApi_Group_Guid", "Bi2cjVeYTlv");
             var emailContentResult = ConvertEmailLinkstoBitlyShortLinks(sGuid, emailContent);
@@ -163,7 +170,7 @@ namespace EImece.Domain.ApiRepositories
         /// <param name="shortUrlGroupGuid"></param>
         /// <param name="emailContent"></param>
         /// <returns></returns>
-        public static EmailShortenUrlsResult ConvertEmailLinkstoBitlyShortLinks(string shortUrlGroupGuid, string emailContent)
+        public EmailShortenUrlsResult ConvertEmailLinkstoBitlyShortLinks(string shortUrlGroupGuid, string emailContent)
         {
             var result = new EmailShortenUrlsResult();
             try
@@ -256,22 +263,37 @@ namespace EImece.Domain.ApiRepositories
                 return result;
             }
         }
-
-        public static TmlnkResponse GetTmlnkResponse(string url = "", string email = "", string group = "")
+        // TODO: Under development
+        public TmlnkResponse GetTmlnkResponse(string url = "", string email = "", string group = "")
         {
+            //string applicationUrl = Settings.GetConfigString("ApplicationFullUrl");
+            //string requestUrl = String.Format("{3}/api/shorten?url={0}&email={1}&group={2}", url.ToStr(), email.ToStr(), group.ToStr(), applicationUrl);
+            //IRestResponse response = MakeGetRequest(requestUrl);
+            //var statusCode = response.StatusCode;
+            //return JsonConvert.DeserializeObject<TmlnkResponse>(response.Content);
 
-            string requestUrl = String.Format("http://dev.t.mlnk.co/api/shorten?url={0}&email={1}&group={2}", url.ToStr(), email.ToStr(), group.ToStr());
-            IRestResponse response = MakeGetRequest(requestUrl);
-            var statusCode = response.StatusCode;
-            return JsonConvert.DeserializeObject<TmlnkResponse>(response.Content);
+
+           
+            var p = ShortUrlRepository.GenerateShortUrl(url,email,group);
+
+            var r = new TmlnkResponse();
+            r.EmailEid = "";
+            r.ErrorMessage = "";
+            r.GroupEid = "";
+            r.HasError = false;
+            r.ShortUrl = p.UrlKey;
+            r.UrlEid = p.UrlKey;
+
+            return r;
+
         }
-        public static EmailShortenUrlsResult ConvertEmailLinkstoShortLinks(string emailContent, string group = "")
+        public EmailShortenUrlsResult ConvertEmailLinkstoShortLinks(string emailContent, string group = "")
         {
             var result = ConvertEmailLinkstoShortLinks(emailContent, group, "//a[@href]");
             return result;
         }
 
-        public static List<String> GetHtmlLinks(string htmlContent, string nodeSelection = "//a[@href]")
+        public List<String> GetHtmlLinks(string htmlContent, string nodeSelection = "//a[@href]")
         {
             var result = new List<String>();
             try
@@ -319,7 +341,7 @@ namespace EImece.Domain.ApiRepositories
             return result;
         }
 
-        private static EmailShortenUrlsResult ConvertEmailLinkstoShortLinks(string emailContent, string group, string nodeSelection = "//a[@href]")
+        private EmailShortenUrlsResult ConvertEmailLinkstoShortLinks(string emailContent, string group, string nodeSelection = "//a[@href]")
         {
             var result = new EmailShortenUrlsResult();
             try
@@ -414,7 +436,7 @@ namespace EImece.Domain.ApiRepositories
                 return result;
             }
         }
-        public static string ConvertEmailBodyForTracking(bool trackWithBitly, bool trackWithMlnk, string body, string emailTemplateName, string groupName)
+        public string ConvertEmailBodyForTracking(bool trackWithBitly, bool trackWithMlnk, string body, string emailTemplateName, string groupName)
         {
             if (trackWithBitly)
             {
