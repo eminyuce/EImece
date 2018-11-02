@@ -18,7 +18,8 @@
     {
         <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
     }
-
+    @Html.EmbedCss("~/Content/css/global.min.css")
+    @Html.EmbedCustomCss("~/Content/css/partial-")
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {

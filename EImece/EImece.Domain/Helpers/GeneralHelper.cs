@@ -25,7 +25,11 @@ namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
-        
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
         public static void SetCultureCookie(HttpResponseBase request, String cultureCookieName, string cultureName = "")
         {
             if (String.IsNullOrEmpty(cultureName))

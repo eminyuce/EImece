@@ -42,10 +42,10 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if (Request.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
-            }
+            //if (Request.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+            //}
             // AuthenticationManager.User.Identity.GetUserId();
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -89,7 +89,8 @@ namespace EImece.Controllers
                     Logger.Debug("The account  " + model.Email + " RequiresVerification ");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
-
+                    ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                    return View(model);
                 default:
                     Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
                     ModelState.AddModelError("", "Invalid login attempt.");

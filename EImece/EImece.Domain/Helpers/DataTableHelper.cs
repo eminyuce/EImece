@@ -12,6 +12,31 @@ namespace EImece.Domain.Helpers
 {
     public static class DataTableHelper
     {
+
+        public static bool GetValueBoolean(DataRow row, string column, bool defaultValue)
+        {
+            return GetValue(row, column, defaultValue).ToBool();
+        }
+        public static string GetValueString(DataRow row, string column, string defaultValue)
+        {
+            return GetValue(row, column, defaultValue).ToStr();
+        }
+        public static int GetValueInt(DataRow row, string column, int defaultValue)
+        {
+            return GetValue(row, column, defaultValue).ToInt();
+        }
+        private static object GetValue(DataRow row, string column, object defaultValue)
+        {
+            try
+            {
+                return row.Table.Columns.Contains(column) ? row[column] : defaultValue;
+            }
+            catch (Exception ex)
+            {
+                return defaultValue;
+            }
+
+        }
         public static DataTable RemoveEmptyRows(DataTable dt)
         {
             DataTable filteredRows = dt.Rows.Cast<DataRow>()

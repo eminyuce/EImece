@@ -442,13 +442,11 @@ QUITE
         [Timeout(TestTimeout.Infinite)]
         public void SaveExcelFile()
         {
-            var filePath = @"D:\Projects\Temp\hubspot-contacts-everyone-2018-01-17\contacts.xlsx";
-            //var workSheetName = ExcelHelper.GetWorkSheets(filePath).FirstOrDefault();
+            var filePath = @"C:\Users\Yuce\Desktop\AtCoMedia.xls";
+            var workSheetName = ExcelHelper.GetWorkSheets(filePath).FirstOrDefault();
 
-            //Console.WriteLine(workSheetName);
-
-            var dt = ExcelHelper.ExcelToDataTable(filePath, "contacts$");
-            dt.TableName = "Atcom_Contact_201801_5";
+            var dt = ExcelHelper.ExcelToDataTable(filePath, workSheetName);
+            dt.TableName = "_AtCoMedia";
             ExcelHelper.SaveTable(dt, @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");
 
 

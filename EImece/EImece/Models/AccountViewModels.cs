@@ -61,7 +61,7 @@ namespace EImece.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        [Display(Name = "Security Question")]
+        [Display(Name = "Please Answer Security Question (Hint:Sum of two number)")]
         public string Captcha { get; set; }
     }
 
