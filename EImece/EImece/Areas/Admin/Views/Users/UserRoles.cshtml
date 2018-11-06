@@ -9,7 +9,7 @@
 <h2>Roles for user @Html.DisplayFor(model => model.UserName)</h2>
 <hr />
 
-@using (Html.BeginForm("UserRoles", "Users", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
+@using (Html.BeginForm("UserRoles", "Users", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

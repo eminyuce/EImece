@@ -7,7 +7,7 @@
 }
 else
 {
-    <div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters ="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
+    <div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
         <div class="grid-wrap">
             <table class="table table-striped grid-table">
                 @* Draw grid header *@
@@ -26,22 +26,25 @@ else
 {
     if (!Model.ItemsToDisplay.Any())
     {
-    <tr class="grid-empty-text">
-        <td colspan="@Model.Columns.Count()">
-            @Model.EmptyGridText
-        </td>
-    </tr>
+        <tr class="grid-empty-text">
+            <td colspan="@Model.Columns.Count()">
+                @Model.EmptyGridText
+            </td>
+        </tr>
     }
     else
     {
         foreach (object item in Model.ItemsToDisplay)
         {
-    <tr class="grid-row @Model.GetRowCssClasses(item)">
-        @foreach (IGridColumn column in Model.Columns)
-        {
-            @column.CellRenderer.Render(column, column.GetCell(item))
-        }
-    </tr>
+            <tr class="grid-row @Model.GetRowCssClasses(item)">
+                @foreach (IGridColumn column in Model.Columns)
+                {
+
+                    var c = column.GetCell(item);
+                    @column.CellRenderer.Render(column, c)
+
+                }
+            </tr>
         }
     }
 }
@@ -58,8 +61,8 @@ else
 {
     if (Model.EnablePaging && Model.Pager != null)
     {
-    <div class="grid-footer">
-        @Html.Partial(Model.Pager.TemplateName, Model.Pager)
-    </div>
+        <div class="grid-footer">
+            @Html.Partial(Model.Pager.TemplateName, Model.Pager)
+        </div>
     }
 }

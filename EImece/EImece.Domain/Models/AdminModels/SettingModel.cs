@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,12 @@ namespace EImece.Domain.Models.AdminModels
         //public string PrivacyPolicy { get; set; }
         //public string TermsAndConditions { get; set; }
         public bool IsProductPriceEnable { get; set; }
+        [Display(Name = "Site Languages")]
+        public string Languages { get; set; }
+        public string CompanyName { get; set; }
+        public string SiteIndexMetaTitle { get; set; }
+        public string SiteIndexMetaDescription { get; set; }
+        public string SiteIndexMetaKeywords { get; set; }
         //public string FooterDescription { get;  set; }
         //public string FooterEmailListDescription { get;  set; }
 

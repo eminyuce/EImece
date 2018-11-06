@@ -231,9 +231,15 @@
         <span>
             @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
         </span>
-        <span>
-            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
-        </span>
+        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId>0)
+        {
+            <span>
+    
+                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
+            </span>
+        }
+
+
         @if (UserRoleHelper.IsDeletedEnableRoles())
         {
             <span>
@@ -258,19 +264,22 @@
         <span>
             @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
         </span>
-        <span>
-            @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
-        </span>
-        @if (UserRoleHelper.IsDeletedEnableRoles())
+        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
         {
             <span>
-                @Html.ActionLink(" ", "Delete", controllerName,
-                           new { id = d.Id },
-                           new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
-
+                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
             </span>
         }
-    </div>
+            @if (UserRoleHelper.IsDeletedEnableRoles())
+            {
+                <span>
+                    @Html.ActionLink(" ", "Delete", controllerName,
+                               new { id = d.Id },
+                               new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
+
+                </span>
+            }
+        </div>
 
 }
 

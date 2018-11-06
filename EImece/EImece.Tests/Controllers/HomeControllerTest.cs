@@ -442,11 +442,10 @@ QUITE
         [Timeout(TestTimeout.Infinite)]
         public void SaveExcelFile()
         {
-            var filePath = @"C:\Users\Yuce\Desktop\AtCoMedia.xls";
+            var filePath = @"C:\Users\Yuce\Desktop\products.xls";
             var workSheetName = ExcelHelper.GetWorkSheets(filePath).FirstOrDefault();
-
             var dt = ExcelHelper.ExcelToDataTable(filePath, workSheetName);
-            dt.TableName = "_AtCoMedia";
+            dt.TableName = "dbo.thelud_products";
             ExcelHelper.SaveTable(dt, @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");
 
 

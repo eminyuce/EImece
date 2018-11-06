@@ -187,8 +187,8 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UserRoles(SelectUserRolesViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            // if (ModelState.IsValid)
+            // {
  
             
                 var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
@@ -201,8 +201,8 @@ namespace EImece.Areas.Admin.Controllers
                     }
                 }
                 return RedirectToAction("index");
-            }
-            return View();
+            // }
+            // return View();
         }
         [AllowAnonymous]
         public ActionResult ForgotPassword(String id="")

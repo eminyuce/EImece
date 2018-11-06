@@ -52,6 +52,7 @@ namespace EImece.Areas.Admin.Controllers
             var templates = TemplateService.GetActiveBaseEntities(true, CurrentLanguage);
 
             var resultListItem = new List<SelectListItem>();
+            resultListItem.Add(new SelectListItem() { Text = "Select Template", Value = "0" });
             foreach (var item in templates)
             {
                 resultListItem.Add(new SelectListItem() { Text = item.Name, Value = item.Id.ToStr() });
@@ -104,6 +105,10 @@ namespace EImece.Areas.Admin.Controllers
                         productCategory.ImageWidth,
                         EImeceImageType.ProductCategoryMainImage,
                         productCategory);
+                    if (!productCategory.TemplateId.HasValue)
+                    {
+                        productCategory.TemplateId = 0;
+                    }
                     productCategory.Lang = CurrentLanguage;
                     ProductCategoryService.SaveOrEditEntity(productCategory);
                     int contentId = productCategory.Id;

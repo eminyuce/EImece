@@ -41,13 +41,23 @@ namespace EImece.Domain.Helpers
         {
             foreach (var field in enumType.GetFields())
             {
-                DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-                if (attribute == null)
-                    continue;
-                if (attribute.Description == description)
+                try
                 {
-                    return (int)field.GetValue(null);
+                    DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                    if (attribute == null)
+                        continue;
+                    if (attribute.Description == description)
+                    {
+                        return (int)field.GetValue(null);
+                    }
                 }
+                catch (Exception)
+                {
+
+                  
+                }
+               
+
             }
             return 0;
         }
@@ -84,7 +94,7 @@ namespace EImece.Domain.Helpers
   
             if (String.IsNullOrEmpty(languagesText))
             {
-                values.RemoveAll(r => r != EImeceLanguage.Turkish);
+                values.RemoveAll(r => r != EImeceLanguage.English);
             }
             else
             {
@@ -120,15 +130,26 @@ namespace EImece.Domain.Helpers
         
         public static string GetDisplayValue(this Enum value)
         {
-            var fieldInfo = value.GetType().GetField(value.ToString());
+            try
+            {
+                var fieldInfo = value.GetType().GetField(value.ToString());
 
-            var descriptionAttributes = fieldInfo.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
+                var descriptionAttributes = fieldInfo.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
 
-            if (descriptionAttributes[0].ResourceType != null)
-                return lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
+                if (descriptionAttributes[0].ResourceType != null)
+                    return lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
 
-            if (descriptionAttributes == null) return string.Empty;
-            return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+                if (descriptionAttributes == null) return string.Empty;
+                return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+            }
+            catch (Exception ex)
+            {
+
+
+                return String.Empty;
+            
+            }
+          
         }
         public static IList<string> GetNames(Enum value)
         {

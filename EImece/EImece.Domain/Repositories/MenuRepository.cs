@@ -50,8 +50,8 @@ namespace EImece.Domain.Repositories
         public List<Node> CreateMenuTreeViewDataList(bool? isActive, int language)
         {
             List<Node> _lstTreeNodes = new List<Node>();
-            var menus = GetActiveBaseContents(isActive, language);
-            foreach (var p in menus)
+            List<Menu> menus = GetActiveBaseContents(isActive, language);
+            foreach (var p in menus.OrderBy(r => r.Position))
             {
                 _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
             }
@@ -91,6 +91,6 @@ namespace EImece.Domain.Repositories
 
         }
 
-       
+
     }
 }
