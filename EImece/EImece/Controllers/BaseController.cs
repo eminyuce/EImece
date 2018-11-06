@@ -37,34 +37,7 @@ namespace EImece.Controllers
             set { _mainPageImageService = value; }
         }
 
-        [Inject]
-        public IBrowserNotificationService BrowserNotificationService { get; set; }
-        [Inject]
-        public IBrowserNotificationFeedBackService BrowserNotificationFeedBackService { get; set; }
-
-        private IBrowserSubscriberService _browserSubscriberService { get; set; }
-        [Inject]
-        public IBrowserSubscriberService BrowserSubscriberService
-        {
-            get
-            {
-                _browserSubscriberService.IsCachingActive = ApplicationConfigs.IsCacheActive;
-                return _browserSubscriberService;
-            }
-            set { _browserSubscriberService = value; }
-        }
-
-        private IBrowserSubscriptionService _browserSubscriptionService { get; set; }
-        [Inject]
-        public IBrowserSubscriptionService BrowserSubscriptionService
-        {
-            get
-            {
-                _browserSubscriptionService.IsCachingActive = ApplicationConfigs.IsCacheActive;
-                return _browserSubscriptionService;
-            }
-            set { _browserSubscriptionService = value; }
-        }
+       
 
 
         private ISettingService _settingService { get; set; }
