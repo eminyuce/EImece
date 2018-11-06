@@ -31,7 +31,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _mainPageImageService.IsCachingActive = Settings.IsCacheActive;
+                _mainPageImageService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _mainPageImageService;
             }
             set { _mainPageImageService = value; }
@@ -43,7 +43,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _settingService.IsCachingActive = Settings.IsCacheActive;
+                _settingService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _settingService;
             }
             set { _settingService = value; }
@@ -56,7 +56,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _productService.IsCachingActive = Settings.IsCacheActive;
+                _productService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _productService;
             }
             set { _productService = value; }
@@ -69,7 +69,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _productCategoryService.IsCachingActive = Settings.IsCacheActive;
+                _productCategoryService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _productCategoryService;
             }
             set { _productCategoryService = value; }
@@ -80,7 +80,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _menuService.IsCachingActive = Settings.IsCacheActive;
+                _menuService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _menuService;
             }
             set { _menuService = value; }
@@ -92,7 +92,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _storyService.IsCachingActive = Settings.IsCacheActive;
+                _storyService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _storyService;
             }
             set { _storyService = value; }
@@ -103,7 +103,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _storyCategoryService.IsCachingActive = Settings.IsCacheActive;
+                _storyCategoryService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _storyCategoryService;
             }
             set { _storyCategoryService = value; }
@@ -115,7 +115,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _tagService.IsCachingActive = Settings.IsCacheActive;
+                _tagService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _tagService;
             }
             set { _tagService = value; }
@@ -127,7 +127,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _tagCategoryService.IsCachingActive = Settings.IsCacheActive;
+                _tagCategoryService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _tagCategoryService;
             }
             set { _tagCategoryService = value; }
@@ -139,7 +139,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _subsciberService.IsCachingActive = Settings.IsCacheActive;
+                _subsciberService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _subsciberService;
             }
             set { _subsciberService = value; }
@@ -150,7 +150,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _fileStorageService.IsCachingActive = Settings.IsCacheActive;
+                _fileStorageService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _fileStorageService;
             }
             set { _fileStorageService = value; }
@@ -162,7 +162,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _templateService.IsCachingActive = Settings.IsCacheActive;
+                _templateService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _templateService;
             }
             set { _templateService = value; }
@@ -175,7 +175,7 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _mailTemplateService.IsCachingActive = Settings.IsCacheActive;
+                _mailTemplateService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _mailTemplateService;
             }
             set { _mailTemplateService = value; }
@@ -191,8 +191,8 @@ namespace EImece.Areas.Amp.Controllers
         {
             get
             {
-                _filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
-                _filesHelper.IsCachingActive = Settings.IsCacheActive;
+                _filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
+                _filesHelper.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _filesHelper;
             }
             set
@@ -244,7 +244,7 @@ namespace EImece.Areas.Amp.Controllers
                 else
                 {
 
-                    return Settings.MainLanguage;
+                    return ApplicationConfigs.MainLanguage;
                 }
             }
         }

@@ -21,7 +21,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    [AuthorizeRoles(Settings.AdministratorRole, Settings.EditorRole)]
+    [AuthorizeRoles(ApplicationConfigs.AdministratorRole, ApplicationConfigs.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
         protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer"; 
@@ -82,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                _filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+                _filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
                 return _filesHelper;
             }
             set
@@ -162,7 +162,7 @@ namespace EImece.Areas.Admin.Controllers
                 else
                 {
 
-                    return Settings.MainLanguage;
+                    return ApplicationConfigs.MainLanguage;
                 }
             }
         }

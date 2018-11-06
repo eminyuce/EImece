@@ -16,7 +16,7 @@
     listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
 
     var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-    var companyNameSetting = SettingService.GetSettingByKey(Settings.CompanyName).ToStr();
+    var companyNameSetting = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName).ToStr();
 }
 <!DOCTYPE html>
 <html>

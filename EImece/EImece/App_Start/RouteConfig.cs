@@ -68,7 +68,7 @@ namespace EImece
             routes.MapRoute(
                    name: "ImageResizing",
                    url: "images/{imageSize}/{id}",
-                   defaults: new { controller = "images", action = Settings.ImageActionName, id = UrlParameter.Optional },
+                   defaults: new { controller = "images", action = ApplicationConfigs.ImageActionName, id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
 

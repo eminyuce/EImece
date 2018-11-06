@@ -20,11 +20,27 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Collections.Specialized;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
+        public static int FromBase64Int(string plainText)
+        {
+            return FromBase64String(plainText).ToInt();
+        }
+        public static string Base64Encode(int id)
+        {
+            return Base64Encode(id + "");
+        }
+        private static string FromBase64String(string plainText)
+        {
+            //var encodedStr = Base64UrlEncoder.Encode(StringToEncode);
+            //var decodedStr = Base64UrlEncoder.Decode(encodedStr);
+
+            return Encoding.UTF8.GetString(System.Convert.FromBase64String(plainText));
+        }
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
@@ -34,7 +50,7 @@ namespace EImece.Domain.Helpers
         {
             if (String.IsNullOrEmpty(cultureName))
             {
-                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)Settings.MainLanguage));
+                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)ApplicationConfigs.MainLanguage));
             }
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
@@ -84,7 +100,7 @@ namespace EImece.Domain.Helpers
             }
             if (String.IsNullOrEmpty(cultureName))
             {
-                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)Settings.MainLanguage));
+                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)ApplicationConfigs.MainLanguage));
             }
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);

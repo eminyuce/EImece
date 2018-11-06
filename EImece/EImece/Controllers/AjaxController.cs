@@ -90,7 +90,7 @@ namespace EImece.Controllers
             jsFileText = jsFileText.Replace("[ChromePublicKey]", chromePublicKey);
             jsFileText = jsFileText.Replace("[FirefoxPublickKey]", firefoxPublicKey);
             jsFileText = jsFileText.Replace("[SafariPublicKey]", safariPublicKey);
-            jsFileText = jsFileText.Replace("[ApplicationServerUrl]", Settings.Domain);
+            jsFileText = jsFileText.Replace("[ApplicationServerUrl]", ApplicationConfigs.Domain);
             jsFileText = jsFileText.Replace("[LocalSwVersion]", swVersion+"");
 
             return Content(jsFileText);

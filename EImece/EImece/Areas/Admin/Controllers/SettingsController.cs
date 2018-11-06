@@ -84,13 +84,13 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult AddWebSiteLogo()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.WebSiteLogo);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
         public ActionResult AddTermsAndConditions()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions, CurrentLanguage);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("TermsAndConditions", new { id });
         }
@@ -98,8 +98,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult TermsAndConditions(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = Settings.TermsAndConditions;
-            content.Name = Settings.TermsAndConditions;
+            content.SettingKey = ApplicationConfigs.TermsAndConditions;
+            content.Name = ApplicationConfigs.TermsAndConditions;
             content.Position = 1;
             content.IsActive = true;
             if (id == 0)
@@ -148,7 +148,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult AddPrivacyPolicy()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy, CurrentLanguage);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("PrivacyPolicy", new { id });
         }
@@ -156,8 +156,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult PrivacyPolicy(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = Settings.PrivacyPolicy;
-            content.Name = Settings.PrivacyPolicy;
+            content.SettingKey = ApplicationConfigs.PrivacyPolicy;
+            content.Name = ApplicationConfigs.PrivacyPolicy;
             content.Position = 1;
             content.IsActive = true;
             if (id == 0)
@@ -231,11 +231,11 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, webSiteLogo);
-            webSiteLogoSetting.Name = Settings.WebSiteLogo;
+            webSiteLogoSetting.Name = ApplicationConfigs.WebSiteLogo;
             webSiteLogoSetting.Description = "";
             webSiteLogoSetting.EntityHash = "";
             webSiteLogoSetting.SettingValue = result.Item1;
-            webSiteLogoSetting.SettingKey = Settings.WebSiteLogo;
+            webSiteLogoSetting.SettingKey = ApplicationConfigs.WebSiteLogo;
             webSiteLogoSetting.IsActive = true;
             webSiteLogoSetting.Position = 1;
             webSiteLogoSetting.Lang = CurrentLanguage;

@@ -15,5 +15,6 @@ namespace EImece.Domain.Services.IServices
         Setting GetSettingObjectByKey(string key, int language);
         SettingModel GetSettingModel();
         void SaveSettingModel(SettingModel settingModel);
+        List<Setting> GetAllActiveSettings();
     }
 }

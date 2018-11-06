@@ -14,7 +14,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Tags";
     var title = "Tags";
     var gridName = "TagGrid";
@@ -113,7 +113,7 @@ columns.Add(c => c.TagCategory.Name)
            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
             Sanitized(false)
            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                             o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+                                             o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
 
     columns.Add(o => o.UpdatedDate)
                .Titled(AdminResource.UpdatedDate)

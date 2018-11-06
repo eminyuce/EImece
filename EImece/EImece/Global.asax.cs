@@ -60,7 +60,7 @@ namespace EImece
         }
         private void Redirect301()
         {
-            var domain = Settings.Domain;
+            var domain = ApplicationConfigs.Domain;
 
 
             if (domain.StartsWith("www") && !Request.Url.Host.StartsWith("www") && !Request.Url.IsLoopback
@@ -71,7 +71,7 @@ namespace EImece
                 // builder.Host = "www." + Request.Url.Host;
                 builder.Host =  Request.Url.Host;
                 Response.StatusCode = 301;
-                builder.Scheme = Settings.HttpProtocol;
+                builder.Scheme = ApplicationConfigs.HttpProtocol;
                 Response.AddHeader("Location", builder.ToString());
                 Response.End();
             }
@@ -81,7 +81,7 @@ namespace EImece
 
             bool useCustomError = true;
 
-            String siteStatus = Settings.GetConfigString("SiteStatus", "dev");
+            String siteStatus = ApplicationConfigs.GetConfigString("SiteStatus", "dev");
 
             if (siteStatus.IndexOf("live", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {

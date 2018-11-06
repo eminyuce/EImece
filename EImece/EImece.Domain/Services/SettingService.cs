@@ -19,6 +19,18 @@ namespace EImece.Domain.Services
         {
             SettingRepository = repository;
         }
+        public List<Setting> GetAllActiveSettings()
+        {
+            var cacheKey = String.Format("Settings");
+            List<Setting> result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = SettingRepository.GetAllActiveSettings();
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
+            }
+            return result;
+        }
         private List<Setting> GetAllSettings()
         {
             var cacheKey = String.Format("Settings");
@@ -27,7 +39,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = SettingRepository.GetAllSettings();
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
             }
             return result;
         }

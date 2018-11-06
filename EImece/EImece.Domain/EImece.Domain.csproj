@@ -454,7 +454,7 @@
     <Compile Include="Services\TagCategoryService.cs" />
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\TemplateService.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="ApplicationConfigs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

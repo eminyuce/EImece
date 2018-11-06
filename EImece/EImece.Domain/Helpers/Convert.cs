@@ -32,7 +32,8 @@ namespace EImece.Domain.Helpers
             }
   
             var m = id.Split("-".ToCharArray()).Last();
-            return Base32Custom.DecodeRnd(m).ToInt();
+            //   return GeneralHelper.FromBase64Int(m);
+            return m.ToInt();
         }
         public static string ToAlphaNumericOnly(this string input)
         {

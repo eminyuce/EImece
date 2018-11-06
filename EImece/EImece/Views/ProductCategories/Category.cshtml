@@ -13,7 +13,7 @@
 
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
-    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
 }
 
 @Html.Partial("_ProductTitleBar", new ViewDataDictionary(ViewData){

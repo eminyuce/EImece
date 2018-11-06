@@ -29,7 +29,7 @@ namespace EImece.Tests.Controllers
                 cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
             });
         }
-        private String ConnectionString { get { return Settings.DbConnectionKey; } }
+        private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
         [TestMethod]
         public void TestMethodProduct()
         {

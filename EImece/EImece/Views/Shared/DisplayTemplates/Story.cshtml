@@ -8,7 +8,7 @@
 @{
     var story = Model;
     var categoryName = story.StoryCategory.Name;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
     var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);

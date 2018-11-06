@@ -12,7 +12,7 @@ using System.Web.Hosting;
 
 namespace EImece.Domain
 {
-    public class Settings
+    public class ApplicationConfigs
     {
 
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
@@ -248,7 +248,7 @@ namespace EImece.Domain
         }
         public static string StorageRoot
         {
-            get { return Path.Combine(HostingEnvironment.MapPath(Settings.ServerMapPath)); }
+            get { return Path.Combine(HostingEnvironment.MapPath(ApplicationConfigs.ServerMapPath)); }
         }
 
         public static bool IsCacheActive

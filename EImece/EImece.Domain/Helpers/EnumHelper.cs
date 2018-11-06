@@ -90,7 +90,7 @@ namespace EImece.Domain.Helpers
 
             var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
             var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-            var languagesText = SettingService.GetSettingByKey(Settings.Languages).ToStr();
+            var languagesText = SettingService.GetSettingByKey(ApplicationConfigs.Languages).ToStr();
   
             if (String.IsNullOrEmpty(languagesText))
             {

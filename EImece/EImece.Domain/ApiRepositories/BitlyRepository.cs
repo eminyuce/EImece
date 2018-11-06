@@ -27,7 +27,7 @@ namespace EImece.Domain.ApiRepositories
         {
             get
             {
-                string access_token = Settings.GetConfigString("BitlyAPI_Access_Token", "f5d605e9e5a9b5eaa92d26d432a104fa2b6eb9bb");
+                string access_token = ApplicationConfigs.GetConfigString("BitlyAPI_Access_Token", "f5d605e9e5a9b5eaa92d26d432a104fa2b6eb9bb");
                 return access_token;
             }
         }
@@ -158,7 +158,7 @@ namespace EImece.Domain.ApiRepositories
 
         public EmailShortenUrlsResult ConvertEmailLinkstoBitlyShortLinks(string emailContent)
         {
-            var sGuid = Settings.GetConfigString("BitlyApi_Group_Guid", "Bi2cjVeYTlv");
+            var sGuid = ApplicationConfigs.GetConfigString("BitlyApi_Group_Guid", "Bi2cjVeYTlv");
             var emailContentResult = ConvertEmailLinkstoBitlyShortLinks(sGuid, emailContent);
             return emailContentResult;
         }

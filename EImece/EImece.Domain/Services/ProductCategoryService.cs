@@ -38,7 +38,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.BuildTree(isActive, language);
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
             }
             return result;
         }
@@ -56,7 +56,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.GetProductCategory(categoryId);
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
 
             }
             return result;
@@ -141,7 +141,7 @@ namespace EImece.Domain.Services
 
                 AddParent(result, productCategoryTreeModel);
 
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
 
             }
             return result;
@@ -188,7 +188,7 @@ namespace EImece.Domain.Services
 
                 result.ProductCategoryTree = tree;
                 result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
 
             }
             return result;

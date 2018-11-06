@@ -47,8 +47,8 @@ namespace EImece
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
 
-            var microsoftAccountClientId = Settings.GetConfigString("MicrosoftAccount_ClientId");
-            var microsoftAccountClientSecret = Settings.GetConfigString("MicrosoftAccount_ClientSecret");
+            var microsoftAccountClientId = ApplicationConfigs.GetConfigString("MicrosoftAccount_ClientId");
+            var microsoftAccountClientSecret = ApplicationConfigs.GetConfigString("MicrosoftAccount_ClientSecret");
 
             // Uncomment the following lines to enable logging in with third party login providers
 
@@ -59,8 +59,8 @@ namespace EImece
                    clientSecret: microsoftAccountClientSecret);
             }
 
-            var twitterAccountConsumerKey = Settings.GetConfigString("TwitterAccount_ConsumerKey");
-            var twitterAccountConsumerSecret = Settings.GetConfigString("TwitterAccount_ConsumerSecret");
+            var twitterAccountConsumerKey = ApplicationConfigs.GetConfigString("TwitterAccount_ConsumerKey");
+            var twitterAccountConsumerSecret = ApplicationConfigs.GetConfigString("TwitterAccount_ConsumerSecret");
 
             if (!String.IsNullOrEmpty(twitterAccountConsumerKey) && !String.IsNullOrEmpty(twitterAccountConsumerSecret))
             {
@@ -69,8 +69,8 @@ namespace EImece
                        consumerSecret: twitterAccountConsumerSecret);
             }
 
-            var facebookAccountAppId = Settings.GetConfigString("FacebookAccount_AppId");
-            var facebookAccountAppSecret = Settings.GetConfigString("FacebookAccount_AppSecret");
+            var facebookAccountAppId = ApplicationConfigs.GetConfigString("FacebookAccount_AppId");
+            var facebookAccountAppSecret = ApplicationConfigs.GetConfigString("FacebookAccount_AppSecret");
 
 
             if (!String.IsNullOrEmpty(facebookAccountAppId) && !String.IsNullOrEmpty(facebookAccountAppSecret))
@@ -81,8 +81,8 @@ namespace EImece
             }
 
 
-            var googleAccountClientId = Settings.GetConfigString("GoogleAccount_ClientId");
-            var googleAccountClientSecret = Settings.GetConfigString("GoogleAccount_ClientSecret");
+            var googleAccountClientId = ApplicationConfigs.GetConfigString("GoogleAccount_ClientId");
+            var googleAccountClientSecret = ApplicationConfigs.GetConfigString("GoogleAccount_ClientSecret");
 
 
             if (!String.IsNullOrEmpty(googleAccountClientId) && !String.IsNullOrEmpty(googleAccountClientSecret))

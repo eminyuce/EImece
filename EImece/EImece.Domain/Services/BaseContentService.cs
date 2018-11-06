@@ -72,7 +72,7 @@ namespace EImece.Domain.Services
                 result = BaseContentRepository.GetActiveBaseContents(isActive, language);
                 if (result != null)
                 {
-                    MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
                 }
                 return new List<T>();
             }

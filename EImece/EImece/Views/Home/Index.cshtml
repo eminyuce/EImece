@@ -16,7 +16,7 @@
     var latestProducts = Model.LatestProducts;
     var latestStories = Model.LatestStories;
 
-    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
 }
 
 <!-- Slider

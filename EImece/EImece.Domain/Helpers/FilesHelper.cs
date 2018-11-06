@@ -652,7 +652,7 @@ namespace EImece.Domain.Helpers
                         result = new Tuple<byte[], String>(imageBytes, contentType);
                         b.Dispose();
                         resizeBitmap.Dispose();
-                        MemoryCacheProvider.Set(cacheKey, result, Settings.CacheShortSeconds);
+                        MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheShortSeconds);
                     }
                 }
             }
@@ -893,6 +893,7 @@ namespace EImece.Domain.Helpers
 
         public static bool IsImage(string ext)
         {
+            ext = ext.ToLower();
             return ext == ".gif" || ext == ".jpg" || ext == ".png" || ext == ".bmp" || ext == ".tiff" || ext == ".jpe" || ext == ".jpeg";
         }
         /// <summary>

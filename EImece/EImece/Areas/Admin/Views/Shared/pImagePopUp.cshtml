@@ -11,7 +11,7 @@
     var imageWidth = 300;
     var imageHeight = 0;
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
-    filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+    filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
     var imageSizes = filesHelper.GetThumbnailImageSize(fileStorage);
 }
 
@@ -27,11 +27,11 @@
             </div>
             <div class="modal-body">
                 <p>@String.Format("Original Width={0} Height={1}", imageSizes.Item3, imageSizes.Item4)
-                    <a href=@String.Format("../..{1}{0}",Model.FileName, Settings.UrlBase) target="_blank">Full Image</a>
+                    <a href=@String.Format("../..{1}{0}",Model.FileName, ApplicationConfigs.UrlBase) target="_blank">Full Image</a>
 
                 </p>
                 <p>@String.Format("Thumbs Width={0} Height={1}", imageSizes.Item1, imageSizes.Item2)
-                    <a href=@String.Format("../..{1}thumbs/thb{0}", Model.FileName, Settings.UrlBase) target="_blank">Thumps Image</a>
+                    <a href=@String.Format("../..{1}thumbs/thb{0}", Model.FileName, ApplicationConfigs.UrlBase) target="_blank">Thumps Image</a>
 
                 </p>
                 <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorage.Id, width=imageWidth, height= imageHeight })" />

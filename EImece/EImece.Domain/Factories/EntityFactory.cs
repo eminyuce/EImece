@@ -20,7 +20,7 @@ namespace EImece.Domain.Factories
         {
             T item = new T();
             item.IsActive = true;
-            item.Lang = Settings.MainLanguage;
+            item.Lang = ApplicationConfigs.MainLanguage;
             item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
             item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
             return item;

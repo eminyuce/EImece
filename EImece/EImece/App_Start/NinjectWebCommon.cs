@@ -89,7 +89,7 @@ namespace EImece.App_Start
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
-            m.WithConstructorArgument("nameOrConnectionString", Settings.DbConnectionKey);
+            m.WithConstructorArgument("nameOrConnectionString", ApplicationConfigs.DbConnectionKey);
             m.InRequestScope();
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();

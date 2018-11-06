@@ -24,9 +24,9 @@ namespace EImece.Controllers
             //content += "User-agent: *" + Environment.NewLine;
 
 
-            String siteStatus = Settings.GetConfigString("SiteStatus", "dev");
+            String siteStatus = ApplicationConfigs.GetConfigString("SiteStatus", "dev");
 
-            var builder = new UriBuilder(Settings.HttpProtocol, Request.Url.Host);
+            var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, Request.Url.Host);
             var fLink = String.Format("{1}{0}", "/sitemap.xml", builder.Uri.ToString().TrimEnd('/'));
             content += "Sitemap: " + fLink + Environment.NewLine;
 

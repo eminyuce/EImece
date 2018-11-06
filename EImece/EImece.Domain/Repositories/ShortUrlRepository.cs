@@ -27,7 +27,7 @@ namespace EImece.Domain.Repositories
         {
             get
             {
-                return Settings.GetConfigInt("ShortUrlKeyLength", 5);
+                return ApplicationConfigs.GetConfigInt("ShortUrlKeyLength", 5);
             }
         }
 
@@ -51,7 +51,7 @@ namespace EImece.Domain.Repositories
             item.CreatedDate = DateTime.Now;
             item.UrlKey = newKey;
             item.IsActive = false;
-            item.Lang = Settings.MainLanguage;
+            item.Lang = ApplicationConfigs.MainLanguage;
             item.Name = "";
             item.Position = 0;
             item.RequestCount = 0;

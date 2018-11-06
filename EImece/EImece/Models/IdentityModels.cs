@@ -30,7 +30,7 @@ namespace EImece.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base(Settings.DbConnectionKey, throwIfV1Schema: false)
+            : base(ApplicationConfigs.DbConnectionKey, throwIfV1Schema: false)
         {
         }
 

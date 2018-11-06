@@ -14,7 +14,7 @@
 
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "ProductCategories";
     var title = "ProductCategories";
     var gridName = "ProductCategoriesGrid";
@@ -130,7 +130,7 @@
                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                    Sanitized(false)
                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive));
+                                                    o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
 
            columns.Add(o => o.ImageState)
                       .Titled(AdminResource.ImageState)
@@ -138,7 +138,7 @@
                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                    Sanitized(false)
                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState));
+                                                    o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState));
 
 
            columns.Add(o => o.MainPage)
@@ -147,7 +147,7 @@
                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                   Sanitized(false)
                  .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
-                                                   o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage));
+                                                   o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage));
 
 
 

@@ -120,10 +120,10 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new StoryIndexViewModel();
-                int pageSize = Settings.RecordPerPage;
+                int pageSize = ApplicationConfigs.RecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
                 result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
 
             }
             return result;
@@ -154,7 +154,7 @@ namespace EImece.Domain.Services
             StoryCategoryViewModel result = null;
           
                 result = new StoryCategoryViewModel();
-                int pageSize = Settings.RecordPerPage;
+                int pageSize = ApplicationConfigs.RecordPerPage;
 
                 result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
             int lang = result.StoryCategory.Lang;
@@ -177,7 +177,7 @@ namespace EImece.Domain.Services
             result.Tag = TagService.GetSingle(tagId);
             result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, lang);
             result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
-            result.CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            result.CompanyName = SettingService.GetSettingObjectByKey(ApplicationConfigs.CompanyName);
             return result;
         }
 
@@ -186,9 +186,9 @@ namespace EImece.Domain.Services
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
             
-            var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
-            String title = SettingService.GetSettingByKey(Settings.CompanyName);
+            String title = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
             var feed = new SyndicationFeed(title, "", new Uri(url))
@@ -208,9 +208,9 @@ namespace EImece.Domain.Services
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
 
-            var builder = new UriBuilder(Settings.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
-            String title = SettingService.GetSettingByKey(Settings.CompanyName);
+            String title = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
             var feed = new SyndicationFeed(title, "", new Uri(url))
@@ -225,7 +225,7 @@ namespace EImece.Domain.Services
             feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
 
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss",null,Settings.HttpProtocol);
+            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss",null,ApplicationConfigs.HttpProtocol);
 
             var formatter = new Rss20FeedFormatter(feed);
             formatter.SerializeExtensionsAsAtom = false;

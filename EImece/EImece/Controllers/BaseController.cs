@@ -31,7 +31,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _mainPageImageService.IsCachingActive = Settings.IsCacheActive;
+                _mainPageImageService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _mainPageImageService;
             }
             set { _mainPageImageService = value; }
@@ -48,7 +48,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _browserSubscriberService.IsCachingActive = Settings.IsCacheActive;
+                _browserSubscriberService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _browserSubscriberService;
             }
             set { _browserSubscriberService = value; }
@@ -60,7 +60,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _browserSubscriptionService.IsCachingActive = Settings.IsCacheActive;
+                _browserSubscriptionService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _browserSubscriptionService;
             }
             set { _browserSubscriptionService = value; }
@@ -73,7 +73,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _settingService.IsCachingActive = Settings.IsCacheActive;
+                _settingService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _settingService;
             }
             set { _settingService = value; }
@@ -86,7 +86,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _productService.IsCachingActive = Settings.IsCacheActive;
+                _productService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _productService;
             }
             set { _productService = value; }
@@ -99,7 +99,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _productCategoryService.IsCachingActive = Settings.IsCacheActive;
+                _productCategoryService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _productCategoryService;
             }
             set { _productCategoryService = value; }
@@ -110,7 +110,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _menuService.IsCachingActive = Settings.IsCacheActive;
+                _menuService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _menuService;
             }
             set { _menuService = value; }
@@ -122,7 +122,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _storyService.IsCachingActive = Settings.IsCacheActive;
+                _storyService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _storyService;
             }
             set { _storyService = value; }
@@ -133,7 +133,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _storyCategoryService.IsCachingActive = Settings.IsCacheActive;
+                _storyCategoryService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _storyCategoryService;
             }
             set { _storyCategoryService = value; }
@@ -145,7 +145,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _tagService.IsCachingActive = Settings.IsCacheActive;
+                _tagService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _tagService;
             }
             set { _tagService = value; }
@@ -157,7 +157,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _tagCategoryService.IsCachingActive = Settings.IsCacheActive;
+                _tagCategoryService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _tagCategoryService;
             }
             set { _tagCategoryService = value; }
@@ -169,7 +169,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _subsciberService.IsCachingActive = Settings.IsCacheActive;
+                _subsciberService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _subsciberService;
             }
             set { _subsciberService = value; }
@@ -180,7 +180,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _fileStorageService.IsCachingActive = Settings.IsCacheActive;
+                _fileStorageService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _fileStorageService;
             }
             set { _fileStorageService = value; }
@@ -192,7 +192,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _templateService.IsCachingActive = Settings.IsCacheActive;
+                _templateService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _templateService;
             }
             set { _templateService = value; }
@@ -205,7 +205,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _mailTemplateService.IsCachingActive = Settings.IsCacheActive;
+                _mailTemplateService.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _mailTemplateService;
             }
             set { _mailTemplateService = value; }
@@ -221,8 +221,8 @@ namespace EImece.Controllers
         {
             get
             {
-                _filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
-                _filesHelper.IsCachingActive = Settings.IsCacheActive;
+                _filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
+                _filesHelper.IsCachingActive = ApplicationConfigs.IsCacheActive;
                 return _filesHelper;
             }
             set
@@ -274,7 +274,7 @@ namespace EImece.Controllers
                 else
                 {
 
-                    return Settings.MainLanguage;
+                    return ApplicationConfigs.MainLanguage;
                 }
             }
         }

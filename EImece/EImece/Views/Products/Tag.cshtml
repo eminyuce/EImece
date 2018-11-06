@@ -13,7 +13,7 @@
     ViewBag.Description = String.Join(",", productTags.Select(r => r.Product.Name)).ToStr(150);
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
 }
 
  

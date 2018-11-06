@@ -52,7 +52,7 @@ namespace EImece.Controllers
                                 Url.Action("detail",
                                 controller,
                                 new { id = c.GetSeoUrl() },
-                                Settings.HttpProtocol),
+                                ApplicationConfigs.HttpProtocol),
                                 lastModified,
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);
@@ -69,7 +69,7 @@ namespace EImece.Controllers
                                  Url.Action(action,
                                  controller,
                                  new { id = mid },
-                                 Settings.HttpProtocol),
+                                 ApplicationConfigs.HttpProtocol),
                                  lastModified,
                                  changeFrequency: SitemapChangeFrequency.Daily,
                                  priority: 1.0);
@@ -84,7 +84,7 @@ namespace EImece.Controllers
                                 Url.Action(action,
                                 controller,
                                 null,
-                                Settings.HttpProtocol),
+                                ApplicationConfigs.HttpProtocol),
                                 lastModified,
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);
@@ -118,7 +118,7 @@ namespace EImece.Controllers
 
                     DateTime? lastModified = productCategory.UpdatedDate;
                     SitemapItem sm = new SitemapItem(productCategory.GetDetailPageUrl("Category", "ProductCategories", "",
-                             Settings.HttpProtocol),
+                             ApplicationConfigs.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -147,7 +147,7 @@ namespace EImece.Controllers
 
                     DateTime? lastModified = product.UpdatedDate;
                     SitemapItem sm = new SitemapItem(product.GetDetailPageUrl("Detail", "Products", productCategoryName,
-                             Settings.HttpProtocol),
+                             ApplicationConfigs.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -169,7 +169,7 @@ namespace EImece.Controllers
 
                     DateTime? lastModified = storyCategory.UpdatedDate;
                     SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
-                             Settings.HttpProtocol),
+                             ApplicationConfigs.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -196,7 +196,7 @@ namespace EImece.Controllers
 
                     DateTime? lastModified = story.UpdatedDate;
                     SitemapItem sm = new SitemapItem(story.GetDetailPageUrl("Detail", "Stories", storyCategoryName,
-                             Settings.HttpProtocol),
+                             ApplicationConfigs.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -217,7 +217,7 @@ namespace EImece.Controllers
                 {
                     DateTime? lastModified = item.UpdatedDate;
                     SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
-                             Settings.HttpProtocol),
+                             ApplicationConfigs.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -225,7 +225,7 @@ namespace EImece.Controllers
                     sitemapItems.Add(sm);
 
                     sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
-                      Settings.HttpProtocol),
+                      ApplicationConfigs.HttpProtocol),
                             lastModified,
                             SitemapChangeFrequency.Daily,
                             priority: 1.0);

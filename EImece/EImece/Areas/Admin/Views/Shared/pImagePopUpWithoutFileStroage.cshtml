@@ -11,7 +11,7 @@
     var imageWidth = 300;
     var imageHeight = 0 ;
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
-    filesHelper.Init(Settings.DeleteURL, Settings.DeleteType, Settings.StorageRoot, Settings.UrlBase, Settings.TempPath, Settings.ServerMapPath);
+    filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
     var imageSizes = filesHelper.GetThumbnailImageSize(fileStorageId);
 }
 

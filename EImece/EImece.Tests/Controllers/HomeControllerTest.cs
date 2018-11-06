@@ -77,12 +77,12 @@ namespace EImece.Tests.Controllers
 
         }
 
-        private String ConnectionString { get { return Settings.DbConnectionKey; } }
+        private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
         private int CurrentLanguage
         {
             get
             {
-                return Settings.MainLanguage;
+                return ApplicationConfigs.MainLanguage;
             }
         }
 

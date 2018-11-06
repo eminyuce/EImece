@@ -93,7 +93,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Settings.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
             return View(content);
         }
 
@@ -158,7 +158,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
             }
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Settings.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
             return View(product);
         }
 

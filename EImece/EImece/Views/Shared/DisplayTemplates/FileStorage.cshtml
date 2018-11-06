@@ -5,7 +5,7 @@
 @using Resources;
 @{
     EImece.Domain.Entities.FileStorage fileStorage = Model;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
     var tags = fileStorage.FileStorageTags.Select(r1 => r1.Tag).Distinct().ToList();
     string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
     string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));

@@ -34,7 +34,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = baseEntityRepository.GetActiveBaseEntities(isActive, language);
-                MemoryCacheProvider.Set(cacheKey, result, Settings.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
             }
             return result;
 

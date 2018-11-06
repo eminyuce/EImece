@@ -8,7 +8,7 @@
 
 @{
     var product = Model.Product;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
     ViewBag.Title = product.GetSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
     ViewBag.Keywords = product.GetSeoKeywords();

@@ -31,9 +31,9 @@ namespace EImece.Controllers
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey(Settings.SiteIndexMetaTitle).ToStr();
-            ViewBag.Description = SettingService.GetSettingByKey(Settings.SiteIndexMetaDescription).ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey(Settings.SiteIndexMetaKeywords).ToStr();
+            ViewBag.Title = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaTitle).ToStr();
+            ViewBag.Description = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaDescription).ToStr();
+            ViewBag.Keywords = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaKeywords).ToStr();
 
             return View(mainPageModel);
         }
@@ -84,7 +84,7 @@ namespace EImece.Controllers
             var s = SubsciberService.GetSingle(id);
             return View(s);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
             var InstagramWebSiteLink = SettingService.GetSettingByKey("InstagramWebSiteLink");
@@ -105,17 +105,17 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult TermsAndConditions()
         {
-            var stringContent = SettingService.GetSettingObjectByKey(Settings.TermsAndConditions, CurrentLanguage);
+            var stringContent = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
             return View(stringContent);
         }
         [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult PrivacyPolicy()
         {
-            var stringContent = SettingService.GetSettingObjectByKey(Settings.PrivacyPolicy, CurrentLanguage);
+            var stringContent = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
             return View(stringContent);
         }
         [ChildActionOnly]
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()
         {
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
@@ -133,11 +133,11 @@ namespace EImece.Controllers
             var tree = ProductCategoryService.BuildTree(true, selectedLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
-        [OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WebSiteLogo()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Settings.WebSiteLogo);
-            var CompanyName = SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.WebSiteLogo);
+            var CompanyName = SettingService.GetSettingObjectByKey(ApplicationConfigs.CompanyName);
             var s = new List<Setting>() { webSiteLogo, CompanyName };
             return PartialView("_WebSiteLogo", s);
         }

@@ -50,11 +50,11 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                if (_filters.Count > Settings.MaxItemsCountInFilter)
+                if (_filters.Count > ApplicationConfigs.MaxItemsCountInFilter)
                 {
                     return
                         _filters.OrderByDescending(i => i.Cnt)
-                                .Take(Settings.MaxItemsCountInFilter)
+                                .Take(ApplicationConfigs.MaxItemsCountInFilter)
                                 .OrderBy(i => i.Text)
                                 .ToList();
                 }

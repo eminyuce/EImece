@@ -14,7 +14,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? Settings.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Products";
     var title = "Products";
     var gridName = "productGrid";
@@ -183,20 +183,20 @@
     <ul>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>Active</span>",
-                                                    o.Id, (o.IsActive ? Settings.OkStyle : Settings.CancelStyle), o.IsActive))
+                                                    o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive))
 
 
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>Main Page</span>",
-                                                    o.Id, (o.MainPage ? Settings.OkStyle : Settings.CancelStyle), o.MainPage))
+                                                    o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage))
 
 
 
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>IsCampaign</span>",
-                                                    o.Id, (o.IsCampaign ? Settings.OkStyle : Settings.CancelStyle), o.IsCampaign))
+                                                    o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign))
 
 
 
@@ -209,7 +209,7 @@
     <ul>
         <li>
             @Html.Raw(String.Format("<span>Image State</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? Settings.OkStyle : Settings.CancelStyle), o.ImageState))
+                                                    o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState))
 
         </li>
         <li>
