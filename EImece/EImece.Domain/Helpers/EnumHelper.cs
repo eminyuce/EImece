@@ -89,9 +89,9 @@ namespace EImece.Domain.Helpers
         {
 
             var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
-            var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-            var languagesText = SettingService.GetSettingByKey(ApplicationConfigs.Languages).ToStr();
-  
+            var languagesText = ApplicationConfigs.ApplicationLanguages;
+
+
             if (String.IsNullOrEmpty(languagesText))
             {
                 values.RemoveAll(r => r != EImeceLanguage.English);

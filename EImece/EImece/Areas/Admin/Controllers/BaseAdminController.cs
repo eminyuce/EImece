@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -140,20 +141,28 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                string cultureName = null;
-                HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
-                if (cultureCookie != null)
+                var languagesText = ApplicationConfigs.ApplicationLanguages;
+                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+                if(languages.Count > 1)
                 {
-                    cultureName = cultureCookie.Value;
-                    var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
-                    return selectedLang;
-
-                }
-                else
+                    string cultureName = null;
+                    HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
+                    if (cultureCookie != null)
+                    {
+                        cultureName = cultureCookie.Value;
+                        var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
+                        return selectedLang;
+                    }
+                    else
+                    {
+                        return ApplicationConfigs.MainLanguage;
+                    }
+                }else
                 {
-
                     return ApplicationConfigs.MainLanguage;
                 }
+                
+
             }
         }
 

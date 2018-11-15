@@ -45,12 +45,24 @@
         String cultureName = Thread.CurrentThread.CurrentCulture.Name;
         List<SelectListItem> listItems = new List<SelectListItem>();
         listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
-        var selectedLang = EImece.Domain.Helpers.EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
+        int selectedLang = 0;
+        if(listItems.Count > 1)
+        {
+            selectedLang = EImece.Domain.Helpers.EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
+        }
+        else
+        {
+            // Just one language is activated.
+            selectedLang = ApplicationConfigs.MainLanguage;
+        }
+
 
 
     }
 </head>
 <body class="fullwidth">
+
+ 
     <div id="wrapper">
 
         <div id="top-bar">
