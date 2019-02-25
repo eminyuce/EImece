@@ -103,6 +103,7 @@ namespace EImece.Domain
                 return GetConfigInt("GridPageSizeNumber", 200);
             }
         }
+        //en-US,tr-TR
         public static string ApplicationLanguages
         {
             get
