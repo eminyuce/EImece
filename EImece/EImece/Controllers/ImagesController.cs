@@ -34,7 +34,7 @@ namespace EImece.Controllers
 
                 var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
 
-                if (imageByte.Item1 != null)
+                if (imageByte !=null && imageByte.Item1 != null)
                 {
                     return File(imageByte.Item1, imageByte.Item2);
                 }
