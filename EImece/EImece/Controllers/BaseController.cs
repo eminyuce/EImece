@@ -24,153 +24,32 @@ namespace EImece.Controllers
 
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
-
-        private IMainPageImageService _mainPageImageService { get; set; }
         [Inject]
-        public IMainPageImageService MainPageImageService
-        {
-            get
-            {
-                return _mainPageImageService;
-            }
-            set { _mainPageImageService = value; }
-        }
-
-       
-
-
-        private ISettingService _settingService { get; set; }
+        public IMainPageImageService MainPageImageService { get; set; }
         [Inject]
-        public ISettingService SettingService
-        {
-            get
-            {
-                return _settingService;
-            }
-            set { _settingService = value; }
-        }
-
-
-        private IProductService _productService { get; set; }
+        public ISettingService SettingService { get; set; }
         [Inject]
-        public IProductService ProductService
-        {
-            get
-            {
-                return _productService;
-            }
-            set { _productService = value; }
-        }
-
-
-        private IProductCategoryService _productCategoryService { get; set; }
+        public IProductService ProductService { get; set; }
         [Inject]
-        public IProductCategoryService ProductCategoryService
-        {
-            get
-            {
-                return _productCategoryService;
-            }
-            set { _productCategoryService = value; }
-        }
-        private IMenuService _menuService { get; set; }
+        public IProductCategoryService ProductCategoryService { get; set; }
         [Inject]
-        public IMenuService MenuService
-        {
-            get
-            {
-                return _menuService;
-            }
-            set { _menuService = value; }
-        }
-
-        private IStoryService _storyService { get; set; }
+        public IMenuService MenuService { get; set; }
         [Inject]
-        public IStoryService StoryService
-        {
-            get
-            {
-                return _storyService;
-            }
-            set { _storyService = value; }
-        }
-        private IStoryCategoryService _storyCategoryService { get; set; }
+        public IStoryService StoryService { get; set; }
         [Inject]
-        public IStoryCategoryService StoryCategoryService
-        {
-            get
-            {
-                return _storyCategoryService;
-            }
-            set { _storyCategoryService = value; }
-        }
-
-        private ITagService _tagService { get; set; }
+        public IStoryCategoryService StoryCategoryService { get; set; }
         [Inject]
-        public ITagService TagService
-        {
-            get
-            {
-                return _tagService;
-            }
-            set { _tagService = value; }
-        }
-
-        private ITagCategoryService _tagCategoryService { get; set; }
+        public ITagService TagService { get; set; }
         [Inject]
-        public ITagCategoryService TagCategoryService
-        {
-            get
-            {
-                return _tagCategoryService;
-            }
-            set { _tagCategoryService = value; }
-        }
-
-        private ISubscriberService _subsciberService { get; set; }
+        public ITagCategoryService TagCategoryService { get; set; }
         [Inject]
-        public ISubscriberService SubsciberService
-        {
-            get
-            {
-                return _subsciberService;
-            }
-            set { _subsciberService = value; }
-        }
-        private IFileStorageService _fileStorageService { get; set; }
+        public ISubscriberService SubsciberService { get; set; }
         [Inject]
-        public IFileStorageService FileStorageService
-        {
-            get
-            {
-                return _fileStorageService;
-            }
-            set { _fileStorageService = value; }
-        }
-
-        private ITemplateService _templateService { get; set; }
+        public IFileStorageService FileStorageService { get; set; }
         [Inject]
-        public ITemplateService TemplateService
-        {
-            get
-            {
-                return _templateService;
-            }
-            set { _templateService = value; }
-        }
-
-
-        private IMailTemplateService _mailTemplateService { get; set; }
+        public ITemplateService TemplateService { get; set; }
         [Inject]
-        public IMailTemplateService MailTemplateService
-        {
-            get
-            {
-                return _mailTemplateService;
-            }
-            set { _mailTemplateService = value; }
-        }
-
+        public IMailTemplateService MailTemplateService { get; set; }
         [Inject]
         public IEmailSender EmailSender { get; set; }
         [Inject]
