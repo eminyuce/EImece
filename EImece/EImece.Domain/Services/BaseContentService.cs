@@ -38,6 +38,7 @@ namespace EImece.Domain.Services
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) :base(baseContentRepository) 
         {
             this.BaseContentRepository = baseContentRepository;
+            this.IsCachingActive = ApplicationConfigs.IsCacheActive;
         }
         public virtual T GetBaseContent(int id)
         {
