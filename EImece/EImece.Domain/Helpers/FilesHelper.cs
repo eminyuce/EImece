@@ -760,33 +760,7 @@ namespace EImece.Domain.Helpers
             }
             return resizedImage;
         }
-        // Resize a Bitmap  
-        private Bitmap ResizeImage1(Bitmap bitmap, int width, int height)
-        {
 
-            Bitmap bmPhoto = new Bitmap(width, height, bitmap.PixelFormat);
-            // bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
-
-            using (Graphics grPhoto = Graphics.FromImage(bmPhoto))
-            {
-                // grPhoto.Clear(Color.White);
-
-                grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                //grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
-                //grPhoto.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                //grPhoto.CompositingQuality = CompositingQuality.HighQuality;
-
-
-                grPhoto.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                grPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-
-                grPhoto.DrawImage(bitmap,
-                    new Rectangle(0, 0, width, height),
-                    new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                    GraphicsUnit.Pixel);
-            }
-            return bmPhoto;
-        }
         public static Bitmap ConvertAndSaveBitmap(Bitmap bitmap, String fileName, ImageFormat imageFormat, long quality = 100L)
         {
             string contentType = HttpContext.Current.Response.ContentType;
