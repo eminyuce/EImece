@@ -20,6 +20,7 @@ namespace EImece.Domain.Models.AdminHelperModels
         public int OriginalHeight { get; set; }
         public int ThumpBitmapWidth { get; set; }
         public int ThumpBitmapHeight  { get; set; }
+        public byte [] ImageBytes { get; set; }
 
         public SavedImage(string newFileName, int width, int height, int imageSize, string contentType, string fileName, string fileHash)
         {
@@ -47,6 +48,12 @@ namespace EImece.Domain.Models.AdminHelperModels
             Height = height;
             OriginalWidth = originalWidth;
             OriginalHeight = originalHeight;
+        }
+
+        public SavedImage(byte[] imageBytes, string contentType)
+        {
+            ImageBytes = imageBytes;
+            ContentType = contentType;
         }
     }
 }

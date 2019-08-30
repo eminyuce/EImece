@@ -579,44 +579,13 @@ namespace EImece.Domain.Helpers
             return ImageFormat.Jpeg;
         }
 
-        public ImageOrientation GetOrientation(int width, int height)
-        {
-            if (width == 0 || height == 0)
-                return ImageOrientation.Unknown;
-
-            float relation = (float)height / (float)width;
-
-            if (relation > .95 && relation < 1.05)
-            {
-                return ImageOrientation.Square;
-            }
-            else if (relation > 1.05 && relation < 2)
-            {
-                return ImageOrientation.Portrate;
-            }
-            else if (relation >= 2)
-            {
-                return ImageOrientation.Vertical;
-            }
-            else if (relation <= .95 && relation > .5)
-            {
-                return ImageOrientation.Landscape;
-            }
-            else if (relation <= .5)
-            {
-                return ImageOrientation.Horizontal;
-            }
-            else
-            {
-                return ImageOrientation.Unknown;
-            }
-        }
-        public Tuple<byte[],String> GetResizedImage(int fileStorageId, int width, int height)
+         
+        public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
 
 
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
-            Tuple<byte[], String> result = null;
+            SavedImage result = null;
             String contentType = "";
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
@@ -643,7 +612,7 @@ namespace EImece.Domain.Helpers
                         b = new Bitmap(fullImagePath);
                         var resizeBitmap = ResizeImage(b, width, height);
                         byte [] imageBytes = GetBitmapBytes(resizeBitmap);
-                        result = new Tuple<byte[], String>(imageBytes, contentType);
+                        result = new SavedImage(imageBytes, contentType);
                         b.Dispose();
                         resizeBitmap.Dispose();
                         MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheShortSeconds);
@@ -859,28 +828,7 @@ namespace EImece.Domain.Helpers
                 return result;
             }
         }
-
-        public static Bitmap ScaleImage(Bitmap image, double scale)
-        {
-            int newWidth = (int)(image.Width * scale);
-            int newHeight = (int)(image.Height * scale);
-
-            Bitmap result = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
-            result.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-            using (Graphics g = Graphics.FromImage(result))
-            {
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                g.DrawImage(image, 0, 0, result.Width, result.Height);
-            }
-            return result;
-        }
-
-
+ 
         private static ImageCodecInfo GetImageCodecInfo(string extension)
         {
 
@@ -1044,15 +992,7 @@ namespace EImece.Domain.Helpers
         }
 
     }
-    public enum ImageOrientation
-    {
-        Unknown = 0,
-        Horizontal = 8,
-        Landscape = 9,
-        Square = 10,
-        Portrate = 11,
-        Vertical = 12
-    }
+
     public enum AnchorPosition
     {
         Top,

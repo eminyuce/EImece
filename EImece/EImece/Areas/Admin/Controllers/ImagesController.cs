@@ -17,7 +17,7 @@ namespace EImece.Areas.Admin.Controllers
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
             if (imageByte != null)
             {
-                return File(imageByte.Item1,imageByte.Item2);
+                return File(imageByte.ImageBytes,imageByte.ContentType);
             }
             else
             {
