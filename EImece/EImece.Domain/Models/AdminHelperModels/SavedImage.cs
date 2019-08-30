@@ -8,6 +8,7 @@ namespace EImece.Domain.Models.AdminHelperModels
 {
     public class SavedImage
     {
+
         public string NewFileName { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -38,6 +39,14 @@ namespace EImece.Domain.Models.AdminHelperModels
             OriginalWidth = originalWidth;
             OriginalHeight = originalHeight;
             FileName = fileName;
+        }
+
+        public SavedImage(int width, int height, int originalWidth, int originalHeight)
+        {
+            Width = width;
+            Height = height;
+            OriginalWidth = originalWidth;
+            OriginalHeight = originalHeight;
         }
     }
 }

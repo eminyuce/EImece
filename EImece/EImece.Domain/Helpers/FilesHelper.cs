@@ -238,12 +238,12 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
-        private Tuple<int, int, int, int> GetFileImageSize(int width, int height, byte[] fileByte)
+        private SavedImage GetFileImageSize(int width, int height, byte[] fileByte)
         {
             Bitmap img = ByteArrayToBitmap(fileByte);
             return GetFileImageSize(width, height, img);
         }
-        private Tuple<int, int, int, int> GetFileImageSize(int width, int height, Bitmap img)
+        private SavedImage GetFileImageSize(int width, int height, Bitmap img)
         {
             int originalImageWidth = img.Width;
             int originalImageHeight = img.Height;
@@ -269,7 +269,7 @@ namespace EImece.Domain.Helpers
 
             }
 
-            return new Tuple<int, int, int, int>(width, height, originalImageWidth, originalImageHeight);
+            return new SavedImage(width, height, originalImageWidth, originalImageHeight);
         }
         private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
         {
@@ -431,10 +431,10 @@ namespace EImece.Domain.Helpers
                             var fileByte = File.ReadAllBytes(fullPath);
                             var ext = Path.GetExtension(mainImage.FileName);
                             var imageResize = GetFileImageSize(width, height, fileByte);
-                            width = imageResize.Item1;
-                            height = imageResize.Item2;
-                            int originalImageWidth = imageResize.Item3;
-                            int originalImageHeight = imageResize.Item4;
+                            width = imageResize.Width;
+                            height = imageResize.Height;
+                            int originalImageWidth = imageResize.OriginalWidth;
+                            int originalImageHeight = imageResize.OriginalHeight;
 
                             var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
 
@@ -511,10 +511,10 @@ namespace EImece.Domain.Helpers
 
 
                 var imageResize = GetFileImageSize(width, height, fileByte);
-                width = imageResize.Item1;
-                height = imageResize.Item2;
-                int originalImageWidth = imageResize.Item3;
-                int originalImageHeight = imageResize.Item4;
+                width = imageResize.Width;
+                height = imageResize.Height;
+                int originalImageWidth = imageResize.OriginalWidth;
+                int originalImageHeight = imageResize.OriginalHeight;
 
                 fileHash = HashHelpers.GetSha256Hash(fileByte);
 
@@ -634,10 +634,10 @@ namespace EImece.Domain.Helpers
                         Bitmap b = new Bitmap(fullImagePath);
 
                         var imageResize = GetFileImageSize(width, height, b);
-                        width = imageResize.Item1;
-                        height = imageResize.Item2;
-                        int originalImageWidth = imageResize.Item3;
-                        int originalImageHeight = imageResize.Item4;
+                        width = imageResize.Width;
+                        height = imageResize.Height;
+                        int originalImageWidth = imageResize.OriginalWidth;
+                        int originalImageHeight = imageResize.OriginalHeight;
                         b.Dispose();
 
                         b = new Bitmap(fullImagePath);
@@ -653,88 +653,7 @@ namespace EImece.Domain.Helpers
             return result;
 
         }
-        public byte[] MakeThumbnail(byte[] myImage, int thumbWidth, int thumbHeight)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            using (Image thumbnail = Image.FromStream(new MemoryStream(myImage)).GetThumbnailImage(thumbWidth, thumbHeight, null, new IntPtr()))
-            {
-                thumbnail.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                return ms.ToArray();
-            }
-        }
-        public Bitmap Crop(Bitmap bitmap, int Width, int Height, AnchorPosition Anchor)
-        {
-
-            int sourceWidth = bitmap.Width;
-            int sourceHeight = bitmap.Height;
-            int sourceX = 0;
-            int sourceY = 0;
-            int destX = 0;
-            int destY = 0;
-
-            float nPercent = 0;
-            float nPercentW = 0;
-            float nPercentH = 0;
-
-            nPercentW = ((float)Width / (float)sourceWidth);
-            nPercentH = ((float)Height / (float)sourceHeight);
-
-            if (nPercentH < nPercentW)
-            {
-                nPercent = nPercentW;
-                switch (Anchor)
-                {
-                    case AnchorPosition.Top:
-                        destY = 0;
-                        break;
-                    case AnchorPosition.Bottom:
-                        destY = (int)(Height - (sourceHeight * nPercent));
-                        break;
-                    default:
-                        destY = (int)((Height - (sourceHeight * nPercent)) / 2);
-                        break;
-                }
-            }
-            else
-            {
-                nPercent = nPercentH;
-                switch (Anchor)
-                {
-                    case AnchorPosition.Left:
-                        destX = 0;
-                        break;
-                    case AnchorPosition.Right:
-                        destX = (int)(Width - (sourceWidth * nPercent));
-                        break;
-                    default:
-                        destX = (int)((Width - (sourceWidth * nPercent)) / 2);
-                        break;
-                }
-            }
-
-            int destWidth = (int)(sourceWidth * nPercent);
-            int destHeight = (int)(sourceHeight * nPercent);
-
-            Bitmap bmPhoto = new Bitmap(Width, Height, PixelFormat.Format48bppRgb);
-            bmPhoto.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
-
-            Graphics grPhoto = Graphics.FromImage(bmPhoto);
-            grPhoto.Clear(Color.White);
-
-            grPhoto.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
-            grPhoto.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            grPhoto.CompositingQuality = CompositingQuality.HighQuality;
-
-            grPhoto.DrawImage(bitmap,
-                new Rectangle(destX, destY, destWidth, destHeight),
-                new Rectangle(sourceX, sourceY, sourceWidth, sourceHeight),
-                GraphicsUnit.Pixel);
-
-
-            grPhoto.Dispose();
-            return bmPhoto;
-        }
+   
         // Create a thumbnail in byte array format from the image encoded in the passed byte array.  
         // (RESIZE an image in a byte[] variable.)  
         public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide, int Height, int Width, ImageFormat format)
