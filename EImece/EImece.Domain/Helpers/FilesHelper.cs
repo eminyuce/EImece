@@ -64,13 +64,12 @@ namespace EImece.Domain.Helpers
             this.tempPath = tempPath;
             this.serverMapPath = serverMapPath;
         }
-        public Tuple<int, int, int, int, string> GetThumbnailImageSize(int mainPageId)
+        public SavedImage GetThumbnailImageSize(int mainPageId)
         {
             var mainPage = FileStorageService.GetSingle(mainPageId);
             return GetThumbnailImageSize(mainPage);
         }
-
-        public Tuple<int, int, int, int, string> GetThumbnailImageSize(FileStorage mainImage)
+        public SavedImage GetThumbnailImageSize(FileStorage mainImage)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = 0, originalHeight = 0;
@@ -80,10 +79,10 @@ namespace EImece.Domain.Helpers
                 fileName = mainImage.FileName;
                 return GetThumbnailImageSize(fileName);
             }
-            var result = new Tuple<int, int, int, int, string>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
+            var result = new SavedImage(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
         }
-        public Tuple<int, int, int, int, string> GetThumbnailImageSize(String fileName)
+        public SavedImage GetThumbnailImageSize(String fileName)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = 0, originalHeight = 0;
@@ -108,7 +107,7 @@ namespace EImece.Domain.Helpers
                 }
             }
 
-            var result = new Tuple<int, int, int, int, string>(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
+            var result = new SavedImage(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
         }
         public void DeleteFiles(String pathToDelete)
@@ -419,8 +418,8 @@ namespace EImece.Domain.Helpers
                     if (mainImage != null)
                     {
                         var imageSize = GetThumbnailImageSize(mainImage);
-                        int mainImageHeight = imageSize.Item2;
-                        int mainImageWidth = imageSize.Item1;
+                        int mainImageHeight = imageSize.ThumpBitmapHeight;
+                        int mainImageWidth = imageSize.ThumpBitmapWidth;
                         if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
                         {
 

@@ -15,6 +15,10 @@ namespace EImece.Domain.Models.AdminHelperModels
         public string ContentType { get; set; }
         public string FileName { get; set; }
         public string FileHash { get; set; }
+        public int OriginalWidth { get; set; }
+        public int OriginalHeight { get; set; }
+        public int ThumpBitmapWidth { get; set; }
+        public int ThumpBitmapHeight  { get; set; }
 
         public SavedImage(string newFileName, int width, int height, int imageSize, string contentType, string fileName, string fileHash)
         {
@@ -25,6 +29,15 @@ namespace EImece.Domain.Models.AdminHelperModels
             ContentType = contentType;
             FileName = fileName;
             FileHash = fileHash;
+        }
+
+        public SavedImage(int thumpBitmapWidth, int thumpBitmapHeight, int originalWidth, int originalHeight, string fileName)
+        {
+            ThumpBitmapWidth = thumpBitmapWidth;
+            ThumpBitmapHeight = thumpBitmapHeight;
+            OriginalWidth = originalWidth;
+            OriginalHeight = originalHeight;
+            FileName = fileName;
         }
     }
 }
