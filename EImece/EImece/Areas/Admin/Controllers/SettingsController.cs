@@ -234,7 +234,7 @@ namespace EImece.Areas.Admin.Controllers
             webSiteLogoSetting.Name = ApplicationConfigs.WebSiteLogo;
             webSiteLogoSetting.Description = "";
             webSiteLogoSetting.EntityHash = "";
-            webSiteLogoSetting.SettingValue = result.Item1;
+            webSiteLogoSetting.SettingValue = result.NewFileName;
             webSiteLogoSetting.SettingKey = ApplicationConfigs.WebSiteLogo;
             webSiteLogoSetting.IsActive = true;
             webSiteLogoSetting.Position = 1;

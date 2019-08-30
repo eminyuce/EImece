@@ -508,6 +508,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="localSw.js" />
+    <Content Include="media\images\tapu_1607652111.jpeg" />
+    <Content Include="media\images\tapu_1990286641.jpeg" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.js" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.min.js" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.js" />
@@ -867,7 +869,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
-    <Folder Include="media\" />
     <Folder Include="Scripts\codemirror\addon\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>

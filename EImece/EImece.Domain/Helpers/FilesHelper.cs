@@ -20,6 +20,7 @@ using EImece.Domain.Caching;
 using NLog;
 using System.Security.Cryptography;
 using System.Drawing.Text;
+using EImece.Domain.Models.AdminHelperModels;
 
 namespace EImece.Domain.Helpers
 {
@@ -286,9 +287,9 @@ namespace EImece.Domain.Helpers
                 if (IsImage(ext))
                 {
                     var result = SaveImageByte(width, height, file);
-                    var newFileName = result.Item1;
+                    var newFileName = result.NewFileName;
                     var k = UploadResult(newFileName, file.ContentLength, newFileName, requestContext);
-                    k.imageHash = result.Item7;
+                    k.imageHash = result.FileHash;
                     statuses.Add(k);
                 }
             }
@@ -385,20 +386,8 @@ namespace EImece.Domain.Helpers
                 }
                 var result = SaveImageByte(width, height, fileName, contentType, imageByte);
 
-                var fileStorage = new FileStorage();
-                fileStorage.Name = result.Item6;
-                fileStorage.FileName = result.Item1;
-                fileStorage.Width = result.Item2;
-                fileStorage.Height = result.Item3;
-                fileStorage.MimeType = result.Item5;
-                fileStorage.CreatedDate = DateTime.Now;
-                fileStorage.UpdatedDate = DateTime.Now;
-                fileStorage.IsActive = true;
-                fileStorage.Position = 1;
-                fileStorage.FileSize = result.Item4;
-                fileStorage.Type = imageType.ToStr();
-                fileStorage.Lang = CurrentLanguage;
-                fileStorage.EntityHash = result.Item7;
+               
+                FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
                 fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
                 FileStorageService.SaveOrEditEntity(fileStorage);
               return fileStorage;
@@ -415,23 +404,9 @@ namespace EImece.Domain.Helpers
                 {
                     FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
                 }
-                var result = SaveImageByte(width, height, httpPostedFileBase);
+                SavedImage result = SaveImageByte(width, height, httpPostedFileBase);
 
-                var fileStorage = new FileStorage();
-                fileStorage.Name = result.Item6;
-                fileStorage.FileName = result.Item1;
-                fileStorage.Width = result.Item2;
-                fileStorage.Height = result.Item3;
-                fileStorage.MimeType = result.Item5;
-                fileStorage.CreatedDate = DateTime.Now;
-                fileStorage.UpdatedDate = DateTime.Now;
-                fileStorage.IsActive = true;
-                fileStorage.Position = 1;
-                fileStorage.FileSize = result.Item4;
-                fileStorage.Type = imageType.ToStr();
-                fileStorage.Lang = CurrentLanguage;
-                fileStorage.EntityHash = result.Item7;
-                fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
+                FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
                 FileStorageService.SaveOrEditEntity(fileStorage);
                 baseContent.MainImageId = fileStorage.Id;
                 baseContent.ImageState = true;
@@ -481,6 +456,27 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
+
+        private FileStorage createFileStorageFromSavedImage(EImeceImageType imageType, SavedImage result)
+        {
+            var fileStorage = new FileStorage();
+            fileStorage.Name = result.FileName;
+            fileStorage.FileName = result.NewFileName;
+            fileStorage.Width = result.Width;
+            fileStorage.Height = result.Height;
+            fileStorage.MimeType = result.ContentType;
+            fileStorage.CreatedDate = DateTime.Now;
+            fileStorage.UpdatedDate = DateTime.Now;
+            fileStorage.IsActive = true;
+            fileStorage.Position = 1;
+            fileStorage.FileSize = result.ImageSize;
+            fileStorage.Type = imageType.ToStr();
+            fileStorage.Lang = CurrentLanguage;
+            fileStorage.EntityHash = result.FileHash;
+            fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
+            return fileStorage;
+        }
+
         private Tuple<string, string, string> GetFileNames(String fileName)
         {
             var ext = Path.GetExtension(fileName);
@@ -497,11 +493,10 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
         }
-        public Tuple<string, int, int, int, string, string, string> SaveImageByte(int width, int height, String fileName, String contentType, byte [] fileByte)
+        public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte [] fileByte)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;
-
             String fileHash = "";
 
             fileName = Path.GetFileName(fileName);
@@ -557,10 +552,10 @@ namespace EImece.Domain.Helpers
                 Logger.Error("Image Extension is not CORRECT:" + fileName);
             }
 
-            return new Tuple<string, int, int, int, string, string, string>(newFileName, width, height, imageSize, contentType, fileName, fileHash);
+            return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
 
         }
-        public Tuple<string, int, int, int, string, string, string> SaveImageByte(int width, int height, HttpPostedFileBase file)
+        public SavedImage SaveImageByte(int width, int height, HttpPostedFileBase file)
         {
             var fileByte = GeneralHelper.ReadFully(file.InputStream);
             return SaveImageByte(width, height, file.FileName, file.ContentType, fileByte);

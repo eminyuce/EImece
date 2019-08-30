@@ -303,6 +303,7 @@
     <Compile Include="Helpers\WebPushHelper.cs" />
     <Compile Include="Helpers\XmlEditorHelper.cs" />
     <Compile Include="Helpers\XmlParserHelper.cs" />
+    <Compile Include="Models\AdminHelperModels\SavedImage.cs" />
     <Compile Include="Models\AdminModels\BrowserNotificationStatistic.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
