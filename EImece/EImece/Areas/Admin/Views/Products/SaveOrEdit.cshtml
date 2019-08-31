@@ -6,7 +6,7 @@
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Helpers;
-
+@using EImece.Domain.Helpers.Extensions;
 @{
     var saveButtonText = AdminResource.SaveButtonText;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
@@ -17,6 +17,7 @@
     var productTree = (List<Node>)ViewBag.Tree;
     Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
     var PleaseSelectYourProductCategoryFromTree = AdminResource.PleaseSelectYourProductCategoryFromTree;
+    Product product = (Product)Model;
 }
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
@@ -71,7 +72,13 @@ console.log(e);
                             <li class="Tools">
                                 <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
                             </li>
-                            <li class="Tools"> @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-link" })</li>
+                            <li class="Tools"> @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</li>
+                            @if (product.Id > 0)
+                            {
+                                <li class="Tools">
+                                    @Html.ActionLink("Product Page", "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name), id = product.GetSeoUrl() }, new { @class = "btn btn-info", @target = "_blank" })
+                                </li>
+                            }
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -279,8 +286,8 @@ console.log(e);
     <script>
         $(document).ready(function () {
             setPreSelectedTreeNode($("#ProductCategoryId"))
-            
-        
+
+
             CreateTags();
             function CreateTags() {
                 var postData = JSON.stringify({ "language": $("#Lang").val(), "productId": $("#Id").val() });
@@ -290,7 +297,7 @@ console.log(e);
                 });
             }
 
-         
+
 
 
         });
