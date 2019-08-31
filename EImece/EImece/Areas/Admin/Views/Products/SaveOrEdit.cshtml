@@ -9,6 +9,7 @@
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -65,10 +66,10 @@ console.log(e);
                             <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
                             <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
                             <li class="Tools">
-                                <input type="submit" value="@saveButtonText" style="width:150px;" class="btn btn-success" />
+                                <input type="submit" name="saveButton" value="@saveButtonText" style="width:150px;" class="btn btn-success" />
                             </li>
                             <li class="Tools">
-                                <input type="submit" value="SAVE AND CLOSE" style="width:150px;" class="btn btn-success" />
+                                <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
                             </li>
                             <li class="Tools"> @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-link" })</li>
                         </ul>

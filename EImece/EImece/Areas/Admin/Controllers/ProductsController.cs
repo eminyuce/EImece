@@ -6,6 +6,7 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using NLog;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -102,7 +103,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase productImage = null)
+        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase productImage = null, String saveButton=null)
         {
             try
             {
@@ -130,13 +131,11 @@ namespace EImece.Areas.Admin.Controllers
 
                             ProductService.SaveProductTags(product.Id, tags);
                         
-
-
-                        return ReturnTempUrl("Index");
-                       
+                        if(String.IsNullOrEmpty(saveButton) || saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                        {
+                            return ReturnTempUrl("Index");
+                        }
                     }
-
-
                 }
                 else
                 {
