@@ -73,12 +73,6 @@ console.log(e);
                                 <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
                             </li>
                             <li class="Tools"> @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</li>
-                            @if (product.Id > 0)
-                            {
-                                <li class="Tools">
-                                    @Html.ActionLink("Product Page", "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(product.ProductCategory.Name), id = product.GetSeoUrl() }, new { @class = "btn btn-info", @target = "_blank" })
-                                </li>
-                            }
                         </ul>
                     </div>
                     <div class="panel-body">
