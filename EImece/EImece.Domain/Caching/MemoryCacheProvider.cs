@@ -17,28 +17,26 @@ namespace EImece.Domain.Caching
 
         public override bool Get<T>(string key, out T value)
         {
-            if (!IsCacheProviderActive)
-            {
-                value = default(T);
-                return false;
-            }
-            try
+            if (IsCacheProviderActive)
             {
                 if (_cache[key] == null)
                 {
                     value = default(T);
                     return false;
                 }
-
                 value = (T)_cache[key];
+                return true;
+            }
+            try
+            {
+                value = default(T);
+                return false;
             }
             catch
             {
                 value = default(T);
                 return false;
             }
-
-            return true;
         }
 
         public override void Set<T>(string key, T value)

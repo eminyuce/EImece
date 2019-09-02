@@ -284,6 +284,7 @@
     <Compile Include="Helpers\RazorCustomRssTemplate\RssInEmail.cs" />
     <Compile Include="Helpers\RazorCustomRssTemplate\SI.cs" />
     <Compile Include="Helpers\RazorCustomRssTemplate\VBCustomTemplateBase.cs" />
+    <Compile Include="Helpers\RegexHelper.cs" />
     <Compile Include="Helpers\RssHelper.cs" />
     <Compile Include="Helpers\SeoUrlHelper.cs" />
     <Compile Include="Helpers\SiteMap\ISitemapGenerator.cs" />

@@ -39,6 +39,7 @@ namespace EImece.Domain.Helpers
             get
             {
                 _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+                _memoryCacheProvider.CacheDuration = ApplicationConfigs.GetConfigInt("CacheLongSeconds");
                 return _memoryCacheProvider;
             }
             set
@@ -582,43 +583,34 @@ namespace EImece.Domain.Helpers
          
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
-
-
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             SavedImage result = null;
-            String contentType = "";
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
+            if (isRetrievedFromCache)
             {
                 var fileStorage = FileStorageService.GetSingle(fileStorageId);
-           
 
                 if (fileStorage != null)
                 {
-                    contentType = fileStorage.MimeType;
-                    var file = fileStorage.FileName;
-                    String fullPath = Path.Combine(StorageRoot, file);
-                    if (System.IO.File.Exists(fullPath))
+                    String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
+                    if (File.Exists(fullPath))
                     {
                         var fullImagePath = Path.Combine(fullPath);
                         Bitmap b = new Bitmap(fullImagePath);
-
-                        var imageResize = GetFileImageSize(width, height, b);
-                        width = imageResize.Width;
-                        height = imageResize.Height;
-                        int originalImageWidth = imageResize.OriginalWidth;
-                        int originalImageHeight = imageResize.OriginalHeight;
-                        b.Dispose();
-
-                        b = new Bitmap(fullImagePath);
                         var resizeBitmap = ResizeImage(b, width, height);
-                        byte [] imageBytes = GetBitmapBytes(resizeBitmap);
-                        result = new SavedImage(imageBytes, contentType);
+                        byte[] imageBytes = GetBitmapBytes(resizeBitmap);
+                        result = new SavedImage(imageBytes, fileStorage.MimeType);
                         b.Dispose();
                         resizeBitmap.Dispose();
-                        MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheShortSeconds);
+                        MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
                     }
                 }
+                else
+                {
+                    Logger.Trace("No FileStorage fileStorageId:" + fileStorageId);
+                }
             }
+           
             return result;
 
         }
@@ -721,13 +713,17 @@ namespace EImece.Domain.Helpers
 
         private Bitmap ResizeImage(Bitmap image, int width, int height)
         {
-            Bitmap resizedImage = new Bitmap(width, height);
-            using (Graphics gfx = Graphics.FromImage(resizedImage))
+            if(width>0 && height > 0)
             {
-                gfx.DrawImage(image, new Rectangle(0, 0, width, height),
-                    new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+                Bitmap resizedImage = new Bitmap(width, height);
+                using (Graphics gfx = Graphics.FromImage(resizedImage))
+                {
+                    gfx.DrawImage(image, new Rectangle(0, 0, width, height),
+                        new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+                }
+                return resizedImage;
             }
-            return resizedImage;
+            return image;
         }
 
         public static Bitmap ConvertAndSaveBitmap(Bitmap bitmap, String fileName, ImageFormat imageFormat, long quality = 100L)
