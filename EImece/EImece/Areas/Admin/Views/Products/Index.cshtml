@@ -68,8 +68,8 @@
                         @String.Format("{0}", selectedCategory.Name)
                     </b>
                 }
-    
-                <a href="@Url.Action("Index", "Products",new { id=0 })" >
+
+                <a href="@Url.Action("Index", "Products",new { id=0 })">
                     <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
                 </a>
 
@@ -119,58 +119,58 @@
                .Encoded(false)
                 .Sanitized(false)
           .RenderValueAs(d =>
-        @<div>
-            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
-             <div>
-                 @GridToolsColumnAlt2(d, controllerName)
-             </div>
-         
-        </div>
-        
-            
-            );
+                        @<div>
+                            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+                            <div>
+                                @GridToolsColumnAlt2(d, controllerName)
+                            </div>
+
+                        </div>
 
 
-           if (isProductPriceEnable.SettingValue.ToBool(true))
-           {
-               columns.Add(c => c.Price).Titled(AdminResource.Price);
-
-           }
+);
 
 
-           columns.Add(c => c.ProductCode)
-           .Titled(AdminResource.ProductCode);
+if (isProductPriceEnable.SettingValue.ToBool(true))
+{
+columns.Add(c => c.Price).Titled(AdminResource.Price);
 
-           columns.Add(o => o.Position)
-              .Encoded(false).
-                   Sanitized(false).
-                   Css("smallGridColumn").
-                   @*SetWidth(10). *@
-                   RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+}
 
 
-           columns.Add(o => o.IsActive)
-                  .Titled(AdminResource.State)
-                  .Sortable(true)
-                  .Css("smallGridColumn")
-                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                   Sanitized(false)
-                  .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
+columns.Add(c => c.ProductCode)
+.Titled(AdminResource.ProductCode);
+
+columns.Add(o => o.Position)
+.Encoded(false).
+Sanitized(false).
+Css("smallGridColumn").
+        @*SetWidth(10). *@
+RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 
-
-           columns.Add(r => r.ImageState
-           )
-       .Titled(AdminResource.Images)
-       .Encoded(false)
-       .Sanitized(false)
-               .Css("smallGridColumn")
-       @*.SetWidth(30) *@
-       .RenderValueAs(o => GridImageColumn(o, controllerName));
+columns.Add(o => o.IsActive)
+.Titled(AdminResource.State)
+.Sortable(true)
+.Css("smallGridColumn")
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => GridImageActiveColumn(o, controllerName));
 
 
 
-       }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+columns.Add(r => r.ImageState
+)
+.Titled(AdminResource.Images)
+.Encoded(false)
+.Sanitized(false)
+.Css("smallGridColumn")
+        @*.SetWidth(30) *@
+.RenderValueAs(o => GridImageColumn(o, controllerName));
+
+
+
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 
         </div>
 
@@ -206,16 +206,31 @@
 }
 @helper GridImageColumn(Product o, String controllerName)
 {
-    <ul>
-        <li>
-            @Html.Raw(String.Format("<span>Image State</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState))
+    Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
+    if (IsMainImageExists)
+    {
+        <ul>
+            <li>
+                @Html.Raw(String.Format("<span>Image State</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                        o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState))
 
-        </li>
-        <li>
-            @Html.Partial("pGridImageMainPage", o)
-        </li>
-    </ul>
+            </li>
+            <li>
+                @Html.Partial("pGridImageMainPage", o)
+            </li>
+        </ul>
+    }
+    else
+    {
+        <ul>
+            <li>
+                <b style="font-size:0.8em;">
+                    No Image
+                </b>
+            </li>
+        </ul>
+        
+    }
 
 }
 @helper GridToolsColumn(Product d, String controllerName)
@@ -231,10 +246,10 @@
         <span>
             @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
         </span>
-        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId>0)
+        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
         {
             <span>
-    
+
                 @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
             </span>
         }
@@ -253,7 +268,7 @@
 
 }
 
- 
+
 @helper GridToolsColumnAlt2(Product d, String controllerName)
 {
 
@@ -270,16 +285,16 @@
                 @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
             </span>
         }
-            @if (UserRoleHelper.IsDeletedEnableRoles())
-            {
-                <span>
-                    @Html.ActionLink(" ", "Delete", controllerName,
-                               new { id = d.Id },
-                               new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
+        @if (UserRoleHelper.IsDeletedEnableRoles())
+        {
+            <span>
+                @Html.ActionLink(" ", "Delete", controllerName,
+                           new { id = d.Id },
+                           new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
 
-                </span>
-            }
-        </div>
+            </span>
+        }
+    </div>
 
 }
 
