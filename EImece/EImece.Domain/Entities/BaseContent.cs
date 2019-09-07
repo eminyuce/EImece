@@ -1,8 +1,10 @@
-﻿using Resources;
+﻿using EImece.Domain.Helpers;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,8 @@ namespace EImece.Domain.Entities
         public string Description { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageState))]
         public Boolean ImageState { get; set; }
+     
+
         public string MetaKeywords { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainImageId))]

@@ -375,6 +375,15 @@ namespace EImece.Domain.Helpers
             }
             return Filess;
         }
+        public static bool IsMainImageExists(int? MainImageId, FileStorage MainImage)
+        {
+            if (MainImageId.HasValue && MainImage!=null)
+            {
+                String fullPath = Path.Combine(ApplicationConfigs.StorageRoot, MainImage.FileName);
+                return File.Exists(fullPath);
+            }
+            return false;
+        }
         public FileStorage SaveFileFromByteArray(byte [] imageByte,String fileName, String contentType,
             int height = 0,
             int width = 0,

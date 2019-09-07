@@ -164,6 +164,10 @@ namespace EImece.Domain.Services
         }
         public void DeleteProductById(int id)
         {
+            try
+            {
+
+          
             var product = ProductRepository.GetProduct(id);
             ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
             ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
@@ -181,6 +185,11 @@ namespace EImece.Domain.Services
             }
             DeleteEntity(product);
 
+            }
+            catch (Exception e)
+            {
+                ProductServiceLogger.Error(e);
+            }
         }
 
         public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang)

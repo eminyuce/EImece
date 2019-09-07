@@ -143,7 +143,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
+           
             ProductCategory content = ProductCategoryService.GetSingle(id);
             var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             if (content == null)
@@ -180,7 +180,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, productCategory);
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("*", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             return View(productCategory);
