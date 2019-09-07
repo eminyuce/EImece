@@ -144,8 +144,6 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-
-
                 return String.Empty;
             
             }

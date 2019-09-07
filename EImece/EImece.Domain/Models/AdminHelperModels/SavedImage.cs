@@ -22,6 +22,10 @@ namespace EImece.Domain.Models.AdminHelperModels
         public int ThumpBitmapHeight  { get; set; }
         public byte [] ImageBytes { get; set; }
 
+        public SavedImage()
+        {
+
+        }
         public SavedImage(string newFileName, int width, int height, int imageSize, string contentType, string fileName, string fileHash)
         {
             NewFileName = newFileName;

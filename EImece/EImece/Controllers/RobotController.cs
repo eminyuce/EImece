@@ -23,11 +23,12 @@ namespace EImece.Controllers
             //content += "Sitemap: " + fLink + Environment.NewLine;
             //content += "User-agent: *" + Environment.NewLine;
 
-
+/*
             String siteStatus = ApplicationConfigs.GetConfigString("SiteStatus", "dev");
 
             var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, Request.Url.Host);
             var fLink = String.Format("{1}{0}", "/sitemap.xml", builder.Uri.ToString().TrimEnd('/'));
+
             content += "Sitemap: " + fLink + Environment.NewLine;
 
             content += "Disallow: /Ajax/ " + Environment.NewLine;
@@ -42,8 +43,10 @@ namespace EImece.Controllers
             {
                 content += "Disallow: /" + Environment.NewLine;
                 content += "# Disallow Robots (Debug)" + Environment.NewLine;
-
             }
+            */
+            content += "Disallow: /" + Environment.NewLine;
+            content += "# Disallow Robots (Debug)" + Environment.NewLine;
 
             return File(Encoding.UTF8.GetBytes(content), "text/plain");
         }

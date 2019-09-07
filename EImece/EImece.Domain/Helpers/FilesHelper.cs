@@ -583,38 +583,57 @@ namespace EImece.Domain.Helpers
          
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
-            var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             SavedImage result = null;
+            var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
             if (isRetrievedFromCache)
             {
-                var fileStorage = FileStorageService.GetSingle(fileStorageId);
-
-                if (fileStorage != null)
+                if(result == null)
                 {
-                    String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
-                    if (File.Exists(fullPath))
-                    {
-                        var fullImagePath = Path.Combine(fullPath);
-                        Bitmap b = new Bitmap(fullImagePath);
-                        var resizeBitmap = ResizeImage(b, width, height);
-                        byte[] imageBytes = GetBitmapBytes(resizeBitmap);
-                        result = new SavedImage(imageBytes, fileStorage.MimeType);
-                        b.Dispose();
-                        resizeBitmap.Dispose();
-                        MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-                    }
+                      result = createSavedImage(fileStorageId,width, height);
+                      MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);                    
                 }
-                else
-                {
-                    Logger.Trace("No FileStorage fileStorageId:" + fileStorageId);
-                }
+            }
+            else
+            {
+                result = createSavedImage(fileStorageId, width, height);
             }
            
             return result;
 
         }
-   
+
+        private SavedImage createSavedImage(int fileStorageId, int width, int height)
+        {
+            var fileStorage = FileStorageService.GetSingle(fileStorageId);
+            SavedImage result = null;
+            if(fileStorage != null)
+            {
+                String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
+                if (File.Exists(fullPath))
+                {
+                    var fullImagePath = Path.Combine(fullPath);
+                    Bitmap b = new Bitmap(fullImagePath);
+                    var resizeBitmap = ResizeImage(b, width, height);
+                    byte[] imageBytes = GetBitmapBytes(resizeBitmap);
+                    result = new SavedImage(imageBytes, fileStorage.MimeType);
+                    b.Dispose();
+                    resizeBitmap.Dispose();
+                }
+                else
+                {
+                    Logger.Debug("NO SUCH IMAGE EXISTS " + fileStorage.FileName + " File Storage Id:" + fileStorageId);
+                }
+            }
+            else
+            {
+                Logger.Debug("NO File Storage Id IN Database:" + fileStorageId);
+            }
+
+
+            return result;
+        }
+
         // Create a thumbnail in byte array format from the image encoded in the passed byte array.  
         // (RESIZE an image in a byte[] variable.)  
         public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide, int Height, int Width, ImageFormat format)
