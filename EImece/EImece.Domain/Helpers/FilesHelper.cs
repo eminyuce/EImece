@@ -732,7 +732,23 @@ namespace EImece.Domain.Helpers
 
         private Bitmap ResizeImage(Bitmap image, int width, int height)
         {
-            if(width>0 && height > 0)
+
+            double ratio = (double) image.Height / (double)image.Width;
+            if (width > 0 && height == 0)
+            {
+                height = (int)Math.Round(width * ratio);
+            }
+            else  if (width == 0 && height > 0)
+            {
+                width = (int)Math.Round(height / ratio);
+            }
+            else
+            {
+                height = image.Height;
+                width = image.Width;
+            }
+
+            if (width>0 && height > 0)
             {
                 Bitmap resizedImage = new Bitmap(width, height);
                 using (Graphics gfx = Graphics.FromImage(resizedImage))
