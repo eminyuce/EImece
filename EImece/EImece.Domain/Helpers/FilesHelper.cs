@@ -409,12 +409,12 @@ namespace EImece.Domain.Helpers
         {
             if (httpPostedFileBase != null)
             {
-                if (baseContent.MainImageId.HasValue && baseContent.MainImageId.Value > 0)
+                if (baseContent.MainImageId.HasValue)
                 {
-                    FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
+                    String deleted = FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
+                    Logger.Info("SaveFileFromHttpPostedFileBase DeleteFileStorage "+ deleted);
                 }
                 SavedImage result = SaveImageByte(width, height, httpPostedFileBase);
-
                 FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
                 FileStorageService.SaveOrEditEntity(fileStorage);
                 baseContent.MainImageId = fileStorage.Id;
@@ -422,7 +422,7 @@ namespace EImece.Domain.Helpers
             }
             else
             {
-                if (baseContent.MainImageId.HasValue && baseContent.MainImageId.Value > 0)
+                if (baseContent.MainImageId.HasValue)
                 {
                     var mainImage = FileStorageService.GetSingle(baseContent.MainImageId.Value);
                     if (mainImage != null)

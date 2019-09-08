@@ -32,6 +32,9 @@ using System.Reflection;
 using EImece.Domain.Services.IServices;
 using System.Diagnostics;
 using System.Collections.Concurrent;
+using EImece.App_Start;
+using Ninject;
+using System.Collections.Specialized;
 
 namespace EImece.Tests.Controllers
 {
@@ -46,6 +49,7 @@ namespace EImece.Tests.Controllers
     [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class HomeControllerTest
     {
+        IKernel kernel = null;
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static void BindByReflection( Type typeOfInterface, string typeofText)
         {
@@ -61,19 +65,19 @@ namespace EImece.Tests.Controllers
                 }
             }
         }
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            kernel = NinjectWebCommon.CreateKernel();
+            Console.WriteLine("Reflecting Repository Assemblies");
+        }
 
         [TestMethod]
-        public void ReflectRepositoryBindings()
+        public void GetProductService()
         {
-            Console.WriteLine("Reflecting Repository Assemblies");
-
-            var typeOfInterface = typeof(IBaseEntityService<>);
-            var typeofText = "Service";
-            BindByReflection( typeOfInterface, typeofText);
-            typeOfInterface = typeof(IBaseRepository<>);
-            typeofText = "Repository";
-            BindByReflection( typeOfInterface, typeofText);
-
+            ProductService productService = kernel.Get<ProductService>();
+            var products = productService.GetAll();
+            Console.WriteLine(products.Count);
 
         }
 
@@ -330,6 +334,18 @@ QUITE
                 //_destOtherContacts.Add(new NwmDestOtherContact() { Email = email, Name = name, Description = description });
 
             }
+
+        }
+        [TestMethod]
+        public void DeleteProductCategory()
+        {
+            var dbContext = new EImeceContext(ConnectionString);
+            FileStorageService fileStorageService = new FileStorageService(new FileStorageRepository(dbContext)); ;
+            ProductService productService = new ProductService(new ProductRepository(dbContext));
+            ProductCategoryService productCategoryService = new ProductCategoryService(new ProductCategoryRepository(dbContext));
+            productCategoryService.ProductService = productService;
+            productCategoryService.FileStorageService = fileStorageService;
+            productCategoryService.DeleteProductCategory(308);
 
         }
         [TestMethod]
