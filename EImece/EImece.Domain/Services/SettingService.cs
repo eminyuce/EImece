@@ -21,7 +21,7 @@ namespace EImece.Domain.Services
         }
         public List<Setting> GetAllActiveSettings()
         {
-            var cacheKey = String.Format("Settings");
+            var cacheKey = String.Format("GetAllActiveSettings");
             List<Setting> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
@@ -33,7 +33,7 @@ namespace EImece.Domain.Services
         }
         private List<Setting> GetAllSettings()
         {
-            var cacheKey = String.Format("Settings");
+            var cacheKey = String.Format("GetAllSettings");
             List<Setting> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))

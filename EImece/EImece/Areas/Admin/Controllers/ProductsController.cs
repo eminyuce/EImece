@@ -39,7 +39,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             Product content = ProductService.GetProductById(id).Product;
-            ViewBag.Template = TemplateService.GetSingle(content.ProductCategory.TemplateId.Value);
+            ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
             if (content == null)
             {
                 return HttpNotFound();

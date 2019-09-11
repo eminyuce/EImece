@@ -14,5 +14,13 @@ namespace EImece.Domain.Repositories
         public TemplateRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+        public List<Template> GetAllActiveTemplates()
+        {
+            return GetAll().Where(t => t.IsActive).ToList();
+        }
+        public List<Template> GetAllTemplates()
+        {
+            return GetAll().ToList();
+        }
     }
 }

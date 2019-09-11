@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace EImece.Domain.Caching
 {
     public class MemoryCacheProvider : CacheProvider<MemoryCache>
     {
+        protected static readonly Logger  Logger = LogManager.GetCurrentClassLogger();
         protected override MemoryCache InitCache()
         {
             return MemoryCache.Default;
@@ -25,6 +27,7 @@ namespace EImece.Domain.Caching
                     return false;
                 }
                 value = (T)_cache[key];
+                Logger.Info("MemoryCacheProvider CacheKey:" + key);
                 return true;
             }
             try

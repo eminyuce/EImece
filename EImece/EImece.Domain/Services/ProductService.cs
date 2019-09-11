@@ -38,8 +38,7 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
-        [Inject]
-        public ITemplateRepository TemplateRepository { get; set; }
+        
 
         private IProductRepository ProductRepository { get; set; }
         public ProductService(IProductRepository repository) : base(repository)
@@ -124,7 +123,7 @@ namespace EImece.Domain.Services
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
             result.Product = r;
-            result.Template = TemplateRepository.GetSingle(r.ProductCategory.TemplateId.Value);
+            result.Template = TemplateService.GetTemplate(r.ProductCategory.TemplateId.Value);
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(r.ProductCategoryId, r.Lang);
             result.RelatedStories = new List<Story>();
             if (r != null && r.ProductTags.Any())
@@ -279,7 +278,7 @@ namespace EImece.Domain.Services
 
         public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int language,HttpRequestBase request)
         {
-            var template = TemplateService.GetSingle(templateId);
+            var template = TemplateService.GetTemplate(templateId);
             XDocument xdoc = XDocument.Parse(template.TemplateXml);
             var groups = xdoc.Root.Descendants("group");
             var Specifications = new List<ProductSpecification>();

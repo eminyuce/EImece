@@ -19,9 +19,7 @@ namespace EImece.Controllers
 {
     public abstract class BaseController : Controller
     {
-        [Inject]
-        public ICacheProvider MemoryCacheProvider { get; set; }
-
+       
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
         [Inject]
@@ -73,7 +71,21 @@ namespace EImece.Controllers
         protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
-
+            Boolean IsCachingActive = ApplicationConfigs.IsCacheActive;
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MainPageImageService.IsCachingActive = IsCachingActive;
+            SettingService.IsCachingActive = IsCachingActive;
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MenuService.IsCachingActive = IsCachingActive;
+            StoryService.IsCachingActive = IsCachingActive;
+            StoryCategoryService.IsCachingActive = IsCachingActive;
+            TagService.IsCachingActive = IsCachingActive;
+            TagCategoryService.IsCachingActive = IsCachingActive;
+            FileStorageService.IsCachingActive = IsCachingActive;
+            TemplateService.IsCachingActive = IsCachingActive;
+            MailTemplateService.IsCachingActive = IsCachingActive;
             HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
             if (cultureCookie != null)
             {

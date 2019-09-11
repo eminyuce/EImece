@@ -258,7 +258,7 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var fileStorage = GetSingle(id);
+                var fileStorage = FileStorageRepository.GetSingle(id);
                 if (fileStorage != null)
                 {
                     FileStorageTagRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorage.Id);
@@ -277,6 +277,19 @@ namespace EImece.Domain.Services
                 Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id);
             }
             return "error";
+        }
+
+        public FileStorage GetFileStorage(int fileStorageId)
+        {
+            var cacheKey = String.Format("fileStorageId-{0}", fileStorageId);
+            FileStorage result = null;
+
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = GetSingle(fileStorageId);
+                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+            }
+            return result;
         }
     }
 }

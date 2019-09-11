@@ -28,7 +28,7 @@ namespace EImece.Areas.Admin.Controllers
         protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer"; 
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
-
+         
         [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
         [Inject]
@@ -107,7 +107,21 @@ namespace EImece.Areas.Admin.Controllers
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
-
+            Boolean IsCachingActive = false;
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MainPageImageService.IsCachingActive = IsCachingActive;
+            SettingService.IsCachingActive = IsCachingActive;
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MenuService.IsCachingActive = IsCachingActive;
+            StoryService.IsCachingActive = IsCachingActive;
+            StoryCategoryService.IsCachingActive = IsCachingActive;
+            TagService.IsCachingActive = IsCachingActive;
+            TagCategoryService.IsCachingActive = IsCachingActive;
+            FileStorageService.IsCachingActive = IsCachingActive;
+            TemplateService.IsCachingActive = IsCachingActive;
+            MailTemplateService.IsCachingActive = IsCachingActive;
             HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
             if (cultureCookie != null)
             {
@@ -219,9 +233,6 @@ namespace EImece.Areas.Admin.Controllers
 
         }
 
-        public BaseAdminController()
-        {
-
-        }
+        
     }
 }

@@ -9,6 +9,8 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface ITemplateRepository : IBaseEntityRepository<Template>, IDisposable
     {
+        List<Template> GetAllActiveTemplates();
+        List<Template> GetAllTemplates();
 
     }
 }

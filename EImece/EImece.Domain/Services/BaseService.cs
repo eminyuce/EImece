@@ -15,6 +15,7 @@ using NLog;
 using EImece.Domain.Caching;
 using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
+using System.Diagnostics;
 
 namespace EImece.Domain.Services
 {
@@ -57,11 +58,19 @@ namespace EImece.Domain.Services
 
         public virtual List<T> GetAll()
         {
+            // Get call stack
+            StackTrace stackTrace = new StackTrace();
+            // Get calling method name
+            Console.WriteLine("GetAll  " + stackTrace.GetFrame(1).GetMethod().Name);
             return baseRepository.GetAll().ToList();
         }
 
         public virtual T GetSingle(int id)
         {
+            // Get call stack
+            StackTrace stackTrace = new StackTrace();
+            // Get calling method name
+            Console.WriteLine("GetSingle  " + stackTrace.GetFrame(1).GetMethod().Name);
             return baseRepository.GetSingle(id);
         }
 

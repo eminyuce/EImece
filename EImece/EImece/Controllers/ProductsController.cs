@@ -18,6 +18,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+      
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
@@ -30,7 +31,6 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult AdvancedSearchProducts(String search="",string filters="",String page = "")
         {
-             
                 var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
                 return View(products);
            

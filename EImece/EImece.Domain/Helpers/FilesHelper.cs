@@ -67,7 +67,7 @@ namespace EImece.Domain.Helpers
         }
         public SavedImage GetThumbnailImageSize(int mainPageId)
         {
-            var mainPage = FileStorageService.GetSingle(mainPageId);
+            var mainPage = FileStorageService.GetFileStorage(mainPageId);
             return GetThumbnailImageSize(mainPage);
         }
         public SavedImage GetThumbnailImageSize(FileStorage mainImage)
@@ -424,7 +424,7 @@ namespace EImece.Domain.Helpers
             {
                 if (baseContent.MainImageId.HasValue)
                 {
-                    var mainImage = FileStorageService.GetSingle(baseContent.MainImageId.Value);
+                    var mainImage = FileStorageService.GetFileStorage(baseContent.MainImageId.Value);
                     if (mainImage != null)
                     {
                         var imageSize = GetThumbnailImageSize(mainImage);
@@ -614,7 +614,7 @@ namespace EImece.Domain.Helpers
 
         private SavedImage createSavedImage(int fileStorageId, int width, int height)
         {
-            var fileStorage = FileStorageService.GetSingle(fileStorageId);
+            var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             SavedImage result = null;
             if(fileStorage != null)
             {

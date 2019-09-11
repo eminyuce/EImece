@@ -248,7 +248,6 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
             Response.Cookies[CultureCookieName].Value = name;
-            MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home");
         }
     }
