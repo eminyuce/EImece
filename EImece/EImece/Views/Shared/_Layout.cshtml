@@ -19,12 +19,6 @@
         <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
     }
 
-    @*
-        @Html.EmbedCss("~/Content/css/global.min.css")
-    @Html.EmbedCustomCss("~/Content/css/partial-")
-        
-        *@
-
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {
         <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
@@ -68,7 +62,6 @@
         <div id="top-bar">
             <div class="container">
                 <div class="ten columns">
-
                     @Html.Action("WebSiteAddressInfo", "Home")
                 </div>
                 <div class="six columns">

@@ -143,15 +143,23 @@ namespace EImece.Domain.Helpers
 
         public static string GetDescriptionWithBody(string description, int length = 300)
         {
-
-            var desc = WebUtility.HtmlDecode(StripHtml(description)).TruncateAtSentence(length);
-
-            if (String.IsNullOrEmpty(desc))
+            if (String.IsNullOrEmpty(description))
             {
-                desc = "";
+                return "";
             }
+            else
+            {
+                string stripDesc = StripHtml(description);
+                var desc = stripDesc.TruncateAtSentence(length);
 
-            return desc;
+                if (String.IsNullOrEmpty(desc))
+                {
+                    desc = "";
+                }
+
+                return desc;
+            }
+          
         }
 
         public static string GetMd5Hash(string input)

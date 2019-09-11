@@ -39,21 +39,21 @@ namespace EImece.Domain
         {
             get
             {
-                //var useSll = Settings.GetConfigBool("UseSSLImages", false);
-                //string httpSecure = string.Format("http{0}", useSll ? "s" : "");
+                var useSll = GetConfigBool("UseSSLImages", false);
+                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
 
-                //return httpSecure;
-                return HttpContext.Current.Request.Url.Scheme;
+                return httpSecure;
+               // return HttpContext.Current.Request.Url.Scheme;
             }
         }
         public static string HttpProtocol
         {
             get
             {
-                //var useSll = GetConfigBool("UseSSL", false);
-                //string httpSecure = string.Format("http{0}", useSll ? "s" : "");
-                //return httpSecure;
-                return HttpContext.Current.Request.Url.Scheme;
+                var useSll = GetConfigBool("UseSSL", false);
+                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
+                return httpSecure;
+                //return HttpContext.Current.Request.Url.Scheme;
             }
         }
 

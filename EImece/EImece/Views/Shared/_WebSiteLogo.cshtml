@@ -15,28 +15,26 @@
         string companyNametxt = companyName.SettingValue;
         string fileName = webSiteLogo.SettingValue;
         string fullPath = Path.Combine(ApplicationConfigs.ServerMapPath, fileName);
+        var isFullFileExits = File.Exists(fullPath);
         string thumbPath = "/thb" + fileName + "";
         string partThumb1 = Path.Combine(ApplicationConfigs.ServerMapPath, "thumbs");
         string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+        var isThump2FileExits = File.Exists(partThumb2);
 
-
-
-        if (isThumb)
+        if (isThumb && isThump2FileExits)
         {
 
             <a href="/">
                 <img alt="@companyNametxt" src="@partThumb2.Replace("~","")" />
-
             </a>
         }
-        else
+        else  if (isFullFileExits)
         {
             <a href="/">
                 <img  alt="@companyNametxt" src="@fullPath.Replace("~","")" />
 
             </a>
         }
-
 
     }
     else

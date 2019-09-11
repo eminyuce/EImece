@@ -42,8 +42,6 @@ namespace EImece.Domain.Helpers.SiteMap
                     new XElement(xmlns + "urlset",
                       new XAttribute("xmlns", xmlns),
                       new XAttribute(XNamespace.Xmlns + "news", newsXsi),
-                      //new XAttribute(XNamespace.Xmlns + "xsi", xsi),
-                      //new XAttribute(xsi + "schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"),
                       from item in items
                       select CreateNewsItemElement(item)
                       )

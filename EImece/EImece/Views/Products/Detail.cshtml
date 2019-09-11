@@ -39,6 +39,7 @@
     <div class="eight columns">
         <div class="slider-padding">
             <div id="product-slider" class="royalSlider rsDefault">
+            
                 @if (product.ImageState)
                 {
 
@@ -66,7 +67,11 @@
 
             <!-- Headline -->
             <section class="title">
-                <h2>@product.Name</h2>
+                <h2>
+                    @product.Name
+                            
+                                @product.GetSeoDescription(20)
+                            </h2>
                 @if (isUserAuthenticated)
                 {
                     @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })

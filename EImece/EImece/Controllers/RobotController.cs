@@ -16,14 +16,6 @@ namespace EImece.Controllers
         public FileContentResult RobotsText()
         {
             var content = "";
-            //var builder = new UriBuilder(Request.Url.Scheme, Settings.HttpProtocol, Request.Url.Port);
-            //var fLink = String.Format("{1}{0}", "/news/sitemap.xml", builder.Uri.ToString().TrimEnd('/'));
-            //content += "Sitemap: " + fLink + Environment.NewLine;
-            //fLink = String.Format("{1}{0}", "/sitemap.xml", builder.Uri.ToString().TrimEnd('/'));
-            //content += "Sitemap: " + fLink + Environment.NewLine;
-            //content += "User-agent: *" + Environment.NewLine;
-
-/*
             String siteStatus = ApplicationConfigs.GetConfigString("SiteStatus", "dev");
 
             var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, Request.Url.Host);
@@ -44,10 +36,7 @@ namespace EImece.Controllers
                 content += "Disallow: /" + Environment.NewLine;
                 content += "# Disallow Robots (Debug)" + Environment.NewLine;
             }
-            */
-            content += "Disallow: /" + Environment.NewLine;
-            content += "# Disallow Robots (Debug)" + Environment.NewLine;
-
+       
             return File(Encoding.UTF8.GetBytes(content), "text/plain");
         }
     }

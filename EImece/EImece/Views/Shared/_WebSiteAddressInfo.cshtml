@@ -1,8 +1,20 @@
 ﻿@model List<String>
-@{ 
+@{
     var arraySettings = Model.ToArray();
+    var isPhone = String.IsNullOrEmpty(arraySettings[0]);
+    var isEnvelope = String.IsNullOrEmpty(arraySettings[1]);
+
 }
-<ul class="top-bar-menu">
-    <li><i class="fa fa-phone"></i> @Html.Raw(arraySettings[0])</li>
-    <li><i class="fa fa-envelope"></i><a href="#">@Html.Raw(arraySettings[1])</a></li>
-</ul>
+@if (isPhone  ||  isEnvelope)
+{
+    <ul class="top-bar-menu">
+        @if (isPhone)
+        {
+            <li><i class="fa fa-phone"></i> @Html.Raw(arraySettings[0])</li>
+        }
+        @if (isEnvelope)
+        {
+            <li><i class="fa fa-envelope"></i><a href="#">@Html.Raw(arraySettings[1])</a></li>
+        }
+    </ul>
+}

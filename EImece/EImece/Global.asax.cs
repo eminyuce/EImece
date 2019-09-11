@@ -56,7 +56,7 @@ namespace EImece
        
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            Redirect301();
+          //  Redirect301();
         }
         private void Redirect301()
         {
@@ -72,7 +72,7 @@ namespace EImece
                 builder.Host =  Request.Url.Host;
                 Response.StatusCode = 301;
                 builder.Scheme = ApplicationConfigs.HttpProtocol;
-                Response.AddHeader("Location", builder.ToString());
+               // Response.AddHeader("Location", builder.ToString());
                 Response.End();
             }
         }
