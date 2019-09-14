@@ -22,5 +22,7 @@ namespace EImece.Domain.Models.Enums
         [Description("de-DE")]
         [Display(Name = "German")]
         German = 4
+
+
     }
 }

@@ -52,8 +52,8 @@ namespace EImece.Domain.Models.AdminModels
         public string SiteIndexMetaTitle { get; set; }
         public string SiteIndexMetaDescription { get; set; }
         public string SiteIndexMetaKeywords { get; set; }
-        //public string FooterDescription { get;  set; }
-        //public string FooterEmailListDescription { get;  set; }
+        public string FooterDescription { get;  set; }
+        public string FooterEmailListDescription { get;  set; }
 
 
 

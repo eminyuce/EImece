@@ -43,7 +43,7 @@ namespace EImece.Domain.Services
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = GetSingle(id);
+                result = TemplateRepository.GetSingle(id);
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
             }
             return result;

@@ -194,5 +194,25 @@ namespace EImece.Domain.Helpers
                        Value = e.ToStr()
                    };
         }
+        public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
+        {
+            var languagesText = ApplicationConfigs.ApplicationLanguages;
+            List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
+            var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+            foreach (var lang in languages)
+            {
+                try
+                {
+                    var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
+                    selectedLanguages.Add((EImeceLanguage)eImageLang);
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+
+            return selectedLanguages;
+        }
     }
 }
