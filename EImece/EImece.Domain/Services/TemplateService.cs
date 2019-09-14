@@ -30,7 +30,10 @@ namespace EImece.Domain.Services
             }
             return result;
         }
-
+        public override Template GetSingle(int id)
+        {
+            return GetTemplate(id);
+        }
         public Template GetTemplate(int id)
         {
             if (id == 0)
