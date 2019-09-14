@@ -19,6 +19,19 @@ namespace EImece.Domain.Services
         {
             SettingRepository = repository;
         }
+
+        public override List<Setting> GetAll()
+        {
+            return base.GetAll();
+        }
+        public override List<Setting> GetActiveBaseEntities(bool? isActive, int? language)
+        {
+            return base.GetActiveBaseEntities(isActive, language);
+        }
+        public override Setting GetSingle(int id)
+        {
+            return base.GetSingle(id);
+        }
         public List<Setting> GetAllActiveSettings()
         {
             var cacheKey = String.Format("GetAllActiveSettings");
