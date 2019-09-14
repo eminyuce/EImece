@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Controllers;
 
 namespace EImece.Areas.Amp.Controllers
 {

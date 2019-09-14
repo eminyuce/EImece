@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Controllers;
 
 namespace EImece.Areas.Amp.Controllers
 {

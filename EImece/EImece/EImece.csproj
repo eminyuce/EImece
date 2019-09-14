@@ -310,7 +310,6 @@
     <Compile Include="Areas\Admin\Controllers\TestController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Amp\AmpAreaRegistration.cs" />
-    <Compile Include="Areas\Amp\Controllers\BaseController.cs" />
     <Compile Include="Areas\Amp\Controllers\HomeController.cs" />
     <Compile Include="Areas\Amp\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Amp\Controllers\StoriesController.cs" />
