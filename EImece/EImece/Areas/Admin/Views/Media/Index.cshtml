@@ -247,11 +247,11 @@ var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
         </div>
          <div class="col-md-6">
             <div>
-                @String.Format("Original Width={0} Height={1}", imageSizes.Item3, imageSizes.Item4)
+                @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
                 <a href=@String.Format("../..{1}{0}", fileStorage.FileName, ApplicationConfigs.UrlBase) target="_blank">Full Image</a>
             </div>
             <div>
-                @String.Format("Thumbs Width={0} Height={1}", imageSizes.Item1, imageSizes.Item2)
+                @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
                 <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, ApplicationConfigs.UrlBase) target="_blank">Thumps Image</a>
             </div>
 
