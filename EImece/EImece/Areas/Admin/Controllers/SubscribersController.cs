@@ -16,10 +16,10 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search="")
         {
             Expression<Func<Subscriber, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower()) || r.Email.ToLower().Contains(search.Trim().ToLower());
-            var subs = SubscriberService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var subs = SubscriberService.SearchEntities(whereLambda, search, null);
             return View(subs);
         }
-        public ActionResult ExportSubscribers()
+        public ActionResult ExportExcel()
         {
             var subscibers = SubscriberService.GetAll().ToList();
           

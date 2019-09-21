@@ -39,7 +39,7 @@ namespace EImece.Domain.Services
             return result;
 
         }
-        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search,int language)
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search,int? language)
         {
 
             return baseEntityRepository.SearchEntities(whereLambda, search, language);

@@ -35,6 +35,22 @@ namespace EImece.Domain.Services
         {
             FileStorageRepository = repository;
         }
+       
+        public FileStorage GetFileStorage(int fileStorageId)
+        {
+            List <FileStorage> fileStorages = base.GetActiveBaseEntitiesFromCache(true, null);
+            FileStorage result = fileStorages.FirstOrDefault(r => r.Id == fileStorageId);
+            if (result == null)
+            {
+                var cacheKey = String.Format("fileStorageId-{0}", fileStorageId);
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = GetSingle(fileStorageId);
+                    MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                }
+            }
+            return result;
+        }
 
         public void SaveUploadImages(int contentId, 
             EImeceImageType? contentImageType,
@@ -279,17 +295,6 @@ namespace EImece.Domain.Services
             return "error";
         }
 
-        public FileStorage GetFileStorage(int fileStorageId)
-        {
-            var cacheKey = String.Format("fileStorageId-{0}", fileStorageId);
-            FileStorage result = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = GetSingle(fileStorageId);
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-            }
-            return result;
-        }
+      
     }
 }
