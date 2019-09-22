@@ -105,17 +105,22 @@ if (UserRoleHelper.IsDeletedEnableRoles())
            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
                                              o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
 
-
-
-
-    columns.Add(o => o.UpdatedDate)
-       .Titled("Date")
+   columns.Add(o => o.CreatedDate)
+       .Titled("CreatedDate")
        .Sortable(true)
        .Css("gridDateClass")
-       .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
+       .RenderValueAs(o => String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) )
        .SortInitialDirection(GridSortDirection.Descending);
 
+    columns.Add(o => o.UpdatedDate)
+       .Titled("UpdatedDate")
+       .Sortable(true)
+       .Css("gridDateClass")
+       .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) )
+       .SortInitialDirection(GridSortDirection.Descending);
 
+    
+ 
 
  
 

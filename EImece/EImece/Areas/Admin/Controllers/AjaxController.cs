@@ -212,6 +212,11 @@ namespace EImece.Areas.Admin.Controllers
             FileStorageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ChangeMailTemplateGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            MailTemplateService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+            return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ChangeMenusGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             MenuService.ChangeGridBaseEntityOrderingOrState(values, checkbox);

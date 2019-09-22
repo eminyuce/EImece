@@ -25,15 +25,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MailFrom)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MailFrom)
+            @Html.Raw(Model.Body)
         </dd>
 
         <dt>
