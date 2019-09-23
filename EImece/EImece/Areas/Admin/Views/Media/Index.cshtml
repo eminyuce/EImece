@@ -235,7 +235,7 @@
 var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
     <div class="row">
         <div class="col-md-6">
-            <img src=@fileStorage.GetAdminCroppedImageUrl(150,150)>
+            <img src=@fileStorage.GetAdminCroppedImageUrl(150,0)>
             <a href=@String.Format("/media/images/{0}", fileStorage.FileName)
                title="@fileStorage.FileName"
                download="@fileStorage.FileName"

@@ -751,11 +751,7 @@ namespace EImece.Domain.Helpers
             {
                 width = (int)Math.Round(height / ratio);
             }
-            else
-            {
-                height = image.Height;
-                width = image.Width;
-            }
+
 
             if (width>0 && height > 0)
             {
