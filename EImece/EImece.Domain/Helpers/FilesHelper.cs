@@ -435,15 +435,13 @@ namespace EImece.Domain.Helpers
                         if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
                         {
 
-                        var ext = Path.GetExtension(mainImage.FileName);
                         String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
-                        String partThumb1 = Path.Combine(StorageRoot, THUMBS);
-                        String candidatePathThb = Path.Combine(partThumb1, THB + mainImage.FileName);
+                        String candidatePathThb = Path.Combine(Path.Combine(StorageRoot, THUMBS), THB + mainImage.FileName);
                         var fileByte = File.ReadAllBytes(fullPath);
                         var imageResize = GetFileImageSize(width, height, fileByte);
                         width = imageResize.Width;
                         height = imageResize.Height;
-                        ImageFormat format = GetImageFormat(ext);
+                        ImageFormat format = GetImageFormat(Path.GetExtension(mainImage.FileName));
                         var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, format);
 
                         DeleteThumbFile(mainImage.FileName);

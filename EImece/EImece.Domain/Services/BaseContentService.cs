@@ -48,6 +48,7 @@ namespace EImece.Domain.Services
                 var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
                 item.ImageHeight = imageSize.ThumpBitmapHeight;
                 item.ImageWidth = imageSize.ThumpBitmapWidth;
+                item.MainImageId = item.MainImage.Id;
             }
             else
             {

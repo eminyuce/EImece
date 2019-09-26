@@ -158,6 +158,7 @@ namespace EImece.Areas.Admin.Controllers
                 product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
+            product = ProductService.GetBaseContent(product.Id);
             return View(product);
         }
 

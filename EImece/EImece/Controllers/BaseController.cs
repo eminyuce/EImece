@@ -71,21 +71,7 @@ namespace EImece.Controllers
         protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
-            Boolean IsCachingActive = ApplicationConfigs.IsCacheActive;
-            ProductService.IsCachingActive = IsCachingActive;
-            ProductCategoryService.IsCachingActive = IsCachingActive;
-            MainPageImageService.IsCachingActive = IsCachingActive;
-            SettingService.IsCachingActive = IsCachingActive;
-            ProductService.IsCachingActive = IsCachingActive;
-            ProductCategoryService.IsCachingActive = IsCachingActive;
-            MenuService.IsCachingActive = IsCachingActive;
-            StoryService.IsCachingActive = IsCachingActive;
-            StoryCategoryService.IsCachingActive = IsCachingActive;
-            TagService.IsCachingActive = IsCachingActive;
-            TagCategoryService.IsCachingActive = IsCachingActive;
-            FileStorageService.IsCachingActive = IsCachingActive;
-            TemplateService.IsCachingActive = IsCachingActive;
-            MailTemplateService.IsCachingActive = IsCachingActive;
+            setIsCachingActive(ApplicationConfigs.IsCacheActive);
             HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
             if (cultureCookie != null)
             {
@@ -93,7 +79,7 @@ namespace EImece.Controllers
             }
 
 
-         //   cultureName = CultureHelper.GetImplementedCulture(cultureName);
+            //   cultureName = CultureHelper.GetImplementedCulture(cultureName);
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
@@ -109,6 +95,25 @@ namespace EImece.Controllers
 
             return base.BeginExecuteCore(callback, state);
         }
+
+        private void setIsCachingActive(bool IsCachingActive)
+        {
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MainPageImageService.IsCachingActive = IsCachingActive;
+            SettingService.IsCachingActive = IsCachingActive;
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MenuService.IsCachingActive = IsCachingActive;
+            StoryService.IsCachingActive = IsCachingActive;
+            StoryCategoryService.IsCachingActive = IsCachingActive;
+            TagService.IsCachingActive = IsCachingActive;
+            TagCategoryService.IsCachingActive = IsCachingActive;
+            FileStorageService.IsCachingActive = IsCachingActive;
+            TemplateService.IsCachingActive = IsCachingActive;
+            MailTemplateService.IsCachingActive = IsCachingActive;
+        }
+
         protected int CurrentLanguage
         {
             get

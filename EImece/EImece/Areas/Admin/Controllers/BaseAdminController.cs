@@ -107,21 +107,7 @@ namespace EImece.Areas.Admin.Controllers
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
-            Boolean IsCachingActive = false;
-            ProductService.IsCachingActive = IsCachingActive;
-            ProductCategoryService.IsCachingActive = IsCachingActive;
-            MainPageImageService.IsCachingActive = IsCachingActive;
-            SettingService.IsCachingActive = IsCachingActive;
-            ProductService.IsCachingActive = IsCachingActive;
-            ProductCategoryService.IsCachingActive = IsCachingActive;
-            MenuService.IsCachingActive = IsCachingActive;
-            StoryService.IsCachingActive = IsCachingActive;
-            StoryCategoryService.IsCachingActive = IsCachingActive;
-            TagService.IsCachingActive = IsCachingActive;
-            TagCategoryService.IsCachingActive = IsCachingActive;
-            FileStorageService.IsCachingActive = IsCachingActive;
-            TemplateService.IsCachingActive = IsCachingActive;
-            MailTemplateService.IsCachingActive = IsCachingActive;
+            setIsCachingActive(false);
             HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
             if (cultureCookie != null)
             {
@@ -140,8 +126,26 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Response.Cookies.Add(cultureCookie);
             }
-            
+
             return base.BeginExecuteCore(callback, state);
+        }
+
+        private void setIsCachingActive(bool IsCachingActive)
+        {
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MainPageImageService.IsCachingActive = IsCachingActive;
+            SettingService.IsCachingActive = IsCachingActive;
+            ProductService.IsCachingActive = IsCachingActive;
+            ProductCategoryService.IsCachingActive = IsCachingActive;
+            MenuService.IsCachingActive = IsCachingActive;
+            StoryService.IsCachingActive = IsCachingActive;
+            StoryCategoryService.IsCachingActive = IsCachingActive;
+            TagService.IsCachingActive = IsCachingActive;
+            TagCategoryService.IsCachingActive = IsCachingActive;
+            FileStorageService.IsCachingActive = IsCachingActive;
+            TemplateService.IsCachingActive = IsCachingActive;
+            MailTemplateService.IsCachingActive = IsCachingActive;
         }
 
         protected EImeceLanguage GetCurrentLanguage
