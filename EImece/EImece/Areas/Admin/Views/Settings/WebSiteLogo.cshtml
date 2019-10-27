@@ -8,9 +8,10 @@
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    ViewBag.Title = "WebSiteLogo";
+    ViewBag.Title = "Web Site Logo";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
+    var setting = Model;
     string fileName = Model.SettingValue;
     string fullPath = Path.Combine(ApplicationConfigs.ServerMapPath, fileName);
     string thumbPath = "/thb" + fileName + "";
@@ -25,7 +26,7 @@
 
     @Html.HiddenFor(r => r.Id)
 
-  
+
     <div class="row">
         <div class="col-md-3">
             <img src="@partThumb2.Replace("~","")" />
@@ -49,7 +50,7 @@
                     <td>
                         <div class="row">
                             <div class="col-md-10">
-                                <input type="hidden" name="ImageWidth" id="ImageWidth" />
+                           
                                 <div id="sliderWidth">
                                     <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
                                 </div>
@@ -67,13 +68,13 @@
                     <td>
                         <div class="row">
                             <div class="col-md-10">
-                                <input type="hidden" name="ImageHeight" id="ImageHeight" />
+                              
                                 <div id="sliderHeight">
                                     <div id="sliderHeightHandle" class="ui-slider-handle myslider"></div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <input type="text" name="imageHeight" style="width:50px"  id="imageHeightTxt" />
+                                <input type="text" name="imageHeight" style="width:50px" id="imageHeightTxt" />
                             </div>
                         </div>
                     </td>
@@ -91,16 +92,6 @@
                 </tr>
             </table>
 
-
-
         </div>
     </div>
-
-
-
-
-
-
-
-
 }

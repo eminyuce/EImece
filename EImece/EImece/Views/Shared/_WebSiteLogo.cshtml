@@ -1,6 +1,6 @@
 ﻿@model List<Setting>
 
- 
+
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
@@ -13,36 +13,15 @@
         var webSiteLogo = Model.FirstOrDefault();
         var companyName = Model.Skip(1).FirstOrDefault();
         string companyNametxt = companyName.SettingValue;
-        string fileName = webSiteLogo.SettingValue;
-        string fullPath = Path.Combine(ApplicationConfigs.ServerMapPath, fileName);
+        string fullPath = Path.Combine(ApplicationConfigs.ServerMapPath, webSiteLogo.SettingValue);
         var isFullFileExits = File.Exists(fullPath);
-        string thumbPath = "/thb" + fileName + "";
-        string partThumb1 = Path.Combine(ApplicationConfigs.ServerMapPath, "thumbs");
-        string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+        string partThumb2 = Path.Combine(Path.Combine(ApplicationConfigs.ServerMapPath, "thumbs"), "thb" + webSiteLogo.SettingValue);
         var isThump2FileExits = File.Exists(partThumb2);
-
-        if (isThumb && isThump2FileExits)
-        {
 
             <a href="/">
                 <img alt="@companyNametxt" src="@partThumb2.Replace("~","")" />
             </a>
-        }
-        else  if (isFullFileExits)
-        {
-            <a href="/">
-                <img  alt="@companyNametxt" src="@fullPath.Replace("~","")" />
-
-            </a>
-        }
-
     }
-    else
-    {
-        @String.Format("NO LOGO")
-    }
-
-
 }
 
 
