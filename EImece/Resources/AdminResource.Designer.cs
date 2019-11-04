@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to adminhome.
+        ///   Looks up a localized string similar to AdminHome.
         /// </summary>
         public static string AdminHome {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to adminsettings.
+        ///   Looks up a localized string similar to AdminSettings.
         /// </summary>
         public static string AdminSettings {
             get {
@@ -484,7 +484,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to lists.
+        ///   Looks up a localized string similar to Lists.
         /// </summary>
         public static string Lists {
             get {
@@ -610,7 +610,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to menus.
+        ///   Looks up a localized string similar to Menus.
         /// </summary>
         public static string Menus {
             get {
@@ -682,7 +682,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to settings.
+        ///   Looks up a localized string similar to NormalSettings.
         /// </summary>
         public static string NormalSettings {
             get {
@@ -754,7 +754,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to privacypolicy.
+        ///   Looks up a localized string similar to Privacypolicy.
         /// </summary>
         public static string Privacypolicy {
             get {
@@ -772,7 +772,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to productcategories.
+        ///   Looks up a localized string similar to ProductCategories.
         /// </summary>
         public static string ProductCategories {
             get {
@@ -844,7 +844,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to templates.
+        ///   Looks up a localized string similar to ProductDynamicTemplates.
         /// </summary>
         public static string ProductDynamicTemplates {
             get {
@@ -862,7 +862,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to products.
+        ///   Looks up a localized string similar to Products.
         /// </summary>
         public static string Products {
             get {
@@ -979,7 +979,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to stories.
+        ///   Looks up a localized string similar to Stories.
         /// </summary>
         public static string Stories {
             get {
@@ -997,7 +997,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to storycategories.
+        ///   Looks up a localized string similar to StoryCategories.
         /// </summary>
         public static string StoryCategories {
             get {
@@ -1051,7 +1051,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to tagcategories.
+        ///   Looks up a localized string similar to TagCategories.
         /// </summary>
         public static string TagCategories {
             get {
@@ -1078,7 +1078,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to tags.
+        ///   Looks up a localized string similar to Tags.
         /// </summary>
         public static string Tags {
             get {
@@ -1168,7 +1168,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to websitelogo.
+        ///   Looks up a localized string similar to WebSiteLogo.
         /// </summary>
         public static string WebSiteLogo {
             get {
