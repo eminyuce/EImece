@@ -7,20 +7,16 @@
         Model.Product.ProductTags : new List<ProductTag>();
 }
 
-<h2>_pProductTags</h2>
-
 
 @foreach (TagCategory tagCategory in tagCategories)
 {
-    <h3>
-        @tagCategory.Name
-    </h3>
-    <div>
+  
+    <span class="tags-checkboxes-flow">
         @foreach (var tag in tagCategory.Tags)
         {
-            <div>
-                <input type="checkbox" @String.Format("{0}", selectedTags.Any(t => t.TagId == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" /> @tag.Name
-            </div>
+            <span>
+                <input  type="checkbox" @String.Format("{0}", selectedTags.Any(t => t.TagId == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" /> @tag.Name
+            </span>
         }
-    </div>
+    </span>
 }

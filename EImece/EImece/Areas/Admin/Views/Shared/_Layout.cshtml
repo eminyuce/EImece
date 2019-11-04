@@ -60,7 +60,7 @@
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="~/Content/checkBoxStyle.css" rel="stylesheet" />
-
+    <link href="~/Content/adminSite.css" rel="stylesheet" />
 
 
 </head>
@@ -81,7 +81,7 @@
                 
                 <ul class="nav navbar-nav">
                     <li>
-                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+                        @Html.ActionLink(AdminResource.Hello +" " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
                     </li>
                 </ul>
 
@@ -94,22 +94,22 @@
                     }
                     <li>
                         <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
-                            Refresh <span class="glyphicon glyphicon-refresh"></span>
+                            @AdminResource.Refresh <span class="glyphicon glyphicon-refresh"></span>
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })">
-                            Admin Home
+                            @AdminResource.AdminHome
                             <span class="glyphicon glyphicon-user"></span>
                         </a>
                     </li>
                     <li>
                         <a href="/" target="_blank">
-                            Web Site <span class="glyphicon glyphicon-globe"></span>
+                            @AdminResource.WebSite <span class="glyphicon glyphicon-globe"></span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:document.getElementById('logoutForm').submit()">Logout <span class="glyphicon glyphicon-log-out"></span></a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
                         @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                         {
                             @Html.AntiForgeryToken()
@@ -158,48 +158,48 @@
 
         <ul class="nav navbar-nav pull-right">
 
-            <li>@Html.ActionLink("Menus", "Index", "Menus", new { area = "admin" }, null)</li>
-            <li>@Html.ActionLink("MainPageImages", "Index", "MainPageImages", new { area = "admin" }, null)</li>
+            <li>@Html.ActionLink(AdminResource.Menus, "Index", "Menus", new { area = "admin" }, null)</li>
+            <li>@Html.ActionLink(AdminResource.MainPageImages, "Index", "MainPageImages", new { area = "admin" }, null)</li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink("Products", "Index", "Products", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Product Categories", "Index", "ProductCategories", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Product Dynamic Templates", "Index", "Templates", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("Lists", "Index", "Lists", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.Products, "Index", "Products", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.ProductCategories, "Index", "ProductCategories", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.ProductDynamicTemplates, "Index", "Templates", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.Lists, "Index", "Lists", new { area = "admin" }, null)</li>
                 </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink("Tags", "Index", "Tags", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("TagCategories", "Index", "TagCategories", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.Tags, "Index", "Tags", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.TagCategories, "Index", "TagCategories", new { area = "admin" }, null)</li>
                 </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stories <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink("Stories", "Index", "Stories", new { area = "admin" }, null)</li>
-                    <li>@Html.ActionLink("StoryCategories", "Index", "StoryCategories", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.Stories, "Index", "Stories", new { area = "admin" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.StoryCategories, "Index", "StoryCategories", new { area = "admin" }, null)</li>
                 </ul>
             </li>
-            <li>@Html.ActionLink("Subscribers", "Index", "Subscribers", new { area = "admin" }, null)</li>
+            <li>@Html.ActionLink(AdminResource.Subscribers, "Index", "Subscribers", new { area = "admin" }, null)</li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     @if (UserRoleHelper.IsAdminManagementRoles())
                     {
-                        <li>@Html.ActionLink("MailTemplates", "Index", "MailTemplates", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink("Admin Settings", "Index", "AdminSettings", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink("Normal Settings", "Index", "Settings", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink("Web Site Logo", "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink("Privacy Policy", "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink("Terms & Conditions", "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.NormalSettings, "Index", "Settings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.WebSiteLogo, "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.Privacypolicy, "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.TermsConditions, "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
                     }
 
                 </ul>
             </li>
-            <li>@Html.ActionLink("Users Management", "Index", "Users", new { area = "admin" }, null)</li>
+            <li>@Html.ActionLink(AdminResource.UsersManagement, "Index", "Users", new { area = "admin" }, null)</li>
         </ul>
             
         </div>

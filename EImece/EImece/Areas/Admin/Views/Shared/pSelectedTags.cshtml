@@ -6,23 +6,16 @@
 }
 @foreach (TagCategory tagCategory in tagCategories)
 {
-    <h3>
-        @tagCategory.Name   
-    </h3>
-    foreach (var tag in tagCategory.Tags)
-    {
-        <div class="checkbox checkbox-danger">
-
-            <input id="@String.Format("checkbox{0}",tag.Id)"  name="tags"  @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
-
+    <span class="tags-checkboxes-flow">
+        @foreach (var tag in tagCategory.Tags)
+        {
+        <span class="checkbox checkbox-danger">
+            <input id="@String.Format("checkbox{0}",tag.Id)" name="tags" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
             <label for="@String.Format("checkbox{0}",tag.Id)">
-
                 @tag.Name
-
             </label>
+        </span>
 
-        </div>
-
-    }
-}
- 
+        }
+    </span>
+        }

@@ -531,3 +531,6 @@ input[name='checkboxGrid'] {
     color: #fff; /* active text color */
     background-color: #a94442; /* active bg color */
 }
+.tags-checkboxes-flow > input{
+    display:inline;
+}

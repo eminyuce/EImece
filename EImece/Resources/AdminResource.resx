@@ -417,4 +417,76 @@
   <data name="SaveButtonAndCloseText" xml:space="preserve">
     <value>Save and Close</value>
   </data>
+  <data name="AdminHome" xml:space="preserve">
+    <value>adminhome</value>
+  </data>
+  <data name="AdminSettings" xml:space="preserve">
+    <value>adminsettings</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>merhaba</value>
+  </data>
+  <data name="Lists" xml:space="preserve">
+    <value>lists</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Menus" xml:space="preserve">
+    <value>menus</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="NormalSettings" xml:space="preserve">
+    <value>settings</value>
+  </data>
+  <data name="Privacypolicy" xml:space="preserve">
+    <value>privacypolicy</value>
+  </data>
+  <data name="ProductCategories" xml:space="preserve">
+    <value>productcategories</value>
+  </data>
+  <data name="ProductDynamicTemplates" xml:space="preserve">
+    <value>templates</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>products</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Stories" xml:space="preserve">
+    <value>stories</value>
+  </data>
+  <data name="StoryCategories" xml:space="preserve">
+    <value>storycategories</value>
+  </data>
+  <data name="TagCategories" xml:space="preserve">
+    <value>tagcategories</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>tags</value>
+  </data>
+  <data name="TermsConditions" xml:space="preserve">
+    <value>TermsConditions</value>
+  </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>UsersManagement</value>
+  </data>
+  <data name="WebSite" xml:space="preserve">
+    <value>Web Site</value>
+  </data>
+  <data name="WebSiteLogo" xml:space="preserve">
+    <value>websitelogo</value>
+  </data>
 </root>

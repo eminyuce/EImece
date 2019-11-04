@@ -280,40 +280,47 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
             String imageTag = "";
-            if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
+            if (entity != null)
+            {
+                if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                 imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
             }
-            else
-            {
-                //  imageTag = "Test";
-            }
+               }
 
             return imageTag;
         }
         public static String GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             String imageTag = "";
-
-            String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
+            if (entity != null)
+            {
+                String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
             if (!String.IsNullOrEmpty(imagePath))
             {
                 imageTag = String.Format("<img src='{0}' alt='{1}'   />",
                     imagePath, entity.Name, width, height).ToLower();
             }
-
+            }
 
             return imageTag;
         }
         public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
-            if (fileStorageId > 0)
+            if (entity != null)
+            {
+                if (fileStorageId > 0)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageSize = String.Format("w{0}h{1}", width, height);
                 var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
                 String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { imageSize, id = imageId });
                 return imagePath;
+            }
+            else
+            {
+                return String.Empty;
+            }
             }
             else
             {
@@ -341,24 +348,32 @@ namespace EImece.Domain.Helpers.Extensions
         }
         public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
         {
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            var imageId = String.Format("{0}.jpg", fileStorage.Id);
-            String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
-            return imagePath;
+            if (fileStorage != null)
+            {
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                var imageId = String.Format("{0}.jpg", fileStorage.Id);
+                String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
+                return imagePath;
+
+            }
+            return "";
         }
 
         public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "")
         {
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            if (String.IsNullOrEmpty(categoryName))
+            if (entity != null)
             {
-                return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity) }, protocol);
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                if (String.IsNullOrEmpty(categoryName))
+                {
+                    return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity) }, protocol);
+                }
+                else
+                {
+                    return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity) }, protocol);
+                }
             }
-            else
-            {
-                return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity) }, protocol);
-            }
-
+            return "";
         }
     }
 }
