@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminGeneralSettings.
+        ///   Looks up a localized string similar to Admin Genel Ayarlar.
         /// </summary>
         public static string AdminGeneralSettings {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminHome.
+        ///   Looks up a localized string similar to Giriş sayfası.
         /// </summary>
         public static string AdminHome {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for Products, Stories, Menus and more.
+        ///   Looks up a localized string similar to Arama.....
         /// </summary>
         public static string AdminMainSeachPlaceHolder {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminSettings.
+        ///   Looks up a localized string similar to Admin Ayarlari.
         /// </summary>
         public static string AdminSettings {
             get {
@@ -106,7 +106,10 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All.
+        ///   Looks up a localized string similar to Search Results
+        ///Web results
+        ///
+        ///Tümü.
         /// </summary>
         public static string AllProductLinkText {
             get {
@@ -115,7 +118,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Iptal.
+        ///   Looks up a localized string similar to İptal.
         /// </summary>
         public static string ButtonCancel {
             get {
@@ -133,7 +136,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Password.
+        ///   Looks up a localized string similar to Şifre değiştir.
         /// </summary>
         public static string ChangePassword {
             get {
@@ -142,7 +145,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear.
+        ///   Looks up a localized string similar to Temizle.
         /// </summary>
         public static string Clear {
             get {
@@ -151,7 +154,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close.
+        ///   Looks up a localized string similar to Kapat.
         /// </summary>
         public static string Close {
             get {
@@ -160,7 +163,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm new password.
+        ///   Looks up a localized string similar to Yeni şifreyi onayla.
         /// </summary>
         public static string ConfirmNewPassword {
             get {
@@ -169,7 +172,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CreatedDate.
+        ///   Looks up a localized string similar to Oluşturma Tarihi.
         /// </summary>
         public static string CreatedDate {
             get {
@@ -178,7 +181,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current password.
+        ///   Looks up a localized string similar to Şimdiki Şifre.
         /// </summary>
         public static string CurrentPassword {
             get {
@@ -187,7 +190,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content Description.
+        ///   Looks up a localized string similar to Içerik açıklaması.
         /// </summary>
         public static string Description {
             get {
@@ -196,7 +199,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discount.
+        ///   Looks up a localized string similar to İndirim.
         /// </summary>
         public static string Discount {
             get {
@@ -205,7 +208,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
+        ///   Looks up a localized string similar to E-posta.
         /// </summary>
         public static string Email {
             get {
@@ -214,7 +217,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General Description.
+        ///   Looks up a localized string similar to Genel açıklama.
         /// </summary>
         public static string EntityDescriptionPage {
             get {
@@ -223,7 +226,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Short Properties.
+        ///   Looks up a localized string similar to Kısa Özellikler.
         /// </summary>
         public static string EntityShortFields {
             get {
@@ -241,7 +244,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Existing Main Image.
+        ///   Looks up a localized string similar to Mevcut Ana Resim.
         /// </summary>
         public static string ExistingMainImageText {
             get {
@@ -250,7 +253,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export To Excel File.
+        ///   Looks up a localized string similar to Excel Dosyasına Aktar.
         /// </summary>
         public static string ExportToExcel {
             get {
@@ -259,7 +262,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Uploading Page.
+        ///   Looks up a localized string similar to Dosya Yükleme Sayfası.
         /// </summary>
         public static string FileUploadingPage {
             get {
@@ -268,7 +271,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate Selected Records.
+        ///   Looks up a localized string similar to Seçilen Kayıtları Etkinleştir.
         /// </summary>
         public static string GridActiveSelectedButtonText {
             get {
@@ -277,7 +280,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DeActivate Selected Records.
+        ///   Looks up a localized string similar to Seçilen Kayıtları Devre Dışı Bırak.
         /// </summary>
         public static string GridDeActiveSelectedButtonText {
             get {
@@ -286,7 +289,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Selected Records.
+        ///   Looks up a localized string similar to Seçilen Kayıtları Sil.
         /// </summary>
         public static string GridDeleteSelectedButtonText {
             get {
@@ -295,7 +298,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Sil.
         /// </summary>
         public static string GridDeleteText {
             get {
@@ -304,7 +307,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deselect All.
+        ///   Looks up a localized string similar to Tüm seçimleri kaldır.
         /// </summary>
         public static string GridDeSelectAllButtonText {
             get {
@@ -313,7 +316,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detail.
+        ///   Looks up a localized string similar to Detay.
         /// </summary>
         public static string GridDetailText {
             get {
@@ -322,7 +325,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Düzenle.
         /// </summary>
         public static string GridEditText {
             get {
@@ -331,7 +334,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images.
+        ///   Looks up a localized string similar to Resimler.
         /// </summary>
         public static string GridImagesText {
             get {
@@ -340,7 +343,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image.
+        ///   Looks up a localized string similar to Resim.
         /// </summary>
         public static string GridMainPageImageText {
             get {
@@ -349,7 +352,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NO Image.
+        ///   Looks up a localized string similar to Resim Yok.
         /// </summary>
         public static string GridNoMainPageImageText {
             get {
@@ -358,7 +361,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Position.
+        ///   Looks up a localized string similar to Konumu Düzenle.
         /// </summary>
         public static string GridOrderingAllButtonText {
             get {
@@ -367,7 +370,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Paging.
+        ///   Looks up a localized string similar to Sayfalama.
         /// </summary>
         public static string GridPagingDropDownText {
             get {
@@ -376,7 +379,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Record Number.
+        ///   Looks up a localized string similar to Toplam Kayit.
         /// </summary>
         public static string GridResultRecordNumber {
             get {
@@ -385,7 +388,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Arama.
         /// </summary>
         public static string GridSearchButtonText {
             get {
@@ -394,7 +397,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select All.
+        ///   Looks up a localized string similar to Hepsini seç.
         /// </summary>
         public static string GridSelectAllButtonText {
             get {
@@ -403,7 +406,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to merhaba.
+        ///   Looks up a localized string similar to Merhaba.
         /// </summary>
         public static string Hello {
             get {
@@ -412,7 +415,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images.
+        ///   Looks up a localized string similar to Resimler.
         /// </summary>
         public static string Images {
             get {
@@ -421,7 +424,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image.
+        ///   Looks up a localized string similar to Resim.
         /// </summary>
         public static string ImageState {
             get {
@@ -430,7 +433,8 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is Active.
+        ///   Looks up a localized string similar to Aktif Mi
+        ///Aktif Mi?.
         /// </summary>
         public static string IsActive {
             get {
@@ -439,7 +443,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsCampaign.
+        ///   Looks up a localized string similar to Kampanyada mı?.
         /// </summary>
         public static string IsCampaign {
             get {
@@ -493,7 +497,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logout.
+        ///   Looks up a localized string similar to Çıkış Yap.
         /// </summary>
         public static string Logout {
             get {
@@ -520,7 +524,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MailSubject.
+        ///   Looks up a localized string similar to Posta Konusu.
         /// </summary>
         public static string MailSubject {
             get {
@@ -529,7 +533,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mail subject should have proper error message.
+        ///   Looks up a localized string similar to Posta konusunun uygun hata mesajı olmalıdır.
         /// </summary>
         public static string MailSubjectPropertyErrorMessage {
             get {
@@ -538,7 +542,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mail Subject is required.
+        ///   Looks up a localized string similar to Posta Konusu Zorunlu.
         /// </summary>
         public static string MailSubjectPropertyRequiredErrorMessage {
             get {
@@ -547,7 +551,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MailTemplates.
+        ///   Looks up a localized string similar to Posta Şablonları.
         /// </summary>
         public static string MailTemplates {
             get {
@@ -556,7 +560,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main Page Image.
+        ///   Looks up a localized string similar to Ana Sayfa Resmi.
         /// </summary>
         public static string MainImageId {
             get {
@@ -565,7 +569,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MainPage.
+        ///   Looks up a localized string similar to Ana Sayfa.
         /// </summary>
         public static string MainPage {
             get {
@@ -574,7 +578,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MainPageImages.
+        ///   Looks up a localized string similar to Ana Sayfa Resimleri.
         /// </summary>
         public static string MainPageImages {
             get {
@@ -592,7 +596,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuLink.
+        ///   Looks up a localized string similar to Menu Link.
         /// </summary>
         public static string MenuLink {
             get {
@@ -610,7 +614,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menus.
+        ///   Looks up a localized string similar to Menuler.
         /// </summary>
         public static string Menus {
             get {
@@ -619,7 +623,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot select same menu for parent.
+        ///   Looks up a localized string similar to Ebeveyn için aynı menüyü seçemezsiniz.
         /// </summary>
         public static string MenuSameSelectionErrorMessage {
             get {
@@ -628,7 +632,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuTreeName.
+        ///   Looks up a localized string similar to Menü Ağacı Adı.
         /// </summary>
         public static string MenuTreeName {
             get {
@@ -637,7 +641,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Isim.
         /// </summary>
         public static string Name {
             get {
@@ -646,7 +650,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name cannot be longer than 500 characters 1.
+        ///   Looks up a localized string similar to İsim 500 karakterden uzun olamaz.
         /// </summary>
         public static string NamePropertyErrorMessage {
             get {
@@ -655,7 +659,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name is required 1.
+        ///   Looks up a localized string similar to İsim Zorunlu.
         /// </summary>
         public static string NamePropertyRequiredErrorMessage {
             get {
@@ -664,7 +668,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New password.
+        ///   Looks up a localized string similar to Yeni Şifre.
         /// </summary>
         public static string NewPassword {
             get {
@@ -673,7 +677,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Record.
+        ///   Looks up a localized string similar to Yeni giriş.
         /// </summary>
         public static string NewRecordText {
             get {
@@ -682,7 +686,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NormalSettings.
+        ///   Looks up a localized string similar to Normal Ayarlar.
         /// </summary>
         public static string NormalSettings {
             get {
@@ -691,7 +695,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Search Results For.
+        ///   Looks up a localized string similar to sonuç bulunamadı..
         /// </summary>
         public static string NoSearchResultsText {
             get {
@@ -700,7 +704,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note.
+        ///   Looks up a localized string similar to Not.
         /// </summary>
         public static string Note {
             get {
@@ -709,7 +713,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PageTheme.
+        ///   Looks up a localized string similar to Sayfa Teması.
         /// </summary>
         public static string PageTheme {
             get {
@@ -718,7 +722,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please Select Your Menu Category From Tree.
+        ///   Looks up a localized string similar to Lütfen Menü Kategorinizi Ağaçtan Seçin.
         /// </summary>
         public static string PleaseSelectYourMenuCategoryFromTree {
             get {
@@ -727,7 +731,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please Select Your Product Category From Tree.
+        ///   Looks up a localized string similar to Lütfen Ağaçtan Ürün Kategorinizi Seçiniz.
         /// </summary>
         public static string PleaseSelectYourProductCategoryFromTree {
             get {
@@ -736,7 +740,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position.
+        ///   Looks up a localized string similar to Pozisyon.
         /// </summary>
         public static string Position {
             get {
@@ -745,7 +749,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Price.
+        ///   Looks up a localized string similar to Fiyat.
         /// </summary>
         public static string Price {
             get {
@@ -754,7 +758,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privacypolicy.
+        ///   Looks up a localized string similar to Gizlilik Politikası.
         /// </summary>
         public static string Privacypolicy {
             get {
@@ -763,7 +767,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product.
+        ///   Looks up a localized string similar to Ürün.
         /// </summary>
         public static string Product {
             get {
@@ -772,7 +776,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductCategories.
+        ///   Looks up a localized string similar to Ürün Kategorileri.
         /// </summary>
         public static string ProductCategories {
             get {
@@ -781,7 +785,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductCategory.
+        ///   Looks up a localized string similar to Ürün Kategorisi.
         /// </summary>
         public static string ProductCategory {
             get {
@@ -790,7 +794,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductCategoryDiscountPercantage.
+        ///   Looks up a localized string similar to Ürün Kategorisi İndirim Yüzdesi.
         /// </summary>
         public static string ProductCategoryDiscountPercantage {
             get {
@@ -799,7 +803,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category Name.
+        ///   Looks up a localized string similar to Kategori adı.
         /// </summary>
         public static string ProductCategoryId {
             get {
@@ -808,7 +812,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please Enter Category.
+        ///   Looks up a localized string similar to Lütfen Kategori Girin.
         /// </summary>
         public static string ProductCategoryIdErrorMessage {
             get {
@@ -826,7 +830,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductCategoryTreeName.
+        ///   Looks up a localized string similar to Ürün Kategorisi Ağaç Adı.
         /// </summary>
         public static string ProductCategoryTreeName {
             get {
@@ -835,7 +839,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductCode.
+        ///   Looks up a localized string similar to Ürün Kodu.
         /// </summary>
         public static string ProductCode {
             get {
@@ -844,7 +848,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductDynamicTemplates.
+        ///   Looks up a localized string similar to Ürün Dinamik Şablonları.
         /// </summary>
         public static string ProductDynamicTemplates {
             get {
@@ -853,7 +857,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product Page .
+        ///   Looks up a localized string similar to Ürün Sayfası.
         /// </summary>
         public static string ProductPageTitle {
             get {
@@ -862,7 +866,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Products.
+        ///   Looks up a localized string similar to ürünler.
         /// </summary>
         public static string Products {
             get {
@@ -871,7 +875,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot select select product category for parent.
+        ///   Looks up a localized string similar to ProductSameSelectionErrorMessage.
         /// </summary>
         public static string ProductSameSelectionErrorMessage {
             get {
@@ -889,7 +893,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh.
+        ///   Looks up a localized string similar to Tazele.
         /// </summary>
         public static string Refresh {
             get {
@@ -898,7 +902,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save and Close.
+        ///   Looks up a localized string similar to Kayit Et ve Kapat.
         /// </summary>
         public static string SaveButtonAndCloseText {
             get {
@@ -907,7 +911,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Kayıt.
         /// </summary>
         public static string SaveButtonText {
             get {
@@ -916,7 +920,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Results.
+        ///   Looks up a localized string similar to Arama Sonuçları.
         /// </summary>
         public static string SearchResults {
             get {
@@ -934,7 +938,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected Category:.
+        ///   Looks up a localized string similar to Seçilen Kategori:.
         /// </summary>
         public static string SelectedCategory {
             get {
@@ -943,7 +947,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingKey.
+        ///   Looks up a localized string similar to Ayar Anahtar Kelimesi.
         /// </summary>
         public static string SettingKey {
             get {
@@ -952,7 +956,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingValue.
+        ///   Looks up a localized string similar to Ayar değeri.
         /// </summary>
         public static string SettingValue {
             get {
@@ -961,7 +965,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to State.
+        ///   Looks up a localized string similar to Durum.
         /// </summary>
         public static string State {
             get {
@@ -970,7 +974,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Static.
+        ///   Looks up a localized string similar to Sabitler.
         /// </summary>
         public static string Static {
             get {
@@ -979,7 +983,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stories.
+        ///   Looks up a localized string similar to Bloglar.
         /// </summary>
         public static string Stories {
             get {
@@ -988,7 +992,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Story.
+        ///   Looks up a localized string similar to Blog.
         /// </summary>
         public static string Story {
             get {
@@ -1087,7 +1091,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Template Name.
+        ///   Looks up a localized string similar to Şablon adı.
         /// </summary>
         public static string TemplateId {
             get {
@@ -1096,7 +1100,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Templates.
+        ///   Looks up a localized string similar to Şablonlar.
         /// </summary>
         public static string Templates {
             get {
@@ -1105,7 +1109,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TemplateXml.
+        ///   Looks up a localized string similar to Xml Şablon.
         /// </summary>
         public static string TemplateXml {
             get {
@@ -1114,7 +1118,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TermsConditions.
+        ///   Looks up a localized string similar to Şartlar ve koşullar.
         /// </summary>
         public static string TermsConditions {
             get {
@@ -1123,7 +1127,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UpdatedDate.
+        ///   Looks up a localized string similar to Güncelleme Tarihi.
         /// </summary>
         public static string UpdatedDate {
             get {
@@ -1132,7 +1136,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Users.
+        ///   Looks up a localized string similar to Kullanıcılar.
         /// </summary>
         public static string Users {
             get {
@@ -1141,7 +1145,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UsersManagement.
+        ///   Looks up a localized string similar to Kullanıcı Yönetimi.
         /// </summary>
         public static string UsersManagement {
             get {
@@ -1150,7 +1154,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VideoUrl.
+        ///   Looks up a localized string similar to Video Url.
         /// </summary>
         public static string VideoUrl {
             get {
@@ -1168,7 +1172,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebSiteLogo.
+        ///   Looks up a localized string similar to Web Site Logo.
         /// </summary>
         public static string WebSiteLogo {
             get {

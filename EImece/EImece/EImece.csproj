@@ -714,6 +714,7 @@
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Properties\PublishProfiles\SecondWebSite.pubxml" />
     <None Include="Properties\PublishProfiles\ThirdOne.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />

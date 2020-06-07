@@ -65,7 +65,11 @@ namespace EImece.Domain.Helpers
             {
                 try
                 {
-                    id = viewContext.Controller.ValueProvider.GetValue("id").RawValue.ToStr();
+                   var valueProviderResult = viewContext.Controller.ValueProvider.GetValue("id");
+                    if(valueProviderResult!=null)
+                    {
+                        id = valueProviderResult.RawValue.ToStr();
+                    }
                 }
                 catch
                 {
