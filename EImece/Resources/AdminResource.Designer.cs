@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giriş sayfası.
+        ///   Looks up a localized string similar to Giriş Sayfası.
         /// </summary>
         public static string AdminHome {
             get {
@@ -106,10 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Results
-        ///Web results
-        ///
-        ///Tümü.
+        ///   Looks up a localized string similar to AllProductLinkText.
         /// </summary>
         public static string AllProductLinkText {
             get {
@@ -506,7 +503,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MailBody.
+        ///   Looks up a localized string similar to E-Posta İçerik.
         /// </summary>
         public static string MailBody {
             get {
@@ -515,7 +512,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Body is required.
+        ///   Looks up a localized string similar to İçerik Zorunlu.
         /// </summary>
         public static string MailBodyPropertyRequiredErrorMessage {
             get {
@@ -677,7 +674,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yeni giriş.
+        ///   Looks up a localized string similar to Yeni Giriş.
         /// </summary>
         public static string NewRecordText {
             get {
@@ -866,7 +863,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ürünler.
+        ///   Looks up a localized string similar to Ürünler.
         /// </summary>
         public static string Products {
             get {
@@ -929,7 +926,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to results were found for the search for.
+        ///   Looks up a localized string similar to Arama sonucu:.
         /// </summary>
         public static string SearchResultsText {
             get {
@@ -952,6 +949,15 @@ namespace Resources {
         public static string SettingKey {
             get {
                 return ResourceManager.GetString("SettingKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ayarlar.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
@@ -1001,7 +1007,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StoryCategories.
+        ///   Looks up a localized string similar to Blog Kategorileri.
         /// </summary>
         public static string StoryCategories {
             get {
@@ -1010,7 +1016,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StoryCategory.
+        ///   Looks up a localized string similar to Blog Kategorisi.
         /// </summary>
         public static string StoryCategory {
             get {
@@ -1028,7 +1034,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a Story Category.
+        ///   Looks up a localized string similar to Bir Blog Kategorisi seçin.
         /// </summary>
         public static string StoryCategoryIdErrorMessage {
             get {
@@ -1037,7 +1043,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subscribers.
+        ///   Looks up a localized string similar to Aboneler.
         /// </summary>
         public static string Subscribers {
             get {
@@ -1046,7 +1052,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tag.
+        ///   Looks up a localized string similar to Etiket.
         /// </summary>
         public static string Tag {
             get {
@@ -1055,7 +1061,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TagCategories.
+        ///   Looks up a localized string similar to Etiket Kategorileri.
         /// </summary>
         public static string TagCategories {
             get {
@@ -1064,7 +1070,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TagCategory.
+        ///   Looks up a localized string similar to Etiket Kategorisi.
         /// </summary>
         public static string TagCategory {
             get {
@@ -1082,7 +1088,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags.
+        ///   Looks up a localized string similar to Etiketler.
         /// </summary>
         public static string Tags {
             get {

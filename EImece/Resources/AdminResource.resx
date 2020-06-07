@@ -160,7 +160,7 @@
     <value>Hepsini seç</value>
   </data>
   <data name="NewRecordText" xml:space="preserve">
-    <value>Yeni giriş</value>
+    <value>Yeni Giriş</value>
   </data>
   <data name="SaveButtonText" xml:space="preserve">
     <value>Kayıt</value>
@@ -275,7 +275,7 @@ Aktif Mi?</value>
     <value>StoryCategoryId</value>
   </data>
   <data name="StoryCategoryIdErrorMessage" xml:space="preserve">
-    <value>Select a Story Category</value>
+    <value>Bir Blog Kategorisi seçin</value>
   </data>
   <data name="TemplateXml" xml:space="preserve">
     <value>Xml Şablon</value>
@@ -314,10 +314,7 @@ Aktif Mi?</value>
     <value>Ürün Sayfası</value>
   </data>
   <data name="AllProductLinkText" xml:space="preserve">
-    <value>Search Results
-Web results
-
-Tümü</value>
+    <value>AllProductLinkText</value>
   </data>
   <data name="IsCampaign" xml:space="preserve">
     <value>Kampanyada mı?</value>
@@ -347,13 +344,13 @@ Tümü</value>
     <value>Blog</value>
   </data>
   <data name="StoryCategory" xml:space="preserve">
-    <value>StoryCategory</value>
+    <value>Blog Kategorisi</value>
   </data>
   <data name="Tag" xml:space="preserve">
-    <value>Tag</value>
+    <value>Etiket</value>
   </data>
   <data name="TagCategory" xml:space="preserve">
-    <value>TagCategory</value>
+    <value>Etiket Kategorisi</value>
   </data>
   <data name="ProductCategory" xml:space="preserve">
     <value>Ürün Kategorisi</value>
@@ -368,7 +365,7 @@ Tümü</value>
     <value>Ana Sayfa Resimleri</value>
   </data>
   <data name="Subscribers" xml:space="preserve">
-    <value>Subscribers</value>
+    <value>Aboneler</value>
   </data>
   <data name="MailTemplates" xml:space="preserve">
     <value>Posta Şablonları</value>
@@ -380,7 +377,7 @@ Tümü</value>
     <value>Arama Sonuçları</value>
   </data>
   <data name="SearchResultsText" xml:space="preserve">
-    <value>results were found for the search for</value>
+    <value>Arama sonucu:</value>
   </data>
   <data name="NoSearchResultsText" xml:space="preserve">
     <value>sonuç bulunamadı.</value>
@@ -404,10 +401,10 @@ Tümü</value>
     <value>Kullanıcılar</value>
   </data>
   <data name="MailBody" xml:space="preserve">
-    <value>MailBody</value>
+    <value>E-Posta İçerik</value>
   </data>
   <data name="MailBodyPropertyRequiredErrorMessage" xml:space="preserve">
-    <value>Body is required</value>
+    <value>İçerik Zorunlu</value>
   </data>
   <data name="MailSubject" xml:space="preserve">
     <value>Posta Konusu</value>
@@ -422,7 +419,7 @@ Tümü</value>
     <value>Kayit Et ve Kapat</value>
   </data>
   <data name="AdminHome" xml:space="preserve">
-    <value>Giriş sayfası</value>
+    <value>Giriş Sayfası</value>
   </data>
   <data name="AdminSettings" xml:space="preserve">
     <value>Admin Ayarlari</value>
@@ -464,7 +461,7 @@ Tümü</value>
     <value>Ürün Dinamik Şablonları</value>
   </data>
   <data name="Products" xml:space="preserve">
-    <value>ürünler</value>
+    <value>Ürünler</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Tazele</value>
@@ -473,13 +470,13 @@ Tümü</value>
     <value>Bloglar</value>
   </data>
   <data name="StoryCategories" xml:space="preserve">
-    <value>StoryCategories</value>
+    <value>Blog Kategorileri</value>
   </data>
   <data name="TagCategories" xml:space="preserve">
-    <value>TagCategories</value>
+    <value>Etiket Kategorileri</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
+    <value>Etiketler</value>
   </data>
   <data name="TermsConditions" xml:space="preserve">
     <value>Şartlar ve koşullar</value>
@@ -492,5 +489,8 @@ Tümü</value>
   </data>
   <data name="WebSiteLogo" xml:space="preserve">
     <value>Web Site Logo</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ayarlar</value>
   </data>
 </root>
