@@ -646,7 +646,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Isim.
+        ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string Name {
             get {
@@ -1146,6 +1146,15 @@ namespace Resources {
         public static string TermsConditions {
             get {
                 return ResourceManager.GetString("TermsConditions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Başlık.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         

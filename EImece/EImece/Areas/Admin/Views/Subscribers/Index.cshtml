@@ -50,15 +50,16 @@
 
 
     columns.Add(c => c.Name)
-           .Titled("Title")
+           .Titled(AdminResource.Name)
            .Filterable(true);
 
     columns.Add(c => c.Email)
-     .Titled("Email")
+     .Titled(AdminResource.Email)
      .Filterable(true);
 
 
     columns.Add(o => o.Note)
+   .Titled(AdminResource.Note)
    .Encoded(false).
         Sanitized(false).
         SetWidth(10).

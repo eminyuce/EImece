@@ -10,13 +10,12 @@
 
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Products";
-    var title = "Products";
     var gridName = "productGrid";
     var contents = Model;
     ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
@@ -165,7 +164,6 @@ columns.Add(r => r.ImageState
 .Encoded(false)
 .Sanitized(false)
 .Css("smallGridColumn")
-        @*.SetWidth(30) *@
 .RenderValueAs(o => GridImageColumn(o, controllerName));
 
 
