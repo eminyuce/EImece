@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geriye Dönün.
+        /// </summary>
+        public static string BackToList {
+            get {
+                return ResourceManager.GetString("BackToList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İptal.
         /// </summary>
         public static string ButtonCancel {
@@ -430,8 +439,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aktif Mi
-        ///Aktif Mi?.
+        ///   Looks up a localized string similar to Aktif Mi?.
         /// </summary>
         public static string IsActive {
             get {
@@ -1039,6 +1047,15 @@ namespace Resources {
         public static string StoryCategoryIdErrorMessage {
             get {
                 return ResourceManager.GetString("StoryCategoryIdErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blog Sayfasi.
+        /// </summary>
+        public static string StoryPageTitle {
+            get {
+                return ResourceManager.GetString("StoryPageTitle", resourceCulture);
             }
         }
         
