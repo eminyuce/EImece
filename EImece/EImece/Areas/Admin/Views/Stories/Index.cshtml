@@ -14,7 +14,6 @@
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Stories";
-    var title = "Stories";
     var gridName = "StoryGrid";
     var contents = Model;
     var baseList = contents.DownCasting<Story>();
@@ -26,12 +25,8 @@
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
 
 }
-<h2>@AdminResource.Story</h2>
+<h2>@AdminResource.Stories</h2>
 <hr class="adminLine" />
-
-
-
- 
 
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -101,7 +96,7 @@ columns.Add(c => c.Name)
 
 
     columns.Add(c => c.StoryCategory.Name)
-        .Titled("StoryCategory Name")
+        .Titled(AdminResource.StoryCategory)
         .Filterable(true);
 
 

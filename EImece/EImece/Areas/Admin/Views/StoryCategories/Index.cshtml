@@ -14,7 +14,6 @@
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "StoryCategories";
-    var title = "StoryCategories";
     var gridName = "StoryCategoryGrid";
     var contents = Model;
     var baseList = contents.DownCasting<StoryCategory>();
