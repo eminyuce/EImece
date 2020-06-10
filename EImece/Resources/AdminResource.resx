@@ -214,7 +214,7 @@
     <value>Içerik açıklaması</value>
   </data>
   <data name="ProductCategoryParentId" xml:space="preserve">
-    <value>ProductCategoryParentId</value>
+    <value>Ürün Kategorisi Iddd</value>
   </data>
   <data name="TemplateId" xml:space="preserve">
     <value>Şablon adı</value>
@@ -280,7 +280,7 @@
     <value>Xml Şablon</value>
   </data>
   <data name="TagCategoryId" xml:space="preserve">
-    <value>TagCategoryId</value>
+    <value>Etiket Kategorisi</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>E-posta</value>
@@ -379,7 +379,7 @@
     <value>Arama sonucu:</value>
   </data>
   <data name="NoSearchResultsText" xml:space="preserve">
-    <value>sonuç bulunamadı.</value>
+    <value>Sonuç bulunamadı.</value>
   </data>
   <data name="AdminMainSeachPlaceHolder" xml:space="preserve">
     <value>Arama....</value>

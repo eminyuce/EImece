@@ -6,23 +6,20 @@
     var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = "SaveOrEdit";
 }
-
-<h2>SaveOrEdit</h2>
-
+<h2>@AdminResource.TagCategory</h2>
+<hr class="adminLine" />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>TagCategory</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
 
- 
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -49,7 +46,7 @@
                 @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
             </div>
         </div>
- 
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -61,7 +58,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+       @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {

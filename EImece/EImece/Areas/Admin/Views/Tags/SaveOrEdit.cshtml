@@ -8,7 +8,8 @@
     var categories = (List<SelectListItem>)ViewBag.Categories;
 }
 
-<h2>SaveOrEdit</h2>
+<h2>@AdminResource.Tag</h2>
+<hr class="adminLine" />
 
 
 @using (Html.BeginForm())
@@ -16,25 +17,10 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Tag</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
-
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Lang, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Lang,
-   EnumHelper.GetSelectList(typeof(EImeceLanguage)),
-   null,
-   new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.TagCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -80,14 +66,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-              <input type="submit" value="@saveButtonText" class="btn btn-default" />
+                <input type="submit" value="@saveButtonText" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {

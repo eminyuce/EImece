@@ -700,7 +700,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sonuç bulunamadı..
+        ///   Looks up a localized string similar to Sonuç bulunamadı..
         /// </summary>
         public static string NoSearchResultsText {
             get {
@@ -826,7 +826,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductCategoryParentId.
+        ///   Looks up a localized string similar to Ürün Kategorisi Iddd.
         /// </summary>
         public static string ProductCategoryParentId {
             get {
@@ -1096,7 +1096,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TagCategoryId.
+        ///   Looks up a localized string similar to Etiket Kategorisi.
         /// </summary>
         public static string TagCategoryId {
             get {
