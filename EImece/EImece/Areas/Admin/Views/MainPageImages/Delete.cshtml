@@ -1,5 +1,5 @@
 ﻿@model EImece.Domain.Entities.MainPageImage
-
+@using Resources;
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -59,15 +59,16 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
- 
+
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-               @Html.ActionLink(AdminResource.BackToList, "Index")
+            @Html.ActionLink(AdminResource.BackToList, "Index")
         </div>
     }
 </div>

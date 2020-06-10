@@ -1,5 +1,5 @@
 ﻿@model EImece.Domain.Entities.TagCategory
-
+@using Resources;
 @{
     ViewBag.Title = "Delete";
 }
@@ -51,7 +51,7 @@
             @Html.DisplayFor(model => model.Position)
         </dd>
 
-         
+
 
         <dt>
             @Html.DisplayNameFor(model => model.Lang)
@@ -63,12 +63,13 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-               @Html.ActionLink(AdminResource.BackToList, "Index")
+            @Html.ActionLink(AdminResource.BackToList, "Index")
         </div>
     }
 </div>

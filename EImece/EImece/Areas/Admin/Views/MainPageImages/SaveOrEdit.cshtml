@@ -9,11 +9,13 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
+
 }
 
+<h2>@AdminResource.MainPageImages</h2>
+<hr class="adminLine" />
 
-
-<h2>SaveOrEdit</h2>
 
 <div class="row" style="padding:20px;">
 
@@ -23,103 +25,128 @@
 
         @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <h4>MainPageImage</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.Id)
-            @Html.HiddenFor(model => model.Lang)
-            @Html.HiddenFor(model => model.EntityHash)
-            @Html.HiddenFor(model => model.UpdatedDate)
-            @Html.HiddenFor(model => model.CreatedDate)
-            @Html.HiddenFor(model => model.ImageState)
-            @Html.HiddenFor(model => model.MetaKeywords)
+    <div class="form-horizontal">
 
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.CreatedDate)
+        @Html.HiddenFor(model => model.UpdatedDate)
 
+        @Html.HiddenFor(model => model.Lang)
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
+        <div class="panel with-nav-tabs panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
+                    <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
+                    <li class="Tools">
+                        <input type="submit" name="saveButton" value="@saveButtonText" style="width:150px;" class="btn btn-success" />
+                    </li>
+                    <li class="Tools">
+                        <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
+                    </li>
+                    <li class="Tools"> @Html.ActionLink(AdminResource.BackToList, "Index", null, new { @class = "btn btn-default" })</li>
+                </ul>
             </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div id="tab1default" class="tab-pane fade in active">
 
+                       
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "productCategory", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-
-             
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-5">
-                    @Html.HiddenFor(model => model.MainImageId)
-                    <input type="file" name="mainPageImageFile" />
-                    @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
-                </div>
-                <div class="col-md-5">
-                    @if (Model.MainImageId.HasValue)
-                    {
-                        <b>@ExistingMainImageText :</b>
-                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
-                    }
-                </div>
-            </div>
-
-
-            @Html.Partial("pSliderResizing", (BaseContent)Model);
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
 
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.IsActive)
-                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox checkbox-danger">
+                                    @Html.EditorFor(model => model.IsActive)
+                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                      
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-5">
+                                <input type="file" name="productImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
+                                @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-5">
+                                @if (Model.MainImageId.HasValue)
+                                {
+                                    <b>@ExistingMainImageText :</b>
+                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model)
+                                }
+                            </div>
+                        </div>
+                        @Html.Partial("pSliderResizing", (BaseContent)Model)
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.ImageState)
+                                    @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                       
+                    </div>
+                    <div class="tab-pane fade" id="tab2default">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="@saveButtonText" class="btn btn-default" />
-                </div>
-            </div>
         </div>
+
+    </div>
     }
 
 
 </div>
 
 <div>
-       @Html.ActionLink(AdminResource.BackToList, "Index")
+    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 
@@ -134,8 +161,8 @@
         $(function () {
 
 
-          
-        
+
+
         });
     </script>
 
