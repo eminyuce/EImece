@@ -112,7 +112,7 @@ columns.Add()
     columns.Add(c => c.Email)
          .Titled(AdminResource.Email)
          .Filterable(true);
- 
+
 
 
     columns.Add(o => o.FirstName)
@@ -121,7 +121,10 @@ columns.Add()
         .RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
 
 
-
+    columns.Add(o => o.Role)
+    .Encoded(false)
+    .Titled(AdminResource.Roles)
+    .RenderValueAs(o => String.Format("{0}", o.Role));
 
 
 }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)

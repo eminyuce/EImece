@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,13 +12,7 @@ namespace EImece.Models
         public EditUserViewModel() { }
 
         // Allow Initialization with an instance of ApplicationUser:
-        public EditUserViewModel(ApplicationUser user)
-        {
-            this.FirstName = user.FirstName;
-            this.LastName = user.LastName;
-            this.Email = user.Email;
-            this.Id = user.Id;
-        }
+      
         public string Id { get; set; }
      
 
@@ -31,7 +26,7 @@ namespace EImece.Models
 
         [Required]
         public string Email { get; set; }
-
+        public virtual String Role { get; set; }
         //you might want to implement jobs too, if you want to display them in your index view
     }
 }

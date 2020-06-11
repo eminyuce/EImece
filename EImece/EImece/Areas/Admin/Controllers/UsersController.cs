@@ -33,8 +33,20 @@ namespace EImece.Areas.Admin.Controllers
         {
              
  
-            var users = ApplicationDbContext.Users.AsQueryable();
-            if (!String.IsNullOrEmpty(search.Trim()))
+            //var users = ApplicationDbContext.Users.AsQueryable();
+
+            var users = from u in ApplicationDbContext.Users
+                        from ur in u.Roles
+                        join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                        select new
+                        {
+                            u.Id,
+                            Email = u.UserName,
+                            FirstName = u.FirstName,
+                            LastName = u.LastName,
+                            Role = r.Name,
+                        };
+            if (!String.IsNullOrEmpty(search))
             {
                 search = search.ToLower().Trim();
                 users = users.Where(r => r.Email.ToLower().Contains(search) || r.FirstName.ToLower().Contains(search) || r.LastName.ToLower().Contains(search));
@@ -44,7 +56,12 @@ namespace EImece.Areas.Admin.Controllers
             var model = new List<EditUserViewModel>();
             foreach (var user in users)
             {
-                var u = new EditUserViewModel(user);
+                var u = new EditUserViewModel();
+                u.FirstName = user.FirstName;
+                u.LastName = user.LastName;
+                u.Email = user.Email;
+                u.Id = user.Id;
+                u.Role = user.Role;
                 model.Add(u);
             }
             return View(model);
@@ -88,7 +105,11 @@ namespace EImece.Areas.Admin.Controllers
         {
     
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
-            var model = new EditUserViewModel(user);
+            var model = new EditUserViewModel();
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Email = user.Email;
+            model.Id = user.Id;
             ViewBag.MessageId = Message;
             return View(model);
         }
@@ -138,7 +159,12 @@ namespace EImece.Areas.Admin.Controllers
                 ViewBag.NewPassword = result.Errors.ToArray()[0].ToStr() + " ERROR is occured while generating the new password for user:"+user.Email;
             }
             AddErrors(result);
-            var model = new EditUserViewModel(user);
+            var model = new EditUserViewModel();
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Email = user.Email;
+            model.Id = user.Id;
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -151,7 +177,11 @@ namespace EImece.Areas.Admin.Controllers
         {
           
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
-            var model = new EditUserViewModel(user);
+            var model = new EditUserViewModel();
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Email = user.Email;
+            model.Id = user.Id;
             if (user == null)
             {
                 return HttpNotFound();
