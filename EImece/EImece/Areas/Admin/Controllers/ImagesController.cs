@@ -1,8 +1,5 @@
 ﻿using EImece.Domain.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -11,13 +8,13 @@ namespace EImece.Areas.Admin.Controllers
     {
         [AcceptVerbs(HttpVerbs.Get)]
         //[CustomOutputCache(CacheProfile = "CustomerImages")]
-        public ActionResult Index(String id, int width=0, int height=0)
+        public ActionResult Index(String id, int width = 0, int height = 0)
         {
             var fileStorageId = id.Replace(".jpg", "").ToInt();
             var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
             if (imageByte != null)
             {
-                return File(imageByte.ImageBytes,imageByte.ContentType);
+                return File(imageByte.ImageBytes, imageByte.ContentType);
             }
             else
             {

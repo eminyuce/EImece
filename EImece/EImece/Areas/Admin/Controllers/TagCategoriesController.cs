@@ -1,15 +1,12 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -37,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
 
             if (id == 0)
             {
-                
+
             }
             else
             {
@@ -84,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
         //
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -104,7 +101,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
 

@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using Resources;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -16,7 +13,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MenuLink))]
-        public string MenuLink   { get; set; }
+        public string MenuLink { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Static))]
         public Boolean Static { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Link))]

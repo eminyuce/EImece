@@ -1,11 +1,8 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Models.FrontModels;
 using NLog;
-using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -143,7 +140,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-           
+
             ProductCategory content = ProductCategoryService.GetSingle(id);
             var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             if (content == null)
@@ -207,7 +204,7 @@ namespace EImece.Areas.Admin.Controllers
                              ImageState = r.ImageState.ToStr(250),
                              MainImageId = r.MainImageId.ToStr(250)
                          };
-           
+
             return DownloadFile(result, String.Format("ProductCategories-{0}", GetCurrentLanguage));
 
         }

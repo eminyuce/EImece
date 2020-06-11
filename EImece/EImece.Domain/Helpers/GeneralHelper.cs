@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
@@ -9,18 +10,14 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Caching;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Collections.Specialized;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EImece.Domain.Helpers
 {
@@ -91,7 +88,7 @@ namespace EImece.Domain.Helpers
 
         public static String GetCultureCookie(HttpResponseBase request, String cultureCookieName)
         {
-           string cultureName = null;
+            string cultureName = null;
             // check the cookie first to get culture name
             HttpCookie cultureCookie = request.Cookies[cultureCookieName];
             if (cultureCookie != null)
@@ -159,7 +156,7 @@ namespace EImece.Domain.Helpers
 
                 return desc;
             }
-          
+
         }
 
         public static string GetMd5Hash(string input)
@@ -321,7 +318,7 @@ namespace EImece.Domain.Helpers
             bool flag = false;
             int counter = 0;
 
-            EXIT:
+        EXIT:
 
             for (int i = counter; i < dt.Columns.Count; i++)
             {
@@ -967,20 +964,20 @@ namespace EImece.Domain.Helpers
                 return "";
             String[] olds = { "Ğ", "ğ", "Ü", "ü", "Ş", "ş", "İ", "ı", "I", "Ö", "ö", "Ç", "ç" };
             // String[] news = { "G", "g", "U", "u", "S", "s", "I", "i", "O", "o", "C", "c" };
-            String[] news = { "G", "g", "U", "u", "S", "s", "i", "i","i", "O", "o", "C", "c" };
+            String[] news = { "G", "g", "U", "u", "S", "s", "i", "i", "i", "O", "o", "C", "c" };
 
             for (int i = 0; i < olds.Length; i++)
             {
                 text = text.Replace(olds[i], news[i]);
             }
 
-           // text = text.ToUpper();
+            // text = text.ToUpper();
 
             return text;
         }
         public static string GetUrlSeoString(string p)
         {
-             p = ConvertTurkishChars(p);
+            p = ConvertTurkishChars(p);
             //p = EncodeUTF8(p);
             return GetUrlString(p);
         }
@@ -1106,7 +1103,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        
+
 
         public static string GenerateRandomPassword(int length)
         {

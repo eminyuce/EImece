@@ -1,15 +1,10 @@
-﻿using EImece.Domain.Entities;
-using EImece.Domain.Repositories.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EImece.Domain.ApiRepositories;
 using EImece.Domain.DbContext;
-using NLog;
+using EImece.Domain.Entities;
+using EImece.Domain.Repositories.IRepositories;
 using Ninject;
-using EImece.Domain.ApiRepositories;
-using EImece.Domain.Models.UrlShortenModels;
+using NLog;
+using System.Linq;
 
 namespace EImece.Domain.Repositories
 {
@@ -28,7 +23,7 @@ namespace EImece.Domain.Repositories
         public MailTemplate GetMailTemplateByName(string templatename)
         {
             var item = GetAll().FirstOrDefault(r => r.Name.Equals(templatename));
-           
+
 
             return item;
         }

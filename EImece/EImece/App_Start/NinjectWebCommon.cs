@@ -3,40 +3,37 @@
 
 namespace EImece.App_Start
 {
-    using System;
-    using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-    using Ninject;
-    using Ninject.Web.Common;
-    using Domain.DbContext;
-    using Domain.Repositories.IRepositories;
-    using Domain.Repositories;
     using Domain;
-    using Domain.Services;
-    using Domain.Services.IServices;
-    using Domain.Helpers;
+    using Domain.ApiRepositories;
     using Domain.Caching;
-    using Domain.Helpers.EmailHelper;
+    using Domain.DbContext;
     using Domain.Factories;
     using Domain.Factories.IFactories;
-    using Microsoft.AspNet.Identity;
-    using Models;
-    using Microsoft.AspNet.Identity.Owin;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Microsoft.Owin.Security;
-    using System.Security.Principal;
-    using System.Reflection;
-    using System.Linq;
-    using Quartz.Impl;
+    using Domain.Helpers;
+    using Domain.Helpers.EmailHelper;
+    using Domain.Repositories;
+    using Domain.Repositories.IRepositories;
     using Domain.Scheduler;
-    using Quartz;
-    using System.Threading.Tasks;
-    using Domain.ApiRepositories;
+    using Domain.Services;
+    using Domain.Services.IServices;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+    using Models;
+    using Ninject;
+    using Ninject.Web.Common;
     using NLog;
+    using Quartz;
+    using Quartz.Impl;
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using System.Web;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -45,13 +42,13 @@ namespace EImece.App_Start
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -59,7 +56,7 @@ namespace EImece.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -97,47 +94,47 @@ namespace EImece.App_Start
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
 
-            kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();  
-  kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();  
-  kernel.Bind<IListService>().To<ListService>().InRequestScope(); 
-  kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();  
-  kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();  
-  kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();  
-  kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();  
-  kernel.Bind<IProductService>().To<ProductService>().InRequestScope(); 
-  kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();   
-  kernel.Bind<IStoryCategoryService>().To<StoryCategoryService>().InRequestScope(); 
-  kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();  
-  kernel.Bind<ISubscriberService>().To<SubscriberService>().InRequestScope(); 
-  kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();   
-  kernel.Bind<ITagService>().To<TagService>().InRequestScope();  
-  kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();  
-  kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope(); 
-  kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();  
-  kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();  
-  kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();  
-  kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();  
-  kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();  
-  kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope(); 
-  kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();  
-  kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();  
-  kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();  
-  kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();  
-  kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
-            kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();   
-  kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();   
-  kernel.Bind<IShortUrlRepository>().To<ShortUrlRepository>().InRequestScope();   
-  kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope(); 
-  kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();   
-  kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();   
-  kernel.Bind<IStoryTagRepository>().To<StoryTagRepository>().InRequestScope();  
-  kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();  
-  kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope(); 
-  kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();  
-  kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope(); 
+            kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
+            kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
+            kernel.Bind<IListService>().To<ListService>().InRequestScope();
+            kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();
+            kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
+            kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();
+            kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
+            kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
+            kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
+            kernel.Bind<IStoryCategoryService>().To<StoryCategoryService>().InRequestScope();
+            kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();
+            kernel.Bind<ISubscriberService>().To<SubscriberService>().InRequestScope();
+            kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
+            kernel.Bind<ITagService>().To<TagService>().InRequestScope();
+            kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
+            kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
+            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
+            kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();
+            kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
+            kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();
+            kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();
+            kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope();
+            kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
+            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
+            kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
+            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
+            kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
+            kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
+            kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
+            kernel.Bind<IShortUrlRepository>().To<ShortUrlRepository>().InRequestScope();
+            kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
+            kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
+            kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();
+            kernel.Bind<IStoryTagRepository>().To<StoryTagRepository>().InRequestScope();
+            kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();
+            kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
+            kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
+            kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope();
 
-       //        BindByReflection(kernel, typeof(IBaseEntityService<>), "Service");
-       //      BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
+            //        BindByReflection(kernel, typeof(IBaseEntityService<>), "Service");
+            //      BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
 
@@ -162,11 +159,11 @@ namespace EImece.App_Start
             {
                 StdSchedulerFactory factory = new StdSchedulerFactory();
                 // get a scheduler
-                var sched =   factory.GetScheduler();
+                var sched = factory.GetScheduler();
                 return sched;
             });
 
-          
+
             kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
               .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
               {

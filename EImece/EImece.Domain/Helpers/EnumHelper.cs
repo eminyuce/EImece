@@ -1,14 +1,11 @@
 ﻿using EImece.Domain.Models.Enums;
-using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
@@ -54,9 +51,9 @@ namespace EImece.Domain.Helpers
                 catch (Exception)
                 {
 
-                  
+
                 }
-               
+
 
             }
             return 0;
@@ -127,7 +124,7 @@ namespace EImece.Domain.Helpers
 
 
         }
-        
+
         public static string GetDisplayValue(this Enum value)
         {
             try
@@ -145,9 +142,9 @@ namespace EImece.Domain.Helpers
             catch (Exception ex)
             {
                 return String.Empty;
-            
+
             }
-          
+
         }
         public static IList<string> GetNames(Enum value)
         {

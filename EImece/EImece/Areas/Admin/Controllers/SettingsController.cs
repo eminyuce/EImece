@@ -2,10 +2,8 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.Enums;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,12 +15,18 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class SettingsController : BaseAdminController
     {
+
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Setting, bool>> whereLambda = r => r.SettingKey.ToLower().Contains(search.Trim().ToLower()) || r.SettingValue.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Setting, bool>> whereLambda = r => (r.SettingKey.ToLower().Contains(search.Trim().ToLower())
+            || r.SettingValue.ToLower().Contains(search.Trim().ToLower()));
+
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
+
+            settings = settings.Where(r => !r.SettingValue.Equals(ApplicationConfigs.Special_Page)).ToList();
+            settings = settings.Where(r => !ApplicationConfigs.AdminSetting.Equals(r.Description)).ToList();
             return View(settings);
         }
 
@@ -35,7 +39,6 @@ namespace EImece.Areas.Admin.Controllers
 
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
-
             if (id == 0)
             {
 
@@ -43,9 +46,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = SettingService.GetSingle(id);
-              
             }
-
 
             return View(content);
         }
@@ -125,6 +126,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    setting.SettingValue = ApplicationConfigs.Special_Page;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                     int contentId = setting.Id;
@@ -183,6 +185,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    setting.SettingValue = ApplicationConfigs.Special_Page;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                     int contentId = setting.Id;
@@ -297,7 +300,7 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
-         
+
             var result = from r in settings
                          select new
                          {
@@ -310,7 +313,7 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-  
+
 
             return DownloadFile(result, String.Format("Settings-{0}", GetCurrentLanguage));
 

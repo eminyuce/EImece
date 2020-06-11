@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Resources;
+﻿using System.Collections.Generic;
 
 namespace EImece.Domain.Entities
 {
     public class TagCategory : BaseEntity
     {
 
-        public  ICollection<Tag> Tags { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using EImece.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
 using EImece.Domain.Helpers.AttributeHelper;
+using System;
+using System.Text;
+using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
@@ -36,7 +33,7 @@ namespace EImece.Controllers
                 content += "Disallow: /" + Environment.NewLine;
                 content += "# Disallow Robots (Debug)" + Environment.NewLine;
             }
-       
+
             return File(Encoding.UTF8.GetBytes(content), "text/plain");
         }
     }

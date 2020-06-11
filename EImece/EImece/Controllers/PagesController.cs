@@ -1,12 +1,9 @@
 ﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {

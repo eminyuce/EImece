@@ -1,12 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AutoMapper;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using AutoMapper;
+using EImece.Domain;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 namespace EImece.Tests.Controllers
 {
     [TestClass]

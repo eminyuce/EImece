@@ -7,7 +7,7 @@ namespace EImece
 {
     public partial class Startup
     {
-        public static IDataProtectionProvider  DataProtectionProvider    { get; set; }
+        public static IDataProtectionProvider DataProtectionProvider { get; set; }
         public void Configuration(IAppBuilder app)
         {
             DataProtectionProvider = app.GetDataProtectionProvider();

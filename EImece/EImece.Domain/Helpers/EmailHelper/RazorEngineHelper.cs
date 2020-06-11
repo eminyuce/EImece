@@ -1,25 +1,17 @@
-﻿using EImece.Domain.Entities;
-using EImece.Domain.Services;
+﻿using EImece.Domain.ApiRepositories;
+using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Helpers.RazorCustomRssTemplate;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using RazorEngine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RazorEngine.Templating;
-using System.Security.Principal;
-using EImece.Domain.Services.IServices;
-using System.Web;
-using EImece.Domain.Factories.IFactories;
-using System.Web.Mvc;
-using EImece.Domain.Models.FrontModels;
-using System.Dynamic;
-using EImece.Domain.Models.AdminModels;
 using RazorEngine.Configuration;
+using RazorEngine.Templating;
+using System;
+using System.Dynamic;
 using System.IO;
-using EImece.Domain.Helpers.RazorCustomRssTemplate;
-using EImece.Domain.ApiRepositories;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -40,15 +32,16 @@ namespace EImece.Domain.Helpers.EmailHelper
         [Inject]
         public BitlyRepository BitlyRepository { get; set; }
 
-        public string ForgotPasswordEmailBody(string email,string callbackUrl)
+        public string ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ForgotPassword");
             String companyname = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
 
             var Request = HttpContext.Create().Request;
-            var baseurl =  Request.Url.Scheme + "://" + Request.Url.Authority +   Request.ApplicationPath.TrimEnd('/') + "/";
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
 
-            var model = new {
+            var model = new
+            {
                 Email = email,
                 ForgotPasswordLink = callbackUrl,
                 CompanyName = companyname,
@@ -66,7 +59,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ContactUsAboutProductInfo");
-            string groupName = string.Format("{0} | {1} | {2}","ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+            string groupName = string.Format("{0} | {1} | {2}", "ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
             String companyname = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
@@ -141,6 +134,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             return result;
         }
 
-      
+
     }
 }

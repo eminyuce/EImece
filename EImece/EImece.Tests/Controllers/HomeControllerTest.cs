@@ -1,40 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EImece;
-using EImece.Controllers;
-using EImece.Domain.Repositories.IRepositories;
-using EImece.Domain.Repositories;
+﻿using EImece.App_Start;
+using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.Models.Enums;
-using System.Linq.Expressions;
-using EImece.Domain.Services;
-using System.Data.SqlClient;
-using System.Configuration;
-using EImece.Domain;
 using EImece.Domain.Helpers;
-using System.Text.RegularExpressions;
-using EImece.Domain.Caching;
-using System.IO;
-using System.Web;
-using System.Data;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Globalization;
+using EImece.Domain.Repositories;
+using EImece.Domain.Services;
 using HtmlAgilityPack;
-using NLog;
-using GenericRepository;
-using System.Reflection;
-using EImece.Domain.Services.IServices;
-using System.Diagnostics;
-using System.Collections.Concurrent;
-using EImece.App_Start;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
-using System.Collections.Specialized;
+using NLog;
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace EImece.Tests.Controllers
 {
@@ -51,7 +40,7 @@ namespace EImece.Tests.Controllers
     {
         IKernel kernel = null;
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static void BindByReflection( Type typeOfInterface, string typeofText)
+        private static void BindByReflection(Type typeOfInterface, string typeofText)
         {
             var baseServiceTypes = Assembly.GetAssembly(typeOfInterface)
                 .GetTypes().Where(t => t.Name.Contains(typeofText)).ToList();
@@ -61,7 +50,7 @@ namespace EImece.Tests.Controllers
                 var interfaceType = type.GetInterface("I" + type.Name);
                 if (interfaceType != null)
                 {
-                    Console.WriteLine("interfaceType:" + interfaceType.Name+"  Name: "+type.Name);
+                    Console.WriteLine("interfaceType:" + interfaceType.Name + "  Name: " + type.Name);
                 }
             }
         }
@@ -126,7 +115,7 @@ namespace EImece.Tests.Controllers
             }
             return doc.DocumentNode.OuterHtml;
         }
-  
+
         [TestMethod]
         public void HtmlToFBHtmlTesting()
         {
@@ -151,19 +140,20 @@ namespace EImece.Tests.Controllers
             {
                 data[i] = Math.Pow(new Random().NextDouble(), 0.6);
             }
-            Console.WriteLine("done " +    sw.Elapsed.TotalMilliseconds.ToString());
+            Console.WriteLine("done " + sw.Elapsed.TotalMilliseconds.ToString());
             sw.Reset();
 
 
             sw.Start();
-            Parallel.For(0, size, i => {
+            Parallel.For(0, size, i =>
+            {
                 data[i] = Math.Pow(new Random().NextDouble(), 0.6);
             });
             sw.Stop();
             Console.WriteLine("done " + sw.Elapsed.TotalMilliseconds.ToString());
 
         }
-      
+
 
         [TestMethod]
         public void GetBreadCrumb()
@@ -184,7 +174,7 @@ namespace EImece.Tests.Controllers
             var db = new EImeceContext(ConnectionString);
             var MainPageImageService = new MainPageImageService(new MainPageImageRepository(db));
             var breadCrumb = MainPageImageService.GetActiveBaseContents(true, 1);
-            
+
         }
 
         [TestMethod]
@@ -234,7 +224,7 @@ QUITE
 ";
             int startIndex = validationDetail.IndexOf("RCPT TO:");
 
-            Regex regex = new Regex(@"^\d{3}",RegexOptions.Multiline);
+            Regex regex = new Regex(@"^\d{3}", RegexOptions.Multiline);
             var d = regex.Matches(validationDetail.Substring(startIndex)).Cast<Match>()
                .Select(match => match.Value)
                .ToArray();
@@ -283,23 +273,23 @@ QUITE
         [TestMethod]
         public void DateTimeOffsetParse()
         {
-        
+
             Console.WriteLine(DateTimeOffset.ParseExact("2014-12-11T04:44:16Z", "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                                        CultureInfo.InvariantCulture));
-    
+
         }
         [TestMethod]
         public void GetmenuLink()
         {
 
             Console.WriteLine(HttpUtility.UrlEncode("Maritime Reporter"));
-//            var theDate = new DateTime();
-//            string m = "20161118";
-//            DateTime.TryParseExact(m, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture,
-//System.Globalization.DateTimeStyles.None, out theDate);
-//            // "Sun, Mar 9, 2008"
-//            Console.WriteLine(theDate);
-//            Console.WriteLine(String.Format("{0:MMM d, yyyy}", theDate));
+            //            var theDate = new DateTime();
+            //            string m = "20161118";
+            //            DateTime.TryParseExact(m, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture,
+            //System.Globalization.DateTimeStyles.None, out theDate);
+            //            // "Sun, Mar 9, 2008"
+            //            Console.WriteLine(theDate);
+            //            Console.WriteLine(String.Format("{0:MMM d, yyyy}", theDate));
         }
         [TestMethod]
         public void TestParsing()
@@ -318,8 +308,8 @@ QUITE
                 var name = "";
                 if (firstComma > 0)
                 {
-                    name = secondComma > 0 ? 
-                        line.Substring(firstComma +1, secondComma - firstComma).Trim() : 
+                    name = secondComma > 0 ?
+                        line.Substring(firstComma + 1, secondComma - firstComma).Trim() :
                         line.Substring(firstComma + 1).Trim();
                 }
 
@@ -412,7 +402,7 @@ QUITE
             TimeSpan t = todayDate.Subtract(firstUsaEntrance);
 
             Console.WriteLine("Total Days of outside of USA:" + totalDayOutsideOfUSA);
-            Console.WriteLine("Total Days I spent in USA:" + (t.Days - totalDayOutsideOfUSA) + "  "+fiveYearsLaterUsaEntrance2.Subtract(firstUsaEntrance).Days);
+            Console.WriteLine("Total Days I spent in USA:" + (t.Days - totalDayOutsideOfUSA) + "  " + fiveYearsLaterUsaEntrance2.Subtract(firstUsaEntrance).Days);
             Console.WriteLine("Application Date:" + fiveYearsLaterUsaEntrance2.AddDays(totalDayOutsideOfUSA).ToShortDateString());
 
         }

@@ -1,16 +1,12 @@
-﻿using EImece.Domain.Entities;
-using GenericRepository;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using GenericRepository.EntityFramework.Enums;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
 using System.Linq.Expressions;
-using GenericRepository.EntityFramework.Enums;
-using NLog;
-using EImece.Domain.Helpers;
-using System.Data.Entity.Validation;
 
 namespace EImece.Domain.Repositories
 {
@@ -22,7 +18,7 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public virtual List<T> GetActiveBaseEntities(bool? isActive, int ? language)
+        public virtual List<T> GetActiveBaseEntities(bool? isActive, int? language)
         {
             try
             {

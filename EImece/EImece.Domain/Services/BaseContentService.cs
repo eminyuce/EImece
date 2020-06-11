@@ -1,22 +1,17 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using GenericRepository.EntityFramework.Enums;
 using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
-   
+
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
         private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
@@ -35,7 +30,7 @@ namespace EImece.Domain.Services
 
 
         public IBaseContentRepository<T> BaseContentRepository { get; set; }
-        protected BaseContentService(IBaseContentRepository<T> baseContentRepository) :base(baseContentRepository) 
+        protected BaseContentService(IBaseContentRepository<T> baseContentRepository) : base(baseContentRepository)
         {
             this.BaseContentRepository = baseContentRepository;
             this.IsCachingActive = false;// ApplicationConfigs.IsCacheActive;
@@ -48,8 +43,8 @@ namespace EImece.Domain.Services
                 var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
                 item.ImageHeight = imageSize.ThumpBitmapHeight;
                 item.ImageWidth = imageSize.ThumpBitmapWidth;
-                if(item.MainImage != null)
-                item.MainImageId = item.MainImage.Id;
+                if (item.MainImage != null)
+                    item.MainImageId = item.MainImage.Id;
             }
             else
             {
@@ -57,11 +52,11 @@ namespace EImece.Domain.Services
                 item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
                 item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
             }
-           
+
 
             return item;
         }
-        public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language) 
+        public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
         }
@@ -82,7 +77,7 @@ namespace EImece.Domain.Services
             return result;
 
         }
-        public virtual List<T> GetActiveBaseContents(bool ?isActive, int ? language)
+        public virtual List<T> GetActiveBaseContents(bool? isActive, int? language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
         }

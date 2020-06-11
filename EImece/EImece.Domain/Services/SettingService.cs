@@ -1,19 +1,19 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Repositories.IRepositories;
-using EImece.Domain.Services.IServices;
-using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Helpers;
 using System.Reflection;
 
 namespace EImece.Domain.Services
 {
     public class SettingService : BaseEntityService<Setting>, ISettingService
     {
+
+
         private ISettingRepository SettingRepository { get; set; }
         public SettingService(ISettingRepository repository) : base(repository)
         {
@@ -74,7 +74,7 @@ namespace EImece.Domain.Services
         public Setting GetSettingObjectByKey(string key)
         {
             var allSettings = GetAllSettings();
-            var  result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
             if (result != null)
             {
                 return result;
@@ -109,18 +109,18 @@ namespace EImece.Domain.Services
         public SettingModel GetSettingModel()
         {
             var result = new SettingModel();
-           
+
 
             Type type = typeof(SettingModel);
-            List<Setting> Settings = GetAllSettings();
+            List<Setting> Settings = GetAllSettings().Where(r => ApplicationConfigs.AdminSetting.Equals(r.Description)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
                 // Get name.
                 string name = propertyInfo.Name;
-               
+
                 // Get value on the target instance.
-            
+
                 var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting != null)
                 {
@@ -160,6 +160,7 @@ namespace EImece.Domain.Services
                 var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting != null)
                 {
+                    setting.Description = ApplicationConfigs.AdminSetting;
                     setting.SettingValue = value.ToStr();
                     SaveOrEditEntity(setting);
                 }

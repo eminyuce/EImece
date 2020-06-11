@@ -1,11 +1,8 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -13,7 +10,7 @@ namespace EImece.Areas.Admin.Controllers
     public class SubscribersController : BaseAdminController
     {
         // GET: Admin/Subscribers
-        public ActionResult Index(String search="")
+        public ActionResult Index(String search = "")
         {
             Expression<Func<Subscriber, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower()) || r.Email.ToLower().Contains(search.Trim().ToLower());
             var subs = SubscriberService.SearchEntities(whereLambda, search, null);
@@ -22,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ExportExcel()
         {
             var subscibers = SubscriberService.GetAll().ToList();
-          
+
 
             var result = from r in subscibers
                          select new
@@ -30,7 +27,7 @@ namespace EImece.Areas.Admin.Controllers
                              r.Name,
                              r.Email,
                              r.CreatedDate,
-                             r.Note 
+                             r.Note
                          };
 
             return DownloadFile(result, String.Format("subscibers-{0}", GetCurrentLanguage));

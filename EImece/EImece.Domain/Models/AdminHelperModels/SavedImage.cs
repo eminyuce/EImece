@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EImece.Domain.Models.AdminHelperModels
+﻿namespace EImece.Domain.Models.AdminHelperModels
 {
     public class SavedImage
     {
@@ -19,8 +13,8 @@ namespace EImece.Domain.Models.AdminHelperModels
         public int OriginalWidth { get; set; }
         public int OriginalHeight { get; set; }
         public int ThumpBitmapWidth { get; set; }
-        public int ThumpBitmapHeight  { get; set; }
-        public byte [] ImageBytes { get; set; }
+        public int ThumpBitmapHeight { get; set; }
+        public byte[] ImageBytes { get; set; }
 
         public SavedImage()
         {

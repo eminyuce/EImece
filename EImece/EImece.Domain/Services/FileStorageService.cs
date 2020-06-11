@@ -1,19 +1,17 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Services.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
-using Ninject;
-using EImece.Domain.Helpers;
-using NLog;
-using System.Linq.Expressions;
+using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using GenericRepository.EntityFramework.Enums;
+using Ninject;
+using NLog;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Services
 {
@@ -35,10 +33,10 @@ namespace EImece.Domain.Services
         {
             FileStorageRepository = repository;
         }
-       
+
         public FileStorage GetFileStorage(int fileStorageId)
         {
-            List <FileStorage> fileStorages = base.GetActiveBaseEntitiesFromCache(true, null);
+            List<FileStorage> fileStorages = base.GetActiveBaseEntitiesFromCache(true, null);
             FileStorage result = fileStorages.FirstOrDefault(r => r.Id == fileStorageId);
             if (result == null)
             {
@@ -52,7 +50,7 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public void SaveUploadImages(int contentId, 
+        public void SaveUploadImages(int contentId,
             EImeceImageType? contentImageType,
             MediaModType? contentMediaType,
             List<ViewDataUploadFilesResult> resultList,
@@ -156,7 +154,7 @@ namespace EImece.Domain.Services
 
                 }
 
-               
+
 
             }
 
@@ -190,7 +188,7 @@ namespace EImece.Domain.Services
 
         public List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType)
         {
-          
+
             switch (enumMod.Value)
             {
                 case MediaModType.Stories:
@@ -198,15 +196,15 @@ namespace EImece.Domain.Services
                     Expression<Func<StoryFile, object>>[] includeProperties = { includeProperty };
                     Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
 
-                    var item = StoryFileRepository.FindAllIncluding(match,  r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToList();
-                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r=>r.UpdatedDate).ToList();
+                    var item = StoryFileRepository.FindAllIncluding(match, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToList();
+                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Products:
                     Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
                     Expression<Func<ProductFile, object>>[] includeProperties1 = { includeProperty1 };
                     Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
 
-                    var item1 = ProductFileRepository.FindAllIncluding(match1,  r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToList();
+                    var item1 = ProductFileRepository.FindAllIncluding(match1, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToList();
                     return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Menus:
@@ -214,7 +212,7 @@ namespace EImece.Domain.Services
                     Expression<Func<MenuFile, object>>[] includeProperties2 = { includeProperty2 };
                     Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
 
-                    var item2 = MenuFileRepository.FindAllIncluding(match2,  r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToList();
+                    var item2 = MenuFileRepository.FindAllIncluding(match2, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToList();
                     return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 default:
@@ -240,17 +238,17 @@ namespace EImece.Domain.Services
                     switch (enumMod.Value)
                     {
                         case MediaModType.Stories:
-                                StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == contentId && r.FileStorageId == fileStorageId);
-                                this.DeleteFileStorage(fileStorageId);
+                            StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == contentId && r.FileStorageId == fileStorageId);
+                            this.DeleteFileStorage(fileStorageId);
                             break;
                         case MediaModType.Products:
-                                ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
-                                this.DeleteFileStorage(fileStorageId);
+                            ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
+                            this.DeleteFileStorage(fileStorageId);
                             break;
                         case MediaModType.Menus:
-                                MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == contentId && r.FileStorageId == fileStorageId);
-                                this.DeleteFileStorage(fileStorageId);
-                            
+                            MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == contentId && r.FileStorageId == fileStorageId);
+                            this.DeleteFileStorage(fileStorageId);
+
                             break;
 
                         default:
@@ -295,6 +293,6 @@ namespace EImece.Domain.Services
             return "error";
         }
 
-      
+
     }
 }

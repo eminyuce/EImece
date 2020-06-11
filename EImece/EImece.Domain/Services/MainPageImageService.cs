@@ -1,15 +1,11 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Services.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Repositories.IRepositories;
-using System.Linq.Expressions;
-using Ninject;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using NLog;
+using System;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -45,14 +41,14 @@ namespace EImece.Domain.Services
             var cacheKey = String.Format("GetMainPageViewModel-{0}", language);
             MainPageViewModel result = null;
 
-           // if (!MemoryCacheProvider.Get(cacheKey, out result))
+            // if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new MainPageViewModel();
                 result.MainPageProducts = ProductService.GetActiveProducts(true, language).Where(r => r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(3).ToList();
                 result.LatestProducts = ProductService.GetActiveProducts(true, language).Where(r => r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(3).ToList();
                 result.CampaignProducts = ProductService.GetActiveProducts(true, language).Where(r => r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(3).ToList();
 
-                result.MainPageMenu = MenuService.GetActiveBaseContents(true,language).FirstOrDefault(r=>r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.MainPageMenu = MenuService.GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
                 result.LatestStories = StoryService.GetLatestStories(language, 4);
                 result.MainPageImages = GetActiveBaseContents(true, language);

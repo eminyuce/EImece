@@ -1,16 +1,13 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Caching;
-using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Ninject;
-using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,10 +22,10 @@ namespace EImece.Areas.Admin.Controllers
     [AuthorizeRoles(ApplicationConfigs.AdministratorRole, ApplicationConfigs.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
-        protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer"; 
+        protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
-         
+
         [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
         [Inject]
@@ -161,7 +158,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var languagesText = ApplicationConfigs.ApplicationLanguages;
                 var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
-                if(languages.Count > 1)
+                if (languages.Count > 1)
                 {
                     string cultureName = null;
                     HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
@@ -175,11 +172,12 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         return ApplicationConfigs.MainLanguage;
                     }
-                }else
+                }
+                else
                 {
                     return ApplicationConfigs.MainLanguage;
                 }
-                
+
 
             }
         }
@@ -237,6 +235,6 @@ namespace EImece.Areas.Admin.Controllers
 
         }
 
-        
+
     }
 }

@@ -1,10 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using GenericRepository.EntityFramework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
 
 namespace EImece.Domain.DbContext
@@ -13,7 +9,7 @@ namespace EImece.Domain.DbContext
     {
         public EImeceContext()
         {
-      
+
         }
         public EImeceContext(String nameOrConnectionString) : base(nameOrConnectionString)
         {
@@ -39,7 +35,7 @@ namespace EImece.Domain.DbContext
         public IDbSet<FileStorage> FileStorages { get; set; }
         public IDbSet<FileStorageTag> FileStorageTags { get; set; }
         public IDbSet<Setting> Settings { get; set; }
-        public IDbSet<Template> Templates    { get; set; }
+        public IDbSet<Template> Templates { get; set; }
         public IDbSet<MenuFile> MenuFiles { get; set; }
         public IDbSet<MainPageImage> MainPageImages { get; set; }
         public IDbSet<BrowserSubscriber> BrowserSubscribers { get; set; }

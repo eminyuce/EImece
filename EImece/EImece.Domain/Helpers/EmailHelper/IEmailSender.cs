@@ -1,10 +1,6 @@
-﻿using System;
+﻿using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {

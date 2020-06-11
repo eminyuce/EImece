@@ -1,15 +1,11 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using EImece.Domain.Models.Enums;
-using GenericRepository.EntityFramework.Enums;
 using System.Linq.Expressions;
-using NLog;
 
 namespace EImece.Domain.Repositories
 {
@@ -25,7 +21,7 @@ namespace EImece.Domain.Repositories
         {
             Expression<Func<Tag, object>> includeProperty2 = r => r.TagCategory;
             Expression<Func<Tag, object>>[] includeProperties = { includeProperty2 };
-            var tags = GetAllIncluding(includeProperties).Where(r=>r.Lang == language);
+            var tags = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
             if (!String.IsNullOrEmpty(search))
             {
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));

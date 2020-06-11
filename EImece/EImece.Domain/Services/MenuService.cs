@@ -1,19 +1,17 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
+using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharkDev.Web.Controls.TreeView.Model;
-using NLog;
-using EImece.Domain.Models.FrontModels;
 using System.Data.Entity.Validation;
-using EImece.Domain.Helpers;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Helpers.Extensions;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -122,7 +120,7 @@ namespace EImece.Domain.Services
             foreach (var item in items)
             {
                 var menuLink = item.MenuLink;
-                if(menuLink.GetId() == storyCategoryId)
+                if (menuLink.GetId() == storyCategoryId)
                 {
                     var storyCategory = StoryCategoryService.GetSingle(storyCategoryId);
                     string m = "stories-categories_" + storyCategory.GetSeoUrl();
@@ -130,7 +128,7 @@ namespace EImece.Domain.Services
                     MenuService.SaveOrEditEntity(item);
                 }
             }
-             
+
         }
     }
 }

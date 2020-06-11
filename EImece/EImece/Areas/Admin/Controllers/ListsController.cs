@@ -1,15 +1,11 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Areas.Admin.Controllers
 {

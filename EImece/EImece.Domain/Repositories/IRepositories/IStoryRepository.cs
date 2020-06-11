@@ -1,10 +1,7 @@
 ﻿using EImece.Domain.Entities;
+using GenericRepository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GenericRepository;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -14,7 +11,7 @@ namespace EImece.Domain.Repositories.IRepositories
         Story GetStoryById(int storyId);
         PaginatedList<Story> GetMainPageStories(int page, int pageSize, int language);
         List<Story> GetRelatedStories(int[] tagIdList, int take, int lang, int excludedStoryId);
-        PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex,int pageSize);
+        PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize);
         List<Story> GetLatestStories(int language, int take);
     }
 }

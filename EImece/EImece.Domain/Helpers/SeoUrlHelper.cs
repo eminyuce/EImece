@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -11,7 +9,7 @@ namespace EImece.Domain.Helpers
     public class SeoUrlHelper
     {
 
-        public static string GetCanonicalTag(ViewContext viewContext, string SeoId = "", string linkArea="")
+        public static string GetCanonicalTag(ViewContext viewContext, string SeoId = "", string linkArea = "")
         {
             String url = GetCanonicalUrl(viewContext, SeoId, linkArea);
             if (!String.IsNullOrEmpty(url))
@@ -53,7 +51,7 @@ namespace EImece.Domain.Helpers
             }
 
 
-            if (linkArea.Equals("amp", StringComparison.InvariantCultureIgnoreCase) 
+            if (linkArea.Equals("amp", StringComparison.InvariantCultureIgnoreCase)
                 && !AmpCanonical.IsRightAmpPages(action, controller))
             {
                 // Not all page we want to create amp canonical links.
@@ -65,8 +63,8 @@ namespace EImece.Domain.Helpers
             {
                 try
                 {
-                   var valueProviderResult = viewContext.Controller.ValueProvider.GetValue("id");
-                    if(valueProviderResult!=null)
+                    var valueProviderResult = viewContext.Controller.ValueProvider.GetValue("id");
+                    if (valueProviderResult != null)
                     {
                         id = valueProviderResult.RawValue.ToStr();
                     }
@@ -76,12 +74,12 @@ namespace EImece.Domain.Helpers
                 }
             }
 
-            string domain =  "";
+            string domain = "";
 
 
             var uh = new UrlHelper(viewContext.RequestContext);
 
-            String url = uh.Action(action, controller, new RouteValueDictionary(new { id = id, area=linkArea }), ApplicationConfigs.HttpProtocol, domain);
+            String url = uh.Action(action, controller, new RouteValueDictionary(new { id = id, area = linkArea }), ApplicationConfigs.HttpProtocol, domain);
             // url = String.Format("<link href='{0}' rel='canonical'/>", url);
             return url;
 

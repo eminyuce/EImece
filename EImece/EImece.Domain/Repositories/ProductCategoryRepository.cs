@@ -1,16 +1,14 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
+using GenericRepository.EntityFramework.Enums;
+using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using SharkDev.Web.Controls.TreeView.Model;
-using EImece.Domain.Helpers;
 using System.Linq.Expressions;
-using EImece.Domain.Models.FrontModels;
-using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
@@ -131,7 +129,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductCategory, bool>> match2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
                 match = match.And(match2);
             }
-            var result = FindAllIncluding(match, 
+            var result = FindAllIncluding(match,
                 r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
 

@@ -1,13 +1,9 @@
 ﻿using EImece.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public  class ProductCategoryViewModel
+    public class ProductCategoryViewModel
     {
         public ProductCategory ProductCategory { get; set; }
 
@@ -15,7 +11,7 @@ namespace EImece.Domain.Models.FrontModels
         public Menu MainPageMenu { get; set; }
         public List<ProductCategory> ChildrenProductCategories { get; set; }
 
-        public  List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
+        public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
 
     }
 }

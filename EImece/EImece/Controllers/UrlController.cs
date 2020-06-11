@@ -1,10 +1,7 @@
-﻿using EImece.Domain.Repositories;
-using EImece.Domain.Repositories.IRepositories;
+﻿using EImece.Domain.Repositories.IRepositories;
 using Ninject;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -36,10 +33,10 @@ namespace EImece.Controllers
 
         [HttpPost]
         [Route("short")]
-        public HttpResponseMessage Post([FromBody] String url, [FromBody] String email = "", [FromBody] String groupName="")
+        public HttpResponseMessage Post([FromBody] String url, [FromBody] String email = "", [FromBody] String groupName = "")
         {
             Logger.Info("Post Short:" + url);
-            return Request.CreateResponse(HttpStatusCode.OK, ShortUrlRepository.GenerateShortUrl(url,email,groupName));
+            return Request.CreateResponse(HttpStatusCode.OK, ShortUrlRepository.GenerateShortUrl(url, email, groupName));
         }
     }
 }

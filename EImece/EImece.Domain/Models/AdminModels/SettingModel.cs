@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Models.AdminModels
@@ -52,8 +47,8 @@ namespace EImece.Domain.Models.AdminModels
         public string SiteIndexMetaTitle { get; set; }
         public string SiteIndexMetaDescription { get; set; }
         public string SiteIndexMetaKeywords { get; set; }
-        public string FooterDescription { get;  set; }
-        public string FooterEmailListDescription { get;  set; }
+        public string FooterDescription { get; set; }
+        public string FooterEmailListDescription { get; set; }
 
 
 

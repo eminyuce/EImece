@@ -1,13 +1,10 @@
 ﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -34,7 +31,7 @@ namespace EImece.Controllers
 
                 var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
 
-                if (imageByte !=null && imageByte.ImageBytes != null)
+                if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     return File(imageByte.ImageBytes, imageByte.ContentType);
                 }

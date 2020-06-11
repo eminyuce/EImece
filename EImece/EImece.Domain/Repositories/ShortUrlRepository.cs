@@ -1,19 +1,13 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using EImece.Domain.Models.Enums;
-using GenericRepository.EntityFramework.Enums;
-using System.Linq.Expressions;
 using NLog;
+using System;
+using System.Linq;
 
 namespace EImece.Domain.Repositories
 {
-   
+
     public class ShortUrlRepository : BaseEntityRepository<ShortUrl>, IShortUrlRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();

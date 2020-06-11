@@ -1,11 +1,9 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Models.FrontModels;
 using System.ServiceModel.Syndication;
 using System.Web;
 
@@ -15,7 +13,7 @@ namespace EImece.Domain.Services.IServices
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
         Rss20FeedFormatter GetProductsRss(RssParams rssParams);
-        ProductIndexViewModel GetMainPageProducts(int pageIndex,  int lang);
+        ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang);
         List<ProductTag> GetProductTagsByProductId(int productId);
         void SaveProductTags(int id, int[] tags);
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);
@@ -23,9 +21,9 @@ namespace EImece.Domain.Services.IServices
         void DeleteProductById(int id);
         new void DeleteBaseEntity(List<string> values);
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang);
-        SimiliarProductTagsViewModel GetProductByTagId(int tagId,int pageIndex, int pageSize,   int lang);
+        SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
         void SaveProductSpecifications(List<ProductSpecification> specifications);
-        IQueryable<Product> GetActiveProducts(bool ? isActive, int ? language);
+        IQueryable<Product> GetActiveProducts(bool? isActive, int? language);
 
         ProductsSearchResult GetProductsSearchResult(
          string search,

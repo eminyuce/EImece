@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using Resources;
 using System.ComponentModel.DataAnnotations;
-using Resources;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
     public class Setting : BaseEntity
     {
+        [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Description))]
         public string Description { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SettingKey))]

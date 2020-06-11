@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
+﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using System.Linq.Expressions;
-using GenericRepository.EntityFramework.Enums;
 using GenericRepository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Repositories
 {
@@ -54,9 +49,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Story);
             includeProperties.Add(r => r.Story.StoryCategory);
             includeProperties.Add(r => r.Story.StoryFiles);
-            return this.Paginate(pageIndex, 
-                pageSize, 
-                r => r.Story.Position, 
+            return this.Paginate(pageIndex,
+                pageSize,
+                r => r.Story.Position,
                 r => r.TagId == tagId && r.Tag.Lang == lang,
                 includeProperties.ToArray());
 

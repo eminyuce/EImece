@@ -1,12 +1,8 @@
 ﻿using GenericRepository;
+using Resources;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Resources;
 
 namespace EImece.Domain.Entities
 {
@@ -16,7 +12,7 @@ namespace EImece.Domain.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NamePropertyRequiredErrorMessage))]
-        [StringLength(500,ErrorMessageResourceType =typeof(AdminResource), ErrorMessageResourceName =nameof(AdminResource.NamePropertyErrorMessage))]
+        [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NamePropertyErrorMessage))]
         [Column("Name")]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Name))]
         public string Name { get; set; }
@@ -31,7 +27,7 @@ namespace EImece.Domain.Entities
         public int Position { get; set; }
         public int Lang { get; set; }
 
-       
+
 
     }
 }

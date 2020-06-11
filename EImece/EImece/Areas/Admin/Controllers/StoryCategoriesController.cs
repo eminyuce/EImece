@@ -1,11 +1,9 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
@@ -79,11 +77,11 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                     FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
-                        storyCategory.ImageHeight,
-                        storyCategory.ImageWidth,
-                        EImeceImageType.StoryCategoryMainImage,
-                        storyCategory);
+                    FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
+                       storyCategory.ImageHeight,
+                       storyCategory.ImageWidth,
+                       EImeceImageType.StoryCategoryMainImage,
+                       storyCategory);
                     storyCategory.Lang = CurrentLanguage;
                     StoryCategoryService.SaveOrEditEntity(storyCategory);
                     int contentId = storyCategory.Id;

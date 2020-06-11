@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
+﻿using EImece.Domain.Helpers.EmailHelper;
+using EImece.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using EImece.Models;
-using System.Web.Mvc;
 using Ninject;
-using EImece.Domain.Helpers.EmailHelper;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EImece
 {
     public class EmailService : IIdentityMessageService
     {
         [Inject]
-        public  IEmailSender EmailSender { get; set; }
+        public IEmailSender EmailSender { get; set; }
 
         public Task SendAsync(IdentityMessage message)
         {
@@ -47,7 +41,7 @@ namespace EImece
         //{
         //}
 
-        public ApplicationUserManager(IUserStore<ApplicationUser> store, 
+        public ApplicationUserManager(IUserStore<ApplicationUser> store,
             IdentityFactoryOptions<ApplicationUserManager> options,
             [Named("Email")] IIdentityMessageService emailService,
             [Named("Sms")] IIdentityMessageService smsService) : base(store)
@@ -90,10 +84,10 @@ namespace EImece
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
-      
+
         }
     }
 

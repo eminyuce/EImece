@@ -1,19 +1,14 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.HelperModels;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Entities;
-using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Models.HelperModels;
-using System.IO;
-using System.Web.Hosting;
-using Ninject;
-using EImece.Domain;
-using NLog;
-using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -21,7 +16,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public FilesHelper filesHelper;
-       
+
         public MediaController(FilesHelper fh)
         {
             filesHelper = fh;
@@ -52,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
                 case MediaModType.Menus:
                     returnModel.BaseContent = MenuService.GetSingle(id);
                     break;
-               case MediaModType.MainPageImages:
+                case MediaModType.MainPageImages:
                     returnModel.BaseContent = MenuService.GetSingle(id);
                     break;
                 default:
@@ -62,7 +57,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(returnModel);
         }
-       
+
 
         public ActionResult Show(int id, String mod, String imageType)
         {
@@ -106,11 +101,11 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList,CurrentLanguage,selectedTags);
+                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList, CurrentLanguage, selectedTags);
                 return Json(files);
             }
         }
-       
+
         public JsonResult GetFileList()
         {
             var CurrentContext = HttpContext;
@@ -119,7 +114,7 @@ namespace EImece.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-            [DeleteAuthorize()]
+        [DeleteAuthorize()]
         public JsonResult DeleteFile(string file, int contentId, String mod, String imageType)
         {
             var CurrentContext = HttpContext;

@@ -1,8 +1,4 @@
 ﻿using EImece.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -24,10 +20,10 @@ namespace EImece
                   name: "robots",
                   url: "robots.txt",
                   defaults: new
-                          {
-                              controller = "Robot",
-                              action = "RobotsText"
-                          },
+                  {
+                      controller = "Robot",
+                      action = "RobotsText"
+                  },
                     namespaces: new[] { "EImece.Controllers" }
                );
 
@@ -59,12 +55,12 @@ namespace EImece
                  defaults: new { controller = "home", action = "termsandconditions" },
                  namespaces: new[] { "EImece.Controllers" }
              );
-         routes.MapRoute(
-                   name: "getcaptcha",
-                   url: "images/getcaptcha",
-                   defaults: new { controller = "images", action = "getcaptcha" },
-                   namespaces: new[] { "EImece.Controllers" }
-               );
+            routes.MapRoute(
+                      name: "getcaptcha",
+                      url: "images/getcaptcha",
+                      defaults: new { controller = "images", action = "getcaptcha" },
+                      namespaces: new[] { "EImece.Controllers" }
+                  );
             routes.MapRoute(
                    name: "ImageResizing",
                    url: "images/{imageSize}/{id}",

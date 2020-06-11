@@ -3,9 +3,6 @@ using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.AdminModels
 {
@@ -41,7 +38,7 @@ namespace EImece.Domain.Models.AdminModels
                             }
                         }
                         var i = new RazorError();
-                       
+
                         i.Column = item.Column;
                         i.ErrorNumber = item.ErrorNumber;
                         i.Line = item.Line;

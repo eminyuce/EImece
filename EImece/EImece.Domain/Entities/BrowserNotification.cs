@@ -1,10 +1,5 @@
 ﻿using EImece.Domain.Models.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
@@ -15,7 +10,7 @@ namespace EImece.Domain.Entities
         public NotificationType NotificationTypeEnum
         {
             get { return (NotificationType)NotificationType; }
-            set { NotificationType = (int) value; }
+            set { NotificationType = (int)value; }
         }
 
 

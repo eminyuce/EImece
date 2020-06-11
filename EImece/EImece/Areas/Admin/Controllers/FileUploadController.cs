@@ -2,12 +2,10 @@
 using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.IO;
+using System.Linq;
 using System.Web.Hosting;
-using Ninject;
+using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -27,7 +25,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             filesHelper = fh;
             filesHelper.Init(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
-    
+
         }
 
         public ActionResult Index()

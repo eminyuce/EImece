@@ -1,16 +1,13 @@
-﻿using System;
+﻿using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
+using Ninject;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Models.FrontModels;
-using Ninject;
-using EImece.Domain.Services;
-using EImece.Domain.Services.IServices;
-using NLog;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -147,7 +144,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             var fromAddressDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(contact.Email, contact.Name);
-            SendEmail(emailAccount, "Contact Us", contact.Message,from, to);
+            SendEmail(emailAccount, "Contact Us", contact.Message, from, to);
         }
 
         public void SendForgotPasswordEmail(string destination, string subject, string body)

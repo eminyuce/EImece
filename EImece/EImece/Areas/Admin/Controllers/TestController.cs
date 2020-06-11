@@ -1,15 +1,12 @@
 ﻿using EImece.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Linq.Dynamic;
-using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories;
 using Ninject;
-using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic;
+using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -35,7 +32,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [Inject]
-        public MigrationRepository MigrationRepository { get;set;}
+        public MigrationRepository MigrationRepository { get; set; }
 
         public ActionResult MigrationData()
         {
@@ -45,7 +42,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return Content("Done");
         }
-        public ActionResult getData(int id=0)
+        public ActionResult getData(int id = 0)
         {
             //Datatable parameter
             var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -63,14 +60,14 @@ namespace EImece.Areas.Admin.Controllers
             int recordsTotal = 0;
             //Database query
             var v = ProductService.GetAll();
-                //search
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    v = v.Where(a =>
-                        a.ProductCode.Contains(searchValue) ||
-                        a.Name.Contains(searchValue) 
-                        ).ToList();
-                }
+            //search
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                v = v.Where(a =>
+                    a.ProductCode.Contains(searchValue) ||
+                    a.Name.Contains(searchValue)
+                    ).ToList();
+            }
 
             //sort
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDir))
@@ -84,11 +81,11 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             recordsTotal = v.Count();
-                products = v.Skip(skip).Take(pageSize).ToList();
+            products = v.Skip(skip).Take(pageSize).ToList();
 
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = products });
         }
 
-         
+
     }
 }

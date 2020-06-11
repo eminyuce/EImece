@@ -1,16 +1,14 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Services.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
-using EImece.Domain.Helpers;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -26,7 +24,7 @@ namespace EImece.Domain.Services
         {
             TagCategoryRepository = repository;
         }
-        
+
         public List<TagCategory> GetTagsByTagType(EImeceLanguage language)
         {
             return TagCategoryRepository.GetTagsByTagType(language);
@@ -45,7 +43,7 @@ namespace EImece.Domain.Services
 
         public TagCategory GetTagCategoryById(int tagCategoryId)
         {
-           return TagCategoryRepository.GetTagCategoryById(tagCategoryId);
+            return TagCategoryRepository.GetTagCategoryById(tagCategoryId);
         }
         public virtual new void DeleteBaseEntity(List<string> values)
         {

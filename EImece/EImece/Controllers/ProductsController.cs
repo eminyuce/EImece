@@ -1,16 +1,10 @@
-﻿using EImece.Domain;
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Entities;
-using GenericRepository;
-using EImece.Domain.Helpers.AttributeHelper;
 
 namespace EImece.Controllers
 {
@@ -18,58 +12,58 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-      
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
-             
-                var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
-                return View(products);
-            
+
+            var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
+            return View(products);
+
         }
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
-        public ActionResult AdvancedSearchProducts(String search="",string filters="",String page = "")
+        public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
         {
-                var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
-                return View(products);
-           
+            var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
+            return View(products);
+
         }
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
-            
-                var productId = id.GetId();
-                var product = ProductService.GetProductById(productId);
-                ViewBag.SeoId = product.Product.GetSeoUrl();
 
-                return View(product);
+            var productId = id.GetId();
+            var product = ProductService.GetProductById(productId);
+            ViewBag.SeoId = product.Product.GetSeoUrl();
 
-           
+            return View(product);
+
+
         }
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {
-            
-                var tagId = id.GetId();
-                int pageIndex = 1;
-                int pageSize = 20;
-                SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
-                ViewBag.SeoId = products.Tag.GetSeoUrl();
-                return View(products);
- 
+
+            var tagId = id.GetId();
+            int pageIndex = 1;
+            int pageSize = 20;
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+            ViewBag.SeoId = products.Tag.GetSeoUrl();
+            return View(products);
+
         }
         public ActionResult SearchProducts(String search)
         {
-            
-                int pageIndex = 1;
-                int pageSize = 20;
-                ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);
-                return View(products);
 
-            
+            int pageIndex = 1;
+            int pageSize = 20;
+            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);
+            return View(products);
+
+
         }
     }
 }

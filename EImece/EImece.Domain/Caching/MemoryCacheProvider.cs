@@ -4,14 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Caching
 {
     public class MemoryCacheProvider : CacheProvider<MemoryCache>
     {
-        protected static readonly Logger  Logger = LogManager.GetCurrentClassLogger();
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected override MemoryCache InitCache()
         {
             return MemoryCache.Default;
@@ -48,7 +46,7 @@ namespace EImece.Domain.Caching
             {
                 Set<T>(key, value, CacheDuration);
             }
-                
+
         }
 
         public override void Set<T>(string key, T value, int duration)

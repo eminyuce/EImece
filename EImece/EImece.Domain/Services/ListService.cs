@@ -1,13 +1,10 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Ninject;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Repositories.IRepositories;
-using NLog;
-using Ninject;
 
 namespace EImece.Domain.Services
 {

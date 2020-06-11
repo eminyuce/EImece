@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Resources;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace EImece.Domain.Entities
@@ -16,8 +9,8 @@ namespace EImece.Domain.Entities
         public int MenuId { get; set; }
         public int FileStorageId { get; set; }
 
-        public  FileStorage FileStorage { get; set; }
+        public FileStorage FileStorage { get; set; }
 
-        public  Menu Menu { get; set; }
+        public Menu Menu { get; set; }
     }
 }

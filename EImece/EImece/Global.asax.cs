@@ -4,13 +4,10 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Scheduler;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
-using System.Web.Routing;
-using System.Web.Http;
 using System.Web.Routing;
 
 namespace EImece
@@ -53,10 +50,10 @@ namespace EImece
 
         }
 
-       
+
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-          //  Redirect301();
+            //  Redirect301();
         }
         private void Redirect301()
         {
@@ -69,10 +66,10 @@ namespace EImece
             {
                 UriBuilder builder = new UriBuilder(Request.Url);
                 // builder.Host = "www." + Request.Url.Host;
-                builder.Host =  Request.Url.Host;
+                builder.Host = Request.Url.Host;
                 Response.StatusCode = 301;
                 builder.Scheme = ApplicationConfigs.HttpProtocol;
-               // Response.AddHeader("Location", builder.ToString());
+                // Response.AddHeader("Location", builder.ToString());
                 Response.End();
             }
         }

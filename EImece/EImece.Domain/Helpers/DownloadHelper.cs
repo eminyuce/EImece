@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers
 {
@@ -50,7 +48,7 @@ namespace EImece.Domain.Helpers
             System.Net.HttpWebRequest request = null;
             System.Net.HttpWebResponse response = null;
             byte[] b = null;
- 
+
             request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
             request.Timeout = 99999;
             response = (System.Net.HttpWebResponse)request.GetResponse();

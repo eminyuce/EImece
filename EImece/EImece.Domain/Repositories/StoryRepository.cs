@@ -1,15 +1,13 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
+using GenericRepository;
+using GenericRepository.EntityFramework.Enums;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
 using System.Linq.Expressions;
-using GenericRepository;
-using NLog;
-using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {

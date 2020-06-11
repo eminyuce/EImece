@@ -1,15 +1,12 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Models.Enums;
 using Ninject;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
 
@@ -22,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
 
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Admin/Template
-        public ActionResult Index(String search="")
+        public ActionResult Index(String search = "")
         {
             Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
@@ -34,7 +31,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             if (id == 0)
             {
-      
+
             }
             else
             {
@@ -66,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
                             return View(template);
                         }
                     }
-                  
+
 
                     template.Lang = CurrentLanguage;
                     TemplateService.SaveOrEditEntity(template);
@@ -135,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
             String search = "";
             Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
-          
+
 
             var result = from r in templates
                          select new
@@ -148,7 +145,7 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-       
+
 
             return DownloadFile(result, String.Format("Templates-{0}", GetCurrentLanguage));
 

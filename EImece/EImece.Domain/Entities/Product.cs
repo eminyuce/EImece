@@ -1,16 +1,13 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using Resources;
 
 namespace EImece.Domain.Entities
 {
-    public class Product: BaseContent
+    public class Product : BaseContent
     {
 
         public string NameShort { get; set; }
@@ -32,9 +29,9 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsCampaign))]
         public Boolean IsCampaign { get; set; }
 
-        public  ProductCategory ProductCategory { get; set; }
-        public  ICollection<ProductFile> ProductFiles { get; set; }
-        public  ICollection<ProductTag> ProductTags { get; set; }
-        public  ICollection<ProductSpecification> ProductSpecifications { get; set; }
+        public ProductCategory ProductCategory { get; set; }
+        public ICollection<ProductFile> ProductFiles { get; set; }
+        public ICollection<ProductTag> ProductTags { get; set; }
+        public ICollection<ProductSpecification> ProductSpecifications { get; set; }
     }
 }

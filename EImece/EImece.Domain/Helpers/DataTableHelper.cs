@@ -1,12 +1,10 @@
-﻿using EImece.Domain.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers
 {
@@ -211,7 +209,7 @@ namespace EImece.Domain.Helpers
                         usesColumnDefault = false;
                         break;
                     case "SYSTEM.STRING":
-                        sql.AppendFormat(" nvarchar({0})", table.Columns[i].MaxLength !=-1 ? table.Columns[i].MaxLength : 1000);
+                        sql.AppendFormat(" nvarchar({0})", table.Columns[i].MaxLength != -1 ? table.Columns[i].MaxLength : 1000);
                         break;
                     case "SYSTEM.SINGLE":
                         sql.Append(" float");

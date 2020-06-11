@@ -1,14 +1,11 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -22,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(int id = 0, String search = "")
         {
             int categoryId = id;
-   
+
             var stories = StoryService.GetAdminPageList(categoryId, search, CurrentLanguage);
             return View(stories);
         }
@@ -85,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
                     FilesHelper.SaveFileFromHttpPostedFileBase(contentImage,
                         story.ImageHeight,
                         story.ImageWidth,
-                        EImeceImageType.StoryMainImage,story);
+                        EImeceImageType.StoryMainImage, story);
 
                     story.Lang = CurrentLanguage;
                     StoryService.SaveOrEditEntity(story);
@@ -108,7 +105,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, story);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator."+ex.StackTrace);
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
             return View(story);

@@ -1,24 +1,22 @@
-﻿using EImece.Domain.Services.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Entities;
-using EImece.Domain.Repositories.IRepositories;
-using Ninject;
-using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Models.Enums;
-using System.Data.Entity.Validation;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
-using NLog;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
+using Ninject;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web;
-using System.Xml.Linq;
-using System.Xml;
 using System.Web.Mvc;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -38,7 +36,7 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
-        
+
 
         private IProductRepository ProductRepository { get; set; }
         public ProductService(IProductRepository repository) : base(repository)
@@ -117,8 +115,8 @@ namespace EImece.Domain.Services
 
             result = new ProductDetailViewModel();
             var r = ProductRepository.GetProduct(id);
-            result.Contact =  ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail",id,EImeceItemType.Product);
-           
+            result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
+
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
@@ -137,7 +135,7 @@ namespace EImece.Domain.Services
                 var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
                 result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, r.Lang, id);
             }
-        
+
 
             return result;
         }
@@ -166,23 +164,23 @@ namespace EImece.Domain.Services
             try
             {
 
-          
-            var product = ProductRepository.GetProduct(id);
-            ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
-            ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
-            if (product.MainImageId.HasValue)
-            {
-                FileStorageService.DeleteFileStorage(product.MainImageId.Value);
-            }
-            if (product.ProductFiles != null)
-            {
-                foreach (var file in product.ProductFiles)
+
+                var product = ProductRepository.GetProduct(id);
+                ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                if (product.MainImageId.HasValue)
                 {
-                    FileStorageService.DeleteFileStorage(file.FileStorageId);
+                    FileStorageService.DeleteFileStorage(product.MainImageId.Value);
                 }
-                ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
-            }
-            DeleteEntity(product);
+                if (product.ProductFiles != null)
+                {
+                    foreach (var file in product.ProductFiles)
+                    {
+                        FileStorageService.DeleteFileStorage(file.FileStorageId);
+                    }
+                    ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                }
+                DeleteEntity(product);
 
             }
             catch (Exception e)
@@ -242,7 +240,7 @@ namespace EImece.Domain.Services
             var items = this.GetActiveProducts(true, rssParams.Language).Take(rssParams.Take).ToList();
             var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
-      
+
             String title = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
@@ -276,7 +274,7 @@ namespace EImece.Domain.Services
             return ProductRepository.GetProductsSearchResult(search, filters, top, skip, language);
         }
 
-        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int language,HttpRequestBase request)
+        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int language, HttpRequestBase request)
         {
             var template = TemplateService.GetTemplate(templateId);
             XDocument xdoc = XDocument.Parse(template.TemplateXml);

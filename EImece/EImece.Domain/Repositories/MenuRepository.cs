@@ -1,16 +1,10 @@
-﻿using System;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Repositories.IRepositories;
+using SharkDev.Web.Controls.TreeView.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using EImece.Domain.Entities;
-using EImece.Domain.Repositories.IRepositories;
-using GenericRepository;
-using System.Data.Entity;
-using SharkDev.Web.Controls.TreeView.Model;
-using EImece.Domain.Helpers;
-using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories
 {

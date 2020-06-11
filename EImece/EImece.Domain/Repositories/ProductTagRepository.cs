@@ -1,12 +1,9 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using System;
+using GenericRepository;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using GenericRepository;
 
 namespace EImece.Domain.Repositories
 {
@@ -15,13 +12,13 @@ namespace EImece.Domain.Repositories
         public ProductTagRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
- 
+
 
         public List<ProductTag> GetAllByProductId(int productId)
         {
-           return this.GetAll().Where(r => r.ProductId == productId).ToList();
+            return this.GetAll().Where(r => r.ProductId == productId).ToList();
         }
- 
+
         public void DeleteProductTags(int productId)
         {
             var productTags = GetAll().Where(r => r.ProductId == productId).ToList();
@@ -33,7 +30,7 @@ namespace EImece.Domain.Repositories
         }
         public void SaveProductTags(int productId, int[] tags)
         {
-            DeleteProductTags(productId);                
+            DeleteProductTags(productId);
             if (tags != null)
             {
                 foreach (var tag in tags)
@@ -46,7 +43,7 @@ namespace EImece.Domain.Repositories
                 Save();
 
             }
-         
+
         }
 
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang)

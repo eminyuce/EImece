@@ -1,9 +1,5 @@
-﻿using EImece.Domain.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -17,7 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         public int Width { get; set; }
         public int Height { get; set; }
 
- 
+
 
 
         //Google tracking

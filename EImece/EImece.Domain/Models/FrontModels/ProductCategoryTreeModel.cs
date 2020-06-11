@@ -1,9 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -19,7 +16,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                if(ProductCount > 0)
+                if (ProductCount > 0)
                 {
                     return String.Format("{0} ({1})", ProductCategory.Name, ProductCount);
                 }

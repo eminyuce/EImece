@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -8,7 +7,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers
 {
@@ -30,7 +28,7 @@ namespace EImece.Domain.Helpers
             {
                 return 0;
             }
-  
+
             var m = id.Split("-".ToCharArray()).Last();
             //   return GeneralHelper.FromBase64Int(m);
             return m.ToInt();

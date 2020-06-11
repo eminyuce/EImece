@@ -4,11 +4,7 @@ using EImece.Domain.Scheduler.Jobs;
 using Ninject;
 using NLog;
 using Quartz;
-using Quartz.Impl;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,7 +45,7 @@ namespace EImece.Domain.Scheduler
         public async Task DeleteNonProcessingTask(int jobId)
         {
             // get a scheduler
-            IScheduler sched = await Scheduler; 
+            IScheduler sched = await Scheduler;
             //  await sched.Clear();
             var job = ScheduleJob.CreateTest();
             try
@@ -109,7 +105,7 @@ namespace EImece.Domain.Scheduler
             }
 
 
-            var job = ScheduleJob.CreateTest();  
+            var job = ScheduleJob.CreateTest();
             var jobKey = job.JobKey;
             var triggerKey = job.TriggerKey;
             bool isExists = await sched.CheckExists(jobKey);

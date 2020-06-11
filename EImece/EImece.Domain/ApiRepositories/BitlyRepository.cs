@@ -1,5 +1,9 @@
-﻿using HtmlAgilityPack;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Models.UrlShortenModels;
+using EImece.Domain.Repositories.IRepositories;
+using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Ninject;
 using NLog;
 using RestSharp;
 using System;
@@ -7,12 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using EImece.Domain.Models.UrlShortenModels;
-using EImece.Domain.Helpers;
-using Ninject;
-using EImece.Domain.Repositories;
-using EImece.Domain.Entities;
-using EImece.Domain.Repositories.IRepositories;
 
 namespace EImece.Domain.ApiRepositories
 {
@@ -273,8 +271,8 @@ namespace EImece.Domain.ApiRepositories
             //return JsonConvert.DeserializeObject<TmlnkResponse>(response.Content);
 
 
-           
-            var p = ShortUrlRepository.GenerateShortUrl(url,email,group);
+
+            var p = ShortUrlRepository.GenerateShortUrl(url, email, group);
 
             var r = new TmlnkResponse();
             r.EmailEid = "";

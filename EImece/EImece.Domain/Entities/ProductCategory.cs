@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-using Resources;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -16,7 +12,7 @@ namespace EImece.Domain.Entities
         public int ParentId { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
-        public  ICollection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         [ForeignKey("Template")]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.TemplateId))]
@@ -29,6 +25,6 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
-        public  Template Template { get; set; }
+        public Template Template { get; set; }
     }
 }

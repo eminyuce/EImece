@@ -1,7 +1,7 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
@@ -12,7 +12,6 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.Extensions;
 
 
 namespace EImece.Areas.Admin.Controllers
@@ -237,7 +236,7 @@ namespace EImece.Areas.Admin.Controllers
             String search = "";
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
-         
+
 
             var result = from r in menus
                          select new

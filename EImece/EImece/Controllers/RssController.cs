@@ -1,15 +1,10 @@
 ﻿using EImece.Domain.Helpers.ActionResultHelpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.AttributeHelper;
-using System.Xml;
-using System.ServiceModel.Syndication;
 
 namespace EImece.Controllers
 {
@@ -34,7 +29,7 @@ namespace EImece.Controllers
                 return Content(ex.Message);
             }
         }
- 
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult StoryCategories(RssParams rssParams)
         {
@@ -58,9 +53,9 @@ namespace EImece.Controllers
             var comment = new StringBuilder();
             //try
             //{
-                var items = StoryService.GetStoryCategoriesRssFull(rssParams);
-                comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
-                return new FeedResult(items, comment);
+            var items = StoryService.GetStoryCategoriesRssFull(rssParams);
+            comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
+            return new FeedResult(items, comment);
 
             //}
             //catch (Exception ex)

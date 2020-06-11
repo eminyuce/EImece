@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using EImece.Domain.Entities;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using WebPush;
-using EImece.Domain.Entities;
 
 namespace EImece.Domain.Helpers
 {
@@ -14,7 +13,7 @@ namespace EImece.Domain.Helpers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
- 
+
         public static String SendPushNotification(BrowserSubscriber p, Dictionary<string, object> payLoad)
         {
 

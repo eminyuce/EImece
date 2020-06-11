@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using GenericRepository;
 using GenericRepository.EntityFramework;
 using NLog;
@@ -9,14 +10,11 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Domain.Repositories
 {
     public abstract class BaseRepository<T> : EntityRepository<T, int>
-       where T : class, IEntity<int> 
+       where T : class, IEntity<int>
     {
         protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
@@ -34,7 +32,7 @@ namespace EImece.Domain.Repositories
             DbContext = dbContext;
             //((EImeceContext)DbContext).Configuration.LazyLoadingEnabled = false;
             //((EImeceContext)DbContext).Configuration.ProxyCreationEnabled = false;
-        //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
+            //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
 
         }
 
@@ -59,7 +57,7 @@ namespace EImece.Domain.Repositories
                 try
                 {
                     this.Delete(whereLambda);
-                    isResult =  this.Save() == 1;
+                    isResult = this.Save() == 1;
                     transactionResult.Commit();
                 }
                 catch (Exception ex)
@@ -90,7 +88,7 @@ namespace EImece.Domain.Repositories
             {
                 this.Edit(item);
             }
-            
+
             return this.Save();
         }
         public virtual int DeleteItem(T item)
@@ -122,7 +120,7 @@ namespace EImece.Domain.Repositories
             DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
             return result.ToArray();
         }
-   
+
 
         public virtual void DeleteBaseEntity(List<string> values)
         {

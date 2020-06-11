@@ -1,24 +1,20 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.UI;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Helpers.AttributeHelper;
+using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
@@ -105,14 +101,14 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult TermsAndConditions()
         {
-            var stringContent = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
-            return View(stringContent);
+            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
+            return View(setting);
         }
         [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult PrivacyPolicy()
         {
-            var stringContent = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
-            return View(stringContent);
+            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
+            return View(setting);
         }
         [ChildActionOnly]
         [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
@@ -121,7 +117,7 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
-        public PartialViewResult Menu(int id=0)
+        public PartialViewResult Menu(int id = 0)
         {
             int selectedLanguage = id;
             var menus = MenuService.BuildTree(true, selectedLanguage);
@@ -203,7 +199,7 @@ namespace EImece.Controllers
                         contact.Message, Environment.NewLine);
                     SubsciberService.SaveOrEditEntity(s);
 
-                    
+
 
                 }
                 catch (DbEntityValidationException ex)
@@ -227,7 +223,7 @@ namespace EImece.Controllers
                     {
                         EmailSender.SendEmailContactingUs(contact);
                     }
-                
+
 
                 }
                 catch (Exception ex)

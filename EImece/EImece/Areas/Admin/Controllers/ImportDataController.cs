@@ -1,18 +1,10 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using Ninject;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 

@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.Extensions
 {
@@ -39,7 +37,7 @@ namespace EImece.Domain.Helpers.Extensions
                     val = itemValues[1].ToStr();
                 }
 
-                Items.Add(new ListItem() { Id=0, Name = text, Value = val, Position = order++, ListId = entity.Id, Lang = entity.Lang });
+                Items.Add(new ListItem() { Id = 0, Name = text, Value = val, Position = order++, ListId = entity.Id, Lang = entity.Lang });
 
             }
 

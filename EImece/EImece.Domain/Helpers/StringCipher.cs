@@ -1,10 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Security.Cryptography;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IO;
 using System.Linq;
-using System.Web;
-using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Text;
 
 
 namespace EImece.Domain.Helpers

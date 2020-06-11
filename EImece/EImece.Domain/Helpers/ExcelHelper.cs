@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NPOI.HSSF.UserModel;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.OleDb;
-using System.Web.Mvc;
 using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
 
 namespace EImece.Domain.Helpers
 {
     public class ExcelHelper
     {
 
-//     <summary>Opens an Excel(xls or xlsx) file and converts it into a DataTable.
-//THE first row must contain the names of those fields.</summary>
-//<param name = "pRutaArchivo" > full path of the file to open.</param>
-//<param name = "pHojaIndex" > number(based on zero) of the sheet that is want to open. 0 is the first sheet.</param>
+        //     <summary>Opens an Excel(xls or xlsx) file and converts it into a DataTable.
+        //THE first row must contain the names of those fields.</summary>
+        //<param name = "pRutaArchivo" > full path of the file to open.</param>
+        //<param name = "pHojaIndex" > number(based on zero) of the sheet that is want to open. 0 is the first sheet.</param>
         public static DataTable Excel_To_DataTable(
 
             string fileFullPath,
@@ -211,9 +207,9 @@ namespace EImece.Domain.Helpers
             return Tabla;
         }
 
-//        <summary>Converts a DataTable into an Excel(xls or Xlsx) file and saves it to disk.</summary>
-//<param name = "pDatos" > data from the table to save.Uses the name of the table as the name of the worksheet</param>
-//<param name = "pFilePath" > file path where is stored.</param>
+        //        <summary>Converts a DataTable into an Excel(xls or Xlsx) file and saves it to disk.</summary>
+        //<param name = "pDatos" > data from the table to save.Uses the name of the table as the name of the worksheet</param>
+        //<param name = "pFilePath" > file path where is stored.</param>
         public static void DataTable_To_Excel(DataTable pDatos, string pFilePath)
         {
             try
@@ -555,7 +551,7 @@ namespace EImece.Domain.Helpers
             return myExport.ExportToBytes();
 
         }
-      
+
         public static byte[] GetExcelByteArrayFromDataTable(DataTable dt)
         {
             var dtList = new List<DataTable>();
@@ -696,7 +692,7 @@ namespace EImece.Domain.Helpers
         public static List<String> GetWorkSheets(String filePath)
         {
             string strConn = GetConnectionString(filePath);
-           // string strConn = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=\"Excel 12.0 Xml;HDR=YES\";", filePath);
+            // string strConn = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=\"Excel 12.0 Xml;HDR=YES\";", filePath);
             OleDbConnection conn = new OleDbConnection(strConn);
             conn.Open();
             var schemaTable = conn.GetOleDbSchemaTable(
@@ -714,7 +710,7 @@ namespace EImece.Domain.Helpers
         public static DataSet GetDS(String filePath, String selectedWorkSheet)
         {
             string strConn = GetConnectionString(filePath);
-           // string strConn = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=\"Excel 12.0 Xml;HDR=YES\";", filePath);
+            // string strConn = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=\"Excel 12.0 Xml;HDR=YES\";", filePath);
             OleDbConnection conn = new OleDbConnection(strConn);
             conn.Open();
             string strExcel = "";
@@ -726,7 +722,7 @@ namespace EImece.Domain.Helpers
             myCommand.Fill(ds);
             return ds;
         }
-        public static DataTable ExcelToDataTable(string pathName, string sheetName="")
+        public static DataTable ExcelToDataTable(string pathName, string sheetName = "")
         {
             DataTable tbContainer = new DataTable();
             String strConn = GetConnectionString(pathName);
@@ -763,7 +759,7 @@ namespace EImece.Domain.Helpers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand c = new SqlCommand(sql,connection))
+                using (SqlCommand c = new SqlCommand(sql, connection))
                 {
                     c.CommandType = CommandType.Text;
                     c.ExecuteNonQuery();
@@ -772,8 +768,8 @@ namespace EImece.Domain.Helpers
             }
         }
         public static void ImportCVSFileToDatabase(String connectionString,
-            string csvFilePath, 
-            string primaryKeyColumnName="", string tableName="")
+            string csvFilePath,
+            string primaryKeyColumnName = "", string tableName = "")
         {
             var csvData = File.ReadAllText(csvFilePath);
             var reader = new CSVReader(csvData);
@@ -793,12 +789,12 @@ namespace EImece.Domain.Helpers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-        
+
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
                 {
                     bulkCopy.BulkCopyTimeout = 1000000;
                     bulkCopy.BatchSize = myDataTable.Rows.Count + 1;
-                    
+
                     foreach (DataColumn c in myDataTable.Columns)
                         bulkCopy.ColumnMappings.Add(c.ColumnName, c.ColumnName);
 

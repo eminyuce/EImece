@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EImece.Domain.Caching;
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
-using System.Linq.Expressions;
-using GenericRepository.EntityFramework;
-using System.Data.Entity.Infrastructure;
 using Ninject;
-using EImece.Domain.Helpers;
-using System.Data.Entity.Validation;
 using NLog;
-using EImece.Domain.Caching;
-using EImece.Domain.Factories;
-using EImece.Domain.Factories.IFactories;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Services
 {

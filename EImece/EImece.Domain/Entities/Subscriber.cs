@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Resources;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
-using Resources;
 
 namespace EImece.Domain.Entities
 {

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using EImece.Domain.Helpers.EmailHelper;
+using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using EImece.Models;
 using Ninject;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Entities;
 using NLog;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
@@ -221,8 +217,8 @@ namespace EImece.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", 
-                    new { userId = user.Id, code = code }, 
+                var callbackUrl = Url.Action("ResetPassword", "Account",
+                    new { userId = user.Id, code = code },
                     protocol: Request.Url.Scheme);
 
                 String emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
@@ -251,7 +247,7 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string userId, string code)
         {
-            Logger.Info("UserId:"+ userId);
+            Logger.Info("UserId:" + userId);
             Logger.Info("Code:" + code);
             return code == null ? View("Error") : View();
         }
@@ -438,7 +434,7 @@ namespace EImece.Controllers
             }
         }
 
-        private ActionResult RedirectToLocal(string returnUrl="")
+        private ActionResult RedirectToLocal(string returnUrl = "")
         {
             if (!String.IsNullOrEmpty(returnUrl) && returnUrl.Contains("login"))
             {

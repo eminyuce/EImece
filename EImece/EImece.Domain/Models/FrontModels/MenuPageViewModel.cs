@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class MenuPageViewModel
     {
-        public Menu Menu {get;set;}
+        public Menu Menu { get; set; }
 
         public Setting CompanyName
         {
@@ -36,7 +34,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Menu MainPageMenu { get;  set; }
+        public Menu MainPageMenu { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
         public List<Setting> ApplicationSettings { get; set; }

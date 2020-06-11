@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.HtmlHelpers
@@ -43,7 +39,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             li.MergeAttribute("title", tooltip);
             if (condition)
             {
-              //  li.AddCssClass(classToAdd);
+                //  li.AddCssClass(classToAdd);
             }
             var a = new TagBuilder("a");
             a.MergeAttribute("href", !condition ? action(index) : "javascript:");
@@ -52,7 +48,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
                 //  li.AddCssClass(classToAdd);
                 a.MergeAttribute("class", classToAdd);
             }
-        
+
 
             a.SetInnerText(linkText);
             li.InnerHtml = a.ToString();

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using GenericRepository;
+using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -14,7 +10,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public Setting CompanyName { get; set; }
 
-        public  List<Tag> Tags { get; set; }
+        public List<Tag> Tags { get; set; }
 
         public Menu ProductMenu { get; set; }
 

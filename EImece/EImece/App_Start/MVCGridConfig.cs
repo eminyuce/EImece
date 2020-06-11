@@ -2,19 +2,15 @@
 
 namespace EImece
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Linq;
-    using System.Collections.Generic;
-
-    using MVCGrid.Models;
-    using MVCGrid.Web;
     using Domain.Entities;
     using Domain.Helpers;
     using Domain.Repositories.IRepositories;
+    using MVCGrid.Models;
+    using MVCGrid.Web;
+    using System;
+    using System.Web.Mvc;
 
-    public static class MVCGridConfig 
+    public static class MVCGridConfig
     {
         public static void RegisterGrids()
         {
@@ -59,13 +55,13 @@ namespace EImece
                     var repo = DependencyResolver.Current.GetService<IProductRepository>();
                     string globalSearch = options.GetAdditionalQueryOptionString("search");
                     String name = "";
-                var items = repo.GetData(out totalRecords, 
-                        globalSearch,
-                        name,
-                        options.GetLimitOffset(), 
-                        options.GetLimitRowcount(),
-                        options.SortColumnName, 
-                        options.SortDirection == SortDirection.Dsc);
+                    var items = repo.GetData(out totalRecords,
+                            globalSearch,
+                            name,
+                            options.GetLimitOffset(),
+                            options.GetLimitRowcount(),
+                            options.SortColumnName,
+                            options.SortDirection == SortDirection.Dsc);
                     return new QueryResult<Product>()
                     {
                         Items = items,
@@ -74,7 +70,7 @@ namespace EImece
 
                 })
             );
-          
+
         }
     }
 }

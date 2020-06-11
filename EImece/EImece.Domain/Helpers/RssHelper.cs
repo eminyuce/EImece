@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 

@@ -1,13 +1,6 @@
-﻿using System;
+﻿using Resources;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Resources;
-using EImece.Domain.Models.FrontModels;
-using System.ServiceModel.Syndication;
 
 namespace EImece.Domain.Entities
 {
@@ -19,10 +12,10 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public bool MainPage { get; set; }
 
-        public  StoryCategory StoryCategory { get; set; }
+        public StoryCategory StoryCategory { get; set; }
         public ICollection<StoryTag> StoryTags { get; set; }
         public ICollection<StoryFile> StoryFiles { get; set; }
 
-     
+
     }
 }

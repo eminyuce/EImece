@@ -4,15 +4,11 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.MigrationModels;
 using EImece.Domain.Repositories.IRepositories;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace EImece.Domain.Repositories

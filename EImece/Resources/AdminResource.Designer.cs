@@ -1186,7 +1186,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Şartlar ve koşullar.
+        ///   Looks up a localized string similar to Şartlar ve Koşullar.
         /// </summary>
         public static string TermsConditions {
             get {

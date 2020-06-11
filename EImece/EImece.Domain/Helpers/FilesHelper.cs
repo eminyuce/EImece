@@ -1,26 +1,22 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.Caching;
+using EImece.Domain.Entities;
+using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Hosting;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using EImece.Domain.Caching;
-using NLog;
-using System.Security.Cryptography;
 using System.Drawing.Text;
-using EImece.Domain.Models.AdminHelperModels;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Web;
+using System.Web.Hosting;
 
 namespace EImece.Domain.Helpers
 {
@@ -134,12 +130,12 @@ namespace EImece.Domain.Helpers
         }
         public String DeleteFile(String file, HttpContextBase ContentBase)
         {
-                var request = ContentBase.Request;
-                int contentId = request.QueryString["contentId"].ToInt();
-                var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
-                var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
+            var request = ContentBase.Request;
+            int contentId = request.QueryString["contentId"].ToInt();
+            var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
+            var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
 
-                FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
+            FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
 
             return "OK";
         }
@@ -298,7 +294,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-       
+
         public ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
         {
             var request = requestContext.Request;
@@ -380,29 +376,29 @@ namespace EImece.Domain.Helpers
         }
         public static bool IsMainImageExists(int? MainImageId, FileStorage MainImage)
         {
-            if (MainImageId.HasValue && MainImage!=null)
+            if (MainImageId.HasValue && MainImage != null)
             {
                 String fullPath = Path.Combine(ApplicationConfigs.StorageRoot, MainImage.FileName);
                 return File.Exists(fullPath);
             }
             return false;
         }
-        public FileStorage SaveFileFromByteArray(byte [] imageByte,String fileName, String contentType,
+        public FileStorage SaveFileFromByteArray(byte[] imageByte, String fileName, String contentType,
             int height = 0,
             int width = 0,
-            EImeceImageType imageType = EImeceImageType.NONE, int ? mainImageId=null)
+            EImeceImageType imageType = EImeceImageType.NONE, int? mainImageId = null)
         {
-                if (mainImageId.HasValue && mainImageId.Value > 0)
-                {
-                    FileStorageService.DeleteFileStorage(mainImageId.Value);
-                }
-                var result = SaveImageByte(width, height, fileName, contentType, imageByte);
+            if (mainImageId.HasValue && mainImageId.Value > 0)
+            {
+                FileStorageService.DeleteFileStorage(mainImageId.Value);
+            }
+            var result = SaveImageByte(width, height, fileName, contentType, imageByte);
 
-               
-                FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
-                fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
-                FileStorageService.SaveOrEditEntity(fileStorage);
-              return fileStorage;
+
+            FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
+            fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
+            FileStorageService.SaveOrEditEntity(fileStorage);
+            return fileStorage;
         }
         public void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
             int height = 0,
@@ -415,7 +411,7 @@ namespace EImece.Domain.Helpers
                 if (baseContent.MainImageId.HasValue)
                 {
                     String deleted = FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
-                    Logger.Info("SaveFileFromHttpPostedFileBase DeleteFileStorage "+ deleted);
+                    Logger.Info("SaveFileFromHttpPostedFileBase DeleteFileStorage " + deleted);
                 }
                 SavedImage result = SaveImageByte(width, height, httpPostedFileBase);
                 FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
@@ -425,15 +421,15 @@ namespace EImece.Domain.Helpers
             }
             else if (baseContent.MainImageId.HasValue)
             {
-               
-                    var mainImage = FileStorageService.GetFileStorage(baseContent.MainImageId.Value);
-                    if (mainImage != null)
+
+                var mainImage = FileStorageService.GetFileStorage(baseContent.MainImageId.Value);
+                if (mainImage != null)
+                {
+                    var imageSize = GetThumbnailImageSize(mainImage);
+                    int mainImageHeight = imageSize.ThumpBitmapHeight;
+                    int mainImageWidth = imageSize.ThumpBitmapWidth;
+                    if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
                     {
-                        var imageSize = GetThumbnailImageSize(mainImage);
-                        int mainImageHeight = imageSize.ThumpBitmapHeight;
-                        int mainImageWidth = imageSize.ThumpBitmapWidth;
-                        if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
-                        {
 
                         String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
                         String candidatePathThb = Path.Combine(Path.Combine(StorageRoot, THUMBS), THB + mainImage.FileName);
@@ -446,16 +442,16 @@ namespace EImece.Domain.Helpers
 
                         DeleteThumbFile(mainImage.FileName);
 
-                          
-                            using (Image thumbnail = ByteArrayToImage(byteArrayIn))
-                            {
 
-                                using (MemoryStream ms = new MemoryStream())
-                                {
-                                    thumbnail.Save(ms, format);
-                                    thumbnail.Save(candidatePathThb, format);
-                                }
+                        using (Image thumbnail = ByteArrayToImage(byteArrayIn))
+                        {
+
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                thumbnail.Save(ms, format);
+                                thumbnail.Save(candidatePathThb, format);
                             }
+                        }
                         baseContent.ImageState = true;
 
 
@@ -500,7 +496,7 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
         }
-        public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte [] fileByte)
+        public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;
@@ -511,7 +507,7 @@ namespace EImece.Domain.Helpers
 
             if (IsImage(ext))
             {
-                
+
                 var fileNames = GetFileNames(fileName);
                 fullPath = fileNames.Item1;
                 candidatePathThb = fileNames.Item2;
@@ -587,7 +583,7 @@ namespace EImece.Domain.Helpers
             return ImageFormat.Jpeg;
         }
 
-         
+
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
@@ -595,17 +591,17 @@ namespace EImece.Domain.Helpers
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
             if (isRetrievedFromCache)
             {
-                if(result == null)
+                if (result == null)
                 {
-                      result = createSavedImage(fileStorageId,width, height);
-                      MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);                    
+                    result = createSavedImage(fileStorageId, width, height);
+                    MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
                 }
             }
             else
             {
                 result = createSavedImage(fileStorageId, width, height);
             }
-           
+
             return result;
 
         }
@@ -614,7 +610,7 @@ namespace EImece.Domain.Helpers
         {
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             SavedImage result = null;
-            if(fileStorage != null)
+            if (fileStorage != null)
             {
                 String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                 if (File.Exists(fullPath))
@@ -740,18 +736,18 @@ namespace EImece.Domain.Helpers
         private Bitmap ResizeImage(Bitmap image, int width, int height)
         {
 
-            double ratio = (double) image.Height / (double)image.Width;
+            double ratio = (double)image.Height / (double)image.Width;
             if (width > 0 && height == 0)
             {
                 height = (int)Math.Round(width * ratio);
             }
-            else  if (width == 0 && height > 0)
+            else if (width == 0 && height > 0)
             {
                 width = (int)Math.Round(height / ratio);
             }
 
 
-            if (width>0 && height > 0)
+            if (width > 0 && height > 0)
             {
                 Bitmap resizedImage = new Bitmap(width, height);
                 using (Graphics gfx = Graphics.FromImage(resizedImage))
@@ -862,7 +858,7 @@ namespace EImece.Domain.Helpers
                 return result;
             }
         }
- 
+
         private static ImageCodecInfo GetImageCodecInfo(string extension)
         {
 

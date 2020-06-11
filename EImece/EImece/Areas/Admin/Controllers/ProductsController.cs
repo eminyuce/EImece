@@ -2,19 +2,15 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Models.FrontModels;
 using NLog;
 using Resources;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using System.Xml.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -28,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
-            ViewBag.SelectedCategory  = ProductCategoryService.GetSingle(id);
+            ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
         public ActionResult SaveOrEditProductSpecs(int id = 0)
@@ -47,10 +43,10 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
         [HttpPost]
-        public ActionResult SaveOrEditProductSpecs(int id,int templateId)
+        public ActionResult SaveOrEditProductSpecs(int id, int templateId)
         {
             int productId = id;
-            ProductService.ParseTemplateAndSaveProductSpecifications(productId,templateId,CurrentLanguage,Request);
+            ProductService.ParseTemplateAndSaveProductSpecifications(productId, templateId, CurrentLanguage, Request);
 
             return RedirectToAction("SaveOrEditProductSpecs", new { id });
         }
@@ -103,7 +99,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase productImage = null, String saveButton=null)
+        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase productImage = null, String saveButton = null)
         {
             try
             {
@@ -118,20 +114,20 @@ namespace EImece.Areas.Admin.Controllers
                     else
                     {
 
-                       FilesHelper.SaveFileFromHttpPostedFileBase(
-                            productImage,
-                            product.ImageHeight,
-                            product.ImageWidth,
-                            EImeceImageType.ProductMainImage,
-                             product);
+                        FilesHelper.SaveFileFromHttpPostedFileBase(
+                             productImage,
+                             product.ImageHeight,
+                             product.ImageWidth,
+                             EImeceImageType.ProductMainImage,
+                              product);
 
                         product.Lang = CurrentLanguage;
                         ProductService.SaveOrEditEntity(product);
                         int contentId = product.Id;
 
-                            ProductService.SaveProductTags(product.Id, tags);
-                        
-                        if(String.IsNullOrEmpty(saveButton) || saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                        ProductService.SaveProductTags(product.Id, tags);
+
+                        if (String.IsNullOrEmpty(saveButton) || saveButton.Equals(AdminResource.SaveButtonAndCloseText))
                         {
                             return ReturnTempUrl("Index");
                         }
@@ -214,7 +210,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ExportExcel()
         {
             var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
-            
+
 
             var result = from r in products
                          select new

@@ -1,24 +1,21 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Models.FrontModels;
-using EImece.Domain.Helpers;
-using NLog;
 using System.Data.Entity.Validation;
-using System.Linq.Expressions;
+using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
-using System.Xml.Linq;
-using System.Xml;
 using System.Web.Mvc;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -152,11 +149,11 @@ namespace EImece.Domain.Services
         public StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page)
         {
             StoryCategoryViewModel result = null;
-          
-                result = new StoryCategoryViewModel();
-                int pageSize = ApplicationConfigs.RecordPerPage;
 
-                result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
+            result = new StoryCategoryViewModel();
+            int pageSize = ApplicationConfigs.RecordPerPage;
+
+            result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
             int lang = result.StoryCategory.Lang;
             result.StoryCategories = StoryCategoryService.GetActiveBaseContents(true, result.StoryCategory.Lang);
             result.Tags = TagService.GetActiveBaseEntities(true, lang);
@@ -185,7 +182,7 @@ namespace EImece.Domain.Services
         {
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
-            
+
             var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
@@ -198,7 +195,7 @@ namespace EImece.Domain.Services
 
             //feed.AddNamespace("StoryCategories", url + "/stories/categories/"+rssParams.CategoryId);
 
-            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name,url, rssParams));
+            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name, url, rssParams));
 
             return new Rss20FeedFormatter(feed);
         }
@@ -225,7 +222,7 @@ namespace EImece.Domain.Services
             feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
 
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss",null,ApplicationConfigs.HttpProtocol);
+            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss", null, ApplicationConfigs.HttpProtocol);
 
             var formatter = new Rss20FeedFormatter(feed);
             formatter.SerializeExtensionsAsAtom = false;

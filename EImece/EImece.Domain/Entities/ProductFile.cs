@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Resources;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace EImece.Domain.Entities
@@ -16,8 +9,8 @@ namespace EImece.Domain.Entities
         public int FileStorageId { get; set; }
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public  FileStorage FileStorage { get; set; }
-        public  Product Product { get; set; }
+        public FileStorage FileStorage { get; set; }
+        public Product Product { get; set; }
 
     }
 }

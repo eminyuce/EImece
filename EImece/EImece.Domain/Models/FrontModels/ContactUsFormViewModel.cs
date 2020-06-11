@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EImece.Domain.Models.Enums;
 using Resources;
+using System;
 using System.ComponentModel.DataAnnotations;
-using EImece.Domain.Models.Enums;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public  class ContactUsFormViewModel
+    public class ContactUsFormViewModel
     {
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsNameErrorMessage))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsName))]
@@ -18,7 +14,7 @@ namespace EImece.Domain.Models.FrontModels
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsEmailErrorMessage))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsEmail))]
         public String Email { get; set; }
- 
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsCompanyName))]
         public String CompanyName { get; set; }
 

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Models.Enums;
+using NLog;
+using System;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.DbContext;
-using EImece.Domain.Entities;
-using System.Linq.Expressions;
-using EImece.Domain.Helpers;
-using EImece.Domain.Models.Enums;
-using NLog;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -79,7 +73,7 @@ namespace EImece.Areas.Admin.Controllers
                       mainPageImageFile,
                       mainpageimage.ImageHeight,
                       mainpageimage.ImageWidth,
-                      EImeceImageType.MainPageImages, 
+                      EImeceImageType.MainPageImages,
                       mainpageimage);
 
                     mainpageimage.ImageState = true;

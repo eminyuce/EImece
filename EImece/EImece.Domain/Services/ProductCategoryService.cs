@@ -1,18 +1,15 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
+using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharkDev.Web.Controls.TreeView.Model;
-using NLog;
-using EImece.Domain.Helpers;
 using System.Data.Entity.Validation;
-using EImece.Domain.Models.FrontModels;
-using GenericRepository.EntityFramework.Enums;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -122,7 +119,7 @@ namespace EImece.Domain.Services
 
         public List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language)
         {
-            var cacheKey = String.Format("ProductCategoryGetBreadCrumb-{0}-{1}", productCategoryId,language);
+            var cacheKey = String.Format("ProductCategoryGetBreadCrumb-{0}-{1}", productCategoryId, language);
             List<ProductCategoryTreeModel> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
@@ -160,7 +157,7 @@ namespace EImece.Domain.Services
         private ProductCategoryTreeModel FindNode(ProductCategoryTreeModel rootNode, int Id)
         {
             if (rootNode.ProductCategory.Id == Id) return rootNode;
-            if(rootNode.Childrens!=null && rootNode.Childrens.Any())
+            if (rootNode.Childrens != null && rootNode.Childrens.Any())
             {
                 foreach (var child in rootNode.Childrens)
                 {
@@ -168,7 +165,7 @@ namespace EImece.Domain.Services
                     if (n != null) return n;
                 }
             }
-           
+
             return null;
         }
 

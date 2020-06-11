@@ -1,16 +1,12 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -173,7 +169,7 @@ namespace EImece.Areas.Admin.Controllers
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
-         
+
 
             return DownloadFile(result, String.Format("Tags-{0}", GetCurrentLanguage));
 

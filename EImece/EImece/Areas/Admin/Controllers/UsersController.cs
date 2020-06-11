@@ -1,15 +1,12 @@
-﻿using EImece.Domain;
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using static EImece.Controllers.ManageController;
@@ -27,12 +24,12 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
-  
 
-        public ActionResult Index(String search="")
+
+        public ActionResult Index(String search = "")
         {
-             
- 
+
+
             //var users = ApplicationDbContext.Users.AsQueryable();
 
             var users = from u in ApplicationDbContext.Users
@@ -78,7 +75,7 @@ namespace EImece.Areas.Admin.Controllers
 
 
         [HttpPost]
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -100,10 +97,10 @@ namespace EImece.Areas.Admin.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-  
+
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {
-    
+
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new EditUserViewModel();
             model.FirstName = user.FirstName;
@@ -120,7 +117,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
                 var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
                 // Update the user data:
                 user.FirstName = model.FirstName;
@@ -134,8 +131,8 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                
-               // ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault());
+
+                // ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault());
             }
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -146,17 +143,18 @@ namespace EImece.Areas.Admin.Controllers
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
             // Send an email with this link
-            string code =  UserManager.GeneratePasswordResetToken(user.Id);
-            String newPassWord = "1"+Membership.GeneratePassword(7, 2);
+            string code = UserManager.GeneratePasswordResetToken(user.Id);
+            String newPassWord = "1" + Membership.GeneratePassword(7, 2);
             var result = UserManager.ResetPassword(user.Id, code, newPassWord);
 
-       
+
             if (result.Succeeded)
             {
                 ViewBag.NewPassword = newPassWord;
-            }else
+            }
+            else
             {
-                ViewBag.NewPassword = result.Errors.ToArray()[0].ToStr() + " ERROR is occured while generating the new password for user:"+user.Email;
+                ViewBag.NewPassword = result.Errors.ToArray()[0].ToStr() + " ERROR is occured while generating the new password for user:" + user.Email;
             }
             AddErrors(result);
             var model = new EditUserViewModel();
@@ -175,7 +173,7 @@ namespace EImece.Areas.Admin.Controllers
         //[Authorize(Roles = "Admin")]
         public ActionResult Delete(string id = null)
         {
-          
+
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new EditUserViewModel();
             model.FirstName = user.FirstName;
@@ -195,17 +193,17 @@ namespace EImece.Areas.Admin.Controllers
         // [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(string id)
         {
- 
+
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             ApplicationDbContext.Users.Remove(user);
             ApplicationDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public ActionResult UserRoles(string id)
         {
-     
+
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new SelectUserRolesViewModel(user);
             return View(model);
@@ -213,29 +211,29 @@ namespace EImece.Areas.Admin.Controllers
 
 
         [HttpPost]
-     //   [Authorize(Roles = "Admin")]
+        //   [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult UserRoles(SelectUserRolesViewModel model)
         {
             // if (ModelState.IsValid)
             // {
- 
-            
-                var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
-                IdentityManager.ClearUserRoles(user.Id);
-                foreach (var role in model.Roles)
+
+
+            var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
+            IdentityManager.ClearUserRoles(user.Id);
+            foreach (var role in model.Roles)
+            {
+                if (role.Selected)
                 {
-                    if (role.Selected)
-                    {
-                        IdentityManager.AddUserToRole(user.Id, role.RoleName);
-                    }
+                    IdentityManager.AddUserToRole(user.Id, role.RoleName);
                 }
-                return RedirectToAction("index");
+            }
+            return RedirectToAction("index");
             // }
             // return View();
         }
         [AllowAnonymous]
-        public ActionResult ForgotPassword(String id="")
+        public ActionResult ForgotPassword(String id = "")
         {
             var m = new ForgotPasswordViewModel();
             if (!String.IsNullOrEmpty(id))
@@ -374,10 +372,10 @@ namespace EImece.Areas.Admin.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-             
+
             return View();
         }
-     
+
 
     }
 }

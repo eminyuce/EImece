@@ -6,9 +6,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Tests.Helpers
 {
@@ -20,13 +17,13 @@ namespace EImece.Tests.Helpers
         {
             string url = "http://dev.magazines.marinelink.com/nwm/MarineTechnologyWhitePapers/201707/content/medium/pageddfdfdf1.jpg";
             var actual = ImageUtilities.GetImageDimensions(url);
-            Console.WriteLine(actual.Item1 + "  "+ actual.Item2);
+            Console.WriteLine(actual.Item1 + "  " + actual.Item2);
         }
         [TestMethod]
         public void GetPngDimensionsTes2t()
         {
             string url = "https://www.dropbox.com/s/29r2qyxe510om7i/ADA-BLANK.jpg?raw=1";
-            var bytesArr = DownloadHelper.GetImageFromUrl(url,new Dictionary<string, string>());
+            var bytesArr = DownloadHelper.GetImageFromUrl(url, new Dictionary<string, string>());
             MemoryStream memstr = new MemoryStream(bytesArr);
             Image img = Image.FromStream(memstr);
             Console.WriteLine(img.Width + "  " + img.Height);
@@ -86,7 +83,7 @@ namespace EImece.Tests.Helpers
                     {
                         emails.Rows.Add(dr.Email);
                     }
-                   
+
                 }
                 catch (Exception ex)
                 {
@@ -97,20 +94,20 @@ namespace EImece.Tests.Helpers
             string connectionString = @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY";
             emails.TableName = "_temp_Emails_Kathleen201805";
             ExcelHelper.SaveTable(emails, connectionString);
-          //  Console.WriteLine("emails:" + emails.Rows.Count);
+            //  Console.WriteLine("emails:" + emails.Rows.Count);
             foreach (var item in p)
             {
                 Console.WriteLine(item);
-             File.Delete(item);
+                File.Delete(item);
             }
         }
-     
 
-       
+
+
 
         public bool IsActionExists(String action, String controller)
         {
-     
+
             //var controllerFullName = string.Format("EImece.Areas.Amp.Controllers.{0}Controller", controller);
             //var assembly = Assembly.GetAssembly(typeof("EImece"));
             //var cont = assembly.GetType(controllerFullName);
@@ -127,5 +124,5 @@ namespace EImece.Tests.Helpers
 
     }
 
-  
+
 }

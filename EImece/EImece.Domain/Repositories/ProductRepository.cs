@@ -1,22 +1,19 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
+using GenericRepository;
+using GenericRepository.EntityFramework.Enums;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using System.Linq.Expressions;
-using GenericRepository.EntityFramework.Enums;
-using GenericRepository;
-using NLog;
-using Ninject;
-using EImece.Domain.Helpers;
 using System.Data;
-using EImece.Domain.Models.FrontModels;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories
 {
@@ -248,8 +245,8 @@ namespace EImece.Domain.Repositories
         {
             var fltrs = FilterHelper.ParseFiltersFromString(filters);
 
-            var  result = GetProductsSearchResult(search, fltrs, top, skip, language);
-           
+            var result = GetProductsSearchResult(search, fltrs, top, skip, language);
+
             return result;
         }
 

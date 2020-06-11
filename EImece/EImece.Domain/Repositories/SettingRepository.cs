@@ -1,11 +1,8 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
 
 namespace EImece.Domain.Repositories
 {
@@ -17,7 +14,7 @@ namespace EImece.Domain.Repositories
         }
         public List<Setting> GetAllActiveSettings()
         {
-            return GetAll().Where(t=>t.IsActive).ToList();
+            return GetAll().Where(t => t.IsActive).ToList();
         }
         public List<Setting> GetAllSettings()
         {

@@ -1,11 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -21,7 +17,7 @@ namespace EImece.Domain.Services.IServices
         StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page);
         List<Story> GetLatestStories(int language, int take);
         Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams);
-        SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, 
+        SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex,
             int pageSize, int currentLanguage);
         Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams);
     }

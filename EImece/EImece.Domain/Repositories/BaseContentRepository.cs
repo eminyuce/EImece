@@ -5,11 +5,8 @@ using GenericRepository.EntityFramework.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -29,7 +26,7 @@ namespace EImece.Domain.Repositories
             var item = GetSingleIncluding(id, includeProperties);
             return item;
         }
-        public virtual List<T> GetActiveBaseContents(bool? isActive, int ? language)
+        public virtual List<T> GetActiveBaseContents(bool? isActive, int? language)
         {
             try
             {
@@ -42,9 +39,9 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
                 Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = this.FindAllIncluding(predicate,keySelector, OrderByType.Ascending, null, null, includeProperties);
+                var items = this.FindAllIncluding(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
 
-                var result =  items.ToList();
+                var result = items.ToList();
 
                 return result == null ? new List<T>() : result;
             }
@@ -61,13 +58,13 @@ namespace EImece.Domain.Repositories
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
             var menus = GetAllIncluding(includeProperties.ToArray());
-         
-            search=search.ToStr().Trim();
+
+            search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
                 match = match.And(whereLambda);
             }
-            
+
             var result = menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             return result;
         }

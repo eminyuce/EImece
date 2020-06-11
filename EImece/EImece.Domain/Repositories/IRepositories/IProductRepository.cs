@@ -4,8 +4,6 @@ using GenericRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -19,11 +17,11 @@ namespace EImece.Domain.Repositories.IRepositories
         IEnumerable<Product> GetData(out int totalRecords, string globalSearch, String name, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
         List<Product> GetRelatedProducts(int[] tagIdList, int take, int lang, int excludedProductId);
         IQueryable<Product> GetActiveProducts(bool? isActive, int? language);
-         ProductsSearchResult GetProductsSearchResult(
-    string search,
-    string filters,
-    int top,
-    int skip,
-    int language);
+        ProductsSearchResult GetProductsSearchResult(
+   string search,
+   string filters,
+   int top,
+   int skip,
+   int language);
     }
 }

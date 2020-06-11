@@ -5,10 +5,8 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -25,7 +23,7 @@ namespace EImece.Areas.Admin.Controllers
                     controller.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Product, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = ProductService.SearchEntities(whereLambda1, searchKey,CurrentLanguage).Select(r => r.Name).ToList();
+                list = ProductService.SearchEntities(whereLambda1, searchKey, CurrentLanguage).Select(r => r.Name).ToList();
             }
             else if (action.Equals("Index", StringComparison.InvariantCultureIgnoreCase) &&
                    controller.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
@@ -280,7 +278,7 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
-     public ActionResult GetProductDetailToolTip(int productId = 0)
+        public ActionResult GetProductDetailToolTip(int productId = 0)
         {
             var product = ProductService.GetProductById(productId);
             var html = this.RenderPartialToString(

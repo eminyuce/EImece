@@ -1,12 +1,4 @@
-﻿using GenericRepository;
-using System;
-using System.Collections.Generic; 
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Resources;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -16,6 +8,6 @@ namespace EImece.Domain.Entities
         public int ListId { get; set; }
         public string Value { get; set; }
 
-        public  List List { get; set; }
+        public List List { get; set; }
     }
 }

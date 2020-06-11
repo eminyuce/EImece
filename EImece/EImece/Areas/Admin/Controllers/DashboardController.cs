@@ -1,19 +1,12 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -67,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             MemoryCacheProvider.ClearAll();
 
-        
+
             var urlReferrer = Request.UrlReferrer;
             if (urlReferrer != null)
             {
@@ -85,7 +78,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             MemoryCacheProvider.ClearAll();
-            return RedirectToAction("Index", "Home",new { @area="" });
+            return RedirectToAction("Index", "Home", new { @area = "" });
         }
         public ActionResult SetLanguage(string name)
         {
@@ -99,7 +92,7 @@ namespace EImece.Areas.Admin.Controllers
             return RequestReturn(returnDefault);
         }
 
-       
+
 
     }
 }

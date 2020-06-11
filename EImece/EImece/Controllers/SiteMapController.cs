@@ -1,17 +1,15 @@
-﻿using System;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers.SiteMap;
+using EImece.Domain.Models.Enums;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Helpers.SiteMap;
-using EImece.Domain;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Helpers;
-using NLog;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.Enums;
-using System.Text.RegularExpressions;
 
 namespace EImece.Controllers
 {

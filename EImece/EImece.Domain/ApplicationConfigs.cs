@@ -1,15 +1,10 @@
 ﻿using EImece.Domain.Helpers;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Hosting;
-using System.Collections.Specialized;
 
 namespace EImece.Domain
 {
@@ -19,12 +14,12 @@ namespace EImece.Domain
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
-
-
+        public const string Special_Page = "Special_Page";
+        public const string AdminSetting = "AdminSetting";
         public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
-     //   public const string Languages = "Languages";
+        //   public const string Languages = "Languages";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
@@ -43,7 +38,7 @@ namespace EImece.Domain
                 string httpSecure = string.Format("http{0}", useSll ? "s" : "");
 
                 return httpSecure;
-               // return HttpContext.Current.Request.Url.Scheme;
+                // return HttpContext.Current.Request.Url.Scheme;
             }
         }
         public static string HttpProtocol
@@ -66,8 +61,8 @@ namespace EImece.Domain
 ;
 
             }
-        } 
- 
+        }
+
 
         public static string OkStyle
         {
@@ -87,7 +82,7 @@ namespace EImece.Domain
 
             }
         }
- 
+
 
         public static string Domain
         {

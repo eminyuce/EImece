@@ -5,11 +5,8 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -283,10 +280,10 @@ namespace EImece.Domain.Helpers.Extensions
             if (entity != null)
             {
                 if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
-            {
-                imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
+                {
+                    imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
+                }
             }
-               }
 
             return imageTag;
         }
@@ -296,11 +293,11 @@ namespace EImece.Domain.Helpers.Extensions
             if (entity != null)
             {
                 String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
-            if (!String.IsNullOrEmpty(imagePath))
-            {
-                imageTag = String.Format("<img src='{0}' alt='{1}'   />",
-                    imagePath, entity.Name, width, height).ToLower();
-            }
+                if (!String.IsNullOrEmpty(imagePath))
+                {
+                    imageTag = String.Format("<img src='{0}' alt='{1}'   />",
+                        imagePath, entity.Name, width, height).ToLower();
+                }
             }
 
             return imageTag;
@@ -310,17 +307,17 @@ namespace EImece.Domain.Helpers.Extensions
             if (entity != null)
             {
                 if (fileStorageId > 0)
-            {
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                var imageSize = String.Format("w{0}h{1}", width, height);
-                var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
-                String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { imageSize, id = imageId });
-                return imagePath;
-            }
-            else
-            {
-                return String.Empty;
-            }
+                {
+                    var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                    var imageSize = String.Format("w{0}h{1}", width, height);
+                    var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
+                    String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { imageSize, id = imageId });
+                    return imagePath;
+                }
+                else
+                {
+                    return String.Empty;
+                }
             }
             else
             {

@@ -1,13 +1,11 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
+using GenericRepository.EntityFramework.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.DbContext;
-using GenericRepository.EntityFramework.Enums;
 
 namespace EImece.Domain.Repositories
 {
@@ -39,7 +37,7 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ListItems);
-            var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase),  r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
             return item.FirstOrDefault();
         }
     }
