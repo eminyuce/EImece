@@ -97,23 +97,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(mainpageimage);
         }
 
-
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            MainPageImage mainPageImage = MainPageImageService.GetSingle(id);
-            if (mainPageImage == null)
-            {
-                return HttpNotFound();
-            }
-            return View(mainPageImage);
-        }
-
         // POST: Admin/MainPageImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

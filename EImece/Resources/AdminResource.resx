@@ -525,4 +525,10 @@
   <data name="PhoneNumber" xml:space="preserve">
     <value>Tel No</value>
   </data>
+  <data name="TagCategoryName" xml:space="preserve">
+    <value>Etiket Kategori İsim</value>
+  </data>
+  <data name="TagName" xml:space="preserve">
+    <value>Etiket İsim</value>
+  </data>
 </root>

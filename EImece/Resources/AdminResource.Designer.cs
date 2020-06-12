@@ -1177,6 +1177,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Etiket Kategori İsim.
+        /// </summary>
+        public static string TagCategoryName {
+            get {
+                return ResourceManager.GetString("TagCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Etiket İsim.
+        /// </summary>
+        public static string TagName {
+            get {
+                return ResourceManager.GetString("TagName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Etiketler.
         /// </summary>
         public static string Tags {

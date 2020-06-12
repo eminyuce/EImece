@@ -611,7 +611,6 @@
     <Content Include="Areas\Admin\Views\Templates\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\pPageThemes.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\MainPageImages\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\Details.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\BaseContentSearchItem.cshtml" />

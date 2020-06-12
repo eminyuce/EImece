@@ -91,11 +91,11 @@ if (UserRoleHelper.IsDeletedEnableRoles())
 }
 
 columns.Add(c => c.Name)
-   .Titled("Tag Name")
+   .Titled(AdminResource.TagName)
    .Filterable(true);
 
 columns.Add(c => c.TagCategory.Name)
-.Titled("TagCategoryName")
+.Titled(AdminResource.TagCategoryName)
 .Filterable(true)
 .Encoded(false)
 .RenderValueAs(d =>
