@@ -107,9 +107,6 @@ namespace EImece.Areas.Admin.Controllers
         }
 
 
-
-  
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
