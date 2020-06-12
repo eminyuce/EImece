@@ -516,4 +516,10 @@
   <data name="NewUserInsert" xml:space="preserve">
     <value>Yeni kullanıcı tanımla</value>
   </data>
+  <data name="DeletePopupDescription" xml:space="preserve">
+    <value>Bu kayıtları gerçekten silmek istiyor musunuz? Bu işlem geri alınamaz.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Emin misiniz?</value>
+  </data>
 </root>

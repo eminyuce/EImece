@@ -439,6 +439,7 @@
     <Content Include="Content\codemirror\codemirror.css" />
     <Content Include="Content\codemirror\doc\docs.css" />
     <Content Include="Content\DataTable\jquery.dataTables.min.css" />
+    <Content Include="Content\deleteStyle.css" />
     <Content Include="Content\FileUpload\FileUploader.css" />
     <Content Include="Content\FileUpload\styles.css" />
     <Content Include="Content\FileUpload\styles.min.css" />
@@ -587,7 +588,6 @@
     <Content Include="Areas\Admin\Views\Tags\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\Tags\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\Delete.cshtml" />
@@ -695,6 +695,7 @@
     <Content Include="manifest.json" />
     <Content Include="Areas\Amp\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emin misiniz?.
+        /// </summary>
+        public static string AreYouSure {
+            get {
+                return ResourceManager.GetString("AreYouSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geriye Dönün.
         /// </summary>
         public static string BackToList {
@@ -201,6 +210,15 @@ namespace Resources {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu kayıtları gerçekten silmek istiyor musunuz? Bu işlem geri alınamaz..
+        /// </summary>
+        public static string DeletePopupDescription {
+            get {
+                return ResourceManager.GetString("DeletePopupDescription", resourceCulture);
             }
         }
         
