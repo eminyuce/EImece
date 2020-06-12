@@ -522,4 +522,7 @@
   <data name="AreYouSure" xml:space="preserve">
     <value>Emin misiniz?</value>
   </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Tel No</value>
+  </data>
 </root>

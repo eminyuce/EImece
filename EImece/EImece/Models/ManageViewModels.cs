@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,11 +31,11 @@ namespace EImece.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NewPassword))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmNewPassword))]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -43,17 +44,17 @@ namespace EImece.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CurrentPassword))]
         public string OldPassword { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NewPassword))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmNewPassword))]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -62,7 +63,7 @@ namespace EImece.Models
     {
         [Required]
         [Phone]
-        [Display(Name = "Phone Number")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string Number { get; set; }
     }
 
@@ -74,7 +75,7 @@ namespace EImece.Models
 
         [Required]
         [Phone]
-        [Display(Name = "Phone Number")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }
     }
 

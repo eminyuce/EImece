@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tel No.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lütfen Menü Kategorinizi Ağaçtan Seçin.
         /// </summary>
         public static string PleaseSelectYourMenuCategoryFromTree {
