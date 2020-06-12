@@ -105,26 +105,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(storyCategory);
         }
 
-
-
-        //
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            StoryCategory content = StoryCategoryService.GetBaseContent(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-
-            return View(content);
-        }
+ 
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

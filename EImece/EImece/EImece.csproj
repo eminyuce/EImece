@@ -568,7 +568,6 @@
     <Content Include="Areas\Admin\Views\Test\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\Menus\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Test\Index2.cshtml" />
     <Content Include="NLog.config">
@@ -581,16 +580,13 @@
     <Content Include="Areas\Admin\Views\Stories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\StoryCategories\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Stories\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Stories\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\Stories\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\TagCategories\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\SaveOrEdit.cshtml" />

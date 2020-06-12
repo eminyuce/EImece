@@ -121,7 +121,7 @@
                         @<div>
                             @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
                             <div>
-                                @GridToolsColumnAlt2(d, controllerName)
+                                @GridToolsColumnAlt(d, controllerName)
                             </div>
 
                         </div>
@@ -231,43 +231,9 @@ columns.Add(r => r.ImageState
     }
 
 }
-@helper GridToolsColumn(Product d, String controllerName)
-{
+ 
 
-    <div class="gridToolBox">
-        <span>
-            @Html.Raw(String.Format("<input gridkey-id='{0}' class='gridCheckboxes' name='checkboxGrid' type='checkbox'>", d.Id))
-        </span>
-        <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
-        </span>
-        <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
-        </span>
-        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
-        {
-            <span>
-
-                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
-            </span>
-        }
-
-
-        @if (UserRoleHelper.IsDeletedEnableRoles())
-        {
-            <span>
-                @Html.ActionLink(" ", "Delete", controllerName,
-                           new { id = d.Id },
-                           new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
-
-            </span>
-        }
-    </div>
-
-}
-
-
-@helper GridToolsColumnAlt2(Product d, String controllerName)
+@helper GridToolsColumnAlt(Product d, String controllerName)
 {
 
     <div class="gridToolBox">
@@ -285,12 +251,14 @@ columns.Add(r => r.ImageState
         }
         @if (UserRoleHelper.IsDeletedEnableRoles())
         {
-            <span>
-                @Html.ActionLink(" ", "Delete", controllerName,
-                           new { id = d.Id },
-                           new { @class = "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" })
+    <span>
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+   { "ItemId", d.Id },
+   {"controllerName",controllerName},
+   { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
+   { "ItemDescription", d.Name } })
 
-            </span>
+    </span>
         }
     </div>
 

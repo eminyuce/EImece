@@ -158,26 +158,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(product);
         }
 
-
-
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Product content = ProductService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-
-            return View(content);
-        }
-
+ 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]

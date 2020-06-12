@@ -118,34 +118,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
 
-
-        //
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Menu content = MenuService.GetSingle(id);
-            var menuTreeNodeList = MenuService.GetMenuLeaves(null, CurrentLanguage);
-            var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == id);
-
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-            if (leave != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return Content("You cannot delete parent");
-            }
-
-        }
+ 
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

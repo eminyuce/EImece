@@ -205,12 +205,16 @@ window.location='/admin/menus/saveoredit/'+e.id;
 
          if (menuTreeNodeList.Any(r => r.Id == d.Id))
             {
-                <span>
-                    @Html.ActionLink(" ", "Delete", controllerName,
-                           new { id = d.Id },
-                          new { @class = "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" })
+    <span>
+    
 
-                </span>
+
+       @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+        { "ItemId", d.Id },
+        {"controllerName",controllerName},
+        { "DeleteIcon", "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" },
+        { "ItemDescription", d.Name } })
+    </span>
             }
             else
             {
