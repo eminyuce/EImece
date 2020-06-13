@@ -532,6 +532,6 @@
     <value>Etiket İsim</value>
   </data>
   <data name="ActionOptionsOfSelectedItems" xml:space="preserve">
-    <value>Seçilenler ile</value>
+    <value>Seçilenler ile Aksiyon</value>
   </data>
 </root>

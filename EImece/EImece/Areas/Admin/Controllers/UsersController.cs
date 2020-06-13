@@ -32,7 +32,9 @@ namespace EImece.Areas.Admin.Controllers
 
             //var users = ApplicationDbContext.Users.AsQueryable();
 
-            var users = from u in ApplicationDbContext.Users
+            var users = ApplicationDbContext.Users.AsQueryable();
+
+            var users2 = from u in ApplicationDbContext.Users
                         from ur in u.Roles
                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
                         select new
@@ -43,6 +45,8 @@ namespace EImece.Areas.Admin.Controllers
                             LastName = u.LastName,
                             Role = r.Name,
                         };
+
+
             if (!String.IsNullOrEmpty(search))
             {
                 search = search.ToLower().Trim();
@@ -51,14 +55,15 @@ namespace EImece.Areas.Admin.Controllers
 
             //ViewModel will be posted at the end of the answer
             var model = new List<EditUserViewModel>();
-            foreach (var user in users)
+            foreach (var user in users.ToList())
             {
                 var u = new EditUserViewModel();
                 u.FirstName = user.FirstName;
                 u.LastName = user.LastName;
                 u.Email = user.Email;
                 u.Id = user.Id;
-                u.Role = user.Role;
+                var p = users2.FirstOrDefault(r => r.Id == u.Id);
+                u.Role = p == null? String.Empty: p.Role.ToStr();
                 model.Add(u);
             }
             return View(model);

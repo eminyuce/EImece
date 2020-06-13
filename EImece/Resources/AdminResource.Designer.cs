@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seçilenler ile.
+        ///   Looks up a localized string similar to Seçilenler ile Aksiyon.
         /// </summary>
         public static string ActionOptionsOfSelectedItems {
             get {
