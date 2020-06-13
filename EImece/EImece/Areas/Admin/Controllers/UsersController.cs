@@ -176,23 +176,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Authorize(Roles = "Admin")]
-        public ActionResult Delete(string id = null)
-        {
-
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
-            var model = new EditUserViewModel();
-            model.FirstName = user.FirstName;
-            model.LastName = user.LastName;
-            model.Email = user.Email;
-            model.Id = user.Id;
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(model);
-        }
-
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

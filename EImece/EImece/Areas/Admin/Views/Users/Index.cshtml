@@ -16,6 +16,7 @@
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Users";
+    var gridDeleteText = AdminResource.GridDeleteText;
     var title = "Users";
     var gridName = "UsersGrid";
     var contents = Model;
@@ -71,16 +72,17 @@ columns.Add()
     @Html.ActionLink(AdminResource.Edit, "Edit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm" })
 </b>);
 
-columns.Add()
+    columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(30)
-.RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(AdminResource.Delete, "Delete", controllerName, new { id = d.Id }, new { @class = "btn btn-danger btn-sm     " })
+.RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+        { "ItemId", d.Id },
+        {"controllerName",controllerName},
+        { "DeleteText", gridDeleteText },
+        { "ItemDescription", String.Format("{0} {1}", d.FirstName, d.LastName) } }));
 
-</b>);
-columns.Add()
+    columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(30)
