@@ -19,6 +19,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/Dashboard
         public ActionResult Index()
         {
+            ViewBag.Title = "Gösterge Paneli";
             return View();
         }
         public ActionResult SearchContent(String searchContent)

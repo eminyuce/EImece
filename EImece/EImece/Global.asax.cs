@@ -75,7 +75,11 @@ namespace EImece
         }
         protected void Application_Error(object sender, EventArgs e)
         {
+           // redirectErrorController(sender);
+        }
 
+        private void redirectErrorController(object sender)
+        {
             bool useCustomError = true;
 
             String siteStatus = ApplicationConfigs.GetConfigString("SiteStatus", "dev");
