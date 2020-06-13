@@ -88,7 +88,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase productCategoryImage = null)
+        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase postedImage = null)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    FilesHelper.SaveFileFromHttpPostedFileBase(productCategoryImage,
+                    FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
                         productCategory.ImageHeight,
                         productCategory.ImageWidth,
                         EImeceImageType.ProductCategoryMainImage,

@@ -84,13 +84,13 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Menu menu, HttpPostedFileBase menuImage = null)
+        public ActionResult SaveOrEdit(Menu menu, HttpPostedFileBase postedImage = null)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    FilesHelper.SaveFileFromHttpPostedFileBase(menuImage,
+                    FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
                         menu.ImageHeight,
                         menu.ImageWidth,
                         EImeceImageType.MenuMainImage, menu);

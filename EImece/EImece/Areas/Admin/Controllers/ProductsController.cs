@@ -99,7 +99,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase productImage = null, String saveButton = null)
+        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace EImece.Areas.Admin.Controllers
                     {
 
                         FilesHelper.SaveFileFromHttpPostedFileBase(
-                             productImage,
+                             postedImage,
                              product.ImageHeight,
                              product.ImageWidth,
                              EImeceImageType.ProductMainImage,

@@ -222,7 +222,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(content);
         }
-        public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase webSiteLogo = null)
+        public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
         {
 
             var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
@@ -233,7 +233,7 @@ namespace EImece.Areas.Admin.Controllers
                 id = webSiteLogoSetting.Id;
             }
 
-            var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, webSiteLogo);
+            var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
             webSiteLogoSetting.Name = ApplicationConfigs.WebSiteLogo;
             webSiteLogoSetting.Description = "";
             webSiteLogoSetting.EntityHash = "";
