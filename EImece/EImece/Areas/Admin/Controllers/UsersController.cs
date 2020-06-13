@@ -91,7 +91,8 @@ namespace EImece.Areas.Admin.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Users");
+                    ///users/userroles/22dc301a-4661-4269-b5ba-88a5420bbcfa/
+                    return RedirectToAction("userroles", "Users",new { id= user.Id });
                 }
                 else
                 {
