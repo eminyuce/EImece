@@ -81,27 +81,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(MailTemplate);
         }
 
-
-
-        //
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            MailTemplate item = MailTemplateService.GetSingle(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-
-
-            return View(item);
-        }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]

@@ -20,24 +20,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(result);
         }
 
-
-        //
-        // GET: /Tag/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Tag content = TagService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-            return View(content);
-        }
         private List<SelectListItem> GetCategoriesSelectList()
         {
 

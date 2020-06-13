@@ -30,24 +30,6 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         //
-        // GET: /Menu/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Menu content = MenuService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-            return View(content);
-        }
-
-        //
         // GET: /Menu/Create
 
         public ActionResult SaveOrEdit(int id = 0)

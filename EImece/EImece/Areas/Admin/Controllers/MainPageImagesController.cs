@@ -22,21 +22,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(mainPageImages);
         }
 
-        // GET: Admin/MainPageImages/Details/5
-        public ActionResult Details(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MainPageImage mainPageImage = MainPageImageService.GetSingle(id);
-            if (mainPageImage == null)
-            {
-                return HttpNotFound();
-            }
-            return View(mainPageImage);
-        }
-
         public ActionResult SaveOrEdit(int id = 0)
         {
 

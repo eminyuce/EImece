@@ -554,17 +554,11 @@
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSearchForm.cshtml" />
-    <Content Include="Areas\Admin\Views\Products\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Products\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\Products\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductCategories\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Test\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\Menus\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Test\Index2.cshtml" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -574,11 +568,8 @@
     <Content Include="Areas\Admin\Views\StoryCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Stories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\StoryCategories\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Stories\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Stories\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Tags\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Tags\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\SaveOrEdit.cshtml" />
@@ -604,10 +595,8 @@
     <Content Include="Areas\Admin\Views\Media\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\Templates\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\pPageThemes.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\MainPageImages\Details.cshtml" />
     <Content Include="Areas\Admin\Views\MainPageImages\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\BaseContentSearchItem.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridDropDown.cshtml" />
@@ -631,7 +620,6 @@
     <Content Include="Areas\Admin\Views\Error\MethodNotAllowed.cshtml" />
     <Content Include="Areas\Admin\Views\Error\NotFound.cshtml" />
     <Content Include="Areas\Admin\Views\Error\Unauthorized.cshtml" />
-    <Content Include="Areas\Admin\Views\Test\TestGridView.cshtml" />
     <Content Include="Areas\Admin\Views\Media\_pBackButtonLink.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pImagePopUpWithoutFileStroage.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSliderResizing.cshtml" />
@@ -658,7 +646,6 @@
     <Content Include="Areas\Admin\Views\StoryCategories\pPageThemes.cshtml" />
     <Content Include="Areas\Admin\Views\ImportData\ExcelUpload.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\DataTable.cshtml" />
-    <Content Include="Areas\Admin\Views\Test\Index3.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -672,7 +659,6 @@
     <Content Include="Areas\Admin\Views\ImportData\DisplayTable.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\MailTemplates\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\Index.cshtml" />
     <Content Include="Areas\Amp\Views\web.config" />

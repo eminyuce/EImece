@@ -484,7 +484,7 @@ TextFilterWidget = (function ($) {
             var type = $context.container.find(".grid-filter-type").val();
             //get filter value:
             var value = $context.container.find(".grid-filter-input").val();
-            //invoke callback with selected filter values:
+            //invoke callback  @AdminResource.ActionOptionsOfSelectedItems filter values:
             var filterValues = [{ filterType: type, filterValue: value }];
             $context.cb(filterValues);
         });

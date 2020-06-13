@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seçilenler ile.
+        /// </summary>
+        public static string ActionOptionsOfSelectedItems {
+            get {
+                return ResourceManager.GetString("ActionOptionsOfSelectedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Secilenleri silmeyi onayliyor musunuz?.
         /// </summary>
         public static string AdminDeleteConfirmMessage {

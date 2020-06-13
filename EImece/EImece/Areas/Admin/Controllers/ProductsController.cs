@@ -50,24 +50,6 @@ namespace EImece.Areas.Admin.Controllers
 
             return RedirectToAction("SaveOrEditProductSpecs", new { id });
         }
-        //
-        // GET: /Product/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Product content = ProductService.GetBaseContent(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
-            return View(content);
-        }
 
         //
         // GET: /Product/Create

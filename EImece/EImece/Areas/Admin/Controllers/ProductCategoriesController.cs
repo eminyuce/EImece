@@ -25,25 +25,6 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
         }
-
-
-        //
-        // GET: /ProductCategory/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            ProductCategory content = ProductCategoryService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-            return View(content);
-        }
         private List<SelectListItem> GetTemplatesDropDown()
         {
             var templates = TemplateService.GetActiveBaseEntities(true, CurrentLanguage);

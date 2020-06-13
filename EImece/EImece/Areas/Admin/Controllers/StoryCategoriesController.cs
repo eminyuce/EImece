@@ -25,24 +25,6 @@ namespace EImece.Areas.Admin.Controllers
 
 
         //
-        // GET: /StoryCategory/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            StoryCategory content = StoryCategoryService.GetBaseContent(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-            return View(content);
-        }
-
-        //
         // GET: /StoryCategory/Create
 
         public ActionResult SaveOrEdit(int id = 0)

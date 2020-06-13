@@ -531,4 +531,7 @@
   <data name="TagName" xml:space="preserve">
     <value>Etiket İsim</value>
   </data>
+  <data name="ActionOptionsOfSelectedItems" xml:space="preserve">
+    <value>Seçilenler ile</value>
+  </data>
 </root>
