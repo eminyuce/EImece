@@ -18,14 +18,17 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
+
         public ActionResult TestGridView()
         {
             return View();
         }
+
         public ActionResult Index2()
         {
             return View();
         }
+
         public ActionResult Index3()
         {
             return View();
@@ -42,6 +45,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return Content("Done");
         }
+
         public ActionResult getData(int id = 0)
         {
             //Datatable parameter
@@ -85,7 +89,5 @@ namespace EImece.Areas.Admin.Controllers
 
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = products });
         }
-
-
     }
 }

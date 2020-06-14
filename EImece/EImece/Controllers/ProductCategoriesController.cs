@@ -12,13 +12,14 @@ namespace EImece.Controllers
     [RoutePrefix(ApplicationConfigs.ProductsCategoriesControllerRoutingPrefix)]
     public class ProductCategoriesController : BaseController
     {
-      
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: ProductCategory
         public ActionResult Index()
         {
             return View();
         }
+
         [Route("category/{id}")]
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Category(String id)
@@ -30,7 +31,6 @@ namespace EImece.Controllers
                 ProductCategoryViewModel productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
                 return View(productCategory);
-
             }
             catch (Exception ex)
             {

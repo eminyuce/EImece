@@ -45,6 +45,7 @@ namespace EImece.Controllers
                 return new EmptyResult();
             }
         }
+
         public ActionResult GetModifiedImage(String id, String imageSize)
         {
             int height = 0;
@@ -88,15 +89,15 @@ namespace EImece.Controllers
         public ActionResult GetCaptcha(string prefix, bool noisy = true)
         {
             var rand = new Random((int)DateTime.Now.Ticks);
-            //generate new question 
+            //generate new question
             int a = rand.Next(10, 99);
             int b = rand.Next(0, 9);
             var captcha = string.Format("{0} + {1} = ?", a, b);
 
-            //store answer 
+            //store answer
             Session["Captcha" + prefix] = a + b;
 
-            //image stream 
+            //image stream
             FileContentResult img = null;
 
             try
@@ -109,6 +110,5 @@ namespace EImece.Controllers
 
             return img;
         }
-
     }
 }

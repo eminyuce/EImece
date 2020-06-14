@@ -7,7 +7,6 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,13 +15,13 @@ namespace EImece.Areas.Admin.Controllers
     public class StoryCategoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(categories);
         }
-
 
         //
         // GET: /StoryCategory/Create
@@ -32,16 +31,13 @@ namespace EImece.Areas.Admin.Controllers
             TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();
 
-
             if (id == 0)
             {
-
             }
             else
             {
                 content = StoryCategoryService.GetBaseContent(id);
             }
-
 
             return View(content);
         }
@@ -55,10 +51,8 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
                        storyCategory.ImageHeight,
                        storyCategory.ImageWidth,
@@ -73,9 +67,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -87,14 +79,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(storyCategory);
         }
 
- 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             StoryCategory StoryCategory = StoryCategoryService.GetSingle(id);
             if (StoryCategory == null)
             {
@@ -112,7 +101,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(StoryCategory);
-
         }
 
         public ActionResult ExportExcel()
@@ -134,9 +122,6 @@ namespace EImece.Areas.Admin.Controllers
                          };
 
             return DownloadFile(result, String.Format("StoryCategories-{0}", GetCurrentLanguage));
-
-
         }
-
     }
 }

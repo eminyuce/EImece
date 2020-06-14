@@ -16,36 +16,32 @@ namespace EImece.Areas.Admin.Controllers
     [DeleteAuthorize()]
     public class UsersController : BaseAdminController
     {
-
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
+
         [Inject]
         public ApplicationUserManager UserManager { get; set; }
+
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
-
-
         public ActionResult Index(String search = "")
         {
-
-
             //var users = ApplicationDbContext.Users.AsQueryable();
 
             var users = ApplicationDbContext.Users.AsQueryable();
 
             var users2 = from u in ApplicationDbContext.Users
-                        from ur in u.Roles
-                        join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
-                        select new
-                        {
-                            u.Id,
-                            Email = u.UserName,
-                            FirstName = u.FirstName,
-                            LastName = u.LastName,
-                            Role = r.Name,
-                        };
-
+                         from ur in u.Roles
+                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                         select new
+                         {
+                             u.Id,
+                             Email = u.UserName,
+                             FirstName = u.FirstName,
+                             LastName = u.LastName,
+                             Role = r.Name,
+                         };
 
             if (!String.IsNullOrEmpty(search))
             {
@@ -63,7 +59,7 @@ namespace EImece.Areas.Admin.Controllers
                 u.Email = user.Email;
                 u.Id = user.Id;
                 var p = users2.FirstOrDefault(r => r.Id == u.Id);
-                u.Role = p == null? String.Empty: p.Role.ToStr();
+                u.Role = p == null ? String.Empty : p.Role.ToStr();
                 model.Add(u);
             }
             return View(model);
@@ -78,7 +74,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(m);
         }
 
-
         [HttpPost]
         // [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -92,7 +87,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     ///users/userroles/22dc301a-4661-4269-b5ba-88a5420bbcfa/
-                    return RedirectToAction("userroles", "Users",new { id= user.Id });
+                    return RedirectToAction("userroles", "Users", new { id = user.Id });
                 }
                 else
                 {
@@ -106,7 +101,6 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {
-
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new EditUserViewModel();
             model.FirstName = user.FirstName;
@@ -116,6 +110,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MessageId = Message;
             return View(model);
         }
+
         [HttpPost]
         //[Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -123,7 +118,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
                 // Update the user data:
                 user.FirstName = model.FirstName;
@@ -137,7 +131,6 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-
                 // ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault());
             }
             // If we got this far, something failed, redisplay form
@@ -152,7 +145,6 @@ namespace EImece.Areas.Admin.Controllers
             string code = UserManager.GeneratePasswordResetToken(user.Id);
             String newPassWord = "1" + Membership.GeneratePassword(7, 2);
             var result = UserManager.ResetPassword(user.Id, code, newPassWord);
-
 
             if (result.Succeeded)
             {
@@ -176,13 +168,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         // [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(string id)
         {
-
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             ApplicationDbContext.Users.Remove(user);
             ApplicationDbContext.SaveChanges();
@@ -192,12 +182,10 @@ namespace EImece.Areas.Admin.Controllers
         // [Authorize(Roles = "Admin")]
         public ActionResult UserRoles(string id)
         {
-
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new SelectUserRolesViewModel(user);
             return View(model);
         }
-
 
         [HttpPost]
         //   [Authorize(Roles = "Admin")]
@@ -206,8 +194,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             // if (ModelState.IsValid)
             // {
-
-
             var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
             IdentityManager.ClearUserRoles(user.Id);
             foreach (var role in model.Roles)
@@ -221,6 +207,7 @@ namespace EImece.Areas.Admin.Controllers
             // }
             // return View();
         }
+
         [AllowAnonymous]
         public ActionResult ForgotPassword(String id = "")
         {
@@ -310,6 +297,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -364,7 +352,5 @@ namespace EImece.Areas.Admin.Controllers
 
             return View();
         }
-
-
     }
 }

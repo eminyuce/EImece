@@ -9,6 +9,5 @@ namespace EImece.Controllers
         {
             return View();
         }
-
     }
 }

@@ -18,6 +18,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -25,6 +26,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
         }
+
         private List<SelectListItem> GetTemplatesDropDown()
         {
             var templates = TemplateService.GetActiveBaseEntities(true, CurrentLanguage);
@@ -37,12 +39,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             return resultListItem;
         }
+
         //
         // GET: /ProductCategory/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
             var parentCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -53,11 +55,8 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-
                 content = ProductCategoryService.GetBaseContent(id);
                 parentCategory = ProductCategoryService.GetSingle(content.ParentId);
-
-
             }
             ViewBag.ParentCategory = parentCategory;
             return View(content);
@@ -68,16 +67,12 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase postedImage = null)
         {
             try
             {
-
-
                 if (ModelState.IsValid)
                 {
-
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
                         productCategory.ImageHeight,
                         productCategory.ImageWidth,
@@ -95,9 +90,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -109,8 +102,6 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Templates = GetTemplatesDropDown();
             return View(productCategory);
         }
-
-
 
         //
         // GET: /ProductCategory/Delete/5
@@ -137,14 +128,12 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return Content("You cannot delete the parent");
             }
-
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-
             ProductCategory productCategory = ProductCategoryService.GetSingle(id);
             if (productCategory == null)
             {
@@ -162,8 +151,8 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(productCategory);
-
         }
+
         public ActionResult ExportExcel()
         {
             String search = "";
@@ -187,8 +176,6 @@ namespace EImece.Areas.Admin.Controllers
                          };
 
             return DownloadFile(result, String.Format("ProductCategories-{0}", GetCurrentLanguage));
-
         }
-
     }
 }

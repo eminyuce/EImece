@@ -11,6 +11,7 @@ namespace EImece.Controllers
     public class RssController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: Rss
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Products(RssParams rssParams)
@@ -18,7 +19,6 @@ namespace EImece.Controllers
             var comment = new StringBuilder();
             try
             {
-
                 var items = ProductService.GetProductsRss(rssParams);
                 comment.AppendLine("/rss/products?take=10&language=1&description=250");
                 return new FeedResult(items, comment);
@@ -39,7 +39,6 @@ namespace EImece.Controllers
                 var items = StoryService.GetStoryCategoriesRss(rssParams);
                 comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
                 return new FeedResult(items, comment);
-
             }
             catch (Exception ex)
             {
@@ -47,6 +46,7 @@ namespace EImece.Controllers
                 return Content(ex.Message);
             }
         }
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult StoryCategoriesFull(RssParams rssParams)
         {
@@ -64,6 +64,7 @@ namespace EImece.Controllers
             //    return Content(ex.Message);
             //}
         }
+
         //public void ShoutBox()
         //{
         //    Response.Buffer = false;
@@ -84,7 +85,6 @@ namespace EImece.Controllers
         //        List<SyndicationItem> items = new List<SyndicationItem>();
         //        foreach (var shout in r.GetShouts(20))
         //        {
-
         //            SyndicationItem item = new SyndicationItem();
         //            item.Id = shout.ShoutDate + ":" + shout.ShoutedBy;
         //            item.Title = TextSyndicationContent.CreatePlaintextContent(shout.ShoutedBy);

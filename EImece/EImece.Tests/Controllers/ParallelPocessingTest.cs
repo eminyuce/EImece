@@ -24,7 +24,6 @@ namespace EImece.Tests.Controllers
             var r = new Random();
             for (int i = 0; i < 1000; i++)
             {
-
                 var p = dt.NewRow();
                 p["Test1"] = r.Next(0, 1000);
                 dt.Rows.Add(p);
@@ -38,7 +37,6 @@ namespace EImece.Tests.Controllers
                new ParallelOptions { MaxDegreeOfParallelism = numberOfThread },
                    (row, n, i) =>
                    {
-
                        // lock (locker)
                        {
                            int index = (int)i;
@@ -101,6 +99,7 @@ namespace EImece.Tests.Controllers
             Console.WriteLine("Parallel.ForEach() execution time = {0} seconds", sw.Elapsed.TotalSeconds);
             // Console.Read();
         }
+
         [TestMethod]
         public void ParallelPocessing3()
         {

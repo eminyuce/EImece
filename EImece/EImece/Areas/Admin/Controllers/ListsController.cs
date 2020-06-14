@@ -4,7 +4,6 @@ using EImece.Domain.Helpers.Extensions;
 using NLog;
 using System;
 using System.Linq.Expressions;
-using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -13,6 +12,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         // GET: Admin/List
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             Expression<Func<List, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
@@ -20,13 +20,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(tags);
         }
 
-
-
         //
         // GET: /List/Create
         /****
-         * 
-         * 
+         *
+         *
          *
          *cat, 1
         bird, 2
@@ -39,19 +37,15 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var content = EntityFactory.GetBaseEntityInstance<List>();
-
 
             if (id == 0)
             {
-
             }
             else
             {
                 content = ListService.GetListById(id);
             }
-
 
             return View(content);
         }
@@ -65,7 +59,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     List.Lang = CurrentLanguage;
@@ -77,9 +70,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -96,7 +87,6 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             List List = ListService.GetSingle(id);
             if (List == null)
             {
@@ -114,7 +104,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(List);
-
         }
     }
 }

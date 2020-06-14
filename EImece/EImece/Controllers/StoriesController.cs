@@ -26,6 +26,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
@@ -42,6 +43,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Categories(String id, int page = 1)
         {
@@ -51,8 +53,6 @@ namespace EImece.Controllers
                 var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
                 return View(storyCategory);
-
-
             }
             catch (Exception ex)
             {
@@ -60,6 +60,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {

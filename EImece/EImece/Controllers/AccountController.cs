@@ -16,8 +16,8 @@ namespace EImece.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -26,8 +26,6 @@ namespace EImece.Controllers
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
-
-
 
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -69,7 +67,6 @@ namespace EImece.Controllers
             //}
             //else
             //{
-
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -78,15 +75,19 @@ namespace EImece.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     Logger.Debug("The account  " + model.Email + " LockedOut ");
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     Logger.Debug("The account  " + model.Email + " RequiresVerification ");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
                 case SignInStatus.Failure:
                     ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
                     return View(model);
+
                 default:
                     Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -120,17 +121,19 @@ namespace EImece.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
+            // The following code protects for brute force attacks against the two factor codes.
+            // If a user enters incorrect codes for a specified amount of time then the user account
+            // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
@@ -224,8 +227,6 @@ namespace EImece.Controllers
                 String emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
                 emailBody = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", emailBody);
-
-
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -349,10 +350,13 @@ namespace EImece.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
                 case SignInStatus.Failure:
 
                 default:
@@ -419,12 +423,10 @@ namespace EImece.Controllers
             return View();
         }
 
-
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
-
-
 
         private void AddErrors(IdentityResult result)
         {
@@ -475,6 +477,7 @@ namespace EImece.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+
+        #endregion Helpers
     }
 }

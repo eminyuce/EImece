@@ -11,17 +11,18 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-
     public class DashboardController : BaseAdminController
     {
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
+
         // GET: Admin/Dashboard
         public ActionResult Index()
         {
             ViewBag.Title = "Gösterge Paneli";
             return View();
         }
+
         public ActionResult SearchContent(String searchContent)
         {
             String search = searchContent;
@@ -57,10 +58,10 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(resultList);
         }
+
         public ActionResult ClearCache()
         {
             MemoryCacheProvider.ClearAll();
-
 
             var urlReferrer = Request.UrlReferrer;
             if (urlReferrer != null)
@@ -71,8 +72,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index");
             }
-
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -81,6 +82,7 @@ namespace EImece.Areas.Admin.Controllers
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home", new { @area = "" });
         }
+
         public ActionResult SetLanguage(string name)
         {
             //  name = CultureHelper.GetImplementedCulture(name);
@@ -92,8 +94,5 @@ namespace EImece.Areas.Admin.Controllers
             var returnDefault = RedirectToAction("Index");
             return RequestReturn(returnDefault);
         }
-
-
-
     }
 }

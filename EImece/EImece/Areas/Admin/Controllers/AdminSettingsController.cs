@@ -11,12 +11,12 @@ namespace EImece.Areas.Admin.Controllers
             SettingModel r = SettingService.GetSettingModel();
             return View(r);
         }
+
         [HttpPost]
         public ActionResult Index(SettingModel settingModel)
         {
             SettingService.SaveSettingModel(settingModel);
             return RedirectToAction("Index");
         }
-
     }
 }

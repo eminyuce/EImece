@@ -12,17 +12,13 @@ namespace EImece.Controllers
     [RoutePrefix(ApplicationConfigs.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
- 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Index(int page = 1)
         {
-
             var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
             return View(products);
-
         }
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
@@ -30,43 +26,35 @@ namespace EImece.Controllers
         {
             var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
             return View(products);
-
         }
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id)
         {
-
             var productId = id.GetId();
             var product = ProductService.GetProductById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
 
             return View(product);
-
-
         }
 
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Tag(String id)
         {
-
             var tagId = id.GetId();
             int pageIndex = 1;
             int pageSize = 20;
             SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
-
         }
+
         public ActionResult SearchProducts(String search)
         {
-
             int pageIndex = 1;
             int pageSize = 20;
             ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);
             return View(products);
-
-
         }
     }
 }

@@ -13,7 +13,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
-
         public ActionResult SearchAutoComplete(String term, String action, String controller)
         {
             String searchKey = term.ToStr().ToLower().Trim();
@@ -84,10 +83,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var users = ApplicationDbContext.Users.AsQueryable();
                 list = users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToList();
-
             }
-
-
 
             return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
         }
@@ -107,6 +103,7 @@ namespace EImece.Areas.Admin.Controllers
             StoryCategoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteSettingGridItem(List<String> values)
@@ -114,6 +111,7 @@ namespace EImece.Areas.Admin.Controllers
             SettingService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteStoryGridItem(List<String> values)
@@ -121,6 +119,7 @@ namespace EImece.Areas.Admin.Controllers
             StoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult MainPageImageGridItem(List<String> values)
@@ -136,6 +135,7 @@ namespace EImece.Areas.Admin.Controllers
             StoryCategoryService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         // GET: Admin/Ajax
         [HttpPost]
         [DeleteAuthorize()]
@@ -144,6 +144,7 @@ namespace EImece.Areas.Admin.Controllers
             SubscriberService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteProductGridItem(List<String> values)
@@ -151,6 +152,7 @@ namespace EImece.Areas.Admin.Controllers
             ProductService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteTemplateGridItem(List<String> values)
@@ -158,6 +160,7 @@ namespace EImece.Areas.Admin.Controllers
             TemplateService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteTagGridItem(List<String> values)
@@ -173,6 +176,7 @@ namespace EImece.Areas.Admin.Controllers
             ProductCategoryService.DeleteProductCategories(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteMainPageImageGridItem(List<String> values)
@@ -180,6 +184,7 @@ namespace EImece.Areas.Admin.Controllers
             MainPageImageService.DeleteBaseEntity(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteMenusGridItem(List<String> values)
@@ -187,6 +192,7 @@ namespace EImece.Areas.Admin.Controllers
             MenuService.DeleteMenus(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public ActionResult DeleteMediaGridItem(List<String> values)
@@ -200,62 +206,73 @@ namespace EImece.Areas.Admin.Controllers
             MainPageImageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeSubscriberGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             SubscriberService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeMediaGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             FileStorageService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeMailTemplateGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             MailTemplateService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeMenusGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             MenuService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeProductCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             ProductCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeProductGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             ProductService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeStoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             StoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeStoryCategoryGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             StoryCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeTagGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-
             TagService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeTagCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             TagCategoryService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ChangeTemplateGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             TemplateService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult GetProductTags(EImeceLanguage language, int productId = 0)
         {
             var tags = TagCategoryService.GetTagsByTagType(language);
@@ -267,6 +284,7 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult GetStoryTags(EImeceLanguage language, int storyId = 0)
         {
             var tags = TagCategoryService.GetTagsByTagType(language);
@@ -278,6 +296,7 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult GetProductDetailToolTip(int productId = 0)
         {
             var product = ProductService.GetProductById(productId);
@@ -286,6 +305,7 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(product), null);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
+
         //C:\Projects\StoryEngine\_imagesSample\samples2
         public ActionResult GetTags(EImeceLanguage language)
         {
@@ -296,6 +316,5 @@ namespace EImece.Areas.Admin.Controllers
                         new ViewDataDictionary(tags), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

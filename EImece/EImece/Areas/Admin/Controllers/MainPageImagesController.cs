@@ -14,6 +14,7 @@ namespace EImece.Areas.Admin.Controllers
     public class MainPageImagesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: Admin/MainPageImages
         public ActionResult Index(String search = "")
         {
@@ -24,19 +25,15 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var content = EntityFactory.GetBaseContentInstance<MainPageImage>();
-
 
             if (id == 0)
             {
-
             }
             else
             {
                 content = MainPageImageService.GetBaseContent(id);
             }
-
 
             return View(content);
         }
@@ -50,10 +47,8 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
                     FilesHelper.SaveFileFromHttpPostedFileBase(
                       postedImage,
                       mainpageimage.ImageHeight,
@@ -68,9 +63,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -93,10 +86,8 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-
             MainPageImageService.DeleteMainPageImage(id);
             return RedirectToAction("Index");
         }
-
     }
 }

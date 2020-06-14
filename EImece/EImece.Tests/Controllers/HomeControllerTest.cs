@@ -39,8 +39,9 @@ namespace EImece.Tests.Controllers
     [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class HomeControllerTest
     {
-        IKernel kernel = null;
+        private IKernel kernel = null;
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static void BindByReflection(Type typeOfInterface, string typeofText)
         {
             var baseServiceTypes = Assembly.GetAssembly(typeOfInterface)
@@ -55,6 +56,7 @@ namespace EImece.Tests.Controllers
                 }
             }
         }
+
         [TestInitialize]
         public void MyTestInitialize()
         {
@@ -68,10 +70,10 @@ namespace EImece.Tests.Controllers
             ProductService productService = kernel.Get<ProductService>();
             var products = productService.GetAll();
             Console.WriteLine(products.Count);
-
         }
 
         private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
+
         private int CurrentLanguage
         {
             get
@@ -79,8 +81,6 @@ namespace EImece.Tests.Controllers
                 return ApplicationConfigs.MainLanguage;
             }
         }
-
-
 
         public static String HtmlToFBHtml(string html)
         {
@@ -101,7 +101,6 @@ namespace EImece.Tests.Controllers
                 doc.DocumentNode.InsertBefore(HtmlNode.CreateNode(DivTags[i].InnerHtml), DivTags[i]);
                 DivTags[i].ParentNode.RemoveChild(DivTags[i]);
             }
-
 
             if (brtags.Count <= 5)
             {
@@ -132,7 +131,6 @@ namespace EImece.Tests.Controllers
             //     Thread.Sleep(10);
             //});
 
-
             int size = 1000000;
             double[] data = new double[size];
             Stopwatch sw = new Stopwatch();
@@ -144,7 +142,6 @@ namespace EImece.Tests.Controllers
             Console.WriteLine("done " + sw.Elapsed.TotalMilliseconds.ToString());
             sw.Reset();
 
-
             sw.Start();
             Parallel.For(0, size, i =>
             {
@@ -152,9 +149,7 @@ namespace EImece.Tests.Controllers
             });
             sw.Stop();
             Console.WriteLine("done " + sw.Elapsed.TotalMilliseconds.ToString());
-
         }
-
 
         [TestMethod]
         public void GetBreadCrumb()
@@ -175,26 +170,24 @@ namespace EImece.Tests.Controllers
             var xdoc = XDocument.Parse(File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\ProductTemplate.xml"));
             var groups = xdoc.Root.Descendants("group");
 
-                foreach (var group in groups)
+            foreach (var group in groups)
+            {
+                foreach (XElement field in group.Elements())
                 {
-                    foreach (XElement field in group.Elements())
-                    {
-
-                        var name = field.Attribute("name");
-                        var unit = field.Attribute("unit");
-                        var values = field.Attribute("values");
-                        var display = field.Attribute("display");
-                      // var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
-                      //  if (dbValueObj == null)
-                      //  {
-                      //      dbValueObj = new ProductSpecification();
-                      //  }
+                    var name = field.Attribute("name");
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+                    var display = field.Attribute("display");
+                    // var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                    //  if (dbValueObj == null)
+                    //  {
+                    //      dbValueObj = new ProductSpecification();
+                    //  }
                     var dbValueObj = new ProductSpecification();
                     dbValueObj.FieldFormat = field;
 
-                    Console.WriteLine("1)"+name+ "1.1)" + name.Value + " 2)"+unit+" 3)"+values+" 4)"+display+"5)"+ field.Name.LocalName);
-
-                    }
+                    Console.WriteLine("1)" + name + "1.1)" + name.Value + " 2)" + unit + " 3)" + values + " 4)" + display + "5)" + field.Name.LocalName);
+                }
             }
         }
 
@@ -211,7 +204,6 @@ namespace EImece.Tests.Controllers
                 Console.WriteLine(item.Id);
                 Console.WriteLine(item.MainImageId);
                 Console.WriteLine(item.MainImage.FileName);
-
             }
         }
 
@@ -224,19 +216,13 @@ MX:sitemail2.everyone.net.
 
 HELO maritimereporter.com
 
-
-
 250 m0087083.mta.everyone.net
 
 MAIL FROM:<update@maritimereporter.com>
 
-
-
 250 Sender okay
 
 RCPT TO:<gregw@traversebaymarine.com>
-
-
 
 999 Recipient okay
 
@@ -252,6 +238,7 @@ QUITE
 
             Console.WriteLine(d.Last());
         }
+
         [TestMethod]
         public void About()
         {
@@ -267,7 +254,6 @@ QUITE
             {
                 Console.WriteLine(ex.StackTrace.ToString());
             }
-
         }
 
         [TestMethod]
@@ -291,18 +277,17 @@ QUITE
                 Console.WriteLine(ex.StackTrace.ToString());
             }
         }
+
         [TestMethod]
         public void DateTimeOffsetParse()
         {
-
             Console.WriteLine(DateTimeOffset.ParseExact("2014-12-11T04:44:16Z", "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                                        CultureInfo.InvariantCulture));
-
         }
+
         [TestMethod]
         public void GetmenuLink()
         {
-
             Console.WriteLine(HttpUtility.UrlEncode("Maritime Reporter"));
             //            var theDate = new DateTime();
             //            string m = "20161118";
@@ -312,6 +297,7 @@ QUITE
             //            Console.WriteLine(theDate);
             //            Console.WriteLine(String.Format("{0:MMM d, yyyy}", theDate));
         }
+
         [TestMethod]
         public void TestParsing()
         {
@@ -323,7 +309,6 @@ QUITE
                 int firstComma = line.IndexOf(",");
                 var email = firstComma > 0 ? line.Substring(0, firstComma).Trim() : line.Trim();
 
-
                 int secondComma = firstComma > 0 ? line.IndexOf(",", firstComma + 1) : -1;
 
                 var name = "";
@@ -334,7 +319,6 @@ QUITE
                         line.Substring(firstComma + 1).Trim();
                 }
 
-
                 var description = "";
                 if (secondComma > 0)
                 {
@@ -343,10 +327,9 @@ QUITE
 
                 Console.WriteLine("Email =" + email + " name= " + name + "  description=  " + description);
                 //_destOtherContacts.Add(new NwmDestOtherContact() { Email = email, Name = name, Description = description });
-
             }
-
         }
+
         [TestMethod]
         public void DeleteProductCategory()
         {
@@ -357,8 +340,8 @@ QUITE
             productCategoryService.ProductService = productService;
             productCategoryService.FileStorageService = fileStorageService;
             productCategoryService.DeleteProductCategory(308);
-
         }
+
         [TestMethod]
         public void TestAllRepository()
         {
@@ -377,7 +360,6 @@ QUITE
             Console.WriteLine(new SubscriberRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new TagCategoryRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new TagRepository(dbContext).GetAll().ToList().Count());
-
         }
 
         [TestMethod]
@@ -391,7 +373,6 @@ QUITE
             Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
 
-
             startTime = "09/11/2014".ToDateTime();
             endTime = "09/28/2014".ToDateTime();
 
@@ -399,14 +380,12 @@ QUITE
             Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
 
-
             startTime = "11/11/2015".ToDateTime();
             endTime = "11/27/2015".ToDateTime();
 
             span = endTime.Subtract(startTime);
             Console.WriteLine(span.Days);
             totalDayOutsideOfUSA += span.Days;
-
 
             startTime = "11/14/2016".ToDateTime();
             endTime = "11/27/2016".ToDateTime();
@@ -425,8 +404,8 @@ QUITE
             Console.WriteLine("Total Days of outside of USA:" + totalDayOutsideOfUSA);
             Console.WriteLine("Total Days I spent in USA:" + (t.Days - totalDayOutsideOfUSA) + "  " + fiveYearsLaterUsaEntrance2.Subtract(firstUsaEntrance).Days);
             Console.WriteLine("Application Date:" + fiveYearsLaterUsaEntrance2.AddDays(totalDayOutsideOfUSA).ToShortDateString());
-
         }
+
         [TestMethod]
         public void MathLog()
         {
@@ -462,7 +441,6 @@ QUITE
             {
                 Console.WriteLine(i.Trim().ToInt() + "   " + Math.Floor(Math.Log(i.Trim().ToInt() + 7)));
             }
-
         }
 
         [TestMethod]
@@ -474,8 +452,6 @@ QUITE
             var dt = ExcelHelper.ExcelToDataTable(filePath, workSheetName);
             dt.TableName = "dbo.thelud_products";
             ExcelHelper.SaveTable(dt, @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");
-
-
         }
     }
 }

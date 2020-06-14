@@ -6,16 +6,15 @@ using NLog;
 using System;
 using System.Data;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
 
 namespace EImece.Areas.Admin.Controllers
 {
     public class StoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(int id = 0, String search = "")
         {
             int categoryId = id;
@@ -35,13 +34,11 @@ namespace EImece.Areas.Admin.Controllers
 
             if (id == 0)
             {
-
             }
             else
             {
                 content = StoryService.GetBaseContent(id);
             }
-
 
             return View(content);
         }
@@ -55,11 +52,8 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
-
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
                         story.ImageHeight,
                         story.ImageWidth,
@@ -78,9 +72,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -92,13 +84,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(story);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             Story Story = StoryService.GetBaseContent(id);
             if (Story == null)
             {
@@ -116,8 +106,8 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(Story);
-
         }
+
         public ActionResult Media(int id)
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
@@ -141,11 +131,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-
             return DownloadFile(result, String.Format("Stories-{0}", GetCurrentLanguage));
-
-
         }
-
     }
 }

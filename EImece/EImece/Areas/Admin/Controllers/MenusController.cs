@@ -9,10 +9,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -20,6 +18,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
@@ -34,7 +33,6 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var content = EntityFactory.GetBaseContentInstance<Menu>();
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
@@ -42,14 +40,12 @@ namespace EImece.Areas.Admin.Controllers
 
             TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
 
-
             if (id == 0)
             {
                 content.ParentId = 0;
             }
             else
             {
-
                 content = MenuService.GetBaseContent(id);
                 if (content.ParentId > 0)
                 {
@@ -84,9 +80,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -99,15 +93,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(menu);
         }
 
-
- 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             Menu menu = MenuService.GetSingle(id);
 
             if (menu == null)
@@ -116,7 +106,6 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-
                 MenuService.DeleteMenu(menu.Id);
                 return RedirectToAction("Index");
             }
@@ -128,10 +117,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(menu);
-
         }
-
-
 
         public ActionResult GetMenus()
         {
@@ -148,12 +134,12 @@ namespace EImece.Areas.Admin.Controllers
                 imageType = EImeceImageType.MenuGallery
             });
         }
+
         private List<SelectListItem> GetMenuPages()
         {
             var menus = MenuService.GetActiveBaseContents(true, CurrentLanguage);
             var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             var menuLinks = new List<SelectListItem>();
-
 
             if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
             {
@@ -169,8 +155,6 @@ namespace EImece.Areas.Admin.Controllers
             }
             menuLinks.Add(new SelectListItem() { Text = "Farkli Sayfa Temalari", Value = "pages-index" });
 
-
-
             foreach (var storyCategory in storyCategories)
             {
                 string m = "stories-categories_" + storyCategory.GetSeoUrl();
@@ -180,18 +164,14 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
 
-
-
-
-
             return menuLinks;
         }
+
         public ActionResult ExportExcel()
         {
             String search = "";
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
-
 
             var result = from r in menus
                          select new

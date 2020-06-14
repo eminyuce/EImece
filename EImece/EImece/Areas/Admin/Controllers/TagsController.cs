@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -14,6 +13,7 @@ namespace EImece.Areas.Admin.Controllers
     public class TagsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             var result = TagService.GetAdminPageList(search, CurrentLanguage);
@@ -22,7 +22,6 @@ namespace EImece.Areas.Admin.Controllers
 
         private List<SelectListItem> GetCategoriesSelectList()
         {
-
             List<TagCategory> tagCategories = TagCategoryService.GetAll().OrderBy(r => r.Position).ToList();
             return tagCategories.Select(r => new SelectListItem()
             {
@@ -33,24 +32,22 @@ namespace EImece.Areas.Admin.Controllers
                 Value = r.Id.ToStr()
             }).ToList();
         }
+
         //
         // GET: /Tag/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var content = EntityFactory.GetBaseEntityInstance<Tag>();
             ViewBag.Categories = GetCategoriesSelectList();
             TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             if (id == 0)
             {
-
             }
             else
             {
                 content = TagService.GetSingle(id);
             }
-
 
             return View(content);
         }
@@ -64,7 +61,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     Tag.Lang = CurrentLanguage;
@@ -74,9 +70,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -88,13 +82,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(Tag);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             Tag Tag = TagService.GetSingle(id);
             if (Tag == null)
             {
@@ -112,7 +104,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(Tag);
-
         }
 
         public ActionResult ExportExcel()
@@ -132,9 +123,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-
             return DownloadFile(result, String.Format("Tags-{0}", GetCurrentLanguage));
-
         }
     }
 }

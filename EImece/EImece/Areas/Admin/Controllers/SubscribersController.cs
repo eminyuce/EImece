@@ -16,10 +16,10 @@ namespace EImece.Areas.Admin.Controllers
             var subs = SubscriberService.SearchEntities(whereLambda, search, null);
             return View(subs);
         }
+
         public ActionResult ExportExcel()
         {
             var subscibers = SubscriberService.GetAll().ToList();
-
 
             var result = from r in subscibers
                          select new

@@ -15,8 +15,8 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class SettingsController : BaseAdminController
     {
-
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             Expression<Func<Setting, bool>> whereLambda = r => (r.SettingKey.ToLower().Contains(search.Trim().ToLower())
@@ -30,18 +30,15 @@ namespace EImece.Areas.Admin.Controllers
             return View(settings);
         }
 
-
         //
         // GET: /Setting/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
             if (id == 0)
             {
-
             }
             else
             {
@@ -60,7 +57,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     Setting.Lang = CurrentLanguage;
@@ -70,9 +66,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -83,12 +77,14 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(Setting);
         }
+
         public ActionResult AddWebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.WebSiteLogo);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
+
         public ActionResult AddTermsAndConditions()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
@@ -105,7 +101,6 @@ namespace EImece.Areas.Admin.Controllers
             content.IsActive = true;
             if (id == 0)
             {
-
             }
             else
             {
@@ -118,12 +113,12 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(content);
         }
+
         [HttpPost]
         public ActionResult TermsAndConditions(Setting setting)
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     setting.SettingValue = ApplicationConfigs.SpecialPage;
@@ -134,9 +129,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -164,7 +157,6 @@ namespace EImece.Areas.Admin.Controllers
             content.IsActive = true;
             if (id == 0)
             {
-
             }
             else
             {
@@ -177,12 +169,12 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(content);
         }
+
         [HttpPost]
         public ActionResult PrivacyPolicy(Setting setting)
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     setting.SettingValue = ApplicationConfigs.SpecialPage;
@@ -193,9 +185,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -206,25 +196,24 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(setting);
         }
+
         public ActionResult WebSiteLogo(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
             if (id == 0)
             {
-
             }
             else
             {
                 content = SettingService.GetSingle(id);
             }
 
-
             return View(content);
         }
+
         public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
         {
-
             var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
             if (id > 0)
             {
@@ -244,10 +233,9 @@ namespace EImece.Areas.Admin.Controllers
             webSiteLogoSetting.Lang = CurrentLanguage;
             SettingService.SaveOrEditEntity(webSiteLogoSetting);
 
-
-
             return RedirectToAction("WebSiteLogo", new { id = webSiteLogoSetting.Id });
         }
+
         //
         [DeleteAuthorize()]
         public ActionResult Delete(int id = 0)
@@ -263,7 +251,6 @@ namespace EImece.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-
             return View(content);
         }
 
@@ -272,7 +259,6 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             Setting Setting = SettingService.GetSingle(id);
             if (Setting == null)
             {
@@ -290,7 +276,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(Setting);
-
         }
 
         public ActionResult ExportExcel()
@@ -299,7 +284,6 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
-
 
             var result = from r in settings
                          select new
@@ -314,9 +298,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-
             return DownloadFile(result, String.Format("Settings-{0}", GetCurrentLanguage));
-
         }
     }
 }

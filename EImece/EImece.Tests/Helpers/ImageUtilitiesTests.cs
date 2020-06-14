@@ -19,6 +19,7 @@ namespace EImece.Tests.Helpers
             var actual = ImageUtilities.GetImageDimensions(url);
             Console.WriteLine(actual.Item1 + "  " + actual.Item2);
         }
+
         [TestMethod]
         public void GetPngDimensionsTes2t()
         {
@@ -83,13 +84,11 @@ namespace EImece.Tests.Helpers
                     {
                         emails.Rows.Add(dr.Email);
                     }
-
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-
             }
             string connectionString = @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY";
             emails.TableName = "_temp_Emails_Kathleen201805";
@@ -102,12 +101,8 @@ namespace EImece.Tests.Helpers
             }
         }
 
-
-
-
         public bool IsActionExists(String action, String controller)
         {
-
             //var controllerFullName = string.Format("EImece.Areas.Amp.Controllers.{0}Controller", controller);
             //var assembly = Assembly.GetAssembly(typeof("EImece"));
             //var cont = assembly.GetType(controllerFullName);
@@ -121,8 +116,5 @@ namespace EImece.Tests.Helpers
             //}
             return false;
         }
-
     }
-
-
 }

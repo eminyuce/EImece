@@ -12,26 +12,29 @@ namespace EImece.Areas.Admin.Controllers
     public class FileUploadController : BaseAdminController
     {
         public FilesHelper filesHelper { get; set; }
-        String tempPath = "~/media/tempFiles/";
-        String serverMapPath = "~/media/images/";
+        private String tempPath = "~/media/tempFiles/";
+        private String serverMapPath = "~/media/images/";
+
         private string StorageRoot
         {
             get { return Path.Combine(HostingEnvironment.MapPath(serverMapPath)); }
         }
+
         private string UrlBase = "/media/images/";
-        String DeleteURL = "/FileUpload/DeleteFile/?file=";
-        String DeleteType = "GET";
+        private String DeleteURL = "/FileUpload/DeleteFile/?file=";
+        private String DeleteType = "GET";
+
         public FileUploadController(FilesHelper fh)
         {
             filesHelper = fh;
             filesHelper.Init(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
-
         }
 
         public ActionResult Index()
         {
             return View();
         }
+
         public ActionResult Show()
         {
             var CurrentContext = HttpContext;
@@ -69,12 +72,14 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(files);
             }
         }
+
         public JsonResult GetFileList()
         {
             var CurrentContext = HttpContext;
             var list = filesHelper.GetFileList(CurrentContext);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         public JsonResult DeleteFile(string file)
         {
@@ -82,6 +87,5 @@ namespace EImece.Areas.Admin.Controllers
             filesHelper.DeleteFile(file, CurrentContext);
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
-
     }
 }

@@ -22,10 +22,12 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.PathName = pathName;
             return View(files);
         }
+
         public ActionResult ExcelUpload()
         {
             return View();
         }
+
         public ActionResult ExcelUploadImport(HttpPostedFileBase excelFile = null)
         {
             String path = "~/App_Data/";
@@ -34,7 +36,6 @@ namespace EImece.Areas.Admin.Controllers
             var pathName = Server.MapPath(path + fileName);
             excelFile.SaveAs(pathName);
             return RedirectToAction("DisplayTable", new { id = fileName });
-
         }
 
         public ActionResult DisplayTable(String id)
@@ -45,6 +46,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.PathName = id;
             return View(dt);
         }
+
         [HttpPost]
         public ActionResult DisplayExcel(String pathName, String selectedTable)
         {

@@ -38,13 +38,11 @@ namespace EImece.Controllers
         {
             ViewBag.Message = "Your app description page.";
 
-
             var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
             var request = new HttpRequestMessage { RequestUri = new Uri("http://dev2.marinelink.com/api/podcastapi/get") };
 
             var m = id.Split(",".ToCharArray());
             request.Headers.Range = new RangeHeaderValue(m[0].ToInt(), m[1].ToInt());
-
 
             var ee = request.Headers.Range.Ranges;
             var response = await client.SendAsync(request);
@@ -57,29 +55,30 @@ namespace EImece.Controllers
 
             return Json(jsonContent, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
-
             //validate the captcha through the session variable stored from GetCaptcha
             subscriber.Name = subscriber.Email;
             subscriber.IsActive = true;
             SubsciberService.SaveOrEditEntity(subscriber);
             return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
-
-
         }
+
         public ActionResult ThanksForSubscription(int id)
         {
             var s = SubsciberService.GetSingle(id);
             return View(s);
         }
+
         [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
@@ -98,18 +97,21 @@ namespace EImece.Controllers
 
             return PartialView("_SocialMediaLinks", resultList);
         }
+
         [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult TermsAndConditions()
         {
             var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
             return View(setting);
         }
+
         [CustomOutputCache(CacheProfile = "Cache30Days")]
         public ActionResult PrivacyPolicy()
         {
             var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
             return View(setting);
         }
+
         [ChildActionOnly]
         [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()
@@ -117,18 +119,21 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
+
         public PartialViewResult Menu(int id = 0)
         {
             int selectedLanguage = id;
             var menus = MenuService.BuildTree(true, selectedLanguage);
             return PartialView("_Navigation", menus);
         }
+
         public ActionResult ProductTree(int id = 0)
         {
             int selectedLanguage = id;
             var tree = ProductCategoryService.BuildTree(true, selectedLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
+
         [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WebSiteLogo()
         {
@@ -137,11 +142,13 @@ namespace EImece.Controllers
             var s = new List<Setting>() { webSiteLogo, CompanyName };
             return PartialView("_WebSiteLogo", s);
         }
+
         public ActionResult Footer()
         {
             FooterViewModel footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
+
         public ActionResult WebSiteAddressInfo()
         {
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
@@ -151,6 +158,7 @@ namespace EImece.Controllers
             resultList.Add(WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", resultList);
         }
+
         //[OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         //public ActionResult ContactUs()
         //{
@@ -175,12 +183,9 @@ namespace EImece.Controllers
                     return View("../Pages/Detail", page);
                 }
                 return View("_ContactUsFormViewModel", contact);
-
             }
             else
             {
-
-
                 try
                 {
                     var s = new Subscriber();
@@ -198,9 +203,6 @@ namespace EImece.Controllers
                         contact.Address,
                         contact.Message, Environment.NewLine);
                     SubsciberService.SaveOrEditEntity(s);
-
-
-
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -223,8 +225,6 @@ namespace EImece.Controllers
                     {
                         EmailSender.SendEmailContactingUs(contact);
                     }
-
-
                 }
                 catch (Exception ex)
                 {
@@ -232,11 +232,9 @@ namespace EImece.Controllers
                 }
             }
 
-
-
             return View("_pThankYouForContactingUs", contact);
-
         }
+
         public ActionResult SetLanguage(string name)
         {
             //  name = CultureHelper.GetImplementedCulture(name);

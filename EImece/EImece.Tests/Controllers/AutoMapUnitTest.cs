@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+
 namespace EImece.Tests.Controllers
 {
     [TestClass]
@@ -29,7 +30,9 @@ namespace EImece.Tests.Controllers
                 cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
             });
         }
+
         private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
+
         [TestMethod]
         public void TestMethodProduct()
         {
@@ -49,7 +52,6 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void TestMethod1()
         {
-
             var team = new Team();
             team.Id = 1;
             team.Name = "EMIN YUCE";
@@ -57,16 +59,13 @@ namespace EImece.Tests.Controllers
             var teamDto = Mapper.Map<TeamDTO>(team);
 
             Console.WriteLine(teamDto);
-
-
-
-
         }
+
         #region Methods
+
         [TestMethod]
         public void TestMethod2()
         {
-
             var config = new MapperConfiguration(cfg => cfg.CreateMissingTypeMaps = true);
             var mapper = config.CreateMapper();
 
@@ -86,12 +85,8 @@ namespace EImece.Tests.Controllers
             Console.WriteLine(apcants.Count);
         }
 
-        #endregion
+        #endregion Methods
     }
-
-
-
-
 
     /// Your source classes
     public class Applicant
@@ -102,7 +97,7 @@ namespace EImece.Tests.Controllers
 
         public string Name { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
     public class ApplicantSkill
@@ -114,7 +109,7 @@ namespace EImece.Tests.Controllers
         public int SomeInt { get; set; }
         public string SomeString { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
     // Your VM classes
@@ -127,9 +122,8 @@ namespace EImece.Tests.Controllers
         public string Description { get; set; }
         public string Name { get; set; }
 
-        #endregion
+        #endregion Properties
     }
-
 
     public class ApplicantSkillVM
     {
@@ -140,7 +134,7 @@ namespace EImece.Tests.Controllers
         public int SomeInt { get; set; }
         public string SomeString { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
     public class Skill
@@ -149,16 +143,14 @@ namespace EImece.Tests.Controllers
 
         public int SomeInt { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
     public class MapProfile : Profile
     {
-
     }
+
     //Mapping
-
-
 
     //Logical
     public class TestClassPLogical
@@ -207,7 +199,6 @@ namespace EImece.Tests.Controllers
         {
             return Id + " " + Name + " " + OrganizationDate.ToLongDateString() + " " + SomeInt + " " + SomeString;
         }
-
     }
 
     public class ProductDTO
@@ -238,7 +229,6 @@ namespace EImece.Tests.Controllers
         //public string ProductCode { get; set; }
         //public string VideoUrl { get; set; }
         //public Boolean IsCampaign { get; set; }
-
     }
 
     [DataContract]
@@ -246,10 +236,13 @@ namespace EImece.Tests.Controllers
     {
         [DataMember]
         public int Id { get; set; }
+
         [DataMember]
         public string Name { get; set; }
+
         [DataMember]
         public DateTime OrganizationDate { get; set; }
+
         [DataMember]
         public string Name3 { get; set; }
 

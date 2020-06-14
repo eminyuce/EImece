@@ -10,11 +10,13 @@ namespace EImece.Controllers
     public class PagesController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: Pages
         public ActionResult Index()
         {
             return View();
         }
+
         [CustomOutputCache(CacheProfile = "Cache20Minutes")]
         public ActionResult Detail(String id = "")
         {

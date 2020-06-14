@@ -23,48 +23,63 @@ namespace EImece.Areas.Admin.Controllers
     public abstract class BaseAdminController : Controller
     {
         protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
+
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
         [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
+
         [Inject]
         public ISettingService SettingService { get; set; }
+
         [Inject]
         public IProductService ProductService { get; set; }
+
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
+
         [Inject]
         public IMenuService MenuService { get; set; }
+
         [Inject]
         public IStoryService StoryService { get; set; }
+
         [Inject]
         public IStoryCategoryService StoryCategoryService { get; set; }
+
         [Inject]
         public ITagService TagService { get; set; }
+
         [Inject]
         public ITagCategoryService TagCategoryService { get; set; }
+
         [Inject]
         public ISubscriberService SubscriberService { get; set; }
+
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
+
         [Inject]
         public ITemplateService TemplateService { get; set; }
+
         [Inject]
         public IListService ListService { get; set; }
+
         [Inject]
         public IListItemService ListItemService { get; set; }
 
         [Inject]
         public IEmailSender EmailSender { get; set; }
+
         [Inject]
         public ICacheProvider MemoryCacheProvider { get; set; }
 
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
-
         private FilesHelper _filesHelper { get; set; }
+
         [Inject]
         public FilesHelper FilesHelper
         {
@@ -78,6 +93,7 @@ namespace EImece.Areas.Admin.Controllers
                 _filesHelper = value;
             }
         }
+
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
@@ -100,7 +116,9 @@ namespace EImece.Areas.Admin.Controllers
                 Session["SelectedLanguage"] = value;
             }
         }
+
         protected static string AdminCultureCookieName = "_adminCulture";
+
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
@@ -110,7 +128,6 @@ namespace EImece.Areas.Admin.Controllers
             {
                 cultureName = cultureCookie.Value;
             }
-
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
@@ -152,6 +169,7 @@ namespace EImece.Areas.Admin.Controllers
                 return (EImeceLanguage)CurrentLanguage;
             }
         }
+
         protected int CurrentLanguage
         {
             get
@@ -177,11 +195,8 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     return ApplicationConfigs.MainLanguage;
                 }
-
-
             }
         }
-
 
         protected ActionResult RequestReturn(RedirectToRouteResult returnDefault)
         {
@@ -208,13 +223,14 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction(name);
             }
         }
+
         protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
         {
             DataTable dt = GeneralHelper.LINQToDataTable(result);
             dt.TableName = fileName;
             return DownloadFileDataTable(dt, fileName);
-
         }
+
         protected ActionResult DownloadFileDataTable(DataTable result, string fileName)
         {
             var dt = result;
@@ -223,18 +239,13 @@ namespace EImece.Areas.Admin.Controllers
                 var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
                 return File(ms, "application/vnd.ms-excel", String.Format("{1}-{0}.xls",
                     DateTime.Now.ToString("yyyy-MM-dd"), fileName));
-
             }
             else
             {
                 byte[] data = ExcelHelper.Export(dt, true);
                 return File(data, "text/csv", String.Format("{1}-{0}.csv",
                     DateTime.Now.ToString("yyyy-MM-dd"), fileName));
-
             }
-
         }
-
-
     }
 }

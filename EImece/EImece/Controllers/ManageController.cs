@@ -21,7 +21,6 @@ namespace EImece.Controllers
 
         public ApplicationUserManager UserManager { get; set; }
 
-
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -294,8 +293,8 @@ namespace EImece.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
-
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -346,6 +345,6 @@ namespace EImece.Controllers
             Error
         }
 
-        #endregion
+        #endregion Helpers
     }
 }

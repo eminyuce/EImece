@@ -14,14 +14,13 @@ namespace EImece.Areas.Admin.Controllers
     public class TagCategoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(tags);
         }
-
-
 
         //
         // GET: /TagCategory/Create
@@ -31,16 +30,13 @@ namespace EImece.Areas.Admin.Controllers
             TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseEntityInstance<TagCategory>();
 
-
             if (id == 0)
             {
-
             }
             else
             {
                 content = TagCategoryService.GetSingle(id);
             }
-
 
             return View(content);
         }
@@ -54,7 +50,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     TagCategory.Lang = CurrentLanguage;
@@ -64,9 +59,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -77,8 +70,6 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(TagCategory);
         }
-
-
 
         //
         [DeleteAuthorize()]
@@ -95,7 +86,6 @@ namespace EImece.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-
             return View(content);
         }
 
@@ -104,7 +94,6 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             TagCategory TagCategory = TagCategoryService.GetSingle(id);
             if (TagCategory == null)
             {
@@ -122,7 +111,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(TagCategory);
-
         }
 
         public ActionResult ExportExcel()
@@ -142,9 +130,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-
             return DownloadFile(result, String.Format("TagCategories-{0}", GetCurrentLanguage));
-
         }
     }
 }

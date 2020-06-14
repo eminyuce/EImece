@@ -23,7 +23,6 @@ namespace EImece.Areas.Admin.Controllers
             filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
         }
 
-
         // GET: Admin/Media
         public ActionResult Index(int contentId, String mod, String imageType)
         {
@@ -41,23 +40,25 @@ namespace EImece.Areas.Admin.Controllers
                 case MediaModType.Stories:
                     returnModel.BaseContent = StoryService.GetSingle(id);
                     break;
+
                 case MediaModType.Products:
                     returnModel.BaseContent = ProductService.GetSingle(id);
                     break;
+
                 case MediaModType.Menus:
                     returnModel.BaseContent = MenuService.GetSingle(id);
                     break;
+
                 case MediaModType.MainPageImages:
                     returnModel.BaseContent = MenuService.GetSingle(id);
                     break;
+
                 default:
                     break;
             }
 
-
             return View(returnModel);
         }
-
 
         public ActionResult Show(int id, String mod, String imageType)
         {
@@ -113,6 +114,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         [DeleteAuthorize()]
         public JsonResult DeleteFile(string file, int contentId, String mod, String imageType)

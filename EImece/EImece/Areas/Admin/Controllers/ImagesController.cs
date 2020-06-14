@@ -20,7 +20,6 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return new EmptyResult();
             }
-
         }
     }
 }

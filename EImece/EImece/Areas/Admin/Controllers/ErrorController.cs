@@ -17,6 +17,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// Returns a HTTP 400 Bad Request error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
@@ -78,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
             return this.GetErrorView(HttpStatusCode.Unauthorized, "unauthorized");
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -112,6 +113,6 @@ namespace EImece.Areas.Admin.Controllers
             return result;
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }

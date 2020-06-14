@@ -18,6 +18,7 @@ namespace EImece.Areas.Admin.Controllers
         public XmlEditorHelper XmlEditorHelper { get; set; }
 
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: Admin/Template
         public ActionResult Index(String search = "")
         {
@@ -25,22 +26,22 @@ namespace EImece.Areas.Admin.Controllers
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(templates);
         }
+
         public ActionResult SaveOrEdit(int id = 0)
         {
             var template = EntityFactory.GetBaseEntityInstance<Template>();
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor(id);
             if (id == 0)
             {
-
             }
             else
             {
-
                 template = TemplateService.GetSingle(id);
             }
 
             return View(template);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
@@ -64,7 +65,6 @@ namespace EImece.Areas.Admin.Controllers
                         }
                     }
 
-
                     template.Lang = CurrentLanguage;
                     TemplateService.SaveOrEditEntity(template);
                     int contentId = template.Id;
@@ -72,9 +72,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -85,6 +83,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             return View(template);
         }
+
         public ActionResult Delete(int id = 0)
         {
             if (id == 0)
@@ -98,7 +97,6 @@ namespace EImece.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-
             return View(content);
         }
 
@@ -106,7 +104,6 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-
             Template template = TemplateService.GetSingle(id);
             if (template == null)
             {
@@ -124,7 +121,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(template);
-
         }
 
         public ActionResult ExportExcel()
@@ -132,7 +128,6 @@ namespace EImece.Areas.Admin.Controllers
             String search = "";
             Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
-
 
             var result = from r in templates
                          select new
@@ -146,9 +141,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-
             return DownloadFile(result, String.Format("Templates-{0}", GetCurrentLanguage));
-
         }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNet.Identity;
 using NLog;
 using System;
 using System.Linq.Expressions;
-using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -13,6 +12,7 @@ namespace EImece.Areas.Admin.Controllers
     public class MailTemplatesController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index(String search = "")
         {
             Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
@@ -20,16 +20,12 @@ namespace EImece.Areas.Admin.Controllers
             return View(result);
         }
 
-
-
         //
         // GET: /MailTemplate/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-
             var item = EntityFactory.GetBaseEntityInstance<MailTemplate>();
-
 
             if (id == 0)
             {
@@ -40,7 +36,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
-            ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject); 
+            ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject);
             return View(item);
         }
 
@@ -53,7 +49,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     if (MailTemplate.Id == 0)
@@ -73,9 +68,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -93,7 +86,6 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             MailTemplate MailTemplate = MailTemplateService.GetSingle(id);
             if (MailTemplate == null)
             {
@@ -111,7 +103,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(MailTemplate);
-
         }
     }
 }

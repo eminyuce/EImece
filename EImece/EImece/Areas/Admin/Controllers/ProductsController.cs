@@ -18,7 +18,6 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         public ActionResult Index(int id = 0, String search = "")
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -27,6 +26,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
+
         public ActionResult SaveOrEditProductSpecs(int id = 0)
         {
             if (id == 0)
@@ -43,6 +43,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             return View(content);
         }
+
         [HttpPost]
         public ActionResult SaveOrEditProductSpecs(int id, int templateId)
         {
@@ -68,7 +69,6 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-
                 content = ProductService.GetBaseContent(id);
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
@@ -86,17 +86,14 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
                     if (product.ProductCategoryId == 0)
                     {
                         ModelState.AddModelError("ProductCategoryId", "You should select category from category tree.");
                     }
                     else
                     {
-
                         FilesHelper.SaveFileFromHttpPostedFileBase(
                              postedImage,
                              product.ImageHeight,
@@ -118,9 +115,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -128,7 +123,6 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.StackTrace);
             }
-
 
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.ProductCategory = ProductCategoryService.GetSingle(product.ProductCategoryId);
@@ -141,13 +135,11 @@ namespace EImece.Areas.Admin.Controllers
             return View(product);
         }
 
- 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-
             Product product = ProductService.GetSingle(id);
             if (product == null)
             {
@@ -165,16 +157,16 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(product);
-
         }
+
         public ActionResult Media(int id)
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
+
         public ActionResult ExportExcel()
         {
             var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
-
 
             var result = from r in products
                          select new
@@ -196,9 +188,7 @@ namespace EImece.Areas.Admin.Controllers
                              VideoUrl = r.VideoUrl.ToStr(250)
                          };
 
-
             return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage));
-
         }
     }
 }
