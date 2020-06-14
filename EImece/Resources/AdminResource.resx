@@ -457,7 +457,7 @@
     <value>Ürün Kategorileri</value>
   </data>
   <data name="ProductDynamicTemplates" xml:space="preserve">
-    <value>Ürün Dinamik Şablonları</value>
+    <value>Ürün Xml Şablonlar</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Ürünler</value>
@@ -533,5 +533,8 @@
   </data>
   <data name="ActionOptionsOfSelectedItems" xml:space="preserve">
     <value>Seçilenler ile Aksiyon</value>
+  </data>
+  <data name="ProductSpecTemplateItemList" xml:space="preserve">
+    <value>Şablonlarin Deger Listesi</value>
   </data>
 </root>

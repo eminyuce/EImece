@@ -34,7 +34,8 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product content = ProductService.GetProductById(id).Product;
+            var productDetailViewModel = ProductService.GetProductById(id);
+            Product content = productDetailViewModel.Product;
             ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
             if (content == null)
             {

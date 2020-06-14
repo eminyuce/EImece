@@ -10,7 +10,9 @@
     var itemText = Model.GetListItemText();
 }
 
-<h2>SaveOrEdit</h2>
+
+<h2>@AdminResource.ProductSpecTemplateItemList</h2>
+<hr class="adminLine" />
 
 
 @using (Html.BeginForm())
@@ -18,8 +20,6 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>List</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
@@ -72,11 +72,17 @@
                 @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
             </div>
         </div>
-        List Items:
 
-        <span style="font-size: small">Put each list item on a new line. Divide the displayed text and values with a comma.</span><br />
+        <div class="form-group">
+            <label class="control-label col-md-2" for=" ListItems"> List Items:</label>
+            <div class="col-md-10">
+                <span style="font-size: small">Put each list item on a new line. Divide the displayed text and values with a comma.</span><br />
+                @Html.TextAreaFor(m => itemText, new { cols = 50, rows = 10 })
+            </div>
+        </div>
 
-        @Html.TextAreaFor(m => itemText, new { cols = 50, rows = 10 })
+
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -96,12 +102,12 @@
             }
         }
 
-      
+
     </div>
 }
 
 <div>
-       @Html.ActionLink(AdminResource.BackToList, "Index")
+    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {

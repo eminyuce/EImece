@@ -925,7 +925,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ürün Dinamik Şablonları.
+        ///   Looks up a localized string similar to Ürün Xml Şablonlar.
         /// </summary>
         public static string ProductDynamicTemplates {
             get {
@@ -966,6 +966,15 @@ namespace Resources {
         public static string ProductSpecs {
             get {
                 return ResourceManager.GetString("ProductSpecs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Şablonlarin Deger Listesi.
+        /// </summary>
+        public static string ProductSpecTemplateItemList {
+            get {
+                return ResourceManager.GetString("ProductSpecTemplateItemList", resourceCulture);
             }
         }
         
