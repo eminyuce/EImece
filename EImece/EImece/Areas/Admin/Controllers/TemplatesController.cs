@@ -28,7 +28,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
             var template = EntityFactory.GetBaseEntityInstance<Template>();
-            ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
+            ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor(id);
             if (id == 0)
             {
 

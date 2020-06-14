@@ -15,7 +15,7 @@ namespace EImece.Domain.Helpers
         [Inject]
         public IListService ListService { get; set; }
 
-        public String GenerateXmlEditor()
+        public String GenerateXmlEditor(int id = 0)
         {
             string url = HttpContext.Current.Server.MapPath("~/App_Data/xmlEditorRazor.txt");
             var template = File.ReadAllText(url);
@@ -23,7 +23,7 @@ namespace EImece.Domain.Helpers
 
 
             String result = Engine.Razor.RunCompile(template,
-                "templateKey1",
+                "templateKey_"+ id,
                 null,
                 new
                 {
