@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
-
+            settings = settings.Where(r => !ApplicationConfigs.WebSiteLogo.Equals(r.SettingKey)).ToList();
             settings = settings.Where(r => !r.SettingValue.Equals(ApplicationConfigs.SpecialPage)).ToList();
             settings = settings.Where(r => !ApplicationConfigs.AdminSetting.Equals(r.Description)).ToList();
             return View(settings);

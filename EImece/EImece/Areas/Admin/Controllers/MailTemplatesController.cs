@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
+using Microsoft.AspNet.Identity;
 using NLog;
 using System;
 using System.Linq.Expressions;
@@ -32,17 +33,14 @@ namespace EImece.Areas.Admin.Controllers
 
             if (id == 0)
             {
-
             }
             else
             {
                 item = MailTemplateService.GetSingle(id);
             }
 
-            RazorRenderResult result = RazorEngineHelper.GetRenderOutput(item.Body);
-            ViewBag.RazorRenderResultBody = result;
-            result = RazorEngineHelper.GetRenderOutput(item.Subject);
-            ViewBag.RazorRenderResultSubject = result;
+            ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
+            ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject); 
             return View(item);
         }
 
@@ -58,6 +56,15 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    if (MailTemplate.Id == 0)
+                    {
+                        MailTemplate.AddUserId = User.Identity.GetUserName();
+                        MailTemplate.UpdateUserId = User.Identity.GetUserName();
+                    }
+                    else
+                    {
+                        MailTemplate.UpdateUserId = User.Identity.GetUserName();
+                    }
 
                     MailTemplate.Lang = CurrentLanguage;
                     MailTemplateService.SaveOrEditEntity(MailTemplate);
