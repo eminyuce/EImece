@@ -6,7 +6,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 {
     public interface IEmailSender
     {
-
         /// <summary>
         /// Sends an email
         /// </summary>
@@ -25,8 +24,11 @@ namespace EImece.Domain.Helpers.EmailHelper
             string fromAddress, string fromName, string toAddress, string toName,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null);
+
         void SendEmailContactingUs(ContactUsFormViewModel contact);
+
         EmailAccount GetEmailAccount();
+
         /// <summary>
         /// Sends an email
         /// </summary>
@@ -43,6 +45,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             MailAddress from, MailAddress to,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null);
+
         void SendForgotPasswordEmail(string destination, string subject, string body);
     }
 }

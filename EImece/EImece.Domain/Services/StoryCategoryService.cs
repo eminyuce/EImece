@@ -13,20 +13,23 @@ namespace EImece.Domain.Services
 {
     public class StoryCategoryService : BaseContentService<StoryCategory>, IStoryCategoryService
     {
-
         private static readonly Logger StoryCategoryServiceLogger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public IStoryService StoryService { get; set; }
 
         private IStoryCategoryRepository StoryCategoryRepository { get; set; }
+
         public StoryCategoryService(IStoryCategoryRepository repository) : base(repository)
         {
             StoryCategoryRepository = repository;
         }
+
         public StoryCategory GetStoryCategoryById(int storyCategoryId)
         {
             return StoryCategoryRepository.GetStoryCategoryById(storyCategoryId);
         }
+
         public void DeleteStoryCategoryById(int storyCategoryId)
         {
             var storyCategory = GetStoryCategoryById(storyCategoryId);
@@ -41,6 +44,7 @@ namespace EImece.Domain.Services
             }
             DeleteEntity(storyCategory);
         }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try

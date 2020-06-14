@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-
 namespace EImece.Domain.Helpers
 {
     public class StringCipher
@@ -26,7 +25,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-
         public static string EncryptEscape(string text)
         {
             return Base64UrlEncoder.Encode(Encrypt(text, PassWord));
@@ -36,7 +34,6 @@ namespace EImece.Domain.Helpers
 
         public static string DecryptEscape(string cipherText)
         {
-
             string ret = string.Empty;
 
             try
@@ -50,14 +47,12 @@ namespace EImece.Domain.Helpers
             }
 
             return ret;
-
         }
-
 
         public static string Encrypt(string plainText, string passPhrase)
         {
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
-            // so that the same Salt and IV values can be used when decrypting.  
+            // so that the same Salt and IV values can be used when decrypting.
             var saltStringBytes = Generate256BitsOfRandomEntropy();
             var ivStringBytes = Generate256BitsOfRandomEntropy();
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);

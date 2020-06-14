@@ -16,14 +16,17 @@ namespace EImece.Domain.Services
         public IListItemRepository ListItemRepository { get; set; }
 
         private IListRepository ListRepository { get; set; }
+
         public ListService(IListRepository repository) : base(repository)
         {
             ListRepository = repository;
         }
+
         public List GetListById(int id)
         {
             return ListRepository.GetListById(id);
         }
+
         public void DeleteListById(int id)
         {
             List list = GetListById(id);
@@ -46,7 +49,6 @@ namespace EImece.Domain.Services
                 result = new List<List>();
                 result = ListRepository.GetAllListItems();
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
-
             }
             return result;
         }

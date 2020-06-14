@@ -5,8 +5,6 @@ using System.Data.SqlClient;
 
 namespace EImece.Domain.Helpers
 {
-
-
     // Copyright (c) 2012-2013, Riyad Parvez
     // All rights reserved.
     //
@@ -15,16 +13,17 @@ namespace EImece.Domain.Helpers
     // 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
     //
     // 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-    // 
+    //
     // 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
     //
     // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
     public class SqlTableCreator
     {
         #region Instance Variables
+
         private SqlConnection _connection;
+
         public SqlConnection Connection
         {
             get { return _connection; }
@@ -32,6 +31,7 @@ namespace EImece.Domain.Helpers
         }
 
         private SqlTransaction _transaction;
+
         public SqlTransaction Transaction
         {
             get { return _transaction; }
@@ -39,28 +39,40 @@ namespace EImece.Domain.Helpers
         }
 
         private string _tableName;
+
         public string DestinationTableName
         {
             get { return _tableName; }
             set { _tableName = value; }
         }
-        #endregion
+
+        #endregion Instance Variables
 
         #region Constructor
-        public SqlTableCreator() { }
-        public SqlTableCreator(SqlConnection connection) : this(connection, null) { }
+
+        public SqlTableCreator()
+        {
+        }
+
+        public SqlTableCreator(SqlConnection connection) : this(connection, null)
+        {
+        }
+
         public SqlTableCreator(SqlConnection connection, SqlTransaction transaction)
         {
             _connection = connection;
             _transaction = transaction;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Instance Methods
+
         public object Create(DataTable schema)
         {
             return Create(schema, null);
         }
+
         public object Create(DataTable schema, int numKeys)
         {
             int[] primaryKeys = new int[numKeys];
@@ -70,7 +82,6 @@ namespace EImece.Domain.Helpers
             }
             return Create(schema, primaryKeys);
         }
-
 
         public object Create(DataTable schema, int[] primaryKeys)
         {
@@ -85,7 +96,6 @@ namespace EImece.Domain.Helpers
             return cmd.ExecuteNonQuery();
         }
 
-
         public object CreateFromDataTable(DataTable table)
         {
             string sql = GetCreateFromDataTableSQL(_tableName, table);
@@ -98,7 +108,8 @@ namespace EImece.Domain.Helpers
 
             return cmd.ExecuteNonQuery();
         }
-        #endregion
+
+        #endregion Instance Methods
 
         #region Static Methods
 
@@ -224,6 +235,7 @@ namespace EImece.Domain.Helpers
         {
             return SQLGetType(column.DataType, column.MaxLength, 10, 2);
         }
-        #endregion
+
+        #endregion Static Methods
     }
 }

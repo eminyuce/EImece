@@ -14,4 +14,3 @@ namespace EImece.Domain.Repositories
         }
     }
 }
-

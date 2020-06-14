@@ -6,6 +6,7 @@ namespace EImece.Domain.Caching
     {
         int CacheDuration { get; set; }
         bool IsCacheProviderActive { get; set; }
+
         /// <summary>
         /// Retrieve cached item
         /// </summary>
@@ -38,12 +39,11 @@ namespace EImece.Domain.Caching
         /// <summary>
         /// Remove item from cache
         /// </summary>
-        /// <param name="key">Name of cached item</param>        
+        /// <param name="key">Name of cached item</param>
         void Clear(string key);
 
         void ClearAll();
 
         IEnumerable<KeyValuePair<string, object>> GetAll();
-
     }
 }

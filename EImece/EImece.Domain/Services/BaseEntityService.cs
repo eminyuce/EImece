@@ -10,18 +10,20 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseEntityService<T> : BaseService<T> where T : BaseEntity
     {
-
         private static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
 
         private IBaseEntityRepository<T> baseEntityRepository { get; set; }
+
         protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) : base(baseEntityRepository)
         {
             this.baseEntityRepository = baseEntityRepository;
         }
+
         public virtual List<T> GetActiveBaseEntities(bool? isActive, int? language)
         {
             return baseEntityRepository.GetActiveBaseEntities(isActive, language);
         }
+
         public virtual List<T> GetActiveBaseEntitiesFromCache(bool? isActive, int? language)
         {
             List<T> result = null;
@@ -33,17 +35,15 @@ namespace EImece.Domain.Services
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
             }
             return result;
-
         }
+
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int? language)
         {
-
             return baseEntityRepository.SearchEntities(whereLambda, search, language);
         }
 
         public new virtual T SaveOrEditEntity(T entity)
         {
-
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
@@ -110,7 +110,6 @@ namespace EImece.Domain.Services
                                 product.IsCampaign = item.IsActive;
                             }
                         }
-
                     }
                     baseEntityRepository.Edit(t);
                 }

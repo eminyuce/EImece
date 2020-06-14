@@ -6,8 +6,6 @@ namespace EImece.Domain.Helpers
 {
     public class UserRoleHelper
     {
-
-
         public static bool IsDeletedEnableRoles()
         {
             var user = HttpContext.Current.User;
@@ -22,6 +20,7 @@ namespace EImece.Domain.Helpers
             }
             return false;
         }
+
         public static bool IsAdminManagementRoles()
         {
             var user = HttpContext.Current.User;

@@ -34,6 +34,7 @@ namespace EImece.Domain.Repositories
                 return null;
             }
         }
+
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int? language)
         {
             Expression<Func<T, bool>> match = r2 => r2.Lang == (language.HasValue ? language.Value : r2.Lang);
@@ -47,6 +48,5 @@ namespace EImece.Domain.Repositories
             var result = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             return result;
         }
-
     }
 }

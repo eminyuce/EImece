@@ -14,7 +14,6 @@ namespace EImece.Domain.Helpers.Extensions
             value.InputStream.Position = 0;
             value.InputStream.Read(array, 0, value.ContentLength);
             return array;
-
         }
     }
 }

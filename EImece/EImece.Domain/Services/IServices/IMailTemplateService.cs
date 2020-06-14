@@ -7,4 +7,3 @@ namespace EImece.Domain.Services.IServices
         MailTemplate GetMailTemplateByName(string templatename);
     }
 }
-

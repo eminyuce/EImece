@@ -93,7 +93,6 @@ namespace EImece.Domain.Helpers.SiteMap
             if (!String.IsNullOrEmpty(newsItem.PublicationLanguage))
                 newsPublication.Add(new XElement(newsXsi + "language", newsItem.PublicationLanguage));
 
-
             if (!String.IsNullOrEmpty(newsItem.Title))
                 elem.Add(new XElement(newsXsi + "title", newsItem.Title));
 
@@ -102,7 +101,6 @@ namespace EImece.Domain.Helpers.SiteMap
 
             if (!String.IsNullOrEmpty(newsItem.Keywords))
                 elem.Add(new XElement(newsXsi + "keywords", newsItem.Keywords));
-
 
             if (!String.IsNullOrEmpty(newsItem.StockTickers))
                 elem.Add(new XElement(newsXsi + "stock_tickers", newsItem.StockTickers));

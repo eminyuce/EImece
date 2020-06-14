@@ -23,6 +23,7 @@ namespace EImece.Domain.Services
         public IStoryCategoryService StoryCategoryService { get; set; }
 
         private IMenuRepository MenuRepository { get; set; }
+
         public MenuService(IMenuRepository repository) : base(repository)
         {
             MenuRepository = repository;
@@ -128,7 +129,6 @@ namespace EImece.Domain.Services
                     MenuService.SaveOrEditEntity(item);
                 }
             }
-
         }
     }
 }

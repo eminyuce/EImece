@@ -8,6 +8,5 @@ namespace EImece.Domain.Models.FrontModels
         public Tag Tag { get; set; }
         public PaginatedList<ProductTag> ProductTags { get; set; }
         public PaginatedList<StoryTag> StoryTags { get; set; }
-
     }
 }

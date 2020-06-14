@@ -14,6 +14,7 @@ namespace EImece.Domain.Repositories
     public class TagCategoryRepository : BaseEntityRepository<TagCategory>, ITagCategoryRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public TagCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
@@ -46,5 +47,4 @@ namespace EImece.Domain.Repositories
             }
         }
     }
-
 }

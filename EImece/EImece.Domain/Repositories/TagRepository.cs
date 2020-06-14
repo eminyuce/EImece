@@ -12,9 +12,9 @@ namespace EImece.Domain.Repositories
     public class TagRepository : BaseEntityRepository<Tag>, ITagRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public TagRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
 
         public List<Tag> GetAdminPageList(string search, int language)
@@ -27,8 +27,6 @@ namespace EImece.Domain.Repositories
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
             var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
-
-
 
             return result;
         }

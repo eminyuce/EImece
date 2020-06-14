@@ -2,7 +2,6 @@
 {
     public class SavedImage
     {
-
         public string NewFileName { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -18,8 +17,8 @@
 
         public SavedImage()
         {
-
         }
+
         public SavedImage(string newFileName, int width, int height, int imageSize, string contentType, string fileName, string fileHash)
         {
             NewFileName = newFileName;

@@ -8,6 +8,7 @@ namespace EImece.Domain.Entities
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Note))]
         public string Note { get; set; }
     }

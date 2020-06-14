@@ -31,6 +31,5 @@ namespace EImece.Domain.DbContext
         IDbSet<BrowserSubscription> BrowserSubscriptions { get; set; }
         IDbSet<BrowserNotificationFeedBack> BrowserNotificationFeedBacks { get; set; }
         IDbSet<BrowserNotification> BrowserNotifications { get; set; }
-
     }
 }

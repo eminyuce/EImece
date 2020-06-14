@@ -30,7 +30,6 @@ namespace EImece
                       "~/Content/site.css"
                       ));
 
-
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/adminSite.css"
@@ -57,7 +56,6 @@ namespace EImece
         "~/Content/themes/base/tabs.css",
         "~/Content/themes/base/theme.css",
         "~/Content/themes/base/tooltip.css"));
-
 
             bundles.Add(new StyleBundle("~/Content/jQuery-File-Upload").Include(
                     "~/Content/jQuery.FileUpload/css/jquery.fileupload.css",
@@ -92,14 +90,14 @@ namespace EImece
 "~/Scripts/jQuery.FileUpload/jquery.fileupload-validate.js",
 //!-- The File Upload user interface plugin -->
 "~/Scripts/jQuery.FileUpload/jquery.fileupload-ui.js",
-//Blueimp Gallery 2 
+//Blueimp Gallery 2
 "~/Scripts/blueimp-gallery2/js/blueimp-gallery.js",
 "~/Scripts/blueimp-gallery2/js/blueimp-gallery-video.js",
 "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",
 "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"
 
 ));
-            bundles.Add(new ScriptBundle("~/bundles/Blueimp-Gallerry2").Include(//Blueimp Gallery 2 
+            bundles.Add(new ScriptBundle("~/bundles/Blueimp-Gallerry2").Include(//Blueimp Gallery 2
 "~/Scripts/blueimp-gallery2/js/blueimp-gallery.js",
 "~/Scripts/blueimp-gallery2/js/blueimp-gallery-video.js",
 "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",

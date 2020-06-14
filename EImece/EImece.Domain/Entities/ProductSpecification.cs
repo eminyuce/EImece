@@ -7,10 +7,13 @@ namespace EImece.Domain.Entities
     {
         [NotMapped]
         public string GroupName { get; set; }
+
         public string Value { get; set; }
         public string Unit { get; set; }
+
         [ForeignKey("Product")]
         public int ProductId { get; set; }
+
         public Product Product { get; set; }
 
         [NotMapped]

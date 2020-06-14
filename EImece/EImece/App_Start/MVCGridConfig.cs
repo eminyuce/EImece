@@ -67,10 +67,8 @@ namespace EImece
                         Items = items,
                         TotalRecords = 0 // if paging is enabled, return the total number of records of all pages
                     };
-
                 })
             );
-
         }
     }
 }

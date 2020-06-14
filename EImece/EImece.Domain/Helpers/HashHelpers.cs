@@ -5,7 +5,6 @@ namespace EImece.Domain.Helpers
 {
     public class HashHelpers
     {
-
         public static string GetSha256Hash(byte[] bytes)
         {
             string ret = "";
@@ -15,11 +14,9 @@ namespace EImece.Domain.Helpers
                 HashAlgorithm sha256 = new SHA256Managed();
                 byte[] bHash = sha256.ComputeHash(bytes);
                 ret = BitConverter.ToString(bHash).Replace("-", "");
-
             }
             catch (Exception e)
             {
-
                 // throw;
             }
 
@@ -30,6 +27,5 @@ namespace EImece.Domain.Helpers
         {
             return hash.Length == 64;
         }
-
     }
 }

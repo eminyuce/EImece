@@ -15,25 +15,30 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     case "EmploymentType":
                         return "Employment Type";
+
                     case "Country":
                         return "Country";
+
                     case "Experience":
                         return "Experience";
+
                     case "Category":
                         return "Category";
+
                     case "State":
                         return "State";
+
                     case "City":
                         return "City";
+
                     case "GT":
                         return "Gross Tonnage";
+
                     default:
                         return FieldName;
                 }
             }
-
         }
-
 
         private List<Filter> _filters = new List<Filter>();
 
@@ -59,12 +64,8 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     return _filters;
                 }
-
             }
-
         }
-
-
 
         public FilterGroup(string fieldName)
         {

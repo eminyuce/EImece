@@ -16,6 +16,7 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         private List<ProductCategory> _productCategories = new List<ProductCategory>();
+
         public List<ProductCategory> ProductCategories
         {
             get { return _productCategories; }
@@ -23,11 +24,13 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         public List<Filter> _filters = new List<Filter>();
+
         public List<Filter> Filters
         {
             get { return _filters; }
             set { _filters = value; }
         }
+
         public List<FilterGroup> FiltersGroups
         {
             get
@@ -40,12 +43,11 @@ namespace EImece.Domain.Models.FrontModels
                     var group = new FilterGroup(groupName);
                     group.Filters.AddRange(Filters.Where(r => r.FieldName.Equals(groupName)));
                     groups.Add(group);
-
                 }
                 return groups;
             }
         }
-        public int PageSize { get; set; }
 
+        public int PageSize { get; set; }
     }
 }

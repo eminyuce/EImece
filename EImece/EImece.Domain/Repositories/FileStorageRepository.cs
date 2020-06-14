@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace EImece.Domain.Repositories
 {
-
     public class FileStorageRepository : BaseEntityRepository<FileStorage>, IFileStorageRepository
     {
         public FileStorageRepository(IEImeceContext dbContext) : base(dbContext)

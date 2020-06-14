@@ -15,7 +15,6 @@ namespace EImece.Domain.Repositories
 
         public ListRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
 
         public List<List> GetAllListItems()

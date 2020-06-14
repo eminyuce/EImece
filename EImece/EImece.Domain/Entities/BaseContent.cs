@@ -11,9 +11,9 @@ namespace EImece.Domain.Entities
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Description))]
         public string Description { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageState))]
         public Boolean ImageState { get; set; }
-
 
         public string MetaKeywords { get; set; }
 
@@ -25,12 +25,11 @@ namespace EImece.Domain.Entities
 
         [NotMapped]
         public int ImageHeight { get; set; }
+
         [NotMapped]
         public int ImageWidth { get; set; }
 
         public string UpdateUserId { get; set; }
         public string AddUserId { get; set; }
-
-
     }
 }

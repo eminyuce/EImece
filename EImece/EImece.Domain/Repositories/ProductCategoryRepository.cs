@@ -60,6 +60,7 @@ namespace EImece.Domain.Repositories
             }
             return returnList;
         }
+
         public List<Node> CreateProductCategoryTreeViewDataList(int language)
         {
             var pcList = GetAll();
@@ -74,6 +75,7 @@ namespace EImece.Domain.Repositories
 
             return _lstTreeNodes;
         }
+
         public ProductCategory GetProductCategory(int categoryId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -100,7 +102,6 @@ namespace EImece.Domain.Repositories
                     result.Add(m);
                 }
             }
-
 
             return result;
         }
@@ -131,8 +132,6 @@ namespace EImece.Domain.Repositories
             }
             var result = FindAllIncluding(match,
                 r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
-
-
 
             return result.ToList();
         }

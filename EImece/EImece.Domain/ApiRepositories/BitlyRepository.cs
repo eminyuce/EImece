@@ -29,6 +29,7 @@ namespace EImece.Domain.ApiRepositories
                 return access_token;
             }
         }
+
         private static IRestResponse MakeGetRequest(string requestUrl)
         {
             var client = new RestClient(requestUrl);
@@ -39,6 +40,7 @@ namespace EImece.Domain.ApiRepositories
             IRestResponse response = client.Execute(request);
             return response;
         }
+
         public string GetGroup()
         {
             var client = new RestClient("https://api-ssl.bitly.com/v4/groups");
@@ -54,8 +56,8 @@ namespace EImece.Domain.ApiRepositories
         /// <summary>
         /// http://dev.bitly.com/v4_documentation.html
         /// Use the /oauth/access_token API endpoint documented below to acquire an OAuth access token,
-        /// passing the code value appended by Bitly to the previous redirect and the same redirect_uri value 
-        /// that was used previously. This API endpoint will return an OAuth access token, as well as the specified 
+        /// passing the code value appended by Bitly to the previous redirect and the same redirect_uri value
+        /// that was used previously. This API endpoint will return an OAuth access token, as well as the specified
         /// Bitly user's login and API key, allowing your application to utilize the Bitly API on that user's behalf.
         /// </summary>
         /// <param name="clientId"></param>
@@ -111,8 +113,8 @@ namespace EImece.Domain.ApiRepositories
             {
                 return new BitlyShortUrl() { long_url = shortUrl.long_url, link = shortUrl.long_url };
             }
-
         }
+
         // https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks
         /// <summary>
         /// Get Clicks for a Bitlink
@@ -126,10 +128,7 @@ namespace EImece.Domain.ApiRepositories
             IRestResponse response = MakeGetRequest(requestUrl);
             var statusCode = response.StatusCode;
             return JsonConvert.DeserializeObject<BitlyUrlClickStats>(response.Content);
-
         }
-
-
 
         /// <summary>
         /// Get Clicks Summary for a Bitlink
@@ -150,8 +149,6 @@ namespace EImece.Domain.ApiRepositories
             {
                 return new BitlyUrlClickSummaryStats() { };
             }
-
-
         }
 
         public EmailShortenUrlsResult ConvertEmailLinkstoBitlyShortLinks(string emailContent)
@@ -160,7 +157,6 @@ namespace EImece.Domain.ApiRepositories
             var emailContentResult = ConvertEmailLinkstoBitlyShortLinks(sGuid, emailContent);
             return emailContentResult;
         }
-
 
         /// <summary>
         /// Takes email content and convert all links to bitly shorten link
@@ -202,8 +198,6 @@ namespace EImece.Domain.ApiRepositories
                                     if (urlDic.ContainsKey(hrefValue))
                                         continue;
 
-
-
                                     var shortUrl = new BitlyShortUrlRequest();
                                     shortUrl.group_guid = shortUrlGroupGuid;
                                     shortUrl.long_url = hrefValue;
@@ -219,8 +213,6 @@ namespace EImece.Domain.ApiRepositories
                                     {
                                         urlDic.Add(hrefValue, bitlyShortUrl);
                                     }
-
-
                                 }
                                 catch (Exception ex)
                                 {
@@ -261,6 +253,7 @@ namespace EImece.Domain.ApiRepositories
                 return result;
             }
         }
+
         // TODO: Under development
         public TmlnkResponse GetTmlnkResponse(string url = "", string email = "", string group = "")
         {
@@ -269,8 +262,6 @@ namespace EImece.Domain.ApiRepositories
             //IRestResponse response = MakeGetRequest(requestUrl);
             //var statusCode = response.StatusCode;
             //return JsonConvert.DeserializeObject<TmlnkResponse>(response.Content);
-
-
 
             var p = ShortUrlRepository.GenerateShortUrl(url, email, group);
 
@@ -283,8 +274,8 @@ namespace EImece.Domain.ApiRepositories
             r.UrlEid = p.UrlKey;
 
             return r;
-
         }
+
         public EmailShortenUrlsResult ConvertEmailLinkstoShortLinks(string emailContent, string group = "")
         {
             var result = ConvertEmailLinkstoShortLinks(emailContent, group, "//a[@href]");
@@ -296,8 +287,6 @@ namespace EImece.Domain.ApiRepositories
             var result = new List<String>();
             try
             {
-
-
                 HtmlDocument doc = new HtmlDocument();
                 // convert string to stream
                 byte[] byteArray = Encoding.ASCII.GetBytes(htmlContent);
@@ -330,7 +319,6 @@ namespace EImece.Domain.ApiRepositories
                 }
                 result = result.Distinct().ToList();
                 result = result != null ? result : new List<string>();
-
             }
             catch (Exception ex)
             {
@@ -373,7 +361,6 @@ namespace EImece.Domain.ApiRepositories
                                     if (TmlnkResponseDic.ContainsKey(hrefValue))
                                         continue;
 
-
                                     TmlnkResponse tmlnkResponse = null;
                                     string email = "";
                                     if (dataBitlyUrl.ToBool())
@@ -386,8 +373,6 @@ namespace EImece.Domain.ApiRepositories
                                     {
                                         TmlnkResponseDic.Add(hrefValue, tmlnkResponse);
                                     }
-
-
                                 }
                                 catch (Exception ex)
                                 {
@@ -416,7 +401,7 @@ namespace EImece.Domain.ApiRepositories
                         }
                     }
                 }
-                //insert tracking image (by group only) before closed 
+                //insert tracking image (by group only) before closed
                 var trackingImage = GetTmlnkResponse("", "", group);
                 var trackingImageNode = doc.CreateElement("img");
                 trackingImageNode.SetAttributeValue("src", String.Format("{0}.png", trackingImage.ShortUrl));
@@ -434,6 +419,7 @@ namespace EImece.Domain.ApiRepositories
                 return result;
             }
         }
+
         public string ConvertEmailBodyForTracking(bool trackWithBitly, bool trackWithMlnk, string body, string emailTemplateName, string groupName)
         {
             if (trackWithBitly)

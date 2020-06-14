@@ -27,10 +27,12 @@ namespace EImece.Domain.Helpers
         {
             return FromBase64String(plainText).ToInt();
         }
+
         public static string Base64Encode(int id)
         {
             return Base64Encode(id + "");
         }
+
         private static string FromBase64String(string plainText)
         {
             //var encodedStr = Base64UrlEncoder.Encode(StringToEncode);
@@ -38,11 +40,13 @@ namespace EImece.Domain.Helpers
 
             return Encoding.UTF8.GetString(System.Convert.FromBase64String(plainText));
         }
+
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
+
         public static void SetCultureCookie(HttpResponseBase request, String cultureCookieName, string cultureName = "")
         {
             if (String.IsNullOrEmpty(cultureName))
@@ -70,6 +74,7 @@ namespace EImece.Domain.Helpers
         {
             return (s.StartsWith("192.168.") || s.StartsWith("10.") || s.StartsWith("127.0.0."));
         }
+
         public static string GetRemoteIP(NameValueCollection ServerVariables)
         {
             string ip = ServerVariables["REMOTE_ADDR"]; // could be a proxy -- beware
@@ -114,13 +119,14 @@ namespace EImece.Domain.Helpers
 
             return cultureName;
         }
+
         public static String GetStringTitleCase(string text)
         {
             // Creates a TextInfo based on the "en-US" culture.
             TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
             return myTI.ToTitleCase(text);
-
         }
+
         public static String ConvertToDateTimeOffset(DateTime t)
         {
             TimeZoneInfo TargetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
@@ -130,6 +136,7 @@ namespace EImece.Domain.Helpers
             string format = "yyyy-MM-ddTHH:mm:sszzz";
             return outputDate.ToString(format, new CultureInfo("en-US"));
         }
+
         public static string EncodeForEmailLink(string text)
         {
             text = text.Replace(" ", "%20");
@@ -156,7 +163,6 @@ namespace EImece.Domain.Helpers
 
                 return desc;
             }
-
         }
 
         public static string GetMd5Hash(string input)
@@ -172,33 +178,37 @@ namespace EImece.Domain.Helpers
             return sb.ToString();
         }
 
-
         public static string EncodeFile(string fileName)
         {
             return System.Convert.ToBase64String(System.IO.File.ReadAllBytes(fileName));
         }
+
         public static X509Certificate2 ImportCert(byte[] rawData, String password)
         {
             var x509 = new X509Certificate2();
             x509.Import(rawData, password, X509KeyStorageFlags.Exportable);
             return x509;
         }
+
         public static X509Certificate2 CreateCert(Byte[] serviceAccountPkCs12FilePath, String password)
         {
             X509Certificate2 cert = new X509Certificate2(serviceAccountPkCs12FilePath, password, X509KeyStorageFlags.Exportable);
             return cert;
         }
+
         public static X509Certificate2 CreateCert(String serviceAccountPkCs12FilePath, String password)
         {
             X509Certificate2 cert = new X509Certificate2(serviceAccountPkCs12FilePath, password, X509KeyStorageFlags.Exportable);
             return cert;
         }
+
         public static byte[] ExportCertFile(String serviceAccountPkCs12FilePath, String password)
         {
             X509Certificate2 cert = new X509Certificate2(serviceAccountPkCs12FilePath, password, X509KeyStorageFlags.Exportable);
             byte[] bytes = cert.Export(X509ContentType.Pkcs12);
             return bytes;
         }
+
         public static string GetDomainPart(string url)
         {
             if (String.IsNullOrEmpty(url))
@@ -216,12 +226,13 @@ namespace EImece.Domain.Helpers
             if (trimmed.StartsWith("www."))
                 trimmed = trimmed.Substring("www.".Length);
             return trimmed;
-
         }
+
         public static string SettingSpan(string key, string value)
         {
             return String.Format("<span id='{0}'>{1}</span>", key, value);
         }
+
         public static string UrlDencode(string adres, bool encode)
         {
             string[] karakter = { "<", ">", "#", "%", "{", "}", "|", @"\", "^", "~", "[", "]", "`", ";", "/", "?", ":", "@", "=", "&", "$" };
@@ -243,6 +254,7 @@ namespace EImece.Domain.Helpers
             }
             return adres;
         }
+
         public static Stream GeneratePDF(byte[] pdf)
         {
             //create your pdf and put it into the stream... pdf variable below
@@ -254,18 +266,19 @@ namespace EImece.Domain.Helpers
 
             return ms;
         }
+
         public static DataTable LINQToDataTable<T>(IEnumerable<T> varlist)
         {
             DataTable dtReturn = new DataTable();
 
-            // column names 
+            // column names
             PropertyInfo[] oProps = null;
 
             if (varlist == null) return dtReturn;
 
             foreach (T rec in varlist)
             {
-                // Use reflection to get property names, to create table, Only first time, others will follow 
+                // Use reflection to get property names, to create table, Only first time, others will follow
                 if (oProps == null)
                 {
                     oProps = ((Type)rec.GetType()).GetProperties();
@@ -312,9 +325,9 @@ namespace EImece.Domain.Helpers
                 RemoveEmptyColumn(dt);
             }
         }
+
         public static DataTable RemoveEmptyColumn(DataTable dt)
         {
-
             bool flag = false;
             int counter = 0;
 
@@ -325,17 +338,12 @@ namespace EImece.Domain.Helpers
                 //if it is empty datatable, that inner loop will never work.
                 for (int x = 0; x < dt.Rows.Count; x++)
                 {
-
                     if (string.IsNullOrEmpty(dt.Rows[x][i].ToString()))
                     {
-
                         flag = true; //means there is an empty value
-
                     }
-
                     else
                     {
-
                         //means if it found non null or empty in rows of a particular column
 
                         flag = false;
@@ -343,27 +351,20 @@ namespace EImece.Domain.Helpers
                         counter = i + 1;
 
                         goto EXIT;
-
                     }
-
                 }
-
-
 
                 if (flag == true)
                 {
-
                     dt.Columns.Remove(dt.Columns[i]);
 
                     i--;
-
                 }
-
             }
 
             return dt;
-
         }
+
         public static void RemoveNullColumnFromDataTables(List<DataTable> dtList)
         {
             foreach (var dt in dtList)
@@ -371,6 +372,7 @@ namespace EImece.Domain.Helpers
                 RemoveNullColumnFromDataTable(dt);
             }
         }
+
         public static void RemoveNullColumnFromDataTable(DataTable dt)
         {
             for (int i = dt.Rows.Count - 1; i >= 0; i--)
@@ -380,6 +382,7 @@ namespace EImece.Domain.Helpers
             }
             dt.AcceptChanges();
         }
+
         public static string GetFileExtension(String fileName)
         {
             String extension = "";
@@ -391,6 +394,7 @@ namespace EImece.Domain.Helpers
 
             return extension;
         }
+
         public static string RemoveHtmlTags(string content)
         {
             if (string.IsNullOrEmpty(content))
@@ -406,6 +410,7 @@ namespace EImece.Domain.Helpers
 
             return cleaned;
         }
+
         public static String GetDescription(string bodyHtml, int length)
         {
             var stripedText = GeneralHelper.RemoveHtmlTags(bodyHtml);
@@ -432,14 +437,11 @@ namespace EImece.Domain.Helpers
                     policy.AbsoluteExpiration = DateTime.Now.AddMinutes(minute);
                     MemoryCache.Default.Set(key, ret, policy);
                 }
-
             }
             else
             {
-
             }
             return ret;
-
         }
 
         public static byte[] GetImageFromUrl(string url, Dictionary<String, String> dictionary)
@@ -448,11 +450,8 @@ namespace EImece.Domain.Helpers
             System.Net.HttpWebResponse response = null;
             byte[] b = null;
 
-
             try
             {
-
-
                 request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
                 response = (System.Net.HttpWebResponse)request.GetResponse();
 
@@ -465,7 +464,6 @@ namespace EImece.Domain.Helpers
                         b = br.ReadBytes(500000);
                         br.Close();
 
-
                         foreach (var h in response.Headers.AllKeys)
                         {
                             dictionary.Add(h, response.Headers[h]);
@@ -473,12 +471,9 @@ namespace EImece.Domain.Helpers
                         dictionary.Add("ContentType", response.ContentType);
                     }
                 }
-
             }
             catch (Exception)
             {
-
-
             }
             return b;
         }
@@ -494,6 +489,7 @@ namespace EImece.Domain.Helpers
             rtn = aResponse.GetResponseStream();
             return rtn;
         }
+
         public static string StripHtml(string html)
         {
             html = html.ToStr();
@@ -522,11 +518,11 @@ namespace EImece.Domain.Helpers
             }
             return new string(array, 0, arrayIndex);
         }
+
         public static string PuttingStars(string strOriginal)
         {
             if (String.IsNullOrEmpty(strOriginal))
                 return strOriginal;
-
 
             string[] lines = strOriginal.Split(new string[] { " " },
                              StringSplitOptions.RemoveEmptyEntries);
@@ -542,15 +538,14 @@ namespace EImece.Domain.Helpers
                     }
                     strOriginal = strOriginal.Replace(lines[j], stars);
                 }
-
             }
             return strOriginal;
         }
+
         public static string ProtectEmail(String email, char character = '*')
         {
             if (String.IsNullOrEmpty(email))
                 return email;
-
 
             string username = email.Split('@')[0];
             string domain = email.Split('@')[1];
@@ -570,7 +565,6 @@ namespace EImece.Domain.Helpers
             {
                 m = String.Format(String.Format("{0}", c.First() + "{0}" + c.Last()), p);
             }
-
 
             return m + "@" + domain;
         }
@@ -596,6 +590,7 @@ namespace EImece.Domain.Helpers
             }
             return table;
         }
+
         public static string GetTextFromFile()
         {
             var fileName = "Jobs.Domain.Helpers.tags.config";
@@ -611,8 +606,8 @@ namespace EImece.Domain.Helpers
             var _textStreamReader = new StreamReader(stream);
             var rrr = _textStreamReader.ReadToEnd();
             return rrr;
-
         }
+
         public static string GetPlainTextFromHtml(string htmlString)
         {
             string htmlTagPattern = "<.*?>";
@@ -630,10 +625,12 @@ namespace EImece.Domain.Helpers
             HashAlgorithm algorithm = MD5.Create();  // SHA1.Create()
             return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
+
         public static string Capitalize(string value)
         {
             return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
         }
+
         public static string GetHashString(string inputString)
         {
             StringBuilder sb = new StringBuilder();
@@ -650,6 +647,7 @@ namespace EImece.Domain.Helpers
             int iNextSpace = input.LastIndexOf(" ", length);
             return String.Format("{0}", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
         }
+
         public static string FileNameToTitle(string FileName)
         {
             string ret;
@@ -661,7 +659,7 @@ namespace EImece.Domain.Helpers
             ret = ret.Replace('"', ' ');
             ret = Regex.Replace(ret, @"\d{2,3}px", " ");
 
-            // remove digits if there is enough letters 
+            // remove digits if there is enough letters
             ret = ret.Count(c => Char.IsLetter(c)) > 5 ? Regex.Replace(ret, @"[0-9]", " ") : ret;
 
             // CaseStringIntoWords -> Case String Into Words
@@ -675,11 +673,8 @@ namespace EImece.Domain.Helpers
             ret = Regex.Replace(ret, @"\s+", " ");
             ret = ret.Trim();
 
-
-
             return ret;
         }
-
 
         public static bool IsNumeric(object Expression)
         {
@@ -688,6 +683,7 @@ namespace EImece.Domain.Helpers
             isNum = Double.TryParse(Expression.ToStr(), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
             return isNum;
         }
+
         public static String[] GetStringArrayBasedOnDelimeter(char[] delimeter, String text)
         {
             String[] textArray = null;
@@ -706,7 +702,6 @@ namespace EImece.Domain.Helpers
 
             if (equalDelimeter == null)
                 return null;
-
 
             var dic = new Dictionary<String, String>();
             foreach (var s in imageArray)
@@ -753,7 +748,6 @@ namespace EImece.Domain.Helpers
             // Creates a TextInfo based on the "en-US" culture.
             TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
             return myTI.ToTitleCase(text);
-
         }
 
         public static String getStringWithoutBreakingWords(string text, int length)
@@ -803,7 +797,7 @@ namespace EImece.Domain.Helpers
         private static bool IsPrivateIpAddress(string ipAddress)
         {
             // http://en.wikipedia.org/wiki/Private_network
-            // Private IP Addresses are: 
+            // Private IP Addresses are:
             //  24-bit block: 10.0.0.0 through 10.255.255.255
             //  20-bit block: 172.16.0.0 through 172.31.255.255
             //  16-bit block: 192.168.0.0 through 192.168.255.255
@@ -824,6 +818,7 @@ namespace EImece.Domain.Helpers
             var isLinkLocalAddress = octets[0] == 169 && octets[1] == 254;
             return isLinkLocalAddress;
         }
+
         public static string EncodeUTF8(string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -832,26 +827,24 @@ namespace EImece.Domain.Helpers
                 value = Encoding.UTF8.GetString(bytes);
             }
 
-
             return value;
         }
 
         public static string CleanInput(string strIn)
         {
-            // Replace invalid characters with empty strings. 
+            // Replace invalid characters with empty strings.
             try
             {
                 return Regex.Replace(strIn, @"[^\w\.@-]", "",
                                      RegexOptions.None, TimeSpan.FromSeconds(1.5));
             }
-            // If we timeout when replacing invalid characters,  
-            // we should return Empty. 
+            // If we timeout when replacing invalid characters,
+            // we should return Empty.
             catch (RegexMatchTimeoutException)
             {
                 return String.Empty;
             }
         }
-
 
         public static string GetSHA256Hash(byte[] bytes)
         {
@@ -886,18 +879,20 @@ namespace EImece.Domain.Helpers
             }
 
             return ret;
-
         }
+
         public static string GetNumberFromStr(string str)
         {
             str = str.Trim();
             Match m = Regex.Match(str, @"(\d+)");
             return (m.Value);
         }
+
         public static string ExtractNumbers(string expr)
         {
             return string.Join(null, Regex.Split(expr, "[^\\d]"));
         }
+
         public static SelectList GetYears()
         {
             var listItems = GetYearList();
@@ -907,6 +902,7 @@ namespace EImece.Domain.Helpers
             listItems.Insert(0, sli);
             return new SelectList(listItems, "Value", "Text");
         }
+
         private static List<SelectListItem> GetYearList()
         {
             var listItems = new List<SelectListItem>();
@@ -921,6 +917,7 @@ namespace EImece.Domain.Helpers
             }
             return listItems;
         }
+
         public static SelectList GetMonths()
         {
             var listItems = GetMonthList();
@@ -930,6 +927,7 @@ namespace EImece.Domain.Helpers
             listItems.Insert(0, sli);
             return new SelectList(listItems, "Value", "Text");
         }
+
         private static List<SelectListItem> GetMonthList()
         {
             var listItems = new List<SelectListItem>();
@@ -948,6 +946,7 @@ namespace EImece.Domain.Helpers
 
             return listItems;
         }
+
         public string ConvertUTF8(string text)
         {
             Encoding iso = Encoding.GetEncoding(text);
@@ -958,6 +957,7 @@ namespace EImece.Domain.Helpers
 
             return msg;
         }
+
         public static string ConvertTurkishChars(string text)
         {
             if (String.IsNullOrEmpty(text))
@@ -975,15 +975,17 @@ namespace EImece.Domain.Helpers
 
             return text;
         }
+
         public static string GetUrlSeoString(string p)
         {
             p = ConvertTurkishChars(p);
             //p = EncodeUTF8(p);
             return GetUrlString(p);
         }
+
         public static string GetUrlString(string strIn)
         {
-            // Replace invalid characters with empty strings. 
+            // Replace invalid characters with empty strings.
             strIn = strIn.ToLower();
             strIn = strIn.RemoveCarriage();
             char[] szArr = strIn.ToCharArray();
@@ -998,13 +1000,13 @@ namespace EImece.Domain.Helpers
             }
             return new String(list.ToArray()).Replace(" ", "-");
         }
+
         public static bool IsHtml(String myString)
         {
             Regex tagRegex = new Regex(@"<[^>]+>");
             bool hasTags = tagRegex.IsMatch(myString);
             return hasTags;
         }
-
 
         public static string GetLastNameFromFull(string fullName)
         {
@@ -1013,7 +1015,6 @@ namespace EImece.Domain.Helpers
             {
                 return string.Empty;
             }
-
 
             char[] spitters = new char[] { ' ', ',' };
             var words = fullName.Split(spitters, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -1028,8 +1029,6 @@ namespace EImece.Domain.Helpers
             {
                 lastName = string.Join(" ", words.Skip(words.Count - 2));
             }
-
-
             else if (words.Count >= 1)
             {
                 lastName = string.Join(" ", words.Skip(words.Count - 1));
@@ -1040,9 +1039,7 @@ namespace EImece.Domain.Helpers
             }
 
             return lastName;
-
         }
-
 
         public static bool IsStringContainsLetters(string text)
         {
@@ -1062,11 +1059,6 @@ namespace EImece.Domain.Helpers
                 return false;
             }
         }
-
-
-
-
-
 
         public static String LetterDigitsOnly(string filters)
         {
@@ -1103,8 +1095,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-
-
         public static string GenerateRandomPassword(int length)
         {
             string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
@@ -1128,10 +1118,7 @@ namespace EImece.Domain.Helpers
             value.InputStream.Position = 0;
             value.InputStream.Read(array, 0, value.ContentLength);
             return array;
-
         }
-
-
 
         public static String GetSiteDomain(HttpContextBase httpContextBase)
         {
@@ -1142,6 +1129,7 @@ namespace EImece.Domain.Helpers
 
             return domainName;
         }
+
         public static string[] PropertiesFromType(object atype)
         {
             if (atype == null) return new string[] { };

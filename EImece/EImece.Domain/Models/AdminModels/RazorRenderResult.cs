@@ -8,8 +8,6 @@ namespace EImece.Domain.Models.AdminModels
 {
     public class RazorRenderResult
     {
-
-
         public String Source { get; set; }
 
         public String Result { get; set; }
@@ -51,9 +49,7 @@ namespace EImece.Domain.Models.AdminModels
                 }
 
                 return resultErrors;
-
             }
         }
-
     }
 }

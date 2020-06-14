@@ -72,6 +72,7 @@ namespace EImece.Domain.Repositories
                 throw;
             }
         }
+
         public List<Story> GetRelatedStories(int[] tagIdList, int take, int lang, int excludedStoryId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -114,7 +115,6 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.StoryFiles.Select(t => t.FileStorage));
             includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
             return GetSingleIncluding(storyId, includeProperties.ToArray());
-
         }
     }
 }

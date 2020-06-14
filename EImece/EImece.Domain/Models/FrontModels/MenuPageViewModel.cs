@@ -21,6 +21,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
         }
+
         private String GetSettingValue(string key)
         {
             var item = ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));

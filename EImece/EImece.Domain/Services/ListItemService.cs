@@ -10,6 +10,7 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private IListItemRepository ListItemRepository { get; set; }
+
         public ListItemService(IListItemRepository repository) : base(repository)
         {
             ListItemRepository = repository;

@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace EImece.Domain.Helpers
 {
     public static class Base32Custom
     {
-
-
         private static readonly Dictionary<string, int> CONVERT = new Dictionary<string, int>
         {
             {"0",0},
@@ -47,13 +44,10 @@ namespace EImece.Domain.Helpers
             {"X",29},
             {"Y",30},
             {"Z",31}
-
         };
-
 
         public static string Encode(long arg)
         {
-
             StringBuilder Base32 = new StringBuilder();
 
             long BASE = 32;
@@ -71,22 +65,16 @@ namespace EImece.Domain.Helpers
             return Base32.ToString();
         }
 
-
-
-
-
         public static long Decode(string arg)
         {
             long Base10 = 0;
             long BASE = 32;
-
 
             CharEnumerator chars = arg.ToUpperInvariant().GetEnumerator();
 
             int power = arg.Length - 1;
             while (chars.MoveNext())
             {
-
                 int val = CONVERT.Where(p => p.Key == chars.Current.ToString()).FirstOrDefault().Value;
                 Base10 += val * (long)Math.Pow(BASE, power);
 
@@ -96,13 +84,10 @@ namespace EImece.Domain.Helpers
             return Base10;
         }
 
-
-
         public static string EncodeEncrypted(long arg)
         {
             return (Encode(EncryptNumber3(arg))).ToLower();
         }
-
 
         public static long DecodeEncrypted(string arg)
         {
@@ -123,11 +108,7 @@ namespace EImece.Domain.Helpers
             {
                 return "error";
             }
-
-
-
         }
-
 
         public static long DecodeRnd(string arg)
         {
@@ -142,12 +123,7 @@ namespace EImece.Domain.Helpers
             {
                 return 0;
             }
-
         }
-
-
-
-
 
         private static long DigitSum(long arg)
         {
@@ -170,9 +146,6 @@ namespace EImece.Domain.Helpers
             return ret;
         }
 
-
-
-
         private static long EncryptNumber3(long arg)
         {
             long ret = arg;
@@ -181,7 +154,6 @@ namespace EImece.Domain.Helpers
             long.TryParse(arg.ToString() + check, out ret);
             return ret;
         }
-
 
         private static long DecryptNumber3(long arg)
         {
@@ -196,12 +168,9 @@ namespace EImece.Domain.Helpers
                 string check = sarg.Substring(sargLenght - 3, 3);
 
                 if (check == checknumber) ret = number;
-
             }
-
 
             return ret;
         }
-
     }
 }

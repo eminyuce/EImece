@@ -11,7 +11,6 @@ using System.Linq.Expressions;
 
 namespace EImece.Domain.Services
 {
-
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
         private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
@@ -28,13 +27,14 @@ namespace EImece.Domain.Services
         [Inject]
         public IMenuService MenuService { get; set; }
 
-
         public IBaseContentRepository<T> BaseContentRepository { get; set; }
+
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) : base(baseContentRepository)
         {
             this.BaseContentRepository = baseContentRepository;
             this.IsCachingActive = false;// ApplicationConfigs.IsCacheActive;
         }
+
         public virtual T GetBaseContent(int id)
         {
             var item = BaseContentRepository.GetBaseContent(id);
@@ -48,18 +48,18 @@ namespace EImece.Domain.Services
             }
             else
             {
-
                 item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
                 item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
             }
 
-
             return item;
         }
+
         public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
         }
+
         public virtual List<T> GetActiveBaseContentsFromCache(bool? isActive, int? language)
         {
             List<T> result = null;
@@ -75,15 +75,15 @@ namespace EImece.Domain.Services
                 return new List<T>();
             }
             return result;
-
         }
+
         public virtual List<T> GetActiveBaseContents(bool? isActive, int? language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
         }
+
         public new virtual T SaveOrEditEntity(T entity)
         {
-
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
@@ -100,6 +100,7 @@ namespace EImece.Domain.Services
             this.MemoryCacheProvider.ClearAll();
             return entity;
         }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try

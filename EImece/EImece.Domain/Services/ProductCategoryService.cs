@@ -17,11 +17,11 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger ProductCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
-
         [Inject]
         public IProductService ProductService { get; set; }
 
         private IProductCategoryRepository ProductCategoryRepository { get; set; }
+
         public ProductCategoryService(IProductCategoryRepository repository) : base(repository)
         {
             ProductCategoryRepository = repository;
@@ -54,16 +54,15 @@ namespace EImece.Domain.Services
             {
                 result = ProductCategoryRepository.GetProductCategory(categoryId);
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-
             }
             return result;
-
         }
 
         public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
         {
             return ProductCategoryRepository.GetProductCategoryLeaves(isActive, language);
         }
+
         public void DeleteProductCategories(List<string> values)
         {
             try
@@ -84,6 +83,7 @@ namespace EImece.Domain.Services
                 ProductCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
         public void DeleteProductCategory(int productCategoryId)
         {
             var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId);
@@ -101,10 +101,8 @@ namespace EImece.Domain.Services
                     ProductService.DeleteProductById(id);
                 }
 
-
                 DeleteEntity(productCategory);
             }
-
         }
 
         public List<ProductCategory> GetMainPageProductCategories(int language)
@@ -139,10 +137,10 @@ namespace EImece.Domain.Services
                 AddParent(result, productCategoryTreeModel);
 
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-
             }
             return result;
         }
+
         private void AddParent(List<ProductCategoryTreeModel> returnList, ProductCategoryTreeModel leave)
         {
             if (leave != null && leave.ProductCategory != null)
@@ -154,6 +152,7 @@ namespace EImece.Domain.Services
                 AddParent(returnList, leave.Parent);
             }
         }
+
         private ProductCategoryTreeModel FindNode(ProductCategoryTreeModel rootNode, int Id)
         {
             if (rootNode.ProductCategory.Id == Id) return rootNode;
@@ -186,7 +185,6 @@ namespace EImece.Domain.Services
                 result.ProductCategoryTree = tree;
                 result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-
             }
             return result;
         }

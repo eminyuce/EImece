@@ -40,9 +40,6 @@ namespace EImece.Domain.Helpers.HtmlHelpers
                 basePath + controller + "-" + action + suffix
             };
 
-
-
-
             // take a path that starts with "~" and map it to the filesystem.
 
             // load the contents of that file
@@ -50,7 +47,6 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             var allCssFiles = new StringBuilder();
             try
             {
-
                 foreach (var cssFile in cssFiles)
                 {
                     allCssFiles.AppendLine("<!-- " + cssFile + " -->");
@@ -63,14 +59,10 @@ namespace EImece.Domain.Helpers.HtmlHelpers
                     allCssContent.AppendLine(File.ReadAllText(cssFilePath));
                     allCssContent.AppendLine("</style>");
                 }
-
-
-
             }
             catch (Exception ex)
             {
                 allCssFiles.AppendLine("<!-- " + ex.Message + " -->");
-
             }
             return htmlHelper.Raw(allCssFiles.ToString() + allCssContent.ToString());
         }

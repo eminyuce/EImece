@@ -21,12 +21,10 @@ namespace EImece.Domain.Services
 {
     public class StoryService : BaseContentService<Story>, IStoryService
     {
-
         private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public ITagService TagService { get; set; }
-
 
         [Inject]
         public IProductService ProductService { get; set; }
@@ -34,15 +32,14 @@ namespace EImece.Domain.Services
         [Inject]
         public IProductRepository ProductRepository { get; set; }
 
-
         [Inject]
         public IStoryCategoryService StoryCategoryService { get; set; }
 
         private IStoryRepository StoryRepository { get; set; }
+
         public StoryService(IStoryRepository repository) : base(repository)
         {
             StoryRepository = repository;
-
         }
 
         public List<Story> GetAdminPageList(int categoryId, string search, int lang)
@@ -121,10 +118,10 @@ namespace EImece.Domain.Services
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
                 result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-
             }
             return result;
         }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try
@@ -214,7 +211,6 @@ namespace EImece.Domain.Services
             {
                 Language = lang
             };
-
 
             feed.AddGoogleContentNameSpace();
             feed.AddYahooMediaNamespace();

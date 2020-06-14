@@ -15,7 +15,6 @@ namespace EImece
             routes.LowercaseUrls = true;
             routes.MapMvcAttributeRoutes(); //Enables Attribute Routing
 
-
             routes.MapRoute(
                   name: "robots",
                   url: "robots.txt",
@@ -40,14 +39,12 @@ namespace EImece
               namespaces: new[] { "EImece.Controllers" }
           );
 
-
             routes.MapRoute(
                  name: "privacypolicy",
                  url: "privacypolicy",
                  defaults: new { controller = "home", action = "privacypolicy" },
                  namespaces: new[] { "EImece.Controllers" }
              );
-
 
             routes.MapRoute(
                  name: "termsandconditions",
@@ -110,8 +107,6 @@ namespace EImece
                  namespaces: new[] { "EImece.Controllers" }
              );
 
-
-
             routes.MapRoute(
                name: "SearchProducts2",
                url: "products/advancedsearchproducts",
@@ -119,10 +114,9 @@ namespace EImece
                namespaces: new[] { "EImece.Controllers" }
            );
 
-
             routes.MapRoute(
                name: "ProductDetail",
-               url: ApplicationConfigs.ProductsControllerRoutingPrefix + "/{categoryName}/{id}", 
+               url: ApplicationConfigs.ProductsControllerRoutingPrefix + "/{categoryName}/{id}",
                defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );

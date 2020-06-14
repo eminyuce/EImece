@@ -8,7 +8,6 @@ namespace EImece.Domain.Helpers
 {
     public class SeoUrlHelper
     {
-
         public static string GetCanonicalTag(ViewContext viewContext, string SeoId = "", string linkArea = "")
         {
             String url = GetCanonicalUrl(viewContext, SeoId, linkArea);
@@ -29,7 +28,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-
         public static string GetCanonicalUrl(ViewContext viewContext, string id = "", string linkArea = "")
         {
             string action = viewContext.Controller.ValueProvider.GetValue("action").RawValue.ToStr();
@@ -42,14 +40,12 @@ namespace EImece.Domain.Helpers
                 return "";
             }
 
-
             bool isImagePage = controller.Equals("Images", StringComparison.InvariantCultureIgnoreCase);
 
             if (isImagePage)
             {
                 return "";
             }
-
 
             if (linkArea.Equals("amp", StringComparison.InvariantCultureIgnoreCase)
                 && !AmpCanonical.IsRightAmpPages(action, controller))
@@ -76,21 +72,18 @@ namespace EImece.Domain.Helpers
 
             string domain = "";
 
-
             var uh = new UrlHelper(viewContext.RequestContext);
 
             String url = uh.Action(action, controller, new RouteValueDictionary(new { id = id, area = linkArea }), ApplicationConfigs.HttpProtocol, domain);
             // url = String.Format("<link href='{0}' rel='canonical'/>", url);
             return url;
-
         }
-
     }
+
     public class AmpCanonical
     {
         public String actionName { get; set; }
         public String controllerName { get; set; }
-
 
         private static List<AmpCanonical> GetAmpCanonicalPage()
         {
@@ -99,12 +92,12 @@ namespace EImece.Domain.Helpers
             p.Add(new AmpCanonical() { actionName = "Detail", controllerName = "Products" });
             return p;
         }
+
         public static bool IsRightAmpPages(string action, string controller)
         {
             var pages = GetAmpCanonicalPage();
             return pages.Any(t => t.controllerName.Equals(controller, StringComparison.InvariantCultureIgnoreCase) &&
                 t.actionName.Equals(action, StringComparison.InvariantCultureIgnoreCase));
-
         }
     }
 }

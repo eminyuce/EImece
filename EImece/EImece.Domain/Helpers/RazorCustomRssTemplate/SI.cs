@@ -17,14 +17,9 @@ namespace EImece.Domain.Helpers.RazorCustomRssTemplate
 
             SyndicationItem = syndicationItem;
 
-
-
-
             Title = syndicationItem.Title;
             Summary = syndicationItem.Summary;
             LastUpdatedTime = syndicationItem.LastUpdatedTime;
-
-
         }
 
         public SyndicationItem SyndicationItem { get; set; }

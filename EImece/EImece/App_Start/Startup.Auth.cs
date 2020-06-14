@@ -30,7 +30,7 @@ namespace EImece
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.
-                    // This is a security feature which is used when you change a password or add an external login to your account.  
+                    // This is a security feature which is used when you change a password or add an external login to your account.
                     OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
@@ -45,7 +45,6 @@ namespace EImece
             // Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
-
 
             var microsoftAccountClientId = ApplicationConfigs.GetConfigString("MicrosoftAccount_ClientId");
             var microsoftAccountClientSecret = ApplicationConfigs.GetConfigString("MicrosoftAccount_ClientSecret");
@@ -72,7 +71,6 @@ namespace EImece
             var facebookAccountAppId = ApplicationConfigs.GetConfigString("FacebookAccount_AppId");
             var facebookAccountAppSecret = ApplicationConfigs.GetConfigString("FacebookAccount_AppSecret");
 
-
             if (!String.IsNullOrEmpty(facebookAccountAppId) && !String.IsNullOrEmpty(facebookAccountAppSecret))
             {
                 app.UseFacebookAuthentication(
@@ -80,23 +78,17 @@ namespace EImece
                      appSecret: facebookAccountAppSecret);
             }
 
-
             var googleAccountClientId = ApplicationConfigs.GetConfigString("GoogleAccount_ClientId");
             var googleAccountClientSecret = ApplicationConfigs.GetConfigString("GoogleAccount_ClientSecret");
 
-
             if (!String.IsNullOrEmpty(googleAccountClientId) && !String.IsNullOrEmpty(googleAccountClientSecret))
             {
-
                 app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
                 {
                     ClientId = googleAccountClientId,
                     ClientSecret = googleAccountClientSecret
                 });
-
             }
-
-
         }
     }
 }

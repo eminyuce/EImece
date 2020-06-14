@@ -16,7 +16,6 @@ namespace EImece.Domain.Helpers.EmailHelper
     /// </summary>
     public class EmailSender : IEmailSender
     {
-
         [Inject]
         public ISettingService SettingService { get; set; }
 
@@ -63,11 +62,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
-
             try
             {
-
-
                 var message = new MailMessage();
                 message.From = from;
                 message.To.Add(to);
@@ -124,6 +120,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 Logger.Error(ex, ex.Message);
             }
         }
+
         public EmailAccount GetEmailAccount()
         {
             var emailAccount = new EmailAccount();
@@ -137,6 +134,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             emailAccount.Username = SettingService.GetSettingByKey("AdminUserName").ToStr();
             return emailAccount;
         }
+
         public void SendEmailContactingUs(ContactUsFormViewModel contact)
         {
             var emailAccount = GetEmailAccount();

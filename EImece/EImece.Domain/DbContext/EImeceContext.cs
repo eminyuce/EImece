@@ -9,13 +9,14 @@ namespace EImece.Domain.DbContext
     {
         public EImeceContext()
         {
-
         }
+
         public EImeceContext(String nameOrConnectionString) : base(nameOrConnectionString)
         {
             this.Database.CommandTimeout = int.MaxValue;
             this.Configuration.LazyLoadingEnabled = false;
         }
+
         public IDbSet<MailTemplate> MailTemplates { get; set; }
         public IDbSet<List> Lists { get; set; }
         public IDbSet<ListItem> ListItems { get; set; }

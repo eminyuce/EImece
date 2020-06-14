@@ -10,6 +10,7 @@ namespace EImece.Domain.Caching
     public class MemoryCacheProvider : CacheProvider<MemoryCache>
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected override MemoryCache InitCache()
         {
             return MemoryCache.Default;
@@ -46,7 +47,6 @@ namespace EImece.Domain.Caching
             {
                 Set<T>(key, value, CacheDuration);
             }
-
         }
 
         public override void Set<T>(string key, T value, int duration)
@@ -73,7 +73,6 @@ namespace EImece.Domain.Caching
             {
                 yield return new KeyValuePair<string, object>(key as string, _cache[key]);
             }
-
         }
 
         public override void ClearAll()

@@ -8,7 +8,6 @@ namespace EImece.Domain.Helpers.Infrastructure
 {
     public static class HtmlRenderExtensions
     {
-
         /// <summary>
         /// Delegate script/resource/etc injection until the end of the page
         /// <para>@via http://stackoverflow.com/a/14127332/1037948 and http://jadnb.wordpress.com/2011/02/16/rendering-scripts-from-partial-views-at-the-end-in-mvc/ </para>
@@ -68,7 +67,6 @@ namespace EImece.Domain.Helpers.Infrastructure
                 return storage;
             }
 
-
             private readonly HtmlHelper helper;
             private readonly string identifier;
             private readonly string isOnlyOne;
@@ -120,7 +118,6 @@ namespace EImece.Domain.Helpers.Infrastructure
                 }
             }
         }
-
 
         /// <summary>
         /// <para>Start a delayed-execution block of output -- this will be rendered/printed on the next call to <see cref="RenderDelayed"/>.</para>
@@ -234,7 +231,5 @@ string.Format("<!-- delayed-block: {0} -->", injectionBlockId) +
 #endif
  string.Join(Environment.NewLine, stack));
         }
-
-
     }
 }

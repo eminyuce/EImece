@@ -20,7 +20,6 @@ namespace EImece.App_Start
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Models;
     using Ninject;
     using Ninject.Web.Common;
@@ -152,7 +151,6 @@ namespace EImece.App_Start
 
             // setup Quartz scheduler that uses our NinjectJobFactory
 
-
             kernel.Bind<Task<IScheduler>>().ToMethod(x =>
             {
                 StdSchedulerFactory factory = new StdSchedulerFactory();
@@ -160,7 +158,6 @@ namespace EImece.App_Start
                 var sched = factory.GetScheduler();
                 return sched;
             });
-
 
             kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
               .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
@@ -183,9 +180,6 @@ namespace EImece.App_Start
             kernel.Bind<IHttpContextFactory>().To<HttpContextFactory>();
 
             kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
-
-
-
         }
 
         private static void BindByReflection(IKernel kernel, Type typeOfInterface, string typeofText)

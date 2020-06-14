@@ -8,7 +8,6 @@ namespace EImece.Domain.Helpers.RazorCustomRssTemplate
     {
         public static Dictionary<String, List<String>> AnonymousToDictionary(object anonymousObject = null, bool doSplitOnComma = false)
         {
-
             Dictionary<String, List<String>> items = new Dictionary<String, List<String>>();
 
             if (anonymousObject != null && anonymousObject.GetType().GetProperties().Any())
@@ -48,16 +47,11 @@ namespace EImece.Domain.Helpers.RazorCustomRssTemplate
             }
 
             return items;
-
         }
 
         private static List<String> SplitOnComma(string value)
         {
             return value.Split(',').Select(s => s.Trim()).ToList();
         }
-
-
-
-
     }
 }

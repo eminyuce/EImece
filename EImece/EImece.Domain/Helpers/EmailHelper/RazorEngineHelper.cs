@@ -19,11 +19,11 @@ namespace EImece.Domain.Helpers.EmailHelper
     {
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
+
         [Inject]
         public ISettingService SettingService { get; set; }
 
         [Inject]
-        //public HttpContextBase HttpContextBase { get; set; }
         public IHttpContextFactory HttpContext { get; set; }
 
         [Inject]
@@ -52,7 +52,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
 
-
             return result;
         }
 
@@ -66,7 +65,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
             var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");
 
-
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
 
@@ -74,7 +72,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             model.ContactUs = contact;
             model.CompanyName = companyname;
             model.ProductPageLink = baseurl;
-
 
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
@@ -98,7 +95,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             try
             {
-
                 result.Source = razorTemplate;
                 var configuration = new TemplateServiceConfiguration { Debug = true };
                 configuration.Namespaces.Add("EImece.Domain.Helpers");
@@ -115,12 +111,10 @@ namespace EImece.Domain.Helpers.EmailHelper
                 using (var service = RazorEngineService.Create(configuration))
                 using (var writer = new StringWriter())
                 {
-
                     var runner = service.CompileRunner<RazorEngineModel>(result.Source);
                     razorEngineModel = razorEngineModel == null ? new RazorEngineModel() : razorEngineModel;
                     runner.Run(razorEngineModel, writer);
                     result.Result = writer.ToString();
-
                 }
             }
             catch (TemplateCompilationException ex)
@@ -133,7 +127,5 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             return result;
         }
-
-
     }
 }

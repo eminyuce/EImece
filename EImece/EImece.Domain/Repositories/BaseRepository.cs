@@ -19,6 +19,7 @@ namespace EImece.Domain.Repositories
         protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
         protected IEImeceContext DbContext;
+
         protected EImeceContext EImeceDbContext
         {
             get
@@ -33,10 +34,10 @@ namespace EImece.Domain.Repositories
             //((EImeceContext)DbContext).Configuration.LazyLoadingEnabled = false;
             //((EImeceContext)DbContext).Configuration.ProxyCreationEnabled = false;
             //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
-
         }
 
         private bool disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -48,6 +49,7 @@ namespace EImece.Domain.Repositories
             }
             this.disposed = true;
         }
+
         public virtual bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda)
         {
             var isResult = false;
@@ -68,15 +70,18 @@ namespace EImece.Domain.Repositories
             }
             return isResult;
         }
+
         public virtual void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         public virtual EntitiesContext GetDbContext()
         {
             return EImeceDbContext;
         }
+
         public virtual int SaveOrEdit(T item)
         {
             item.TrimAllStrings();
@@ -91,6 +96,7 @@ namespace EImece.Domain.Repositories
 
             return this.Save();
         }
+
         public virtual int DeleteItem(T item)
         {
             int r = 0;
@@ -114,13 +120,13 @@ namespace EImece.Domain.Repositories
             }
             return r;
         }
+
         public T[] ExecuteStoreQuery(string commandText, params object[] parameters)
         {
             EntitiesContext objectContext = this.GetDbContext();
             DbRawSqlQuery<T> result = objectContext.Database.SqlQuery<T>(commandText, parameters);
             return result.ToArray();
         }
-
 
         public virtual void DeleteBaseEntity(List<string> values)
         {
@@ -149,6 +155,5 @@ namespace EImece.Domain.Repositories
         {
             return new List<Expression<Func<T, object>>>();
         }
-
     }
 }

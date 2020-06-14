@@ -4,7 +4,6 @@ namespace EImece.Domain.Entities
 {
     public class TagCategory : BaseEntity
     {
-
         public ICollection<Tag> Tags { get; set; }
     }
 }

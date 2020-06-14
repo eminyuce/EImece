@@ -1,6 +1,5 @@
 ﻿using GenericRepository;
 
-
 namespace EImece.Domain.Entities
 {
     public class FileStorageTag : IEntity<int>

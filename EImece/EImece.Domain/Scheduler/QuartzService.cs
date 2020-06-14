@@ -12,7 +12,6 @@ namespace EImece.Domain.Scheduler
 {
     public class QuartzService
     {
-
         // https://www.freeformatter.com/cron-expression-generator-quartz.html
         //https://cronexpressiondescriptor.azurewebsites.net
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -31,7 +30,6 @@ namespace EImece.Domain.Scheduler
                 return;
             }
 
-
             try
             {
                 Logger.Info("ExecuteMultiplyTask Cron has started");
@@ -42,6 +40,7 @@ namespace EImece.Domain.Scheduler
                 Logger.Error(ex);
             }
         }
+
         public async Task DeleteNonProcessingTask(int jobId)
         {
             // get a scheduler
@@ -64,7 +63,6 @@ namespace EImece.Domain.Scheduler
             {
                 Logger.Error(ex);
             }
-
         }
 
         public async Task InterruptTask(int jobId)
@@ -93,23 +91,17 @@ namespace EImece.Domain.Scheduler
                 {
                     var jobId = runningCronJob.JobDetail.Key.Name.Replace("Name-", "").ToInt();
                     Logger.Info("RunningCron Job:" + runningCronJob.JobDetail.Key.Name + " " + runningCronJob.JobDetail.Key.Group + " JobId:" + jobId);
-
                 }
                 catch (Exception ex)
                 {
-
-
                 }
                 //  jobsFromDb.Contains()
-
             }
-
 
             var job = ScheduleJob.CreateTest();
             var jobKey = job.JobKey;
             var triggerKey = job.TriggerKey;
             bool isExists = await sched.CheckExists(jobKey);
-
 
             ITrigger trigger = null;
 
@@ -136,13 +128,13 @@ namespace EImece.Domain.Scheduler
                 Logger.Info("ScheduleJob:" + job.ToString());
                 await sched.ScheduleJob(cronJob, trigger);
             }
-
         }
 
         public class ScheduleJob
         {
             public int JobId { get; set; }
             public string CronExp { get; set; }
+
             public string CronExpDescription
             {
                 get
@@ -154,11 +146,10 @@ namespace EImece.Domain.Scheduler
                     return ExpressionDescriptor.GetDescription(CronExp, options);
                 }
             }
+
             public string Name { get; set; }
             public bool IsActive { get; set; }
             public string TaskId { get; set; }
-
-
 
             public override string ToString()
             {
@@ -176,18 +167,15 @@ namespace EImece.Domain.Scheduler
                 {
                     return new JobKey(string.Format("Name-{0}", JobId), string.Format("Group-{0}", JobId));
                 }
-
             }
+
             public TriggerKey TriggerKey
             {
                 get
                 {
                     return new TriggerKey(string.Format("Name-{0}", JobId), string.Format("Group-{0}", JobId));
                 }
-
             }
         }
-
     }
-
 }

@@ -6,6 +6,7 @@ namespace EImece.Domain.Entities
     {
         [ForeignKey("List")]
         public int ListId { get; set; }
+
         public string Value { get; set; }
 
         public List List { get; set; }

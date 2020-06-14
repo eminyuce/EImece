@@ -8,7 +8,6 @@ namespace EImece.Domain.Helpers
 {
     public class TidyManagedHtmlHelper
     {
-
         public static string ClearHTML(string html)
         {
             string ret = html;
@@ -44,33 +43,25 @@ namespace EImece.Domain.Helpers
                     doc.UseLogicalEmphasis = true;
                     doc.ForceOutput = true;
 
-
                     doc.OutputBodyOnly = AutoBool.Yes;
 
                     doc.CleanAndRepair();
 
                     ret = doc.Save();
-
                 }
             }
             catch (Exception e)
             {
-
             }
-
 
             return ret;
         }
 
         public static string StripTags(string source)
         {
-
             source = ClearHTML(source.Replace(Environment.NewLine, " ").Replace("\n", " ")).Replace("<\\p>", "<\\p>" + Environment.NewLine);
 
-
-
             return StripTagsRegexCompiled(HttpUtility.HtmlDecode(source).Trim());
-
         }
 
         private static Regex _htmlRegexComents = new Regex("<!--.*?-->", RegexOptions.Compiled);

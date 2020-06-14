@@ -13,7 +13,6 @@ namespace EImece.Domain.Repositories
         {
         }
 
-
         public List<ProductTag> GetAllByProductId(int productId)
         {
             return this.GetAll().Where(r => r.ProductId == productId).ToList();
@@ -28,6 +27,7 @@ namespace EImece.Domain.Repositories
             }
             Save();
         }
+
         public void SaveProductTags(int productId, int[] tags)
         {
             DeleteProductTags(productId);
@@ -41,9 +41,7 @@ namespace EImece.Domain.Repositories
                     this.Add(item);
                 }
                 Save();
-
             }
-
         }
 
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang)

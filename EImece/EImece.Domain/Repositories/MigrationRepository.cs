@@ -25,10 +25,12 @@ namespace EImece.Domain.Repositories
 
         [Inject]
         public IProductFileRepository ProductFileRepository { get; set; }
+
         [Inject]
         public IFileStorageRepository FileStorageRepository { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
+
         [Inject]
         public FilesHelper FilesHelper
         {
@@ -48,7 +50,6 @@ namespace EImece.Domain.Repositories
 
         public MigrationRepository()
         {
-
         }
 
         public EntityImage GetImages()
@@ -65,7 +66,6 @@ namespace EImece.Domain.Repositories
             {
                 try
                 {
-
                     if (entityMainImage.EntityImageType.Equals("ProductMainImage", StringComparison.InvariantCultureIgnoreCase))
                     {
                         FileStorage image = InsertImage(entityMainImage.ImagePath, entityMainImage.Name);
@@ -82,16 +82,13 @@ namespace EImece.Domain.Repositories
                 catch (Exception ex)
                 {
                     Logger.Error(ex, ex.Message + " entityMainImage:" + entityMainImage);
-
                 }
             }
-
 
             foreach (var entityMediaImage in images.EntityMediaFiles)
             {
                 try
                 {
-
                     if (entityMediaImage.Mod.Equals("product", StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (FilesHelper.IsImage(entityMediaImage.File_Format))
@@ -105,20 +102,13 @@ namespace EImece.Domain.Repositories
                                 Logger.Info("Media InsertProductFiles:" + result + " parameters:" + String.Join(", ", parameters));
                             }
                         }
-
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(ex, ex.Message + " entityMainImage:" + entityMediaImage);
-
                 }
-
             }
-
-
-
-
         }
 
         private FileStorage InsertImage(String imagePath, String name)
@@ -145,8 +135,6 @@ namespace EImece.Domain.Repositories
                 Logger.Error(ex, ex.Message + " imageFullPath: " + imageFullPath + " name:" + name);
                 return null;
             }
-
         }
     }
 }
-

@@ -4,7 +4,6 @@ namespace EImece.Domain.Caching
 {
     public abstract class CacheProvider<TCache> : ICacheProvider
     {
-
         public int CacheDuration
         {
             get;
@@ -25,6 +24,7 @@ namespace EImece.Domain.Caching
             CacheDuration = defaultCacheDurationInMinutes;
             _cache = InitCache();
         }
+
         public CacheProvider(int durationInMinutes)
         {
             CacheDuration = durationInMinutes;
@@ -44,6 +44,5 @@ namespace EImece.Domain.Caching
         public abstract void ClearAll();
 
         public abstract IEnumerable<KeyValuePair<string, object>> GetAll();
-
     }
 }

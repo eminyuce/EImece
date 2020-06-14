@@ -13,10 +13,8 @@ namespace EImece.Domain.Helpers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         public static String SendPushNotification(BrowserSubscriber p, Dictionary<string, object> payLoad)
         {
-
             var subscription = new PushSubscription(p.EndPoint, p.P256dh, p.Auth);
 
             var options = new Dictionary<string, object>();
@@ -26,7 +24,6 @@ namespace EImece.Domain.Helpers
                 p.BrowserSubscription.Subject,
                 p.BrowserSubscription.PublicKey,
                 p.BrowserSubscription.PrivateKey);
-
 
             var payLoadJson = JsonConvert.SerializeObject(payLoad);
 
@@ -38,19 +35,16 @@ namespace EImece.Domain.Helpers
                 Dictionary<string, string> ss = message.Headers.ToDictionary(a => a.Key, a => string.Join(";", a.Value));
                 Logger.Info("message.Headers = " + GetLine(ss));
 
-
                 webPushClient.SendNotificationAsync(subscription, payLoadJson, options);
                 Logger.Info("SendNotification IS SENT ");
                 return "SUCCESS";
-
-
             }
             catch (WebPushException exception)
             {
                 return String.Format("{0} {1} {2}", exception.StatusCode, exception.Message, exception.StackTrace);
             }
-
         }
+
         public static string GetLine(Dictionary<string, string> d)
         {
             // Build up each line one-by-one and then trim the end

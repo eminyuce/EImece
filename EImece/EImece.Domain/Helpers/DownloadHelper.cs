@@ -43,6 +43,7 @@ namespace EImece.Domain.Helpers
 
             return b;
         }
+
         public static String GetStringFromUrl(string url)
         {
             System.Net.HttpWebRequest request = null;

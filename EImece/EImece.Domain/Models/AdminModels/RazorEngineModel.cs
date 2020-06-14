@@ -5,22 +5,22 @@ namespace EImece.Domain.Models.AdminModels
 {
     public class RazorEngineModel
     {
-        Dictionary<string, string> _params = new Dictionary<string, string>();
+        private Dictionary<string, string> _params = new Dictionary<string, string>();
 
         public RazorEngineModel()
         {
-
         }
+
         public bool HasKey(string name)
         {
             name = name.ToStr().Trim().ToLower();
             return _params.ContainsKey(name);
         }
+
         public string this[string name]
         {
             get
             {
-
                 name = name.ToStr().Trim().ToLower();
                 if (_params.ContainsKey(name))
                 {

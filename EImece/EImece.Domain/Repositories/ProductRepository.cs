@@ -21,7 +21,6 @@ namespace EImece.Domain.Repositories
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         public ProductRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
@@ -30,8 +29,6 @@ namespace EImece.Domain.Repositories
         {
             try
             {
-
-
                 Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
                 Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
@@ -48,15 +45,12 @@ namespace EImece.Domain.Repositories
                 Logger.Error(exception, exception.Message);
                 throw;
             }
-
         }
 
         public PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language)
         {
             try
             {
-
-
                 Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
                 Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
@@ -73,9 +67,7 @@ namespace EImece.Domain.Repositories
                 Logger.Error(exception, exception.Message);
                 throw;
             }
-
         }
-
 
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
@@ -86,7 +78,6 @@ namespace EImece.Domain.Repositories
             search = search.ToStr().ToLower().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-
                 products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search) || r.ProductCategory.Name.ToLower().Contains(search));
             }
             if (categoryId > 0)
@@ -149,7 +140,6 @@ namespace EImece.Domain.Repositories
                 query = query.Where(p => p.Name.Contains(name.ToLower()));
             }
 
-
             if (!String.IsNullOrWhiteSpace(globalSearch))
             {
                 query = query.Where(p => (p.Name).Contains(globalSearch) || (p.ProductCode).Contains(globalSearch));
@@ -167,22 +157,22 @@ namespace EImece.Domain.Repositories
                         else
                             query = query.OrderByDescending(p => p.Name);
                         break;
+
                     case "lastname":
                         if (!desc)
                             query = query.OrderBy(p => p.ProductCode);
                         else
                             query = query.OrderByDescending(p => p.ProductCode);
                         break;
+
                     case "id":
                         if (!desc)
                             query = query.OrderBy(p => p.Id);
                         else
                             query = query.OrderByDescending(p => p.Id);
                         break;
-
                 }
             }
-
 
             if (limitOffset.HasValue)
             {
@@ -232,7 +222,6 @@ namespace EImece.Domain.Repositories
                     Controller = "Products",
                     ItemTypeID = 1
                 };
-
             }
         }
 
@@ -283,9 +272,7 @@ namespace EImece.Domain.Repositories
             var connection = db.Database.Connection;
             try
             {
-
                 connection.Open();
-
 
                 // Create a SQL command to execute the sproc
                 SqlCommand cmd = (SqlCommand)connection.CreateCommand();
@@ -298,9 +285,8 @@ namespace EImece.Domain.Repositories
                 parameterList.Add(DatabaseUtility.GetSqlParameter("skip", skip, SqlDbType.Int));
                 parameterList.Add(DatabaseUtility.GetSqlParameter("language", language, SqlDbType.Int));
 
-
                 cmd.Parameters.AddRange(parameterList.ToArray());
-                // Run the sproc 
+                // Run the sproc
                 var reader = cmd.ExecuteReader();
 
                 // Read Blogs from the first result set
@@ -317,7 +303,6 @@ namespace EImece.Domain.Repositories
                     .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
 
                 searchResult.ProductCategories = productCategories.ToList();
-
             }
             catch (Exception ex)
             {
@@ -331,8 +316,5 @@ namespace EImece.Domain.Repositories
             searchResult.PageSize = top;
             return searchResult;
         }
-
-
-
     }
 }

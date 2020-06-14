@@ -11,10 +11,10 @@ namespace EImece.Domain.Services
 {
     public class TagService : BaseEntityService<Tag>, ITagService
     {
-
         private static readonly Logger TagServiceLogger = LogManager.GetCurrentClassLogger();
 
         private ITagRepository TagRepository { get; set; }
+
         public TagService(ITagRepository repository) : base(repository)
         {
             TagRepository = repository;
@@ -37,6 +37,7 @@ namespace EImece.Domain.Services
         {
             return TagRepository.GetTagById(tagId);
         }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try

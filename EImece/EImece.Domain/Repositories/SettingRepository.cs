@@ -10,12 +10,13 @@ namespace EImece.Domain.Repositories
     {
         public SettingRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
+
         public List<Setting> GetAllActiveSettings()
         {
             return GetAll().Where(t => t.IsActive).ToList();
         }
+
         public List<Setting> GetAllSettings()
         {
             return GetAll().ToList();

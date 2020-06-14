@@ -17,6 +17,7 @@ namespace EImece.Domain.Repositories
         {
             return this.GetAll().Where(r => r.StoryId == storyId).ToList();
         }
+
         public void DeleteStoryTags(int storyId)
         {
             var storyTags = GetAll().Where(r => r.StoryId == storyId).ToList();
@@ -26,6 +27,7 @@ namespace EImece.Domain.Repositories
             }
             Save();
         }
+
         public void SaveStoryTags(int storyId, int[] tags)
         {
             DeleteStoryTags(storyId);
@@ -44,7 +46,6 @@ namespace EImece.Domain.Repositories
 
         public PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
-
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Story);
             includeProperties.Add(r => r.Story.StoryCategory);
@@ -54,7 +55,6 @@ namespace EImece.Domain.Repositories
                 r => r.Story.Position,
                 r => r.TagId == tagId && r.Tag.Lang == lang,
                 includeProperties.ToArray());
-
         }
     }
 }

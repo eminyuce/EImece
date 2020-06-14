@@ -39,6 +39,7 @@ namespace EImece.Domain.DbContext
             }
             return result;
         }
+
         private static EntityMediaFile GetEntityMediaFileFromDataRow(DataRow dr)
         {
             var item = new EntityMediaFile();
@@ -54,6 +55,7 @@ namespace EImece.Domain.DbContext
 
             return item;
         }
+
         private static EntityMainImage GetEntityMainImageFromDataRow(DataRow dr)
         {
             var item = new EntityMainImage();

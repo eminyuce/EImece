@@ -9,5 +9,4 @@ namespace EImece.Domain.Helpers.AttributeHelper
             Roles = string.Join(",", roles);
         }
     }
-
 }

@@ -8,7 +8,6 @@ namespace EImece.Domain.Helpers
 {
     public static class PartialViewToString
     {
-
         public static string RenderPartialToString(this Controller controller, string partialViewName, ViewDataDictionary viewData, TempDataDictionary tempData)
         {
             ControllerContext controllerContext = controller.ControllerContext;
@@ -37,6 +36,7 @@ namespace EImece.Domain.Helpers
 
             return String.Empty;
         }
+
         public static string RenderPartialToString(this Controller controller, string partialView)
         {
             return RenderPartialToString(controller, partialView, new ViewDataDictionary(), new TempDataDictionary());
@@ -46,6 +46,5 @@ namespace EImece.Domain.Helpers
         {
             return RenderPartialToString(controller, partialView, new ViewDataDictionary(model), new TempDataDictionary());
         }
-
     }
 }

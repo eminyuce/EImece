@@ -22,6 +22,7 @@ namespace EImece.Domain.Helpers
             var m = id.Split("-".ToCharArray()).Last();
             return m.ToInt();
         }
+
         public static int GetId(this string id)
         {
             if (String.IsNullOrEmpty(id))
@@ -33,6 +34,7 @@ namespace EImece.Domain.Helpers
             //   return GeneralHelper.FromBase64Int(m);
             return m.ToInt();
         }
+
         public static string ToAlphaNumericOnly(this string input)
         {
             Regex rgx = new Regex("[^a-zA-Z0-9]");
@@ -50,6 +52,7 @@ namespace EImece.Domain.Helpers
             Regex rgx = new Regex("[^0-9]");
             return rgx.Replace(input, "");
         }
+
         public static string Substring(this string str, string StartString, string EndString)
         {
             if (str.Contains(StartString))
@@ -62,6 +65,7 @@ namespace EImece.Domain.Helpers
         }
 
         private static readonly Regex CarriageRegex = new Regex(@"(\r\n|\r|\n)+");
+
         //remove carriage returns from the header name
         public static string RemoveCarriage(this string text, string replace = "")
         {
@@ -100,6 +104,7 @@ namespace EImece.Domain.Helpers
             }
             return new string(array, 0, arrayIndex);
         }
+
         /// <summary>
         /// Parse the input string by placing a space between character case changes in the string
         /// </summary>
@@ -130,7 +135,6 @@ namespace EImece.Domain.Helpers
                 {
                     // Get the previous character from the input string
                     chrPreviousInputChar = strInput[intCurrentCharPos - 1];
-
                 } // end if
 
                 // Put a space before each upper case character if the previous character is lower case
@@ -138,24 +142,20 @@ namespace EImece.Domain.Helpers
                 {
                     // Add a space to the output string
                     strOutput += " ";
-
                 } // end if
 
                 // Add the character from the input string to the output string
                 strOutput += chrCurrentInputChar;
-
             } // next
 
             // Return the altered string
             return strOutput;
-
         } // end method
 
         public static string TruncateAtSentence(this string text, int length, int lengthMin = -1,
                                         bool addEllipsis = true)
         {
             if (string.IsNullOrEmpty(text) || text.Length <= length) return text;
-
 
             const string ellChar = "…";
             const int defLengthMin = 20;
@@ -165,9 +165,7 @@ namespace EImece.Domain.Helpers
             var r = text;
             if (lengthMin < 0 || lengthMin > length)
             {
-
                 lengthMin = length * .8 > defLengthMin ? (length * 0.8).ToInt() : defLengthMin;
-
             }
 
             Regex rx = new Regex(@"(\S.+?[.!?])(?=\s+|$)");
@@ -180,7 +178,6 @@ namespace EImece.Domain.Helpers
                         ret.Append(" ");
 
                     ret.Append(match.Value.Trim());
-
                 }
                 else
                 {
@@ -212,17 +209,10 @@ namespace EImece.Domain.Helpers
             return addEllipsis ? r.Substring(0, length).Trim() + ellChar : r.Substring(0, length).Trim();
         }
 
-
         public static string ToUrlFriendly(this string value)
         {
-
-
             return Regex.Replace(value, @"[^A-Za-z0-9_]+", "-");
-
-
         }
-
-
 
         public static int ToInt(this object arg, int defaultValue = 0)
         {
@@ -231,17 +221,12 @@ namespace EImece.Domain.Helpers
             if (int.TryParse(arg.ToStr(), out ret))
             {
                 return ret;
-
             }
             else
             {
                 return defaultValue;
             }
-
-
         }
-
-
 
         public static long ToLong(this object arg)
         {
@@ -251,28 +236,28 @@ namespace EImece.Domain.Helpers
 
             return ret;
         }
+
         public static float ToFloat(this object arg)
         {
             float ret = 0;
-
 
             float.TryParse(arg.ToStr(), out ret);
 
             return ret;
         }
+
         public static decimal ToDecimal(this object arg)
         {
             decimal ret = 0;
-
 
             decimal.TryParse(arg.ToStr(), out ret);
 
             return ret;
         }
+
         public static double ToDouble(this object arg)
         {
             double ret = 0;
-
 
             double.TryParse(arg.ToStr(), out ret);
 
@@ -291,17 +276,16 @@ namespace EImece.Domain.Helpers
             return myTI.ToTitleCase(ret);
         }
 
-
-
-
         public static string ReplaceHtmlNewLineWithNewLine(this object arg)
         {
             return ReplaceStr(arg, "<br>", "\n");
         }
+
         public static string ReplaceNewLineWithHtmlNewLine(this object arg)
         {
             return ReplaceStr(arg, "\n", "<br>");
         }
+
         public static string ReplaceStr(object arg, String first, String second)
         {
             string ret = string.Empty;
@@ -311,7 +295,6 @@ namespace EImece.Domain.Helpers
             }
             return ret.Replace(first, second);
         }
-
 
         public static string ToStr(this object arg, String defaultValue = "")
         {
@@ -329,7 +312,6 @@ namespace EImece.Domain.Helpers
             }
             return ret;
         }
-
 
         public static string ToStr(this object arg, int length)
         {
@@ -362,7 +344,6 @@ namespace EImece.Domain.Helpers
             else if ((ix = s.LastIndexOf(",")) > minLen)
             {
                 s = s.Substring(0, ix).Trim();
-
             }
             else if ((ix = s.LastIndexOf(" ")) > minLen)
             {
@@ -382,7 +363,6 @@ namespace EImece.Domain.Helpers
             return !string.IsNullOrEmpty(ret);
         }
 
-
         public static string ToTitleCase(this string text)
         {
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
@@ -390,49 +370,42 @@ namespace EImece.Domain.Helpers
             return textInfo.ToTitleCase(text);
         }
 
-
         public static string ToSmartCase(this string text)
         {
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
             if (string.Equals(text, text.ToLower()))
             {
-
                 return textInfo.ToTitleCase(text);
             }
 
-
             return text;
-
         }
 
         public static string HtmlDecode(this string arg)
         {
             return WebUtility.HtmlDecode(arg);
         }
+
         public static string HtmlEncode(this string arg)
         {
             return WebUtility.HtmlEncode(arg);
         }
+
         public static string NoRepeatedSpaces(string arg)
         {
-
             return Regex.Replace(arg, " {2,}", " ");
         }
 
-
         public static string NoBreakLine(string arg)
         {
-
             return arg.Replace("\r", " ").Replace("\n", " ");
         }
-
 
         public static string ToNormal(this string arg)
         {
             return NoRepeatedSpaces(NoBreakLine(arg.HtmlDecode()));
         }
-
 
         public static bool ToBool(this object arg, bool defaultValue = false)
         {
@@ -446,15 +419,10 @@ namespace EImece.Domain.Helpers
                 }
             }
 
-
             return ret;
         }
 
-
-        static Regex _dateRegex = new Regex(@"^(19|20)(\d\d)[- /.]?(0[1-9]|1[012])[- /.]?(0[1-9]|[12][0-9]|3[01])$", RegexOptions.Compiled);
-
-
-
+        private static Regex _dateRegex = new Regex(@"^(19|20)(\d\d)[- /.]?(0[1-9]|1[012])[- /.]?(0[1-9]|[12][0-9]|3[01])$", RegexOptions.Compiled);
 
         public static DateTime? ToNullableDateTime(this object arg)
         {
@@ -475,8 +443,6 @@ namespace EImece.Domain.Helpers
                     }
                     catch { }
                 }
-
-
             }
 
             if (ret != DateTime.MinValue)
@@ -488,8 +454,6 @@ namespace EImece.Domain.Helpers
                 return null;
             }
         }
-
-
 
         public static DateTime ToDateTime(this object arg)
         {
@@ -510,20 +474,13 @@ namespace EImece.Domain.Helpers
                     }
                     catch { }
                 }
-
-
             }
-
-
 
             return ret;
         }
 
-
-
         public static string ToFlexDateTime(this DateTime dt)
         {
-
             string rt = "";
             if (dt > DateTime.Now.Date)
             {
@@ -531,7 +488,6 @@ namespace EImece.Domain.Helpers
             }
             //else if (dt > DateTime.Now.AddDays(-DateTime.Now.DayOfYear))
             //{
-
             //    rt = dt.ToString("MMM dd");
             //}
             else if (dt > DateTime.MinValue)
@@ -540,7 +496,6 @@ namespace EImece.Domain.Helpers
             }
             return rt;
         }
-
 
         public static object DeepClone(object obj)
         {
@@ -556,17 +511,13 @@ namespace EImece.Domain.Helpers
             return objResult;
         }
 
-
-
         public static string UrlEncode(this string text)
         {
-
             return UrlEncodeCustom(text);
             //return HttpUtility.UrlPathEncode(text.Replace(" ", "_")).ToLower();
 
             //char c;
             //((int) c).ToString("X");
-
         }
 
         public static string UrlDecode(this string text)
@@ -575,7 +526,6 @@ namespace EImece.Domain.Helpers
             return UrlDecodeCustom(text);
             // return HttpUtility.UrlPathEncode(text).Replace("_", " ");
         }
-
 
         private static string UrlEncodeCustom(string text)
         {
@@ -601,10 +551,8 @@ namespace EImece.Domain.Helpers
             return ret.ToString().Replace(" ", "_");
         }
 
-
         private static string UrlDecodeCustom(string text)
         {
-
             var chars = text.Replace("_", " ").ToCharArray();
 
             StringBuilder ret = new StringBuilder();
@@ -623,7 +571,6 @@ namespace EImece.Domain.Helpers
                 }
                 else if (c == '~' && i + 2 < chars.Length)
                 {
-
                     try
                     {
                         string hexValue = chars[i + 1].ToString() + chars[i + 2].ToString();
@@ -635,7 +582,6 @@ namespace EImece.Domain.Helpers
                     }
 
                     i = i + 3;
-
                 }
                 else
                 {
@@ -646,11 +592,9 @@ namespace EImece.Domain.Helpers
             return ret.ToString();
         }
 
-
         public static string CalculateMD5Hash(string input)
 
         {
-
             // step 1, calculate MD5 hash from input
 
             MD5 md5 = System.Security.Cryptography.MD5.Create();
@@ -666,15 +610,10 @@ namespace EImece.Domain.Helpers
             for (int i = 0; i < hash.Length; i++)
 
             {
-
                 sb.Append(hash[i].ToString("X2"));
-
             }
 
             return sb.ToString();
-
         }
-
-
     }
 }

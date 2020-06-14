@@ -14,7 +14,6 @@ namespace EImece.Domain.Helpers.Extensions
 
                 foreach (string sortField in sort)
                 {
-
                     if (sortField.StartsWith("+"))
                     {
                         sortFields.Add(string.Format("{0} ASC", sortField.TrimStart('+')));

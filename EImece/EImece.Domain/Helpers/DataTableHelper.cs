@@ -10,19 +10,21 @@ namespace EImece.Domain.Helpers
 {
     public static class DataTableHelper
     {
-
         public static bool GetValueBoolean(DataRow row, string column, bool defaultValue)
         {
             return GetValue(row, column, defaultValue).ToBool();
         }
+
         public static string GetValueString(DataRow row, string column, string defaultValue)
         {
             return GetValue(row, column, defaultValue).ToStr();
         }
+
         public static int GetValueInt(DataRow row, string column, int defaultValue)
         {
             return GetValue(row, column, defaultValue).ToInt();
         }
+
         private static object GetValue(DataRow row, string column, object defaultValue)
         {
             try
@@ -33,8 +35,8 @@ namespace EImece.Domain.Helpers
             {
                 return defaultValue;
             }
-
         }
+
         public static DataTable RemoveEmptyRows(DataTable dt)
         {
             DataTable filteredRows = dt.Rows.Cast<DataRow>()
@@ -43,6 +45,7 @@ namespace EImece.Domain.Helpers
 
             return filteredRows;
         }
+
         public static T ConvertToEntity<T>(this DataRow tableRow) where T : new()
         {
             // Create a new type of the entity I want
@@ -90,6 +93,7 @@ namespace EImece.Domain.Helpers
             // return the entity object with values
             return returnObject;
         }
+
         public static List<T> ConvertToList<T>(this DataTable table) where T : new()
         {
             Type t = typeof(T);
@@ -108,6 +112,7 @@ namespace EImece.Domain.Helpers
             // Return the finished list
             return returnObject;
         }
+
         public static DataTable ConvertToDataTable(this object obj)
         {
             // Retrieve the entities property info of all the properties
@@ -135,6 +140,7 @@ namespace EImece.Domain.Helpers
             // Return the finished DataTable
             return table;
         }
+
         public static String ToPrintConsole(DataTable dataTable)
         {
             var sb = new StringBuilder();
@@ -171,6 +177,7 @@ namespace EImece.Domain.Helpers
 
             return sb.ToString();
         }
+
         /// <summary>
         /// Inspects a DataTable and return a SQL string that can be used to CREATE a TABLE in SQL Server.
         /// </summary>
@@ -196,33 +203,41 @@ namespace EImece.Domain.Helpers
                         sql.Append(" smallint");
                         isNumeric = true;
                         break;
+
                     case "SYSTEM.INT32":
                         sql.Append(" int");
                         isNumeric = true;
                         break;
+
                     case "SYSTEM.INT64":
                         sql.Append(" bigint");
                         isNumeric = true;
                         break;
+
                     case "SYSTEM.DATETIME":
                         sql.Append(" datetime");
                         usesColumnDefault = false;
                         break;
+
                     case "SYSTEM.STRING":
                         sql.AppendFormat(" nvarchar({0})", table.Columns[i].MaxLength != -1 ? table.Columns[i].MaxLength : 1000);
                         break;
+
                     case "SYSTEM.SINGLE":
                         sql.Append(" float");
                         isNumeric = true;
                         break;
+
                     case "SYSTEM.DOUBLE":
                         sql.Append(" double");
                         isNumeric = true;
                         break;
+
                     case "SYSTEM.DECIMAL":
                         sql.AppendFormat(" decimal(18, 6)");
                         isNumeric = true;
                         break;
+
                     default:
                         sql.AppendFormat(" nvarchar({0})", table.Columns[i].MaxLength);
                         break;
@@ -236,8 +251,8 @@ namespace EImece.Domain.Helpers
                 }
                 else
                 {
-                    // DataColumns will add a blank DefaultValue for any AutoIncrement column. 
-                    // We only want to create an ALTER statement for those columns that are not set to AutoIncrement. 
+                    // DataColumns will add a blank DefaultValue for any AutoIncrement column.
+                    // We only want to create an ALTER statement for those columns that are not set to AutoIncrement.
                     //if (table.Columns[i].DefaultValue != null)
                     //{
                     //    if (usesColumnDefault)
@@ -313,6 +328,7 @@ namespace EImece.Domain.Helpers
 
             return sql.ToString();
         }
+
         public static DataTable ConvertCSVtoDataTable(string strFilePath)
         {
             DataTable dt = new DataTable();
@@ -333,9 +349,7 @@ namespace EImece.Domain.Helpers
                     }
                     dt.Rows.Add(dr);
                 }
-
             }
-
 
             return dt;
         }

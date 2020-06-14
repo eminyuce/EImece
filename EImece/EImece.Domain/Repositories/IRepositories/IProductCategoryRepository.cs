@@ -6,15 +6,20 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-
     public interface IProductCategoryRepository : IBaseContentRepository<ProductCategory>, IDisposable
     {
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
+
         List<Node> CreateProductCategoryTreeViewDataList(int language);
+
         ProductCategory GetProductCategory(int categoryId);
+
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
+
         List<ProductCategory> GetMainPageProductCategories(int language);
+
         List<ProductCategory> GetAdminProductCategories(string search, int language);
+
         List<ProductCategory> GetProductCategoriesByParentId(int parentId);
     }
 }

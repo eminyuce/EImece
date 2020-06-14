@@ -57,8 +57,7 @@ namespace EImece.Domain.Helpers
                 return typeof(float);
             }
 
-
-            // It's not clear that there's anything that double.TryParse() and decimal.TryParse() will parse 
+            // It's not clear that there's anything that double.TryParse() and decimal.TryParse() will parse
             // but which float.TryParse() won't
             double doubleResult;
             if (double.TryParse(value, out doubleResult))
@@ -113,7 +112,6 @@ namespace EImece.Domain.Helpers
 
             return typeMap[typeA][typeB];
         }
-
 
         // Dictionary to map two types to a common type that can hold both of them
         private static Dictionary<Type, Dictionary<Type, Type>> typeMap = null;
@@ -299,11 +297,9 @@ namespace EImece.Domain.Helpers
                             { typeof(char), typeof(string) },
                             { typeof(string), typeof(string) },
                         }},
-
                     };
                 }
             }
         }
     }
-
 }

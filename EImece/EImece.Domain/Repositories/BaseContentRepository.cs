@@ -10,15 +10,14 @@ using System.Linq.Expressions;
 
 namespace EImece.Domain.Repositories
 {
-
     public abstract class BaseContentRepository<T> : BaseEntityRepository<T> where T : BaseContent
     {
         protected static readonly Logger BaseContentLogger = LogManager.GetCurrentClassLogger();
 
         public BaseContentRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
+
         public virtual T GetBaseContent(int id)
         {
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
@@ -26,6 +25,7 @@ namespace EImece.Domain.Repositories
             var item = GetSingleIncluding(id, includeProperties);
             return item;
         }
+
         public virtual List<T> GetActiveBaseContents(bool? isActive, int? language)
         {
             try
@@ -69,7 +69,4 @@ namespace EImece.Domain.Repositories
             return result;
         }
     }
-
-
-
 }

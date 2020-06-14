@@ -7,7 +7,6 @@ using System.Web.Routing;
 
 namespace EImece.Domain.Models.FrontModels
 {
-
     public class Filter
     {
         public string FilterLink { get; set; }
@@ -22,6 +21,7 @@ namespace EImece.Domain.Models.FrontModels
         public int Ord { get; set; }
 
         private string _text = "";
+
         public string Text
         {
             get
@@ -36,7 +36,6 @@ namespace EImece.Domain.Models.FrontModels
                         }
                         else
                         {
-
                             return ValueLast;
                         }
                     }
@@ -44,8 +43,6 @@ namespace EImece.Domain.Models.FrontModels
                     {
                         return ValueFirst;
                     }
-
-
                 }
                 else
                 {
@@ -55,16 +52,14 @@ namespace EImece.Domain.Models.FrontModels
             set { _text = value; }
         }
 
-
         public Filter()
         {
-
         }
+
         public string Url
         {
             get
             {
-
                 string url = FieldName.UrlEncode() + "-";
                 if (ValueFirst == ValueLast)
                 {
@@ -76,8 +71,6 @@ namespace EImece.Domain.Models.FrontModels
                 }
 
                 return url.Trim();
-
-
             }
         }
 
@@ -91,7 +84,6 @@ namespace EImece.Domain.Models.FrontModels
 
         private ItemType _ownerType;
         public ItemType OwnerType { get { return _ownerType; } set { _ownerType = value; } }
-
 
         public string Link(HttpRequestBase httpRequestBase)
         {
@@ -117,8 +109,6 @@ namespace EImece.Domain.Models.FrontModels
                 urlFilters = Url;
             }
 
-
-
             var rv = new RouteValueDictionary();
             rv.Add("id", id);
             rv.Add("filters", urlFilters);
@@ -137,12 +127,9 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
 
-
-
             var urlHelper = new UrlHelper(httpRequestBase.RequestContext);
             return urlHelper.Action(OwnerType.SearchAction, OwnerType.Controller, rv).ToLower();
         }
-
 
         public string LinkExclude(HttpRequestBase httpRequestBase, ItemType ownerType)
         {
@@ -150,7 +137,6 @@ namespace EImece.Domain.Models.FrontModels
             string id = (string)httpRequestBase.RequestContext.RouteData.Values["id"];
             string sFilters = (string)httpRequestBase.RequestContext.RouteData.Values["filters"];
             var filters = FilterHelper.ParseFiltersFromString(sFilters);
-
 
             var rv = new RouteValueDictionary();
             rv.Add("id", id);
@@ -170,9 +156,6 @@ namespace EImece.Domain.Models.FrontModels
                 rv.Add("filters", urlFilters.ToLower());
             }
 
-
-
-
             foreach (var key in httpRequestBase.QueryString.AllKeys)
             {
                 if (key != null)
@@ -185,14 +168,10 @@ namespace EImece.Domain.Models.FrontModels
                     }
             }
 
-
             var urlHelper = new UrlHelper(httpRequestBase.RequestContext);
 
             //  return urlHelper.Action("BoatsSearch", "Directory", rv);
             return urlHelper.Action(ownerType.SearchAction, ownerType.Controller, rv).ToLower();
-
-
         }
-
     }
 }

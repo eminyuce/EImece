@@ -21,6 +21,7 @@ namespace EImece.Domain.Helpers
         {
             return (T[])Enum.GetValues(typeof(T));
         }
+
         public static string EnumToString<T>(object value)
         {
             return Enum.GetName(typeof(T), value);
@@ -50,11 +51,7 @@ namespace EImece.Domain.Helpers
                 }
                 catch (Exception)
                 {
-
-
                 }
-
-
             }
             return 0;
         }
@@ -82,12 +79,11 @@ namespace EImece.Domain.Helpers
                         Value = e.ToString()
                     }).ToList();
         }
+
         public static List<SelectListItem> ToSelectList3(String selected)
         {
-
             var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
             var languagesText = ApplicationConfigs.ApplicationLanguages;
-
 
             if (String.IsNullOrEmpty(languagesText))
             {
@@ -106,7 +102,6 @@ namespace EImece.Domain.Helpers
                     }
                     catch (Exception)
                     {
-
                     }
                 }
                 values = selectedLanguages;
@@ -119,10 +114,6 @@ namespace EImece.Domain.Helpers
                         Text = e.GetDisplayValue(),
                         Value = e.ToDescription()
                     }).ToList();
-
-
-
-
         }
 
         public static string GetDisplayValue(this Enum value)
@@ -142,15 +133,13 @@ namespace EImece.Domain.Helpers
             catch (Exception ex)
             {
                 return String.Empty;
-
             }
-
         }
+
         public static IList<string> GetNames(Enum value)
         {
             return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
         }
-
 
         private static string lookupResource(Type resourceManagerProvider, string resourceKey)
         {
@@ -175,10 +164,8 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-
                 return String.Empty;
             }
-
         }
 
         public static IEnumerable<SelectListItem> ToSelectListWithId(this Enum enumValue)
@@ -191,6 +178,7 @@ namespace EImece.Domain.Helpers
                        Value = e.ToStr()
                    };
         }
+
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
@@ -212,11 +200,9 @@ namespace EImece.Domain.Helpers
                     }
                     catch (Exception)
                     {
-
                     }
                 }
             }
-     
 
             return selectedLanguages;
         }

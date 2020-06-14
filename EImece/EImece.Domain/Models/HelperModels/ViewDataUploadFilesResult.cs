@@ -18,6 +18,7 @@ namespace EImece.Domain.Models.HelperModels
         public String mimeType { get; set; }
         public int fileStorageId { get; set; }
         public string imageHash { get; set; }
+
         public String fileImageSrc
         {
             get

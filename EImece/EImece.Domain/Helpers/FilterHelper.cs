@@ -19,19 +19,13 @@ namespace EImece.Domain.Helpers
             {
                 var stringFilters = filters.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
-
-
-
                 foreach (var stringFilter in stringFilters)
                 {
-
-
                     if (stringFilter.IndexOf('-') > 0)
                     {
                         var filter = new Filter();
                         var firstHyphen = stringFilter.IndexOf('-');
                         filter.FieldName = stringFilter.Substring(0, firstHyphen).UrlDecode();
-
 
                         if (stringFilter.IndexOf('-', firstHyphen + 1) > 0)
                         {
@@ -41,16 +35,12 @@ namespace EImece.Domain.Helpers
                             filter.ValueLast =
                                 stringFilter.Substring(secondHyphen + 1, stringFilter.Length - secondHyphen - 1).
                                     UrlDecode();
-
                         }
                         else
                         {
                             filter.ValueFirst =
                                 stringFilter.Substring(firstHyphen + 1, stringFilter.Length - firstHyphen - 1).UrlDecode
                                     ();
-
-
-
                         }
 
                         items.Add(filter);
@@ -58,16 +48,12 @@ namespace EImece.Domain.Helpers
                 }//for each
             }//end if
             return items;
-
         }
 
         public static string PageLink(HttpRequestBase httpRequestBase, ViewContext viewContext, int page, ItemType itemType)
         {
-
             string sFilters = (string)viewContext.RouteData.Values["filters"];
             var filters = FilterHelper.ParseFiltersFromString(sFilters);
-
-
 
             var rv = new RouteValueDictionary();
 
@@ -78,8 +64,6 @@ namespace EImece.Domain.Helpers
                                              i => i.Url));
                 rv.Add("filters", urlFilters);
             }
-
-
 
             foreach (var key in httpRequestBase.QueryString.AllKeys)
             {
@@ -98,11 +82,8 @@ namespace EImece.Domain.Helpers
             return urlHelper.Action(itemType.SearchAction, itemType.Controller, rv);
         }
 
-
-
         public static string Link(Filter f, HttpRequestBase httpRequestBase, ViewContext viewContext)
         {
-
             string sFilters = (string)viewContext.RouteData.Values["filters"];
             var filters = FilterHelper.ParseFiltersFromString(sFilters);
 
@@ -124,8 +105,6 @@ namespace EImece.Domain.Helpers
                 urlFilters = f.Url;
             }
 
-
-
             var rv = new RouteValueDictionary();
             rv.Add("filters", urlFilters);
 
@@ -141,19 +120,13 @@ namespace EImece.Domain.Helpers
             return urlHelper.Action(f.OwnerType.SearchAction, f.OwnerType.Controller, rv);
         }
 
-
-
-
-
         public static string LinkExclude(Filter f, HttpRequestBase httpRequestBase, ViewContext viewContext, ItemType ownerType)
         {
             //RequestContext
             string sFilters = (string)viewContext.RouteData.Values["filters"];
             var filters = FilterHelper.ParseFiltersFromString(sFilters);
 
-
             var rv = new RouteValueDictionary();
-
 
             if (filters != null)
             {
@@ -170,9 +143,6 @@ namespace EImece.Domain.Helpers
                 rv.Add("filters", urlFilters);
             }
 
-
-
-
             foreach (var key in httpRequestBase.QueryString.AllKeys)
             {
                 if (key.ToLower() != "page")
@@ -181,17 +151,13 @@ namespace EImece.Domain.Helpers
                 }
             }
 
-
             var urlHelper = new UrlHelper(httpRequestBase.RequestContext);
             //  return urlHelper.Action("BoatsSearch", "Directory", rv);
             return urlHelper.Action(ownerType.SearchAction, ownerType.Controller, rv);
-
-
         }
 
         public static string LogPageLink(HttpRequestBase httpRequestBase, ViewContext viewContext, String appName, String logLevel)
         {
-
             var rv = new RouteValueDictionary();
             if (!String.IsNullOrEmpty(appName))
             {
@@ -205,7 +171,6 @@ namespace EImece.Domain.Helpers
 
             var urlHelper = new UrlHelper(httpRequestBase.RequestContext);
             return urlHelper.Action("AppLogDetail", "Logs", rv);
-
         }
 
         public static List<Filter> GetFiltersFromContextRequest(HttpRequestBase httpContextRequest)

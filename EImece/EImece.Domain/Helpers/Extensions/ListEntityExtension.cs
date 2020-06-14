@@ -28,7 +28,6 @@ namespace EImece.Domain.Helpers.Extensions
             int order = 1;
             foreach (var sItem in strItems)
             {
-
                 var itemValues = sItem.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var text = itemValues[0].ToStr();
                 var val = text;
@@ -38,7 +37,6 @@ namespace EImece.Domain.Helpers.Extensions
                 }
 
                 Items.Add(new ListItem() { Id = 0, Name = text, Value = val, Position = order++, ListId = entity.Id, Lang = entity.Lang });
-
             }
 
             return Items;

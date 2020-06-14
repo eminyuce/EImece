@@ -49,7 +49,6 @@ namespace EImece.Domain.Helpers.HtmlHelpers
                 a.MergeAttribute("class", classToAdd);
             }
 
-
             a.SetInnerText(linkText);
             li.InnerHtml = a.ToString();
             return li;

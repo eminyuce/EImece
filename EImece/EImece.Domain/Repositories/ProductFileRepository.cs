@@ -9,7 +9,5 @@ namespace EImece.Domain.Repositories
         public ProductFileRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-
     }
 }

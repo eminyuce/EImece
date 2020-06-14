@@ -16,6 +16,7 @@ namespace EImece.Domain.Entities
         [Column("Name")]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Name))]
         public string Name { get; set; }
+
         public string EntityHash { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
@@ -25,9 +26,7 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Position))]
         public int Position { get; set; }
+
         public int Lang { get; set; }
-
-
-
     }
 }

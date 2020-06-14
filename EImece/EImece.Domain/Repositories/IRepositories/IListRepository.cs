@@ -7,7 +7,9 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IListRepository : IBaseEntityRepository<List>, IDisposable
     {
         List GetListById(int id);
+
         List GetListByName(string name);
+
         List<List> GetAllListItems();
     }
 }

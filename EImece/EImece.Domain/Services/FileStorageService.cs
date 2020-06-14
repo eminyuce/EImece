@@ -15,7 +15,6 @@ using System.Linq.Expressions;
 
 namespace EImece.Domain.Services
 {
-
     public class FileStorageService : BaseEntityService<FileStorage>, IFileStorageService
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -26,9 +25,8 @@ namespace EImece.Domain.Services
         [Inject]
         public IStoryService StoryService { get; set; }
 
-
-
         public IFileStorageRepository FileStorageRepository { get; set; }
+
         public FileStorageService(IFileStorageRepository repository) : base(repository)
         {
             FileStorageRepository = repository;
@@ -58,10 +56,8 @@ namespace EImece.Domain.Services
             string selectedTags
             )
         {
-
             foreach (var file in resultList)
             {
-
                 try
                 {
                     var fileStorage = new FileStorage();
@@ -82,8 +78,6 @@ namespace EImece.Domain.Services
                     FileStorageRepository.SaveOrEdit(fileStorage);
                     file.fileStorageId = fileStorage.Id;
 
-
-
                     var sTags = selectedTags.Split(",".ToCharArray()).Select(r => r.ToInt());
                     if (sTags.Any())
                     {
@@ -95,7 +89,6 @@ namespace EImece.Domain.Services
                             iTag.FileStorageId = file.fileStorageId;
                             FileStorageTagRepository.SaveOrEdit(iTag);
                         }
-
                     }
 
                     switch (contentMediaType.Value)
@@ -112,6 +105,7 @@ namespace EImece.Domain.Services
                             sf.Lang = language;
                             StoryFileRepository.SaveOrEdit(sf);
                             break;
+
                         case MediaModType.Products:
                             var pf = new ProductFile();
                             pf.ProductId = contentId;
@@ -124,6 +118,7 @@ namespace EImece.Domain.Services
                             pf.Lang = language;
                             ProductFileRepository.SaveOrEdit(pf);
                             break;
+
                         case MediaModType.Menus:
                             var mf = new MenuFile();
                             mf.MenuId = contentId;
@@ -151,15 +146,8 @@ namespace EImece.Domain.Services
                     Logger.Error(ex, "ContentId:" + contentId +
                         " contentImageType:" + contentImageType.Value
                         + " contentMediaType:" + contentMediaType.Value);
-
                 }
-
-
-
             }
-
-
-
         }
 
         public void DeleteUploadImage(String fileName, int contentId, EImeceImageType? imageType, MediaModType? mod)
@@ -177,10 +165,12 @@ namespace EImece.Domain.Services
                     isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.ProductId == contentId);
                     this.DeleteFileStorage(f.Id);
                     break;
+
                 case MediaModType.Menus:
                     isResult = MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == f.Id && r.MenuId == contentId);
                     this.DeleteFileStorage(f.Id);
                     break;
+
                 default:
                     break;
             }
@@ -188,7 +178,6 @@ namespace EImece.Domain.Services
 
         public List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType)
         {
-
             switch (enumMod.Value)
             {
                 case MediaModType.Stories:
@@ -226,7 +215,6 @@ namespace EImece.Domain.Services
         {
             try
             {
-
                 foreach (String v in values)
                 {
                     var parts = v.Split("-".ToCharArray());
@@ -241,10 +229,12 @@ namespace EImece.Domain.Services
                             StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == contentId && r.FileStorageId == fileStorageId);
                             this.DeleteFileStorage(fileStorageId);
                             break;
+
                         case MediaModType.Products:
                             ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
                             this.DeleteFileStorage(fileStorageId);
                             break;
+
                         case MediaModType.Menus:
                             MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == contentId && r.FileStorageId == fileStorageId);
                             this.DeleteFileStorage(fileStorageId);
@@ -255,7 +245,6 @@ namespace EImece.Domain.Services
                             break;
                     }
                 }
-
             }
             catch (DbEntityValidationException ex)
             {
@@ -292,7 +281,5 @@ namespace EImece.Domain.Services
             }
             return "error";
         }
-
-
     }
 }

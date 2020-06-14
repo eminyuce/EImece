@@ -26,8 +26,10 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
+
         [Inject]
         public ITagService TagService { get; set; }
+
         [Inject]
         public IStoryService StoryService { get; set; }
 
@@ -37,8 +39,8 @@ namespace EImece.Domain.Services
         [Inject]
         public IStoryRepository StoryRepository { get; set; }
 
-
         private IProductRepository ProductRepository { get; set; }
+
         public ProductService(IProductRepository repository) : base(repository)
         {
             ProductRepository = repository;
@@ -66,11 +68,9 @@ namespace EImece.Domain.Services
                 result.Products = items;
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
                 MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
-
             }
             return result;
         }
-
 
         public void SaveProductTags(int id, int[] tags)
         {
@@ -103,7 +103,6 @@ namespace EImece.Domain.Services
             EImeceLanguage language = (EImeceLanguage)lang;
             result.TagCategories = TagCategoryService.GetTagsByTagType(language);
 
-
             return result;
         }
 
@@ -111,7 +110,6 @@ namespace EImece.Domain.Services
         {
             var cacheKey = String.Format("ProductById-{0}", id);
             ProductDetailViewModel result = null;
-
 
             result = new ProductDetailViewModel();
             var r = ProductRepository.GetProduct(id);
@@ -136,9 +134,9 @@ namespace EImece.Domain.Services
                 result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, r.Lang, id);
             }
 
-
             return result;
         }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try
@@ -159,12 +157,11 @@ namespace EImece.Domain.Services
                 ProductServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
         public void DeleteProductById(int id)
         {
             try
             {
-
-
                 var product = ProductRepository.GetProduct(id);
                 ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
@@ -181,7 +178,6 @@ namespace EImece.Domain.Services
                     ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 }
                 DeleteEntity(product);
-
             }
             catch (Exception e)
             {
@@ -260,7 +256,6 @@ namespace EImece.Domain.Services
             formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
 
             return formatter;
-
         }
 
         public ProductsSearchResult GetProductsSearchResult(
@@ -287,7 +282,6 @@ namespace EImece.Domain.Services
                 int position = 1;
                 foreach (XElement field in group.Elements())
                 {
-
                     var p = new ProductSpecification();
                     p.GroupName = groupName;
                     p.ProductId = productId;
@@ -299,7 +293,6 @@ namespace EImece.Domain.Services
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
-
 
                     var value = request.Form[name.Value];
 
@@ -314,7 +307,6 @@ namespace EImece.Domain.Services
 
                     p.Value = value;
                     Specifications.Add(p);
-
                 }
             }
 

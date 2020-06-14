@@ -10,7 +10,5 @@
         public string UserAddress { get; set; }
 
         public BrowserSubscription BrowserSubscription { get; set; }
-
-
     }
 }

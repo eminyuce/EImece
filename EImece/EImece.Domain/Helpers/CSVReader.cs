@@ -4,7 +4,6 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-
 namespace EImece.Domain.Helpers
 {
     /// <summary>
@@ -47,7 +46,6 @@ namespace EImece.Domain.Helpers
             if (csvData == null)
                 throw new ArgumentNullException("Null string passed to CSVReader");
 
-
             this.reader = new BinaryReader(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(csvData)));
         }
 
@@ -63,11 +61,10 @@ namespace EImece.Domain.Helpers
             this.reader = new BinaryReader(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(reader.ReadToEnd())));
         }
 
-        #endregion
+        #endregion Constructors
 
+        private string currentLine = "";
 
-
-        string currentLine = "";
         /// <summary>
         /// Read the next row from the CSV data
         /// </summary>
@@ -248,8 +245,6 @@ namespace EImece.Domain.Helpers
                 return reader.CreateDataTable(headerRow);
         }
 
-
-
         #region IDisposable Members
 
         public void Dispose()
@@ -265,7 +260,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        #endregion
+        #endregion IDisposable Members
     }
 }
-

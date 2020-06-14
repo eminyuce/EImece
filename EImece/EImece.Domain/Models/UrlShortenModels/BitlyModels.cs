@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace EImece.Domain.Models.UrlShortenModels
 {
-
     public class EmailShortenUrlsResult
     {
         public string EmailContent { get; set; }
@@ -13,13 +11,14 @@ namespace EImece.Domain.Models.UrlShortenModels
         public string EmailContentBitlyLinks { get; set; }
         public Dictionary<string, string> UrlLongAndShortUrls { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, TmlnkResponse> TmlnkResponseDic { get; set; } = new Dictionary<string, TmlnkResponse>();
-
     }
+
     public class BitlyShortUrlRequest
     {
         public string group_guid { get; set; }
         public string long_url { get; set; }
     }
+
     public class References
     {
         public string group { get; set; }
@@ -66,9 +65,9 @@ namespace EImece.Domain.Models.UrlShortenModels
     {
         [JsonIgnore]
         public string FullUrl { get; set; }
+
         [JsonIgnore]
         public string BitlyShortenUrl { get; set; }
-
 
         [JsonProperty("unit_reference")]
         public string UnitReference { get; set; }
@@ -82,6 +81,7 @@ namespace EImece.Domain.Models.UrlShortenModels
         [JsonProperty("unit")]
         public string Unit { get; set; }
     }
+
     public partial class TmlnkResponse
     {
         [JsonProperty("ShortUrl")]
@@ -102,6 +102,4 @@ namespace EImece.Domain.Models.UrlShortenModels
         [JsonProperty("HasError")]
         public bool HasError { get; set; }
     }
-
-
 }

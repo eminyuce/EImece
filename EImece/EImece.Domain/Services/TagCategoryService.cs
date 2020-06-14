@@ -20,6 +20,7 @@ namespace EImece.Domain.Services
         public ITagService TagService { get; set; }
 
         private ITagCategoryRepository TagCategoryRepository { get; set; }
+
         public TagCategoryService(ITagCategoryRepository repository) : base(repository)
         {
             TagCategoryRepository = repository;
@@ -45,6 +46,7 @@ namespace EImece.Domain.Services
         {
             return TagCategoryRepository.GetTagCategoryById(tagCategoryId);
         }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try

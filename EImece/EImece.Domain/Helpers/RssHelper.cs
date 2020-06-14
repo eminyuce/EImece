@@ -11,7 +11,6 @@ namespace EImece.Domain.Helpers
 {
     public class RssHelper
     {
-
         public static List<RssInEmail> GetListRssInEmail(string synKey)
         {
             string key = synKey;
@@ -25,20 +24,15 @@ namespace EImece.Domain.Helpers
                 ret = (List<RssInEmail>)ci.Value;
             }
 
-
             return ret;
         }
 
-
         public static void SetRssInEmail(string synKey, RssInEmail rssInEmail)
         {
-
             List<RssInEmail> list = new List<RssInEmail>();
             string key = synKey;
 
             ObjectCache cache = MemoryCache.Default;
-
-
 
             CacheItem ci = cache.GetCacheItem(key);
 
@@ -49,11 +43,9 @@ namespace EImece.Domain.Helpers
             }
             else
             {
-
                 list.Add(rssInEmail);
                 ci = new CacheItem(key, list);
             }
-
 
             CacheItemPolicy policy = new CacheItemPolicy();
             policy.SlidingExpiration = new TimeSpan(0, 1, 0);
@@ -61,11 +53,9 @@ namespace EImece.Domain.Helpers
             cache.Set(ci, policy);
         }
 
-
         public static List<SI> GetRssItems(string url)
         {
             List<SI> result = new List<SI>();
-
 
             try
             {
@@ -81,16 +71,13 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
-
         public static SI SyndicationItemToSI(SyndicationItem syndicationItem)
         {
             return new SI(syndicationItem);
         }
 
-
         public static SyndicationFeed GetRssFeedCached(String url)
         {
-
             string key = url;
             var products = (SyndicationFeed)MemoryCache.Default.Get(key);
             if (products == null)
@@ -105,20 +92,15 @@ namespace EImece.Domain.Helpers
                 MemoryCache.Default.Set(key, products, policy);
             }
             return products;
-
-
         }
-
 
         public static SyndicationFeed GetRss(String url)
         {
-
             XmlReader reader = XmlReader.Create(url);
             SyndicationFeed feed = SyndicationFeed.Load(reader);
             reader.Close();
             return feed;
         }
-
 
         public static string GetRssItemValue(SyndicationItem rssItem, string elementName)
         {
@@ -129,7 +111,5 @@ namespace EImece.Domain.Helpers
             }
             return String.Empty;
         }
-
-
     }
 }

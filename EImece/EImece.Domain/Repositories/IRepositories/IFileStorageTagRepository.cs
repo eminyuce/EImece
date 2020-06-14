@@ -5,7 +5,5 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IFileStorageTagRepository : IBaseRepository<FileStorageTag>, IDisposable
     {
-
     }
 }
-

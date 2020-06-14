@@ -5,7 +5,6 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class RssParams
     {
-
         public int Take { get; set; }
         public int Description { get; set; }
         public int CategoryId { get; set; }
@@ -13,17 +12,14 @@ namespace EImece.Domain.Models.FrontModels
         public int Width { get; set; }
         public int Height { get; set; }
 
-
-
-
         //Google tracking
         public string utm_source { get; set; }
+
         public string utm_medium { get; set; }
         public string utm_campaign { get; set; }
 
         public string utm_term { get; set; }
         public string utm_content { get; set; }
-
 
         //DefaultValues
         public RssParams()
@@ -55,8 +51,6 @@ namespace EImece.Domain.Models.FrontModels
                 ret.Append(string.Format("utm_campaign={0}", utm_campaign));
             }
 
-
-
             if (!string.IsNullOrEmpty(utm_term))
             {
                 if (ret.Length > 0) { ret.Append("&"); }
@@ -72,11 +66,6 @@ namespace EImece.Domain.Models.FrontModels
             //if (ret.Length > 0) { ret.Insert(0, "?"); }
 
             return ret.ToString();
-
-
         }
-
-
-
     }
 }

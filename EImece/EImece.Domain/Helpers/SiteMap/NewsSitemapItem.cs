@@ -42,5 +42,4 @@ namespace EImece.Domain.Helpers.SiteMap
         public string Genres { get; set; }
         public DateTime? PublicationDate { get; set; }
     }
-
 }

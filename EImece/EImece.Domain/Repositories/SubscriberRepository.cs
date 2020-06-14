@@ -9,7 +9,5 @@ namespace EImece.Domain.Repositories
         public SubscriberRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-
     }
 }

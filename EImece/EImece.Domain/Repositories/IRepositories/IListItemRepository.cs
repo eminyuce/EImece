@@ -5,6 +5,5 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IListItemRepository : IBaseEntityRepository<ListItem>, IDisposable
     {
-
     }
 }

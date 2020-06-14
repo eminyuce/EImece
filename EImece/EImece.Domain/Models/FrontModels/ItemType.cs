@@ -16,10 +16,10 @@ namespace EImece.Domain.Models.FrontModels
 
         public bool IsInternal { get; set; }
 
-
         public string MenuName { get; set; }
 
         private string _dropDownName = "";
+
         public string DropDownName
         {
             get { return string.IsNullOrEmpty(_dropDownName) ? MenuName : _dropDownName; }
@@ -34,6 +34,5 @@ namespace EImece.Domain.Models.FrontModels
         //}
 
         public int ItemTypeID { get; set; }
-
     }
 }

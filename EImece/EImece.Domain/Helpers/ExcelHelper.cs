@@ -14,7 +14,6 @@ namespace EImece.Domain.Helpers
 {
     public class ExcelHelper
     {
-
         //     <summary>Opens an Excel(xls or xlsx) file and converts it into a DataTable.
         //THE first row must contain the names of those fields.</summary>
         //<param name = "pRutaArchivo" > full path of the file to open.</param>
@@ -43,8 +42,7 @@ namespace EImece.Domain.Helpers
             {
                 if (System.IO.File.Exists(pRutaArchivo))
                 {
-
-                    IWorkbook workbook = null;  //IWorkbook determina si es xls o xlsx              
+                    IWorkbook workbook = null;  //IWorkbook determina si es xls o xlsx
                     ISheet worksheet = null;
                     string first_sheet_name = "";
 
@@ -72,7 +70,7 @@ namespace EImece.Domain.Helpers
                                 row3 = worksheet.GetRow(rowIndex + 2); //Y la tercera tambien por las dudas
                             }
 
-                            if (row != null) //null is when the row only contains empty cells 
+                            if (row != null) //null is when the row only contains empty cells
                             {
                                 if (rowIndex > 0) NewReg = Tabla.NewRow();
 
@@ -129,6 +127,7 @@ namespace EImece.Domain.Helpers
                                                                 break;
                                                         }
                                                         break;
+
                                                     default:
                                                         cellType2[i] = "System.String"; break;
                                                 }
@@ -171,6 +170,7 @@ namespace EImece.Domain.Helpers
                                                 if (HSSFDateUtil.IsCellDateFormatted(cell)) { valorCell = cell.DateCellValue; }
                                                 else { valorCell = cell.NumericCellValue; }
                                                 break;
+
                                             case CellType.Formula:
                                                 switch (cell.CachedFormulaResultType)
                                                 {
@@ -183,6 +183,7 @@ namespace EImece.Domain.Helpers
                                                         break;
                                                 }
                                                 break;
+
                                             default: valorCell = cell.StringCellValue; break;
                                         }
                                         //Agregar el nuevo Registro
@@ -275,7 +276,7 @@ namespace EImece.Domain.Helpers
                             int iCol = 0;
                             foreach (DataColumn column in pDatos.Columns)
                             {
-                                ICell cell = null; //<-Representa la celda actual                               
+                                ICell cell = null; //<-Representa la celda actual
                                 object cellValue = row[iCol]; //<- El valor actual de la celda
 
                                 switch (column.DataType.ToString())
@@ -308,6 +309,7 @@ namespace EImece.Domain.Helpers
                                             cell.CellStyle = _intCellStyle;
                                         }
                                         break;
+
                                     case "System.Int64":
                                         if (cellValue != DBNull.Value)
                                         {
@@ -316,6 +318,7 @@ namespace EImece.Domain.Helpers
                                             cell.CellStyle = _intCellStyle;
                                         }
                                         break;
+
                                     case "System.Decimal":
                                         if (cellValue != DBNull.Value)
                                         {
@@ -324,6 +327,7 @@ namespace EImece.Domain.Helpers
                                             cell.CellStyle = _doubleCellStyle;
                                         }
                                         break;
+
                                     case "System.Double":
                                         if (cellValue != DBNull.Value)
                                         {
@@ -345,6 +349,7 @@ namespace EImece.Domain.Helpers
                                             else { cell.CellStyle = _dateCellStyle; }
                                         }
                                         break;
+
                                     default:
                                         break;
                                 }
@@ -366,7 +371,6 @@ namespace EImece.Domain.Helpers
 
         //public static void DataTableToExcel(DataTable dt, String fileName)
         //{
-
         //    //Make a new npoi workbook
         //    HSSFWorkbook hssfworkbook = new HSSFWorkbook();
         //    //Here I am making sure that I am giving the file name the right
@@ -413,21 +417,15 @@ namespace EImece.Domain.Helpers
 
         //    Response.End();
 
-
-
         //}
 
-
-
-        static MemoryStream WriteToStream(HSSFWorkbook hssfworkbook)
+        private static MemoryStream WriteToStream(HSSFWorkbook hssfworkbook)
         {
-
             //Write the stream data of workbook to the root directory
             MemoryStream file = new MemoryStream();
             hssfworkbook.Write(file);
             file.Seek(0, 0);
             return file;
-
         }
 
         public static HSSFWorkbook CreateWorkBook(List<DataTable> dtList)
@@ -454,6 +452,7 @@ namespace EImece.Domain.Helpers
             }
             return workbook;
         }
+
         private static ICellStyle GetCellStyle3(HSSFWorkbook workbook)
         {
             ICellStyle headerStyle = workbook.CreateCellStyle();
@@ -469,6 +468,7 @@ namespace EImece.Domain.Helpers
             headerStyle.SetFont(font);
             return headerStyle;
         }
+
         private static ICellStyle GetCellStyle2(HSSFWorkbook workbook)
         {
             ICellStyle headerStyle = workbook.CreateCellStyle();
@@ -484,6 +484,7 @@ namespace EImece.Domain.Helpers
             headerStyle.SetFont(font);
             return headerStyle;
         }
+
         private static ICellStyle GetCellStyle(HSSFWorkbook workbook)
         {
             ICellStyle headerStyle = workbook.CreateCellStyle();
@@ -501,8 +502,6 @@ namespace EImece.Domain.Helpers
 
         private static void ExportDataTableToSheet(DataTable dt, ISheet sheet, ICellStyle headerStyle, ICellStyle headerStyle2, ICellStyle headerStyle3)
         {
-
-
             var row1 = sheet.CreateRow(0);
             //Puts in headers (these are table row headers, omit if you
             //just need a straight data dump
@@ -534,6 +533,7 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
+
         public static byte[] Export(DataTable dt, bool exportColumnHeadings)
         {
             var myExport = new CsvExport();
@@ -549,7 +549,6 @@ namespace EImece.Domain.Helpers
             }
 
             return myExport.ExportToBytes();
-
         }
 
         public static byte[] GetExcelByteArrayFromDataTable(DataTable dt)
@@ -559,12 +558,13 @@ namespace EImece.Domain.Helpers
             var ms = GetExcelByteArrayFromDataTable(dtList);
             return ms.ToArray();
         }
+
         public static byte[] GetExcelByteArrayFromDataTable(List<DataTable> dtList)
         {
-
             var ms = GetExcelMemoryFromDataTable(dtList);
             return ms.ToArray();
         }
+
         public static MemoryStream GetExcelMemoryFromDataTable(List<DataTable> dtList)
         {
             var workbook = CreateWorkBook(dtList);
@@ -574,7 +574,6 @@ namespace EImece.Domain.Helpers
 
             return ms;
         }
-
 
         public static HSSFWorkbook GetExcel1()
         {
@@ -586,6 +585,7 @@ namespace EImece.Domain.Helpers
             rowIndex++;
             return workbook;
         }
+
         public static MemoryStream GetExcelMemory()
         {
             MemoryStream ms = new MemoryStream();
@@ -594,6 +594,7 @@ namespace EImece.Domain.Helpers
 
             return ms;
         }
+
         public static HSSFWorkbook GetExcel()
         {
             HSSFWorkbook workbook = new HSSFWorkbook();
@@ -638,7 +639,7 @@ namespace EImece.Domain.Helpers
             ICell cell8 = sheet.CreateRow(7).CreateCell(0);
             SetValueAndFormat(workbook, cell8, new DateTime(2005, 11, 6), format.GetFormat("yyyy年m月d日"));
 
-            //formula value with datetime style 
+            //formula value with datetime style
             ICell cell9 = sheet.CreateRow(8).CreateCell(0);
             cell9.CellFormula = "DateValue(\"2005-11-11\")+TIMEVALUE(\"11:11:11\")";
             ICellStyle cellStyle9 = workbook.CreateCellStyle();
@@ -649,8 +650,6 @@ namespace EImece.Domain.Helpers
             ICell cell10 = sheet.CreateRow(9).CreateCell(0);
             SetValueAndFormat(workbook, cell10, DateTime.Now, format.GetFormat("[$-409]h:mm:ss AM/PM;@"));
 
-
-
             ISheet sheet2 = workbook.CreateSheet("Sheet2");
             //increase the width of Column A
             sheet2.SetColumnWidth(0, 5000);
@@ -660,10 +659,10 @@ namespace EImece.Domain.Helpers
             //number format with 2 digits after the decimal point - "1.20"
             SetValueAndFormat(workbook, cell21, 1.2, HSSFDataFormat.GetBuiltinFormat("0.00"));
 
-
             return workbook;
         }
-        static void SetValueAndFormat(IWorkbook workbook, ICell cell, int value, short formatId)
+
+        private static void SetValueAndFormat(IWorkbook workbook, ICell cell, int value, short formatId)
         {
             cell.SetCellValue(value);
             ICellStyle cellStyle = workbook.CreateCellStyle();
@@ -671,14 +670,15 @@ namespace EImece.Domain.Helpers
             cell.CellStyle = cellStyle;
         }
 
-        static void SetValueAndFormat(IWorkbook workbook, ICell cell, double value, short formatId)
+        private static void SetValueAndFormat(IWorkbook workbook, ICell cell, double value, short formatId)
         {
             cell.SetCellValue(value);
             ICellStyle cellStyle = workbook.CreateCellStyle();
             cellStyle.DataFormat = formatId;
             cell.CellStyle = cellStyle;
         }
-        static void SetValueAndFormat(IWorkbook workbook, ICell cell, DateTime value, short formatId)
+
+        private static void SetValueAndFormat(IWorkbook workbook, ICell cell, DateTime value, short formatId)
         {
             //set value for the cell
             if (value != null)
@@ -707,6 +707,7 @@ namespace EImece.Domain.Helpers
 
             return list;
         }
+
         public static DataSet GetDS(String filePath, String selectedWorkSheet)
         {
             string strConn = GetConnectionString(filePath);
@@ -722,6 +723,7 @@ namespace EImece.Domain.Helpers
             myCommand.Fill(ds);
             return ds;
         }
+
         public static DataTable ExcelToDataTable(string pathName, string sheetName = "")
         {
             DataTable tbContainer = new DataTable();
@@ -733,6 +735,7 @@ namespace EImece.Domain.Helpers
             oda.Fill(tbContainer);
             return tbContainer;
         }
+
         private static string GetConnectionString(string pathName)
         {
             string strConn = string.Empty;
@@ -744,9 +747,11 @@ namespace EImece.Domain.Helpers
                 case ".xls":
                     strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + pathName + ";Extended Properties='Excel 8.0;HDR=Yes;IMEX=1;'";
                     break;
+
                 case ".xlsx":
                     strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + pathName + ";Extended Properties='Excel 12.0;HDR=Yes;IMEX=1;'";
                     break;
+
                 default:
                     strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + pathName + ";Extended Properties='Excel 8.0;HDR=Yes;IMEX=1;'";
                     break;
@@ -754,6 +759,7 @@ namespace EImece.Domain.Helpers
 
             return strConn;
         }
+
         public static void ExecuteSqlCommand(string connectionString, String sql)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -767,6 +773,7 @@ namespace EImece.Domain.Helpers
                 connection.Close();
             }
         }
+
         public static void ImportCVSFileToDatabase(String connectionString,
             string csvFilePath,
             string primaryKeyColumnName = "", string tableName = "")
@@ -784,6 +791,7 @@ namespace EImece.Domain.Helpers
             ExcelHelper.ExecuteSqlCommand(connectionString, sqlCreate);
             ExcelHelper.SaveTable(dt, connectionString);
         }
+
         public static void SaveTable(DataTable myDataTable, string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -810,6 +818,5 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
-
     }
 }

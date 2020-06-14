@@ -12,7 +12,6 @@ namespace EImece.Domain.Repositories
     {
         public MenuRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
 
         private void GetTreeview(List<Menu> list, Menu current, ref List<Menu> returnList)
@@ -80,11 +79,7 @@ namespace EImece.Domain.Repositories
                 }
             }
 
-
             return result;
-
         }
-
-
     }
 }

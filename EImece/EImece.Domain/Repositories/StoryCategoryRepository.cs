@@ -12,7 +12,6 @@ namespace EImece.Domain.Repositories
 {
     public class StoryCategoryRepository : BaseContentRepository<StoryCategory>, IStoryCategoryRepository
     {
-
         private static readonly Logger StoryCategoryLogger = LogManager.GetCurrentClassLogger();
 
         public StoryCategoryRepository(IEImeceContext dbContext) : base(dbContext)
@@ -43,7 +42,6 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Stories.Select(t => t.StoryTags.Select(q => q.Tag)));
             var item = GetSingleIncluding(storyCategoryId, includeProperties.ToArray());
             return item;
-
         }
     }
 }

@@ -7,15 +7,13 @@ using System.Linq;
 
 namespace EImece.Domain.Repositories
 {
-
     public class ShortUrlRepository : BaseEntityRepository<ShortUrl>, IShortUrlRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ShortUrlRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
-
 
         public static int ShortUrlKeyLength
         {
@@ -24,7 +22,6 @@ namespace EImece.Domain.Repositories
                 return ApplicationConfigs.GetConfigInt("ShortUrlKeyLength", 5);
             }
         }
-
 
         public ShortUrl GetShortUrlByUrl(string url)
         {
@@ -51,7 +48,6 @@ namespace EImece.Domain.Repositories
             item.RequestCount = 0;
             SaveOrEdit(item);
             return item;
-
         }
     }
 }

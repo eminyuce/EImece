@@ -12,6 +12,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<ProductCategoryTreeModel> Childrens { get; set; }
         public ProductCategoryTreeModel Parent { get; set; }
+
         public String Text
         {
             get
@@ -26,6 +27,5 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
         }
-
     }
 }

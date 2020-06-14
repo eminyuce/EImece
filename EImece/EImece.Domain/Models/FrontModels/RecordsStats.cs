@@ -13,11 +13,8 @@ namespace EImece.Domain.Models.FrontModels
         {
             if (RecordCount > 1)
             {
-
                 return string.Format("{0}-{1} of {2}", RecordFirst,
                     RecordFirst + RecordCount - 1, RecordsTotal);
-
-
             }
             else if (RecordCount == 1)
             {
@@ -32,10 +29,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 return string.Format("no records found");
             }
-
         }
-
-
 
         public int PageCurrent
         {
@@ -49,10 +43,8 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     return 0;
                 }
-
             }
         }
-
 
         public int PageLast
         {
@@ -63,8 +55,6 @@ namespace EImece.Domain.Models.FrontModels
                 return (int)Math.Round(doubleVal, 0, MidpointRounding.AwayFromZero);
             }
         }
-
-
 
         private ItemType _ownerType;
         public ItemType OwnerType { get { return _ownerType; } set { _ownerType = value; } }

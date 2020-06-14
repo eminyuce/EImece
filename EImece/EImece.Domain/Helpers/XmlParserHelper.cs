@@ -30,7 +30,6 @@ namespace EImece.Domain.Helpers
             return stringwriter.ToString();
         }
 
-
         public static T ToObject<T>(string xmlTextToParse) where T : class, new()
         {
             if (string.IsNullOrEmpty(xmlTextToParse))
@@ -50,6 +49,5 @@ namespace EImece.Domain.Helpers
                 throw new Exception(string.Format("Unable to convert to given string into the type {0}. See inner exception for details.", typeof(T)), e);
             }
         }
-
     }
 }

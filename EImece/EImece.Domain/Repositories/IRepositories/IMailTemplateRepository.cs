@@ -8,4 +8,3 @@ namespace EImece.Domain.Repositories.IRepositories
         MailTemplate GetMailTemplateByName(string templatename);
     }
 }
-

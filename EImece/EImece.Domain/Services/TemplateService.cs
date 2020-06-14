@@ -12,10 +12,12 @@ namespace EImece.Domain.Services
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ITemplateRepository TemplateRepository { get; set; }
+
         public TemplateService(ITemplateRepository repository) : base(repository)
         {
             TemplateRepository = repository;
         }
+
         public List<Template> GetAllActiveTemplates()
         {
             var cacheKey = String.Format("GetAllActiveTemplates");
@@ -27,10 +29,12 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         public override Template GetSingle(int id)
         {
             return GetTemplate(id);
         }
+
         public Template GetTemplate(int id)
         {
             if (id == 0)

@@ -12,9 +12,8 @@ namespace EImece.Domain.Services
 {
     public class SettingService : BaseEntityService<Setting>, ISettingService
     {
-
-
         private ISettingRepository SettingRepository { get; set; }
+
         public SettingService(ISettingRepository repository) : base(repository)
         {
             SettingRepository = repository;
@@ -24,14 +23,17 @@ namespace EImece.Domain.Services
         {
             return base.GetAll();
         }
+
         public override List<Setting> GetActiveBaseEntities(bool? isActive, int? language)
         {
             return base.GetActiveBaseEntities(isActive, language);
         }
+
         public override Setting GetSingle(int id)
         {
             return base.GetSingle(id);
         }
+
         public List<Setting> GetAllActiveSettings()
         {
             var cacheKey = String.Format("GetAllActiveSettings");
@@ -44,6 +46,7 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         private List<Setting> GetAllSettings()
         {
             var cacheKey = String.Format("GetAllSettings");
@@ -56,6 +59,7 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         public string GetSettingByKey(string key)
         {
             var allSettings = GetAllSettings();
@@ -68,7 +72,6 @@ namespace EImece.Domain.Services
             {
                 return String.Empty;
             }
-
         }
 
         public Setting GetSettingObjectByKey(string key)
@@ -110,7 +113,6 @@ namespace EImece.Domain.Services
         {
             var result = new SettingModel();
 
-
             Type type = typeof(SettingModel);
             List<Setting> Settings = GetAllSettings().Where(r => ApplicationConfigs.AdminSetting.Equals(r.Description)).ToList();
             // Loop over properties.
@@ -137,7 +139,6 @@ namespace EImece.Domain.Services
                         propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
                     }
                 }
-
             }
 
             return result;
@@ -164,7 +165,6 @@ namespace EImece.Domain.Services
                     setting.SettingValue = value.ToStr();
                     SaveOrEditEntity(setting);
                 }
-
             }
         }
     }

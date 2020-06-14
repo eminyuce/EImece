@@ -9,6 +9,7 @@ namespace EImece.Domain.Scheduler.Jobs
     public class HelloJob : IJob
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public async Task Execute(IJobExecutionContext context)
         {
             JobKey key = context.JobDetail.Key;

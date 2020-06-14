@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-
 namespace EImece.Domain.Helpers
 {
     /// <summary>
@@ -63,7 +62,7 @@ namespace EImece.Domain.Helpers
         /// <summary>
         /// Combines the first expression with the second using the specified merge function.
         /// </summary>
-        static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
+        private static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
             // zip parameters (map from parameters of second to parameters of first)
             var map = first.Parameters
@@ -77,11 +76,11 @@ namespace EImece.Domain.Helpers
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
         }
 
-        class ParameterRebinder : ExpressionVisitor
+        private class ParameterRebinder : ExpressionVisitor
         {
-            readonly Dictionary<ParameterExpression, ParameterExpression> map;
+            private readonly Dictionary<ParameterExpression, ParameterExpression> map;
 
-            ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
+            private ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
             {
                 this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
             }

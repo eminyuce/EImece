@@ -12,6 +12,5 @@ namespace EImece.Domain.Models.FrontModels
         public List<ProductCategory> ChildrenProductCategories { get; set; }
 
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
-
     }
 }

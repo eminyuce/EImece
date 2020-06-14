@@ -1,55 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
-using EImece.Domain.Services.IServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Services
 {
     public class SiteMapService
     {
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
+
         [Inject]
         public ISettingService SettingService { get; set; }
+
         [Inject]
         public IProductService ProductService { get; set; }
+
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
+
         [Inject]
         public IMenuService MenuService { get; set; }
+
         [Inject]
         public IStoryService StoryService { get; set; }
+
         [Inject]
         public IStoryCategoryService StoryCategoryService { get; set; }
+
         [Inject]
         public ITagService TagService { get; set; }
+
         [Inject]
         public ITagCategoryService TagCategoryService { get; set; }
+
         [Inject]
         public ISubscriberService SubsciberService { get; set; }
+
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
+
         [Inject]
         public ITemplateService TemplateService { get; set; }
+
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
-
 
         public List<SitemapItem> GenerateSiteMap()
         {
@@ -96,7 +102,6 @@ namespace EImece.Domain.Services
                             priority: 1.0);
 
                     sitemapItems.Add(sm);
-
                 }
             }
             catch (Exception ex)
@@ -127,7 +132,6 @@ namespace EImece.Domain.Services
                                    priority: 1.0);
 
                     sitemapItems.Add(sm);
-
                 }
             }
             catch (Exception ex)
@@ -143,7 +147,6 @@ namespace EImece.Domain.Services
                 storyCategories = StoryCategoryService.GetActiveBaseEntitiesFromCache(true, language);
                 foreach (var storyCategory in storyCategories)
                 {
-
                     DateTime? lastModified = storyCategory.UpdatedDate;
                     SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
                              ApplicationConfigs.HttpProtocol),
@@ -152,7 +155,6 @@ namespace EImece.Domain.Services
                                    priority: 1.0);
 
                     sitemapItems.Add(sm);
-
                 }
             }
             catch (Exception ex)
@@ -185,7 +187,6 @@ namespace EImece.Domain.Services
                                    priority: 1.0);
 
                     sitemapItems.Add(sm);
-
                 }
             }
             catch (Exception ex)
@@ -196,14 +197,12 @@ namespace EImece.Domain.Services
 
         private List<ProductCategory> GenerateProductCategorySiteMap(List<SitemapItem> sitemapItems, int language)
         {
-
             List<ProductCategory> productCategories = new List<ProductCategory>();
             try
             {
                 productCategories = ProductCategoryService.GetActiveBaseEntitiesFromCache(true, language);
                 foreach (var productCategory in productCategories)
                 {
-
                     DateTime? lastModified = productCategory.UpdatedDate;
                     SitemapItem sm = new SitemapItem(productCategory.GetDetailPageUrl("Category", "ProductCategories", "",
                              ApplicationConfigs.HttpProtocol),
@@ -212,13 +211,10 @@ namespace EImece.Domain.Services
                                    priority: 1.0);
 
                     sitemapItems.Add(sm);
-
                 }
-
             }
             catch (Exception ex)
             {
-
                 Logger.Error(ex, ex.Message);
             }
 
@@ -235,10 +231,8 @@ namespace EImece.Domain.Services
 
                 foreach (var c in menus)
                 {
-
                     try
                     {
-
                         var p = c.MenuLink.Split("_".ToCharArray());
                         var parts = p.First().Split("-".ToCharArray());
                         var action = parts[1];
@@ -259,14 +253,11 @@ namespace EImece.Domain.Services
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);
 
-
                             sitemapItems.Add(siteMap);
                         }
                         else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
                                                     && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
                         {
-
-
                             var siteMap = new SitemapItem(
                                  new UrlHelper(requestContext).Action(action,
                                  controller,
@@ -276,9 +267,7 @@ namespace EImece.Domain.Services
                                  changeFrequency: SitemapChangeFrequency.Daily,
                                  priority: 1.0);
 
-
                             sitemapItems.Add(siteMap);
-
                         }
                         else
                         {
@@ -291,24 +280,17 @@ namespace EImece.Domain.Services
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);
 
-
                             sitemapItems.Add(siteMap);
-
                         }
-
                     }
                     catch (Exception ex)
                     {
-
                         Logger.Error(ex, ex.Message);
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
-
                 Logger.Error(ex, ex.Message);
             }
         }

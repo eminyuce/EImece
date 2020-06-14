@@ -11,7 +11,6 @@ namespace EImece.Domain.Repositories
 
         public MainPageImageRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
     }
 }

@@ -16,6 +16,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 base.OnActionExecuting(filterContext);
             }
         }
+
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)
@@ -28,6 +29,5 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 base.OnResultExecuting(filterContext);
             }
         }
-
     }
 }

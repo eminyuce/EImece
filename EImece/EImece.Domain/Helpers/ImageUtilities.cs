@@ -13,6 +13,7 @@ namespace EImece.Domain.Helpers
     {
         private const string ErrorMessage = "Could not read image data";
         private const int ChunkSize = 1024;
+
         private static readonly Dictionary<byte[], Func<BinaryReader, Size>> ImageFormatDecoders = new Dictionary<byte[], Func<BinaryReader, Size>>()
         {
             { new byte[]{ 0x42, 0x4D }, DecodeBitmap},
@@ -21,6 +22,7 @@ namespace EImece.Domain.Helpers
             { new byte[]{ 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }, DecodePng },
             { new byte[]{ 0xff, 0xd8 }, DecodeJfif },
         };
+
         public static Tuple<int, int> GetImageDimensions(String imageUrl)
         {
             try
@@ -33,8 +35,8 @@ namespace EImece.Domain.Helpers
             {
                 return new Tuple<int, int>(0, 0);
             }
-
         }
+
         /// <summary>
         /// Retrieve the dimensions of an online image, downloading as little as possible
         /// </summary>
@@ -59,7 +61,6 @@ namespace EImece.Domain.Helpers
                     {
                         moreBytes = false;
                     }
-
                 }
                 catch
                 {
@@ -87,7 +88,6 @@ namespace EImece.Domain.Helpers
                     {
                         return null;
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +101,7 @@ namespace EImece.Domain.Helpers
         /// Gets the dimensions of an image.
         /// </summary>
         /// <returns>The dimensions of the specified image.</returns>
-        /// <exception cref="ArgumentException">The image was of an unrecognized format.</exception>    
+        /// <exception cref="ArgumentException">The image was of an unrecognized format.</exception>
         public static Size GetDimensions(BinaryReader binaryReader)
         {
             int maxMagicBytesLength = ImageFormatDecoders.Keys.OrderByDescending(x => x.Length).First().Length;

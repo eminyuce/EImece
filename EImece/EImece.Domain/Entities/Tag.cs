@@ -8,6 +8,7 @@ namespace EImece.Domain.Entities
     {
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.TagCategoryId))]
         public int TagCategoryId { get; set; }
+
         public TagCategory TagCategory { get; set; }
 
         public ICollection<ProductTag> ProductTags { get; set; }

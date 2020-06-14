@@ -6,7 +6,6 @@ using System.Xml.Linq;
 
 namespace EImece.Domain.Helpers.Extensions
 {
-
     /// <summary>
     /// <see cref="SyndicationFeed"/> extension methods.
     /// </summary>
@@ -14,7 +13,6 @@ namespace EImece.Domain.Helpers.Extensions
     {
         private const string YahooMediaNamespacePrefix = "media";
         private const string YahooMediaNamespace = "http://search.yahoo.com/mrss/";
-
 
         private const string GoogleContentNamespacePrefix = "content";
         private const string GoogleContentNamespace = "http://purl.org/rss/1.0/modules/content/";
@@ -38,10 +36,12 @@ namespace EImece.Domain.Helpers.Extensions
         {
             AddNamespace(feed, YahooMediaNamespacePrefix, YahooMediaNamespace);
         }
+
         public static void AddGoogleContentNameSpace(this SyndicationFeed feed)
         {
             AddNamespace(feed, GoogleContentNamespacePrefix, GoogleContentNamespace);
         }
+
         /// <summary>
         /// Gets the icon URL for the feed.
         /// </summary>
@@ -87,6 +87,7 @@ namespace EImece.Domain.Helpers.Extensions
             var p = new SyndicationElementExtension(element);
             item.ElementExtensions.Add(p);
         }
+
         public static void SetGuid(this SyndicationItem item, string id, bool isPermaLink)
         {
             item.ElementExtensions.Add(new SyndicationElementExtension(new XElement("guid", new XAttribute("isPermaLink", isPermaLink), id)));

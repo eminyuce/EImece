@@ -14,7 +14,6 @@ namespace EImece.Domain
         public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
 
-
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
         public const string SpecialPage = "Special_Page";
@@ -22,8 +21,10 @@ namespace EImece.Domain
         public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
+
         //   public const string Languages = "Languages";
         public const string PrivacyPolicy = "PrivacyPolicy";
+
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
@@ -31,8 +32,8 @@ namespace EImece.Domain
         public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
 
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static string HttpProtocolForImages
         {
             get
@@ -44,6 +45,7 @@ namespace EImece.Domain
                 // return HttpContext.Current.Request.Url.Scheme;
             }
         }
+
         public static string HttpProtocol
         {
             get
@@ -59,33 +61,26 @@ namespace EImece.Domain
         {
             get
             {
-
                 return new { @class = "btn btn-sm btn-danger   glyphicon glyphicon-trash glyphicon-white" }
 ;
-
             }
         }
-
 
         public static string OkStyle
         {
             get
             {
-
                 return "class='gridActiveIcon glyphicon glyphicon-ok-circle'";
-
             }
         }
+
         public static string CancelStyle
         {
             get
             {
-
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
-
             }
         }
-
 
         public static string Domain
         {
@@ -102,6 +97,7 @@ namespace EImece.Domain
                 return GetConfigInt("GridPageSizeNumber", 200);
             }
         }
+
         //en-US,tr-TR
         public static string ApplicationLanguages
         {
@@ -115,10 +111,12 @@ namespace EImece.Domain
         {
             get { return 24; }
         }
+
         public static int MaxItemsCountInFilter
         {
             get { return 20; }
         }
+
         private static void WriteLog(string configName, object defaultValue)
         {
             if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)))
@@ -129,6 +127,7 @@ namespace EImece.Domain
                 }
             }
         }
+
         public static string GetConfigString(string configName, string defaultValue = "")
         {
             var appValue = ConfigurationManager.AppSettings[configName];
@@ -145,7 +144,6 @@ namespace EImece.Domain
 
         public static bool GetConfigBool(string configName, bool defaultValue = false)
         {
-
             var configValue = defaultValue;
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
             {
@@ -156,7 +154,6 @@ namespace EImece.Domain
                 WriteLog(configName, defaultValue);
             }
             return configValue;
-
         }
 
         public static int GetConfigInt(string configName, int defaultValue = 0)
@@ -173,7 +170,6 @@ namespace EImece.Domain
             return configValue == -1 ? defaultValue : configValue;
         }
 
-
         public static int CacheTinySeconds
         {
             get
@@ -181,7 +177,6 @@ namespace EImece.Domain
                 return GetConfigInt("CacheTinySeconds", 1);
             }
         }
-
 
         public static int CacheShortSeconds
         {
@@ -225,17 +220,14 @@ namespace EImece.Domain
 
         public static bool IsDebug
         {
-
             get
             {
-
                 var isDebug = false;
 #if DEBUG
                 isDebug = true;
 #endif
                 return isDebug;
             }
-
         }
 
         public static bool IsMainLanguageSet
@@ -245,6 +237,7 @@ namespace EImece.Domain
                 return MainLanguage > 0;
             }
         }
+
         public static int MainLanguage
         {
             get
@@ -252,6 +245,7 @@ namespace EImece.Domain
                 return GetConfigInt("MainLanguage", 1);
             }
         }
+
         public static string StorageRoot
         {
             get { return Path.Combine(HostingEnvironment.MapPath(ApplicationConfigs.ServerMapPath)); }
@@ -264,8 +258,6 @@ namespace EImece.Domain
                 return GetConfigBool("IsCacheActive", true);
             }
         }
-
-
 
         public static string TempPath = "~/media/tempFiles/";
         public static string ServerMapPath = "~/media/images/";

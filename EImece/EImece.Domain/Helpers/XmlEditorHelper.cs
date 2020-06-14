@@ -21,9 +21,8 @@ namespace EImece.Domain.Helpers
             var template = File.ReadAllText(url);
             var config = GetConfiguration();
 
-
             String result = Engine.Razor.RunCompile(template,
-                "templateKey_"+ id,
+                "templateKey_" + id,
                 null,
                 new
                 {
@@ -54,16 +53,16 @@ namespace EImece.Domain.Helpers
                 configurations = configurations.Replace(component + "values", GetValue(component, "values"));
             }
 
-
-
             return new Tuple<String, String>(configurationComponent, configurations);
         }
+
         private String GetValue(string tag, string atribute)
         {
             var r = String.Format("[{0}]", string.Join(",", GetList(tag, atribute).Select(x => string.Format("'{0}'", x.Trim()))));
             r = GeneralHelper.GetStringTitleCase(r);
             return r;
         }
+
         private List<string> GetListItems(String name)
         {
             var list = ListService.GetListItems();
@@ -78,17 +77,16 @@ namespace EImece.Domain.Helpers
                 return new List<string>();
             }
         }
+
         private List<string> GetList(string tag, string atribute)
         {
             if (atribute.Equals("names", StringComparison.InvariantCultureIgnoreCase))
             {
-
                 if (tag.Equals("group", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return GetListItems("ComponentDisplayNames");
                     // return new List<string> { "Size", "Power", "Other" };
                 }
-
 
                 return GetListItems("ComponentNames");
                 //return new List<string> { "width", "length", "height" };
@@ -96,14 +94,12 @@ namespace EImece.Domain.Helpers
 
             if (atribute.Equals("units", StringComparison.InvariantCultureIgnoreCase))
             {
-
                 return GetListItems("ComponentUnit");
                 //return new List<string> { "inch", "volt", "pound" };
             }
 
             if (atribute.Equals("values", StringComparison.InvariantCultureIgnoreCase))
             {
-
                 var list = ListService.GetListItems();
 
                 return list.Where(r => r.IsValues).OrderBy(r => r.Position).Select(r => r.Name).ToList();
@@ -113,10 +109,7 @@ namespace EImece.Domain.Helpers
 
             return new List<string>
             {
-
             };
         }
-
-
     }
 }

@@ -14,6 +14,7 @@ namespace EImece.Domain.Helpers.ActionResultHelpers
         public string ContentType { get; set; }
         private StringBuilder Comment { get; set; }
         private readonly SyndicationFeedFormatter feed;
+
         public SyndicationFeedFormatter Feed
         {
             get { return feed; }
@@ -36,7 +37,6 @@ namespace EImece.Domain.Helpers.ActionResultHelpers
             if (ContentEncoding != null)
                 response.ContentEncoding = ContentEncoding;
 
-
             String[] lines = Comment
                 .ToString()
                 .Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)
@@ -47,8 +47,6 @@ namespace EImece.Domain.Helpers.ActionResultHelpers
             {
                 response.Output.WriteLine(String.Format("<!-- {0}  -->", line));
             }
-
-
 
             if (feed != null)
                 using (var xmlWriter = new XmlTextWriter(response.Output))

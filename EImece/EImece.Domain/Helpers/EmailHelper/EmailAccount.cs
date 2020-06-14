@@ -59,8 +59,5 @@ namespace EImece.Domain.Helpers.EmailHelper
                 return this.Email;
             }
         }
-
-
-
     }
 }

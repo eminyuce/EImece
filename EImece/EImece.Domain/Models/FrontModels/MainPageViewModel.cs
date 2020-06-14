@@ -7,7 +7,6 @@ namespace EImece.Domain.Models.FrontModels
     {
         public List<MainPageImage> MainPageImages { get; set; }
 
-
         public List<ProductCategory> MainPageProductCategories { set; get; }
 
         public List<Product> MainPageProducts { get; set; }

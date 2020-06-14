@@ -15,6 +15,7 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IProductService ProductService { get; set; }
+
         [Inject]
         public IStoryService StoryService { get; set; }
 
@@ -22,6 +23,7 @@ namespace EImece.Domain.Services
         public IProductCategoryService ProductCategoryService { get; set; }
 
         private IMainPageImageRepository MainPageImageRepository { get; set; }
+
         public MainPageImageService(IMainPageImageRepository repository) : base(repository)
         {
             MainPageImageRepository = repository;
@@ -36,6 +38,7 @@ namespace EImece.Domain.Services
             }
             DeleteEntity(item);
         }
+
         public MainPageViewModel GetMainPageViewModel(int language)
         {
             var cacheKey = String.Format("GetMainPageViewModel-{0}", language);
