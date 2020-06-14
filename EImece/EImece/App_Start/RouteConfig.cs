@@ -122,7 +122,7 @@ namespace EImece
 
             routes.MapRoute(
                name: "ProductDetail",
-               url: "products/{categoryName}/{id}",
+               url: ApplicationConfigs.ProductsControllerRoutingPrefix + "/{categoryName}/{id}", 
                defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );

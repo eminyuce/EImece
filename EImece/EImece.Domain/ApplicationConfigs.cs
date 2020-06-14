@@ -10,11 +10,14 @@ namespace EImece.Domain
 {
     public class ApplicationConfigs
     {
-
+        public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
+        public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
+
+
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
-        public const string Special_Page = "Special_Page";
+        public const string SpecialPage = "Special_Page";
         public const string AdminSetting = "AdminSetting";
         public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";

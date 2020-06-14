@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
@@ -8,8 +9,10 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
+    [RoutePrefix(ApplicationConfigs.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
+ 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 
