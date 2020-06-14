@@ -484,7 +484,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim.
+        ///   Looks up a localized string similar to Resim Durumu.
         /// </summary>
         public static string ImageState {
             get {

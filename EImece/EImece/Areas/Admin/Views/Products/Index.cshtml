@@ -179,21 +179,21 @@ columns.Add(r => r.ImageState
 {
     <ul>
         <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>Active</span>",
-                                                    o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive))
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
+                                                    o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive, AdminResource.State))
 
 
         </li>
         <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>Main Page</span>",
-                                                    o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage))
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
+                                                    o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage, AdminResource.MainPage))
 
 
 
         </li>
         <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>IsCampaign</span>",
-                                                    o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign))
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
+                                                    o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign,AdminResource.IsCampaign))
 
 
 
@@ -208,8 +208,8 @@ columns.Add(r => r.ImageState
     {
         <ul>
             <li>
-                @Html.Raw(String.Format("<span>Image State</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                        o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState))
+                @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                        o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState, AdminResource.ImageState))
 
             </li>
             <li>
