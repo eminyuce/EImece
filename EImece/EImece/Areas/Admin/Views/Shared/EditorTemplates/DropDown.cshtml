@@ -24,7 +24,6 @@
         valueDisplayName = name != null ? name.Value : "";
     }
 }
-@valueDisplayName
 
 
 <div class="form-group">
@@ -34,7 +33,7 @@
     <div class="col-md-5">
         @if (values != null)
         {
-            <select name="@name.Value">
+            <select class="form-control" name="@name.Value">
                 @{
                     var listService = DependencyResolver.Current.GetService<IListService>();
                     var list = listService.GetListByName(values.Value);

@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Linq;
 
 namespace EImece.Tests.Controllers
 {
@@ -171,10 +172,30 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void GetActiveBaseContents()
         {
-            var db = new EImeceContext(ConnectionString);
-            var MainPageImageService = new MainPageImageService(new MainPageImageRepository(db));
-            var breadCrumb = MainPageImageService.GetActiveBaseContents(true, 1);
+            var xdoc = XDocument.Parse(File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\ProductTemplate.xml"));
+            var groups = xdoc.Root.Descendants("group");
 
+                foreach (var group in groups)
+                {
+                    foreach (XElement field in group.Elements())
+                    {
+
+                        var name = field.Attribute("name");
+                        var unit = field.Attribute("unit");
+                        var values = field.Attribute("values");
+                        var display = field.Attribute("display");
+                      // var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                      //  if (dbValueObj == null)
+                      //  {
+                      //      dbValueObj = new ProductSpecification();
+                      //  }
+                    var dbValueObj = new ProductSpecification();
+                    dbValueObj.FieldFormat = field;
+
+                    Console.WriteLine("1)"+name+ "1.1)" + name.Value + " 2)"+unit+" 3)"+values+" 4)"+display+"5)"+ field.Name.LocalName);
+
+                    }
+            }
         }
 
         [TestMethod]

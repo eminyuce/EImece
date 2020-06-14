@@ -24,6 +24,18 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /List/Create
+        /****
+         * 
+         * 
+         *
+         *cat, 1
+        bird, 2
+        dog, 3
+        fish, 4
+        parrot, 5
+        hamster, 6
+        dove, 7
+        */
 
         public ActionResult SaveOrEdit(int id = 0)
         {
@@ -77,27 +89,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(List);
-        }
-
-
-
-        //
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            List content = ListService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-
-            return View(content);
         }
 
         [HttpPost, ActionName("Delete")]

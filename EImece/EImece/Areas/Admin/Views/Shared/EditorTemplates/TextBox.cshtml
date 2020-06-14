@@ -25,19 +25,19 @@
 }
 
  
-<div class="form-group">
-    <div class="col-md-2">
-        @valueDisplayName
-    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            @valueDisplayName
+        </div>
         <div class="col-md-5">
             <input class="form-control" name="@name.Value" type="text" value="@dbValue" />
         </div>
-    <div class="col-md-1">
-        @if (unit != null)
+        <div class="col-md-1">
+            @if (unit != null)
             {
-            @unit.Value
-        }
-    </div>
+                @unit.Value
+            }
+        </div>
     </div>
 
 
