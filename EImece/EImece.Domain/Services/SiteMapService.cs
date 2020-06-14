@@ -51,7 +51,7 @@ namespace EImece.Domain.Services
         public IMailTemplateService MailTemplateService { get; set; }
 
 
-        public new List<SitemapItem> GenerateSiteMap()
+        public List<SitemapItem> GenerateSiteMap()
         {
             List<EImeceLanguage> eImeceLanguages = EnumHelper.GetLanguageEnumListFromWebConfig();
 

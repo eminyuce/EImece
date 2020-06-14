@@ -193,21 +193,30 @@ namespace EImece.Domain.Helpers
         }
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
-            var languagesText = ApplicationConfigs.ApplicationLanguages;
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
-            var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
-            foreach (var lang in languages)
-            {
-                try
-                {
-                    var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-                    selectedLanguages.Add((EImeceLanguage)eImageLang);
-                }
-                catch (Exception)
-                {
 
+            var languagesText = ApplicationConfigs.ApplicationLanguages;
+            if (String.IsNullOrEmpty(languagesText))
+            {
+                selectedLanguages.Add((EImeceLanguage)ApplicationConfigs.MainLanguage);
+            }
+            else
+            {
+                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+                foreach (var lang in languages)
+                {
+                    try
+                    {
+                        var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
+                        selectedLanguages.Add((EImeceLanguage)eImageLang);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
             }
+     
 
             return selectedLanguages;
         }
