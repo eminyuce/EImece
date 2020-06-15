@@ -92,16 +92,16 @@ columns.Add()
 
 
     columns.Add(c => c.Name)
-           .Titled("Title")
+          .Titled(AdminResource.Name)
            .Filterable(true);
 
     columns.Add(c => c.SettingKey)
-                           .Titled("SettingKey")
+                           .Titled(AdminResource.SettingKey)
                            .Filterable(true);
 
 
     columns.Add(c => c.SettingValue)
-                           .Titled("SettingValue")
+                           .Titled(AdminResource.SettingValue)
                            .Filterable(true);
 
 

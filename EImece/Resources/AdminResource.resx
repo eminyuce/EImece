@@ -214,7 +214,7 @@
     <value>Içerik açıklaması</value>
   </data>
   <data name="ProductCategoryParentId" xml:space="preserve">
-    <value>Ürün Kategorisi Iddd</value>
+    <value>Ürün Kategorisi</value>
   </data>
   <data name="TemplateId" xml:space="preserve">
     <value>Şablon adı</value>
@@ -247,13 +247,13 @@
     <value>Video Url</value>
   </data>
   <data name="MenuParentId" xml:space="preserve">
-    <value>MenuParentId</value>
+    <value>Menu Ana Kategori</value>
   </data>
   <data name="Link" xml:space="preserve">
     <value>Link</value>
   </data>
   <data name="LinkIsActive" xml:space="preserve">
-    <value>LinkIsActive</value>
+    <value>Link aktif mi?</value>
   </data>
   <data name="MenuLink" xml:space="preserve">
     <value>Menu Link</value>
@@ -271,7 +271,7 @@
     <value>Ayar Anahtar Kelimesi</value>
   </data>
   <data name="StoryCategoryId" xml:space="preserve">
-    <value>StoryCategoryId</value>
+    <value>Blog Kategorisi</value>
   </data>
   <data name="StoryCategoryIdErrorMessage" xml:space="preserve">
     <value>Bir Blog Kategorisi seçin</value>
@@ -536,5 +536,110 @@
   </data>
   <data name="ProductSpecTemplateItemList" xml:space="preserve">
     <value>Şablonlarin Deger Listesi</value>
+  </data>
+  <data name="MakeItRootCategory" xml:space="preserve">
+    <value>Ana Kategori Yap</value>
+  </data>
+  <data name="ImageHeight" xml:space="preserve">
+    <value>Resim Boy</value>
+  </data>
+  <data name="ImageWidth" xml:space="preserve">
+    <value>Resim En</value>
+  </data>
+  <data name="MetaKeywords" xml:space="preserve">
+    <value>SEO anahtar kelimeler</value>
+  </data>
+  <data name="NameShort" xml:space="preserve">
+    <value>Kısaltılmış isim</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingScript" xml:space="preserve">
+    <value>Google Analytics Script</value>
+  </data>
+  <data name="SmtpEmailSettings" xml:space="preserve">
+    <value>E-Posta Ayarları</value>
+  </data>
+  <data name="AdminEmail" xml:space="preserve">
+    <value>AdminEmail</value>
+  </data>
+  <data name="AdminEmailDisplayName" xml:space="preserve">
+    <value>AdminEmailDisplayName</value>
+  </data>
+  <data name="AdminEmailEnableSsl" xml:space="preserve">
+    <value>AdminEmailEnableSsl</value>
+  </data>
+  <data name="AdminEmailHost" xml:space="preserve">
+    <value>AdminEmailHost</value>
+  </data>
+  <data name="AdminEmailPassword" xml:space="preserve">
+    <value>AdminEmailPassword</value>
+  </data>
+  <data name="AdminEmailPort" xml:space="preserve">
+    <value>AdminEmailPort</value>
+  </data>
+  <data name="AdminEmailUseDefaultCredentials" xml:space="preserve">
+    <value>AdminEmailUseDefaultCredentials</value>
+  </data>
+  <data name="AdminUserName" xml:space="preserve">
+    <value>AdminUserName</value>
+  </data>
+  <data name="CompanyAddress" xml:space="preserve">
+    <value>CompanyAddress</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>CompanyName</value>
+  </data>
+  <data name="DefaultImageHeight" xml:space="preserve">
+    <value>DefaultImageHeight</value>
+  </data>
+  <data name="DefaultImageWidth" xml:space="preserve">
+    <value>DefaultImageWidth</value>
+  </data>
+  <data name="FacebookWebSiteLink" xml:space="preserve">
+    <value>FacebookWebSiteLink</value>
+  </data>
+  <data name="FooterDescription" xml:space="preserve">
+    <value>FooterDescription</value>
+  </data>
+  <data name="FooterEmailListDescription" xml:space="preserve">
+    <value>FooterEmailListDescription</value>
+  </data>
+  <data name="GooglePlusWebSiteLink" xml:space="preserve">
+    <value>GooglePlusWebSiteLink</value>
+  </data>
+  <data name="InstagramWebSiteLink" xml:space="preserve">
+    <value>InstagramWebSiteLink</value>
+  </data>
+  <data name="IsProductPriceEnable" xml:space="preserve">
+    <value>IsProductPriceEnable</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Diller</value>
+  </data>
+  <data name="LinkedinWebSiteLink" xml:space="preserve">
+    <value>LinkedinWebSiteLink</value>
+  </data>
+  <data name="SiteIndexMetaDescription" xml:space="preserve">
+    <value>SiteIndexMetaDescription</value>
+  </data>
+  <data name="SiteIndexMetaKeywords" xml:space="preserve">
+    <value>SiteIndexMetaKeywords</value>
+  </data>
+  <data name="SiteIndexMetaTitle" xml:space="preserve">
+    <value>SiteIndexMetaTitle</value>
+  </data>
+  <data name="TwitterWebSiteLink" xml:space="preserve">
+    <value>TwitterWebSiteLink</value>
+  </data>
+  <data name="WebSiteCompanyEmailAddress" xml:space="preserve">
+    <value>WebSiteCompanyEmailAddress</value>
+  </data>
+  <data name="WebSiteCompanyPhoneAndLocation" xml:space="preserve">
+    <value>WebSiteCompanyPhoneAndLocation</value>
+  </data>
+  <data name="YoutubeWebSiteLink" xml:space="preserve">
+    <value>YoutubeWebSiteLink</value>
+  </data>
+  <data name="Zopim" xml:space="preserve">
+    <value>Zopim</value>
   </data>
 </root>

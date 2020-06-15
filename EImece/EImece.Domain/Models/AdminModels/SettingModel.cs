@@ -1,64 +1,109 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Resources;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Models.AdminModels
 {
     public class SettingModel
     {
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailHost))]
         public string AdminEmailHost { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailPassword))]
         public string AdminEmailPassword { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailEnableSsl))]
         public bool AdminEmailEnableSsl { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailPort))]
         public int AdminEmailPort { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailDisplayName))]
         public string AdminEmailDisplayName { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmail))]
         public string AdminEmail { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailUseDefaultCredentials))]
         public bool AdminEmailUseDefaultCredentials { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminUserName))]
         public string AdminUserName { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.DefaultImageHeight))]
         public int DefaultImageHeight { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.DefaultImageWidth))]
         public int DefaultImageWidth { get; set; }
 
         //public string SiteIndexMetaTitle { get; set; }
         //public string SiteIndexMetaDescription { get; set; }
         //public string SiteIndexMetaKeywords { get; set; }
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GoogleAnalyticsTrackingScript))]
         public string GoogleAnalyticsTrackingScript { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FacebookWebSiteLink))]
         public string FacebookWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GooglePlusWebSiteLink))]
         public string GooglePlusWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LinkedinWebSiteLink))]
         public string LinkedinWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.TwitterWebSiteLink))]
         public string TwitterWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.InstagramWebSiteLink))]
         public string InstagramWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.YoutubeWebSiteLink))]
         public string YoutubeWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Zopim))]
         public string Zopim { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CompanyAddress))]
         public string CompanyAddress { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WebSiteCompanyPhoneAndLocation))]
         public string WebSiteCompanyPhoneAndLocation { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WebSiteCompanyEmailAddress))]
         public string WebSiteCompanyEmailAddress { get; set; }
 
         //public string PrivacyPolicy { get; set; }
         //public string TermsAndConditions { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsProductPriceEnable))]
         public bool IsProductPriceEnable { get; set; }
 
-        [Display(Name = "Site Languages")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Languages))]
         public string Languages { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CompanyName))]
         public string CompanyName { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SiteIndexMetaTitle))]
         public string SiteIndexMetaTitle { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SiteIndexMetaDescription))]
         public string SiteIndexMetaDescription { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SiteIndexMetaKeywords))]
         public string SiteIndexMetaKeywords { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterDescription))]
         public string FooterDescription { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterEmailListDescription))]
         public string FooterEmailListDescription { get; set; }
     }
 }

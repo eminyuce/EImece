@@ -79,6 +79,69 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AdminEmail.
+        /// </summary>
+        public static string AdminEmail {
+            get {
+                return ResourceManager.GetString("AdminEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminEmailDisplayName.
+        /// </summary>
+        public static string AdminEmailDisplayName {
+            get {
+                return ResourceManager.GetString("AdminEmailDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminEmailEnableSsl.
+        /// </summary>
+        public static string AdminEmailEnableSsl {
+            get {
+                return ResourceManager.GetString("AdminEmailEnableSsl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminEmailHost.
+        /// </summary>
+        public static string AdminEmailHost {
+            get {
+                return ResourceManager.GetString("AdminEmailHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminEmailPassword.
+        /// </summary>
+        public static string AdminEmailPassword {
+            get {
+                return ResourceManager.GetString("AdminEmailPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminEmailPort.
+        /// </summary>
+        public static string AdminEmailPort {
+            get {
+                return ResourceManager.GetString("AdminEmailPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminEmailUseDefaultCredentials.
+        /// </summary>
+        public static string AdminEmailUseDefaultCredentials {
+            get {
+                return ResourceManager.GetString("AdminEmailUseDefaultCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Admin Genel Ayarlar.
         /// </summary>
         public static string AdminGeneralSettings {
@@ -111,6 +174,15 @@ namespace Resources {
         public static string AdminSettings {
             get {
                 return ResourceManager.GetString("AdminSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdminUserName.
+        /// </summary>
+        public static string AdminUserName {
+            get {
+                return ResourceManager.GetString("AdminUserName", resourceCulture);
             }
         }
         
@@ -187,6 +259,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CompanyAddress.
+        /// </summary>
+        public static string CompanyAddress {
+            get {
+                return ResourceManager.GetString("CompanyAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CompanyName.
+        /// </summary>
+        public static string CompanyName {
+            get {
+                return ResourceManager.GetString("CompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yeni şifreyi onayla.
         /// </summary>
         public static string ConfirmNewPassword {
@@ -210,6 +300,24 @@ namespace Resources {
         public static string CurrentPassword {
             get {
                 return ResourceManager.GetString("CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DefaultImageHeight.
+        /// </summary>
+        public static string DefaultImageHeight {
+            get {
+                return ResourceManager.GetString("DefaultImageHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DefaultImageWidth.
+        /// </summary>
+        public static string DefaultImageWidth {
+            get {
+                return ResourceManager.GetString("DefaultImageWidth", resourceCulture);
             }
         }
         
@@ -313,6 +421,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FacebookWebSiteLink.
+        /// </summary>
+        public static string FacebookWebSiteLink {
+            get {
+                return ResourceManager.GetString("FacebookWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dosya Yükleme Sayfası.
         /// </summary>
         public static string FileUploadingPage {
@@ -322,11 +439,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FooterDescription.
+        /// </summary>
+        public static string FooterDescription {
+            get {
+                return ResourceManager.GetString("FooterDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FooterEmailListDescription.
+        /// </summary>
+        public static string FooterEmailListDescription {
+            get {
+                return ResourceManager.GetString("FooterEmailListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şifremi Unuttum.
         /// </summary>
         public static string ForgotPassword {
             get {
                 return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google Analytics Script.
+        /// </summary>
+        public static string GoogleAnalyticsTrackingScript {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTrackingScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GooglePlusWebSiteLink.
+        /// </summary>
+        public static string GooglePlusWebSiteLink {
+            get {
+                return ResourceManager.GetString("GooglePlusWebSiteLink", resourceCulture);
             }
         }
         
@@ -475,6 +628,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resim Boy.
+        /// </summary>
+        public static string ImageHeight {
+            get {
+                return ResourceManager.GetString("ImageHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resimler.
         /// </summary>
         public static string Images {
@@ -489,6 +651,24 @@ namespace Resources {
         public static string ImageState {
             get {
                 return ResourceManager.GetString("ImageState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resim En.
+        /// </summary>
+        public static string ImageWidth {
+            get {
+                return ResourceManager.GetString("ImageWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InstagramWebSiteLink.
+        /// </summary>
+        public static string InstagramWebSiteLink {
+            get {
+                return ResourceManager.GetString("InstagramWebSiteLink", resourceCulture);
             }
         }
         
@@ -511,6 +691,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsProductPriceEnable.
+        /// </summary>
+        public static string IsProductPriceEnable {
+            get {
+                return ResourceManager.GetString("IsProductPriceEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsServices.
         /// </summary>
         public static string IsService {
@@ -529,6 +718,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diller.
+        /// </summary>
+        public static string Languages {
+            get {
+                return ResourceManager.GetString("Languages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link.
         /// </summary>
         public static string Link {
@@ -538,7 +736,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LinkIsActive.
+        ///   Looks up a localized string similar to LinkedinWebSiteLink.
+        /// </summary>
+        public static string LinkedinWebSiteLink {
+            get {
+                return ResourceManager.GetString("LinkedinWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link aktif mi?.
         /// </summary>
         public static string LinkIsActive {
             get {
@@ -646,6 +853,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ana Kategori Yap.
+        /// </summary>
+        public static string MakeItRootCategory {
+            get {
+                return ResourceManager.GetString("MakeItRootCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
         public static string Menu {
@@ -664,7 +880,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuParentId.
+        ///   Looks up a localized string similar to Menu Ana Kategori.
         /// </summary>
         public static string MenuParentId {
             get {
@@ -700,6 +916,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SEO anahtar kelimeler.
+        /// </summary>
+        public static string MetaKeywords {
+            get {
+                return ResourceManager.GetString("MetaKeywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string Name {
@@ -723,6 +948,15 @@ namespace Resources {
         public static string NamePropertyRequiredErrorMessage {
             get {
                 return ResourceManager.GetString("NamePropertyRequiredErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kısaltılmış isim.
+        /// </summary>
+        public static string NameShort {
+            get {
+                return ResourceManager.GetString("NameShort", resourceCulture);
             }
         }
         
@@ -898,7 +1132,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ürün Kategorisi Iddd.
+        ///   Looks up a localized string similar to Ürün Kategorisi.
         /// </summary>
         public static string ProductCategoryParentId {
             get {
@@ -1069,6 +1303,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SiteIndexMetaDescription.
+        /// </summary>
+        public static string SiteIndexMetaDescription {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SiteIndexMetaKeywords.
+        /// </summary>
+        public static string SiteIndexMetaKeywords {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaKeywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SiteIndexMetaTitle.
+        /// </summary>
+        public static string SiteIndexMetaTitle {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-Posta Ayarları.
+        /// </summary>
+        public static string SmtpEmailSettings {
+            get {
+                return ResourceManager.GetString("SmtpEmailSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Durum.
         /// </summary>
         public static string State {
@@ -1123,7 +1393,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StoryCategoryId.
+        ///   Looks up a localized string similar to Blog Kategorisi.
         /// </summary>
         public static string StoryCategoryId {
             get {
@@ -1267,6 +1537,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TwitterWebSiteLink.
+        /// </summary>
+        public static string TwitterWebSiteLink {
+            get {
+                return ResourceManager.GetString("TwitterWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Güncelleme Tarihi.
         /// </summary>
         public static string UpdatedDate {
@@ -1312,11 +1591,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebSiteCompanyEmailAddress.
+        /// </summary>
+        public static string WebSiteCompanyEmailAddress {
+            get {
+                return ResourceManager.GetString("WebSiteCompanyEmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebSiteCompanyPhoneAndLocation.
+        /// </summary>
+        public static string WebSiteCompanyPhoneAndLocation {
+            get {
+                return ResourceManager.GetString("WebSiteCompanyPhoneAndLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web Site Logo.
         /// </summary>
         public static string WebSiteLogo {
             get {
                 return ResourceManager.GetString("WebSiteLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YoutubeWebSiteLink.
+        /// </summary>
+        public static string YoutubeWebSiteLink {
+            get {
+                return ResourceManager.GetString("YoutubeWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zopim.
+        /// </summary>
+        public static string Zopim {
+            get {
+                return ResourceManager.GetString("Zopim", resourceCulture);
             }
         }
     }

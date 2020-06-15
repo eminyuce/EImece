@@ -9,6 +9,7 @@ namespace EImece.Domain.Entities
 {
     public class Product : BaseContent
     {
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NameShort))]
         public string NameShort { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCategoryIdErrorMessage))]

@@ -14,7 +14,7 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageState))]
         public Boolean ImageState { get; set; }
-
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MetaKeywords))]
         public string MetaKeywords { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainImageId))]
@@ -24,9 +24,11 @@ namespace EImece.Domain.Entities
         public virtual FileStorage MainImage { get; set; }
 
         [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageHeight))]
         public int ImageHeight { get; set; }
 
         [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageWidth))]
         public int ImageWidth { get; set; }
 
         public string UpdateUserId { get; set; }
