@@ -194,10 +194,10 @@ window.location='/admin/menus/saveoredit/'+e.id;
     <div class="gridToolBox">
         
         <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default     glyphicon glyphicon-camera glyphicon-white " })
+            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-sm  btn-default     glyphicon glyphicon-camera glyphicon-white " })
         </span>
         <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-sm btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
         </span>
 
         @if (UserRoleHelper.IsDeletedEnableRoles())
@@ -212,7 +212,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
         { "ItemId", d.Id },
         {"controllerName",controllerName},
-        { "DeleteIcon", "gridBtn btn btn-danger glyphicon  glyphicon-remove-circle" },
+        { "DeleteIcon", "gridBtn btn-sm btn btn-danger glyphicon  glyphicon-remove-circle" },
         { "ItemDescription", d.Name } })
     </span>
             }

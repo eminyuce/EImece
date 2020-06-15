@@ -340,7 +340,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Içerik açıklaması.
+        ///   Looks up a localized string similar to İçerik açıklaması.
         /// </summary>
         public static string Description {
             get {

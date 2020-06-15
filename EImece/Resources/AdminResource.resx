@@ -211,7 +211,7 @@
     <value>Pozisyon</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Içerik açıklaması</value>
+    <value>İçerik açıklaması</value>
   </data>
   <data name="ProductCategoryParentId" xml:space="preserve">
     <value>Ürün Kategorisi</value>

@@ -180,7 +180,7 @@ columns.Add()
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
             { "ItemId", d.Id },
             {"controllerName",controllerName},
-            { "DeleteIcon", "gridBtn btn btn-danger  glyphicon  glyphicon-remove-circle" },
+            { "DeleteIcon", "gridBtn btn-sm btn btn-danger  glyphicon  glyphicon-remove-circle" },
             { "ItemDescription", d.Name } });
     }
     else
