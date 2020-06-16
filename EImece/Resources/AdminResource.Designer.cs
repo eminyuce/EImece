@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lütfen Güvenlik Sorusunu Cevaplayın (İpucu: İki sayının toplamı).
+        /// </summary>
+        public static string AnswerSecurityQuestion {
+            get {
+                return ResourceManager.GetString("AnswerSecurityQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emin misiniz?.
         /// </summary>
         public static string AreYouSure {
@@ -259,6 +268,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kod.
+        /// </summary>
+        public static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CompanyAddress.
         /// </summary>
         public static string CompanyAddress {
@@ -282,6 +300,15 @@ namespace Resources {
         public static string ConfirmNewPassword {
             get {
                 return ResourceManager.GetString("ConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Şifreyi Onayla.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
             }
         }
         
@@ -435,6 +462,15 @@ namespace Resources {
         public static string FileUploadingPage {
             get {
                 return ResourceManager.GetString("FileUploadingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İsim.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
             }
         }
         
@@ -727,6 +763,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Soyisim.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link.
         /// </summary>
         public static string Link {
@@ -759,6 +804,15 @@ namespace Resources {
         public static string Lists {
             get {
                 return ResourceManager.GetString("Lists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giriş.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         
@@ -1024,6 +1078,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Şifre.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Şifre ve onay şifresi eşleşmiyor..
+        /// </summary>
+        public static string PasswordAndConfirmationPasswordDoNotMatch {
+            get {
+                return ResourceManager.GetString("PasswordAndConfirmationPasswordDoNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tel No.
         /// </summary>
         public static string PhoneNumber {
@@ -1222,6 +1294,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beni hatırla?.
+        /// </summary>
+        public static string RememberMe {
+            get {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu tarayıcıyı hatırla?.
+        /// </summary>
+        public static string RememberThisBrowser {
+            get {
+                return ResourceManager.GetString("RememberThisBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Roler.
         /// </summary>
         public static string Roles {
@@ -1272,6 +1362,15 @@ namespace Resources {
         public static string SelectedCategory {
             get {
                 return ResourceManager.GetString("SelectedCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-Posta Link Yolla.
+        /// </summary>
+        public static string SendEmailLink {
+            get {
+                return ResourceManager.GetString("SendEmailLink", resourceCulture);
             }
         }
         

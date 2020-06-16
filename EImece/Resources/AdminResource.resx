@@ -642,4 +642,37 @@
   <data name="Zopim" xml:space="preserve">
     <value>Zopim</value>
   </data>
+  <data name="AnswerSecurityQuestion" xml:space="preserve">
+    <value>Lütfen Güvenlik Sorusunu Cevaplayın (İpucu: İki sayının toplamı)</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kod</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Şifreyi Onayla</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>İsim</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Soyisim</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Şifre</value>
+  </data>
+  <data name="PasswordAndConfirmationPasswordDoNotMatch" xml:space="preserve">
+    <value>Şifre ve onay şifresi eşleşmiyor.</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Beni hatırla?</value>
+  </data>
+  <data name="RememberThisBrowser" xml:space="preserve">
+    <value>Bu tarayıcıyı hatırla?</value>
+  </data>
+  <data name="SendEmailLink" xml:space="preserve">
+    <value>E-Posta Link Yolla</value>
+  </data>
 </root>

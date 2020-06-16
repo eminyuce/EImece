@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Resources;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EImece.Models
@@ -6,7 +7,8 @@ namespace EImece.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [EmailAddress]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
     }
 
@@ -20,6 +22,7 @@ namespace EImece.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
         public bool RememberMe { get; set; }
     }
 
@@ -29,39 +32,40 @@ namespace EImece.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Code))]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberThisBrowser))]
         public bool RememberBrowser { get; set; }
-
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
         public bool RememberMe { get; set; }
     }
 
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [EmailAddress]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
         [EmailAddress]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
         public bool RememberMe { get; set; }
 
-        [Display(Name = "Please Answer Security Question (Hint:Sum of two number)")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
         public string Captcha { get; set; }
     }
 
@@ -69,26 +73,26 @@ namespace EImece.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
+        [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "First Name")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = "Last Name")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string LastName { get; set; }
 
         //[Required]
@@ -112,19 +116,20 @@ namespace EImece.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }
-
+        
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
+        [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
+
 
         public string Code { get; set; }
     }
@@ -133,7 +138,7 @@ namespace EImece.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
     }
 }
