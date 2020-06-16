@@ -403,6 +403,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kurtarmak için E-postanızı Girin.
+        /// </summary>
+        public static string EnterYourEmailToRecover {
+            get {
+                return ResourceManager.GetString("EnterYourEmailToRecover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Genel açıklama.
         /// </summary>
         public static string EntityDescriptionPage {

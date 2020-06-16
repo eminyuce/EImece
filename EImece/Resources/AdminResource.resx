@@ -675,4 +675,7 @@
   <data name="SendEmailLink" xml:space="preserve">
     <value>E-Posta Link Yolla</value>
   </data>
+  <data name="EnterYourEmailToRecover" xml:space="preserve">
+    <value>Kurtarmak için E-postanızı Girin</value>
+  </data>
 </root>
