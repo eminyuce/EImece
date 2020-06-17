@@ -313,7 +313,7 @@
     <value>Ürün Sayfası</value>
   </data>
   <data name="AllProductLinkText" xml:space="preserve">
-    <value>AllProductLinkText</value>
+    <value>Tüm Ürünlerin Linki</value>
   </data>
   <data name="IsCampaign" xml:space="preserve">
     <value>Kampanyada mı?</value>
@@ -328,7 +328,7 @@
     <value>Ebeveyn için aynı menüyü seçemezsiniz</value>
   </data>
   <data name="ProductSameSelectionErrorMessage" xml:space="preserve">
-    <value>ProductSameSelectionErrorMessage</value>
+    <value>Ürün Aynı Seçim Hata Mesajı</value>
   </data>
   <data name="MenuTreeName" xml:space="preserve">
     <value>Menü Ağacı Adı</value>
@@ -421,7 +421,7 @@
     <value>Giriş Sayfası</value>
   </data>
   <data name="AdminSettings" xml:space="preserve">
-    <value>Admin Ayarlari</value>
+    <value>Yönetici Ayarlari</value>
   </data>
   <data name="ChangePassword" xml:space="preserve">
     <value>Şifre değiştir</value>
@@ -559,85 +559,85 @@
     <value>E-Posta Ayarları</value>
   </data>
   <data name="AdminEmail" xml:space="preserve">
-    <value>AdminEmail</value>
+    <value>Yönetici E-postası</value>
   </data>
   <data name="AdminEmailDisplayName" xml:space="preserve">
-    <value>AdminEmailDisplayName</value>
+    <value>Yönetici E-posta Görünen Adı</value>
   </data>
   <data name="AdminEmailEnableSsl" xml:space="preserve">
-    <value>AdminEmailEnableSsl</value>
+    <value>Yönetici E-postasını SSL Etkinleştir </value>
   </data>
   <data name="AdminEmailHost" xml:space="preserve">
-    <value>AdminEmailHost</value>
+    <value>Yönetici E-posta Host</value>
   </data>
   <data name="AdminEmailPassword" xml:space="preserve">
-    <value>AdminEmailPassword</value>
+    <value>Yönetici E-posta Parolası</value>
   </data>
   <data name="AdminEmailPort" xml:space="preserve">
-    <value>AdminEmailPort</value>
+    <value>Yönetici E-posta Port</value>
   </data>
   <data name="AdminEmailUseDefaultCredentials" xml:space="preserve">
-    <value>AdminEmailUseDefaultCredentials</value>
+    <value>Yönetici E-postası Varsayılan Kimlik Bilgilerini Kullan</value>
   </data>
   <data name="AdminUserName" xml:space="preserve">
-    <value>AdminUserName</value>
+    <value>Yönetici Kullanıcı Adı</value>
   </data>
   <data name="CompanyAddress" xml:space="preserve">
-    <value>CompanyAddress</value>
+    <value>Şirket adresi</value>
   </data>
   <data name="CompanyName" xml:space="preserve">
-    <value>CompanyName</value>
+    <value>Şirket Adı</value>
   </data>
   <data name="DefaultImageHeight" xml:space="preserve">
-    <value>DefaultImageHeight</value>
+    <value>Varsayılan Resim Yüksekliği</value>
   </data>
   <data name="DefaultImageWidth" xml:space="preserve">
-    <value>DefaultImageWidth</value>
+    <value>Varsayılan Resim Genişliği</value>
   </data>
   <data name="FacebookWebSiteLink" xml:space="preserve">
-    <value>FacebookWebSiteLink</value>
+    <value>Facebook Link</value>
   </data>
   <data name="FooterDescription" xml:space="preserve">
-    <value>FooterDescription</value>
+    <value>Altbilgi Açıklaması</value>
   </data>
   <data name="FooterEmailListDescription" xml:space="preserve">
-    <value>FooterEmailListDescription</value>
+    <value>Altbilgi E-posta Listesi Açıklaması</value>
   </data>
   <data name="GooglePlusWebSiteLink" xml:space="preserve">
-    <value>GooglePlusWebSiteLink</value>
+    <value>GooglePlus Link</value>
   </data>
   <data name="InstagramWebSiteLink" xml:space="preserve">
-    <value>InstagramWebSiteLink</value>
+    <value>Instagram Link</value>
   </data>
   <data name="IsProductPriceEnable" xml:space="preserve">
-    <value>IsProductPriceEnable</value>
+    <value>Ürün Fiyatı Etkin mi?</value>
   </data>
   <data name="Languages" xml:space="preserve">
     <value>Diller</value>
   </data>
   <data name="LinkedinWebSiteLink" xml:space="preserve">
-    <value>LinkedinWebSiteLink</value>
+    <value>Linkedin Link</value>
   </data>
   <data name="SiteIndexMetaDescription" xml:space="preserve">
-    <value>SiteIndexMetaDescription</value>
+    <value>Site Dizini Meta Açıklama</value>
   </data>
   <data name="SiteIndexMetaKeywords" xml:space="preserve">
-    <value>SiteIndexMetaKeywords</value>
+    <value>Site Dizini Meta Anahtar Kelimeleri</value>
   </data>
   <data name="SiteIndexMetaTitle" xml:space="preserve">
-    <value>SiteIndexMetaTitle</value>
+    <value>Site Dizini Meta Başlığı</value>
   </data>
   <data name="TwitterWebSiteLink" xml:space="preserve">
-    <value>TwitterWebSiteLink</value>
+    <value>Twitter Link</value>
   </data>
   <data name="WebSiteCompanyEmailAddress" xml:space="preserve">
-    <value>WebSiteCompanyEmailAddress</value>
+    <value>Web Sitesi Şirketi E-posta Adresi</value>
   </data>
   <data name="WebSiteCompanyPhoneAndLocation" xml:space="preserve">
-    <value>WebSiteCompanyPhoneAndLocation</value>
+    <value>Şirket Telefon ve Adresi</value>
   </data>
   <data name="YoutubeWebSiteLink" xml:space="preserve">
-    <value>YoutubeWebSiteLink</value>
+    <value>Youtube Link</value>
   </data>
   <data name="Zopim" xml:space="preserve">
     <value>Zopim</value>

@@ -1,11 +1,14 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.Entity.Validation;
 using System.Linq.Expressions;
 
@@ -13,6 +16,7 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
+  
         private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
@@ -48,8 +52,8 @@ namespace EImece.Domain.Services
             }
             else
             {
-                item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
-                item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
+                item.ImageHeight = SettingService.GetSettingByKey(ApplicationConfigs.DefaultImageHeight).ToInt();
+                item.ImageWidth = SettingService.GetSettingByKey(ApplicationConfigs.DefaultImageWidth).ToInt();
             }
 
             return item;
@@ -84,6 +88,11 @@ namespace EImece.Domain.Services
 
         public new virtual T SaveOrEditEntity(T entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentException("entity cannot be empty");
+            }
+
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
@@ -103,8 +112,13 @@ namespace EImece.Domain.Services
 
         public virtual new void DeleteBaseEntity(List<string> values)
         {
+            if (values.IsNullOrEmpty())
+            {
+                throw new ArgumentException("List cannot be empty");
+            }
             try
             {
+
                 foreach (String v in values)
                 {
                     var id = v.ToInt();

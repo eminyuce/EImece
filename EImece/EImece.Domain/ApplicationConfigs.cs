@@ -10,6 +10,8 @@ namespace EImece.Domain
 {
     public class ApplicationConfigs
     {
+        public const string DefaultImageHeight = "DefaultImageHeight";
+        public const string DefaultImageWidth = "DefaultImageWidth";
         public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
         public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";

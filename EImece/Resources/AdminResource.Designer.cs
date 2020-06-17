@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmail.
+        ///   Looks up a localized string similar to Yönetici E-postası.
         /// </summary>
         public static string AdminEmail {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmailDisplayName.
+        ///   Looks up a localized string similar to Yönetici E-posta Görünen Adı.
         /// </summary>
         public static string AdminEmailDisplayName {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmailEnableSsl.
+        ///   Looks up a localized string similar to Yönetici E-postasını SSL Etkinleştir .
         /// </summary>
         public static string AdminEmailEnableSsl {
             get {
@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmailHost.
+        ///   Looks up a localized string similar to Yönetici E-posta Host.
         /// </summary>
         public static string AdminEmailHost {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmailPassword.
+        ///   Looks up a localized string similar to Yönetici E-posta Parolası.
         /// </summary>
         public static string AdminEmailPassword {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmailPort.
+        ///   Looks up a localized string similar to Yönetici E-posta Port.
         /// </summary>
         public static string AdminEmailPort {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminEmailUseDefaultCredentials.
+        ///   Looks up a localized string similar to Yönetici E-postası Varsayılan Kimlik Bilgilerini Kullan.
         /// </summary>
         public static string AdminEmailUseDefaultCredentials {
             get {
@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Ayarlari.
+        ///   Looks up a localized string similar to Yönetici Ayarlari.
         /// </summary>
         public static string AdminSettings {
             get {
@@ -178,7 +178,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AdminUserName.
+        ///   Looks up a localized string similar to Yönetici Kullanıcı Adı.
         /// </summary>
         public static string AdminUserName {
             get {
@@ -187,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AllProductLinkText.
+        ///   Looks up a localized string similar to Tüm Ürünlerin Linki.
         /// </summary>
         public static string AllProductLinkText {
             get {
@@ -277,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CompanyAddress.
+        ///   Looks up a localized string similar to Şirket adresi.
         /// </summary>
         public static string CompanyAddress {
             get {
@@ -286,7 +286,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CompanyName.
+        ///   Looks up a localized string similar to Şirket Adı.
         /// </summary>
         public static string CompanyName {
             get {
@@ -331,7 +331,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DefaultImageHeight.
+        ///   Looks up a localized string similar to Varsayılan Resim Yüksekliği.
         /// </summary>
         public static string DefaultImageHeight {
             get {
@@ -340,7 +340,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DefaultImageWidth.
+        ///   Looks up a localized string similar to Varsayılan Resim Genişliği.
         /// </summary>
         public static string DefaultImageWidth {
             get {
@@ -457,7 +457,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FacebookWebSiteLink.
+        ///   Looks up a localized string similar to Facebook Link.
         /// </summary>
         public static string FacebookWebSiteLink {
             get {
@@ -484,7 +484,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FooterDescription.
+        ///   Looks up a localized string similar to Altbilgi Açıklaması.
         /// </summary>
         public static string FooterDescription {
             get {
@@ -493,7 +493,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FooterEmailListDescription.
+        ///   Looks up a localized string similar to Altbilgi E-posta Listesi Açıklaması.
         /// </summary>
         public static string FooterEmailListDescription {
             get {
@@ -520,7 +520,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GooglePlusWebSiteLink.
+        ///   Looks up a localized string similar to GooglePlus Link.
         /// </summary>
         public static string GooglePlusWebSiteLink {
             get {
@@ -709,7 +709,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InstagramWebSiteLink.
+        ///   Looks up a localized string similar to Instagram Link.
         /// </summary>
         public static string InstagramWebSiteLink {
             get {
@@ -736,7 +736,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsProductPriceEnable.
+        ///   Looks up a localized string similar to Ürün Fiyatı Etkin mi?.
         /// </summary>
         public static string IsProductPriceEnable {
             get {
@@ -790,7 +790,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LinkedinWebSiteLink.
+        ///   Looks up a localized string similar to Linkedin Link.
         /// </summary>
         public static string LinkedinWebSiteLink {
             get {
@@ -1267,7 +1267,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductSameSelectionErrorMessage.
+        ///   Looks up a localized string similar to Ürün Aynı Seçim Hata Mesajı.
         /// </summary>
         public static string ProductSameSelectionErrorMessage {
             get {
@@ -1411,7 +1411,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SiteIndexMetaDescription.
+        ///   Looks up a localized string similar to Site Dizini Meta Açıklama.
         /// </summary>
         public static string SiteIndexMetaDescription {
             get {
@@ -1420,7 +1420,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SiteIndexMetaKeywords.
+        ///   Looks up a localized string similar to Site Dizini Meta Anahtar Kelimeleri.
         /// </summary>
         public static string SiteIndexMetaKeywords {
             get {
@@ -1429,7 +1429,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SiteIndexMetaTitle.
+        ///   Looks up a localized string similar to Site Dizini Meta Başlığı.
         /// </summary>
         public static string SiteIndexMetaTitle {
             get {
@@ -1645,7 +1645,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TwitterWebSiteLink.
+        ///   Looks up a localized string similar to Twitter Link.
         /// </summary>
         public static string TwitterWebSiteLink {
             get {
@@ -1699,7 +1699,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebSiteCompanyEmailAddress.
+        ///   Looks up a localized string similar to Web Sitesi Şirketi E-posta Adresi.
         /// </summary>
         public static string WebSiteCompanyEmailAddress {
             get {
@@ -1708,7 +1708,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebSiteCompanyPhoneAndLocation.
+        ///   Looks up a localized string similar to Şirket Telefon ve Adresi.
         /// </summary>
         public static string WebSiteCompanyPhoneAndLocation {
             get {
@@ -1726,7 +1726,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to YoutubeWebSiteLink.
+        ///   Looks up a localized string similar to Youtube Link.
         /// </summary>
         public static string YoutubeWebSiteLink {
             get {
