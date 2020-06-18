@@ -41,6 +41,10 @@ namespace EImece.Domain.Services
 
         public virtual T GetBaseContent(int id)
         {
+            if(id == 0)
+            {
+                throw new ArgumentException("Id cannot be zero");
+            }
             var item = BaseContentRepository.GetBaseContent(id);
             if (item.MainImageId.HasValue && item.MainImageId > 0)
             {

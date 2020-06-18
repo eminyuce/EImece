@@ -84,6 +84,7 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
+            int contentId = 0;
             try
             {
                 if (ModelState.IsValid)
@@ -103,7 +104,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         product.Lang = CurrentLanguage;
                         ProductService.SaveOrEditEntity(product);
-                        int contentId = product.Id;
+                        contentId = product.Id;
 
                         ProductService.SaveProductTags(product.Id, tags);
 
@@ -131,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
                 product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
-            product = ProductService.GetBaseContent(product.Id);
+            product = contentId==0 ? product : ProductService.GetBaseContent(contentId);
             return View(product);
         }
 
