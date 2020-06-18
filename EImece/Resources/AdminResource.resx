@@ -690,4 +690,7 @@
   <data name="SelectRoleAssignments" xml:space="preserve">
     <value>Rol Atamalarını Seçin</value>
   </data>
+  <data name="GeneralSaveErrorMessage" xml:space="preserve">
+    <value>Değişiklikler kaydedilemedi. Tekrar deneyin ve sorun devam ederse sistem yöneticinize başvurun.</value>
+  </data>
 </root>

@@ -16,13 +16,14 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ProductsController : BaseAdminController
     {
+       
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index(int id = 0, String search = "")
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey("IsProductPriceEnable");
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
@@ -91,7 +92,7 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     if (product.ProductCategoryId == 0)
                     {
-                        ModelState.AddModelError("ProductCategoryId", "You should select category from category tree.");
+                        ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
                     }
                     else
                     {
@@ -122,7 +123,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, product);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
             }
 
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -154,7 +155,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, product);
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return View(product);

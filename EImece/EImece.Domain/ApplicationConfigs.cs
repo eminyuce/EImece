@@ -15,7 +15,7 @@ namespace EImece.Domain
         public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
         public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
-
+        public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
         public const string SpecialPage = "Special_Page";
@@ -30,7 +30,6 @@ namespace EImece.Domain
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
-        public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
 

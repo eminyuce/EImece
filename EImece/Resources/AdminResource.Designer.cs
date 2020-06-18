@@ -520,6 +520,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Değişiklikler kaydedilemedi. Tekrar deneyin ve sorun devam ederse sistem yöneticinize başvurun..
+        /// </summary>
+        public static string GeneralSaveErrorMessage {
+            get {
+                return ResourceManager.GetString("GeneralSaveErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kullanıcı için Yeni Şifre Oluştur.
         /// </summary>
         public static string GenerateNewPasswordforUser {
