@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers;
 using Ninject;
 using NLog;
+using Resources;
 using System;
 using System.Data;
 using System.Linq;
@@ -78,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.Message, template);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator." + ex.Message.ToString());
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             return View(template);
@@ -117,7 +118,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete template:" + ex.StackTrace, template);
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
             }
 
             return View(template);

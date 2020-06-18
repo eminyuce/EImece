@@ -3,6 +3,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using Microsoft.AspNet.Identity;
 using NLog;
+using Resources;
 using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
@@ -74,7 +75,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, MailTemplate);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
             }
             RazorRenderResult result = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
             ViewBag.RazorRenderResult = result;
@@ -99,7 +100,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
             }
 
             return View(MailTemplate);
