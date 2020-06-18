@@ -84,22 +84,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             return View(template);
         }
-
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Template content = TemplateService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(content);
-        }
+ 
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

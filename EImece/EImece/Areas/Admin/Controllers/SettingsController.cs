@@ -237,23 +237,6 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("WebSiteLogo", new { id = webSiteLogoSetting.Id });
         }
 
-        //
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Setting content = SettingService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(content);
-        }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

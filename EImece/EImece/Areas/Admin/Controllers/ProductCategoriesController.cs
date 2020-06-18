@@ -104,33 +104,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(productCategory);
         }
 
-        //
-        // GET: /ProductCategory/Delete/5
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            ProductCategory content = ProductCategoryService.GetSingle(id);
-            var leaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-            if (leaves.Any(r => r.Id == id))
-            {
-                return View(content);
-            }
-            else
-            {
-                return Content("You cannot delete the parent");
-            }
-        }
-
+      
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

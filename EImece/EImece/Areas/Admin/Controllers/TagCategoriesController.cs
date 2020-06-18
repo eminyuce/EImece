@@ -72,23 +72,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(TagCategory);
         }
 
-        //
-        [DeleteAuthorize()]
-        public ActionResult Delete(int id = 0)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            TagCategory content = TagCategoryService.GetSingle(id);
-            if (content == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(content);
-        }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
