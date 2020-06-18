@@ -12,10 +12,9 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
 
 }
- 
+
 <h2>
     @category.Name
- 
 </h2>
 <!-- Container -->
 <div class="container">
@@ -27,9 +26,7 @@
             {
                 @Html.DisplayFor(modelItem => story, "Stories")
             }
-
         </div>
-
     </div>
 
     <div class="four columns">
@@ -44,7 +41,6 @@
             </p>
         </div>
 
-
         <!-- Categories -->
         <div class="widget">
             <h3 class="headline">Categories</h3><span class="line"></span><div class="clearfix"></div>
@@ -58,12 +54,9 @@
                             @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
                         </li>
                     }
-
                 </ul>
             </nav>
         </div>
-
-
 
         <!-- Tags -->
         <div class="widget margin-top-10">
@@ -79,8 +72,5 @@
 
         <br>
         <br>
-
     </div>
-
-
 </div>

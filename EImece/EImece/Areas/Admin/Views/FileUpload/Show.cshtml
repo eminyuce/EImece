@@ -1,7 +1,6 @@
 ﻿@model  EImece.Domain.Models.HelperModels.FilesViewModel
 @using EImece.Domain.Helpers
 
-
 @{
     ViewBag.Title = "Show";
 }
@@ -27,9 +26,8 @@
 
             if (file.type.Equals("video/mp4"))
             {
-             
-                <a href="@file.url" title="@file.name" type="video/mp4" data-description="This is a movie."><img src="@file.thumbnailUrl" alt="@file.name"></a>
 
+                <a href="@file.url" title="@file.name" type="video/mp4" data-description="This is a movie."><img src="@file.thumbnailUrl" alt="@file.name"></a>
 
             }
             else

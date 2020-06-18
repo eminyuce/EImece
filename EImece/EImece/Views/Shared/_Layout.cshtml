@@ -34,7 +34,6 @@
     <link href="~/Content/trizzy/css/style.css?v=1" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/blue.css" id="colors">
 
-
     @{
         String cultureName = Thread.CurrentThread.CurrentCulture.Name;
         List<SelectListItem> listItems = new List<SelectListItem>();
@@ -50,12 +49,9 @@
             selectedLang = ApplicationConfigs.MainLanguage;
         }
 
-
-
     }
 </head>
 <body class="fullwidth">
-
 
     <div id="wrapper">
 
@@ -73,15 +69,10 @@
                         }
                     }
 
-
                     @Html.Action("SocialMediaLinks", "Home")
                 </div>
-
             </div>
         </div>
-
-
-
 
         <!-- Header
         ================================================== -->
@@ -91,7 +82,6 @@
             <div class="four columns">
                 <div id="logo">
                     <h1></h1>
-
                 </div>
                 @Html.Action("WebSiteLogo", "Home")
             </div>
@@ -106,7 +96,6 @@
                 </div>
             </div>
 
-
             <!-- Shopping Cart -->
             <div class="twelve columns">
 
@@ -114,12 +103,8 @@
                 <nav class="top-search">
                     @Html.Partial("_SearchProductForm")
                 </nav>
-
             </div>
-
         </div>
-
-
 
         <div class="container">
             <div class="sixteen columns">
@@ -129,10 +114,6 @@
                 </nav>
             </div>
         </div>
-
-
-
-
 
         <div>
             @RenderBody()
@@ -151,8 +132,6 @@
     </div>
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
 
-
-
     <!-- Java Script
     ================================================== -->
     @*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script*@
@@ -161,11 +140,10 @@
     <script src="~/Scripts/trizzy/scripts/jquery-2.1.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
-
     <script src="~/Scripts/eimece.js?v=2"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
        <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
-       <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script> 
+       <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
@@ -186,13 +164,11 @@
     <script src="~/Scripts/trizzy/scripts/custom.js"></script>
     <script src="~/Scripts/cookie-consent.js"></script>
 
-
     @RenderSection("scripts", required: false)
 
     <script src="~/Scripts/cookie-consent.js?v=1"></script>
     <script>
         CookieConsent();
     </script>
-
 </body>
 </html>

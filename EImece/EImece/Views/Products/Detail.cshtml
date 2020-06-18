@@ -22,8 +22,6 @@
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
 }
 
-
-
 <section class="titlebar">
     <div class="container">
         <div class="sixteen columns">
@@ -40,7 +38,7 @@
     <div class="eight columns">
         <div class="slider-padding">
             <div id="product-slider" class="royalSlider rsDefault">
-            
+
                 @if (product.ImageState)
                 {
 
@@ -55,11 +53,8 @@
                 }
             </div>
             <div class="clearfix"></div>
-         
         </div>
     </div>
-
-
 
     <!-- Content
     ================================================== -->
@@ -87,8 +82,6 @@
                         </i>
                     </span>
                 }
-
-
             </section>
 
             <!-- Text Parapgraph -->
@@ -104,12 +97,7 @@
                               {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } })
                 </div>
                 <div class="clearfix"></div>
-
             </section>
-
-
-
-
         </div>
     </div>
     <div class="two columns">
@@ -135,7 +123,6 @@
     </div>
 </div>
 
-
 <div class="container">
     <div class="sixteen columns">
         <!-- Tabs Navigation -->
@@ -155,14 +142,9 @@
             </div>
 
             <div class="tab-content" id="tab2">
-
-
-
-
             </div>
 
             <div class="tab-content" id="tab3">
-
 
                 <!-- Contact Form -->
                 <section id="contact">
@@ -175,20 +157,13 @@
                     <div id="result"></div>
 
                     <div class="clearfix"></div>
-
-
                 </section>
 
                 <!-- Contact Form / End -->
-
-
-
             </div>
-
         </div>
     </div>
 </div>
-
 
 @if (relatedProducts.Any())
 {
@@ -198,7 +173,6 @@
 
             <h3 class="headline"> @Resource.SimilairProducts</h3>
             <span class="line margin-bottom-0"></span>
-
 
             @foreach (var product2 in relatedProducts)
             {
@@ -220,25 +194,17 @@
 
                 <h3 class="headline">
                     @Resource.RelatedBlogsForProducts
-
                 </h3>
                 <span class="line margin-bottom-0"></span>
-
 
                 @foreach (var story in relatedStories)
                 {
                     @Html.DisplayFor(modelItem => story, "Story", new { Width = 80, Height = 80 })
                 }
-
             </div>
-
         </div>
     }
 </div>
-
-
-
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

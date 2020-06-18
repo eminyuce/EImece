@@ -161,9 +161,7 @@ $.fn.imagesLoaded = function( callback ) {
 	return deferred ? deferred.promise( $this ) : $this;
 };
 
-
 var PureGrid = (function() {
-
 	var $grid = $( '#og-grid' ),
 	// the items
 	$items = $grid.children( 'li' ),
@@ -188,7 +186,6 @@ var PureGrid = (function() {
 	};
 
 	function init( config ) {
-
 		// the settings..
 		settings = $.extend( true, {}, settings, config );
 
@@ -201,16 +198,13 @@ var PureGrid = (function() {
 				animationSpeed: "3000",
 				slideshowSpeed: "8000",
 				controlNav: false,
-
 			});
 			saveItemInfo( true );
 			initEvents();
 		} );
-
 	}
 
 	function initEvents() {
-
 		// when clicking an item, show the preview with the item´s info and large image.
 		// close the item if already expanded.
 		// also close if clicking on the item´s cross
@@ -228,7 +222,6 @@ var PureGrid = (function() {
 				var $item = $( this );
 
 				$item.stop().animate({ 'height': $newheight});
-
 			});
 			$expanded = $('#og-grid li.expanded');
 			$expanded.removeClass('expanded').find('.og-expander').animate({	 opacity: '0' },500,function(){
@@ -239,9 +232,7 @@ var PureGrid = (function() {
 			if( typeof preview != 'undefined' ) {
 				hidePreview();
 			}*/
-
 		} );
-
 	}
 
 	// saves the item´s offset top and height (if saveheight is true)
@@ -258,7 +249,6 @@ var PureGrid = (function() {
 	}
 
 	function initItemsEvents( $items ) {
-
 		$items.on( 'click', 'span.og-close', function() {
 			hidePreview();
 			return false;
@@ -299,7 +289,6 @@ var PureGrid = (function() {
 					expanderPosition = $('#og-grid li.expanded').offset().top;
 					$body.animate( { scrollTop : expanderPosition }, settings.speed );
 					$item.removeClass('loading').delay( 800 ).find('.hover-icon').removeClass('loading');
-
 				})
 			})
 		} else {
@@ -317,11 +306,8 @@ var PureGrid = (function() {
 				expanderPosition = $('#og-grid li.expanded').offset().top;
 				$body.animate( { scrollTop : expanderPosition }, settings.speed );
 				$item.removeClass('loading').delay( 800 ).find('.hover-icon').removeClass('loading');
-
-
 			})
 		}
-
 	}
 
 	function setTransition($item) {
@@ -330,19 +316,15 @@ var PureGrid = (function() {
 	}
 
 	function hidePreview() {
-
 		var $expandedItem = $items.eq( current );
 		current = -1;
 		$items.removeClass('expanded').find('.og-expander').animate({	 opacity: '0' },500,function(){
 			$items.find('.og-expander').css({ height: 0 });
 			$items.animate({ 'height' :$items.data( 'height' ) },200);
 		});
-
 	}
 
 	return {
 		init : init
 	};
-
 })();
-

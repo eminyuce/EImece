@@ -27,7 +27,6 @@
     var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
 }
 
-
 <h2>@AdminResource.Users</h2>
 <hr class="adminLine" />
 
@@ -56,12 +55,9 @@
                 <p class="text-right">@GridPagingDropDownText</p>
             </span>
         </div>
-
     </div>
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
-
-
 
 columns.Add()
    .Encoded(false)
@@ -89,7 +85,6 @@ columns.Add()
 .RenderValueAs(d =>
         @<b>
             @Html.ActionLink(AdminResource.ForgotPassword, "ForgotPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
-
         </b>);
 
     columns.Add()
@@ -99,7 +94,6 @@ columns.Add()
     .RenderValueAs(d =>
         @<b>
             @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
-
         </b>);
 
     columns.Add()
@@ -115,24 +109,15 @@ columns.Add()
          .Titled(AdminResource.Email)
          .Filterable(true);
 
-
-
     columns.Add(o => o.FirstName)
         .Encoded(false)
         .Titled(AdminResource.Name)
         .RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
-
 
     columns.Add(o => o.Role)
     .Encoded(false)
     .Titled(AdminResource.Roles)
     .RenderValueAs(o => String.Format("{0}", o.Role));
 
-
 }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>
-
-
-
-

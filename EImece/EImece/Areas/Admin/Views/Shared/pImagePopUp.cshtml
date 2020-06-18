@@ -28,11 +28,9 @@
             <div class="modal-body">
                 <p>@String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
                     <a href=@String.Format("../..{1}{0}",Model.FileName, ApplicationConfigs.UrlBase) target="_blank">Full Image</a>
-
                 </p>
                 <p>@String.Format("Thumbs Width={0} Height={1}", imageSizes.ThumpBitmapWidth, imageSizes.ThumpBitmapHeight)
                     <a href=@String.Format("../..{1}thumbs/thb{0}", Model.FileName, ApplicationConfigs.UrlBase) target="_blank">Thumps Image</a>
-
                 </p>
                 <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorage.Id, width=imageWidth, height= imageHeight })" />
             </div>
@@ -40,6 +38,5 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">@close</button>
             </div>
         </div>
-
     </div>
 </div>

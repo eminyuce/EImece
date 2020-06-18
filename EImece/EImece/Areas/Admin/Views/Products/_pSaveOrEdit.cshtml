@@ -40,7 +40,6 @@
                         {
 
                             <span id="OldCategoryName">
-
                             </span>
                         }
 
@@ -49,7 +48,6 @@
                     </div>
                 </div>
 
-
                 <div class="form-group">
                     @Html.LabelFor(model => product.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -57,8 +55,6 @@
                         @Html.ValidationMessageFor(model => product.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
 
                 <div class="form-group">
                     @Html.LabelFor(model => product.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -82,7 +78,6 @@
                     @Html.LabelFor(model => product.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.TextAreaFor(model => product.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
-
 
                         @Html.ValidationMessageFor(model => product.Description, "", new { @class = "text-danger" })
                     </div>
@@ -115,8 +110,6 @@
                     </div>
                 </div>
 
-         
-
                 <div class="form-group">
                     @Html.LabelFor(model => product.Price, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -132,8 +125,6 @@
                         @Html.ValidationMessageFor(model => product.Discount, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
 
                 <div class="form-group">
                     @Html.LabelFor(model => product.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })

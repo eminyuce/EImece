@@ -3,7 +3,7 @@
 @using EImece.Domain.Helpers.Extensions;
 @model Menu
 
-@{ 
+@{
     var m = Model;
 }
 
@@ -19,35 +19,29 @@ var controller = parts[0];
 String mid = "";
 mid = p.Last();
 
-
 if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
 {
-
 
         @Html.ActionLink(m.Name, "detail", controller, new
    {
        id = m.GetSeoUrl()
    }, null)
 
-
 }
 else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
                                             && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
 {
-
 
         @Html.ActionLink(m.Name, action, controller, new
    {
        id = mid
    }, null)
 
-
 }
 else
 {
 
         @Html.ActionLink(m.Name, action, controller)
-
 
 }
 

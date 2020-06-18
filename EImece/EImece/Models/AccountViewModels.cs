@@ -22,6 +22,7 @@ namespace EImece.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
         public bool RememberMe { get; set; }
     }
@@ -34,10 +35,12 @@ namespace EImece.Models
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Code))]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberThisBrowser))]
         public bool RememberBrowser { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
         public bool RememberMe { get; set; }
     }
@@ -124,12 +127,11 @@ namespace EImece.Models
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }
-        
+
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
         [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
-
 
         public string Code { get; set; }
     }

@@ -25,12 +25,7 @@
 
    }
 
- 
 }
-
-
-
-
 
 @Html.BootstrapPager(stories.PageIndex,
     index => Url.Action("Index", "Stories", new { page = index }),
@@ -40,7 +35,3 @@
 {
     @Html.DisplayFor(modelItem => item,"StoryShort", new { Width = 300, Height = 300 })
 }
-
-
-
-

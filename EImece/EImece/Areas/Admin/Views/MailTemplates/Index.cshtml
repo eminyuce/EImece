@@ -30,7 +30,7 @@
 
 <h2>@AdminResource.MailTemplates</h2>
 <hr class="adminLine" />
- 
+
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                      ,{"StateTypes","State"}
@@ -38,18 +38,13 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
- 
+
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-
 columns.Add(o => o.Id, true);
-
-
-
-
 
 columns.Add()
                .Encoded(false)
@@ -57,9 +52,6 @@ columns.Add()
                 .Css("gridButtons")
                .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
-
-
-
 
 columns.Add()
                        .Encoded(false)
@@ -70,7 +62,6 @@ columns.Add()
                             @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
                         </b>);
 
- 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
     columns.Add()
@@ -84,13 +75,9 @@ if (UserRoleHelper.IsDeletedEnableRoles())
 
     }
 
-
     columns.Add(c => c.Name)
               .Titled("Name")
               .Filterable(true);
-
-
-
 
     columns.Add(o => o.Position)
        .Encoded(false).
@@ -120,15 +107,5 @@ if (UserRoleHelper.IsDeletedEnableRoles())
        .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) )
        .SortInitialDirection(GridSortDirection.Descending);
 
-    
- 
-
- 
-
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>
-
-
-

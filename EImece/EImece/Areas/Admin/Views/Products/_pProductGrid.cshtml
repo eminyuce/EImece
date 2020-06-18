@@ -27,7 +27,7 @@
 }
 <div class="row">
     <div class="col-md-12">
-        
+
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                      ,{"StateTypes","State,ImageState,MainPage"}
@@ -37,9 +37,9 @@
             ,{"SetStateOnOrOff",true}})
 
         <div class="panel panel-primary">
-            
+
             @Html.Partial("pGridDropDown", baseList)
-        
+
             @Html.Grid(contents).Named(gridName).Columns(columns =>
                        {
 
@@ -59,7 +59,6 @@
                                     @Html.ActionLink(gridEditText, "Index", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm" })
                                 </b>);
 
-
                        columns.Add()
                                       .Encoded(false)
                                       .Sanitized(false)
@@ -68,7 +67,6 @@
                                     @<b>
                                         @Html.ActionLink("Add Specs", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
                                     </b>);
-
 
                            columns.Add()
                                   .Encoded(false)
@@ -79,7 +77,6 @@
                                     @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm" })
                                 </b>);
 
-
                        columns.Add()
                               .Encoded(false)
                               .Sanitized(false)
@@ -88,7 +85,6 @@
                             @<b>
                                 @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
                             </b>);
-
 
                        columns.Add()
                                     .Encoded(false)
@@ -108,7 +104,6 @@
                                                 @<b>
                                                     @Html.ActionLink(d.Name, "ProductDetail", "Products", new { area="", id = d.Id }, new { @class = "btn btn-link" })
                                                 </b>);
-
 
                            columns.Add(o => o.Position)
                               .Encoded(false).
@@ -132,8 +127,6 @@
                                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
                                                                     o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState));
 
-
-
                            columns.Add(o => o.MainPage)
                                       .Titled(AdminResource.MainPage)
                                   .Sortable(true)
@@ -142,15 +135,12 @@
                                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
                                                                     o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage));
 
-
-
                            columns.Add(o => o.CreatedDate)
                                       .Titled(AdminResource.CreatedDate)
                                   .Sortable(true)
                                   .Css("gridDateClass")
                                   .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
                                   .SortInitialDirection(GridSortDirection.Descending);
-
 
                            columns.Add()
                                      .Titled(AdminResource.Images)
@@ -160,14 +150,7 @@
                                  .SetWidth(30)
                                  .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-
                        }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
         </div>
-
-
-
     </div>
-
-
 </div>

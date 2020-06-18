@@ -1,16 +1,16 @@
 /**
  * @classDescription	Custom selectbox with the option to use jScrollPane
- *						for a custom scrollbar. Hides the original selectbox off 
+ *						for a custom scrollbar. Hides the original selectbox off
  *						screen so that it will still get picked up as a form element.
  *
  * @version				1.1.0
  *
  * @author				Rob LaPlaca - rob.laplaca@gmail.com
  * @date				04/05/2010
- * @lastUpdate			03/09/2014 
+ * @lastUpdate			03/09/2014
  * @dependency			jScrollPane.js			optional
  *						jquery.mousewheel.js	optional
- * 
+ *
  * @param {DOMElement}	options.selectbox			the selectbox that is being customized, REQUIRED (default undefined)
  * @param {Boolean}		options.customScrollbar		whether or not to use jScrollPane to restyle system scrollbar (default false)
  * @param {Number}		options.zIndex				The default z-index of the selectbox. (default 100)
@@ -160,7 +160,7 @@
 
 			cfg.selectbox.keyup(function(e){
 				self.close();
-				$options.each(function(i, itm){		
+				$options.each(function(i, itm){
 					if(itm.selected) {
 						self.jumpToIndex(i);
 						return false;
@@ -209,7 +209,7 @@
 			}
 		}
 
-		/** 
+		/**
 		 * @returns {String} HTML generated after processing options
 		 * @private
 		 */

@@ -24,7 +24,7 @@
 
 <h2>@AdminResource.Subscribers</h2>
 <hr class="adminLine" />
- 
+
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
             ,{"StateTypes","State"}
@@ -39,7 +39,6 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-
     columns.Add(o => o.Id, true);
     columns.Add()
 .Encoded(false)
@@ -47,7 +46,6 @@
 .Css("gridButtons")
 .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
-
 
     columns.Add(c => c.Name)
            .Titled(AdminResource.Name)
@@ -57,17 +55,12 @@
      .Titled(AdminResource.Email)
      .Filterable(true);
 
-
     columns.Add(o => o.Note)
    .Titled(AdminResource.Note)
    .Encoded(false).
         Sanitized(false).
         SetWidth(10).
         RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.Note));
-
-
-
-
 
     columns.Add(o => o.UpdatedDate)
                .Titled(AdminResource.UpdatedDate)
@@ -76,10 +69,5 @@
            .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
            .SortInitialDirection(GridSortDirection.Descending);
 
-
-
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>
-

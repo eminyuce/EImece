@@ -1,6 +1,6 @@
 ﻿@model EImece.Domain.Entities.Menu
 @using EImece.Domain.Helpers;
-@{ 
+@{
     var selectedTheme = Model.PageTheme.ToStr();
 
 }
@@ -15,7 +15,7 @@
                 <input id="T1"
                        @String.Format("{0}",selectedTheme.Equals("T1") ? "checked='checked'" : "")
                         type="radio" name="PageTheme" value="T1" />
-                
+
                 <label for="T1">Tema 1</label>
             </td>
             <td>
@@ -80,7 +80,7 @@
                 @*<a href="~/Areas/Admin/Content/PageThemes/tema-07.gif" rel="prettyPhoto">
                 <img width="150px" src="~/Areas/Admin/Content/PageThemes/tema-07.gif" />
             </a>*@
-             
+
                 <br />
                 <input id="T8"
                        @String.Format("{0}", selectedTheme.Equals("T8") ? "checked='checked'" : "")

@@ -6,7 +6,6 @@
 @using Resources;
     @{
         var categories = Model.BreadCrumb;
-      
 
     }
 <h2>
@@ -26,8 +25,8 @@
             {
                 var category = categories[i];
                 <li>
-                    @Html.ActionLink(category.Text, 
-                   "Category", 
+                    @Html.ActionLink(category.Text,
+                   "Category",
                    "ProductCategories",
                    new { id = category.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-link" })
                 </li>
@@ -36,5 +35,4 @@
                 @Model.Product.Name
             </li>
         </ul>
-
     </nav>

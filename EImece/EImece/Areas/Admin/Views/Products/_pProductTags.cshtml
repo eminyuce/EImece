@@ -2,15 +2,14 @@
 @using EImece.Domain.Entities;
 @{
     var tagCategories = Model.TagCategories;
-    var selectedTags = 
-        Model.Product.ProductTags!= null ? 
+    var selectedTags =
+        Model.Product.ProductTags!= null ?
         Model.Product.ProductTags : new List<ProductTag>();
 }
 
-
 @foreach (TagCategory tagCategory in tagCategories)
 {
-  
+
     <span class="tags-checkboxes-flow">
         @foreach (var tag in tagCategory.Tags)
         {

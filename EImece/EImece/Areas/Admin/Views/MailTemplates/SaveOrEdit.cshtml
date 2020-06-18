@@ -13,7 +13,7 @@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editor-form" }))
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
@@ -49,8 +49,6 @@
         </div>
     </div>
 
-
-
     <div class="form-group">
         @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -67,10 +65,8 @@
             @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
             @WriteErrorMessage(RazorRenderResultSubject)
             @WriteErrorMessage(RazorRenderResultBody)
-
         </div>
     </div>
-
 
     <div class="form-group">
         @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -105,7 +101,6 @@
             @Html.ValidationMessageFor(model => model.TrackWithMlnk, "", new { @class = "text-danger" })
         </div>
     </div>
-
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -144,9 +139,8 @@
     </div>
     }
 
-
    <script src="/Areas/Admin/Content/vs/loader.js"></script>
- 
+
     <script>
         require.config({ paths: { 'vs': '/Areas/Admin/Content/vs' } });
 	    require(['vs/editor/editor.main'], function() {
@@ -173,4 +167,3 @@
             $('#Body').val(code);
         });
     </script>
- 

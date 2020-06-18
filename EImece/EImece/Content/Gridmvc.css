@@ -104,6 +104,7 @@ table.grid-table .grid-filter-choose.choose-selected {
 table.grid-table .grid-popup-additional {
     padding: 3px 0 0 0;
 }
+
 table.grid-table tr:hover {
     background-color: antiquewhite !important;
 }

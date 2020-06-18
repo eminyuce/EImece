@@ -16,8 +16,6 @@
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
 }
 
-
-
 <h2>@AdminResource.Menu</h2>
 <hr class="adminLine" />
 
@@ -41,15 +39,12 @@ console.log(e);
         alert( $('#errorMessageForSameSelection').val());
     }
 
-
 }";
        settings.Height = 300;
        settings.Width = 270;
        settings.DataOnClient = true;
    }).GetContent(productTree)
         }
-
-
     </div>
     <div class="col-md-10">
         <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.MenuSameSelectionErrorMessage" />
@@ -84,7 +79,6 @@ console.log(e);
                 <div class="tab-content">
                     <div id="tab1default" class="tab-pane fade in active">
 
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -93,8 +87,6 @@ console.log(e);
                             </div>
                         </div>
 
-
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -102,10 +94,6 @@ console.log(e);
                                 @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-
-
-
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -175,8 +163,6 @@ console.log(e);
                         </div>
                         @Html.Partial("pSliderResizing", (BaseContent)Model)
 
-
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -219,12 +205,10 @@ console.log(e);
                                 @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
         }
     </div>
@@ -232,7 +216,6 @@ console.log(e);
 <div>
     @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -255,7 +238,6 @@ console.log(e);
                     $("#pageThemeWrapper").hide();
                 }
             }
-
 
         });
     </script>

@@ -49,7 +49,6 @@
         handleClose = Gallery.prototype.handleClose;
 
     $.extend(Gallery.prototype, {
-
         createIndicator: function (obj) {
             var indicator = this.indicatorPrototype.cloneNode(false),
                 title = this.getItemProperty(obj, this.options.titleProperty),
@@ -146,7 +145,6 @@
             }
             handleClose.call(this);
         }
-
     });
 
     return Gallery;

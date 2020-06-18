@@ -10,7 +10,6 @@
  *
  */
 ;(function($) {
-
   $.fn.stacktable = function(options) {
     var $tables = this,
         defaults = {id:'stacktable small-only',hideOriginal:true},
@@ -50,7 +49,4 @@
       if (!settings.hideOriginal) $table.show();
     });
   };
-
-
-
 }(jQuery));

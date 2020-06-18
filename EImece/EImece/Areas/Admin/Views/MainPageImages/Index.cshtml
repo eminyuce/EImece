@@ -47,10 +47,7 @@
         @Html.Grid(contents).Named(gridName).Columns(columns =>
    {
 
-
    columns.Add(o => o.Id, true);
-
-
 
    columns.Add()
                   .Encoded(false)
@@ -58,7 +55,6 @@
                    .Css("gridButtons")
                   .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
-
 
    columns.Add()
           .Encoded(false)
@@ -95,8 +91,6 @@
                  .Titled(AdminResource.Title)
               .Filterable(true);
 
-
-
        columns.Add(o => o.Position)
           .Encoded(false).
                Sanitized(false).
@@ -110,7 +104,6 @@
                Sanitized(false)
               .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
                                                 o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
-
 
        columns.Add(o => o.UpdatedDate)
                   .Titled(AdminResource.UpdatedDate)
@@ -127,16 +120,6 @@
        .SetWidth(30)
        .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-
    }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
     </div>
-
-
-
-
-
-
-
     </div>
- 

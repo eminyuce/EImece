@@ -9,7 +9,7 @@
             $("#errorMessage").text($("#SearchRequiredErrorMessage").val());
             //  $("#Search_TextBox").after('<span class="error">' + $("#SearchRequiredErrorMessage").val() + '</span>');
             hasError = true;
-        } 
+        }
         //else if (!searchReg.test(searchVal)) {
         //    $("#errorMessage").text($("#SearchValidText").val());
         //    // $("#Search_TextBox").after('<span class="error">' + $("#SearchValidText").val() + '</span>');

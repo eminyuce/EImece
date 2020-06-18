@@ -14,7 +14,6 @@ namespace EImece.Areas.Amp
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-
             context.MapRoute(
                        name: "AmpStoryDetail",
                        url: "amp/stories/{categoryName}/{id}",

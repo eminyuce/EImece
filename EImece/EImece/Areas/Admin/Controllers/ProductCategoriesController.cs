@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
@@ -9,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -97,14 +95,13 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, productCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             return View(productCategory);
         }
 
-      
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -122,7 +119,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, productCategory);
-                ModelState.AddModelError("*", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("*", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return View(productCategory);

@@ -7,7 +7,6 @@
 @using Resources;
 @using EImece.Domain.Helpers;
 
-
 @{
     String search = Model.Search;
     ViewBag.Title = String.Format(Resource.ProductSearchPageTitle, search);
@@ -32,16 +31,11 @@
 else
 {
 
-
-
-
-
     <div class="container potrfolio-container">
 
         <section class="title">
             <h2>@String.Format(Resource.SearchResultText, Model.Search)</h2>
         </section>
-
 
         <div class="sixteen columns">
             @if (productTags.Any())
@@ -62,8 +56,6 @@ else
         </div>
         <div class="clearfix"></div>
 
-
-
         @if (products.TotalCount > products.PageSize)
         {
             <div class="pagination-container">
@@ -73,16 +65,13 @@ else
                         @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("searchproducts", "Products", new { page = index }),
     products.TotalCount, products.PageSize, numberOfLinks: 10)
-
                     </div>
                 </nav>
             </div>
 
         }
 
-
         <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
-
 
             @foreach (var item in products)
                 {

@@ -16,7 +16,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ProductsController : BaseAdminController
     {
-       
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index(int id = 0, String search = "")
@@ -123,7 +122,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, product);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -133,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
                 product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
-            product = contentId==0 ? product : ProductService.GetBaseContent(contentId);
+            product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
             return View(product);
         }
 

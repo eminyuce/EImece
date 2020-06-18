@@ -21,14 +21,13 @@
     List<Menu> contents = Model;
     var baseList = contents.DownCasting<Menu>();
     var treeNodeList = (List<Node>)ViewBag.Tree;
-   
+
     var menuTreeNodeList = (List<Menu>)ViewBag.MenuLeaves;
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
-
 
 }
 
@@ -43,9 +42,9 @@
        settings.Id = "treeViewContainer";
        settings.Header.Expanded = true;
        settings.ClientHandlers.ContentSelect = @"function (e)
-{ 
-console.log(e);  
-window.location='/admin/menus/saveoredit/'+e.id; 
+{
+console.log(e);
+window.location='/admin/menus/saveoredit/'+e.id;
 }";
        //settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
        settings.Height = 300;
@@ -54,11 +53,8 @@ window.location='/admin/menus/saveoredit/'+e.id;
    }).GetContent(treeNodeList)
 
         <span id="treeClickContainer"></span>
-
-
     </div>
     <div class="col-md-10">
-      
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -68,16 +64,12 @@ window.location='/admin/menus/saveoredit/'+e.id;
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
 
-
-
         <div class="panel panel-primary">
             @Html.Partial("pGridDropDown", baseList)
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {
 
            columns.Add(o => o.Id, true);
-
-
 
            columns.Add()
                           .Encoded(false)
@@ -86,15 +78,11 @@ window.location='/admin/menus/saveoredit/'+e.id;
                           .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-
            columns.Add()
                .Encoded(false)
                .Sanitized(false)
               .SetWidth("18%")
              .RenderValueAs(d => GridToolsColumn(d, menuTreeNodeList, controllerName));
-
-
-
 
            columns.Add(c => c.Name)
                             .Titled(AdminResource.Name)
@@ -102,7 +90,6 @@ window.location='/admin/menus/saveoredit/'+e.id;
                             .Encoded(false)
                              .Sanitized(false)
                        .RenderValueAs(d => GridDetailLink(d, controllerName) );
-
 
            columns.Add(o => o.Position)
               .Encoded(false).
@@ -126,9 +113,6 @@ window.location='/admin/menus/saveoredit/'+e.id;
                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
                                                     o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState));
 
-
-
-
            columns.Add(o => o.UpdatedDate)
                       .Titled(AdminResource.UpdatedDate)
                   .Sortable(true)
@@ -144,17 +128,9 @@ window.location='/admin/menus/saveoredit/'+e.id;
        .SetWidth(30)
        .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-
-
        }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
         </div>
-
-
-
     </div>
-
-
 </div>
 @helper GridDetailLink(Menu d, String controllerName)
 {
@@ -184,7 +160,6 @@ window.location='/admin/menus/saveoredit/'+e.id;
             }
 
         }
-
     </b>
 
 }
@@ -192,7 +167,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
 {
 
     <div class="gridToolBox">
-        
+
         <span>
             @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-sm  btn-default     glyphicon glyphicon-camera glyphicon-white " })
         </span>
@@ -206,8 +181,6 @@ window.location='/admin/menus/saveoredit/'+e.id;
          if (menuTreeNodeList.Any(r => r.Id == d.Id))
             {
     <span>
-    
-
 
        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
         { "ItemId", d.Id },

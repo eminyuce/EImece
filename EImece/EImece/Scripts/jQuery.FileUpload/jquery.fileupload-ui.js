@@ -49,7 +49,6 @@
     // The UI version extends the file upload widget
     // and adds complete user interface interaction:
     $.widget('blueimp.fileupload', $.blueimp.fileupload, {
-
         options: {
             // By default, files added to the widget are uploaded as soon
             // as the user clicks on the start buttons. To enable automatic
@@ -68,10 +67,10 @@
             // The expected data type of the upload response, sets the dataType
             // option of the $.ajax upload requests:
             dataType: 'json',
-            
+
             // Error and info messages:
             messages: {
-                unknownError: 'Unknown error'  
+                unknownError: 'Unknown error'
             },
 
             // Function returning the current number of files,
@@ -704,7 +703,5 @@
             }
             this._super();
         }
-
     });
-
 }));

@@ -45,8 +45,6 @@
                 <div class="tab-content">
                     <div id="tab1default" class="tab-pane fade in active">
 
-
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -54,8 +52,6 @@
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -93,7 +89,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-5">
@@ -110,7 +105,6 @@
                         </div>
                         @Html.Partial("pSliderResizing", (BaseContent)Model)
 
-
                         <div id="pageThemeWrapper" class="form-group">
                             @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -120,8 +114,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="tab-pane fade" id="tab2default">
                         <div class="form-group">
@@ -129,12 +121,10 @@
                                 @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
 }

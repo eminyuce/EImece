@@ -15,14 +15,10 @@
     var storyImageTag = story.GetCroppedImageTag(Width, Height);
 }
 
-
- 
-
-
 <article class="post">
 
     <figure class="post-img">
-         
+
         <a href="@story.GetDetailPageUrl("Detail","Stories",categoryName)">
             @Html.Raw(storyImageTag)
         </a>
@@ -37,7 +33,7 @@
 
         <header class="meta">
             <h2><a href="@story.GetDetailPageUrl("Detail","Stories",categoryName)">
-                
+
                 @story.Name</a>
                 @if (isUserAuthenticated)
                 {
@@ -45,25 +41,19 @@
                 }
             </h2>
             <span><i class="fa fa-tag"></i>
-            
+
                 @for (int i = 0; i < tags.Count; i++)
                 {
                     var tag = tags[i];
                     <a href="#">@tag.Name</a>
                 }
-
-
-
             </span>
         </header>
 
         <p>
             @story.GetSeoDescription(300)
-
         </p>
 
         <a href="@story.GetDetailPageUrl("Detail","Stories",categoryName)" class="button color">@Resource.ReadMore</a>
-
     </section>
-
 </article>

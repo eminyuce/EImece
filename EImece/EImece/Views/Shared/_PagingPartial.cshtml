@@ -1,9 +1,6 @@
 ﻿@using GenericRepository;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
- 
-
-
 
 @{
     var pager = Model as IPaginatedList;
@@ -13,9 +10,6 @@
 
     //var curPage = Request["page"].ToInt() == 0 ? pager.PageIndex : Request["page"].ToInt();
     var search = Request["search"].ToStr();
-
-
-
 
     if (pager.TotalPageCount > 1)
     {
@@ -48,4 +42,3 @@
 
     }
 }
-

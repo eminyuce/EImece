@@ -30,7 +30,6 @@
  **/
 (function($) {
     $.fn.hoverIntent = function(handlerIn,handlerOut,selector) {
-
         // default configuration values
         var cfg = {
             interval: 50,

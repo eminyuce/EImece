@@ -42,15 +42,12 @@
 {
 columns.Add(o => o.Id, true);
 
-
 columns.Add()
                .Encoded(false)
                .Sanitized(false)
                 .Css("gridButtons")
                .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
-
-
 
 columns.Add()
                        .Encoded(false)
@@ -61,7 +58,6 @@ columns.Add()
                             @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
                         </b>);
 
- 
 columns.Add()
                .Encoded(false)
                .Sanitized(false)
@@ -84,7 +80,6 @@ if (UserRoleHelper.IsDeletedEnableRoles())
 
 }
 
-
 columns.Add(c => c.Name)
            .Titled(AdminResource.Title)
           .Filterable(true)
@@ -95,11 +90,9 @@ columns.Add(c => c.Name)
         @Html.ActionLink(d.Name, "Detail", "Stories", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.StoryCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
     </b>);
 
-
     columns.Add(c => c.StoryCategory.Name)
         .Titled(AdminResource.StoryCategory)
         .Filterable(true);
-
 
     columns.Add(o => o.Position)
        .Encoded(false).
@@ -115,7 +108,6 @@ columns.Add(c => c.Name)
            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
                                              o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
 
-
     columns.Add(o => o.ImageState)
                .Titled(AdminResource.ImageState)
            .Sortable(true)
@@ -123,7 +115,6 @@ columns.Add(c => c.Name)
             Sanitized(false)
            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
                                              o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState));
-
 
     columns.Add(o => o.MainPage)
                     .Titled(AdminResource.MainPage)
@@ -133,17 +124,12 @@ columns.Add(c => c.Name)
                 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
                                                   o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage));
 
-
-
-
     columns.Add(o => o.UpdatedDate)
            .Titled(AdminResource.UpdatedDate)
        .Sortable(true)
        .Css("gridDateClass")
        .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
        .SortInitialDirection(GridSortDirection.Descending);
-
-
 
     columns.Add()
                .Titled(AdminResource.Images)
@@ -153,9 +139,5 @@ columns.Add(c => c.Name)
            .SetWidth(30)
            .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-
 }).SetRowCssClasses(item =>  item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>
-
-

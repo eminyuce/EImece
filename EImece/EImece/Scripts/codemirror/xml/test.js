@@ -47,5 +47,4 @@
      "[tag&bracket <][tag p][tag&bracket >]",
      "  foo",
      "[tag&bracket <][tag article][tag&bracket >]bar");
-
 })();

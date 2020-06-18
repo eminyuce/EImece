@@ -12,7 +12,6 @@
     ViewBag.Title = tag.GetSeoTitle();
     ViewBag.Description = (Model.CompanyName.SettingValue + " - "+ String.Join(",", StoryTags.Select(r => r.Story.Name))).ToStr(150);
 
-
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
@@ -29,8 +28,6 @@
 @Html.BootstrapPager(StoryTags.PageIndex,
     index => Url.Action("Tag", "Stories", new { page = index }),
     StoryTags.TotalCount, StoryTags.PageSize, numberOfLinks: 10)
-
-
 
 <div class="row">
     @foreach (var item in StoryTags)

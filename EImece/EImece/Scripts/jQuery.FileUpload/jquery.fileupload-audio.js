@@ -57,7 +57,6 @@
     // The File Upload Audio Preview plugin extends the fileupload widget
     // with audio preview functionality:
     $.widget('blueimp.fileupload', $.blueimp.fileupload, {
-
         options: {
             // The regular expression for the types of audio files to load,
             // matched against the file type:
@@ -67,7 +66,6 @@
         _audioElement: document.createElement('audio'),
 
         processActions: {
-
             // Loads the audio file given via data.files and data.index
             // as audio element if the browser supports playing it.
             // Accepts the options fileTypes (regular expression)
@@ -104,9 +102,6 @@
                 }
                 return data;
             }
-
         }
-
     });
-
 }));

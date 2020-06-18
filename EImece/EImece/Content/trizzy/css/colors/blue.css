@@ -29,8 +29,9 @@ a.caption-btn:hover,
 .qtyminus:hover,
 a.calculate-shipping:hover,
 .og-close:hover,
-.tags a:hover							{ background: #2db2ea; }
-
+.tags a:hover {
+    background: #2db2ea;
+}
 
 .top-search button:hover,
 .cart-buttons a,
@@ -62,7 +63,9 @@ a.button.gray:hover,
 .hover-icon,
 #backtotop a:hover,
 #filters a:hover,
-#filters a.selected 					{ background-color: #2db2ea; }
+#filters a.selected {
+    background-color: #2db2ea;
+}
 
 a,
 .happy-clients-author,
@@ -84,11 +87,22 @@ a,
 #categories li ul li a:hover,
 table .cart-title a:hover,
 .st-val a:hover,
-.meta a:hover   						{ color: #2db2ea; }
+.meta a:hover {
+    color: #2db2ea;
+}
 
+#jPanelMenu-menu a.current {
+    background: #2db2ea !important;
+}
 
+.current-page {
+    background-color: #2db2ea !important;
+}
 
-#jPanelMenu-menu a.current { background: #2db2ea !important; }
-.current-page { background-color: #2db2ea !important; }
-blockquote { border-left: 4px solid #2db2ea; }
-.categories li a:hover { color: #2db2ea !important; }
+blockquote {
+    border-left: 4px solid #2db2ea;
+}
+
+.categories li a:hover {
+    color: #2db2ea !important;
+}

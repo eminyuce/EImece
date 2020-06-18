@@ -21,12 +21,10 @@
     var contents = Model.FileStorages;
     var baseList = contents.DownCasting<FileStorage>();
 
-
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
-
 
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
     filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
@@ -46,8 +44,6 @@
 <div class="form-horizontal">
 
     @Html.Partial("_pBackButtonLink", Model)
-
-
 </div>
 
 @Html.HiddenFor(r => Model.Id)
@@ -55,11 +51,8 @@
 @Html.HiddenFor(r => Model.MediaMod)
 @Html.HiddenFor(r => Model.Lang)
 
-
 <!-- blueimp File Upload & Gallery styles -->
 @Styles.Render("~/Content/jQuery-File-Upload")
-
-
 
 <script>
     var $form = null;
@@ -95,7 +88,6 @@
                 }
             });
 
-
             return arr;
         }
         CreateTags();
@@ -106,7 +98,6 @@
                 $("#imageTagsHtml").html(data);
             });
         }
-
 
     });
 </script>
@@ -122,11 +113,9 @@
         <div class="tab-content">
             <div class="tab-pane fade in active" id="tab1default">
 
-
                 <div class="row">
                     <div style="border:2px black" class="col-md-2">
                         <div id="imageTagsHtml">
-
                         </div>
                     </div>
                     <div style="border:2px black" class="col-md-9">
@@ -134,15 +123,8 @@
                             @Html.Partial("pSliderResizing", baseContent)
                         </div>
                         @Html.Partial("_Files")
-
                     </div>
                 </div>
-
-
-
-
-
-
             </div>
             <div class="tab-pane fade" id="tab2default">
 
@@ -165,18 +147,12 @@
                                           .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",String.Format("{0}-{1}-{2}-{3}", d.Id, Model.Id, Model.MediaMod, Model.ImageType)}}));
 
-
                    columns.Add(o => o.Id, true);
-
-
 
                    columns.Add()
                      .Encoded(false)
                      .Sanitized(false)
                      .RenderValueAs(d => ImageLinkColumn(d, filesHelper));
-
-
-
 
                    columns.Add(o => o.Position)
                       .Encoded(false).
@@ -192,9 +168,6 @@
                           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
                                                             o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
 
-
-
-
                    columns.Add(o => o.UpdatedDate)
                               .Titled(AdminResource.UpdatedDate)
                           .Sortable(true)
@@ -202,31 +175,12 @@
                           .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
                           .SortInitialDirection(GridSortDirection.Descending);
 
-
-
-
-
                }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
                 </div>
-
-
-
             </div>
-
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
 
 @Scripts.Render("~/bundles/jQuery-File-Upload")
 
@@ -254,7 +208,6 @@ var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
                 @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
                 <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, ApplicationConfigs.UrlBase) target="_blank">Thumps Image</a>
             </div>
-
         </div>
     </div>
 }

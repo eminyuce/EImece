@@ -28,7 +28,6 @@
     'use strict';
 
     $.widget('blueimp.fileupload', $.blueimp.fileupload, {
-
         options: {
             processdone: function (e, data) {
                 data.context.find('.start').button('enable');
@@ -149,7 +148,5 @@
                 .end().find('.progress').progressbar('destroy');
             this._super();
         }
-
     });
-
 }));

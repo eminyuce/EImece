@@ -350,7 +350,6 @@ GridMvc = (function ($) {
                 }
                 target = target.parentNode;
             } while (target); // Click was outside the box, hide it.
-
         }
         if ($context.openedMenuBtn != null)
             $context.openedMenuBtn.removeClass("clicked");
@@ -401,7 +400,7 @@ GridMvc.lang.en = {
 };
 /***
 * ============= FILTER WIDGETS =============
-* Filter widget allows onRender custom filter user interface for different columns. 
+* Filter widget allows onRender custom filter user interface for different columns.
 * For example if your added column is of type "DateTime" - widget can onRender calendar for picking filter value.
 * This script provider base widget for default .Net types: System.String, System.Int32, System.Decimal etc.
 * If you want to provide custom filter functionality - you can assign your own widget type for column and write widget for this types.
@@ -504,7 +503,6 @@ TextFilterWidget = (function ($) {
 * Also validates user's input for digits
 */
 NumberFilterWidget = (function ($) {
-
     function numberFilterWidget() { }
 
     numberFilterWidget.prototype.showClearFilterButton = function () { return true; };
@@ -596,7 +594,6 @@ NumberFilterWidget = (function ($) {
 * In other case he onRender textbox field for specifing date value (more info at http://window.jQueryui.com/)
 */
 DateTimeFilterWidget = (function ($) {
-
     function dateTimeFilterWidget() { }
 
     dateTimeFilterWidget.prototype.getAssociatedTypes = function () { return ["System.DateTime"]; };
@@ -676,7 +673,6 @@ DateTimeFilterWidget = (function ($) {
 * Renders two button for filter - true and false
 */
 BooleanFilterWidget = (function ($) {
-
     function booleanFilterWidget() { }
 
     booleanFilterWidget.prototype.getAssociatedTypes = function () { return ["System.Boolean"]; };

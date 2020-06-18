@@ -14,6 +14,7 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ImageState))]
         public Boolean ImageState { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MetaKeywords))]
         public string MetaKeywords { get; set; }
 

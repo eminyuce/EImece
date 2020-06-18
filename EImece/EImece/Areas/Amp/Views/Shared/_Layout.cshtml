@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers 
+﻿@using EImece.Domain.Helpers
 <!doctype html>
 <html ⚡>
 
@@ -13,20 +13,16 @@
 
 @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext,seoId))
 
- 
   <title>@ViewBag.Title</title>
-    
-    
+
     <script async src="https://cdn.ampproject.org/v0.js"></script>
     <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
     <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
     <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.1.js"></script>
-    
+
     @RenderSection("delayed_head", false)
    @RenderSection("top_head", false)
 
-
-    
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
 
 <style  amp-custom>
@@ -62,7 +58,7 @@
             flex-wrap: wrap;
         }
         amp-ad {
-            margin: 5px auto;            
+            margin: 5px auto;
         }
 
         .carousel .slide > amp-img > img {
@@ -108,11 +104,10 @@
         }
         .carousel-preview button {
             padding:0;
-            border:0;                        
+            border:0;
             margin: 4px;
             padding: 0;
         }
-
 
         amp-lightbox figcaption {
             color:white;
@@ -155,7 +150,7 @@
 </style>
 </head>
 <body>
-     
+
     <div>
         <a href="https://www.google.com/">
             <amp-img
@@ -171,11 +166,5 @@
     <main>
         @RenderBody()
     </main>
-        
- 
- 
-
-
-
 </body>
 </html>

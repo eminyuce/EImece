@@ -75,7 +75,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, MailTemplate);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
             RazorRenderResult result = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
             ViewBag.RazorRenderResult = result;
@@ -100,7 +100,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return View(MailTemplate);

@@ -7,40 +7,38 @@ window.console = window.console || (function(){
 	return c;
 })();
 
-
 jQuery(document).ready(function($) {
-	
 		// Color Changer
 		$(".green" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/green.css" );
 			return false;
 		});
-		
+
 		$(".blue" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/blue.css" );
 			return false;
 		});
-		
+
 		$(".orange" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/orange.css" );
 			return false;
 		});
-		
+
 		$(".navy" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/navy.css" );
 			return false;
 		});
-		
+
 		$(".yellow" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/yellow.css" );
 			return false;
 		});
-		
+
 		$(".peach" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/peach.css" );
 			return false;
 		});
-		
+
 		$(".beige" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/beige.css" );
 			return false;
@@ -60,42 +58,41 @@ jQuery(document).ready(function($) {
 			$("#colors" ).attr("href", "css/colors/pink.css" );
 			return false;
 		});
-		
+
 		$(".celadon" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/celadon.css" );
 			return false;
 		});
-		
+
 		$(".brown" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/brown.css" );
 			return false;
 		});
-		
+
 		$(".cherry" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/cherry.css" );
 			return false;
 		});
-		
+
 		$(".gray" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/gray.css" );
 			return false;
 		});
-		
+
 		$(".darkcol" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/dark.css" );
 			return false;
 		});
-		
+
 		$(".cyan" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/cyan.css" );
 			return false;
 		});
-		
+
 		$(".olive" ).click(function(){
 			$("#colors" ).attr("href", "css/colors/olive.css" );
 			return false;
 		});
-
 
 		$("#style-switcher h2 a").click(function(e){
 			e.preventDefault();
@@ -104,14 +101,13 @@ jQuery(document).ready(function($) {
 			if (div.css("left") === "-205px") {
 				$("#style-switcher").animate({
 					left: "0px"
-				}); 
+				});
 			} else {
 				$("#style-switcher").animate({
 					left: "-205px"
 				});
 			}
 		});
-
 
 		//Layout Switcher
 	   $("#layout-style").change(function(e){
@@ -135,7 +131,7 @@ jQuery(document).ready(function($) {
 			$(this).parent().parent().find("a").removeClass("active");
 			$(this).addClass("active");
 		});
-		
+
 		$('.bg li a').click(function() {
 			var current = $('#style-switcher select[id=layout-style]').find('option:selected').val();
 			if(current == '1') {
@@ -156,7 +152,6 @@ jQuery(document).ready(function($) {
 			}
 		});
 
-
 		$("#reset a").click(function(e){
 			e.preventDefault();
 			$("body").css("backgroundColor","e9e9e9");
@@ -167,6 +162,4 @@ jQuery(document).ready(function($) {
 			$("#colors" ).attr("href", "css/colors/green.css" );
 			$(window).resize();
 		});
-			
-
 	});

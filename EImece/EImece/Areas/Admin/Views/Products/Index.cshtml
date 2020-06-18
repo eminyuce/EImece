@@ -8,7 +8,6 @@
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.Extensions;
 
-
 @{
     ViewBag.Title = "Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -36,7 +35,6 @@
 <div class="row">
     <div class="col-md-2">
 
-
         @Html.SharkDev().TreeView(settings =>
     {
         settings.Id = "treeViewContainer";
@@ -51,8 +49,6 @@
     }).GetContent(ViewBag.Tree)
 
         <span id="treeClickContainer"></span>
-
-
     </div>
     <div class="col-md-10">
 
@@ -71,13 +67,9 @@
                 <a href="@Url.Action("Index", "Products",new { id=0 })">
                     <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
                 </a>
-
             </span>
 
         }
-
-
-
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
                             {"controllerName",controllerName}
@@ -87,21 +79,13 @@
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true} ,{"IsExcelButtonEnabled",true}})
 
-
-
         <div class="panel panel-primary">
             @Html.Partial("pGridDropDown", baseList)
 
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {
 
-
-
        columns.Add(o => o.Id, true);
-
-
-
-
 
        columns.Add()
                       .Encoded(false)
@@ -109,8 +93,6 @@
                        .Css("gridButtons")
                       .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
-
-
 
        columns.Add(c => c.Name)
               .Titled(AdminResource.Name)
@@ -125,16 +107,13 @@
                             </div>
                         </div>
 
-
 );
-
 
 if (isProductPriceEnable.SettingValue.ToBool(true))
 {
 columns.Add(c => c.Price).Titled(AdminResource.Price);
 
 }
-
 
 columns.Add(c => c.ProductCode)
 .Titled(AdminResource.ProductCode);
@@ -146,7 +125,6 @@ Css("smallGridColumn").
         @*SetWidth(10). *@
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-
 columns.Add(o => o.IsActive)
 .Titled(AdminResource.State)
 .Sortable(true)
@@ -154,8 +132,6 @@ columns.Add(o => o.IsActive)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
-
-
 
 columns.Add(r => r.ImageState
 )
@@ -165,14 +141,8 @@ columns.Add(r => r.ImageState
 .Css("smallGridColumn")
 .RenderValueAs(o => GridImageColumn(o, controllerName));
 
-
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
         </div>
-
-
-
     </div>
 </div>
 @helper GridImageActiveColumn(Product o, String controllerName)
@@ -181,22 +151,14 @@ columns.Add(r => r.ImageState
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
                                                     o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive, AdminResource.State))
-
-
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
                                                     o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage, AdminResource.MainPage))
-
-
-
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
                                                     o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign,AdminResource.IsCampaign))
-
-
-
         </li>
     </ul>
 
@@ -210,7 +172,6 @@ columns.Add(r => r.ImageState
             <li>
                 @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
                                                         o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState, AdminResource.ImageState))
-
             </li>
             <li>
                 @Html.Partial("pGridImageMainPage", o)
@@ -226,11 +187,10 @@ columns.Add(r => r.ImageState
                 </b>
             </li>
         </ul>
-        
+
     }
 
 }
- 
 
 @helper GridToolsColumnAlt(Product d, String controllerName)
 {
@@ -256,28 +216,17 @@ columns.Add(r => r.ImageState
    {"controllerName",controllerName},
    { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
    { "ItemDescription", d.Name } })
-
     </span>
         }
     </div>
 
 }
 
-
-
-
 @section Scripts{
     <script>
 
-
-
         $(document).ready(function () {
-
-
-
 
         });
     </script>
 }
-
-

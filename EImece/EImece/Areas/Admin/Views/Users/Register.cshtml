@@ -5,10 +5,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-
  <h2>@AdminResource.CreateNewAccount</h2>
 <hr class="adminLine" />
-
 
 @using (Html.BeginForm("Register", "Users", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {

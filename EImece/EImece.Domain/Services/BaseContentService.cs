@@ -6,9 +6,7 @@ using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data.Entity.Validation;
 using System.Linq.Expressions;
 
@@ -16,7 +14,6 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
-  
         private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
@@ -41,7 +38,7 @@ namespace EImece.Domain.Services
 
         public virtual T GetBaseContent(int id)
         {
-            if(id == 0)
+            if (id == 0)
             {
                 throw new ArgumentException("Id cannot be zero");
             }
@@ -122,7 +119,6 @@ namespace EImece.Domain.Services
             }
             try
             {
-
                 foreach (String v in values)
                 {
                     var id = v.ToInt();

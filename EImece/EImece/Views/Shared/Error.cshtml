@@ -2,12 +2,9 @@
 @using EImece.Domain.Helpers
 @using EImece.Domain
 
-
    @if (Model != null)
     {
     ViewBag.Title = "Error";
- 
-
 
     var exception = Model.Exception;
     var errorCode = 0;
@@ -17,7 +14,6 @@
 
         errorCode = httpEx.GetHttpCode();
     }
-
 
     var body = string.Empty;
 
@@ -53,29 +49,15 @@ else
 
 <p class="well featured">
 
-
     @Model.Exception.Message
-
-
-
 </p>
 
 <p>
     <span>
         To inform us of this error click
 
-
-
-
         <a class="button button-flat-primary" id="hlInform" href="@link">here</a>
-
     </span>
-
-
 </p>
-
-
-
-
 
 }

@@ -22,7 +22,6 @@
     var tags = Model.Tags;
 }
 
-
 <section class="titlebar">
     <div class="container">
         <div class="sixteen columns">
@@ -49,7 +48,6 @@
                        {
                            id = mid
                        }, null)
-
                         </li>
                     }
                     <li>@story.Name</li>
@@ -58,9 +56,6 @@
         </div>
     </div>
 </section>
-
-
-
 
 <!-- Container -->
 <div class="container">
@@ -89,23 +84,15 @@
                     <h4>
                         @storyCategory.Name
                     </h4>
-                   
                 </header>
                 @Html.Raw(story.Description)
 
-
                 <div class="clearfix"></div>
-
             </section>
-
         </article>
-
 
         <div class="clearfix"></div>
         <br>
-
-
-
     </div>
 </div>
 
@@ -113,8 +100,6 @@
 ================================================== -->
 <div class="four columns">
 
-
-   
     <!-- Share Buttons -->
 
     <div class="widget">
@@ -127,14 +112,9 @@
 
     <br>
     <br>
-
+</div>
 </div>
 
-
-</div>
-
-
- 
 @*@section top_head {
         @{String seoId = (String)ViewBag.SeoId;
             var canonical = SeoUrlHelper.GetCanonicalUrl(this.ViewContext, seoId);
@@ -170,7 +150,6 @@
             }
         </script>
 
-
     }*@
 
 @section delayed_head {
@@ -181,11 +160,10 @@
     So this helps prevents duplicates, probably copied from:
 
             https://stackoverflow.com/questions/7556400/injecting-content-into-specific-sections-from-a-partial-view-asp-net-mvc-3-with
-        
+
         *@
 
     @Html.RenderDelayed()
     @Html.RenderDelayed("amp", onlyUnique: true)
 
 }
-

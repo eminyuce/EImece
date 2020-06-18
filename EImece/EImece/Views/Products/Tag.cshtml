@@ -16,8 +16,6 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
 }
 
- 
- 
 <div class="container potrfolio-container">
 
     <section class="title">
@@ -28,15 +26,10 @@
         {
             @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
         }
-        
         </h2>
     </section>
 
-
- 
     <div class="clearfix"></div>
-
-
 
     @if (productTags.TotalCount > productTags.PageSize)
     {
@@ -47,16 +40,13 @@
                     @Html.BootstrapPager(productTags.PageIndex,
     index => Url.Action("Tag", "Products", new { page = index }),
     productTags.TotalCount, productTags.PageSize, numberOfLinks: 10)
-
                 </div>
             </nav>
         </div>
 
     }
 
-
     <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
-
 
         @foreach (var item in productTags)
         {

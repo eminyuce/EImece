@@ -53,7 +53,6 @@
     }
 
     $.extend(Gallery.prototype, {
-
         options: {
             // The Id, element or querySelector of the gallery widget:
             container: '#blueimp-gallery',
@@ -1334,7 +1333,6 @@
                 this.preventDefault(this.options.event);
             }
         }
-
     });
 
     return Gallery;

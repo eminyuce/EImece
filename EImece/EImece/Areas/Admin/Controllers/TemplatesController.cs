@@ -7,7 +7,6 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Web.Mvc;
 using System.Xml.Linq;
 
@@ -79,12 +78,11 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.Message, template);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace + ex.Message.ToString());
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
             return View(template);
         }
- 
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -103,7 +101,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete template:" + ex.StackTrace, template);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return View(template);

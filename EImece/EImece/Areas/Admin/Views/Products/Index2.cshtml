@@ -9,12 +9,10 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var products = Model.Products;
-  
 
 }
 
 <h2>Index</h2>
-
 
 <div class="row" style="padding:20px;">
 
@@ -33,7 +31,6 @@
     </div>
 </div>
 
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -47,7 +44,6 @@
                     $("#productTagsHtml").html(data);
                 });
             }
-
 
         });
     </script>

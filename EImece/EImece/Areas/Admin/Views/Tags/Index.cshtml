@@ -32,12 +32,7 @@
 <h2>@AdminResource.Tag</h2>
 <hr class="adminLine" />
 
-
     @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel",   new { @id = 0 }, new { @class = "btn btn-link" })
-
-
-
-
 
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -60,7 +55,6 @@ columns.Add()
 .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-
 columns.Add()
    .Encoded(false)
    .Sanitized(false)
@@ -70,12 +64,8 @@ columns.Add()
         @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
     </b>);
 
-
-
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
-
-
 
     columns.Add()
 .Encoded(false)
@@ -86,7 +76,6 @@ if (UserRoleHelper.IsDeletedEnableRoles())
         {"controllerName",controllerName},
         { "DeleteText", gridDeleteText },
         { "ItemDescription", d.Name } }));
-
 
 }
 
@@ -102,10 +91,6 @@ columns.Add(c => c.TagCategory.Name)
             @<span>
                 @String.Format("{0}", d.TagCategory.Name)
             </span>);
-
- 
-
-
 
     columns.Add(o => o.Position)
    .Encoded(false).
@@ -128,12 +113,5 @@ columns.Add(c => c.TagCategory.Name)
            .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
            .SortInitialDirection(GridSortDirection.Descending);
 
-
-
-
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>
-
-

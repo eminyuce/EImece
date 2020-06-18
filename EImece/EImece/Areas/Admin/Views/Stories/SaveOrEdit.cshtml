@@ -12,12 +12,10 @@
     var categoriesDb = categories.Select(r => new SelectListItem() { Text = r.Name, Value = r.Id.ToString() }).ToList();
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
 
-
 }
 
 <h2>@AdminResource.StoryPageTitle</h2>
 <hr class="adminLine" />
-
 
 @using (Html.BeginForm("SaveOrEdit", "Stories", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -70,8 +68,6 @@
                             </div>
                         </div>
 
-
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -79,10 +75,6 @@
                                 @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-
-
-
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -128,8 +120,6 @@
                         </div>
                         @Html.Partial("pSliderResizing", (BaseContent)Model)
 
-
-
                         <div class="form-group">
                             @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -140,15 +130,10 @@
                             </div>
                         </div>
 
-
-
-
                         <div class="form-group">
                             <label class="control-label col-md-2" for="Tags">@AdminResource.Tags</label>
                             <div class="col-md-10">
                                 <div id="storyTagsHtml">
-
-
                                 </div>
                             </div>
                         </div>
@@ -159,15 +144,11 @@
                                 @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-
 
 }
 
@@ -187,7 +168,6 @@
                     $("#storyTagsHtml").html(data);
                 });
             }
-
 
         });
     </script>

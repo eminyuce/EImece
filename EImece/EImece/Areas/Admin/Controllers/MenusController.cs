@@ -87,7 +87,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.Message, menu);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace + ex.Message.ToString());
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
@@ -114,7 +114,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to delete product:" +
                     ex.StackTrace, menu);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage +"  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return View(menu);

@@ -3,7 +3,7 @@
 @{
     var tagCategories = Model;
 }
- 
+
 @foreach (TagCategory tagCategory in tagCategories)
 {
     <h3>
@@ -13,7 +13,6 @@
         @foreach (var tag in tagCategory.Tags)
         {
 
-
             <div class="checkbox checkbox-danger">
 
                 <input id="@String.Format("checkbox{0}",tag.Id)" class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
@@ -21,13 +20,9 @@
                 <label for="@String.Format("checkbox{0}",tag.Id)">
 
                     @tag.Name
-
                 </label>
-
             </div>
 
         }
     </div>
 }
-
-

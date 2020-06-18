@@ -8,20 +8,8 @@
 @using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post))
 {
 
-
-
-
     <button class="newsletter-btn" type="submit">@Resource.SubscriberButtonText</button>
 
     @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
-   
- 
-
 
 }
- 
- 
-
-
-
- 

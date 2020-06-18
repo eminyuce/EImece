@@ -21,7 +21,6 @@
     var tags = Model.Tags;
 }
 
-
 <section class="titlebar">
     <div class="container">
         <div class="sixteen columns">
@@ -48,7 +47,6 @@
                        {
                            id = mid
                        }, null)
-
                         </li>
                     }
                     <li>@story.Name</li>
@@ -57,9 +55,6 @@
         </div>
     </div>
 </section>
-
-
-
 
 <!-- Container -->
 <div class="container">
@@ -99,31 +94,22 @@
                             var pt = storyTags[i];
                             @Html.ActionLink(pt.Name, "tag", "stories", new { id = pt.GetSeoUrl() }, null) @:&nbsp;
                            }
-
                     </span>
                 </header>
                 @Html.Raw(story.Description)
 
-
                 <div class="clearfix"></div>
-
             </section>
-
         </article>
-
 
         <div class="clearfix"></div>
         <br>
-
-
-
     </div>
 </div>
 
 <!-- Sidebar
 ================================================== -->
 <div class="four columns">
-
 
     <!-- Tags -->
     <div class="widget margin-top-10">
@@ -148,14 +134,8 @@
 
     <br>
     <br>
-
 </div>
-
-
 </div>
-
-
-
 
 @if (RelatedProducts.Any())
 {
@@ -174,12 +154,10 @@
         </div>
     </div>
 
-
 }
 
 @section scripts
 {
     <script src="/ajax/ServiceWorkerScript?v=1"></script>
-     
 
 }

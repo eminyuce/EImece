@@ -60,7 +60,6 @@
             @AdminResource.GridNoMainPageImageText
 
         }
-
     </div>
     <div class="col-xs-12 col-sm-12 col-md-2">
         <ul class="meta-search">
@@ -73,7 +72,7 @@
             <span class="searchItemTitle">
                 @Html.DisplayFor(model => baseContent.Name)
             </span>
-          
+
             @Html.ActionLink("Edit", actionNameEdit, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-link    ", @target = "_blank" })
 
             @if (UserRoleHelper.IsDeletedEnableRoles())
@@ -84,11 +83,6 @@
         <p>
             @GeneralHelper.GetDescription(baseContent.Description, 200)
         </p>
-         
     </div>
     <span class="clearfix borda"></span>
 </article>
-
- 
-
-

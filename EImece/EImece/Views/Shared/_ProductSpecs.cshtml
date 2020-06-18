@@ -24,7 +24,6 @@
 @if (productSpecs.Any())
 {
 
-
     if (!String.IsNullOrEmpty(template.TemplateXml))
     {
         XDocument xdoc = XDocument.Parse(template.TemplateXml);
@@ -35,8 +34,6 @@
 
             foreach (var group in groups)
             {
-
-
 
                 foreach (XElement field in group.Elements())
                 {
@@ -61,7 +58,6 @@
                         attributeName = name.Value;
                     }
 
-
                     if (isValueExist)
                     {
                         <div>
@@ -73,11 +69,7 @@
                 }
             }
 
-
         }
     }
-
-
-
 
 }

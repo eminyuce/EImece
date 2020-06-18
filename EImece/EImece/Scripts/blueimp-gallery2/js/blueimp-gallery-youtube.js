@@ -55,7 +55,6 @@
         };
 
     $.extend(YouTubePlayer.prototype, {
-
         canPlayType: function () {
             return true;
         },
@@ -192,11 +191,9 @@
                 delete this.playStatus;
             }
         }
-
     });
 
     $.extend(Gallery.prototype, {
-
         YouTubePlayer: YouTubePlayer,
 
         textFactory: function (obj, callback) {
@@ -222,7 +219,6 @@
             }
             return textFactory.call(this, obj, callback);
         }
-
     });
 
     return Gallery;

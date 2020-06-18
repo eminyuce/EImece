@@ -20,9 +20,6 @@ namespace EImece.Models
             // Add custom user claims here
             return userIdentity;
         }
-
-
-
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -38,8 +35,6 @@ namespace EImece.Models
         }
     }
 
-
-
     public class IdentityManager
     {
         public bool RoleExists(string name)
@@ -49,7 +44,6 @@ namespace EImece.Models
             return rm.RoleExists(name);
         }
 
-
         public bool CreateRole(string name)
         {
             var rm = new RoleManager<IdentityRole>(
@@ -57,7 +51,6 @@ namespace EImece.Models
             var idResult = rm.Create(new IdentityRole(name));
             return idResult.Succeeded;
         }
-
 
         public bool CreateUser(ApplicationUser user, string password)
         {
@@ -67,7 +60,6 @@ namespace EImece.Models
             return idResult.Succeeded;
         }
 
-
         public bool AddUserToRole(string userId, string roleName)
         {
             var um = new UserManager<ApplicationUser>(
@@ -75,7 +67,6 @@ namespace EImece.Models
             var idResult = um.AddToRole(userId, roleName);
             return idResult.Succeeded;
         }
-
 
         public void ClearUserRoles(string userId)
         {

@@ -253,5 +253,4 @@
 		hideSuperfishUl: methods.hide,
 		showSuperfishUl: methods.show
 	});
-
 })(jQuery);

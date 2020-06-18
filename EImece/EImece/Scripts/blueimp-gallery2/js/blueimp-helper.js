@@ -68,7 +68,6 @@
     };
 
     extend(Helper.prototype, {
-
         find: function (query) {
             var container = this[0] || document;
             if (typeof query === 'string') {
@@ -177,7 +176,6 @@
         first: function () {
             return new Helper(this[0]);
         }
-
     });
 
     if (typeof define === 'function' && define.amd) {

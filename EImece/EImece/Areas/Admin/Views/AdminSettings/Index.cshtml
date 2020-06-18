@@ -14,8 +14,6 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-   
-
     <div class="container">
         <div class="form-horizontal">
             <div class="panel-group" id="accordion">
@@ -67,7 +65,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group">
                                 @Html.LabelFor(model => model.DefaultImageHeight, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
@@ -90,7 +87,6 @@
                                     @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.WebSiteCompanyPhoneAndLocation, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -185,7 +181,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -262,13 +257,10 @@
                                     @Html.ValidationMessageFor(model => model.AdminUserName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
-              
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="panel-title expand">
@@ -285,23 +277,18 @@
                                     @Html.ValidationMessageFor(model => model.GoogleAnalyticsTrackingScript, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-             
             </div>
         </div>
     </div>
-
-
 
 }
 
 <div>
        @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
-
 
 <script>
     $(function () {

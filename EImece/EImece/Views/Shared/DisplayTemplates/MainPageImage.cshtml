@@ -2,7 +2,7 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 
-@{ 
+@{
     var image = Model.MainImage;
     var mainPageImage = Model;
     int index = ViewData["index"].ToInt()+1;
@@ -17,4 +17,3 @@
         <a href="shop-with-sidebar.html" class="caption-btn">@mainPageImage.Name</a>
     </div>
 </li>
- 

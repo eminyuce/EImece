@@ -9,7 +9,6 @@
 @using EImece.Domain.Services.IServices;
 @{
 
-
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
     String cultureName = Thread.CurrentThread.CurrentCulture.Name;
     List<SelectListItem> listItems = new List<SelectListItem>();
@@ -62,8 +61,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="~/Content/checkBoxStyle.css" rel="stylesheet" />
     <link href="~/Content/adminSite.css" rel="stylesheet" />
-
-
 </head>
 <body>
 
@@ -75,11 +72,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>                
+                </button>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                <p class="navbar-text" style="font-weight:bolder;">@String.Format("{0} Admin Panel", companyNameSetting)</p>                
-                
+                <p class="navbar-text" style="font-weight:bolder;">@String.Format("{0} Admin Panel", companyNameSetting)</p>
+
                 <ul class="nav navbar-nav">
                     <li>
                         @Html.ActionLink(AdminResource.Hello +" " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
@@ -115,8 +112,6 @@
                         {
                             @Html.AntiForgeryToken()
 
-
-
                         }
                     </li>
                 </ul>
@@ -131,7 +126,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button>            
+            </button>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse-2">
@@ -155,7 +150,6 @@
                 <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
 
             }
- 
 
         <ul class="nav navbar-nav pull-right">
 
@@ -197,12 +191,10 @@
                         <li>@Html.ActionLink(AdminResource.Privacypolicy, "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
                         <li>@Html.ActionLink(AdminResource.TermsConditions, "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
                     }
-
                 </ul>
             </li>
             <li>@Html.ActionLink(AdminResource.UsersManagement, "Index", "Users", new { area = "admin" }, null)</li>
         </ul>
-            
         </div>
     </nav>
 
@@ -226,9 +218,5 @@
 
     @*<link href="~/Content/DataTable/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery.dataTables.js"></script>*@
-
-
-
-
 </body>
 </html>

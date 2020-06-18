@@ -1988,7 +1988,6 @@ function insertLineContent(line, builder, styles) {
   }
 }
 
-
 // These objects are used to represent the visible (currently drawn)
 // part of the document. A LineView may correspond to multiple
 // logical lines, if those are connected by collapsed ranges.
@@ -6593,7 +6592,6 @@ var commands = {
   toggleOverwrite: function (cm) { return cm.toggleOverwrite(); }
 }
 
-
 function lineStart(cm, lineN) {
   var line = getLine(cm.doc, lineN)
   var visual = visualLine(line)
@@ -7014,7 +7012,6 @@ function leftButtonSelect(cm, e, start, type, addNew) {
   on(document, "mousemove", move)
   on(document, "mouseup", up)
 }
-
 
 // Determines whether an event happened in the gutter, and fires the
 // handlers for the corresponding event.
@@ -8129,7 +8126,6 @@ function findPosV(cm, pos, dir, unit) {
     var pageSize = Math.min(cm.display.wrapper.clientHeight, window.innerHeight || document.documentElement.clientHeight)
     var moveAmount = Math.max(pageSize - .5 * textHeight(cm.display), 3)
     y = (dir > 0 ? pos.bottom : pos.top) + dir * moveAmount
-
   } else if (unit == "line") {
     y = dir > 0 ? pos.bottom + 3 : pos.top - 3
   }
@@ -9105,5 +9101,4 @@ addLegacyProps(CodeMirror$1)
 CodeMirror$1.version = "5.21.1"
 
 return CodeMirror$1;
-
 })));

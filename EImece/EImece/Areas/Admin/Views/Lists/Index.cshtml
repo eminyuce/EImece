@@ -41,7 +41,6 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-
 </div>
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
@@ -63,8 +62,6 @@ columns.Add()
 @<b>
     @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
 </b>);
-
-
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -92,9 +89,6 @@ columns.Add(o => o.IsService)
         .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
                                           o.Id, (o.IsService ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsService));
 
-
-
-
 columns.Add(o => o.IsValues)
       .Titled(AdminResource.IsValues)
       .Sortable(true)
@@ -103,17 +97,5 @@ columns.Add(o => o.IsValues)
       .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
                                         o.Id, (o.IsValues ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsValues));
 
-
-
-
-
-
-
-
-
-
-
-
 }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>

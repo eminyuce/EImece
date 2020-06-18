@@ -33,11 +33,7 @@
 <h2>@AdminResource.TagCategory</h2>
 <hr class="adminLine" />
 
-
     @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel",   new { @id = 0 }, new { @class = "btn btn-link" })
-
-
-
 
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -61,7 +57,6 @@ columns.Add()
 .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-
 columns.Add()
    .Encoded(false)
    .Sanitized(false)
@@ -71,7 +66,6 @@ columns.Add()
         @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
     </b>);
 
- 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
         columns.Add()
@@ -89,9 +83,6 @@ if (UserRoleHelper.IsDeletedEnableRoles())
     columns.Add(c => c.Name)
             .Titled(AdminResource.Title)
            .Filterable(true);
-
-
-
 
     columns.Add(o => o.Position)
        .Encoded(false).
@@ -114,10 +105,5 @@ if (UserRoleHelper.IsDeletedEnableRoles())
            .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
            .SortInitialDirection(GridSortDirection.Descending);
 
-
-
-
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
 </div>

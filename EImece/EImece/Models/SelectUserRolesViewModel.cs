@@ -1,7 +1,6 @@
 ﻿using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.AccessControl;
 
 namespace EImece.Models
 {
@@ -11,7 +10,6 @@ namespace EImece.Models
         {
             this.Roles = new List<SelectRoleEditorViewModel>();
         }
-
 
         // Enable initialization with an instance of ApplicationUser:
         public SelectUserRolesViewModel(ApplicationUser user) : this()
@@ -31,7 +29,7 @@ namespace EImece.Models
                 this.Roles.Add(rvm);
             }
 
-            // Set the Selected property to true for those roles for 
+            // Set the Selected property to true for those roles for
             // which the current user is a member:
             foreach (var userRole in user.Roles)
             {
@@ -40,7 +38,9 @@ namespace EImece.Models
                 checkUserRole.Selected = true;
             }
         }
+
         public string Id { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string UserName { get; set; }
 

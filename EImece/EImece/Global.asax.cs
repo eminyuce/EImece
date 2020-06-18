@@ -14,7 +14,6 @@ namespace EImece
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected void Application_Start()
@@ -43,22 +42,19 @@ namespace EImece
                 {
                     return ""; // context.User.Identity.Name;
                 }
-
             }
 
             return base.GetVaryByCustomString(context, arg);
-
         }
-
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             //  Redirect301();
         }
+
         private void Redirect301()
         {
             var domain = ApplicationConfigs.Domain;
-
 
             if (domain.StartsWith("www") && !Request.Url.Host.StartsWith("www") && !Request.Url.IsLoopback
                 && Request.Url.Host.IndexOf('.') > Request.Url.Host.Length / 2
@@ -73,6 +69,7 @@ namespace EImece
                 Response.End();
             }
         }
+
         protected void Application_Error(object sender, EventArgs e)
         {
             // redirectErrorController(sender);
@@ -95,7 +92,6 @@ namespace EImece
 
             if (useCustomError)
             {
-
                 var httpContext = ((MvcApplication)sender).Context;
                 var currentController = " ";
                 var currentAction = " ";
@@ -134,15 +130,12 @@ namespace EImece
                 //We check if we have an AJAX request and return JSON in this case
                 if (IsAjaxRequest())
                 {
-
                 }
                 else
                 {
-
                     var controller = new ErrorController();
                     var routeData = new RouteData();
                     var action = "Index";
-
 
                     httpContext.ClearError();
                     httpContext.Response.Clear();
@@ -157,7 +150,6 @@ namespace EImece
                     controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
                     ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
                 }
-
             }
         }
 
@@ -169,7 +161,7 @@ namespace EImece
             || ((Request.Headers != null)
             && (Request.Headers["X-Requested-With"] == "XMLHttpRequest"));
 
-            //If we are not sure that we have an AJAX request or that we have to return JSON 
+            //If we are not sure that we have an AJAX request or that we have to return JSON
             //we fall back to Reflection
             if (!isAjaxRequest)
             {
@@ -205,7 +197,6 @@ namespace EImece
                 }
                 catch
                 {
-
                 }
             }
 

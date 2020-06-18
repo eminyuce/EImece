@@ -16,10 +16,8 @@
     List<Tag> productTags = products.SelectMany(r => r.ProductTags.Select(r1 => r1.Tag)).Distinct().ToList();
 }
 
-
 @Html.Partial("_ProductTitleBar", new ViewDataDictionary(ViewData){
                               {"ProductMenu",Model.ProductMenu}, {"MainPageMenu",Model.MainPageMenu } })
-
 
 <div class="pagination-container">
     <nav class="pagination">
@@ -31,9 +29,6 @@
         </div>
     </nav>
 </div>
-
-
-
 
 <div class="container potrfolio-container">
     <div class="sixteen columns">
@@ -58,7 +53,6 @@
     @*@Html.Partial("_PagingPartial", products)*@
     <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
 
-
         @foreach (var item in products)
         {
 
@@ -77,7 +71,6 @@
                 @Html.BootstrapPager(products.PageIndex,
     index => Url.Action("Index", "Products", new { page = index }),
     products.TotalCount, products.PageSize, numberOfLinks: 10)
-
             </div>
         </nav>
     </div>

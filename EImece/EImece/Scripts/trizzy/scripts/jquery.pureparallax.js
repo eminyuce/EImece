@@ -7,7 +7,6 @@
      * @desc A small plugin that scroll background of div based on window scroll position.
      */
      $.fn.pureparallax = function( options ) {
-
         return this.each( function() {
             var settings = $.extend({
                 // These are the defaults.
@@ -15,7 +14,6 @@
                 overlayOpacity: "0.45",
                 timeout: 500
             }, options );
-
 
             var banner = $(this),
             overlay = banner.find('.parallax-overlay'),
@@ -55,7 +53,6 @@
                 }
             }
             $(window).bind("load",function(e){
-
                 var transition =    "-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;" +
                 "transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;" +
                 "-webkit-perspective: 1000;" +
@@ -75,7 +72,6 @@
                 },500)
             })
 
-
             $(window).on("resize",function(e){
                 var anim = false;
                 parallaxit(banner,height,anim);
@@ -90,13 +86,6 @@
                 var anim = false;
                 parallaxit(banner,height,anim)
             });
-
         });
-
-
 }
-
 }(jQuery));
-
-
-

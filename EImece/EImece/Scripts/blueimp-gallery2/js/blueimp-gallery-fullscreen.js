@@ -38,7 +38,6 @@
         close = Gallery.prototype.close;
 
     $.extend(Gallery.prototype, {
-
         getFullScreenElement: function () {
             return document.fullscreenElement ||
                 document.webkitFullscreenElement ||
@@ -83,7 +82,6 @@
             }
             close.call(this);
         }
-
     });
 
     return Gallery;

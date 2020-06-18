@@ -45,7 +45,6 @@
     var handleSlide = Gallery.prototype.handleSlide;
 
     $.extend(Gallery.prototype, {
-
         handleSlide: function (index) {
             handleSlide.call(this, index);
             if (this.playingVideo) {

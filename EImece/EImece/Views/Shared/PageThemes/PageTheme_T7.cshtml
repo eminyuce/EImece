@@ -34,9 +34,7 @@
                     }
                     <li>@Model.Menu.Name</li>
                 </ul>
-
             </nav>
-
         </div>
     </div>
 </section>
@@ -81,14 +79,10 @@
     </div>
     <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
 
-
         @for (int i = 0; i < files.Count; i++)
         {
             var f = files[i].FileStorage;
             @Html.DisplayFor(modelItem => f, "FileStorage")
         }
-
     </div>
-
-
 </div>

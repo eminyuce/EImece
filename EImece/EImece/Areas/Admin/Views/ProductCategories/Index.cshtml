@@ -12,7 +12,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "ProductCategories";
@@ -26,7 +25,6 @@
     var gridEditText = AdminResource.GridEditText;
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
-
 
 }
 
@@ -50,11 +48,8 @@
     }).GetContent(ViewBag.Tree)
 
         <span id="treeClickContainer"></span>
-
     </div>
     <div class="col-md-10">
-
-
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -63,8 +58,6 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
-
-
 
         <div class="panel panel-primary">
             @Html.Partial("pGridDropDown", baseList)
@@ -79,7 +72,6 @@
    .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-
        columns.Add()
                       .Encoded(false)
                       .Sanitized(false)
@@ -88,8 +80,6 @@
                                             @<b>
                                                 @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
                                             </b>);
-
-
 
        if (UserRoleHelper.IsDeletedEnableRoles())
        {
@@ -107,8 +97,6 @@
 columns.Add(c => c.Name)
 .Titled(AdminResource.Title)
 .Filterable(true);
-
-
 
 columns.Add(o => o.Position)
 .Encoded(false).
@@ -132,7 +120,6 @@ Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
                      o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState));
 
-
 columns.Add(o => o.MainPage)
 .Titled(AdminResource.MainPage)
 .Sortable(true)
@@ -141,16 +128,12 @@ Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
                     o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage));
 
-
-
 columns.Add(o => o.UpdatedDate)
 .Titled(AdminResource.UpdatedDate)
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) : null)
 .SortInitialDirection(GridSortDirection.Descending);
-
-
 
 columns.Add()
 .Titled(AdminResource.Images)
@@ -160,18 +143,10 @@ columns.Add()
 .SetWidth(30)
 .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
         </div>
-
-
-
     </div>
-
 </div>
-
 
 @helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
 {

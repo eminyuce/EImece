@@ -29,21 +29,14 @@
         </h4>
     </div>
     <div class="col-md-8">
-
     </div>
 </div>
 <hr class="adminLine" />
-
- 
-
- 
-
 
         @using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
 
             <div class="form-horizontal">
-            
 
                 @Html.HiddenFor(model => model.Id)
 
@@ -67,7 +60,6 @@
 
                 }
 
-
                 foreach (XElement field in group.Elements())
                 {
 
@@ -86,10 +78,8 @@
 
                 @Html.EditorFor(model => dbValueObj, field.Name.LocalName)
 
-
                 }
                 }
-
 
                 }
                 }
@@ -100,6 +90,3 @@
                 </div>
             </div>
         }
-
-
-

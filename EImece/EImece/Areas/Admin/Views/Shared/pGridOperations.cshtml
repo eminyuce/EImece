@@ -28,9 +28,6 @@
 
 }
 
-
-
-
 <div class="panel panel-info">
     <div class="panel-body">
 
@@ -98,8 +95,6 @@
                         </div>
                     }
 
-
-
                     @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                     {
                         <div class="btn-group" role="group">
@@ -135,8 +130,6 @@
                         <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
                     }
 
-
-
                     @if (orderingButton)
                     {
                         <div class="btn-group" role="group">
@@ -154,21 +147,15 @@
                                     @AdminResource.Excel
                                 </span>
                             </a>
-
                         </div>
                     }
-                   
-
                 </div>
-
             </div>
-
         </div>
 
         <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
             <span id="ErrorMessage"></span>
         </div>
-
     </div>
 </div>
 <span style="display:none;" id="AdminMultiSelectDeleteConfirmMessage">@AdminDeleteConfirmMessage</span>

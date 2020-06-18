@@ -85,7 +85,6 @@
     // "add" method are uploaded immediately, but it is possible to override
     // the "add" callback option to queue file uploads.
     $.widget('blueimp.fileupload', {
-
         options: {
             // The drop target element(s), by the default the complete document.
             // Set to null to disable drag & drop support:
@@ -1465,7 +1464,5 @@
             }
             return this._getXHRPromise(false, data && data.context);
         }
-
     });
-
 }));

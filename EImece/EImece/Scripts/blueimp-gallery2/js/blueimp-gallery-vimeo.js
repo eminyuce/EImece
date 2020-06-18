@@ -57,7 +57,6 @@
         counter = 0;
 
     $.extend(VimeoPlayer.prototype, {
-
         canPlayType: function () {
             return true;
         },
@@ -180,11 +179,9 @@
                 delete this.playStatus;
             }
         }
-
     });
 
     $.extend(Gallery.prototype, {
-
         VimeoPlayer: VimeoPlayer,
 
         textFactory: function (obj, callback) {
@@ -208,7 +205,6 @@
             }
             return textFactory.call(this, obj, callback);
         }
-
     });
 
     return Gallery;

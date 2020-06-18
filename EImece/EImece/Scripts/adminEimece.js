@@ -3,7 +3,6 @@
 }
 
 $(document).ready(function () {
-
     bindProductDetailToolTip();
     bindCKEDITOR();
     searchAutoComplete();
@@ -28,9 +27,7 @@ $(document).ready(function () {
                 //    ['FontSize', 'TextColor', 'BGColor']
                 //],
                 height: ['550px']
-
             });
-
         });
     }
     function OrderingItem() {
@@ -69,7 +66,6 @@ $(document).ready(function () {
                 ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
             }
         });
-
     });
 
     function confirmDialog(message, onConfirm) {
@@ -109,7 +105,6 @@ $(document).ready(function () {
         return itemArray;
     }
 
-     
     $("#DeselectAll").click(function () {
         var i = 0;
         $("input[name=checkboxGrid]").each(function () {
@@ -144,11 +139,9 @@ $(document).ready(function () {
             var tableName = $("[data-gridname]").attr("data-gridname");
             ajaxMethodCall(postData, "/admin/Ajax/Change" + tableName + "OrderingOrState", changeStateSuccess);
             displayMessage("hide", "");
-
         } else {
             displayMessage("error", "Checkboxes on the grid does not selected");
         }
-
     }
     $("#GridListItemSize").change(function (e) {
         var originalURL = window.location.href;
@@ -161,7 +154,6 @@ $(document).ready(function () {
             } else {
                 window.location.href = window.location.href + "?GridPageSize=" + $('#GridListItemSize option:selected').val();
             }
-
         }
     });
 
@@ -219,9 +211,6 @@ $(document).ready(function () {
         $("#sliderWidth").slider("value", parseInt(value));
         handle1.text(parseInt(value));
     });
-
-
-
 });
 
 function GetSelectedCheckBoxValues() {
@@ -255,7 +244,6 @@ function displayMessage(messageType, message) {
     }
 }
 function hasQueryStringParameter(originalURL) {
-
     if (originalURL.split('?').length > 1) {
         var qs = originalURL.split('?')[1];
         var qsArray = qs.split('&');
@@ -265,7 +253,6 @@ function hasQueryStringParameter(originalURL) {
     }
 }
 function getQueryStringParameter(originalURL, param) {
-
     if (originalURL.split('?').length > 1) {
         var qs = originalURL.split('?')[1];
         //3- get list of query strings
@@ -280,7 +267,6 @@ function getQueryStringParameter(originalURL, param) {
                 }
             }
         }
-
     }
     return "";
 }
@@ -308,7 +294,6 @@ function updateUrlParameter(originalURL, param, value) {
 }
 
 function deleteItemsSuccess(data) {
-
     data.forEach(function (entry) {
         var pp = $('[gridkey-id=' + entry + ']');
         pp.parent().parent().remove();
@@ -325,12 +310,9 @@ function changeStateSuccess(data) {
         } else {
             $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('class', ' gridNotActiveIcon glyphicon  glyphicon-remove-circle');
         }
-
-
     });
 }
 function refresh(timeElapsed) {
-
     setTimeout(function () {
         location.reload()
     }, timeElapsed);
@@ -340,7 +322,6 @@ function changeOrderingSuccess(data) {
     refresh(500);
 }
 function ajaxMethodCall(postData, ajaxUrl, successFunction) {
-
     $.ajax({
         type: "POST",
         url: ajaxUrl,
@@ -386,13 +367,10 @@ function sortInputFirst(input, data) {
 }
 
 function searchAutoComplete() {
-
-
     $("#searchTxtInput").autocomplete({
         source: function (request, response) {
             //  console.log("auto complate");
             var items = new Array();
-
 
             var jsonRequest = JSON.stringify({ "term": request.term, "action": $("#action").val(), "controller": $("#controller").val() });
             //  console.log(jsonRequest);
@@ -404,16 +382,12 @@ function searchAutoComplete() {
                     //  console.log(items);
                     response(sortInputFirst(request.term, items));
                 });
-
             }
-
         },
         select: function (event, ui) {
             $("#SearchButton").click();
-
         }
     });
-
 }
 function bindProductDetailToolTip() {
     $('[data-product-detail]').each(function () {
@@ -445,5 +419,4 @@ function setPreSelectedTreeNode(preSelectedNode) {
         $("#Content_" + productCategoryId).addClass("hover2");
         $("#Content_" + productCategoryId).append("<span id='contentInside' class='contentSelected'>" + textSpan + "</span>");
     }
-
 }

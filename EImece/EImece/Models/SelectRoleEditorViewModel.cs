@@ -5,7 +5,10 @@ namespace EImece.Models
 {
     public class SelectRoleEditorViewModel
     {
-        public SelectRoleEditorViewModel() { }
+        public SelectRoleEditorViewModel()
+        {
+        }
+
         public SelectRoleEditorViewModel(IdentityRole role)
         {
             this.RoleName = role.Name;
@@ -16,7 +19,6 @@ namespace EImece.Models
 
         [Required]
         public string RoleName { get; set; }
-
 
         public string RoleId { get; set; }
     }

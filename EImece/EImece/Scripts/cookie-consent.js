@@ -7,7 +7,6 @@
     };
     var cookieName = 'GDPR';
 
-
     window.CookieConsent = function (message, privacyLink, termsLink) {
         var currentCookie = getCookie(cookieName);
         if (currentCookie) {
