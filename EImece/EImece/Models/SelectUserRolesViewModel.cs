@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Resources;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace EImece.Models
 {
@@ -38,9 +41,15 @@ namespace EImece.Models
             }
         }
         public string Id { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string UserName { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
         public string FirstName { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string LastName { get; set; }
+
         public List<SelectRoleEditorViewModel> Roles { get; set; }
     }
 }

@@ -670,6 +670,7 @@
     <Content Include="Areas\Amp\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\SelectUserRolesViewModel.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

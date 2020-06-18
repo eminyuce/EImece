@@ -1,13 +1,14 @@
 ﻿@using EImece.Models;
 @model SelectUserRolesViewModel
-
+@using Resources;
 @{
     ViewBag.Title = "User Roles";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Roles for user @Html.DisplayFor(model => model.UserName)</h2>
-<hr />
+
+<h2>@AdminResource.Roles</h2>
+<hr class="adminLine" />
 
 @using (Html.BeginForm("UserRoles", "Users", FormMethod.Post))
 {
@@ -21,28 +22,26 @@
             </div>
         </div>
 
-        <h4>Select Role Assignments</h4>
-        <br />
+        <h4>@AdminResource.SelectRoleAssignments</h4>
         <hr />
 
-        <table>
+        <table width="25%" class="table table-bordered table-hover">
             <tr>
                 <th>
-                    Select
+
                 </th>
                 <th>
-                    Role
+                    @AdminResource.Roles
                 </th>
             </tr>
             @Html.EditorFor(model => model.Roles)
         </table>
-        <br />
-        <hr />
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-info btn-block" />
             </div>
         </div>
     </div>
 }
+@Html.DisplayFor(model => model) 

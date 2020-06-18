@@ -678,4 +678,16 @@
   <data name="EnterYourEmailToRecover" xml:space="preserve">
     <value>Kurtarmak için E-postanızı Girin</value>
   </data>
+  <data name="CreateNewAccount" xml:space="preserve">
+    <value>Yeni bir hesap oluştur</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Kayıt ol</value>
+  </data>
+  <data name="GenerateNewPasswordforUser" xml:space="preserve">
+    <value>Kullanıcı için Yeni Şifre Oluştur</value>
+  </data>
+  <data name="SelectRoleAssignments" xml:space="preserve">
+    <value>Rol Atamalarını Seçin</value>
+  </data>
 </root>

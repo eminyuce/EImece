@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yeni bir hesap oluştur.
+        /// </summary>
+        public static string CreateNewAccount {
+            get {
+                return ResourceManager.GetString("CreateNewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şimdiki Şifre.
         /// </summary>
         public static string CurrentPassword {
@@ -507,6 +516,15 @@ namespace Resources {
         public static string ForgotPassword {
             get {
                 return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kullanıcı için Yeni Şifre Oluştur.
+        /// </summary>
+        public static string GenerateNewPasswordforUser {
+            get {
+                return ResourceManager.GetString("GenerateNewPasswordforUser", resourceCulture);
             }
         }
         
@@ -1303,6 +1321,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kayıt ol.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beni hatırla?.
         /// </summary>
         public static string RememberMe {
@@ -1371,6 +1398,15 @@ namespace Resources {
         public static string SelectedCategory {
             get {
                 return ResourceManager.GetString("SelectedCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rol Atamalarını Seçin.
+        /// </summary>
+        public static string SelectRoleAssignments {
+            get {
+                return ResourceManager.GetString("SelectRoleAssignments", resourceCulture);
             }
         }
         
