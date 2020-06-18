@@ -241,7 +241,7 @@
     <value>Ürün Kodu</value>
   </data>
   <data name="ProductCategoryIdErrorMessage" xml:space="preserve">
-    <value>Lütfen Kategori Girin</value>
+    <value>Kategori ağacından kategori seçmelisiniz.</value>
   </data>
   <data name="VideoUrl" xml:space="preserve">
     <value>Video Url</value>

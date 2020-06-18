@@ -1231,7 +1231,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen Kategori Girin.
+        ///   Looks up a localized string similar to Kategori ağacından kategori seçmelisiniz..
         /// </summary>
         public static string ProductCategoryIdErrorMessage {
             get {
