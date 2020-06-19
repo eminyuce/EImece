@@ -132,77 +132,6 @@ console.log(e);
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.IsCampaign, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="checkbox checkbox-danger">
-                                        @Html.EditorFor(model => model.IsCampaign)
-                                        @Html.ValidationMessageFor(model => model.IsCampaign, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="checkbox checkbox-danger">
-                                        @Html.EditorFor(model => model.IsActive)
-                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.MainPage)
-                                        @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-5">
-                                    <input type="file" name="postedImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
-                                    @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-md-5">
-                                    @if (Model.MainImageId.HasValue)
-                                    {
-                                        <b>@ExistingMainImageText :</b>
-                                        @Html.Partial("pGridImageMainPage", (BaseContent)Model)
-                                    }
-                                </div>
-                            </div>
-                            @Html.Partial("pSliderResizing", (BaseContent)Model)
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.ImageState)
-                                        @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.VideoUrl, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.VideoUrl, 2, 20, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.VideoUrl, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
                             @if (isProductPriceEnable.SettingValue.ToBool(true))
                             {
                                 <div class="form-group">
@@ -228,13 +157,75 @@ console.log(e);
                                 @Html.HiddenFor(model => model.Discount)
                             }
 
-                        <div class="form-group">
-                            <label class="control-label col-md-2" for="Tags">Tags</label>
-                            <div class="col-md-10">
-                                <div id="productTagsHtml">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.IsActive)
+                                    @Html.EditorFor(model => model.IsActive)
+                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.MainPage)
+                                    @Html.EditorFor(model => model.MainPage)
+                                    @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.IsCampaign)
+                                    @Html.EditorFor(model => model.IsCampaign)
+                                    @Html.ValidationMessageFor(model => model.IsCampaign, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3">
+                                    <input type="file" name="postedImage" />
+                                    @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.ImageState)
+                                    @Html.EditorFor(model => model.ImageState)
+                                    @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    @if (Model.MainImageId.HasValue)
+                                    {
+                                        <b>@ExistingMainImageText :</b>
+                                        @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                    }
+                                </div>
+                            </div>
+                            @Html.Partial("pSliderResizing", (BaseContent)Model)
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.VideoUrl, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.VideoUrl, 2, 20, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VideoUrl, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="Tags">Tags</label>
+                                <div class="col-md-10">
+                                    <div id="productTagsHtml">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="tab2default">
                             <div class="form-group">

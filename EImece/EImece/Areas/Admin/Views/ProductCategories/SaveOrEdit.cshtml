@@ -134,59 +134,52 @@ console.log(e);
                                 </div>
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        <div class="checkbox checkbox-danger">
+                                    <div class="col-md-4">
+                                    </div>
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.IsActive)
                                             @Html.EditorFor(model => model.IsActive)
                                             @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        <div class="checkbox">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.MainPage)
                                             @Html.EditorFor(model => model.MainPage)
                                             @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-5">
-                                        <input type="file" name="postedImage" />
-                                        @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        @if (Model.MainImageId.HasValue)
-                                        {
-                                            <b>@ExistingMainImageText :</b>
-                                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
-                                        }
-                                    </div>
-                                </div>
-                                @Html.Partial("pSliderResizing", (BaseContent)Model)
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        <div class="checkbox">
+
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-3">
+                                            <input type="file" name="postedImage" />
+                                            @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.LabelFor(model => model.ImageState)
                                             @Html.EditorFor(model => model.ImageState)
                                             @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
                                         </div>
+                                        <div class="col-md-3">
+                                            @if (Model.MainImageId.HasValue)
+                                            {
+                                                <b>@ExistingMainImageText :</b>
+                                                @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                            }
+                                        </div>
                                     </div>
+                                    @Html.Partial("pSliderResizing", (BaseContent)Model)
+
                                 </div>
-                            </div>
                             <div class="tab-pane fade" id="tab2default">
                                 <div class="form-group">
                                     <div class="col-md-12">
