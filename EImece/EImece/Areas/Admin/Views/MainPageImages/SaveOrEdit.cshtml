@@ -21,7 +21,7 @@
     @using (Html.BeginForm("SaveOrEdit", "MainPageImages", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
 
@@ -98,14 +98,12 @@
                             <div class="col-md-3">
                                 @if (Model.MainImageId.HasValue)
                                 {
-                                    <b>@ExistingMainImageText :</b>
-                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                <b>@ExistingMainImageText :</b>
+                                @Html.Partial("pGridImageMainPage", (BaseContent)Model);
                                 }
                             </div>
                         </div>
                         @Html.Partial("pSliderResizing", (BaseContent)Model)
-
-
                     </div>
                     <div class="tab-pane fade" id="tab2default">
                         <div class="form-group">
