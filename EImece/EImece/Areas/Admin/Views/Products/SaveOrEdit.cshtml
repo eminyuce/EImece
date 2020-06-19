@@ -132,7 +132,7 @@ console.log(e);
                                 </div>
                             </div>
 
-                            @if (isProductPriceEnable.SettingValue.ToBool(true))
+                            @if (isProductPriceEnable.SettingValue.ToBool(false))
                             {
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
