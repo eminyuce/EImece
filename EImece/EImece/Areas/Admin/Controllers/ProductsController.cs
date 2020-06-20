@@ -49,8 +49,12 @@ namespace EImece.Areas.Admin.Controllers
         {
             int productId = id;
             ProductService.ParseTemplateAndSaveProductSpecifications(productId, templateId, CurrentLanguage, Request);
-
-            return RedirectToAction("SaveOrEditProductSpecs", new { id });
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            var productDetailViewModel = ProductService.GetProductById(id);
+            Product content = productDetailViewModel.Product;
+            ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
+            return View(content);
+            //  return RedirectToAction("SaveOrEditProductSpecs", new { id });
         }
 
         //
