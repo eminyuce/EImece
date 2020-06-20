@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Düzenle.
         /// </summary>
         public static string AdminEdit {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Panel Login.
+        ///   Looks up a localized string similar to Yönetici Paneli Girişi.
         /// </summary>
         public static string AdminPanelLoginPage {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to click here to log in.
+        ///   Looks up a localized string similar to Giriş yapmak için buraya tıklayın.
         /// </summary>
         public static string ClickHereToLogin {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lutfen Guvenlik Sorunu Cevaplayiniz..
+        ///   Looks up a localized string similar to Lütfen Guvenlik Sorunu Cevaplayiniz..
         /// </summary>
         public static string ContactUsCaptchaErrorMessage {
             get {
@@ -142,7 +142,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lutfen E-Postanizi girin.
+        ///   Looks up a localized string similar to Lütfen E-Postanizi girin.
         /// </summary>
         public static string ContactUsEmailErrorMessage {
             get {
@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lutfen Mesajinizi Giriniz.
+        ///   Looks up a localized string similar to Lütfen Mesajinizi Giriniz.
         /// </summary>
         public static string ContactUsMessageErrorMessage {
             get {
@@ -178,7 +178,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lutfen Ad / Soyadiniz Girin..
+        ///   Looks up a localized string similar to Lütfen Ad / Soyadınızı Girin.
         /// </summary>
         public static string ContactUsNameErrorMessage {
             get {
@@ -196,7 +196,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wrong Sum, Please try it again..
+        ///   Looks up a localized string similar to Yanlış Toplam, Lütfen tekrar deneyin..
         /// </summary>
         public static string ContactUsWrongSumForSecurityQuestion {
             get {
@@ -223,7 +223,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forgot Password Confirmation.
+        ///   Looks up a localized string similar to Şifremi Unuttum Onayı.
         /// </summary>
         public static string ForgotPasswordConfirmation {
             get {
@@ -232,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please check your email to reset your password.
+        ///   Looks up a localized string similar to Şifrenizi sıfırlamak için lütfen e-postanızı kontrol edin.
         /// </summary>
         public static string ForgotPasswordConfirmationText {
             get {
@@ -241,7 +241,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsCampaign.
+        ///   Looks up a localized string similar to Kampanya.
         /// </summary>
         public static string IsCampaign {
             get {
@@ -250,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log in.
+        ///   Looks up a localized string similar to Oturum aç.
         /// </summary>
         public static string Login {
             get {
@@ -259,7 +259,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lost Your Password?.
+        ///   Looks up a localized string similar to Şifreni mi unuttun?.
         /// </summary>
         public static string LostYourPassword {
             get {
@@ -295,7 +295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NO Search Result.
+        ///   Looks up a localized string similar to Arama Sonucu Bulunamadi..
         /// </summary>
         public static string NOSearchResult {
             get {
@@ -313,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privacy Policy.
+        ///   Looks up a localized string similar to Gizlilik Politikası.
         /// </summary>
         public static string PrivacyPolicy {
             get {
@@ -340,7 +340,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product Search Result for {0}.
+        ///   Looks up a localized string similar to {0} için Ürün Arama Sonucu.
         /// </summary>
         public static string ProductSearchPageTitle {
             get {
@@ -367,7 +367,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recover.
+        ///   Looks up a localized string similar to Kurtarmak.
         /// </summary>
         public static string Recover {
             get {
@@ -376,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recover Password.
+        ///   Looks up a localized string similar to Şifre kurtarma.
         /// </summary>
         public static string RecoverPassword {
             get {
@@ -385,7 +385,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter your e-mail address below. We&apos;ll send you an e-mail with a link to reset your password..
+        ///   Looks up a localized string similar to E-posta adresinizi aşağıya girin. Size şifrenizi sıfırlamak için bir bağlantı içeren bir e-posta göndereceğiz..
         /// </summary>
         public static string RecoverPasswordText {
             get {
@@ -394,7 +394,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ilgili Blogs.
+        ///   Looks up a localized string similar to İlgili Bloglar.
         /// </summary>
         public static string RelatedBlogsForProducts {
             get {
@@ -403,7 +403,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ilgili Urunler.
+        ///   Looks up a localized string similar to İlgili Ürünler.
         /// </summary>
         public static string RelatedProductsForBlog {
             get {
@@ -412,7 +412,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResetPassword.
+        ///   Looks up a localized string similar to Şifreyi yenile.
         /// </summary>
         public static string ResetPassword {
             get {
@@ -421,7 +421,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset password confirmation.
+        ///   Looks up a localized string similar to Parola sıfırlamayı onayla.
         /// </summary>
         public static string ResetPasswordConfirmation {
             get {
@@ -430,7 +430,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your password has been reset. Please click to link below to login..
+        ///   Looks up a localized string similar to Şifreniz sıfırlandı. Giriş yapmak için lütfen aşağıdaki bağlantıyı tıklayın..
         /// </summary>
         public static string ResetPasswordConfirmationText {
             get {
@@ -448,7 +448,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lutfen birseyler yaziniz.
+        ///   Looks up a localized string similar to Arama Yapmak için lütfen birşeyler yazınız.
         /// </summary>
         public static string SearchErrorMessage {
             get {
@@ -457,7 +457,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Araba.
+        ///   Looks up a localized string similar to Ara.
         /// </summary>
         public static string SearchProductButtonText {
             get {
@@ -466,7 +466,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Urunlerde Ara.
+        ///   Looks up a localized string similar to Ürünlerde Ara.
         /// </summary>
         public static string SearchProductTextBoxPlaceHolder {
             get {
@@ -475,7 +475,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter a search term 2.
+        ///   Looks up a localized string similar to Lütfen bir arama terimi girin 2.
         /// </summary>
         public static string SearchRequiredErrorMessage {
             get {
@@ -484,7 +484,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Result for {0}.
+        ///   Looks up a localized string similar to {0} için Arama Sonucu.
         /// </summary>
         public static string SearchResultText {
             get {
@@ -493,7 +493,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter a valid text 2.
+        ///   Looks up a localized string similar to Lütfen geçerli bir metin girin 2.
         /// </summary>
         public static string SearchValidText {
             get {
@@ -502,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gonder.
+        ///   Looks up a localized string similar to Gönder.
         /// </summary>
         public static string SendButtonText {
             get {
@@ -511,7 +511,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send E-Mail.
+        ///   Looks up a localized string similar to Eposta gönder.
         /// </summary>
         public static string SendEmail {
             get {
@@ -529,7 +529,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Social Media.
+        ///   Looks up a localized string similar to Sosyal medya.
         /// </summary>
         public static string SocialMedia {
             get {
@@ -565,7 +565,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terms &amp; Conditions.
+        ///   Looks up a localized string similar to Şartlar ve Koşullar.
         /// </summary>
         public static string TermsAndConditions {
             get {
@@ -574,7 +574,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thank You For Contacting Us.
+        ///   Looks up a localized string similar to Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz. Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek. Günün geri kalanı güzel geçsin!.
+        /// </summary>
+        public static string ThankYouContactUsForm {
+            get {
+                return ResourceManager.GetString("ThankYouContactUsForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bizimle iletişime geçtiğiniz için teşekkürler.
         /// </summary>
         public static string ThankYouForContactingUs {
             get {

@@ -124,7 +124,7 @@
     <value>Guvenlik Sorusunu:</value>
   </data>
   <data name="ContactUsCaptchaErrorMessage" xml:space="preserve">
-    <value>Lutfen Guvenlik Sorunu Cevaplayiniz.</value>
+    <value>Lütfen Guvenlik Sorunu Cevaplayiniz.</value>
   </data>
   <data name="ContactUsCompanyName" xml:space="preserve">
     <value>Sirketiniz ismi</value>
@@ -133,19 +133,19 @@
     <value>E-Posta</value>
   </data>
   <data name="ContactUsEmailErrorMessage" xml:space="preserve">
-    <value>Lutfen E-Postanizi girin</value>
+    <value>Lütfen E-Postanizi girin</value>
   </data>
   <data name="ContactUsMessage" xml:space="preserve">
     <value>Mesajiniz</value>
   </data>
   <data name="ContactUsMessageErrorMessage" xml:space="preserve">
-    <value>Lutfen Mesajinizi Giriniz</value>
+    <value>Lütfen Mesajinizi Giriniz</value>
   </data>
   <data name="ContactUsName" xml:space="preserve">
     <value>Ad / Soyad</value>
   </data>
   <data name="ContactUsNameErrorMessage" xml:space="preserve">
-    <value>Lutfen Ad / Soyadiniz Girin.</value>
+    <value>Lütfen Ad / Soyadınızı Girin</value>
   </data>
   <data name="ContactUsPhone" xml:space="preserve">
     <value>Telefon</value>
@@ -166,43 +166,43 @@
     <value>Sayfalar</value>
   </data>
   <data name="PrivacyPolicy" xml:space="preserve">
-    <value>Privacy Policy</value>
+    <value>Gizlilik Politikası</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Ürünler</value>
   </data>
   <data name="ProductSearchPageTitle" xml:space="preserve">
-    <value>Product Search Result for {0}</value>
+    <value>{0} için Ürün Arama Sonucu</value>
   </data>
   <data name="SearchProductButtonText" xml:space="preserve">
-    <value>Araba</value>
+    <value>Ara</value>
   </data>
   <data name="SearchProductTextBoxPlaceHolder" xml:space="preserve">
-    <value>Urunlerde Ara</value>
+    <value>Ürünlerde Ara</value>
   </data>
   <data name="SendButtonText" xml:space="preserve">
-    <value>Gonder</value>
+    <value>Gönder</value>
   </data>
   <data name="SubscriberButtonText" xml:space="preserve">
     <value>EKLE</value>
   </data>
   <data name="TermsAndConditions" xml:space="preserve">
-    <value>Terms &amp; Conditions</value>
+    <value>Şartlar ve Koşullar</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Ara</value>
   </data>
   <data name="SearchErrorMessage" xml:space="preserve">
-    <value>Lutfen birseyler yaziniz</value>
+    <value>Arama Yapmak için lütfen birşeyler yazınız</value>
   </data>
   <data name="SearchRequiredErrorMessage" xml:space="preserve">
-    <value>Please enter a search term 2</value>
+    <value>Lütfen bir arama terimi girin 2</value>
   </data>
   <data name="SearchValidText" xml:space="preserve">
-    <value>Please enter a valid text 2</value>
+    <value>Lütfen geçerli bir metin girin 2</value>
   </data>
   <data name="NOSearchResult" xml:space="preserve">
-    <value>NO Search Result</value>
+    <value>Arama Sonucu Bulunamadi.</value>
   </data>
   <data name="NewModelsClick" xml:space="preserve">
     <value>Yeni modellerimiz için tıklayınız</value>
@@ -211,25 +211,25 @@
     <value>Hepsi</value>
   </data>
   <data name="IsCampaign" xml:space="preserve">
-    <value>IsCampaign</value>
+    <value>Kampanya</value>
   </data>
   <data name="AdminEdit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Düzenle</value>
   </data>
   <data name="ProductCodeNo" xml:space="preserve">
     <value>Ürün No :</value>
   </data>
   <data name="SearchResultText" xml:space="preserve">
-    <value>Search Result for {0}</value>
+    <value>{0} için Arama Sonucu</value>
   </data>
   <data name="ContactUsWrongSumForSecurityQuestion" xml:space="preserve">
-    <value>Wrong Sum, Please try it again.</value>
+    <value>Yanlış Toplam, Lütfen tekrar deneyin.</value>
   </data>
   <data name="ProductsInfo" xml:space="preserve">
     <value>Ürün Bilgisi</value>
   </data>
   <data name="RelatedBlogsForProducts" xml:space="preserve">
-    <value>Ilgili Blogs</value>
+    <value>İlgili Bloglar</value>
   </data>
   <data name="SimilairProducts" xml:space="preserve">
     <value>Benzer Urunler</value>
@@ -244,54 +244,57 @@
     <value>Bu Ürün Hakkında Bilgi İstiyorum</value>
   </data>
   <data name="SocialMedia" xml:space="preserve">
-    <value>Social Media</value>
+    <value>Sosyal medya</value>
   </data>
   <data name="RelatedProductsForBlog" xml:space="preserve">
-    <value>Ilgili Urunler</value>
+    <value>İlgili Ürünler</value>
   </data>
   <data name="ReadMore" xml:space="preserve">
     <value>Devami...</value>
   </data>
   <data name="RecoverPassword" xml:space="preserve">
-    <value>Recover Password</value>
+    <value>Şifre kurtarma</value>
   </data>
   <data name="RecoverPasswordText" xml:space="preserve">
-    <value>Enter your e-mail address below. We'll send you an e-mail with a link to reset your password.</value>
+    <value>E-posta adresinizi aşağıya girin. Size şifrenizi sıfırlamak için bir bağlantı içeren bir e-posta göndereceğiz.</value>
   </data>
   <data name="AdminPanelLoginPage" xml:space="preserve">
-    <value>Admin Panel Login</value>
+    <value>Yönetici Paneli Girişi</value>
   </data>
   <data name="ClickHereToLogin" xml:space="preserve">
-    <value>click here to log in</value>
+    <value>Giriş yapmak için buraya tıklayın</value>
   </data>
   <data name="ForgotPasswordConfirmation" xml:space="preserve">
-    <value>Forgot Password Confirmation</value>
+    <value>Şifremi Unuttum Onayı</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Log in</value>
+    <value>Oturum aç</value>
   </data>
   <data name="LostYourPassword" xml:space="preserve">
-    <value>Lost Your Password?</value>
+    <value>Şifreni mi unuttun?</value>
   </data>
   <data name="Recover" xml:space="preserve">
-    <value>Recover</value>
+    <value>Kurtarmak</value>
   </data>
   <data name="ResetPassword" xml:space="preserve">
-    <value>ResetPassword</value>
+    <value>Şifreyi yenile</value>
   </data>
   <data name="ResetPasswordConfirmation" xml:space="preserve">
-    <value>Reset password confirmation</value>
+    <value>Parola sıfırlamayı onayla</value>
   </data>
   <data name="ResetPasswordConfirmationText" xml:space="preserve">
-    <value>Your password has been reset. Please click to link below to login.</value>
+    <value>Şifreniz sıfırlandı. Giriş yapmak için lütfen aşağıdaki bağlantıyı tıklayın.</value>
   </data>
   <data name="SendEmail" xml:space="preserve">
-    <value>Send E-Mail</value>
+    <value>Eposta gönder</value>
   </data>
   <data name="ForgotPasswordConfirmationText" xml:space="preserve">
-    <value>Please check your email to reset your password</value>
+    <value>Şifrenizi sıfırlamak için lütfen e-postanızı kontrol edin</value>
   </data>
   <data name="ThankYouForContactingUs" xml:space="preserve">
-    <value>Thank You For Contacting Us</value>
+    <value>Bizimle iletişime geçtiğiniz için teşekkürler</value>
+  </data>
+  <data name="ThankYouContactUsForm" xml:space="preserve">
+    <value>Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz. Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek. Günün geri kalanı güzel geçsin!</value>
   </data>
 </root>
