@@ -297,4 +297,7 @@
   <data name="ThankYouContactUsForm" xml:space="preserve">
     <value>Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz. Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek. Günün geri kalanı güzel geçsin!</value>
   </data>
+  <data name="SuccessfullySavedCompleted" xml:space="preserve">
+    <value>İşleminiz başarıyla gerçekleşmiştir.</value>
+  </data>
 </root>

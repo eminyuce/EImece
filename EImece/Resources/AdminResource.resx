@@ -693,4 +693,7 @@
   <data name="GeneralSaveErrorMessage" xml:space="preserve">
     <value>Değişiklikler kaydedilemedi. Tekrar deneyin ve sorun devam ederse sistem yöneticinize başvurun.</value>
   </data>
+  <data name="SuccessfullySavedCompleted" xml:space="preserve">
+    <value>İşleminiz başarıyla gerçekleşmiştir.</value>
+  </data>
 </root>

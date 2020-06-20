@@ -1582,6 +1582,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İşleminiz başarıyla gerçekleşmiştir..
+        /// </summary>
+        public static string SuccessfullySavedCompleted {
+            get {
+                return ResourceManager.GetString("SuccessfullySavedCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Etiket.
         /// </summary>
         public static string Tag {

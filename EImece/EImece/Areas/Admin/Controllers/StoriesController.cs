@@ -82,6 +82,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(story);
         }
 
