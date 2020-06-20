@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers.ActionResultHelpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers.ActionResultHelpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.FrontModels;
 using NLog;
@@ -13,7 +14,7 @@ namespace EImece.Controllers
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: Rss
-        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+       [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
         public ActionResult Products(RssParams rssParams)
         {
             var comment = new StringBuilder();
@@ -30,7 +31,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+       [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
         public ActionResult StoryCategories(RssParams rssParams)
         {
             var comment = new StringBuilder();
@@ -47,7 +48,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+       [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
         public ActionResult StoryCategoriesFull(RssParams rssParams)
         {
             var comment = new StringBuilder();

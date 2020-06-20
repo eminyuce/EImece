@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using System;
 using System.Drawing;
@@ -10,11 +11,18 @@ namespace EImece.Controllers
 {
     public class ImagesController : BaseController
     {
+       
+
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
-        [CustomOutputCache(CacheProfile = "ImageProxyCaching")]
+        [CustomOutputCache(CacheProfile = ApplicationConfigs.ImageProxyCaching)]
         public ActionResult Index(String id, String imageSize)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("Id cannot be null");
+            }
+
             var fileStorageId = id.Replace(".jpg", "").GetIdWithoutDecode();
 
             if (fileStorageId > 0)

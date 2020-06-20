@@ -9,7 +9,7 @@ namespace EImece.Controllers
     public class RobotController : Controller
     {
         // GET: Robots
-        [CustomOutputCache(CacheProfile = "Cache30Days")]
+        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
         public FileContentResult RobotsText()
         {
             var content = "";

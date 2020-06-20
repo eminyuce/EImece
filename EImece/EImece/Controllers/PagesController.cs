@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using NLog;
@@ -17,7 +18,7 @@ namespace EImece.Controllers
             return View();
         }
 
-        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+       [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
         public ActionResult Detail(String id = "")
         {
             try

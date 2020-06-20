@@ -21,7 +21,7 @@ namespace EImece.Controllers
         }
 
         [Route("category/{id}")]
-        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+       [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
         public ActionResult Category(String id)
         {
             try

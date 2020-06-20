@@ -10,6 +10,11 @@ namespace EImece.Domain
 {
     public class ApplicationConfigs
     {
+        public const string Cache30Days = "Cache30Days";
+        public const string Cache20Minutes = "Cache20Minutes";
+        public const string ImageProxyCaching = "ImageProxyCaching";
+
+        public const string WebSiteCompanyEmailAddress = "WebSiteCompanyEmailAddress";
         public const string DefaultImageHeight = "DefaultImageHeight";
         public const string DefaultImageWidth = "DefaultImageWidth";
         public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
@@ -23,7 +28,13 @@ namespace EImece.Domain
         public const string TermsAndConditions = "TermsAndConditions";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
-
+        public const string InstagramWebSiteLink = "InstagramWebSiteLink";
+        public const string TwitterWebSiteLink = "TwitterWebSiteLink";
+        public const string LinkedinWebSiteLink = "LinkedinWebSiteLink";
+        public const string GooglePlusWebSiteLink = "GooglePlusWebSiteLink";
+        public const string FacebookWebSiteLink = "FacebookWebSiteLink";
+        public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
+        public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
         //   public const string Languages = "Languages";
         public const string PrivacyPolicy = "PrivacyPolicy";
 

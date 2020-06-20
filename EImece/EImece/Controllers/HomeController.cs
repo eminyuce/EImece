@@ -20,9 +20,11 @@ namespace EImece.Controllers
 {
     public class HomeController : BaseController
     {
+        private const string CaptchaContactUsLogin = "CaptchaContactUsLogin";
+
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-        [CustomOutputCache(CacheProfile = "Cache20Minutes")]
+        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
@@ -82,11 +84,11 @@ namespace EImece.Controllers
         [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
-            var InstagramWebSiteLink = SettingService.GetSettingByKey("InstagramWebSiteLink");
-            var TwitterWebSiteLink = SettingService.GetSettingByKey("TwitterWebSiteLink");
-            var LinkedinWebSiteLink = SettingService.GetSettingByKey("LinkedinWebSiteLink");
-            var GooglePlusWebSiteLink = SettingService.GetSettingByKey("GooglePlusWebSiteLink");
-            var FacebookWebSiteLink = SettingService.GetSettingByKey("FacebookWebSiteLink");
+            var InstagramWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.InstagramWebSiteLink);
+            var TwitterWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.TwitterWebSiteLink);
+            var LinkedinWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.LinkedinWebSiteLink);
+            var GooglePlusWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.GooglePlusWebSiteLink);
+            var FacebookWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.FacebookWebSiteLink);
 
             var resultList = new List<String>();
             resultList.Add(InstagramWebSiteLink);
@@ -98,14 +100,14 @@ namespace EImece.Controllers
             return PartialView("_SocialMediaLinks", resultList);
         }
 
-        [CustomOutputCache(CacheProfile = "Cache30Days")]
+        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
         public ActionResult TermsAndConditions()
         {
             var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
             return View(setting);
         }
 
-        [CustomOutputCache(CacheProfile = "Cache30Days")]
+        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
         public ActionResult PrivacyPolicy()
         {
             var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
@@ -116,7 +118,7 @@ namespace EImece.Controllers
         [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()
         {
-            var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey("GoogleAnalyticsTrackingScript").ToStr();
+            var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(ApplicationConfigs.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
 
@@ -151,8 +153,8 @@ namespace EImece.Controllers
 
         public ActionResult WebSiteAddressInfo()
         {
-            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
-            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");
+            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey(ApplicationConfigs.WebSiteCompanyPhoneAndLocation);
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(ApplicationConfigs.WebSiteCompanyEmailAddress);
             var resultList = new List<String>();
             resultList.Add(WebSiteCompanyPhoneAndLocation);
             resultList.Add(WebSiteCompanyEmailAddress);
@@ -167,7 +169,12 @@ namespace EImece.Controllers
         //}
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
-            if (Session["CaptchaContactUsLogin"] == null || !Session["CaptchaContactUsLogin"].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            if(contact == null)
+            {
+                throw new ArgumentException("Contact cannot be null");
+            }
+
+            if (Session[CaptchaContactUsLogin] == null || !Session[CaptchaContactUsLogin].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("Captcha", Resources.Resource.ContactUsWrongSumForSecurityQuestion);
                 if (contact.ItemType == EImeceItemType.Product)
@@ -197,7 +204,7 @@ namespace EImece.Controllers
                     s.Position = 1;
                     s.EntityHash = "";
                     s.Lang = CurrentLanguage;
-                    s.Note = String.Format("CompanyName:{0} {4}Phone:{1} {4}Address:{2} {4}Message:{3} ",
+                    s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
                         contact.CompanyName,
                         contact.Phone,
                         contact.Address,
