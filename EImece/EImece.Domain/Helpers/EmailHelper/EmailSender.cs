@@ -2,6 +2,7 @@
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         [Inject]
         public ISettingService SettingService { get; set; }
 
+       
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -124,32 +126,53 @@ namespace EImece.Domain.Helpers.EmailHelper
         public EmailAccount GetEmailAccount()
         {
             var emailAccount = new EmailAccount();
-            emailAccount.Host = SettingService.GetSettingByKey("AdminEmailHost");
-            emailAccount.Password = SettingService.GetSettingByKey("AdminEmailPassword");
-            emailAccount.EnableSsl = SettingService.GetSettingByKey("AdminEmailEnableSsl").ToBool();
-            emailAccount.Port = SettingService.GetSettingByKey("AdminEmailPort").ToInt();
-            emailAccount.DisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
-            emailAccount.Email = SettingService.GetSettingByKey("AdminEmail");
-            emailAccount.UseDefaultCredentials = SettingService.GetSettingByKey("AdminEmailUseDefaultCredentials").ToBool();
-            emailAccount.Username = SettingService.GetSettingByKey("AdminUserName").ToStr();
+            emailAccount.Host = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailHost);
+            emailAccount.Password = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailPassword);
+            emailAccount.EnableSsl = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailEnableSsl).ToBool();
+            emailAccount.Port = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailPort).ToInt();
+            emailAccount.DisplayName = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailDisplayName);
+            emailAccount.Email = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmail);
+            emailAccount.UseDefaultCredentials = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailUseDefaultCredentials).ToBool();
+            emailAccount.Username = SettingService.GetSettingByKey(ApplicationConfigs.AdminUserName).ToStr();
             return emailAccount;
         }
 
         public void SendEmailContactingUs(ContactUsFormViewModel contact)
         {
             var emailAccount = GetEmailAccount();
-            var fromAddress = SettingService.GetSettingByKey("AdminEmail");
-            var fromAddressDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            var fromAddress = emailAccount.Email;
+            if (string.IsNullOrEmpty(fromAddress))
+            {
+                throw new ArgumentException("From Address cannot be null");
+            }
+            var fromAddressDisplayName = emailAccount.DisplayName;
+            if (string.IsNullOrEmpty(fromAddressDisplayName))
+            {
+                throw new ArgumentException("from Address DisplayName cannot be null");
+            }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(contact.Email, contact.Name);
-            SendEmail(emailAccount, "Contact Us", contact.Message, from, to);
+            SendEmail(emailAccount, Resource.ContactUsMessage, contact.Message, from, to);
         }
 
         public void SendForgotPasswordEmail(string destination, string subject, string body)
         {
             var emailAccount = GetEmailAccount();
-            var fromAddress = SettingService.GetSettingByKey("AdminEmail");
-            var fromAddressDisplayName = SettingService.GetSettingByKey("AdminEmailDisplayName");
+            SendEmail(destination, subject, body, emailAccount);
+        }
+
+        public void SendEmail(string destination, string subject, string body, EmailAccount emailAccount)
+        {
+            var fromAddress = emailAccount.Email;
+            if (string.IsNullOrEmpty(fromAddress))
+            {
+                throw new ArgumentException("From Address cannot be null");
+            }
+            var fromAddressDisplayName = emailAccount.DisplayName;
+            if (string.IsNullOrEmpty(fromAddressDisplayName))
+            {
+                throw new ArgumentException("from Address DisplayName cannot be null");
+            }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(destination);
             SendEmail(emailAccount, subject, body, from, to);

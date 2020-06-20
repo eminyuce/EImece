@@ -10,10 +10,20 @@ namespace EImece.Domain
 {
     public class ApplicationConfigs
     {
+        /*********CACHE KEYS*********/
         public const string Cache30Days = "Cache30Days";
         public const string Cache20Minutes = "Cache20Minutes";
         public const string ImageProxyCaching = "ImageProxyCaching";
 
+        /********* SETTING KEYS **********/
+        public const string AdminEmailHost = "AdminEmailHost";
+        public const string AdminEmailPassword = "AdminEmailPassword";
+        public const string AdminEmailEnableSsl = "AdminEmailEnableSsl";
+        public const string AdminEmailPort = "AdminEmailPort";
+        public const string AdminEmailDisplayName = "AdminEmailDisplayName";
+        public const string AdminEmail = "AdminEmail";
+        public const string AdminEmailUseDefaultCredentials = "AdminEmailUseDefaultCredentials";
+        public const string AdminUserName = "AdminUserName";
         public const string WebSiteCompanyEmailAddress = "WebSiteCompanyEmailAddress";
         public const string DefaultImageHeight = "DefaultImageHeight";
         public const string DefaultImageWidth = "DefaultImageWidth";
