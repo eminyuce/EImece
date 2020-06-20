@@ -696,4 +696,10 @@
   <data name="SuccessfullySavedCompleted" xml:space="preserve">
     <value>İşleminiz başarıyla gerçekleşmiştir.</value>
   </data>
+  <data name="SelectTemplate" xml:space="preserve">
+    <value>Şablon Seçin</value>
+  </data>
+  <data name="ShortDescription" xml:space="preserve">
+    <value>Kısa Açıklama</value>
+  </data>
 </root>

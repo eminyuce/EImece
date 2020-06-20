@@ -82,7 +82,25 @@ $('#ParentId').val(e.id);
                 <div class="panel-body">
                     <div class="tab-content">
                         <div id="tab1default" class="tab-pane fade in active">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.HiddenFor(model => model.ParentId)
 
+                                    @if (Model.ParentId > 0)
+                                    {
+                                        <span style="color:red;font-size:x-large" id="ParentName">
+                                            @parentCategory.Name
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span  style="color:red;font-size:x-large" id="ParentName">
+                                        </span>
+                                    }
+                                    <input id="SetParentIdRoot" value="@AdminResource.MakeItRootCategory" type="button">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
@@ -93,29 +111,11 @@ $('#ParentId').val(e.id);
                             <div class="form-group">
                                 @Html.LabelFor(model => model.TemplateId, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.TemplateId, templates, new { @class = "form-control" } )
+                                    @Html.DropDownListFor(model => model.TemplateId, templates, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.TemplateId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.HiddenFor(model => model.ParentId)
 
-                                    @if (Model.ParentId > 0)
-                                        {
-                                    <span id="ParentName">
-                                        @parentCategory.Name
-                                    </span>
-                                        }
-                                        else
-                                        {
-                                    <span id="ParentName">
-                                    </span>
-                                        }
-                                    <input id="SetParentIdRoot" value="@AdminResource.MakeItRootCategory" type="button">
-                                </div>
-                            </div>
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.DiscountPercantage, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -169,10 +169,10 @@ $('#ParentId').val(e.id);
                                 </div>
                                 <div class="col-md-3">
                                     @if (Model.MainImageId.HasValue)
-                                            {
-                                    <b>@ExistingMainImageText :</b>
-                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model);
-                                            }
+                                    {
+                                        <b>@ExistingMainImageText :</b>
+                                        @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                    }
                                 </div>
                             </div>
                             @Html.Partial("pSliderResizing", (BaseContent)Model)

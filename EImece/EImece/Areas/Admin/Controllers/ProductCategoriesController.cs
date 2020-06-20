@@ -31,7 +31,7 @@ namespace EImece.Areas.Admin.Controllers
             var templates = TemplateService.GetActiveBaseEntities(true, CurrentLanguage);
 
             var resultListItem = new List<SelectListItem>();
-            resultListItem.Add(new SelectListItem() { Text = "Select Template", Value = "0" });
+            resultListItem.Add(new SelectListItem() { Text = AdminResource.SelectTemplate, Value = "0" });
             foreach (var item in templates)
             {
                 resultListItem.Add(new SelectListItem() { Text = item.Name, Value = item.Id.ToStr() });

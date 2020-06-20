@@ -20,6 +20,10 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
 
+        [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ShortDescription))]
+        public string ShortDescription { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
         public double Price { get; set; }
 
