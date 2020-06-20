@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -18,6 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [HttpGet]
         public ActionResult Index(String search = "")
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -41,7 +44,7 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /ProductCategory/Create
-
+        [HttpGet]
         public ActionResult SaveOrEdit(int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
@@ -70,6 +73,11 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                if (productCategory == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
@@ -83,12 +91,8 @@ namespace EImece.Areas.Admin.Controllers
                     }
                     productCategory.Lang = CurrentLanguage;
                     ProductCategoryService.SaveOrEditEntity(productCategory);
-                    int contentId = productCategory.Id;
 
                     return RedirectToAction("Index");
-                }
-                else
-                {
                 }
             }
             catch (Exception ex)
@@ -104,9 +108,14 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int ? id)
         {
-            ProductCategory productCategory = ProductCategoryService.GetSingle(id);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ProductCategory productCategory = ProductCategoryService.GetSingle(id.Value);
             if (productCategory == null)
             {
                 return HttpNotFound();
@@ -115,6 +124,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ProductCategoryService.DeleteProductCategory(productCategory.Id);
                 return RedirectToAction("Index");
+
             }
             catch (Exception ex)
             {
@@ -125,10 +135,19 @@ namespace EImece.Areas.Admin.Controllers
             return View(productCategory);
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet]
+        public async Task<ActionResult> ExportExcel()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+            }).ConfigureAwait(true);
+        }
+
+        private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name,r.Name,StringComparison.OrdinalIgnoreCase);
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in productCategories
