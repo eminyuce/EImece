@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -109,10 +110,21 @@ namespace EImece.Domain.Helpers.EmailHelper
                     smtpClient.Port = emailAccount.Port;
                     smtpClient.EnableSsl = emailAccount.EnableSsl;
                     if (emailAccount.UseDefaultCredentials)
+                    {
                         smtpClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    }
                     else
+                    {
                         smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                    smtpClient.Send(message);
+                    }
+                      
+
+                    Task.Run(() =>
+                    {
+                        smtpClient.Send(message);
+                    });
+                   
+
                     Logger.Info("Email Body" + message.Body);
                     Logger.Trace("Email is sent to " + emailAccount.Username);
                 }
