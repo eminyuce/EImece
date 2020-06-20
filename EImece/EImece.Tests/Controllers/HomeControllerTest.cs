@@ -76,6 +76,8 @@ namespace EImece.Tests.Controllers
                     SettingService.MemoryCacheProvider = new MemoryCacheProvider();
                     EmailAccount emailAccount = SettingService.GetEmailAccount();
                     Console.WriteLine(emailAccount.ToString());
+                    EmailSender emailSender = new EmailSender();
+                    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
                 }
             }
         }

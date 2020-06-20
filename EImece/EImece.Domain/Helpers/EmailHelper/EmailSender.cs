@@ -21,7 +21,6 @@ namespace EImece.Domain.Helpers.EmailHelper
         [Inject]
         public ISettingService SettingService { get; set; }
 
-       
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -65,8 +64,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
-            try
+            Task.Run(() =>
             {
+                if (emailAccount == null)
+                {
+                    throw new ArgumentException("No email account is defined.");
+                }
                 var message = new MailMessage();
                 message.From = from;
                 message.To.Add(to);
@@ -117,22 +120,13 @@ namespace EImece.Domain.Helpers.EmailHelper
                     {
                         smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
                     }
-                      
 
-                    Task.Run(() =>
-                    {
-                        smtpClient.Send(message);
-                    });
-                   
+                    smtpClient.Send(message);
 
                     Logger.Info("Email Body" + message.Body);
                     Logger.Trace("Email is sent to " + emailAccount.Username);
                 }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, ex.Message);
-            }
+            });
         }
 
         public void SendEmailContactingUs(ContactUsFormViewModel contact)
