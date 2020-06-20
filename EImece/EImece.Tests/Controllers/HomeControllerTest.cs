@@ -4,6 +4,7 @@ using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
 using HtmlAgilityPack;
@@ -65,13 +66,26 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetEmailAccount()
+        {
+            using (var db = new EImeceContext(ConnectionString))
+            {
+                using (SettingRepository repository = new SettingRepository(db))
+                {
+                    var SettingService = new SettingService(repository);
+                    SettingService.MemoryCacheProvider = new MemoryCacheProvider();
+                    EmailAccount emailAccount = SettingService.GetEmailAccount();
+                    Console.WriteLine(emailAccount.ToString());
+                }
+            }
+        }
+        [TestMethod]
         public void GetProductService()
         {
             ProductService productService = kernel.Get<ProductService>();
             var products = productService.GetAll();
             Console.WriteLine(products.Count);
         }
-
         private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
 
         private int CurrentLanguage

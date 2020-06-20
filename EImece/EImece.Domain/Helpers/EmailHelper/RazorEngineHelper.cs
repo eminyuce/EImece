@@ -76,7 +76,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string body = Engine.Razor.RunCompile(template, templateKey, null, (object)model);
-            EmailSender.SendEmail(EmailSender.GetEmailAccount(),
+            EmailSender.SendEmail(SettingService.GetEmailAccount(),
                 emailTemplate.Subject,
                 body,
                 WebSiteCompanyEmailAddress,

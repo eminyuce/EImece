@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using System.Collections.Generic;
 
@@ -17,5 +18,7 @@ namespace EImece.Domain.Services.IServices
         void SaveSettingModel(SettingModel settingModel);
 
         List<Setting> GetAllActiveSettings();
+
+        EmailAccount GetEmailAccount();
     }
 }

@@ -27,8 +27,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         void SendEmailContactingUs(ContactUsFormViewModel contact);
 
-        EmailAccount GetEmailAccount();
-
         /// <summary>
         /// Sends an email
         /// </summary>

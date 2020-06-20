@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -166,6 +167,19 @@ namespace EImece.Domain.Services
                     SaveOrEditEntity(setting);
                 }
             }
+        }
+        public EmailAccount GetEmailAccount()
+        {
+            var emailAccount = new EmailAccount();
+            emailAccount.Host = GetSettingByKey(ApplicationConfigs.AdminEmailHost);
+            emailAccount.Password = GetSettingByKey(ApplicationConfigs.AdminEmailPassword);
+            emailAccount.EnableSsl = GetSettingByKey(ApplicationConfigs.AdminEmailEnableSsl).ToBool();
+            emailAccount.Port = GetSettingByKey(ApplicationConfigs.AdminEmailPort).ToInt();
+            emailAccount.DisplayName = GetSettingByKey(ApplicationConfigs.AdminEmailDisplayName);
+            emailAccount.Email = GetSettingByKey(ApplicationConfigs.AdminEmail);
+            emailAccount.UseDefaultCredentials = GetSettingByKey(ApplicationConfigs.AdminEmailUseDefaultCredentials).ToBool();
+            emailAccount.Username = GetSettingByKey(ApplicationConfigs.AdminUserName).ToStr();
+            return emailAccount;
         }
     }
 }

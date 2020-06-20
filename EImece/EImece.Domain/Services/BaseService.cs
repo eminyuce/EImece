@@ -27,7 +27,9 @@ namespace EImece.Domain.Services
         {
             get
             {
-                _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+                if (_memoryCacheProvider != null) {
+                    _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
+                }
                 return _memoryCacheProvider;
             }
             set

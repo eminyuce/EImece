@@ -123,23 +123,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
         }
 
-        public EmailAccount GetEmailAccount()
-        {
-            var emailAccount = new EmailAccount();
-            emailAccount.Host = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailHost);
-            emailAccount.Password = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailPassword);
-            emailAccount.EnableSsl = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailEnableSsl).ToBool();
-            emailAccount.Port = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailPort).ToInt();
-            emailAccount.DisplayName = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailDisplayName);
-            emailAccount.Email = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmail);
-            emailAccount.UseDefaultCredentials = SettingService.GetSettingByKey(ApplicationConfigs.AdminEmailUseDefaultCredentials).ToBool();
-            emailAccount.Username = SettingService.GetSettingByKey(ApplicationConfigs.AdminUserName).ToStr();
-            return emailAccount;
-        }
-
         public void SendEmailContactingUs(ContactUsFormViewModel contact)
         {
-            var emailAccount = GetEmailAccount();
+            var emailAccount = SettingService.GetEmailAccount();
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
             {
@@ -157,7 +143,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendForgotPasswordEmail(string destination, string subject, string body)
         {
-            var emailAccount = GetEmailAccount();
+            var emailAccount = SettingService.GetEmailAccount();
             SendEmail(destination, subject, body, emailAccount);
         }
 
