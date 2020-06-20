@@ -300,4 +300,7 @@
   <data name="SuccessfullySavedCompleted" xml:space="preserve">
     <value>İşleminiz başarıyla gerçekleşmiştir.</value>
   </data>
+  <data name="ThanksForSubscription" xml:space="preserve">
+    <value>Abonelik için teşekkürler</value>
+  </data>
 </root>

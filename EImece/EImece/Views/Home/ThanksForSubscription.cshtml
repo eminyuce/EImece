@@ -1,8 +1,8 @@
 ﻿@model EImece.Domain.Entities.Subscriber
-
+@using Resources
 @{
-    ViewBag.Title = "ThanksForSubscription";
+    ViewBag.Title = Resource.ThanksForSubscription;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Thanks For Subscription @Model.Email</h2>
+    <h2>@Resource.ThanksForSubscription @Model.Email</h2>

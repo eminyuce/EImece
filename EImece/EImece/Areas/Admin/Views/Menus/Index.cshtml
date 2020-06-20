@@ -135,32 +135,35 @@ window.location='/admin/menus/saveoredit/'+e.id;
 @helper GridDetailLink(Menu d, String controllerName)
 {
 
-    <b>
-        @{
+<b>
+    @{
 
-            var p = d.MenuLink.Split("_".ToCharArray());
-            var parts = p.First().Split("-".ToCharArray());
-            var action = parts[1];
-            var controller = parts[0];
-            String mid = "";
-            mid = p.Last();
-
-            if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-            {
-                @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
-            }
-            else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
-            {
-                @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
-            }
-            else
-            {
-                @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
-            }
-
+        var p = d.MenuLink.Split("_".ToCharArray());
+        var parts = p.First().Split("-".ToCharArray());
+        var action = parts[1];
+        var controller = parts[0];
+        String mid = "";
+        mid = p.Last();
+        if (d.LinkIsActive && !String.IsNullOrEmpty(d.Link))
+        {
+            <a class="btn btn-link" target = "_blank" href="@d.Link">@d.Name</a>
         }
-    </b>
+        else  if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+        {
+            @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+        }
+        else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+            && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+        {
+            @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
+        }
+        else
+        {
+            @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
+        }
+
+    }
+</b>
 
 }
 @helper GridToolsColumn(Menu d, List<Menu> menuTreeNodeList, String controllerName)

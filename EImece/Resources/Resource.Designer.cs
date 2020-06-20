@@ -583,6 +583,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abonelik için teşekkürler.
+        /// </summary>
+        public static string ThanksForSubscription {
+            get {
+                return ResourceManager.GetString("ThanksForSubscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz. Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek. Günün geri kalanı güzel geçsin!.
         /// </summary>
         public static string ThankYouContactUsForm {

@@ -1,10 +1,8 @@
 ﻿@model EImece.Domain.Entities.Setting
-
+@using Resources
 @{
-    ViewBag.Title = "TermsAndConditions";
+    ViewBag.Title = Resource.TermsAndConditions;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>TermsAndConditions</h2>
 
 @Html.Raw(Model.Description)

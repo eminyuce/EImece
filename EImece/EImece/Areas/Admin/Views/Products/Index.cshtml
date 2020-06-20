@@ -100,12 +100,14 @@
                .Encoded(false)
                 .Sanitized(false)
           .RenderValueAs(d =>
-                        @<div>
-                            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
-                            <div>
-                                @GridToolsColumnAlt(d, controllerName)
+                            @<div>
+                         
+            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+                                
+            <div>
+                                    @GridToolsColumnAlt(d, controllerName)
+                                </div>
                             </div>
-                        </div>
 
 );
 
@@ -158,7 +160,7 @@ columns.Add(r => r.ImageState
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
-                                                    o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign,AdminResource.IsCampaign))
+                                                    o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
         </li>
     </ul>
 
@@ -210,13 +212,13 @@ columns.Add(r => r.ImageState
         }
         @if (UserRoleHelper.IsDeletedEnableRoles())
         {
-    <span>
-        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-   { "ItemId", d.Id },
-   {"controllerName",controllerName},
-   { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
-   { "ItemDescription", d.Name } })
-    </span>
+            <span>
+                @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+           { "ItemId", d.Id },
+           {"controllerName",controllerName},
+           { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
+           { "ItemDescription", d.Name } })
+            </span>
         }
     </div>
 
