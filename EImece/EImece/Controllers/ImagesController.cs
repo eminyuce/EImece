@@ -11,8 +11,6 @@ namespace EImece.Controllers
 {
     public class ImagesController : BaseController
     {
-       
-
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = ApplicationConfigs.ImageProxyCaching)]

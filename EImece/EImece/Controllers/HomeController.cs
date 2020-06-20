@@ -169,7 +169,7 @@ namespace EImece.Controllers
         //}
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
-            if(contact == null)
+            if (contact == null)
             {
                 throw new ArgumentException("Contact cannot be null");
             }
