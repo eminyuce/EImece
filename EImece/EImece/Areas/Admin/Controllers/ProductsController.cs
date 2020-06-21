@@ -112,7 +112,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         ProductService.SaveProductTags(product.Id, tags);
 
-                        if (String.IsNullOrEmpty(saveButton) || saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
                         {
                             return ReturnTempUrl("Index");
                         }
@@ -137,7 +137,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
-            if (String.IsNullOrEmpty(saveButton) || saveButton.Equals(AdminResource.SaveButtonText))
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }

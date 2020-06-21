@@ -49,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Story story, int[] tags = null, HttpPostedFileBase postedImage = null)
+        public ActionResult SaveOrEdit(Story story, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -62,17 +62,16 @@ namespace EImece.Areas.Admin.Controllers
 
                     story.Lang = CurrentLanguage;
                     StoryService.SaveOrEditEntity(story);
-                    int contentId = story.Id;
 
                     if (tags != null)
                     {
                         StoryService.SaveStoryTags(story.Id, tags);
                     }
 
-                    return ReturnTempUrl("Index");
-                }
-                else
-                {
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                    {
+                        return ReturnTempUrl("Index");
+                    }
                 }
             }
             catch (Exception ex)
@@ -82,7 +81,10 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
-            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             return View(story);
         }
 

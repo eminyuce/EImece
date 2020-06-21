@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase postedImage = null)
+        public ActionResult SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -64,10 +64,10 @@ namespace EImece.Areas.Admin.Controllers
                     int contentId = storyCategory.Id;
 
                     MenuService.UpdateStoryCategoryMenuLink(contentId, CurrentLanguage);
-                    return ReturnTempUrl("Index");
-                }
-                else
-                {
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                    {
+                        return ReturnTempUrl("Index");
+                    }
                 }
             }
             catch (Exception ex)
@@ -76,7 +76,10 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             return View(storyCategory);
         }
 

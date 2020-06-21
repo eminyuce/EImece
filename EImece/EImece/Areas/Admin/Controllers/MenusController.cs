@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Menu menu, HttpPostedFileBase postedImage = null)
+        public ActionResult SaveOrEdit(Menu menu, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -76,11 +76,10 @@ namespace EImece.Areas.Admin.Controllers
 
                     menu.Lang = CurrentLanguage;
                     MenuService.SaveOrEditEntity(menu);
-                    int contentId = menu.Id;
-                    return ReturnTempUrl("Index");
-                }
-                else
-                {
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                    {
+                        return ReturnTempUrl("Index");
+                    }
                 }
             }
             catch (Exception ex)
@@ -91,6 +90,10 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             return View(menu);
         }
 
