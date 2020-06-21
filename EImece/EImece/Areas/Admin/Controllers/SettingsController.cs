@@ -84,7 +84,61 @@ namespace EImece.Areas.Admin.Controllers
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
+        public ActionResult AddAboutUs()
+        {
+            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.AboutUs, CurrentLanguage);
+            int id = setting != null ? setting.Id : 0;
+            return RedirectToAction("AboutUs", new { id });
+        }
 
+        public ActionResult AboutUs(int id = 0)
+        {
+            var content = EntityFactory.GetBaseEntityInstance<Setting>();
+            content.SettingKey = ApplicationConfigs.AboutUs;
+            content.Name = ApplicationConfigs.AboutUs;
+            content.Position = 1;
+            content.IsActive = true;
+            if (id == 0)
+            {
+            }
+            else
+            {
+                content = SettingService.GetSingle(id);
+                if (content.Lang != CurrentLanguage)
+                {
+                    return RedirectToAction("AboutUs");
+                }
+            }
+
+            return View(content);
+        }
+
+        [HttpPost]
+        public ActionResult AboutUs(Setting setting)
+        {
+            try
+            {
+                if (setting == null)
+                {
+                    return HttpNotFound();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    setting.SettingValue = ApplicationConfigs.SpecialPage;
+                    setting.Lang = CurrentLanguage;
+                    SettingService.SaveOrEditEntity(setting);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, setting);
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+            }
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(setting);
+        }
         public ActionResult AddTermsAndConditions()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);

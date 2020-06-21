@@ -101,6 +101,12 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
+        public ActionResult AboutUs()
+        {
+            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.AboutUs, CurrentLanguage);
+            return View(setting);
+        }
+        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
         public ActionResult TermsAndConditions()
         {
             var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);

@@ -720,4 +720,7 @@
   <data name="AboutUs" xml:space="preserve">
     <value>Hakkimizda</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Hakkımızda</value>
+  </data>
 </root>

@@ -1,0 +1,11 @@
+﻿@model EImece.Domain.Entities.Setting
+@using Resources
+@{
+    ViewBag.Title = Resource.AboutUs;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="container">
+        <h1>@Resource.AboutUs</h1>
+        @Html.Raw(Model.Description)
+    </div>
+  

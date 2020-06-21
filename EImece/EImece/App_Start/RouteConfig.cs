@@ -32,26 +32,13 @@ namespace EImece
                        defaults: new { controller = "SiteMap", action = "Index" },
               namespaces: new[] { "EImece.Controllers" }
             );
-            routes.MapRoute(
-              name: "sendcontactus",
-              url: "home/sendContactUs",
-              defaults: new { controller = "home", action = "SendContactUs" },
-              namespaces: new[] { "EImece.Controllers" }
-          );
+            
+            singlePageRouting(routes, "contactus");
+            singlePageRouting(routes, "aboutus");
+            singlePageRouting(routes, "privacypolicy");
+            singlePageRouting(routes, "termsandconditions");
 
-            routes.MapRoute(
-                 name: "privacypolicy",
-                 url: "privacypolicy",
-                 defaults: new { controller = "home", action = "privacypolicy" },
-                 namespaces: new[] { "EImece.Controllers" }
-             );
-
-            routes.MapRoute(
-                 name: "termsandconditions",
-                 url: "termsandconditions",
-                 defaults: new { controller = "home", action = "termsandconditions" },
-                 namespaces: new[] { "EImece.Controllers" }
-             );
+           
             routes.MapRoute(
                       name: "getcaptcha",
                       url: "images/getcaptcha",
@@ -127,6 +114,16 @@ namespace EImece
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new[] { "EImece.Controllers" }
             );
+        }
+
+        private static void singlePageRouting(RouteCollection routes, string singlePage)
+        {
+            routes.MapRoute(
+                            name: singlePage,
+                            url: singlePage,
+                            defaults: new { controller = "home", action = singlePage },
+                            namespaces: new[] { "EImece.Controllers" }
+                        );
         }
     }
 }

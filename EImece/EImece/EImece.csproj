@@ -876,6 +876,7 @@
     <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Shared\_ProductTitleBar.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

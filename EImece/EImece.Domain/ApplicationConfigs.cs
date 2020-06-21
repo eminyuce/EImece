@@ -35,7 +35,8 @@ namespace EImece.Domain
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
         public const string SpecialPage = "Special_Page";
         public const string AdminSetting = "AdminSetting";
-        public const string TermsAndConditions = "TermsAndConditions";
+        public const string TermsAndConditions = "TermsAndConditions";   
+        public const string AboutUs = "AboutUs";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
         public const string InstagramWebSiteLink = "InstagramWebSiteLink";

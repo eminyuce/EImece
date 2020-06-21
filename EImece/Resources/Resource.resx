@@ -303,4 +303,7 @@
   <data name="ThanksForSubscription" xml:space="preserve">
     <value>Abonelik için teşekkürler</value>
   </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>Hakkımızda</value>
+  </data>
 </root>
