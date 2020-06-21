@@ -8,7 +8,7 @@
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    ViewBag.Title = "Web Site Logo";
+    ViewBag.Title = AdminResource.WebSiteLogo;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     var setting = Model;
@@ -19,8 +19,8 @@
     string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
 }
 
-<h2>Web Site Logo</h2>
-
+<h2>@AdminResource.WebSiteLogo</h2>
+<hr class="adminLine" />
 @using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
@@ -35,7 +35,7 @@
             <table width="95%" class="table table-responsive table-bordered">
                 <tr>
                     <td class="text-center">
-                        Upload LOGO
+                        @AdminResource.WebSiteLogo
                     </td>
                     <td>
                         <input type="file" name="postedImage" />
@@ -43,7 +43,7 @@
                 </tr>
                 <tr>
                     <td class="text-center">
-                        Image Width
+                        @AdminResource.ImageWidth
                     </td>
                     <td>
                         <div class="row">
@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td class="text-center">
-                        Image Height
+                        @AdminResource.ImageHeight
                     </td>
                     <td>
                         <div class="row">
