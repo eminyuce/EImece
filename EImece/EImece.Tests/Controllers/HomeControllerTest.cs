@@ -78,10 +78,9 @@ namespace EImece.Tests.Controllers
                     EmailAccount emailAccount = SettingService.GetEmailAccount();
                     Console.WriteLine(emailAccount.ToString());
                     EmailSender emailSender = new EmailSender();
-                //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
+                    //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
 
-                
-
+ 
                 }
             }
         }
