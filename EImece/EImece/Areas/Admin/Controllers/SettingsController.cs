@@ -119,16 +119,16 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                if (setting == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
                     setting.SettingValue = ApplicationConfigs.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
-                    int contentId = setting.Id;
-                    return RedirectToAction("Index");
-                }
-                else
-                {
                 }
             }
             catch (Exception ex)
@@ -137,7 +137,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(setting);
         }
 
@@ -157,6 +157,7 @@ namespace EImece.Areas.Admin.Controllers
             content.IsActive = true;
             if (id == 0)
             {
+
             }
             else
             {
@@ -175,17 +176,20 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+       
+                if (setting == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // settings/privacypolicy/31/
                 if (ModelState.IsValid)
                 {
                     setting.SettingValue = ApplicationConfigs.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
-                    int contentId = setting.Id;
-                    return RedirectToAction("Index");
                 }
-                else
-                {
-                }
+               
             }
             catch (Exception ex)
             {
@@ -193,12 +197,13 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(setting);
         }
 
         public ActionResult WebSiteLogo(int id = 0)
         {
+
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
             if (id == 0)
