@@ -64,8 +64,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
-            Task.Run(() =>
-            {
+          
                 if (emailAccount == null)
                 {
                     throw new ArgumentException("No email account is defined.");
@@ -126,7 +125,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                     Logger.Info("Email Body" + message.Body);
                     Logger.Trace("Email is sent to " + emailAccount.Username);
                 }
-            });
+          
         }
 
         public void SendEmailContactingUs(ContactUsFormViewModel contact)

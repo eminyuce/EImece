@@ -598,10 +598,10 @@
     <value>Facebook Link</value>
   </data>
   <data name="FooterDescription" xml:space="preserve">
-    <value>Altbilgi Açıklaması</value>
+    <value>Footer Açıklaması</value>
   </data>
   <data name="FooterEmailListDescription" xml:space="preserve">
-    <value>Altbilgi E-posta Listesi Açıklaması</value>
+    <value>Footer E-posta Listesi Açıklaması</value>
   </data>
   <data name="GooglePlusWebSiteLink" xml:space="preserve">
     <value>GooglePlus Link</value>
@@ -701,5 +701,20 @@
   </data>
   <data name="ShortDescription" xml:space="preserve">
     <value>Kısa Açıklama</value>
+  </data>
+  <data name="CompanyAdminSettings" xml:space="preserve">
+    <value>Şirket Bilgileri</value>
+  </data>
+  <data name="SeoSettings" xml:space="preserve">
+    <value>SEO Bilgileri</value>
+  </data>
+  <data name="SocialMediaSetttings" xml:space="preserve">
+    <value>Sosyal Media Linkleri</value>
+  </data>
+  <data name="WhatsAppCommunicationScript" xml:space="preserve">
+    <value>WhatsApp Script</value>
+  </data>
+  <data name="FooterSettings" xml:space="preserve">
+    <value>Footer Ayarlar</value>
   </data>
 </root>

@@ -286,6 +286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Şirket Bilgileri.
+        /// </summary>
+        public static string CompanyAdminSettings {
+            get {
+                return ResourceManager.GetString("CompanyAdminSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şirket Adı.
         /// </summary>
         public static string CompanyName {
@@ -493,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altbilgi Açıklaması.
+        ///   Looks up a localized string similar to Footer Açıklaması.
         /// </summary>
         public static string FooterDescription {
             get {
@@ -502,11 +511,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altbilgi E-posta Listesi Açıklaması.
+        ///   Looks up a localized string similar to Footer E-posta Listesi Açıklaması.
         /// </summary>
         public static string FooterEmailListDescription {
             get {
                 return ResourceManager.GetString("FooterEmailListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Footer Ayarlar.
+        /// </summary>
+        public static string FooterSettings {
+            get {
+                return ResourceManager.GetString("FooterSettings", resourceCulture);
             }
         }
         
@@ -1438,6 +1456,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SEO Bilgileri.
+        /// </summary>
+        public static string SeoSettings {
+            get {
+                return ResourceManager.GetString("SeoSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ayar Anahtar Kelimesi.
         /// </summary>
         public static string SettingKey {
@@ -1506,6 +1533,15 @@ namespace Resources {
         public static string SmtpEmailSettings {
             get {
                 return ResourceManager.GetString("SmtpEmailSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sosyal Media Linkleri.
+        /// </summary>
+        public static string SocialMediaSetttings {
+            get {
+                return ResourceManager.GetString("SocialMediaSetttings", resourceCulture);
             }
         }
         
@@ -1794,6 +1830,15 @@ namespace Resources {
         public static string WebSiteLogo {
             get {
                 return ResourceManager.GetString("WebSiteLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WhatsApp Script.
+        /// </summary>
+        public static string WhatsAppCommunicationScript {
+            get {
+                return ResourceManager.GetString("WhatsAppCommunicationScript", resourceCulture);
             }
         }
         

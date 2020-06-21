@@ -166,7 +166,7 @@ namespace EImece.Areas.Admin.Controllers
                              MainImageId = r.MainImageId.ToStr(250)
                          };
 
-            return DownloadFile(result, String.Format("ProductCategories-{0}", GetCurrentLanguage));
+            return DownloadFile(result, string.Format("ProductCategories-{0}", GetCurrentLanguage));
         }
     }
 }

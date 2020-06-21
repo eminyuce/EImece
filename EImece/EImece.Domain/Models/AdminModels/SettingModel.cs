@@ -36,12 +36,13 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.DefaultImageWidth))]
         public int DefaultImageWidth { get; set; }
 
-        //public string SiteIndexMetaTitle { get; set; }
-        //public string SiteIndexMetaDescription { get; set; }
-        //public string SiteIndexMetaKeywords { get; set; }
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GoogleAnalyticsTrackingScript))]
-        public string GoogleAnalyticsTrackingScript { get; set; }
+        public string GoogleAnalyticsTrackingScript { get; set; } 
+        
+        [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WhatsAppCommunicationScript))]
+        public string WhatsAppCommunicationScript { get; set; }
 
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FacebookWebSiteLink))]
@@ -80,8 +81,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WebSiteCompanyEmailAddress))]
         public string WebSiteCompanyEmailAddress { get; set; }
 
-        //public string PrivacyPolicy { get; set; }
-        //public string TermsAndConditions { get; set; }
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsProductPriceEnable))]
         public bool IsProductPriceEnable { get; set; }
 
