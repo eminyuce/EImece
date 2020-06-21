@@ -717,4 +717,7 @@
   <data name="FooterSettings" xml:space="preserve">
     <value>Footer Ayarlar</value>
   </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>Hakkimizda</value>
+  </data>
 </root>

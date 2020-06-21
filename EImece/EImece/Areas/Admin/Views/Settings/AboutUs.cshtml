@@ -3,11 +3,11 @@
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
-    ViewBag.Title = AdminResource.Privacypolicy;
+    ViewBag.Title = @AdminResource.AboutUs;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@AdminResource.Privacypolicy</h2>
+<h2>@AdminResource.AboutUs</h2>
 <hr class="adminLine" />
 
 @Html.Partial("_pPageSetting", Model)

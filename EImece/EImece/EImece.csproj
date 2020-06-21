@@ -677,6 +677,8 @@
     <Content Include="Areas\Admin\Views\TestAsync\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\TestAsync\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags - Copy.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\_pPageSetting.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\AboutUs.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

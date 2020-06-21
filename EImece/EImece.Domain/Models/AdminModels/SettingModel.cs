@@ -49,10 +49,6 @@ namespace EImece.Domain.Models.AdminModels
         public string FacebookWebSiteLink { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GooglePlusWebSiteLink))]
-        public string GooglePlusWebSiteLink { get; set; }
-
-        [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LinkedinWebSiteLink))]
         public string LinkedinWebSiteLink { get; set; }
 

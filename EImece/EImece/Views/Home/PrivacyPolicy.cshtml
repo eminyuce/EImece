@@ -4,5 +4,8 @@
     ViewBag.Title = Resource.PrivacyPolicy;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@Html.Raw(Model.Description)
+    <div class="container">
+        <h1>@Resource.PrivacyPolicy</h1>
+        @Html.Raw(Model.Description)
+    </div>
+  

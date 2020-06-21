@@ -4,5 +4,7 @@
     ViewBag.Title = Resource.TermsAndConditions;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@Html.Raw(Model.Description)
+    <div class="container">
+        <h1>@Resource.TermsAndConditions</h1>
+        @Html.Raw(Model.Description)
+    </div>
