@@ -3,8 +3,7 @@
     var InstagramWebSiteLink = Model[0];
     var TwitterWebSiteLink = Model[1];
     var LinkedinWebSiteLink = Model[2];
-    var GooglePlusWebSiteLink = Model[3];
-    var FacebookWebSiteLink = Model[4];
+    var FacebookWebSiteLink = Model[3];
 
 }
 
@@ -22,11 +21,6 @@
     {
         <li><a class="twitter" href="@TwitterWebSiteLink"><i class="icon-twitter"></i></a></li>
     }
-    @if (!String.IsNullOrEmpty(GooglePlusWebSiteLink))
-    {
-        <li><a class="google" href="@GooglePlusWebSiteLink"><i class="icon-google"></i></a></li>
-    }
-
     @if (!String.IsNullOrEmpty(LinkedinWebSiteLink))
     {
         <li><a class="linkedin" href="@LinkedinWebSiteLink"><i class="icon-linkedin"></i></a></li>

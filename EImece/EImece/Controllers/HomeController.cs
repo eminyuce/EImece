@@ -87,14 +87,12 @@ namespace EImece.Controllers
             var InstagramWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.InstagramWebSiteLink);
             var TwitterWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.TwitterWebSiteLink);
             var LinkedinWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.LinkedinWebSiteLink);
-            var GooglePlusWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.GooglePlusWebSiteLink);
             var FacebookWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.FacebookWebSiteLink);
 
             var resultList = new List<String>();
             resultList.Add(InstagramWebSiteLink);
             resultList.Add(TwitterWebSiteLink);
             resultList.Add(LinkedinWebSiteLink);
-            resultList.Add(GooglePlusWebSiteLink);
             resultList.Add(FacebookWebSiteLink);
 
             return PartialView("_SocialMediaLinks", resultList);

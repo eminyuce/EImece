@@ -42,7 +42,6 @@ namespace EImece.Domain
         public const string InstagramWebSiteLink = "InstagramWebSiteLink";
         public const string TwitterWebSiteLink = "TwitterWebSiteLink";
         public const string LinkedinWebSiteLink = "LinkedinWebSiteLink";
-        public const string GooglePlusWebSiteLink = "GooglePlusWebSiteLink";
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
         public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
