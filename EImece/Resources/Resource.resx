@@ -306,4 +306,7 @@
   <data name="AboutUs" xml:space="preserve">
     <value>Hakkımızda</value>
   </data>
+  <data name="NoUserFound" xml:space="preserve">
+    <value>Geçersiz Kullanıcı Adı ve/veya Şifre.Lütfen bilgilerinizi kontrol ediniz.</value>
+  </data>
 </root>

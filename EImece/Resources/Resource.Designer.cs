@@ -313,6 +313,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geçersiz Kullanıcı Adı ve/veya Şifre.Lütfen bilgilerinizi kontrol ediniz..
+        /// </summary>
+        public static string NoUserFound {
+            get {
+                return ResourceManager.GetString("NoUserFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sayfalar.
         /// </summary>
         public static string Pages {
