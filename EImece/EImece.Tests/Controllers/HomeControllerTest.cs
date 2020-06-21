@@ -80,17 +80,7 @@ namespace EImece.Tests.Controllers
                     EmailSender emailSender = new EmailSender();
                 //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
 
-                    var mail = new MailMessage();
-                    var SmtpServer = new SmtpClient("srvm05.trwww.com");
-                    mail.From = new MailAddress("test@erayweb.net");
-                    mail.To.Add("test@erayweb.net");
-                    mail.To.Add("eminyuce@gmail.com");
-                    mail.Subject = "Test Mail";
-                    mail.Body = "This is for testing SMTP mail";
-                    SmtpServer.Port = 465;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential("test@erayweb.net", "W6y9BkcH");
-                    SmtpServer.EnableSsl = false;
-                    SmtpServer.Send(mail);
+                
 
                 }
             }
