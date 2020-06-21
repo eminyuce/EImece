@@ -160,12 +160,25 @@ namespace EImece.Domain.Services
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
                 var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-                if (setting != null)
+                if (setting == null)
+                {
+                    var newSetting = new Setting();
+                    newSetting.Name = name;
+                    newSetting.IsActive = true;
+                    newSetting.SettingKey = name;
+                    newSetting.Description = ApplicationConfigs.AdminSetting;
+                    newSetting.SettingValue = value.ToStr();
+                    SaveOrEditEntity(newSetting);
+                }
+                else
                 {
                     setting.Description = ApplicationConfigs.AdminSetting;
                     setting.SettingValue = value.ToStr();
                     SaveOrEditEntity(setting);
                 }
+
+
+             
             }
         }
         public EmailAccount GetEmailAccount()

@@ -44,6 +44,10 @@ namespace EImece.Domain.Services
 
         public new virtual T SaveOrEditEntity(T entity)
         {
+            if(entity == null)
+            {
+                throw new ArgumentException("entity cannot be null");
+            }
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
@@ -62,6 +66,11 @@ namespace EImece.Domain.Services
         {
             try
             {
+                if (values == null)
+                {
+                    throw new ArgumentException("values cannot be null");
+                }
+
                 foreach (OrderingItem item in values)
                 {
                     var t = baseEntityRepository.GetSingle(item.Id);
