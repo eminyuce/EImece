@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        [HttpGet]
         public ActionResult Index(String search = "")
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
@@ -123,13 +123,13 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(menu);
         }
-
+        [HttpGet]
         public ActionResult GetMenus()
         {
             List<Menu> treelist = MenuService.BuildTree(null, CurrentLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
-
+        [HttpGet]
         public ActionResult Media(int id)
         {
             return RedirectToAction("Index", "Media", new

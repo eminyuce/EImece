@@ -112,7 +112,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(Story);
         }
-
+        [HttpGet]
         public ActionResult Media(int id)
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
