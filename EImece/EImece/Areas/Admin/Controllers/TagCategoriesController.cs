@@ -7,6 +7,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -95,7 +96,16 @@ namespace EImece.Areas.Admin.Controllers
             return View(TagCategory);
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             String search = "";
             Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());

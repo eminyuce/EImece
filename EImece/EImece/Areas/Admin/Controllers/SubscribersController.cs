@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -17,7 +18,16 @@ namespace EImece.Areas.Admin.Controllers
             return View(subs);
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             var subscibers = SubscriberService.GetAll().ToList();
 

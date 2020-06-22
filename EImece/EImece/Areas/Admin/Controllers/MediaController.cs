@@ -15,12 +15,12 @@ namespace EImece.Areas.Admin.Controllers
     public class MediaController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public FilesHelper filesHelper;
+        private FilesHelper filesHelper;
 
-        public MediaController(FilesHelper fh)
+        public MediaController(FilesHelper filesHelper)
         {
-            filesHelper = fh;
-            filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
+            this.filesHelper = filesHelper;
+            this.filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
         }
 
         // GET: Admin/Media

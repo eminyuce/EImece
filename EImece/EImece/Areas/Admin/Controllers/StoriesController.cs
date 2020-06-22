@@ -7,6 +7,7 @@ using Resources;
 using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -68,7 +69,7 @@ namespace EImece.Areas.Admin.Controllers
                         StoryService.SaveStoryTags(story.Id, tags);
                     }
 
-                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText,StringComparison.InvariantCultureIgnoreCase))
                     {
                         return ReturnTempUrl("Index");
                     }
@@ -81,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
@@ -116,8 +117,16 @@ namespace EImece.Areas.Admin.Controllers
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
         }
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
 
-        public ActionResult ExportExcel()
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             String search = "";
             var stories = StoryService.GetAdminPageList(0, search, CurrentLanguage);

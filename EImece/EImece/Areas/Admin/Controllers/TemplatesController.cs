@@ -7,6 +7,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Xml.Linq;
 
@@ -107,7 +108,16 @@ namespace EImece.Areas.Admin.Controllers
             return View(template);
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             String search = "";
             Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());

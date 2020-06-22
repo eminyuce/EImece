@@ -9,6 +9,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -18,6 +19,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [HttpGet]
         public ActionResult Index(int id = 0, String search = "")
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -26,7 +28,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
-
+        [HttpGet]
         public ActionResult SaveOrEditProductSpecs(int id = 0)
         {
             if (id == 0)
@@ -45,6 +47,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveOrEditProductSpecs(int id, int templateId)
         {
             int productId = id;
@@ -54,12 +57,11 @@ namespace EImece.Areas.Admin.Controllers
             Product content = productDetailViewModel.Product;
             ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
             return View(content);
-            //  return RedirectToAction("SaveOrEditProductSpecs", new { id });
         }
 
         //
         // GET: /Product/Create
-
+        [HttpGet]
         public ActionResult SaveOrEdit(int id = 0)
         {
             TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
@@ -89,6 +91,10 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             int contentId = 0;
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
             try
             {
                 if (ModelState.IsValid)
@@ -112,14 +118,11 @@ namespace EImece.Areas.Admin.Controllers
 
                         ProductService.SaveProductTags(product.Id, tags);
 
-                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText,StringComparison.InvariantCultureIgnoreCase))
                         {
                             return ReturnTempUrl("Index");
                         }
                     }
-                }
-                else
-                {
                 }
             }
             catch (Exception ex)
@@ -137,7 +140,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
@@ -149,6 +152,11 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             Product product = ProductService.GetSingle(id);
             if (product == null)
             {
@@ -168,12 +176,22 @@ namespace EImece.Areas.Admin.Controllers
             return View(product);
         }
 
+        [HttpGet]
         public ActionResult Media(int id)
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
 

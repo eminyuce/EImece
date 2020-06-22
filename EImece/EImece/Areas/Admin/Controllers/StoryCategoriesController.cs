@@ -8,6 +8,8 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -64,7 +66,7 @@ namespace EImece.Areas.Admin.Controllers
                     int contentId = storyCategory.Id;
 
                     MenuService.UpdateStoryCategoryMenuLink(contentId, CurrentLanguage);
-                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return ReturnTempUrl("Index");
                     }
@@ -76,7 +78,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
@@ -88,6 +90,11 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             StoryCategory StoryCategory = StoryCategoryService.GetSingle(id);
             if (StoryCategory == null)
             {
@@ -107,7 +114,16 @@ namespace EImece.Areas.Admin.Controllers
             return View(StoryCategory);
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             String search = "";
             Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());

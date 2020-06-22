@@ -22,7 +22,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Title = "Gösterge Paneli";
             return View();
         }
-
+        [HttpGet]
         public ActionResult SearchContent(String searchContent)
         {
             String search = searchContent;
@@ -58,7 +58,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(resultList);
         }
-
+        [HttpGet]
         public ActionResult ClearCache()
         {
             MemoryCacheProvider.ClearAll();
@@ -82,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home", new { @area = "" });
         }
-
+        [HttpGet]
         public ActionResult SetLanguage(string name)
         {
             //  name = CultureHelper.GetImplementedCulture(name);

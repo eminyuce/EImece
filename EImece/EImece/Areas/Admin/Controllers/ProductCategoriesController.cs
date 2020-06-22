@@ -129,7 +129,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, productCategory);
-                ModelState.AddModelError("*", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return View(productCategory);

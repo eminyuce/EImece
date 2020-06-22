@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -107,7 +108,16 @@ namespace EImece.Areas.Admin.Controllers
             return View(Tag);
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             String search = "";
             var tags = TagService.GetAdminPageList(search, CurrentLanguage);

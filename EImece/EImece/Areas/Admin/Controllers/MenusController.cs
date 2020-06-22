@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -76,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
 
                     menu.Lang = CurrentLanguage;
                     MenuService.SaveOrEditEntity(menu);
-                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText))
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText,StringComparison.InvariantCultureIgnoreCase))
                     {
                         return ReturnTempUrl("Index");
                     }
@@ -90,7 +91,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText))
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
@@ -171,7 +172,16 @@ namespace EImece.Areas.Admin.Controllers
             return menuLinks;
         }
 
-        public ActionResult ExportExcel()
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
         {
             String search = "";
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
