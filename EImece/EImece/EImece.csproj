@@ -343,6 +343,7 @@
   <ItemGroup>
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
+    <Content Include="Areas\Admin\Content\main\1.gif" />
     <Content Include="Areas\Admin\Content\main\excel.jpg" />
     <Content Include="Areas\Admin\Content\vs\base\worker\workerMain.js" />
     <Content Include="Areas\Admin\Content\vs\basic-languages\bat\bat.js" />

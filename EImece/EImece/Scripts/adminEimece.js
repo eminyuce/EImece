@@ -233,13 +233,13 @@ function displayMessage(messageType, message) {
     var messagePanel = $("#ErrorMessagePanel");
     var errorMessage = $("#ErrorMessage");
     messagePanel.show();
-    if (messageType == "info") {
+    if (messageType === "info") {
         messagePanel.attr("class", "alert alert-info");
         errorMessage.text(message);
-    } else if (messageType == "error") {
+    } else if (messageType === "error") {
         messagePanel.attr("class", "alert alert-danger");
         errorMessage.text(message);
-    } else if (messageType == "hide") {
+    } else if (messageType === "hide") {
         messagePanel.hide();
     }
 }
@@ -261,7 +261,7 @@ function getQueryStringParameter(originalURL, param) {
         //4- try to find query string key
         for (var i = 0; i < qsArray.length; i++) {
             if (qsArray[i].split('=').length > 0) {
-                if (param == qsArray[i].split('=')[0]) {
+                if (param === qsArray[i].split('=')[0]) {
                     //exists key
                     return qsArray[i].split('=')[1];
                 }
@@ -280,7 +280,7 @@ function updateUrlParameter(originalURL, param, value) {
     //4- try to find query string key
     for (var i = 0; i < qsArray.length; i++) {
         if (qsArray[i].split('=').length > 0) {
-            if (param == qsArray[i].split('=')[0]) {
+            if (param === qsArray[i].split('=')[0]) {
                 //exists key
                 qsArray[i] = param + '=' + value;
             }
@@ -318,7 +318,6 @@ function refresh(timeElapsed) {
     }, timeElapsed);
 }
 function changeOrderingSuccess(data) {
-    //  console.log(data);
     refresh(500);
 }
 function ajaxMethodCall(postData, ajaxUrl, successFunction) {
@@ -335,9 +334,9 @@ function ajaxMethodCall(postData, ajaxUrl, successFunction) {
             console.error("responseText :" + jqXHR.responseText);
             if (jqXHR.status === 0) {
                 console.error('Not connect.\n Verify Network.');
-            } else if (jqXHR.status == 404) {
+            } else if (jqXHR.status === 404) {
                 console.error('Requested page not found. [404]');
-            } else if (jqXHR.status == 500) {
+            } else if (jqXHR.status === 500) {
                 console.error('Internal Server Error [500].');
             } else if (exception === 'parsererror') {
                 console.error('Requested JSON parse failed.');
@@ -413,7 +412,7 @@ function handleProductDetailToolTip(e) {
 
 function setPreSelectedTreeNode(preSelectedNode) {
     var productCategoryId = preSelectedNode.val();
-    if (productCategoryId != "0") {
+    if (productCategoryId !== "0") {
         var textSpan = $("#Content_" + productCategoryId).text();
         $("#Content_" + productCategoryId).text("");
         $("#Content_" + productCategoryId).addClass("hover2");
