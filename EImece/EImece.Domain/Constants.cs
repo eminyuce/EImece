@@ -1,12 +1,4 @@
-﻿using EImece.Domain.Helpers;
-using NLog;
-using System;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Web.Hosting;
-
-namespace EImece.Domain
+﻿namespace EImece.Domain
 {
     public static class Constants
     {
@@ -35,7 +27,7 @@ namespace EImece.Domain
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
         public const string SpecialPage = "Special_Page";
         public const string AdminSetting = "AdminSetting";
-        public const string TermsAndConditions = "TermsAndConditions";   
+        public const string TermsAndConditions = "TermsAndConditions";
         public const string AboutUs = "AboutUs";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
@@ -45,8 +37,9 @@ namespace EImece.Domain
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
         public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
-        //   public const string Languages = "Languages";
+
         public const string PrivacyPolicy = "PrivacyPolicy";
+
         public const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
 
         public const string DbConnectionKey = "EImeceDbConnection";
@@ -63,6 +56,7 @@ namespace EImece.Domain
         public const string DeleteType = "GET";
         public const string FileUploadDeleteURL = "/FileUpload/DeleteFile/?file=";
         public static string AdminCultureCookieName = "_adminCulture";
+
         public static object DeleteButtonHtmlAttribute
         {
             get
@@ -86,6 +80,5 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
-
     }
 }
