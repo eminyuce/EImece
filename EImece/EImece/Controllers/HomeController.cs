@@ -82,7 +82,7 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var s = SubsciberService.GetSingle(id);
+            var s = SubsciberService.GetSingle(id.Value);
             return View(s);
         }
 
