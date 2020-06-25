@@ -74,7 +74,7 @@ namespace EImece.Domain.Helpers
 
             var uh = new UrlHelper(viewContext.RequestContext);
 
-            String url = uh.Action(action, controller, new RouteValueDictionary(new { id = id, area = linkArea }), ApplicationConfigs.HttpProtocol, domain);
+            String url = uh.Action(action, controller, new RouteValueDictionary(new { id = id, area = linkArea }), AppConfig.HttpProtocol, domain);
             // url = String.Format("<link href='{0}' rel='canonical'/>", url);
             return url;
         }

@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
+    <Compile Include="AppConfig.cs" />
     <Compile Include="Caching\CacheProvider.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
     <Compile Include="Caching\MemoryCacheProvider.cs" />
@@ -437,7 +438,7 @@
     <Compile Include="Services\TagCategoryService.cs" />
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\TemplateService.cs" />
-    <Compile Include="ApplicationConfigs.cs" />
+    <Compile Include="Constants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

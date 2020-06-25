@@ -48,7 +48,7 @@ namespace EImece.Domain.Services
             {
                 result = new List<List>();
                 result = ListRepository.GetAllListItems();
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }

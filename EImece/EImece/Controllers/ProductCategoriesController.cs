@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    [RoutePrefix(ApplicationConfigs.ProductsCategoriesControllerRoutingPrefix)]
+    [RoutePrefix(Constants.ProductsCategoriesControllerRoutingPrefix)]
     public class ProductCategoriesController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -21,7 +21,7 @@ namespace EImece.Controllers
         }
 
         [Route("category/{id}")]
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Category(String id)
         {
             try

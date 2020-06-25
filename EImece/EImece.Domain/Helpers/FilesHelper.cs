@@ -37,7 +37,7 @@ namespace EImece.Domain.Helpers
             get
             {
                 _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
-                _memoryCacheProvider.CacheDuration = ApplicationConfigs.GetConfigInt("CacheLongSeconds");
+                _memoryCacheProvider.CacheDuration = AppConfig.GetConfigInt("CacheLongSeconds");
                 return _memoryCacheProvider;
             }
             set
@@ -379,7 +379,7 @@ namespace EImece.Domain.Helpers
         {
             if (MainImageId.HasValue && MainImage != null)
             {
-                String fullPath = Path.Combine(ApplicationConfigs.StorageRoot, MainImage.FileName);
+                String fullPath = Path.Combine(AppConfig.StorageRoot, MainImage.FileName);
                 return File.Exists(fullPath);
             }
             return false;
@@ -585,7 +585,7 @@ namespace EImece.Domain.Helpers
                 if (result == null)
                 {
                     result = createSavedImage(fileStorageId, width, height);
-                    MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else

@@ -19,7 +19,7 @@ namespace EImece.Domain.Repositories
         {
             get
             {
-                return ApplicationConfigs.GetConfigInt("ShortUrlKeyLength", 5);
+                return AppConfig.GetConfigInt("ShortUrlKeyLength", 5);
             }
         }
 
@@ -42,7 +42,7 @@ namespace EImece.Domain.Repositories
             item.CreatedDate = DateTime.Now;
             item.UrlKey = newKey;
             item.IsActive = false;
-            item.Lang = ApplicationConfigs.MainLanguage;
+            item.Lang = AppConfig.MainLanguage;
             item.Name = "";
             item.Position = 0;
             item.RequestCount = 0;

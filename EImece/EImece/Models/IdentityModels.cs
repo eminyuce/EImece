@@ -25,7 +25,7 @@ namespace EImece.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base(ApplicationConfigs.DbConnectionKey, throwIfV1Schema: false)
+            : base(Domain.Constants.DbConnectionKey, throwIfV1Schema: false)
         {
         }
 

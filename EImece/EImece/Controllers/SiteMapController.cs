@@ -12,7 +12,7 @@ namespace EImece.Controllers
         [Inject]
         public SiteMapService SiteMapService { get; set; }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache1Hour)]
+        [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         [Route("sitemap.xml")]
         [HttpGet]
         public ActionResult Index()

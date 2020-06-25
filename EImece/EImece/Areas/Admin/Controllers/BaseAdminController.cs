@@ -19,7 +19,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    [AuthorizeRoles(ApplicationConfigs.AdministratorRole, ApplicationConfigs.EditorRole)]
+    [AuthorizeRoles(Constants.AdministratorRole, Constants.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
         [Inject]
@@ -83,7 +83,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                _filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
+                _filesHelper.Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
                 return _filesHelper;
             }
             set
@@ -102,18 +102,18 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                if (Session[ApplicationConfigs.SelectedLanguage] != null)
+                if (Session[Constants.SelectedLanguage] != null)
                 {
-                    return Session[ApplicationConfigs.SelectedLanguage].ToInt(1);
+                    return Session[Constants.SelectedLanguage].ToInt(1);
                 }
                 else
                 {
-                    return ApplicationConfigs.MainLanguage;
+                    return AppConfig.MainLanguage;
                 }
             }
             set
             {
-                Session[ApplicationConfigs.SelectedLanguage] = value;
+                Session[Constants.SelectedLanguage] = value;
             }
         }
 
@@ -123,7 +123,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             string cultureName = "tr-TR";
             setIsCachingActive(false);
-            HttpCookie cultureCookie = Request.Cookies[ApplicationConfigs.AdminCultureCookieName];
+            HttpCookie cultureCookie = Request.Cookies[Constants.AdminCultureCookieName];
             if (cultureCookie != null)
             {
                 cultureName = cultureCookie.Value;
@@ -132,9 +132,9 @@ namespace EImece.Areas.Admin.Controllers
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            if (Response.Cookies[ApplicationConfigs.AdminCultureCookieName] != null)
+            if (Response.Cookies[Constants.AdminCultureCookieName] != null)
             {
-                Response.Cookies[ApplicationConfigs.AdminCultureCookieName].Value = cultureName;
+                Response.Cookies[Constants.AdminCultureCookieName].Value = cultureName;
             }
             else
             {
@@ -174,12 +174,12 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                var languagesText = ApplicationConfigs.ApplicationLanguages;
+                var languagesText = AppConfig.ApplicationLanguages;
                 var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
                 if (languages.Count > 1)
                 {
                     string cultureName = null;
-                    HttpCookie cultureCookie = Request.Cookies[ApplicationConfigs.AdminCultureCookieName];
+                    HttpCookie cultureCookie = Request.Cookies[Constants.AdminCultureCookieName];
                     if (cultureCookie != null)
                     {
                         cultureName = cultureCookie.Value;
@@ -187,12 +187,12 @@ namespace EImece.Areas.Admin.Controllers
                     }
                     else
                     {
-                        return ApplicationConfigs.MainLanguage;
+                        return AppConfig.MainLanguage;
                     }
                 }
                 else
                 {
-                    return ApplicationConfigs.MainLanguage;
+                    return AppConfig.MainLanguage;
                 }
             }
         }
@@ -212,10 +212,10 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult ReturnTempUrl(String name)
         {
-            if (!String.IsNullOrEmpty(TempData[ApplicationConfigs.TempDataReturnUrlReferrer].ToStr()))
+            if (!String.IsNullOrEmpty(TempData[Constants.TempDataReturnUrlReferrer].ToStr()))
             {
                 MemoryCacheProvider.ClearAll();
-                return Redirect(TempData[ApplicationConfigs.TempDataReturnUrlReferrer].ToStr());
+                return Redirect(TempData[Constants.TempDataReturnUrlReferrer].ToStr());
             }
             else
             {

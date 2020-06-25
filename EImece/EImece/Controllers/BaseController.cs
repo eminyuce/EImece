@@ -69,8 +69,8 @@ namespace EImece.Controllers
         {
             get
             {
-                _filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
-                _filesHelper.IsCachingActive = ApplicationConfigs.IsCacheActive;
+                _filesHelper.Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+                _filesHelper.IsCachingActive = AppConfig.IsCacheActive;
                 return _filesHelper;
             }
             set
@@ -84,7 +84,7 @@ namespace EImece.Controllers
         protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
-            setIsCachingActive(ApplicationConfigs.IsCacheActive);
+            setIsCachingActive(AppConfig.IsCacheActive);
             HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
             if (cultureCookie != null)
             {
@@ -135,12 +135,11 @@ namespace EImece.Controllers
                 if (cultureCookie != null)
                 {
                     cultureName = cultureCookie.Value;
-                    var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
-                    return selectedLang;
+                    return EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
                 }
                 else
                 {
-                    return ApplicationConfigs.MainLanguage;
+                    return AppConfig.MainLanguage;
                 }
             }
         }

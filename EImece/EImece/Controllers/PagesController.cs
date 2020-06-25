@@ -18,7 +18,7 @@ namespace EImece.Controllers
             return View();
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id = "")
         {
             try

@@ -83,7 +83,7 @@ namespace EImece.Domain.Helpers
         public static List<SelectListItem> ToSelectList3(String selected)
         {
             var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
-            var languagesText = ApplicationConfigs.ApplicationLanguages;
+            var languagesText = AppConfig.ApplicationLanguages;
 
             if (String.IsNullOrEmpty(languagesText))
             {
@@ -183,10 +183,10 @@ namespace EImece.Domain.Helpers
         {
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
 
-            var languagesText = ApplicationConfigs.ApplicationLanguages;
+            var languagesText = AppConfig.ApplicationLanguages;
             if (String.IsNullOrEmpty(languagesText))
             {
-                selectedLanguages.Add((EImeceLanguage)ApplicationConfigs.MainLanguage);
+                selectedLanguages.Add((EImeceLanguage)AppConfig.MainLanguage);
             }
             else
             {

@@ -59,15 +59,15 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new ProductIndexViewModel();
-                int pageSize = ApplicationConfigs.RecordPerPage;
-                result.CompanyName = SettingService.GetSettingObjectByKey(ApplicationConfigs.CompanyName);
+                int pageSize = AppConfig.RecordPerPage;
+                result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
                 var items = ProductRepository.GetActiveProducts(page, pageSize, language);
                 result.Products = items;
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }
@@ -234,10 +234,10 @@ namespace EImece.Domain.Services
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
             var items = this.GetActiveProducts(true, rssParams.Language).Take(rssParams.Take).ToList();
-            var builder = new UriBuilder(ApplicationConfigs.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 
-            String title = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
+            String title = SettingService.GetSettingByKey(Constants.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
             var feed = new SyndicationFeed(title, "", new Uri(url))

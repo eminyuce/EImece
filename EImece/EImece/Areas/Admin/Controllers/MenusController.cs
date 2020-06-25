@@ -41,7 +41,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
-            TempData[ApplicationConfigs.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
 
             if (id == 0)
             {

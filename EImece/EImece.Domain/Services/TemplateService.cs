@@ -25,7 +25,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = TemplateRepository.GetAllActiveTemplates();
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }
@@ -45,7 +45,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = TemplateRepository.GetSingle(id);
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }

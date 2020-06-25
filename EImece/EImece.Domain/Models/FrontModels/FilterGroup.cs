@@ -52,11 +52,11 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                if (_filters.Count > ApplicationConfigs.MaxItemsCountInFilter)
+                if (_filters.Count > AppConfig.MaxItemsCountInFilter)
                 {
                     return
                         _filters.OrderByDescending(i => i.Cnt)
-                                .Take(ApplicationConfigs.MaxItemsCountInFilter)
+                                .Take(AppConfig.MaxItemsCountInFilter)
                                 .OrderBy(i => i.Text)
                                 .ToList();
                 }

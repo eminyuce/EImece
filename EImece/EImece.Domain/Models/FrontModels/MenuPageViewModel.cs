@@ -13,7 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return GetSetting(ApplicationConfigs.CompanyName);
+                return GetSetting(Constants.CompanyName);
             }
         }
 

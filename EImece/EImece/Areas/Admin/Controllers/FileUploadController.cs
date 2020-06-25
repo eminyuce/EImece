@@ -14,12 +14,12 @@ namespace EImece.Areas.Admin.Controllers
         public FileUploadController(FilesHelper fh)
         {
             filesHelper = fh;
-            filesHelper.Init(ApplicationConfigs.FileUploadDeleteURL,
-                ApplicationConfigs.DeleteType,
-                ApplicationConfigs.StorageRoot,
-                ApplicationConfigs.UrlBase,
-                ApplicationConfigs.TempPath,
-                ApplicationConfigs.ServerMapPath);
+            filesHelper.Init(Constants.FileUploadDeleteURL,
+                Constants.DeleteType,
+               AppConfig.StorageRoot,
+                Constants.UrlBase,
+                Constants.TempPath,
+                Constants.ServerMapPath);
         }
 
         public ActionResult Index()

@@ -19,7 +19,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static SyndicationItem GetStorySyndicationItem(this Story product, string categoryName, string url, RssParams rssParams)
         {
             String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
-                         ApplicationConfigs.HttpProtocol));
+                         AppConfig.HttpProtocol));
 
             var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
 
@@ -63,7 +63,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static SyndicationItem GetStorySyndicationItemFull(this Story product, string categoryName, string url, RssParams rssParams)
         {
             String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
-                         ApplicationConfigs.HttpProtocol));
+                         AppConfig.HttpProtocol));
 
             var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
 
@@ -99,7 +99,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static SyndicationItem GetProductSyndicationItem(this Product product, string url, RssParams rssParams)
         {
             String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Products", product.ProductCategory.Name,
-                         ApplicationConfigs.HttpProtocol));
+                         AppConfig.HttpProtocol));
 
             var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
             var pageLink = new Uri(link.ToLower());
@@ -212,7 +212,7 @@ namespace EImece.Domain.Helpers.Extensions
             if (String.IsNullOrEmpty(result))
             {
                 var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-                result = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaDescription).ToStr();
+                result = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
             }
             return result;
         }
@@ -224,7 +224,7 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 //TODO: Missing keywords.
                 var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-                result = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaKeywords).ToStr();
+                result = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords).ToStr();
             }
             return result;
         }
@@ -259,11 +259,11 @@ namespace EImece.Domain.Helpers.Extensions
         {
             if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
             {
-                String imagePath = ApplicationConfigs.UrlBase + entity.MainImage.FileName;
+                String imagePath = Constants.UrlBase + entity.MainImage.FileName;
                 if (isThump)
                 {
                     String fileName = entity.MainImage.FileName;
-                    String partThumb1 = Path.Combine(ApplicationConfigs.UrlBase, "thumbs");
+                    String partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
                     String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
                     imagePath = partThumb2;
                 }
@@ -311,7 +311,7 @@ namespace EImece.Domain.Helpers.Extensions
                     var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     var imageSize = String.Format("w{0}h{1}", width, height);
                     var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
-                    String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { imageSize, id = imageId });
+                    String imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId });
                     return imagePath;
                 }
                 else
@@ -349,7 +349,7 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageId = String.Format("{0}.jpg", fileStorage.Id);
-                String imagePath = urlHelper.Action(ApplicationConfigs.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
+                String imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
                 return imagePath;
             }
             return "";

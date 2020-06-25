@@ -51,7 +51,7 @@ namespace EImece.Domain.Helpers
         {
             if (String.IsNullOrEmpty(cultureName))
             {
-                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)ApplicationConfigs.MainLanguage));
+                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)AppConfig.MainLanguage));
             }
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
@@ -102,7 +102,7 @@ namespace EImece.Domain.Helpers
             }
             if (String.IsNullOrEmpty(cultureName))
             {
-                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)ApplicationConfigs.MainLanguage));
+                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)AppConfig.MainLanguage));
             }
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);

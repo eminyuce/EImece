@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
@@ -64,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SaveOrEdit(int id = 0)
         {
-            TempData[ApplicationConfigs.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Product>();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
@@ -79,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             return View(content);
         }
 
@@ -138,7 +138,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
             }
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(ApplicationConfigs.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
             if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {

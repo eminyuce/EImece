@@ -46,8 +46,8 @@ namespace EImece
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            var microsoftAccountClientId = ApplicationConfigs.GetConfigString("MicrosoftAccount_ClientId");
-            var microsoftAccountClientSecret = ApplicationConfigs.GetConfigString("MicrosoftAccount_ClientSecret");
+            var microsoftAccountClientId = Domain.AppConfig.GetConfigString("MicrosoftAccount_ClientId");
+            var microsoftAccountClientSecret = Domain.AppConfig.GetConfigString("MicrosoftAccount_ClientSecret");
 
             // Uncomment the following lines to enable logging in with third party login providers
 
@@ -58,8 +58,8 @@ namespace EImece
                    clientSecret: microsoftAccountClientSecret);
             }
 
-            var twitterAccountConsumerKey = ApplicationConfigs.GetConfigString("TwitterAccount_ConsumerKey");
-            var twitterAccountConsumerSecret = ApplicationConfigs.GetConfigString("TwitterAccount_ConsumerSecret");
+            var twitterAccountConsumerKey = Domain.AppConfig.GetConfigString("TwitterAccount_ConsumerKey");
+            var twitterAccountConsumerSecret = Domain.AppConfig.GetConfigString("TwitterAccount_ConsumerSecret");
 
             if (!String.IsNullOrEmpty(twitterAccountConsumerKey) && !String.IsNullOrEmpty(twitterAccountConsumerSecret))
             {
@@ -68,8 +68,8 @@ namespace EImece
                        consumerSecret: twitterAccountConsumerSecret);
             }
 
-            var facebookAccountAppId = ApplicationConfigs.GetConfigString("FacebookAccount_AppId");
-            var facebookAccountAppSecret = ApplicationConfigs.GetConfigString("FacebookAccount_AppSecret");
+            var facebookAccountAppId = Domain.AppConfig.GetConfigString("FacebookAccount_AppId");
+            var facebookAccountAppSecret = Domain.AppConfig.GetConfigString("FacebookAccount_AppSecret");
 
             if (!String.IsNullOrEmpty(facebookAccountAppId) && !String.IsNullOrEmpty(facebookAccountAppSecret))
             {
@@ -78,8 +78,8 @@ namespace EImece
                      appSecret: facebookAccountAppSecret);
             }
 
-            var googleAccountClientId = ApplicationConfigs.GetConfigString("GoogleAccount_ClientId");
-            var googleAccountClientSecret = ApplicationConfigs.GetConfigString("GoogleAccount_ClientSecret");
+            var googleAccountClientId = Domain.AppConfig.GetConfigString("GoogleAccount_ClientId");
+            var googleAccountClientSecret = Domain.AppConfig.GetConfigString("GoogleAccount_ClientSecret");
 
             if (!String.IsNullOrEmpty(googleAccountClientId) && !String.IsNullOrEmpty(googleAccountClientSecret))
             {

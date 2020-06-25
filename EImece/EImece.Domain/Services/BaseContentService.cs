@@ -53,8 +53,8 @@ namespace EImece.Domain.Services
             }
             else
             {
-                item.ImageHeight = SettingService.GetSettingByKey(ApplicationConfigs.DefaultImageHeight).ToInt();
-                item.ImageWidth = SettingService.GetSettingByKey(ApplicationConfigs.DefaultImageWidth).ToInt();
+                item.ImageHeight = SettingService.GetSettingByKey(Constants.DefaultImageHeight).ToInt();
+                item.ImageWidth = SettingService.GetSettingByKey(Constants.DefaultImageWidth).ToInt();
             }
 
             return item;
@@ -75,7 +75,7 @@ namespace EImece.Domain.Services
                 result = BaseContentRepository.GetActiveBaseContents(isActive, language);
                 if (result != null)
                 {
-                    MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
                 }
                 return new List<T>();
             }

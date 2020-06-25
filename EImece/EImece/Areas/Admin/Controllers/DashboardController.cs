@@ -90,7 +90,7 @@ namespace EImece.Areas.Admin.Controllers
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            Response.Cookies[ApplicationConfigs.AdminCultureCookieName].Value = name;
+            Response.Cookies[Domain.Constants.AdminCultureCookieName].Value = name;
             MemoryCacheProvider.ClearAll();
             var returnDefault = RedirectToAction("Index");
             return RequestReturn(returnDefault);

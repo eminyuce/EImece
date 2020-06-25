@@ -24,9 +24,9 @@ namespace EImece.Areas.Admin.Controllers
 
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
-            settings = settings.Where(r => !ApplicationConfigs.WebSiteLogo.Equals(r.SettingKey)).ToList();
-            settings = settings.Where(r => !r.SettingValue.Equals(ApplicationConfigs.SpecialPage)).ToList();
-            settings = settings.Where(r => !ApplicationConfigs.AdminSetting.Equals(r.Description)).ToList();
+            settings = settings.Where(r => !Constants.WebSiteLogo.Equals(r.SettingKey)).ToList();
+            settings = settings.Where(r => !r.SettingValue.Equals(Constants.SpecialPage)).ToList();
+            settings = settings.Where(r => !Constants.AdminSetting.Equals(r.Description)).ToList();
             return View(settings);
         }
 
@@ -83,13 +83,13 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult AddWebSiteLogo()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.WebSiteLogo);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
         public ActionResult AddAboutUs()
         {
-            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.AboutUs, CurrentLanguage);
+            var setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
             int id = setting != null ? setting.Id : 0;
             return RedirectToAction("AboutUs", new { id });
         }
@@ -97,8 +97,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult AboutUs(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = ApplicationConfigs.AboutUs;
-            content.Name = ApplicationConfigs.AboutUs;
+            content.SettingKey = Constants.AboutUs;
+            content.Name = Constants.AboutUs;
             content.Position = 1;
             content.IsActive = true;
             if (id == 0)
@@ -128,7 +128,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    setting.SettingValue = ApplicationConfigs.SpecialPage;
+                    setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                 }
@@ -144,7 +144,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult AddTermsAndConditions()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("TermsAndConditions", new { id });
         }
@@ -152,8 +152,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult TermsAndConditions(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = ApplicationConfigs.TermsAndConditions;
-            content.Name = ApplicationConfigs.TermsAndConditions;
+            content.SettingKey = Constants.TermsAndConditions;
+            content.Name = Constants.TermsAndConditions;
             content.Position = 1;
             content.IsActive = true;
             if (id == 0)
@@ -183,7 +183,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    setting.SettingValue = ApplicationConfigs.SpecialPage;
+                    setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                 }
@@ -200,7 +200,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult AddPrivacyPolicy()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("PrivacyPolicy", new { id });
         }
@@ -208,8 +208,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult PrivacyPolicy(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = ApplicationConfigs.PrivacyPolicy;
-            content.Name = ApplicationConfigs.PrivacyPolicy;
+            content.SettingKey = Constants.PrivacyPolicy;
+            content.Name = Constants.PrivacyPolicy;
             content.Position = 1;
             content.IsActive = true;
             if (id == 0)
@@ -242,7 +242,7 @@ namespace EImece.Areas.Admin.Controllers
                 // settings/privacypolicy/31/
                 if (ModelState.IsValid)
                 {
-                    setting.SettingValue = ApplicationConfigs.SpecialPage;
+                    setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                 }
@@ -285,11 +285,11 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
-            webSiteLogoSetting.Name = ApplicationConfigs.WebSiteLogo;
+            webSiteLogoSetting.Name = Constants.WebSiteLogo;
             webSiteLogoSetting.Description = "";
             webSiteLogoSetting.EntityHash = "";
             webSiteLogoSetting.SettingValue = result.NewFileName;
-            webSiteLogoSetting.SettingKey = ApplicationConfigs.WebSiteLogo;
+            webSiteLogoSetting.SettingKey = Constants.WebSiteLogo;
             webSiteLogoSetting.IsActive = true;
             webSiteLogoSetting.Position = 1;
             webSiteLogoSetting.Lang = CurrentLanguage;

@@ -24,7 +24,7 @@ namespace EImece.Domain.Scheduler
             Logger.Info("StartSchedulerService has started");
 
             // We do not want to trigger cron job for development environment.
-            var quartzEnabled = ApplicationConfigs.GetConfigBool("Quartz_Scheduler_IsEnabled", true);
+            var quartzEnabled = AppConfig.GetConfigBool("Quartz_Scheduler_IsEnabled", true);
             if (quartzEnabled == false)
             {
                 return;

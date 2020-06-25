@@ -9,26 +9,26 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    [RoutePrefix(ApplicationConfigs.ProductsControllerRoutingPrefix)]
+    [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index(int page = 1)
         {
             var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
             return View(products);
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
         {
             var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
             return View(products);
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)
         {
             var productId = id.GetId();
@@ -38,7 +38,7 @@ namespace EImece.Controllers
             return View(product);
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Tag(String id)
         {
             var tagId = id.GetId();

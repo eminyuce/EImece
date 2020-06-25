@@ -13,7 +13,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index(int page = 1)
         {
             try
@@ -28,7 +28,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)
         {
             try
@@ -45,7 +45,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Categories(String id, int page = 1)
         {
             try
@@ -62,7 +62,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Tag(String id)
         {
             try

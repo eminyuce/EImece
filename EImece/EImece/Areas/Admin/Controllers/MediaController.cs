@@ -20,7 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         public MediaController(FilesHelper filesHelper)
         {
             this.filesHelper = filesHelper;
-            this.filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
+            this.filesHelper.Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
 
         // GET: Admin/Media

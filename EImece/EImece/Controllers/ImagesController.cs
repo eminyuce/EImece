@@ -13,7 +13,7 @@ namespace EImece.Controllers
     {
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.ImageProxyCaching)]
+        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public ActionResult Index(String id, String imageSize)
         {
             if (String.IsNullOrEmpty(id))

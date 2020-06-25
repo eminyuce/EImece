@@ -31,7 +31,7 @@ namespace EImece.Tests.Controllers
             });
         }
 
-        private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
+        private String ConnectionString { get { return Constants.DbConnectionKey; } }
 
         [TestMethod]
         public void TestMethodProduct()

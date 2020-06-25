@@ -24,14 +24,14 @@ namespace EImece.Controllers
 
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaTitle).ToStr();
-            ViewBag.Description = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaDescription).ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey(ApplicationConfigs.SiteIndexMetaKeywords).ToStr();
+            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle).ToStr();
+            ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
+            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords).ToStr();
 
             return View(mainPageModel);
         }
@@ -81,13 +81,13 @@ namespace EImece.Controllers
             return View(s);
         }
 
-        [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
-            var InstagramWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.InstagramWebSiteLink);
-            var TwitterWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.TwitterWebSiteLink);
-            var LinkedinWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.LinkedinWebSiteLink);
-            var FacebookWebSiteLink = SettingService.GetSettingByKey(ApplicationConfigs.FacebookWebSiteLink);
+            var InstagramWebSiteLink = SettingService.GetSettingByKey(Constants.InstagramWebSiteLink);
+            var TwitterWebSiteLink = SettingService.GetSettingByKey(Constants.TwitterWebSiteLink);
+            var LinkedinWebSiteLink = SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink);
+            var FacebookWebSiteLink = SettingService.GetSettingByKey(Constants.FacebookWebSiteLink);
 
             var resultList = new List<String>();
             resultList.Add(InstagramWebSiteLink);
@@ -98,31 +98,31 @@ namespace EImece.Controllers
             return PartialView("_SocialMediaLinks", resultList);
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
+        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public ActionResult AboutUs()
         {
-            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.AboutUs, CurrentLanguage);
+            var setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
             return View(setting);
         }
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
+        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public ActionResult TermsAndConditions()
         {
-            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.TermsAndConditions, CurrentLanguage);
+            var setting = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
             return View(setting);
         }
 
-        [CustomOutputCache(CacheProfile = ApplicationConfigs.Cache30Days)]
+        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public ActionResult PrivacyPolicy()
         {
-            var setting = SettingService.GetSettingObjectByKey(ApplicationConfigs.PrivacyPolicy, CurrentLanguage);
+            var setting = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
             return View(setting);
         }
 
         [ChildActionOnly]
-        [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()
         {
-            var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(ApplicationConfigs.GoogleAnalyticsTrackingScript).ToStr();
+            var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
 
@@ -140,11 +140,11 @@ namespace EImece.Controllers
             return PartialView("_ProductCategoryTree", tree);
         }
 
-        [OutputCache(Duration = ApplicationConfigs.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WebSiteLogo()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(ApplicationConfigs.WebSiteLogo);
-            var CompanyName = SettingService.GetSettingObjectByKey(ApplicationConfigs.CompanyName);
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            var CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
             var s = new List<Setting>() { webSiteLogo, CompanyName };
             return PartialView("_WebSiteLogo", s);
         }
@@ -157,8 +157,8 @@ namespace EImece.Controllers
 
         public ActionResult WebSiteAddressInfo()
         {
-            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey(ApplicationConfigs.WebSiteCompanyPhoneAndLocation);
-            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(ApplicationConfigs.WebSiteCompanyEmailAddress);
+            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey(Constants.WebSiteCompanyPhoneAndLocation);
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
             var resultList = new List<String>();
             resultList.Add(WebSiteCompanyPhoneAndLocation);
             resultList.Add(WebSiteCompanyEmailAddress);

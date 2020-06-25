@@ -88,7 +88,7 @@ namespace EImece.Domain.Services
                 {
                     DateTime? lastModified = item.UpdatedDate;
                     SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
-                             ApplicationConfigs.HttpProtocol),
+                             AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -96,7 +96,7 @@ namespace EImece.Domain.Services
                     sitemapItems.Add(sm);
 
                     sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
-                      ApplicationConfigs.HttpProtocol),
+                      AppConfig.HttpProtocol),
                             lastModified,
                             SitemapChangeFrequency.Daily,
                             priority: 1.0);
@@ -126,7 +126,7 @@ namespace EImece.Domain.Services
 
                     DateTime? lastModified = story.UpdatedDate;
                     SitemapItem sm = new SitemapItem(story.GetDetailPageUrl("Detail", "Stories", storyCategoryName,
-                             ApplicationConfigs.HttpProtocol),
+                             AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -149,7 +149,7 @@ namespace EImece.Domain.Services
                 {
                     DateTime? lastModified = storyCategory.UpdatedDate;
                     SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
-                             ApplicationConfigs.HttpProtocol),
+                             AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -181,7 +181,7 @@ namespace EImece.Domain.Services
 
                     DateTime? lastModified = product.UpdatedDate;
                     SitemapItem sm = new SitemapItem(product.GetDetailPageUrl("Detail", "Products", productCategoryName,
-                             ApplicationConfigs.HttpProtocol),
+                             AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -205,7 +205,7 @@ namespace EImece.Domain.Services
                 {
                     DateTime? lastModified = productCategory.UpdatedDate;
                     SitemapItem sm = new SitemapItem(productCategory.GetDetailPageUrl("Category", "ProductCategories", "",
-                             ApplicationConfigs.HttpProtocol),
+                             AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
@@ -248,7 +248,7 @@ namespace EImece.Domain.Services
                                 new UrlHelper(requestContext).Action("detail",
                                 controller,
                                 new { id = c.GetSeoUrl() },
-                                ApplicationConfigs.HttpProtocol),
+                                AppConfig.HttpProtocol),
                                 lastModified,
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);
@@ -262,7 +262,7 @@ namespace EImece.Domain.Services
                                  new UrlHelper(requestContext).Action(action,
                                  controller,
                                  new { id = mid },
-                                 ApplicationConfigs.HttpProtocol),
+                                 AppConfig.HttpProtocol),
                                  lastModified,
                                  changeFrequency: SitemapChangeFrequency.Daily,
                                  priority: 1.0);
@@ -275,7 +275,7 @@ namespace EImece.Domain.Services
                                 new UrlHelper(requestContext).Action(action,
                                 controller,
                                 null,
-                                ApplicationConfigs.HttpProtocol),
+                                AppConfig.HttpProtocol),
                                 lastModified,
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);

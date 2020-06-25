@@ -37,7 +37,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = MenuRepository.BuildTree(isActive, language);
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }
@@ -58,7 +58,7 @@ namespace EImece.Domain.Services
                 result.Menu = MenuRepository.GetMenuById(menuId);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }

@@ -12,7 +12,7 @@ namespace EImece.Domain.Helpers
             var roles = GetDeletedRoles();
             foreach (var role in roles)
             {
-                var r = user.IsInRole(ApplicationConfigs.AdministratorRole);
+                var r = user.IsInRole(Constants.AdministratorRole);
                 if (r)
                 {
                     return true;
@@ -24,13 +24,13 @@ namespace EImece.Domain.Helpers
         public static bool IsAdminManagementRoles()
         {
             var user = HttpContext.Current.User;
-            return user.IsInRole(ApplicationConfigs.AdministratorRole);
+            return user.IsInRole(Constants.AdministratorRole);
         }
 
         public static string[] GetDeletedRoles()
         {
             var roles = new List<String>();
-            roles.Add(ApplicationConfigs.AdministratorRole);
+            roles.Add(Constants.AdministratorRole);
             return roles.ToArray();
         }
     }

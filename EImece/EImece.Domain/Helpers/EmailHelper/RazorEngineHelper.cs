@@ -35,7 +35,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         public string ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ForgotPassword");
-            String companyname = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
+            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
@@ -61,7 +61,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string groupName = string.Format("{0} | {1} | {2}", "ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
-            String companyname = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName);
+            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
             var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
             var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");
 

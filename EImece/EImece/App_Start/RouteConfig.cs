@@ -48,7 +48,7 @@ namespace EImece
             routes.MapRoute(
                    name: "ImageResizing",
                    url: "images/{imageSize}/{id}",
-                   defaults: new { controller = "images", action = ApplicationConfigs.ImageActionName, id = UrlParameter.Optional },
+                   defaults: new { controller = "images", action = Constants.ImageActionName, id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
 
@@ -103,7 +103,7 @@ namespace EImece
 
             routes.MapRoute(
                name: "ProductDetail",
-               url: ApplicationConfigs.ProductsControllerRoutingPrefix + "/{categoryName}/{id}",
+               url: Constants.ProductsControllerRoutingPrefix + "/{categoryName}/{id}",
                defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );

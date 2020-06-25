@@ -91,13 +91,13 @@ namespace EImece.Tests.Controllers
             var products = productService.GetAll();
             Console.WriteLine(products.Count);
         }
-        private String ConnectionString { get { return ApplicationConfigs.DbConnectionKey; } }
+        private String ConnectionString { get { return Constants.DbConnectionKey; } }
 
         private int CurrentLanguage
         {
             get
             {
-                return ApplicationConfigs.MainLanguage;
+                return AppConfig.MainLanguage;
             }
         }
 

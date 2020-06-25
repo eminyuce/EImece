@@ -20,7 +20,7 @@ namespace EImece.Domain.Helpers
         {
             get
             {
-                var password = ApplicationConfigs.GetConfigString("encrypt-password", "SAUW193BX628TD57");
+                var password = AppConfig.GetConfigString("encrypt-password", "SAUW193BX628TD57");
                 return password;
             }
         }

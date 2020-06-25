@@ -43,7 +43,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = SettingRepository.GetAllActiveSettings();
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }
@@ -56,7 +56,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = SettingRepository.GetAllSettings();
-                MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }
@@ -115,7 +115,7 @@ namespace EImece.Domain.Services
             var result = new SettingModel();
 
             Type type = typeof(SettingModel);
-            List<Setting> Settings = GetAllSettings().Where(r => ApplicationConfigs.AdminSetting.Equals(r.Description)).ToList();
+            List<Setting> Settings = GetAllSettings().Where(r => Constants.AdminSetting.Equals(r.Description)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -166,13 +166,13 @@ namespace EImece.Domain.Services
                     newSetting.Name = name;
                     newSetting.IsActive = true;
                     newSetting.SettingKey = name;
-                    newSetting.Description = ApplicationConfigs.AdminSetting;
+                    newSetting.Description = Constants.AdminSetting;
                     newSetting.SettingValue = value.ToStr();
                     SaveOrEditEntity(newSetting);
                 }
                 else
                 {
-                    setting.Description = ApplicationConfigs.AdminSetting;
+                    setting.Description = Constants.AdminSetting;
                     setting.SettingValue = value.ToStr();
                     SaveOrEditEntity(setting);
                 }
@@ -184,14 +184,14 @@ namespace EImece.Domain.Services
         public EmailAccount GetEmailAccount()
         {
             var emailAccount = new EmailAccount();
-            emailAccount.Host = GetSettingByKey(ApplicationConfigs.AdminEmailHost);
-            emailAccount.Password = GetSettingByKey(ApplicationConfigs.AdminEmailPassword);
-            emailAccount.EnableSsl = GetSettingByKey(ApplicationConfigs.AdminEmailEnableSsl).ToBool();
-            emailAccount.Port = GetSettingByKey(ApplicationConfigs.AdminEmailPort).ToInt();
-            emailAccount.DisplayName = GetSettingByKey(ApplicationConfigs.AdminEmailDisplayName);
-            emailAccount.Email = GetSettingByKey(ApplicationConfigs.AdminEmail);
-            emailAccount.UseDefaultCredentials = GetSettingByKey(ApplicationConfigs.AdminEmailUseDefaultCredentials).ToBool();
-            emailAccount.Username = GetSettingByKey(ApplicationConfigs.AdminUserName).ToStr();
+            emailAccount.Host = GetSettingByKey(Constants.AdminEmailHost);
+            emailAccount.Password = GetSettingByKey(Constants.AdminEmailPassword);
+            emailAccount.EnableSsl = GetSettingByKey(Constants.AdminEmailEnableSsl).ToBool();
+            emailAccount.Port = GetSettingByKey(Constants.AdminEmailPort).ToInt();
+            emailAccount.DisplayName = GetSettingByKey(Constants.AdminEmailDisplayName);
+            emailAccount.Email = GetSettingByKey(Constants.AdminEmail);
+            emailAccount.UseDefaultCredentials = GetSettingByKey(Constants.AdminEmailUseDefaultCredentials).ToBool();
+            emailAccount.Username = GetSettingByKey(Constants.AdminUserName).ToStr();
             return emailAccount;
         }
     }

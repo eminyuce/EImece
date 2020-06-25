@@ -42,7 +42,7 @@ namespace EImece.Domain.Services
                 if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
                     result = GetSingle(fileStorageId);
-                    MemoryCacheProvider.Set(cacheKey, result, ApplicationConfigs.CacheMediumSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             return result;
