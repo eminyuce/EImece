@@ -14,7 +14,7 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
 <h2>

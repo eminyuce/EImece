@@ -7,7 +7,7 @@
 @using Resources;
 @{
     var story = Model;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
 }

@@ -7,7 +7,7 @@
 @model FooterViewModel
 @{
     var footerModel = Model;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 
 }
 <!-- Container -->

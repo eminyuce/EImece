@@ -33,7 +33,7 @@ namespace EImece.Domain.Services
         protected BaseContentService(IBaseContentRepository<T> baseContentRepository) : base(baseContentRepository)
         {
             this.BaseContentRepository = baseContentRepository;
-            this.IsCachingActive = false;// ApplicationConfigs.IsCacheActive;
+            this.IsCachingActive = false; 
         }
 
         public virtual T GetBaseContent(int id)

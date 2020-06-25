@@ -14,7 +14,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Lists";
     var title = "Lists";
     var gridName = "ListGrid";
@@ -87,7 +87,7 @@ columns.Add(o => o.IsService)
         .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
          Sanitized(false)
         .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                          o.Id, (o.IsService ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsService));
+                                          o.Id, (o.IsService ? AppConfig.OkStyle : AppConfig.CancelStyle), o.IsService));
 
 columns.Add(o => o.IsValues)
       .Titled(AdminResource.IsValues)
@@ -95,7 +95,7 @@ columns.Add(o => o.IsValues)
       .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
        Sanitized(false)
       .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                        o.Id, (o.IsValues ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsValues));
+                                        o.Id, (o.IsValues ? AppConfig.OkStyle : AppConfig.CancelStyle), o.IsValues));
 
 }).SetRowCssClasses(item => item.Id % 2 == 0 ? "warning" : string.Empty).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

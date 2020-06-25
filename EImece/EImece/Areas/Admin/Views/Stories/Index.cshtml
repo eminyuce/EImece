@@ -12,7 +12,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Stories";
     var gridName = "StoryGrid";
     var contents = Model;
@@ -106,7 +106,7 @@ columns.Add(c => c.Name)
            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
             Sanitized(false)
            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                             o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
+                                             o.Id, (o.IsActive ? AppConfig.OkStyle : AppConfig.CancelStyle), o.IsActive));
 
     columns.Add(o => o.ImageState)
                .Titled(AdminResource.ImageState)
@@ -114,7 +114,7 @@ columns.Add(c => c.Name)
            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
             Sanitized(false)
            .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                             o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState));
+                                             o.Id, (o.ImageState ? AppConfig.OkStyle : AppConfig.CancelStyle), o.ImageState));
 
     columns.Add(o => o.MainPage)
                     .Titled(AdminResource.MainPage)
@@ -122,7 +122,7 @@ columns.Add(c => c.Name)
                 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                  Sanitized(false)
                 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
-                                                  o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage));
+                                                  o.Id, (o.MainPage ? AppConfig.OkStyle : AppConfig.CancelStyle), o.MainPage));
 
     columns.Add(o => o.UpdatedDate)
            .Titled(AdminResource.UpdatedDate)

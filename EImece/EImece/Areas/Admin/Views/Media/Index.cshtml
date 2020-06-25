@@ -14,7 +14,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Media";
     var title = "Medias";
     var gridName = "MediaGrid";
@@ -27,7 +27,7 @@
     var gridDetailText = AdminResource.GridDetailText;
 
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
-    filesHelper.Init(ApplicationConfigs.DeleteURL, ApplicationConfigs.DeleteType, ApplicationConfigs.StorageRoot, ApplicationConfigs.UrlBase, ApplicationConfigs.TempPath, ApplicationConfigs.ServerMapPath);
+    filesHelper.Init(AppConfig.DeleteURL, AppConfig.DeleteType, AppConfig.StorageRoot, AppConfig.UrlBase, AppConfig.TempPath, AppConfig.ServerMapPath);
 
 }
 <style>
@@ -166,7 +166,7 @@
                           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                            Sanitized(false)
                           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                            o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive));
+                                                            o.Id, (o.IsActive ? AppConfig.OkStyle : AppConfig.CancelStyle), o.IsActive));
 
                    columns.Add(o => o.UpdatedDate)
                               .Titled(AdminResource.UpdatedDate)
@@ -202,11 +202,11 @@ var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
          <div class="col-md-6">
             <div>
                 @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-                <a href=@String.Format("../..{1}{0}", fileStorage.FileName, ApplicationConfigs.UrlBase) target="_blank">Full Image</a>
+                <a href=@String.Format("../..{1}{0}", fileStorage.FileName, AppConfig.UrlBase) target="_blank">Full Image</a>
             </div>
             <div>
                 @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
-                <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, ApplicationConfigs.UrlBase) target="_blank">Thumps Image</a>
+                <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, AppConfig.UrlBase) target="_blank">Thumps Image</a>
             </div>
         </div>
     </div>

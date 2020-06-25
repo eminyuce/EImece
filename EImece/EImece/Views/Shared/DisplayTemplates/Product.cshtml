@@ -7,7 +7,7 @@
     var productFiles = Model.ProductFiles;
     var product = Model;
     var categoryName = product.ProductCategory.Name;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var tags = product.ProductTags.Select(r1 => r1.Tag).Distinct().ToList();
     string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
     string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
@@ -23,12 +23,12 @@
 
     <figure>
         <div class="portfolio-holder">
-            <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, ApplicationConfigs.HttpProtocol)">
+            <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, AppConfig.HttpProtocol)">
                 @Html.Raw(productImageTag)
                 <div class="hover-icon"></div>
             </a>
         </div>
-        <a href="@product.GetDetailPageUrl("Detail", "Products", categoryName, ApplicationConfigs.HttpProtocol)">
+        <a href="@product.GetDetailPageUrl("Detail", "Products", categoryName, AppConfig.HttpProtocol)">
             <section class="item-description">
 
                 <span>@product.Name

@@ -9,7 +9,7 @@
     ViewBag.Description =  menu.GetSeoDescription();
     menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
     var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 @if (isUserAuthenticated)
 {

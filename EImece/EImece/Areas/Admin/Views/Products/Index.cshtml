@@ -13,7 +13,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? ApplicationConfigs.GridPageSizeNumber : pageSizeNumber;
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Products";
     var gridName = "productGrid";
     var contents = Model;
@@ -152,15 +152,15 @@ columns.Add(r => r.ImageState
     <ul>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
-                                                    o.Id, (o.IsActive ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsActive, AdminResource.State))
+                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.State))
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
-                                                    o.Id, (o.MainPage ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.MainPage, AdminResource.MainPage))
+                                                    o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
-                                                    o.Id, (o.IsCampaign ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
+                                                    o.Id, (o.IsCampaign ? Constants.OkStyle : Constants.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
         </li>
     </ul>
 
@@ -173,7 +173,7 @@ columns.Add(r => r.ImageState
         <ul>
             <li>
                 @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                        o.Id, (o.ImageState ? ApplicationConfigs.OkStyle : ApplicationConfigs.CancelStyle), o.ImageState, AdminResource.ImageState))
+                                                        o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
             </li>
             <li>
                 @Html.Partial("pGridImageMainPage", o)

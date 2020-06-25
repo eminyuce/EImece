@@ -11,7 +11,7 @@
     ViewBag.Title = String.Format("{0} {1}", Model.CompanyName.SettingValue, Resource.Products);
     PaginatedList<Product> products = Model.Products;
     ViewBag.Description = String.Join(",", products.Select(r => r.Name)).ToStr(150);
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     List<Tag> tags = Model.Tags;
     List<Tag> productTags = products.SelectMany(r => r.ProductTags.Select(r1 => r1.Tag)).Distinct().ToList();
 }

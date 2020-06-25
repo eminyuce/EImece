@@ -11,7 +11,7 @@
     var files = menu.MenuFiles.ToList();
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
-    var isUserAuthenticated = User.Identity.IsAuthenticated && ApplicationConfigs.IsEditLinkEnable;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
     int Width = ViewData["Width"].ToInt(300);
     int Height = ViewData["Height"].ToInt(214);

@@ -1,17 +1,14 @@
 ﻿@using EImece.Domain.Helpers;
-@using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain;
 @using Resources;
-@using Microsoft.AspNet.Identity
 @using System.Threading;
 @using EImece.Domain.Models.Enums;
-@using EImece.Domain.Entities;
 @using EImece.Domain.Services.IServices;
 @{
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
     String cultureName = Thread.CurrentThread.CurrentCulture.Name;
-    List<SelectListItem> listItems = new List<SelectListItem>();
+    var listItems = new List<SelectListItem>();
     listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
     int selectedLang = 0;
     if (listItems.Count > 1)
@@ -21,11 +18,13 @@
     else
     {
         // Just one language is activated.
-        selectedLang = ApplicationConfigs.MainLanguage;
+        selectedLang = AppConfig.MainLanguage;
     }
 
     var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-    var companyNameSetting = SettingService.GetSettingByKey(ApplicationConfigs.CompanyName).ToStr();
+    string companyName = EImece.Domain.Constants.CompanyName;
+    var companyNameSetting = SettingService.GetSettingByKey(companyName).ToStr();
+    var userName = Microsoft.AspNet.Identity.User.Identity.GetUserName();
 }
 <!DOCTYPE html>
 <html>
@@ -79,7 +78,7 @@
 
                 <ul class="nav navbar-nav">
                     <li>
-                        @Html.ActionLink(AdminResource.Hello + " " + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+                        @Html.ActionLink(AdminResource.Hello + " " + userName + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
                     </li>
                 </ul>
 

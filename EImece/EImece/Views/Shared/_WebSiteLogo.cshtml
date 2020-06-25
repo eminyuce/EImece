@@ -12,9 +12,9 @@
         var webSiteLogo = Model.FirstOrDefault();
         var companyName = Model.Skip(1).FirstOrDefault();
         string companyNametxt = companyName.SettingValue;
-        string fullPath = Path.Combine(ApplicationConfigs.ServerMapPath, webSiteLogo.SettingValue);
+        string fullPath = Path.Combine(Constants.ServerMapPath, webSiteLogo.SettingValue);
         var isFullFileExits = File.Exists(fullPath);
-        string partThumb2 = Path.Combine(Path.Combine(ApplicationConfigs.ServerMapPath, "thumbs"), "thb" + webSiteLogo.SettingValue);
+        string partThumb2 = Path.Combine(Path.Combine(Constants.ServerMapPath, "thumbs"), "thb" + webSiteLogo.SettingValue);
         var isThump2FileExits = File.Exists(partThumb2);
 
             <a href="/">
