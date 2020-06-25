@@ -86,9 +86,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (listItems.Count() > 1)
                     {
-                        <li>
-                            @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @class = "form-control" })
-                        </li>
+                    <li>
+                            @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @style= " margin-top: 7px;", @class = "form-control" })
+                    </li>
                     }
                     <li>
                         <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
@@ -112,7 +112,7 @@
                         {
                             @Html.AntiForgeryToken()
 
-                        }
+                            }
                     </li>
                 </ul>
             </div>
@@ -183,7 +183,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Settings <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         @if (UserRoleHelper.IsAdminManagementRoles())
-                        {
+                            {
                             <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink(AdminResource.NormalSettings, "Index", "Settings", new { area = "admin" }, null)</li>

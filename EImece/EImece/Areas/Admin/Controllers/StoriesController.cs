@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
@@ -30,7 +31,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            TempData[ApplicationConfigs.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Story>();
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
 

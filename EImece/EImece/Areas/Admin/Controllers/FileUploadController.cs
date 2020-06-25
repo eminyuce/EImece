@@ -1,10 +1,8 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.HelperModels;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -12,22 +10,16 @@ namespace EImece.Areas.Admin.Controllers
     public class FileUploadController : BaseAdminController
     {
         public FilesHelper filesHelper { get; set; }
-        private String tempPath = "~/media/tempFiles/";
-        private String serverMapPath = "~/media/images/";
-
-        private string StorageRoot
-        {
-            get { return Path.Combine(HostingEnvironment.MapPath(serverMapPath)); }
-        }
-
-        private string UrlBase = "/media/images/";
-        private String DeleteURL = "/FileUpload/DeleteFile/?file=";
-        private String DeleteType = "GET";
 
         public FileUploadController(FilesHelper fh)
         {
             filesHelper = fh;
-            filesHelper.Init(DeleteURL, DeleteType, StorageRoot, UrlBase, tempPath, serverMapPath);
+            filesHelper.Init(ApplicationConfigs.FileUploadDeleteURL,
+                ApplicationConfigs.DeleteType,
+                ApplicationConfigs.StorageRoot,
+                ApplicationConfigs.UrlBase,
+                ApplicationConfigs.TempPath,
+                ApplicationConfigs.ServerMapPath);
         }
 
         public ActionResult Index()

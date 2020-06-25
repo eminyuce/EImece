@@ -57,11 +57,14 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                if (Setting == null)
+                {
+                    return HttpNotFound();
+                }
                 if (ModelState.IsValid)
                 {
                     Setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(Setting);
-                    int contentId = Setting.Id;
                     return RedirectToAction("Index");
                 }
                 else

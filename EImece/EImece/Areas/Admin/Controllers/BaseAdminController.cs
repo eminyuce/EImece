@@ -22,8 +22,6 @@ namespace EImece.Areas.Admin.Controllers
     [AuthorizeRoles(ApplicationConfigs.AdministratorRole, ApplicationConfigs.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
-        protected const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
-
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
@@ -104,26 +102,28 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                if (Session["SelectedLanguage"] != null)
-                    return Session["SelectedLanguage"].ToInt(1);
+                if (Session[ApplicationConfigs.SelectedLanguage] != null)
+                {
+                    return Session[ApplicationConfigs.SelectedLanguage].ToInt(1);
+                }
                 else
                 {
-                    return 1;
-                };
+                    return ApplicationConfigs.MainLanguage;
+                }
             }
             set
             {
-                Session["SelectedLanguage"] = value;
+                Session[ApplicationConfigs.SelectedLanguage] = value;
             }
         }
 
-        protected static string AdminCultureCookieName = "_adminCulture";
+  
 
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
             string cultureName = "tr-TR";
             setIsCachingActive(false);
-            HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
+            HttpCookie cultureCookie = Request.Cookies[ApplicationConfigs.AdminCultureCookieName];
             if (cultureCookie != null)
             {
                 cultureName = cultureCookie.Value;
@@ -132,9 +132,9 @@ namespace EImece.Areas.Admin.Controllers
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            if (Response.Cookies[AdminCultureCookieName] != null)
+            if (Response.Cookies[ApplicationConfigs.AdminCultureCookieName] != null)
             {
-                Response.Cookies[AdminCultureCookieName].Value = cultureName;
+                Response.Cookies[ApplicationConfigs.AdminCultureCookieName].Value = cultureName;
             }
             else
             {
@@ -179,12 +179,11 @@ namespace EImece.Areas.Admin.Controllers
                 if (languages.Count > 1)
                 {
                     string cultureName = null;
-                    HttpCookie cultureCookie = Request.Cookies[AdminCultureCookieName];
+                    HttpCookie cultureCookie = Request.Cookies[ApplicationConfigs.AdminCultureCookieName];
                     if (cultureCookie != null)
                     {
                         cultureName = cultureCookie.Value;
-                        var selectedLang = EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
-                        return selectedLang;
+                        return EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage)); 
                     }
                     else
                     {
@@ -213,10 +212,10 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult ReturnTempUrl(String name)
         {
-            if (!String.IsNullOrEmpty(TempData[TempDataReturnUrlReferrer].ToStr()))
+            if (!String.IsNullOrEmpty(TempData[ApplicationConfigs.TempDataReturnUrlReferrer].ToStr()))
             {
                 MemoryCacheProvider.ClearAll();
-                return Redirect(TempData[TempDataReturnUrlReferrer].ToStr());
+                return Redirect(TempData[ApplicationConfigs.TempDataReturnUrlReferrer].ToStr());
             }
             else
             {
@@ -233,18 +232,20 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult DownloadFileDataTable(DataTable result, string fileName)
         {
-            var dt = result;
-            if (dt.Rows.Count < 65534)
+            if(result == null || String.IsNullOrEmpty(fileName))
             {
-                var ms = ExcelHelper.GetExcelByteArrayFromDataTable(dt);
-                return File(ms, "application/vnd.ms-excel", String.Format("{1}-{0}.xls",
-                    DateTime.Now.ToString("yyyy-MM-dd"), fileName));
+                throw new ArgumentException("Result or fileName cannot be empty.");
+            }
+            fileName = string.Format("{1}-{0}", DateTime.Now.ToString("yyyy-MM-dd"), fileName);
+            if (result.Rows.Count < 65534)
+            {
+                var ms = ExcelHelper.GetExcelByteArrayFromDataTable(result);
+                return File(ms, "application/vnd.ms-excel", fileName + ".xls");
             }
             else
             {
-                byte[] data = ExcelHelper.Export(dt, true);
-                return File(data, "text/csv", String.Format("{1}-{0}.csv",
-                    DateTime.Now.ToString("yyyy-MM-dd"), fileName));
+                byte[] data = ExcelHelper.Export(result, true);
+                return File(data, "text/csv", fileName + ".csv");
             }
         }
     }

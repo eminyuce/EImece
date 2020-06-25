@@ -64,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SaveOrEdit(int id = 0)
         {
-            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            TempData[ApplicationConfigs.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Product>();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);

@@ -8,13 +8,13 @@ using System.Web.Hosting;
 
 namespace EImece.Domain
 {
-    public class ApplicationConfigs
+    public static class ApplicationConfigs
     {
         /*********CACHE KEYS*********/
         public const string Cache30Days = "Cache30Days";
         public const string Cache20Minutes = "Cache20Minutes";
         public const string ImageProxyCaching = "ImageProxyCaching";
-
+        public const string Cache1Hour = "Cache1Hour";
         /********* SETTING KEYS **********/
         public const string AdminEmailHost = "AdminEmailHost";
         public const string AdminEmailPassword = "AdminEmailPassword";
@@ -47,13 +47,23 @@ namespace EImece.Domain
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
         //   public const string Languages = "Languages";
         public const string PrivacyPolicy = "PrivacyPolicy";
+        public const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
 
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
         public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
+        public const string SelectedLanguage = "SelectedLanguage";
 
+        public const string TempPath = "~/media/tempFiles/";
+        public const string ServerMapPath = "~/media/images/";
+        public const string UrlBase = "/media/images/";
+        public const string DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
+        public const string DeleteType = "GET";
+        public const string FileUploadDeleteURL = "/FileUpload/DeleteFile/?file=";
+
+        public static string AdminCultureCookieName = "_adminCulture";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public static string HttpProtocolForImages
@@ -61,9 +71,7 @@ namespace EImece.Domain
             get
             {
                 var useSll = GetConfigBool("UseSSLImages", false);
-                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
-
-                return httpSecure;
+                return string.Format("http{0}", useSll ? "s" : ""); 
                 // return HttpContext.Current.Request.Url.Scheme;
             }
         }
@@ -73,8 +81,7 @@ namespace EImece.Domain
             get
             {
                 var useSll = GetConfigBool("UseSSL", false);
-                string httpSecure = string.Format("http{0}", useSll ? "s" : "");
-                return httpSecure;
+                return string.Format("http{0}", useSll ? "s" : "");
                 //return HttpContext.Current.Request.Url.Scheme;
             }
         }
@@ -141,12 +148,9 @@ namespace EImece.Domain
 
         private static void WriteLog(string configName, object defaultValue)
         {
-            if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)))
+            if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)) && defaultValue != null)
             {
-                if (!String.IsNullOrEmpty(defaultValue.ToString()))
-                {
                     Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
-                }
             }
         }
 
@@ -223,15 +227,7 @@ namespace EImece.Domain
                 return GetConfigInt("CacheLongSeconds", 1800);
             }
         }
-
-        public static int Cache1Hour
-        {
-            get
-            {
-                return GetConfigInt("Cache1Hour", 3600);
-            }
-        }
-
+ 
         public static bool IsEditLinkEnable
         {
             get
@@ -270,7 +266,7 @@ namespace EImece.Domain
 
         public static string StorageRoot
         {
-            get { return Path.Combine(HostingEnvironment.MapPath(ApplicationConfigs.ServerMapPath)); }
+            get { return Path.Combine(HostingEnvironment.MapPath(ServerMapPath)); }
         }
 
         public static bool IsCacheActive
@@ -281,10 +277,5 @@ namespace EImece.Domain
             }
         }
 
-        public static string TempPath = "~/media/tempFiles/";
-        public static string ServerMapPath = "~/media/images/";
-        public static string UrlBase = "/media/images/";
-        public static string DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
-        public static string DeleteType = "GET";
     }
 }

@@ -50,6 +50,10 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                if (MailTemplate == null)
+                {
+                    return HttpNotFound();
+                }
                 if (ModelState.IsValid)
                 {
                     if (MailTemplate.Id == 0)
@@ -77,8 +81,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            RazorRenderResult result = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
-            ViewBag.RazorRenderResult = result;
+            ViewBag.RazorRenderResult = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
             return View(MailTemplate);
         }
 

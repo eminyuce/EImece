@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
@@ -42,7 +43,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             var content = EntityFactory.GetBaseEntityInstance<Tag>();
             ViewBag.Categories = GetCategoriesSelectList();
-            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            TempData[ApplicationConfigs.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             if (id == 0)
             {
             }

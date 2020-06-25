@@ -33,13 +33,13 @@
 
     <link href="~/Content/trizzy/css/style.css?v=1" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/blue.css" id="colors">
-
+   
     @{
         String cultureName = Thread.CurrentThread.CurrentCulture.Name;
         List<SelectListItem> listItems = new List<SelectListItem>();
         listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
         int selectedLang = 0;
-        if(listItems.Count > 1)
+        if (listItems.Count > 1)
         {
             selectedLang = EImece.Domain.Helpers.EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
         }
@@ -58,6 +58,7 @@
         <div id="top-bar">
             <div class="container">
                 <div class="ten columns">
+                    <div class="img-thumbnail flag flag-icon-background flag-icon-tr" title="tr" id="tr"></div>
                     @Html.Action("WebSiteAddressInfo", "Home")
                 </div>
                 <div class="six columns">
@@ -77,8 +78,8 @@
         <!-- Header
         ================================================== -->
         <div class="container">
-           
-           
+
+
             <!-- Logo -->
             <div class="four columns">
                 <div id="logo">
@@ -140,11 +141,11 @@
     @*@Scripts.Render("~/bundles/jquery")*@
     <script src="~/Scripts/trizzy/scripts/jquery-2.1.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
+   
     <script src="~/Scripts/eimece.js?v=2"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
-       <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
-       <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
+ 
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>

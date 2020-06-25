@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
@@ -40,7 +41,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
-            TempData[TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            TempData[ApplicationConfigs.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
 
             if (id == 0)
             {

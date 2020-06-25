@@ -48,6 +48,10 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                if (mainpageimage == null)
+                {
+                    return HttpNotFound();
+                }
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(
@@ -59,11 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
                     mainpageimage.ImageState = true;
                     MainPageImageService.SaveOrEditEntity(mainpageimage);
-                    int contentId = mainpageimage.Id;
                     return RedirectToAction("Index");
-                }
-                else
-                {
                 }
             }
             catch (Exception ex)

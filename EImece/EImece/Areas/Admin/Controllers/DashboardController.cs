@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -89,7 +90,7 @@ namespace EImece.Areas.Admin.Controllers
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            Response.Cookies[AdminCultureCookieName].Value = name;
+            Response.Cookies[ApplicationConfigs.AdminCultureCookieName].Value = name;
             MemoryCacheProvider.ClearAll();
             var returnDefault = RedirectToAction("Index");
             return RequestReturn(returnDefault);
