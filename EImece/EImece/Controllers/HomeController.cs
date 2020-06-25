@@ -75,8 +75,13 @@ namespace EImece.Controllers
             return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
         }
 
-        public ActionResult ThanksForSubscription(int id)
+        public ActionResult ThanksForSubscription(int ? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var s = SubsciberService.GetSingle(id);
             return View(s);
         }
@@ -175,7 +180,7 @@ namespace EImece.Controllers
         {
             if (contact == null)
             {
-                throw new ArgumentException("Contact cannot be null");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (Session[CaptchaContactUsLogin] == null || !Session[CaptchaContactUsLogin].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
@@ -199,21 +204,7 @@ namespace EImece.Controllers
             {
                 try
                 {
-                    var s = new Subscriber();
-                    s.Email = contact.Email.ToStr();
-                    s.CreatedDate = DateTime.Now;
-                    s.IsActive = true;
-                    s.Name = contact.Name.ToStr();
-                    s.UpdatedDate = DateTime.Now;
-                    s.Position = 1;
-                    s.EntityHash = "";
-                    s.Lang = CurrentLanguage;
-                    s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
-                        contact.CompanyName,
-                        contact.Phone,
-                        contact.Address,
-                        contact.Message, Environment.NewLine);
-                    SubsciberService.SaveOrEditEntity(s);
+                    saveSubsciber(contact);
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -244,6 +235,25 @@ namespace EImece.Controllers
             }
 
             return View("_pThankYouForContactingUs", contact);
+        }
+
+        private void saveSubsciber(ContactUsFormViewModel contact)
+        {
+            var s = new Subscriber();
+            s.Email = contact.Email.ToStr();
+            s.CreatedDate = DateTime.Now;
+            s.IsActive = true;
+            s.Name = contact.Name.ToStr();
+            s.UpdatedDate = DateTime.Now;
+            s.Position = 1;
+            s.EntityHash = "";
+            s.Lang = CurrentLanguage;
+            s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
+                contact.CompanyName,
+                contact.Phone,
+                contact.Address,
+                contact.Message, Environment.NewLine);
+            SubsciberService.SaveOrEditEntity(s);
         }
 
         public ActionResult SetLanguage(string name)

@@ -8,6 +8,8 @@ namespace EImece.Controllers
 {
     public class RobotController : Controller
     {
+        private const string TextPlain = "text/plain";
+
         // GET: Robots
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public FileContentResult RobotsText()
@@ -34,7 +36,7 @@ namespace EImece.Controllers
                 content += "# Disallow Robots (Debug)" + Environment.NewLine;
             }
 
-            return File(Encoding.UTF8.GetBytes(content), "text/plain");
+            return File(Encoding.UTF8.GetBytes(content), TextPlain);
         }
     }
 }

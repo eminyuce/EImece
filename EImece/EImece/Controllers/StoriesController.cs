@@ -70,7 +70,7 @@ namespace EImece.Controllers
                 var tagId = id.GetId();
                 int pageIndex = 1;
                 int pageSize = 20;
-                SimiliarStoryTagsViewModel stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+                var stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();
                 return View(stories);
             }

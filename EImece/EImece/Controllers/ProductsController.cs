@@ -5,6 +5,7 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
+using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -12,8 +13,6 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index(int page = 1)
         {
@@ -31,6 +30,10 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var productId = id.GetId();
             var product = ProductService.GetProductById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
@@ -41,6 +44,10 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Tag(String id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var tagId = id.GetId();
             int pageIndex = 1;
             int pageSize = 20;
@@ -51,6 +58,10 @@ namespace EImece.Controllers
 
         public ActionResult SearchProducts(String search)
         {
+            if (String.IsNullOrEmpty(search))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             int pageIndex = 1;
             int pageSize = 20;
             ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);

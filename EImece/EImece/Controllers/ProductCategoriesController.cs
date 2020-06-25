@@ -5,6 +5,7 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using NLog;
 using System;
+using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -26,6 +27,11 @@ namespace EImece.Controllers
         {
             try
             {
+                if (String.IsNullOrEmpty(id))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
                 var categoryId = id.GetId();
 
                 ProductCategoryViewModel productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
