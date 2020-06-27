@@ -103,7 +103,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                    Sanitized(false)
                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                    o.Id, (o.IsActive ? AppConfig.OkStyle : AppConfig.CancelStyle), o.IsActive));
+                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
            columns.Add(o => o.ImageState)
                       .Titled(AdminResource.ImageState)
@@ -111,7 +111,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
                   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                    Sanitized(false)
                   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                                                    o.Id, (o.ImageState ? AppConfig.OkStyle : AppConfig.CancelStyle), o.ImageState));
+                                                    o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState));
 
            columns.Add(o => o.UpdatedDate)
                       .Titled(AdminResource.UpdatedDate)

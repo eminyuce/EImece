@@ -166,7 +166,7 @@
                           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
                            Sanitized(false)
                           .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                            o.Id, (o.IsActive ? AppConfig.OkStyle : AppConfig.CancelStyle), o.IsActive));
+                                                            o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
                    columns.Add(o => o.UpdatedDate)
                               .Titled(AdminResource.UpdatedDate)

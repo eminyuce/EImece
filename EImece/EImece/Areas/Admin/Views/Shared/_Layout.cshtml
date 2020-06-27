@@ -4,6 +4,7 @@
 @using System.Threading;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Services.IServices;
+@using Microsoft.AspNet.Identity;
 @{
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
@@ -24,7 +25,7 @@
     var SettingService = DependencyResolver.Current.GetService<ISettingService>();
     string companyName = EImece.Domain.Constants.CompanyName;
     var companyNameSetting = SettingService.GetSettingByKey(companyName).ToStr();
-    var userName = Microsoft.AspNet.Identity.User.Identity.GetUserName();
+    var userName = User.Identity.GetUserName();
 }
 <!DOCTYPE html>
 <html>
