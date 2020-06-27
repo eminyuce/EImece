@@ -66,7 +66,7 @@
                     {
                         foreach (var item in listItems)
                         {
-                            <a href="@Url.Action("SetLanguage", "Home", new { @name = item.Value })">@item.Text</a>
+                            @Html.ActionLink(item.Text, "SetLanguage", "Home", new { id = item.Value },null)
                         }
                     }
 
@@ -141,11 +141,11 @@
     @*@Scripts.Render("~/bundles/jquery")*@
     <script src="~/Scripts/trizzy/scripts/jquery-2.1.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-   
+
     <script src="~/Scripts/eimece.js?v=2"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
- 
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
     <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>

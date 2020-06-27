@@ -256,13 +256,15 @@ namespace EImece.Controllers
             SubsciberService.SaveOrEditEntity(s);
         }
 
-        public ActionResult SetLanguage(string name)
+        public ActionResult SetLanguage(string id)
         {
-            //  name = CultureHelper.GetImplementedCulture(name);
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
 
-            Response.Cookies[CultureCookieName].Value = name;
+            String cultureName=EnumHelper.GetEnumDescription(selectedLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            CreateLanguageCookie((int)selectedLanguage);
+
             return RedirectToAction("Index", "Home");
         }
     }

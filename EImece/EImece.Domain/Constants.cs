@@ -55,8 +55,8 @@
         public const string DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
         public const string DeleteType = "GET";
         public const string FileUploadDeleteURL = "/FileUpload/DeleteFile/?file=";
-        public static string AdminCultureCookieName = "_adminCulture";
-
+        public const string AdminCultureCookieName = "_adminCulture";
+        public const string CultureCookieName = "_culture";
         public static object DeleteButtonHtmlAttribute
         {
             get

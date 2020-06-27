@@ -37,21 +37,21 @@ namespace EImece.Domain.Helpers
 
         public static int GetEnumFromDescription(string description, Type enumType)
         {
+            if(enumType == null)
+            {
+                throw new ArgumentException();
+            }
+
             foreach (var field in enumType.GetFields())
             {
-                try
-                {
+              
                     DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
                     if (attribute == null)
                         continue;
-                    if (attribute.Description == description)
+                    if (string.Equals(attribute.Description, description,StringComparison.InvariantCultureIgnoreCase))
                     {
                         return (int)field.GetValue(null);
                     }
-                }
-                catch (Exception)
-                {
-                }
             }
             return 0;
         }
@@ -83,6 +83,19 @@ namespace EImece.Domain.Helpers
         public static List<SelectListItem> ToSelectList3(String selected)
         {
             var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
+            values = ConfigureLanguagesFromAppConfigs(values);
+
+            return (from EImeceLanguage e in values
+                    select new SelectListItem
+                    {
+                        Selected = selected.Equals(e.ToInt().ToStr(),StringComparison.CurrentCultureIgnoreCase),
+                        Text = e.GetDisplayValue(),
+                        Value = ((int)e).ToStr()
+                    }).ToList();
+        }
+
+        private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs(List<EImeceLanguage> values)
+        {
             var languagesText = AppConfig.ApplicationLanguages;
 
             if (String.IsNullOrEmpty(languagesText))
@@ -107,13 +120,7 @@ namespace EImece.Domain.Helpers
                 values = selectedLanguages;
             }
 
-            return (from Enum e in values
-                    select new SelectListItem
-                    {
-                        Selected = selected.Equals(e.ToDescription()),
-                        Text = e.GetDisplayValue(),
-                        Value = e.ToDescription()
-                    }).ToList();
+            return values;
         }
 
         public static string GetDisplayValue(this Enum value)

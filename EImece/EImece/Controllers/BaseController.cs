@@ -6,6 +6,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
+using System.CodeDom;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -79,33 +80,36 @@ namespace EImece.Controllers
             }
         }
 
-        protected static string CultureCookieName = "_culture";
-
-        protected override IAsyncResult BeginExecuteCore(System.AsyncCallback callback, object state)
+        protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
-            string cultureName = "tr-TR";
             setIsCachingActive(AppConfig.IsCacheActive);
-            HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
-            if (cultureCookie != null)
+            return base.BeginExecuteCore(callback, state);
+        }
+
+        public void CreateLanguageCookie(int cultureName)
+        {
+            if (cultureName == 0)
             {
-                cultureName = cultureCookie.Value;
+                throw new ArgumentException();
             }
 
-            //   cultureName = CultureHelper.GetImplementedCulture(cultureName);
+            HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
+            if (cultureCookie != null)
+            {
+                cultureName = cultureCookie.Value.ToInt();
+            }
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            if (Response.Cookies[CultureCookieName] != null)
+            if (Response.Cookies[Constants.CultureCookieName] != null)
             {
-                Response.Cookies[CultureCookieName].Value = cultureName;
+                Response.Cookies[Constants.CultureCookieName].Value = cultureName+"";
             }
             else
             {
                 Response.Cookies.Add(cultureCookie);
             }
-
-            return base.BeginExecuteCore(callback, state);
         }
 
         private void setIsCachingActive(bool IsCachingActive)
@@ -130,12 +134,11 @@ namespace EImece.Controllers
         {
             get
             {
-                string cultureName = null;
-                HttpCookie cultureCookie = Request.Cookies[CultureCookieName];
+                HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
                 if (cultureCookie != null)
                 {
-                    cultureName = cultureCookie.Value;
-                    return EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
+                    return cultureCookie.Value.ToInt();
+
                 }
                 else
                 {
