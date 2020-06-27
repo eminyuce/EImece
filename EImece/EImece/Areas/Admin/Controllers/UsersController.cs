@@ -3,6 +3,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Ninject;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,10 +92,14 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", result.Errors.ToList().FirstOrDefault());
+                    ModelState.AddModelError("", String.Join(", ", result.Errors.ToArray()));
                 }
             }
-
+            else
+            {
+                ModelState.AddModelError("", AdminResource.RequestIsNotValid);
+            }
+        
             // If we got this far, something failed, redisplay form
             return View(model);
         }

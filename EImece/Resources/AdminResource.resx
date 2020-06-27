@@ -723,4 +723,13 @@
   <data name="String1" xml:space="preserve">
     <value>Hakkımızda</value>
   </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>{0} alanı zorunludur.</value>
+  </data>
+  <data name="PasswordStringLength" xml:space="preserve">
+    <value>{0} en az {2} karakter uzunluğunda olmalıdır.</value>
+  </data>
+  <data name="RequestIsNotValid" xml:space="preserve">
+    <value>İstek Geçerli Değil</value>
+  </data>
 </root>

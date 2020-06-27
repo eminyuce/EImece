@@ -1159,6 +1159,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} alanı zorunludur..
+        /// </summary>
+        public static string PasswordRequired {
+            get {
+                return ResourceManager.GetString("PasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} en az {2} karakter uzunluğunda olmalıdır..
+        /// </summary>
+        public static string PasswordStringLength {
+            get {
+                return ResourceManager.GetString("PasswordStringLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tel No.
         /// </summary>
         public static string PhoneNumber {
@@ -1380,6 +1398,15 @@ namespace Resources {
         public static string RememberThisBrowser {
             get {
                 return ResourceManager.GetString("RememberThisBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İstek Geçerli Değil.
+        /// </summary>
+        public static string RequestIsNotValid {
+            get {
+                return ResourceManager.GetString("RequestIsNotValid", resourceCulture);
             }
         }
         

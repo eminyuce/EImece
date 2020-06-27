@@ -32,11 +32,11 @@ namespace EImece
                        defaults: new { controller = "SiteMap", action = "Index" },
               namespaces: new[] { "EImece.Controllers" }
             );
-            
-            singlePageRouting(routes, "contactus");
-            singlePageRouting(routes, "aboutus");
-            singlePageRouting(routes, "privacypolicy");
-            singlePageRouting(routes, "termsandconditions");
+
+            SinglePageRouting(routes, "contactus");
+            SinglePageRouting(routes, "aboutus");
+            SinglePageRouting(routes, "privacypolicy");
+            SinglePageRouting(routes, "termsandconditions");
 
            
             routes.MapRoute(
@@ -116,7 +116,7 @@ namespace EImece
             );
         }
 
-        private static void singlePageRouting(RouteCollection routes, string singlePage)
+        private static void SinglePageRouting(RouteCollection routes, string singlePage)
         {
             routes.MapRoute(
                             name: singlePage,
