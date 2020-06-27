@@ -732,4 +732,7 @@
   <data name="RequestIsNotValid" xml:space="preserve">
     <value>İstek Geçerli Değil</value>
   </data>
+  <data name="PasswordInfoMessage" xml:space="preserve">
+    <value>En az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli</value>
+  </data>
 </root>

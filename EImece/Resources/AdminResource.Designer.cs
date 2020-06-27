@@ -1159,6 +1159,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to En az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli.
+        /// </summary>
+        public static string PasswordInfoMessage {
+            get {
+                return ResourceManager.GetString("PasswordInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} alanı zorunludur..
         /// </summary>
         public static string PasswordRequired {

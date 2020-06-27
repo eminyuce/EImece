@@ -70,8 +70,6 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Register()
         {
             var m = new RegisterViewModel();
-            String newPassWord = "1" + Membership.GeneratePassword(7, 2);
-            m.Password = newPassWord;
             return View(m);
         }
 
