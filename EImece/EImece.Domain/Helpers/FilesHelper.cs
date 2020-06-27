@@ -52,19 +52,37 @@ namespace EImece.Domain.Helpers
         public string DeleteType { get; set; }
         public string StorageRoot { get; set; }
         public string UrlBase { get; set; }
-        public string tempPath { get; set; }
+        public string TempPath { get; set; }
+        public string ServerMapPath { get; set; }
 
-        //ex:"~/Files/something/";
-        public string serverMapPath { get; set; }
-
-        public void Init(string DeleteURL, string DeleteType, string StorageRoot, string UrlBase, string tempPath, string serverMapPath)
+        public void InitFilesMediaFolder()
         {
-            this.DeleteURL = DeleteURL;
-            this.DeleteType = DeleteType;
-            this.StorageRoot = StorageRoot;
-            this.UrlBase = UrlBase;
-            this.tempPath = tempPath;
-            this.serverMapPath = serverMapPath;
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.FileUploadDeleteURL,            Constants.DeleteType,               AppConfig.StorageRoot,                Constants.UrlBase,                Constants.TempPath,                Constants.ServerMapPath)
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            Init(Constants.DeleteURL, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+        }
+        public void InitFilesMediaFolder(String deleteUrl)
+        {
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.FileUploadDeleteURL,            Constants.DeleteType,               AppConfig.StorageRoot,                Constants.UrlBase,                Constants.TempPath,                Constants.ServerMapPath)
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            Init(deleteUrl, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+        }
+        private void Init(string deleteURL, string deleteType, string storageRoot, string urlBase, 
+            string tempPath, string serverMapPath)
+        {
+            this.DeleteURL = deleteURL;
+            this.DeleteType = deleteType;
+            this.StorageRoot = storageRoot;
+            this.UrlBase = urlBase;
+            this.TempPath = tempPath;
+            this.ServerMapPath = serverMapPath;
         }
 
         public SavedImage GetThumbnailImageSize(int mainPageId)
@@ -361,7 +379,7 @@ namespace EImece.Domain.Helpers
         public List<String> FilesList()
         {
             List<String> Filess = new List<String>();
-            string path = HostingEnvironment.MapPath(serverMapPath);
+            string path = HostingEnvironment.MapPath(ServerMapPath);
             System.Diagnostics.Debug.WriteLine(path);
             if (Directory.Exists(path))
             {

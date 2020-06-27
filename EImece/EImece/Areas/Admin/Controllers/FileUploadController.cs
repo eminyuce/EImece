@@ -14,12 +14,7 @@ namespace EImece.Areas.Admin.Controllers
         public FileUploadController(FilesHelper fh)
         {
             filesHelper = fh;
-            filesHelper.Init(Constants.FileUploadDeleteURL,
-                Constants.DeleteType,
-               AppConfig.StorageRoot,
-                Constants.UrlBase,
-                Constants.TempPath,
-                Constants.ServerMapPath);
+            filesHelper.InitFilesMediaFolder(Constants.FileUploadDeleteURL);
         }
 
         public ActionResult Index()

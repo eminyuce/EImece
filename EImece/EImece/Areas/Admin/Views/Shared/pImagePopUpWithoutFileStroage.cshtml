@@ -1,4 +1,4 @@
-﻿@model int
+﻿@model FileStorage
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
@@ -11,7 +11,7 @@
     var imageWidth = 300;
     var imageHeight = 0 ;
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
-    filesHelper.Init(Constants.DeleteURL, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+    filesHelper.InitFilesMediaFolder();
     var imageSizes = filesHelper.GetThumbnailImageSize(fileStorageId);
 }
 

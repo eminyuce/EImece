@@ -27,7 +27,8 @@
     var gridDetailText = AdminResource.GridDetailText;
 
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
-    filesHelper.Init(AppConfig.DeleteURL, AppConfig.DeleteType, AppConfig.StorageRoot, AppConfig.UrlBase, AppConfig.TempPath, AppConfig.ServerMapPath);
+    filesHelper.InitFilesMediaFolder();
+
 
 }
 <style>
@@ -202,11 +203,11 @@ var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
          <div class="col-md-6">
             <div>
                 @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-                <a href=@String.Format("../..{1}{0}", fileStorage.FileName, AppConfig.UrlBase) target="_blank">Full Image</a>
+                <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Full Image</a>
             </div>
             <div>
                 @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
-                <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, AppConfig.UrlBase) target="_blank">Thumps Image</a>
+                <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Thumps Image</a>
             </div>
         </div>
     </div>

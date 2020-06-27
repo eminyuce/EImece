@@ -36,7 +36,7 @@ namespace EImece.Domain.Repositories
         {
             get
             {
-                _filesHelper.Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+                _filesHelper.InitFilesMediaFolder();
 
                 return _filesHelper;
             }

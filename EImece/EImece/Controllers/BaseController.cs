@@ -69,7 +69,7 @@ namespace EImece.Controllers
         {
             get
             {
-                _filesHelper.Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+                _filesHelper.InitFilesMediaFolder();
                 _filesHelper.IsCachingActive = AppConfig.IsCacheActive;
                 return _filesHelper;
             }
