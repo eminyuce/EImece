@@ -85,7 +85,7 @@ namespace EImece.Domain.Helpers
         public static List<SelectListItem> ToSelectList3(string cookieName)
         {
             var cultureCookie = HttpContext.Current.Request.Cookies[cookieName];
-            string selected = cultureCookie.Values[Constants.ELanguage];
+            string selected = cultureCookie == null? "": cultureCookie.Values[Constants.ELanguage];
             if (String.IsNullOrEmpty(selected))
             {
                 selected = AppConfig.MainLanguage + "";
