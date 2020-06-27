@@ -263,7 +263,7 @@ namespace EImece.Controllers
             String cultureName=EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            CreateLanguageCookie((int)selectedLanguage);
+            CreateLanguageCookie(selectedLanguage);
 
             return RedirectToAction("Index", "Home");
         }

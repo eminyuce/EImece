@@ -86,30 +86,16 @@ namespace EImece.Controllers
             return base.BeginExecuteCore(callback, state);
         }
 
-        public void CreateLanguageCookie(int cultureName)
+        public void CreateLanguageCookie(EImeceLanguage selectedLanguage)
         {
-            if (cultureName == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
-            if (cultureCookie != null)
-            {
-                cultureName = cultureCookie.Value.ToInt();
-            }
-
+            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-            if (Response.Cookies[Constants.CultureCookieName] != null)
-            {
-                Response.Cookies[Constants.CultureCookieName].Value = cultureName+"";
-            }
-            else
-            {
-                Response.Cookies.Add(cultureCookie);
-            }
+            HttpCookie cultureCookie  = new HttpCookie(Constants.CultureCookieName);
+            cultureCookie.Values[Constants.ELanguage] = ((int)selectedLanguage)+"";
+            cultureCookie.Values["LastVisit"] = DateTime.Now.ToString();
+            cultureCookie.Expires = DateTime.Now.AddDays(1);
+            Response.Cookies.Add(cultureCookie);
         }
 
         private void setIsCachingActive(bool IsCachingActive)
@@ -137,7 +123,7 @@ namespace EImece.Controllers
                 HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
                 if (cultureCookie != null)
                 {
-                    return cultureCookie.Value.ToInt();
+                    return cultureCookie.Values[Constants.ELanguage].ToInt();
 
                 }
                 else

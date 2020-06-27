@@ -2,7 +2,6 @@
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain;
 @using Resources;
-@using Microsoft.AspNet.Identity
 @using System.Threading;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers;
@@ -35,13 +34,13 @@
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/blue.css" id="colors">
    
     @{
-        String cultureName = Thread.CurrentThread.CurrentCulture.Name;
-        List<SelectListItem> listItems = new List<SelectListItem>();
-        listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
+        HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
+        string selectedCookieLang = cultureCookie.Values[Constants.ELanguage];
+        List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(selectedCookieLang);
         int selectedLang = 0;
         if (listItems.Count > 1)
         {
-            selectedLang = EImece.Domain.Helpers.EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
+            selectedLang = selectedCookieLang.ToInt();
         }
         else
         {
@@ -66,7 +65,7 @@
                     {
                         foreach (var item in listItems)
                         {
-                            @Html.ActionLink(item.Text, "SetLanguage", "Home", new { id = item.Value },null)
+                            @Html.ActionLink(item.Text, "SetLanguage", "Home", new { id = item.Value },new { @class= selectedCookieLang.Equals(item.Value) ? "selectedLang" : "" })
                         }
                     }
 

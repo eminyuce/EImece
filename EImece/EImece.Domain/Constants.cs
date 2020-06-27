@@ -39,6 +39,7 @@
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
 
         public const string PrivacyPolicy = "PrivacyPolicy";
+        public const string ELanguage = "ELanguage";
 
         public const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
 
