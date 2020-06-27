@@ -680,6 +680,7 @@
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags - Copy.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\_pPageSetting.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\AboutUs.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pLanguages.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -878,6 +879,7 @@
     <Content Include="Views\Shared\_ProductTitleBar.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
     <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Shared\_Languages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

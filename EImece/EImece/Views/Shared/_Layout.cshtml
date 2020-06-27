@@ -33,25 +33,10 @@
     <link href="~/Content/trizzy/css/style.css?v=1" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/trizzy/css/colors/blue.css" id="colors">
    
-    @{
-        HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
-        string selectedCookieLang = cultureCookie.Values[Constants.ELanguage];
-        List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(selectedCookieLang);
-        int selectedLang = 0;
-        if (listItems.Count > 1)
-        {
-            selectedLang = selectedCookieLang.ToInt();
-        }
-        else
-        {
-            // Just one language is activated.
-            selectedLang = AppConfig.MainLanguage;
-        }
-
-    }
+ 
 </head>
 <body class="fullwidth">
-
+ 
     <div id="wrapper">
 
         <div id="top-bar">
@@ -61,14 +46,7 @@
                     @Html.Action("WebSiteAddressInfo", "Home")
                 </div>
                 <div class="six columns">
-                    @if (listItems.Count() > 1)
-                    {
-                        foreach (var item in listItems)
-                        {
-                            @Html.ActionLink(item.Text, "SetLanguage", "Home", new { id = item.Value },new { @class= selectedCookieLang.Equals(item.Value) ? "selectedLang" : "" })
-                        }
-                    }
-
+                    @Html.Action("Languages", "Home")
                     @Html.Action("SocialMediaLinks", "Home")
                 </div>
             </div>
@@ -92,7 +70,7 @@
                 <div id="additional-menu">
                     <ul>
 
-                        @{Html.RenderAction("Menu", "Home", new { id = selectedLang }); }
+                        @{Html.RenderAction("Menu", "Home"); }
                     </ul>
                 </div>
             </div>
@@ -111,7 +89,7 @@
             <div class="sixteen columns">
                 <nav id="navigation">
                     @*@Html.Action("ProductTree", "Home")*@
-                    @{Html.RenderAction("ProductTree", "Home", new { id = selectedLang }); }
+                    @{Html.RenderAction("ProductTree", "Home"); }
                 </nav>
             </div>
         </div>

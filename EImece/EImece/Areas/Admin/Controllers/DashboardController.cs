@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -83,17 +85,30 @@ namespace EImece.Areas.Admin.Controllers
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home", new { @area = "" });
         }
-        [HttpGet]
-        public ActionResult SetLanguage(string name)
+        public PartialViewResult Languages()
         {
-            //  name = CultureHelper.GetImplementedCulture(name);
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(name);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-            Response.Cookies[Domain.Constants.AdminCultureCookieName].Value = name;
+            List<SelectListItem> listItems = EnumHelper.ToSelectList3(Domain.Constants.AdminCultureCookieName);
+            return PartialView("pLanguages", listItems);
+        }
+        [HttpGet]
+        public ActionResult SetLanguage(string id)
+        {
+            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
+            CreateLanguageCookie(selectedLanguage, Domain.Constants.AdminCultureCookieName);
             MemoryCacheProvider.ClearAll();
             var returnDefault = RedirectToAction("Index");
             return RequestReturn(returnDefault);
+        }
+        public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
+        {
+            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            var cultureCookie = new HttpCookie(cookieName);
+            cultureCookie.Values[Domain.Constants.ELanguage] = ((int)selectedLanguage) + "";
+            cultureCookie.Values["LastVisit"] = DateTime.Now.ToString();
+            cultureCookie.Expires = DateTime.Now.AddDays(1);
+            Response.Cookies.Add(cultureCookie);
         }
     }
 }

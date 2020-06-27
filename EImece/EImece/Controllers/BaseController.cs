@@ -7,6 +7,7 @@ using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
 using System.CodeDom;
+using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -86,12 +87,12 @@ namespace EImece.Controllers
             return base.BeginExecuteCore(callback, state);
         }
 
-        public void CreateLanguageCookie(EImeceLanguage selectedLanguage)
+        public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            HttpCookie cultureCookie  = new HttpCookie(Constants.CultureCookieName);
+            HttpCookie cultureCookie  = new HttpCookie(cookieName);
             cultureCookie.Values[Constants.ELanguage] = ((int)selectedLanguage)+"";
             cultureCookie.Values["LastVisit"] = DateTime.Now.ToString();
             cultureCookie.Expires = DateTime.Now.AddDays(1);

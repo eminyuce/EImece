@@ -1,10 +1,12 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -21,7 +23,8 @@ namespace EImece.Controllers
     public class HomeController : BaseController
     {
         private const string CaptchaContactUsLogin = "CaptchaContactUsLogin";
-
+        [Inject]
+        public ICacheProvider MemoryCacheProvider { get; set; }
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
@@ -130,18 +133,20 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
-
-        public PartialViewResult Menu(int id = 0)
+        public PartialViewResult Languages()
         {
-            int selectedLanguage = id;
-            var menus = MenuService.BuildTree(true, selectedLanguage);
+            List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
+            return PartialView("_Languages", listItems);
+        }
+        public PartialViewResult Menu()
+        {
+            var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
         }
 
-        public ActionResult ProductTree(int id = 0)
+        public ActionResult ProductTree()
         {
-            int selectedLanguage = id;
-            var tree = ProductCategoryService.BuildTree(true, selectedLanguage);
+            var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
             return PartialView("_ProductCategoryTree", tree);
         }
 
@@ -259,11 +264,11 @@ namespace EImece.Controllers
         public ActionResult SetLanguage(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
-
+            MemoryCacheProvider.ClearAll();
             String cultureName=EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            CreateLanguageCookie(selectedLanguage);
+            CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
 
             return RedirectToAction("Index", "Home");
         }

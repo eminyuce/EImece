@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
@@ -80,24 +81,32 @@ namespace EImece.Domain.Helpers
                     }).ToList();
         }
 
-        public static List<SelectListItem> ToSelectList3(String selected)
+
+        public static List<SelectListItem> ToSelectList3(string cookieName)
         {
-            var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
-            values = ConfigureLanguagesFromAppConfigs(values);
+            var cultureCookie = HttpContext.Current.Request.Cookies[cookieName];
+            string selected = cultureCookie.Values[Constants.ELanguage];
+            if (String.IsNullOrEmpty(selected))
+            {
+                selected = AppConfig.MainLanguage + "";
+            }
+          
+            var values = ConfigureLanguagesFromAppConfigs();
 
             return (from EImeceLanguage e in values
                     select new SelectListItem
                     {
-                        Selected = selected.Equals(e.ToInt().ToStr(),StringComparison.CurrentCultureIgnoreCase),
+                        Selected = selected.Equals(((int)e).ToStr(), StringComparison.CurrentCultureIgnoreCase),
                         Text = e.GetDisplayValue(),
                         Value = ((int)e).ToStr()
                     }).ToList();
+
         }
 
-        private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs(List<EImeceLanguage> values)
+        private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs()
         {
             var languagesText = AppConfig.ApplicationLanguages;
-
+            var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
             if (String.IsNullOrEmpty(languagesText))
             {
                 values.RemoveAll(r => r != EImeceLanguage.English);

@@ -8,20 +8,6 @@
 @{
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
-    String cultureName = Thread.CurrentThread.CurrentCulture.Name;
-    var listItems = new List<SelectListItem>();
-    listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3(cultureName);
-    int selectedLang = 0;
-    if (listItems.Count > 1)
-    {
-        selectedLang = EImece.Domain.Helpers.EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage));
-    }
-    else
-    {
-        // Just one language is activated.
-        selectedLang = AppConfig.MainLanguage;
-    }
-
     var SettingService = DependencyResolver.Current.GetService<ISettingService>();
     string companyName = EImece.Domain.Constants.CompanyName;
     var companyNameSetting = SettingService.GetSettingByKey(companyName).ToStr();
@@ -84,12 +70,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    @if (listItems.Count() > 1)
-                    {
-                    <li>
-                            @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @style= " margin-top: 7px;", @class = "form-control" })
-                    </li>
-                    }
+                    @Html.Action("Languages", "Dashboard")
                     <li>
                         <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
                             @AdminResource.Refresh <span class="glyphicon glyphicon-refresh"></span>
@@ -112,7 +93,7 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            }
+                        }
                     </li>
                 </ul>
             </div>
@@ -213,7 +194,7 @@
 
     <script>
         function setlanguage(selectedLanguage) {
-            window.location.href = "/admin/Dashboard/setlanguage?name=" + selectedLanguage;
+            window.location.href = "/admin/dashboard/setlanguage/" + selectedLanguage;
         }
     </script>
 

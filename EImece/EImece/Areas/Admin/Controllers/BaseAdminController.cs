@@ -116,51 +116,7 @@ namespace EImece.Areas.Admin.Controllers
                 Session[Constants.SelectedLanguage] = value;
             }
         }
-
   
-
-        protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
-        {
-            string cultureName = "tr-TR";
-            setIsCachingActive(false);
-            HttpCookie cultureCookie = Request.Cookies[Constants.AdminCultureCookieName];
-            if (cultureCookie != null)
-            {
-                cultureName = cultureCookie.Value;
-            }
-
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-            if (Response.Cookies[Constants.AdminCultureCookieName] != null)
-            {
-                Response.Cookies[Constants.AdminCultureCookieName].Value = cultureName;
-            }
-            else
-            {
-                Response.Cookies.Add(cultureCookie);
-            }
-
-            return base.BeginExecuteCore(callback, state);
-        }
-
-        private void setIsCachingActive(bool IsCachingActive)
-        {
-            ProductService.IsCachingActive = IsCachingActive;
-            ProductCategoryService.IsCachingActive = IsCachingActive;
-            MainPageImageService.IsCachingActive = IsCachingActive;
-            SettingService.IsCachingActive = IsCachingActive;
-            ProductService.IsCachingActive = IsCachingActive;
-            ProductCategoryService.IsCachingActive = IsCachingActive;
-            MenuService.IsCachingActive = IsCachingActive;
-            StoryService.IsCachingActive = IsCachingActive;
-            StoryCategoryService.IsCachingActive = IsCachingActive;
-            TagService.IsCachingActive = IsCachingActive;
-            TagCategoryService.IsCachingActive = IsCachingActive;
-            FileStorageService.IsCachingActive = IsCachingActive;
-            TemplateService.IsCachingActive = IsCachingActive;
-            MailTemplateService.IsCachingActive = IsCachingActive;
-        }
 
         protected EImeceLanguage GetCurrentLanguage
         {
@@ -178,12 +134,10 @@ namespace EImece.Areas.Admin.Controllers
                 var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
                 if (languages.Count > 1)
                 {
-                    string cultureName = null;
                     HttpCookie cultureCookie = Request.Cookies[Constants.AdminCultureCookieName];
                     if (cultureCookie != null)
                     {
-                        cultureName = cultureCookie.Value;
-                        return EnumHelper.GetEnumFromDescription(cultureName, typeof(EImeceLanguage)); 
+                        return cultureCookie.Values[Constants.ELanguage].ToInt();
                     }
                     else
                     {
