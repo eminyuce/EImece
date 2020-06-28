@@ -75,29 +75,27 @@ namespace EImece.Domain.Caching
             }
         }
 
+
         public override void ClearAll()
         {
-            if (!IsCacheProviderActive)
+            List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
+            foreach (String key in cacheKeys)
             {
-                List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
-                foreach (String key in cacheKeys)
-                {
-                    Clear(key);
-                }
+                Clear(key);
+            }
 
-                List<string> keys = new List<string>();
+            List<string> keys = new List<string>();
 
-                IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    string key = (string)enumerator.Key;
-                    keys.Add(key);
-                }
+            IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                string key = (string)enumerator.Key;
+                keys.Add(key);
+            }
 
-                foreach (string key in keys)
-                {
-                    System.Web.HttpRuntime.Cache.Remove(key);
-                }
+            foreach (string key in keys)
+            {
+                System.Web.HttpRuntime.Cache.Remove(key);
             }
         }
     }

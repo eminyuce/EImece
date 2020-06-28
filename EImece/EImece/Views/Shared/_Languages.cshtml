@@ -10,6 +10,6 @@
                     {
                 foreach (var item in listItems)
                 {
-@Html.ActionLink(item.Text, "SetLanguage", "Home", new { id = item.Value }, new { @class = item.Selected ? "selectedLang" : "" })
+@Html.ActionLink(item.Text, "Language", "Home", new { id = item.Value }, new { @class = item.Selected ? "selectedLang" : "" })
                         }
             }

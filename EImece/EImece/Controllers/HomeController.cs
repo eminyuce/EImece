@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -27,7 +28,7 @@ namespace EImece.Controllers
         public ICacheProvider MemoryCacheProvider { get; set; }
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
@@ -261,16 +262,16 @@ namespace EImece.Controllers
             SubsciberService.SaveOrEditEntity(s);
         }
 
-        public ActionResult SetLanguage(string id)
+        public ActionResult Language(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
-            MemoryCacheProvider.ClearAll();
             String cultureName=EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
-
-            return RedirectToAction("Index", "Home");
+            MemoryCacheProvider.ClearAll();
+       
+            return RedirectToAction("Index","Home");
         }
     }
 }
