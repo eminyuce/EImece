@@ -5,6 +5,7 @@
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Services.IServices;
 @using Microsoft.AspNet.Identity;
+@using System.Globalization;
 @{
 
     var GridSearchButtonText = AdminResource.GridSearchButtonText;
@@ -113,7 +114,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-2">
 
             <p class="navbar-text" style="font-weight:bold;">
-                @String.Format("{0}", DateTime.Now.ToString("dd MMMM yyyy"))
+                @String.Format("{0}", DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture))
             </p>
 
             @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
@@ -164,7 +165,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Settings <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         @if (UserRoleHelper.IsAdminManagementRoles())
-                            {
+                        {
                             <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink(AdminResource.NormalSettings, "Index", "Settings", new { area = "admin" }, null)</li>
@@ -179,7 +180,7 @@
             </ul>
         </div>
     </nav>
-  
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">

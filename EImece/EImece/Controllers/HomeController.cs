@@ -11,6 +11,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -31,7 +32,8 @@ namespace EImece.Controllers
        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()
         {
-            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+             
+               MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
