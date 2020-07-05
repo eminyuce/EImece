@@ -3,7 +3,6 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
-using NLog;
 using System;
 using System.Net;
 using System.Web.Mvc;

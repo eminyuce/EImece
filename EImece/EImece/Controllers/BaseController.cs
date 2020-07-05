@@ -14,8 +14,6 @@ namespace EImece.Controllers
 {
     public abstract class BaseController : Controller
     {
-  
-
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
@@ -92,8 +90,8 @@ namespace EImece.Controllers
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            HttpCookie cultureCookie  = new HttpCookie(cookieName);
-            cultureCookie.Values[Constants.ELanguage] = ((int)selectedLanguage)+"";
+            HttpCookie cultureCookie = new HttpCookie(cookieName);
+            cultureCookie.Values[Constants.ELanguage] = ((int)selectedLanguage) + "";
             cultureCookie.Values[Constants.LastVisit] = DateTime.Now.ToString();
             cultureCookie.Expires = DateTime.Now.AddDays(1);
             Response.Cookies.Add(cultureCookie);
@@ -125,7 +123,6 @@ namespace EImece.Controllers
                 if (cultureCookie != null)
                 {
                     return cultureCookie.Values[Constants.ELanguage].ToInt();
-
                 }
                 else
                 {

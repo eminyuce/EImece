@@ -23,14 +23,15 @@ namespace EImece.Controllers
     public class HomeController : BaseController
     {
         private const string CaptchaContactUsLogin = "CaptchaContactUsLogin";
+
         [Inject]
         public ICacheProvider MemoryCacheProvider { get; set; }
+
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()
         {
-             
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle).ToStr();
@@ -79,7 +80,7 @@ namespace EImece.Controllers
             return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
         }
 
-        public ActionResult ThanksForSubscription(int ? id)
+        public ActionResult ThanksForSubscription(int? id)
         {
             if (id == null)
             {
@@ -113,6 +114,7 @@ namespace EImece.Controllers
             var setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
             return View(setting);
         }
+
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public ActionResult TermsAndConditions()
         {
@@ -134,11 +136,13 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
+
         public ActionResult Languages()
         {
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
             return PartialView("_Languages", listItems);
         }
+
         public ActionResult Menu()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
@@ -261,16 +265,17 @@ namespace EImece.Controllers
                 contact.Message, Environment.NewLine);
             SubsciberService.SaveOrEditEntity(s);
         }
+
         public ActionResult Language(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
-            String cultureName=EnumHelper.GetEnumDescription(selectedLanguage);
+            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
             MemoryCacheProvider.ClearAll();
-       
-            return RedirectToAction("Index","Home");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
