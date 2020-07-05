@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.AttributeHelper
 {
@@ -6,23 +7,27 @@ namespace EImece.Domain.Helpers.AttributeHelper
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+            var httpContext = filterContext.HttpContext;
+
+            if (httpContext.User.Identity.IsAuthenticated)
             {
-                filterContext.HttpContext.Response.Cache.SetNoServerCaching();
-                filterContext.HttpContext.Response.Cache.SetNoStore();
+                httpContext.Response.Cache.SetNoServerCaching();
+                httpContext.Response.Cache.SetNoStore();
             }
             else
             {
                 base.OnActionExecuting(filterContext);
             }
         }
-
+ 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+            var httpContext = filterContext.HttpContext;
+
+            if (httpContext.User.Identity.IsAuthenticated)
             {
-                filterContext.HttpContext.Response.Cache.SetNoServerCaching();
-                filterContext.HttpContext.Response.Cache.SetNoStore();
+                httpContext.Response.Cache.SetNoServerCaching();
+                httpContext.Response.Cache.SetNoStore();
             }
             else
             {
