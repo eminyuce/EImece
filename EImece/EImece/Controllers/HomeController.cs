@@ -16,7 +16,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -28,11 +27,11 @@ namespace EImece.Controllers
         public ICacheProvider MemoryCacheProvider { get; set; }
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()
         {
              
-               MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
@@ -135,12 +134,12 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
-        public PartialViewResult Languages()
+        public ActionResult Languages()
         {
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
             return PartialView("_Languages", listItems);
         }
-        public PartialViewResult Menu()
+        public ActionResult Menu()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
@@ -262,7 +261,6 @@ namespace EImece.Controllers
                 contact.Message, Environment.NewLine);
             SubsciberService.SaveOrEditEntity(s);
         }
-
         public ActionResult Language(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();

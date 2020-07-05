@@ -30,22 +30,36 @@ namespace EImece
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
-        public override string GetVaryByCustomString(HttpContext context, string arg)
+        public override string GetVaryByCustomString(HttpContext context, string custom)
         {
-            if (arg == "User")
+            if (custom == "User")
             {
-                if (context.Request.IsAuthenticated)
+                HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
+                String cultureCookieValue = "";
+                if (cultureCookie != null)
                 {
-                    return string.Format("User:{0}-Rnd:{1}", context.User.Identity.Name, Guid.NewGuid().ToString());
+                    cultureCookieValue = cultureCookie.Values[Constants.ELanguage].ToStr();
+                }
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    return string.Format("User:{0}-Rnd:{1}:Lang:{2}",
+                        context.User.Identity.Name,
+                        Guid.NewGuid().ToString(),
+                        cultureCookieValue);
                 }
                 else
                 {
-                    return ""; // context.User.Identity.Name;
+                    return string.Format("cultureCookieValue:{0}-Rnd:{1}",
+                    cultureCookieValue,
+                    Guid.NewGuid().ToString());
                 }
+                 
             }
 
-            return base.GetVaryByCustomString(context, arg);
+            return base.GetVaryByCustomString(context, custom);
         }
+  
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {

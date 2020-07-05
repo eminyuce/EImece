@@ -37,7 +37,7 @@
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
         public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
-
+        public const string LastVisit = "LastVisit";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";
 

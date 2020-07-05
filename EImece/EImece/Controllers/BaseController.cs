@@ -6,8 +6,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
-using System.CodeDom;
-using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +14,8 @@ namespace EImece.Controllers
 {
     public abstract class BaseController : Controller
     {
+  
+
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
@@ -94,7 +94,7 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             HttpCookie cultureCookie  = new HttpCookie(cookieName);
             cultureCookie.Values[Constants.ELanguage] = ((int)selectedLanguage)+"";
-            cultureCookie.Values["LastVisit"] = DateTime.Now.ToString();
+            cultureCookie.Values[Constants.LastVisit] = DateTime.Now.ToString();
             cultureCookie.Expires = DateTime.Now.AddDays(1);
             Response.Cookies.Add(cultureCookie);
         }
