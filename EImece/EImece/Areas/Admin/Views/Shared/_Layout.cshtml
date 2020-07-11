@@ -62,7 +62,7 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                <p class="navbar-text" style="font-weight:bolder;">@String.Format("{0} Admin Panel", companyNameSetting)</p>
+                <p class="navbar-text" style="font-weight:bolder;">@String.Format("{0} Yönetim Paneli", companyNameSetting)</p>
 
                 <ul class="nav navbar-nav">
                     <li>
@@ -116,22 +116,6 @@
             <p class="navbar-text" style="font-weight:bold;">
                 @String.Format("{0}", DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture))
             </p>
-
-            @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
-            {
-                <div class="form-group" style="display:inline;">
-                    <input type="text" name="searchContent"
-                           value="@Request.QueryString["searchContent"].ToStr()"
-                           id="searchTxt"
-                           data-provide="typehead"
-                           title="Aramaya başlamak için en az 2 karakter yazmalısınız"
-                           class="form-control"
-                           placeholder="@AdminResource.AdminMainSeachPlaceHolder"
-                           autocomplete="off">
-                </div>
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-
-            }
 
             <ul class="nav navbar-nav pull-right">
 
