@@ -17,69 +17,69 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
-        {
-            Expression<Func<Setting, bool>> whereLambda = r => (r.SettingKey.ToLower().Contains(search.Trim().ToLower())
-            || r.SettingValue.ToLower().Contains(search.Trim().ToLower()));
+        //public ActionResult Index(String search = "")
+        //{
+        //    Expression<Func<Setting, bool>> whereLambda = r => (r.SettingKey.ToLower().Contains(search.Trim().ToLower())
+        //    || r.SettingValue.ToLower().Contains(search.Trim().ToLower()));
 
-            var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
+        //    var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
-            settings = settings.Where(r => !Constants.WebSiteLogo.Equals(r.SettingKey)).ToList();
-            settings = settings.Where(r => !r.SettingValue.Equals(Constants.SpecialPage)).ToList();
-            settings = settings.Where(r => !Constants.AdminSetting.Equals(r.Description)).ToList();
-            return View(settings);
-        }
+        //    settings = settings.Where(r => !Constants.WebSiteLogo.Equals(r.SettingKey)).ToList();
+        //    settings = settings.Where(r => !r.SettingValue.Equals(Constants.SpecialPage)).ToList();
+        //    settings = settings.Where(r => !Constants.AdminSetting.Equals(r.Description)).ToList();
+        //    return View(settings);
+        //}
 
-        //
-        // GET: /Setting/Create
+        ////
+        //// GET: /Setting/Create
 
-        public ActionResult SaveOrEdit(int id = 0)
-        {
-            var content = EntityFactory.GetBaseEntityInstance<Setting>();
+        //public ActionResult SaveOrEdit(int id = 0)
+        //{
+        //    var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
-            if (id == 0)
-            {
-            }
-            else
-            {
-                content = SettingService.GetSingle(id);
-            }
+        //    if (id == 0)
+        //    {
+        //    }
+        //    else
+        //    {
+        //        content = SettingService.GetSingle(id);
+        //    }
 
-            return View(content);
-        }
+        //    return View(content);
+        //}
 
-        //
-        // POST: /Setting/Create
+        ////
+        //// POST: /Setting/Create
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Setting Setting)
-        {
-            try
-            {
-                if (Setting == null)
-                {
-                    return HttpNotFound();
-                }
-                if (ModelState.IsValid)
-                {
-                    Setting.Lang = CurrentLanguage;
-                    SettingService.SaveOrEditEntity(Setting);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Setting);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult SaveOrEdit(Setting Setting)
+        //{
+        //    try
+        //    {
+        //        if (Setting == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        if (ModelState.IsValid)
+        //        {
+        //            Setting.Lang = CurrentLanguage;
+        //            SettingService.SaveOrEditEntity(Setting);
+        //            return RedirectToAction("Index");
+        //        }
+        //        else
+        //        {
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Setting);
+        //        //Log the error (uncomment dex variable name and add a line here to write a log.
+        //        ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+        //    }
 
-            return View(Setting);
-        }
+        //    return View(Setting);
+        //}
 
         public ActionResult AddWebSiteLogo()
         {
