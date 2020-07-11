@@ -382,7 +382,7 @@
     <value>Sonuç bulunamadı.</value>
   </data>
   <data name="AdminMainSeachPlaceHolder" xml:space="preserve">
-    <value>Arama....</value>
+    <value>Ürün, kategori veya blog ara</value>
   </data>
   <data name="AdminGeneralSettings" xml:space="preserve">
     <value>Admin Genel Ayarlar</value>
@@ -734,5 +734,8 @@
   </data>
   <data name="PasswordInfoMessage" xml:space="preserve">
     <value>En az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli</value>
+  </data>
+  <data name="AdminPanelWelcome" xml:space="preserve">
+    <value>Yönetici Paneline Hoş Geldiniz</value>
   </data>
 </root>

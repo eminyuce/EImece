@@ -1,11 +1,14 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using Microsoft.AspNet.Identity;
 using NLog;
 using Resources;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -107,6 +110,35 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(MailTemplate);
+        }
+        [HttpGet, ActionName("ExportExcel")]
+        public async Task<ActionResult> ExportExcelAsync()
+        {
+            return await Task.Run(() =>
+            {
+                return DownloadFile();
+
+            }).ConfigureAwait(true);
+        }
+        private ActionResult DownloadFile()
+        {
+            String search = "";
+            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            var mailTemplates = MailTemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var result = from r in mailTemplates
+                         select new
+                         {
+                             Id = r.Id.ToStr(250),
+                             Name = r.Name.ToStr(250),
+                             Subject = r.Subject.ToStr(400),
+                             Body = r.Body.ToStr(30000),
+                             CreatedDate = r.CreatedDate.ToStr(250),
+                             UpdatedDate = r.UpdatedDate.ToStr(250),
+                             IsActive = r.IsActive.ToStr(250),
+                             Position = r.Position.ToStr(250),
+                         };
+
+            return DownloadFile(result, String.Format("MailTemplates-{0}", GetCurrentLanguage));
         }
     }
 }

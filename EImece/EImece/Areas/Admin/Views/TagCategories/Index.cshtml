@@ -33,15 +33,13 @@
 <h2>@AdminResource.TagCategory</h2>
 <hr class="adminLine" />
 
-    @Html.ActionLink( AdminResource.ExportToExcel, "ExportExcel",   new { @id = 0 }, new { @class = "btn btn-link" })
-
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                       ,{"StateTypes","State"}
            ,{"orderingButton",true}
            ,{"selectAll",true}
            ,{"deleteAll",true}
-            ,{"SetStateOnOrOff",true}})
+            ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
 
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)

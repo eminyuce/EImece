@@ -169,11 +169,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arama.....
+        ///   Looks up a localized string similar to Ürün, kategori veya blog ara.
         /// </summary>
         public static string AdminMainSeachPlaceHolder {
             get {
                 return ResourceManager.GetString("AdminMainSeachPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yönetici Paneline Hoş Geldiniz.
+        /// </summary>
+        public static string AdminPanelWelcome {
+            get {
+                return ResourceManager.GetString("AdminPanelWelcome", resourceCulture);
             }
         }
         
