@@ -31,7 +31,7 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    public class IyzipayController : BaseController
+    public class PaymentController : BaseController
     {
         private const string ApiKey = "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB";
         private const string SecretKey = "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL";
