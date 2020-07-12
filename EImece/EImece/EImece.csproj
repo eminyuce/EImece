@@ -885,6 +885,7 @@
     <Content Include="Views\Home\AboutUs.cshtml" />
     <Content Include="Views\Shared\_Languages.cshtml" />
     <Content Include="Views\Iyzipay\Index.cshtml" />
+    <Content Include="Views\Iyzipay\ShoppingCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

@@ -334,6 +334,7 @@
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\RecordsStats.cs" />
     <Compile Include="Models\FrontModels\RssParams.cs" />
+    <Compile Include="Models\FrontModels\ShoppingCartItem.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarStoryTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\StoryCategoryViewModel.cs" />

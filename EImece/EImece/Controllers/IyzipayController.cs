@@ -35,7 +35,27 @@ namespace EImece.Controllers
     {
         private const string ApiKey = "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB";
         private const string SecretKey = "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL";
+        public ActionResult AddToCart(int productId, int quantity)
+        {
+            var product = ProductService.GetProductById(productId);
+            List<ShoppingCartItem> addToCartProducts = (List<ShoppingCartItem>)Session["AddToCartProducts"];
+            if(addToCartProducts == null)
+            {
+                addToCartProducts = new List<ShoppingCartItem>();
+            }
 
+            var item = new ShoppingCartItem();
+            item.product = product.Product;
+            item.quantity = quantity;
+            addToCartProducts.Add(item);
+            Session["AddToCartProducts"] = addToCartProducts;
+            return RedirectToAction("Detail", "Products", new { id = productId });
+        }
+        public ActionResult ShoppingCart()
+        {
+            List<ShoppingCartItem> addToCartProducts = (List<ShoppingCartItem>)Session["AddToCartProducts"];
+            return View(addToCartProducts);
+        }
         // GET: Home
         public ActionResult Index()
         {

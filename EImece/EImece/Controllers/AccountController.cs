@@ -46,6 +46,8 @@ namespace EImece.Controllers
             return View();
         }
 
+        private const string CaptchaAdminLogin = "CaptchaAdminLogin";
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -61,16 +63,16 @@ namespace EImece.Controllers
             }
 
             //validate the captcha through the session variable stored from GetCaptcha
-            //if (Session["CaptchaAdminLogin"] == null || !Session["CaptchaAdminLogin"].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
-            //{
-            //    ModelState.AddModelError("Captcha", "Wrong sum, please try again.");
-            //    return View(model);
-            //}
-            //else
-            //{
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            if (Session[CaptchaAdminLogin] == null || !Session[CaptchaAdminLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("Captcha", AdminResource.WrongSum);
+                return View(model);
+            }
+            else
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             Logger.Debug("The account " + model.Email + "   " + result.ToString());
             switch (result)
             {
@@ -94,7 +96,7 @@ namespace EImece.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
-            //}
+            }
         }
 
         //

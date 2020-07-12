@@ -1906,6 +1906,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yanlış toplam, lütfen tekrar deneyin..
+        /// </summary>
+        public static string WrongSum {
+            get {
+                return ResourceManager.GetString("WrongSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Youtube Link.
         /// </summary>
         public static string YoutubeWebSiteLink {

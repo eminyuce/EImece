@@ -738,4 +738,7 @@
   <data name="AdminPanelWelcome" xml:space="preserve">
     <value>Yönetici Paneline Hoş Geldiniz</value>
   </data>
+  <data name="WrongSum" xml:space="preserve">
+    <value>Yanlış toplam, lütfen tekrar deneyin.</value>
+  </data>
 </root>

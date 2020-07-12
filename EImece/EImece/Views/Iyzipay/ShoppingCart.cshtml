@@ -1,0 +1,150 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@model IEnumerable<ShoppingCartItem>
+
+@{
+    ViewBag.Title = "ShoppingCart";
+}
+
+<section class="titlebar">
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>Shopping Cart</h2>
+
+            <nav id="breadcrumbs">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li>Shopping Cart</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+<div class="container cart">
+
+    <div class="sixteen columns">
+
+        <!-- Cart -->
+        <table class="stacktable small-only">
+            <tbody>
+                <tr class="st-space"><td></td><td></td></tr>
+                <tr class="st-new-item"><td class="st-key"></td><td class="st-val st-head-row"><img src="images/small_product_list_08.jpg" alt=""></td></tr>
+                <tr><td class="st-key">Description</td><td class="st-val"><a href="#">Converse All Star Trainers</a></td></tr>
+                <tr><td class="st-key">Price</td><td class="st-val">$79.00</td></tr>
+                <tr>
+                    <td class="st-key">Quantity</td>
+                    <td class="st-val">
+                        <form action="#">
+                            <div class="qtyminus"></div>
+                            <input type="text" name="quantity" value="1" class="qty">
+                            <div class="qtyplus"></div>
+                        </form>
+                    </td>
+                </tr>
+                <tr><td class="st-key">Total</td><td class="st-val">$79.00</td></tr>
+                <tr><td class="st-key"></td><td class="st-val"><a href="#" class="cart-remove"></a></td></tr>
+                <tr class="st-space"><td></td><td></td></tr>
+                <tr class="st-new-item"><td class="st-key"></td><td class="st-val st-head-row"><img src="images/small_product_list_09.jpg" alt=""></td></tr>
+                <tr><td class="st-key">Description</td><td class="st-val"><a href="#">Wool Two-Piece Suit</a></td></tr>
+                <tr><td class="st-key">Price</td><td class="st-val">$99.00</td></tr>
+                <tr>
+                    <td class="st-key">Quantity</td>
+                    <td class="st-val">
+                        <form action="#">
+                            <div class="qtyminus"></div>
+                            <input type="text" name="quantity" value="1" class="qty">
+                            <div class="qtyplus"></div>
+                        </form>
+                    </td>
+                </tr>
+                <tr><td class="st-key">Total</td><td class="st-val">$99.00</td></tr>
+                <tr><td class="st-key"></td><td class="st-val"><a href="#" class="cart-remove"></a></td></tr>
+            </tbody>
+        </table><table class="cart-table responsive-table stacktable large-only">
+
+                    <tbody>
+                        <tr>
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td><img src="images/small_product_list_08.jpg" alt=""></td>
+                                <td class="cart-title"><a href="#">@item.product.Name</a></td>
+                                <td>$79.00</td>
+                                <td>
+                                    <form action="#">
+                                        <div class="qtyminus"></div>
+                                        <input type="text" name="quantity" value="1" class="qty">
+                                        <div class="qtyplus"></div>
+                                    </form>
+                                </td>
+                                <td class="cart-total">$79.00</td>
+                                <td><a href="#" class="cart-remove"></a></td>
+                            </tr>
+                        }
+
+
+
+
+                    </tbody>
+        </table>
+
+        <!-- Apply Coupon Code / Buttons -->
+        <table class="cart-table bottom">
+
+            <tbody>
+                <tr>
+                    <th>
+                        <form action="#" method="get" class="apply-coupon">
+                            <input class="search-field" type="text" placeholder="Coupon Code" value="">
+                            <a href="#" class="button gray">Apply Coupon</a>
+                        </form>
+
+                        <div class="cart-btns">
+                            <a href="checkout-billing-details.html" class="button color cart-btns proceed">Proceed to Checkout</a>
+                            <a href="#" class="button gray cart-btns">Update Cart</a>
+                        </div>
+                    </th>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Cart Totals -->
+    <div class="eight columns cart-totals">
+        <h3 class="headline">Cart Totals</h3><span class="line"></span><div class="clearfix"></div>
+
+        <table class="cart-table margin-top-5">
+
+            <tbody>
+                <tr>
+                    <th>Cart Subtotal</th>
+                    <td><strong>$178.00</strong></td>
+                </tr>
+
+                <tr>
+                    <th>Shipping and Handling</th>
+                    <td>Free Shipping</td>
+                </tr>
+
+                <tr>
+                    <th>Order Total</th>
+                    <td><strong>$178.00</strong></td>
+                </tr>
+
+            </tbody>
+        </table>
+        <br>
+        <!-- <a href="#" class="calculate-shipping"><i class="fa fa-arrow-circle-down"></i> Calculate Shipping</a> -->
+    </div>
+
+</div>

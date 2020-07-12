@@ -64,7 +64,7 @@
             <section class="title">
                 <h2>
                     @product.Name
-                            </h2>
+                </h2>
                 @if (isUserAuthenticated)
                 {
                     @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
@@ -72,17 +72,31 @@
                 <h4>
                     @product.ProductCategory.Name
                 </h4>
-                @*<span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>*@
-                @if (!String.IsNullOrEmpty(product.ProductCode))
-                {
-                    <span class="product-code">
-                        <i>
-                            @Resource.ProductCodeNo @product.ProductCode
-                        </i>
-                    </span>
-                }
-                @Html.Raw(product.ShortDescription)
-            </section>
+
+                <section class="linking">
+                    @using (Html.BeginForm("AddToCart", "Iyzipay", FormMethod.Post, new { id = "add-to-cart-form" }))
+                    {
+
+                        <div class="qtyminus"></div>
+                        <input type="hidden" name="productId" value="@product.Id" >
+                        <input type="text" name="quantity" value="1" class="qty">
+                        <div class="qtyplus"></div>
+                        <a href="#" onclick="document.getElementById('add-to-cart-form').submit();" class="button adc">Add to Cart</a>
+                        <div class="clearfix"></div>
+                    }
+
+
+                    <span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>
+                    @if (!String.IsNullOrEmpty(product.ProductCode))
+                    {
+                        <span class="product-code">
+                            <i>
+                                @Resource.ProductCodeNo @product.ProductCode
+                            </i>
+                        </span>
+                    }
+                    @Html.Raw(product.ShortDescription)
+                </section>
 
             <!-- Text Parapgraph -->
             <section>
