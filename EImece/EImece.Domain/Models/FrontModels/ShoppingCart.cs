@@ -29,22 +29,18 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                if (!shoppingCartItems.IsNullOrEmpty())
+                if (shoppingCartItems.IsNullOrEmpty())
                 {
-                    return shoppingCartItems.Sum(r => r.product.Price);
+                    return 0;
                 }
-                return 0;
+                return shoppingCartItems.Sum(r => r.product.Price * r.quantity);
             }
         }
         public double SubTotalPrice
         {
             get
             {
-                if (!shoppingCartItems.IsNullOrEmpty())
-                {
-                    return shoppingCartItems.Sum(r => r.product.Price);
-                }
-                return 0;
+                return TotalPrice;
             }
         }
     }
