@@ -257,6 +257,7 @@
     <Compile Include="Helpers\CsvExport.cs" />
     <Compile Include="Helpers\CSVReader.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
+    <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\DownloadHelper.cs" />
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />

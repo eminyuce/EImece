@@ -55,8 +55,19 @@ namespace EImece.Controllers
         }
         public ActionResult ShoppingCart()
         {
-            ShoppingCart addToCartProducts = (ShoppingCart)Session[ShoppingCartSession];
-            return View(addToCartProducts);
+            ShoppingCart shoppingCart = (ShoppingCart)Session[ShoppingCartSession];
+            if (shoppingCart == null)
+            {
+                if (Request.UrlReferrer == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return Redirect(Request.UrlReferrer.ToString());
+                }
+            }
+            return View(shoppingCart);
         }
         // GET: Home
         public ActionResult Index()

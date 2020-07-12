@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain.Helpers.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,29 @@ namespace EImece.Domain.Models.FrontModels
                 shoppingCartItems.Add(item);
             }
            
+        }
+
+        public double TotalPrice
+        {
+            get
+            {
+                if (!shoppingCartItems.IsNullOrEmpty())
+                {
+                    return shoppingCartItems.Sum(r => r.product.Price);
+                }
+                return 0;
+            }
+        }
+        public double SubTotalPrice
+        {
+            get
+            {
+                if (!shoppingCartItems.IsNullOrEmpty())
+                {
+                    return shoppingCartItems.Sum(r => r.product.Price);
+                }
+                return 0;
+            }
         }
     }
 }
