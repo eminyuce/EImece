@@ -1,0 +1,20 @@
+﻿@using Iyzipay;
+@using Iyzipay.Model;
+@using Iyzipay.Request;
+@model  CheckoutFormInitialize
+@{ 
+    
+    ViewBag.Title = "Index";
+    var checkoutFormInitialize = Model;
+}
+
+
+
+<div id="iyzipay-checkout-form" class="responsive"></div>  @*İyzico Ödeme Ekranı*@
+
+<b>
+
+    @Html.DisplayFor(model => checkoutFormInitialize)
+</b>
+
+@Html.Raw(checkoutFormInitialize.CheckoutFormContent)
