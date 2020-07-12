@@ -103,7 +103,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 StoryService.DeleteStoryById(id);
-                return RedirectToAction("Index");
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {

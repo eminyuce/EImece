@@ -183,7 +183,28 @@ namespace EImece.Areas.Admin.Controllers
             dt.TableName = fileName;
             return DownloadFileDataTable(dt, fileName);
         }
-
+        protected ActionResult ReturnIndexIfNotUrlReferrer(String action)
+        {
+            if (Request.UrlReferrer == null)
+            {
+                return RedirectToAction(action);
+            }
+            else
+            {
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
+        protected ActionResult ReturnIndexIfNotUrlReferrer(String action, object routeValues)
+        {
+            if (Request.UrlReferrer == null)
+            {
+                return RedirectToAction(action, routeValues);
+            }
+            else
+            {
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
         protected ActionResult DownloadFileDataTable(DataTable result, string fileName)
         {
             if(result == null || String.IsNullOrEmpty(fileName))

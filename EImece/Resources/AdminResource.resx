@@ -418,7 +418,7 @@
     <value>Kayit Et ve Kapat</value>
   </data>
   <data name="AdminHome" xml:space="preserve">
-    <value>Giriş Sayfası</value>
+    <value>Yönetim Ana Sayfa</value>
   </data>
   <data name="AdminSettings" xml:space="preserve">
     <value>Yönetici Ayarlari</value>
@@ -484,7 +484,7 @@
     <value>Kullanıcı Yönetimi</value>
   </data>
   <data name="WebSite" xml:space="preserve">
-    <value>Web Site</value>
+    <value>Sitenizin Ana Sayfasi</value>
   </data>
   <data name="WebSiteLogo" xml:space="preserve">
     <value>Web Site Logo</value>

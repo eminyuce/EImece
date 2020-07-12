@@ -108,7 +108,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 StoryCategoryService.DeleteStoryCategoryById(id);
-                return RedirectToAction("Index");
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {

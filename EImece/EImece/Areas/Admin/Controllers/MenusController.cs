@@ -113,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 MenuService.DeleteMenu(menu.Id);
-                return RedirectToAction("Index");
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
@@ -124,6 +124,9 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(menu);
         }
+
+       
+
         [HttpGet]
         public ActionResult GetMenus()
         {

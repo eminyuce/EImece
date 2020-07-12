@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giriş Sayfası.
+        ///   Looks up a localized string similar to Yönetim Ana Sayfa.
         /// </summary>
         public static string AdminHome {
             get {
@@ -1861,7 +1861,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Web Site.
+        ///   Looks up a localized string similar to Sitenizin Ana Sayfasi.
         /// </summary>
         public static string WebSite {
             get {

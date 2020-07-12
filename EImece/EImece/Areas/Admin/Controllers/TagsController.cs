@@ -98,7 +98,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 TagService.DeleteEntity(Tag);
-                return RedirectToAction("Index");
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {

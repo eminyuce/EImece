@@ -123,7 +123,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 ProductCategoryService.DeleteProductCategory(productCategory.Id);
-                return RedirectToAction("Index");
+                return ReturnIndexIfNotUrlReferrer("Index");
 
             }
             catch (Exception ex)

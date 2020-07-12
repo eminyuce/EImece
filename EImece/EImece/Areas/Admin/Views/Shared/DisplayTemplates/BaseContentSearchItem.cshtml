@@ -7,6 +7,8 @@
 @model  BaseContent
 
 @{
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
     var actionNameDelete = "Delete";
     var actionNameEdit = "SaveOrEdit";
     var controllerName = "";
@@ -73,11 +75,19 @@
                 @Html.DisplayFor(model => baseContent.Name)
             </span>
 
-            @Html.ActionLink("Edit", actionNameEdit, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-link    ", @target = "_blank" })
+            @Html.ActionLink(gridEditText, actionNameEdit, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-link    ", @target = "_blank" })
 
             @if (UserRoleHelper.IsDeletedEnableRoles())
             {
-                @Html.ActionLink("Delete", actionNameDelete, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-link   ", @target = "_blank" })
+                <span>
+                    @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+               { "ItemId", baseContent.Id },
+               {"controllerName",controllerName},
+                {"actionName",actionNameDelete},
+               { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
+               { "ItemDescription", baseContent.Name } })
+                </span>
+
             }
         </h3>
         <p>
