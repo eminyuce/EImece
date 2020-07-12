@@ -1,8 +1,9 @@
 ﻿@using EImece.Domain.Models.FrontModels;
-@model IEnumerable<ShoppingCartItem>
+@model  ShoppingCart
 
 @{
     ViewBag.Title = "ShoppingCart";
+    var products = Model.shoppingCartItems;
 }
 
 <section class="titlebar">
@@ -71,7 +72,7 @@
                             <th></th>
                         </tr>
 
-                        @foreach (var item in Model)
+                        @foreach (var item in products)
                         {
 
                             <tr>
@@ -81,7 +82,7 @@
                                 <td>
                                     <form action="#">
                                         <div class="qtyminus"></div>
-                                        <input type="text" name="quantity" value="1" class="qty">
+                                        <input type="text" name="quantity" value="@item.quantity" class="qty">
                                         <div class="qtyplus"></div>
                                     </form>
                                 </td>

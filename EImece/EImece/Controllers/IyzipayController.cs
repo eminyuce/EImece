@@ -35,25 +35,27 @@ namespace EImece.Controllers
     {
         private const string ApiKey = "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB";
         private const string SecretKey = "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL";
+        private const string ShoppingCartSession = "ShoppingCartSession";
+
         public ActionResult AddToCart(int productId, int quantity)
         {
             var product = ProductService.GetProductById(productId);
-            List<ShoppingCartItem> addToCartProducts = (List<ShoppingCartItem>)Session["AddToCartProducts"];
-            if(addToCartProducts == null)
+            ShoppingCart shoppingCart = (ShoppingCart)Session[ShoppingCartSession];
+            if(shoppingCart == null)
             {
-                addToCartProducts = new List<ShoppingCartItem>();
+                shoppingCart = new ShoppingCart();
             }
 
             var item = new ShoppingCartItem();
             item.product = product.Product;
             item.quantity = quantity;
-            addToCartProducts.Add(item);
-            Session["AddToCartProducts"] = addToCartProducts;
+            shoppingCart.Add(item);
+            Session[ShoppingCartSession] = shoppingCart;
             return RedirectToAction("Detail", "Products", new { id = productId });
         }
         public ActionResult ShoppingCart()
         {
-            List<ShoppingCartItem> addToCartProducts = (List<ShoppingCartItem>)Session["AddToCartProducts"];
+            ShoppingCart addToCartProducts = (ShoppingCart)Session[ShoppingCartSession];
             return View(addToCartProducts);
         }
         // GET: Home
