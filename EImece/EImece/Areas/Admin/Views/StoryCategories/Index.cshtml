@@ -57,7 +57,7 @@ columns.Add()
        .SetWidth(30)
        .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
+                @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs  glyphicon glyphicon-pencil glyphicon-white   " })
             </b>);
 
        columns.Add()
@@ -66,7 +66,7 @@ columns.Add()
                       .SetWidth(30)
                       .RenderValueAs(d =>
                     @<b>
-                        @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
+                        @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-xs  glyphicon glyphicon-camera glyphicon-white" })
                     </b>);
     if (UserRoleHelper.IsDeletedEnableRoles())
     {
@@ -77,6 +77,7 @@ columns.Add()
 .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
         { "ItemId", d.Id },
         {"controllerName",controllerName},
+              { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
         { "DeleteText", gridDeleteText },
         { "ItemDescription", d.Name } }));
     }
