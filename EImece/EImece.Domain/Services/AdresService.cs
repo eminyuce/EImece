@@ -36,16 +36,12 @@ namespace EImece.Domain.Services
                 turkiyeAdres = new TurkiyeAdres();
                 turkiyeAdres.IlRoot = GetIlRoot();
                 turkiyeAdres.IlceRoot = GetIlceRoot();
-                turkiyeAdres.MahalleRoot = GetMahalleRoot();
                 MemoryCacheProvider.Set(cacheKey, turkiyeAdres, AppConfig.CacheVeryLongSeconds);
             }
             return turkiyeAdres;
         }
 
-        public MahalleRoot GetMahalleRoot()
-        {
-            return JsonConvert.DeserializeObject<MahalleRoot>(read(@"~\App_Data\il-ilce-mahalle\mahalle.json"));
-        }
+        
         public IlceRoot GetIlceRoot()
         {
             return JsonConvert.DeserializeObject<IlceRoot>(read(@"~\App_Data\il-ilce-mahalle\ilceler.json"));

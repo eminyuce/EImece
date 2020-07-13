@@ -190,15 +190,11 @@ namespace EImece.Tests.Controllers
         public void GetmahalleStr()
         {
             //System.IO.File.ReadAllText(Server.MapPath(@"~/App_Data/file.txt"));
-            var mahalleStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\mahalle.json");
             var ilceStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\ilceler.json");
             var illerStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\iller.json");
-            var MahalleRoot = JsonConvert.DeserializeObject(mahalleStr, typeof(MahalleRoot));
             var IlceRoot = JsonConvert.DeserializeObject(ilceStr, typeof(IlceRoot));
             var IlRoot =  JsonConvert.DeserializeObject(illerStr, typeof(IlRoot));
 
-
-            Console.WriteLine(mahalleStr);
         }
         [TestMethod]
         public void GetActiveBaseContents()

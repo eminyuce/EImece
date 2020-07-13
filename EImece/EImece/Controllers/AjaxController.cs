@@ -14,12 +14,15 @@ namespace EImece.Controllers
         }
         // GET: Ajax
         [HttpGet]
-        public async Task<JsonResult> GetTurkiyeIller()
+        public async Task<JsonResult> GetIller()
         {
-            return await Task.Run(() =>
-            {
-                return Json(adresService.GetTurkiyeAdres().IlRoot, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
+            return await Task.Run(() => Json(adresService.GetTurkiyeAdres().IlRoot, JsonRequestBehavior.AllowGet)).ConfigureAwait(true);
         }
+        [HttpGet]
+        public async Task<JsonResult> GetIlceler(int ilId)
+        {
+            return await Task.Run(() => Json(adresService.GetTurkiyeAdres().IlceRoot.ilceler.ilce.FindAll(r => r.il_id == ilId), JsonRequestBehavior.AllowGet)).ConfigureAwait(true);
+        }
+       
     }
 }

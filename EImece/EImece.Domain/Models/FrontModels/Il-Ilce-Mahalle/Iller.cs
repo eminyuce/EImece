@@ -22,4 +22,9 @@ namespace EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle
         public Iller Iller { get; set; }
 
     }
+    public class TurkiyeAdres
+    {
+        public IlRoot IlRoot { get; set; }
+        public IlceRoot IlceRoot { get; set; }
+    }
 }
