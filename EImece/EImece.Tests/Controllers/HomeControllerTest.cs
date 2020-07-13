@@ -5,13 +5,16 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -183,6 +186,20 @@ namespace EImece.Tests.Controllers
             }
         }
 
+        [TestMethod]
+        public void GetmahalleStr()
+        {
+            //System.IO.File.ReadAllText(Server.MapPath(@"~/App_Data/file.txt"));
+            var mahalleStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\mahalle.json");
+            var ilceStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\ilceler.json");
+            var illerStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\iller.json");
+            var MahalleRoot = JsonConvert.DeserializeObject(mahalleStr, typeof(MahalleRoot));
+            var IlceRoot = JsonConvert.DeserializeObject(ilceStr, typeof(IlceRoot));
+            var IlRoot =  JsonConvert.DeserializeObject(illerStr, typeof(IlRoot));
+
+
+            Console.WriteLine(mahalleStr);
+        }
         [TestMethod]
         public void GetActiveBaseContents()
         {

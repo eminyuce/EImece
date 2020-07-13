@@ -149,6 +149,13 @@ namespace EImece.Domain
                 return GetConfigInt("CacheLongSeconds", 1800);
             }
         }
+        public static int CacheVeryLongSeconds
+        {
+            get
+            {
+                return GetConfigInt("CacheVeryLongSeconds", 180000);
+            }
+        }
 
         public static bool IsEditLinkEnable
         {

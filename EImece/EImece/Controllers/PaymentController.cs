@@ -1,32 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using EImece.Domain;
-using EImece.Domain.Caching;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Models.FrontModels;
 using Ninject;
-using NLog;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -37,14 +16,15 @@ namespace EImece.Controllers
         private const string SecretKey = "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL";
         private const string ShoppingCartSession = "ShoppingCartSession";
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult AddToCart(int productId, int quantity)
         {
             var product = ProductService.GetProductById(productId);
-            ShoppingCart shoppingCart = (ShoppingCart)Session[ShoppingCartSession];
-            if(shoppingCart == null)
-            {
-                shoppingCart = new ShoppingCart();
-            }
+            ShoppingCart shoppingCart = GetShoppingCart();
 
             var item = new ShoppingCartItem();
             item.product = product.Product;
@@ -53,24 +33,41 @@ namespace EImece.Controllers
             Session[ShoppingCartSession] = shoppingCart;
             return RedirectToAction("Detail", "Products", new { id = productId });
         }
-        public ActionResult ShoppingCart()
+
+        private ShoppingCart GetShoppingCart()
         {
             ShoppingCart shoppingCart = (ShoppingCart)Session[ShoppingCartSession];
             if (shoppingCart == null)
             {
-                if (Request.UrlReferrer == null)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return Redirect(Request.UrlReferrer.ToString());
-                }
+                shoppingCart = new ShoppingCart();
             }
+
+            return shoppingCart;
+        }
+
+        public ActionResult ShoppingCart()
+        {
+            ShoppingCart shoppingCart = GetShoppingCart();
             return View(shoppingCart);
         }
+
+        public ActionResult CheckoutBillingDetails()
+        {
+            return View();
+        }
+
+        public ActionResult CheckoutDelivery()
+        {
+            return View();
+        }
+
+        public ActionResult CheckoutPaymentOrderReview()
+        {
+            return View();
+        }
+
         // GET: Home
-        public ActionResult Index()
+        public ActionResult PlaceOrder()
         {
             Options options = new Options();
             options.ApiKey = ApiKey;
@@ -147,7 +144,7 @@ namespace EImece.Controllers
 
             request.BasketItems = basketItems;
             CheckoutFormInitialize checkoutFormInitialize = CheckoutFormInitialize.Create(request, options);
-         //   ViewBag.Iyzico = checkoutFormInitialize; //View Dönüş yapılan yer, Burada farklı yöntemler ile View gönderim yapabilirsiniz.
+            //   ViewBag.Iyzico = checkoutFormInitialize; //View Dönüş yapılan yer, Burada farklı yöntemler ile View gönderim yapabilirsiniz.
             return View(checkoutFormInitialize);
         }
 

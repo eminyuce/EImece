@@ -134,7 +134,7 @@ namespace EImece.App_Start
             //      BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
-
+            kernel.Bind<AdresService>().ToSelf().InRequestScope();
             kernel.Bind<MigrationRepository>().ToSelf().InRequestScope();
             kernel.Bind<SiteMapService>().ToSelf().InRequestScope();
             kernel.Bind<XmlEditorHelper>().ToSelf().InRequestScope();
@@ -147,7 +147,7 @@ namespace EImece.App_Start
             kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
 
             //kernel.Bind<StdSchedulerFactory>().ToSelf().InRequestScope();
-            kernel.Bind<QuartzService>().ToSelf().InRequestScope();
+            //kernel.Bind<QuartzService>().ToSelf().InRequestScope();
 
             // setup Quartz scheduler that uses our NinjectJobFactory
 

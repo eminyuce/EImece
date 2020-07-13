@@ -324,6 +324,9 @@
     <Compile Include="Models\FrontModels\Filter.cs" />
     <Compile Include="Models\FrontModels\FilterGroup.cs" />
     <Compile Include="Models\FrontModels\FooterViewModel.cs" />
+    <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Ilceler.cs" />
+    <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Iller.cs" />
+    <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Mahalleler.cs" />
     <Compile Include="Models\FrontModels\ItemType.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
@@ -407,6 +410,7 @@
     <Compile Include="Repositories\TemplateRepository.cs" />
     <Compile Include="Scheduler\Jobs\HelloJob.cs" />
     <Compile Include="Scheduler\QuartzService.cs" />
+    <Compile Include="Services\AdresService.cs" />
     <Compile Include="Services\BaseContentService.cs" />
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />

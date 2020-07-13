@@ -685,6 +685,9 @@
     <Content Include="Areas\Admin\Views\Settings\_pPageSetting.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\AboutUs.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pLanguages.cshtml" />
+    <Content Include="App_Data\il-ilce-mahalle\mahalle.json" />
+    <Content Include="App_Data\il-ilce-mahalle\iller.json" />
+    <Content Include="App_Data\il-ilce-mahalle\ilceler.json" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -884,8 +887,11 @@
     <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
     <Content Include="Views\Home\AboutUs.cshtml" />
     <Content Include="Views\Shared\_Languages.cshtml" />
-    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\PlaceOrder.cshtml" />
     <Content Include="Views\Payment\ShoppingCart.cshtml" />
+    <Content Include="Views\Payment\CheckoutBillingDetails.cshtml" />
+    <Content Include="Views\Payment\CheckoutDelivery.cshtml" />
+    <Content Include="Views\Payment\CheckoutPaymentOrderReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

@@ -18,7 +18,7 @@ namespace EImece.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
-                throw new ArgumentException("Id cannot be null");
+                return Content("Id cannot be null");
             }
 
             var fileStorageId = id.Replace(".jpg", "").GetIdWithoutDecode();

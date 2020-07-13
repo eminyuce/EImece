@@ -2,6 +2,7 @@
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Scheduler;
+using EImece.Domain.Services;
 using NLog;
 using System;
 using System.Web;
@@ -24,8 +25,13 @@ namespace EImece
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             MvcHandler.DisableMvcResponseHeader = true;
-            var quartzService = DependencyResolver.Current.GetService<QuartzService>();
-            quartzService.StartSchedulerService();
+
+            var adresService = DependencyResolver.Current.GetService<AdresService>();
+            var turkiyeAdres = adresService.GetTurkiyeAdres();
+            turkiyeAdres = adresService.GetTurkiyeAdres();
+            turkiyeAdres = adresService.GetTurkiyeAdres();
+            //  var quartzService = DependencyResolver.Current.GetService<QuartzService>();
+            //  quartzService.StartSchedulerService();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
