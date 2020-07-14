@@ -136,12 +136,13 @@ namespace EImece.Controllers
             request.BillingAddress = billingAddress;
 
             List<BasketItem> basketItems = new List<BasketItem>();
-            var products = ProductService.GetMainPageProducts(1, CurrentLanguage);
+            ShoppingCart shoppingCart = (ShoppingCart)Session[ShoppingCartSession];
             double price = 0;
-            foreach (Product item in products.Products) //Session'da tutmuş oldugum sepette bulunan ürünler
+            foreach (ShoppingCartItem shoppingCartItem in shoppingCart.shoppingCartItems) //Session'da tutmuş oldugum sepette bulunan ürünler
             {
+                var item = shoppingCartItem.product;
                 BasketItem firstBasketItem = new BasketItem();
-                firstBasketItem.Id =  item.ProductCode;
+                firstBasketItem.Id =  string.IsNullOrEmpty(item.ProductCode) ? item.Id.ToString() : item.ProductCode;
                 firstBasketItem.Name = item.Name;
                 firstBasketItem.Category1 = item.ProductCategory.Name;
                 firstBasketItem.Category2 = "Ürün";
