@@ -30,6 +30,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Discount))]
         public double Discount { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCodeErrorMessage))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCode))]
         public string ProductCode { get; set; }
 

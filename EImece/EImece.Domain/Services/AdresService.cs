@@ -31,17 +31,28 @@ namespace EImece.Domain.Services
         {
             var cacheKey = String.Format("GetTurkiyeAdres");
             TurkiyeAdres turkiyeAdres =null;
-            if (!MemoryCacheProvider.Get(cacheKey, out turkiyeAdres))
+           if (!MemoryCacheProvider.Get(cacheKey, out turkiyeAdres))
             {
-                turkiyeAdres = new TurkiyeAdres();
-                turkiyeAdres.IlRoot = GetIlRoot();
-                turkiyeAdres.IlceRoot = GetIlceRoot();
-                MemoryCacheProvider.Set(cacheKey, turkiyeAdres, AppConfig.CacheVeryLongSeconds);
+                turkiyeAdres = GetTurkiyeAdres(cacheKey);
             }
+            
+           if(turkiyeAdres == null)
+            {
+                turkiyeAdres = GetTurkiyeAdres(cacheKey);
+            }
+
             return turkiyeAdres;
         }
 
-        
+        private TurkiyeAdres GetTurkiyeAdres(string cacheKey)
+        {
+            TurkiyeAdres turkiyeAdres = new TurkiyeAdres();
+            turkiyeAdres.IlRoot = GetIlRoot();
+            turkiyeAdres.IlceRoot = GetIlceRoot();
+            MemoryCacheProvider.Set(cacheKey, turkiyeAdres, AppConfig.CacheVeryLongSeconds);
+            return turkiyeAdres;
+        }
+
         public IlceRoot GetIlceRoot()
         {
             return JsonConvert.DeserializeObject<IlceRoot>(read(@"~\App_Data\il-ilce-mahalle\ilceler.json"));

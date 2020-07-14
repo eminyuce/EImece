@@ -741,4 +741,7 @@
   <data name="WrongSum" xml:space="preserve">
     <value>Yanlış toplam, lütfen tekrar deneyin.</value>
   </data>
+  <data name="ProductCodeErrorMessage" xml:space="preserve">
+    <value>Ürün Kodu Zorunludur.</value>
+  </data>
 </root>

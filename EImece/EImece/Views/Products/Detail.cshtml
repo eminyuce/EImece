@@ -65,6 +65,7 @@
                 <h2>
                     @product.Name
                 </h2>
+                <div><b>@product.ProductCode</b></div>
                 @if (isUserAuthenticated)
                 {
                     @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
@@ -78,7 +79,7 @@
                     {
 
                         <div class="qtyminus"></div>
-                        <input type="hidden" name="productId" value="@product.Id" >
+                        <input type="hidden" name="productId" value="@product.Id">
                         <input type="text" name="quantity" value="1" class="qty">
                         <div class="qtyplus"></div>
                         <a href="#" onclick="document.getElementById('add-to-cart-form').submit();" class="button adc">Add to Cart</a>
@@ -98,21 +99,21 @@
                     @Html.Raw(product.ShortDescription)
                 </section>
 
-            <!-- Text Parapgraph -->
-            <section>
-                <p class="margin-reset">
+                <!-- Text Parapgraph -->
+                <section>
+                    <p class="margin-reset">
 
-                    @Html.Partial("_ProductSpecs", Model)
-                </p>
-                <!-- Share Buttons -->
-                <div class="share-buttons">
+                        @Html.Partial("_ProductSpecs", Model)
+                    </p>
+                    <!-- Share Buttons -->
+                    <div class="share-buttons">
 
-                    @Html.Partial("_SocialMediaShareLinks", new ViewDataDictionary(ViewData){
-                              {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } })
-                </div>
-                <div class="clearfix"></div>
-            </section>
-        </div>
+                        @Html.Partial("_SocialMediaShareLinks", new ViewDataDictionary(ViewData){
+                                  {"DataUrl",Request.Url.AbsoluteUri.ToString()}, {"DataTitle",product.Name  } })
+                    </div>
+                    <div class="clearfix"></div>
+                </section>
+</div>
     </div>
     <div class="two columns">
         @if (productTags.Count > 0)

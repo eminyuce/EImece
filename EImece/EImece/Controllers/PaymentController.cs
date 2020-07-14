@@ -6,6 +6,7 @@ using Iyzipay.Model;
 using Iyzipay.Request;
 using Ninject;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -65,7 +66,18 @@ namespace EImece.Controllers
         {
             return View();
         }
+         public ActionResult RemoveCart(int id)
+        {
+            ShoppingCart shoppingCart = (ShoppingCart)Session[ShoppingCartSession];
+            var item = shoppingCart.shoppingCartItems.FirstOrDefault(r => r.product.Id == id);
+            if (item != null)
+            {
+                shoppingCart.shoppingCartItems.Remove(item);
+                Session[ShoppingCartSession] = shoppingCart;
+            }
 
+            return RedirectToAction("ShoppingCart");
+        }
         // GET: Home
         public ActionResult PlaceOrder()
         {
@@ -129,7 +141,7 @@ namespace EImece.Controllers
             foreach (Product item in products.Products) //Session'da tutmuş oldugum sepette bulunan ürünler
             {
                 BasketItem firstBasketItem = new BasketItem();
-                firstBasketItem.Id = item.ProductCode;
+                firstBasketItem.Id =  item.ProductCode;
                 firstBasketItem.Name = item.Name;
                 firstBasketItem.Category1 = item.ProductCategory.Name;
                 firstBasketItem.Category2 = "Ürün";

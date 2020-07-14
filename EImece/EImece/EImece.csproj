@@ -895,7 +895,6 @@
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
     <Folder Include="Scripts\codemirror\addon\" />
-    <Folder Include="Views\IyzicoPay\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>

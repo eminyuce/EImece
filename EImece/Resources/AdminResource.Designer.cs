@@ -1330,6 +1330,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Kodu Zorunludur..
+        /// </summary>
+        public static string ProductCodeErrorMessage {
+            get {
+                return ResourceManager.GetString("ProductCodeErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Xml Şablonlar.
         /// </summary>
         public static string ProductDynamicTemplates {

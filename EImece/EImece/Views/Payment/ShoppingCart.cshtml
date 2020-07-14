@@ -1,5 +1,10 @@
 ﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
 @model  ShoppingCart
 
 @{
@@ -72,35 +77,46 @@
                             <th>Total</th>
                             <th></th>
                         </tr>
-
-                        @foreach (var item in products)
+                        @if (!products.IsNullOrEmpty())
                         {
+                            foreach (var item in products)
+                            {
 
-                                                double totalPricePerItem = item.product.Price * item.quantity;
-                                    
-                                    <tr>
-                                        <td><img src="images/small_product_list_08.jpg" alt=""></td>
+                                var product = item.product;
+                                double totalPricePerItem = product.Price * item.quantity;
 
-
-                                        <td class="cart-title"><a href="#">@item.product.Name</a></td>
-
-
-                                        <td>@item.product.Price.CurrencySign()</td>
-
-
-                                        <td>
+                                <tr>
+                                    <td>
+                                        @if (product.MainImageId.HasValue && product.ImageState)
+                                        {
+                                            <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
+                                        }
 
 
-                                            <form action="#">
-                                        <div class="qtyminus"></div>
-                                        <input type="text" name="quantity" value="@item.quantity" class="qty">
-                                        <div class="qtyplus"></div>
-                                    </form>
-                                </td>
-                                <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
-                                <td><a href="#" class="cart-remove"></a></td>
-                            </tr>
+                                    </td>
+
+
+                                    <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
+
+
+                                    <td>@product.Price.CurrencySign()</td>
+
+
+                                    <td>
+
+
+                                        <form action="#">
+                                            <div class="qtyminus"></div>
+                                            <input type="text" name="quantity" value="@item.quantity" class="qty">
+                                            <div class="qtyplus"></div>
+                                        </form>
+                                    </td>
+                                    <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
+                                    <td><a href="@Url.Action("RemoveCart",new { id=item.product.Id })" class="cart-remove"></a></td>
+                                </tr>
+                            }
                         }
+
 
 
 
