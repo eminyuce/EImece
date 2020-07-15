@@ -4,6 +4,7 @@ using EImece.Domain.Services;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
+using Resources;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -45,6 +46,9 @@ namespace EImece.Controllers
             if (shoppingCart == null)
             {
                 shoppingCart = new ShoppingCartSession();
+                shoppingCart.Customer.Country = "Turkiye";
+                shoppingCart.Customer.IsSameAsShippingAddress = true;
+                Session[ShoppingCartSession] = shoppingCart;
             }
 
             return shoppingCart;
@@ -63,10 +67,17 @@ namespace EImece.Controllers
         }
         public ActionResult SaveCustomer(Customer customer)
         {
-            ShoppingCartSession shoppingCart = GetShoppingCart();
-            shoppingCart.Customer = customer;
-            Session[ShoppingCartSession] = shoppingCart;
-            return RedirectToAction("CheckoutDelivery");
+            if (customer != null && customer.isValid())
+            {
+                ShoppingCartSession shoppingCart = GetShoppingCart();
+                shoppingCart.Customer = customer;
+                Session[ShoppingCartSession] = shoppingCart;
+                return RedirectToAction("CheckoutDelivery");
+            }
+            else
+            {
+                return RedirectToAction("CheckoutBillingDetails");
+            }
         }
         public ActionResult CheckoutDelivery()
         {

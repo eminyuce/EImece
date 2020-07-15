@@ -309,4 +309,7 @@
   <data name="NoUserFound" xml:space="preserve">
     <value>Geçersiz Kullanıcı Adı ve/veya Şifre.Lütfen bilgilerinizi kontrol ediniz.</value>
   </data>
+  <data name="MandatoryField" xml:space="preserve">
+    <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
+  </data>
 </root>

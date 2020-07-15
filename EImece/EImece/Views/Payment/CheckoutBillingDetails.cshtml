@@ -12,7 +12,7 @@
     var products = Model.ShoppingCartItems;
     var customer = Model.Customer;
 }
- 
+
 
 <section class="titlebar">
     <div class="container">
@@ -40,34 +40,64 @@
 
 
 
-        @using (Html.BeginForm("SaveCustomer","Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("SaveCustomer", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            <div class="checkout-content">
-                @Html.AntiForgeryToken()
-                <div class="half first"><label>First Name: <abbr>*</abbr></label><input type="text" placeholder="" name="Name" value="@customer.Name"></div>
-                <div class="half"><label>Last Name: <abbr>*</abbr></label><input type="text" placeholder="" name="Surname"  value="@customer.Surname"></div>
-                <div class="half first"><label>Email Adress: <abbr>*</abbr></label><input type="text" placeholder="" name="Email"  value="@customer.Email"></div>
-                <div class="half"><label>Phone: <abbr>*</abbr></label><input type="text" placeholder=""  name="GsmNumber"  value="@customer.GsmNumber"></div>
-                <div class="fullwidth"><label>Il:  <abbr>*</abbr></label><span id="iller"></span></div>
-                <div class="fullwidth"><label>Ilce:  <abbr>*</abbr></label><span id="ilceler"></span></div>
-                <div class="half first"><label>Postcode / Zip:<abbr>*</abbr></label><input type="text" placeholder=""  name="ZipCode"  value="@customer.ZipCode"></div>
-                <div class="fullwidth">  <label>Street Address: <abbr>*</abbr></label>   <textarea   cols="40" rows="3"  name="RegistrationAddress"  id="comment">@customer.RegistrationAddress</textarea></div>
+    <div class="checkout-content">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => customer.Country)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="half first">
+            <label>First Name: <abbr>*       </abbr></label>
+            @Html.EditorFor(model => customer.Name)
+            @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="half">
+            <label>Last Name: <abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.Surname)
+            @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
+        </div>
+        <div class="half first">
+            <label>Email Adress: <abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.Email)
+            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="half">
+            <label>Phone: <abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.GsmNumber)
+            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+        </div>
+        <div class="half first">
+            <label>City:<abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.City)
+            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="half ">
+            <label>Postcode / Zip:<abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.ZipCode)
+            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="fullwidth">
+            <label>Street Address: <abbr>*</abbr></label>
+            @Html.TextAreaFor(model => customer.RegistrationAddress, 3, 40, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => customer.RegistrationAddress, "", new { @class = "text-danger" })
+        </div>
 
 
-                <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
 
 
-                <span class="shippping-checkbox">
-                    <input class="input-checkbox" id="shipping-address" type="checkbox" name="shipping-address" checked="checked" value="1">
-                    <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
-                </span>
-                <div class="clearfix"></div>
+        <span class="shippping-checkbox">
+            <input class="input-checkbox" id="shipping-address" type="checkbox" name="customer.IsSameAsShippingAddress"  @(customer.IsSameAsShippingAddress ? String.Format("checked='checked'") : "" )>
+            <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
+        </span>
+        <div class="clearfix"></div>
 
 
-            </div>
+    </div>
             <div class="clearfix"></div>
-            <input type="submit" name="saveButton" value="Continue"  class="continue button color"/>
+            <input type="submit" name="saveButton" value="Continue" class="continue button color" />
         }
 
         <a href="@Url.Action("CheckoutDelivery")"><div class="checkout-section"><span>2</span> Delivery</div></a>
@@ -76,54 +106,7 @@
     <!-- Billing Details / Enc -->
     <!-- Checkout Cart -->
     <div class="eight columns">
-        <div class="checkout-section cart">Shopping Cart</div>
-        <!-- Cart -->
-        <table class="stacktable small-only"><tbody><tr class="st-space"><td></td><td></td></tr><tr class="st-new-item"><td class="st-key"></td><td class="st-val st-head-row"><img src="images/small_product_list_08.jpg" alt=""></td></tr><tr><td class="st-key"></td><td class="st-val"><a href="#">Converse All Star Trainers</a></td></tr><tr><td class="st-key">Price</td><td class="st-val">$79.00</td></tr><tr><td class="st-key">Qty</td><td class="st-val">1</td></tr><tr><td class="st-key">Total</td><td class="st-val">$79.00</td></tr><tr class="st-space"><td></td><td></td></tr><tr class="st-new-item"><td class="st-key"></td><td class="st-val st-head-row"><img src="images/small_product_list_09.jpg" alt=""></td></tr><tr><td class="st-key"></td><td class="st-val"><a href="#">Wool Two-Piece Suit</a></td></tr><tr><td class="st-key">Price</td><td class="st-val">$99.00</td></tr><tr><td class="st-key">Qty</td><td class="st-val">1</td></tr><tr><td class="st-key">Total</td><td class="st-val">$99.00</td></tr></tbody></table><table class="checkout cart-table responsive-table stacktable large-only">
-
-            <tbody>
-                <tr>
-                    <th class="hide-on-mobile">Item</th>
-                    <th></th>
-                    <th>Price</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-                </tr>
-
-                <!-- Item #1 -->
-                <tr>
-                    <td class="hide-on-mobile"><img src="images/small_product_list_08.jpg" alt=""></td>
-                    <td class="cart-title"><a href="#">Converse All Star Trainers</a></td>
-                    <td>$79.00</td>
-                    <td class="qty-checkout">1</td>
-                    <td class="cart-total">$79.00</td>
-                </tr>
-
-                <!-- Item #2 -->
-                <tr>
-                    <td class="hide-on-mobile"><img src="images/small_product_list_09.jpg" alt=""></td>
-                    <td class="cart-title"><a href="#">Wool Two-Piece Suit</a></td>
-                    <td>$99.00</td>
-                    <td class="qty-checkout">1</td>
-                    <td class="cart-total">$99.00</td>
-                </tr>
-
-            </tbody>
-        </table>
-
-        <!-- Apply Coupon Code / Buttons -->
-        <table class="cart-table bottom">
-
-            <tbody>
-                <tr>
-                    <th class="checkout-totals">
-                        <div class="checkout-subtotal">
-                            Subtotal: <span>$178.00</span>
-                        </div>
-                    </th>
-                </tr>
-
-            </tbody>
-        </table>
+        @Html.Partial("_ShoppingCartProducts", Model)
     </div>
     <!-- Checkout Cart / End -->
 
@@ -132,6 +115,15 @@
 
 
 @section Scripts{
+    <script id="CityHtml" type="text/template">
+       
+            {{ #items}}
+            <option value="{{id}}">
+                {{name}}
+            </option>
+            {{/items}}
+    
+    </script>
     <script id="optionHtml" type="text/template">
         <select id="il_select">
             {{ #items}}
@@ -147,13 +139,19 @@
 
         $(document).ready(function () {
 
-            GetIller();
+          //  GetIller();
             function GetIller() {
                 var postData = JSON.stringify({});
                 console.log(postData);
                 ajaxMethodCall(postData, "/Ajax/GetIller", function (data) {
-                    var p = $('#optionHtml').html();
-                    $("#iller").html(Mustache.render(p, data));
+
+                    $.each(data, function (key, value) {
+                        $.each(value, function (key1, value1) {
+                            $("#customer_Country").add(new Option(value1.name, value1.id));
+                        });
+                    });
+
+                
                     $("#il_select").on('change', function () {
                         GetIlceler(this.value);
                     });

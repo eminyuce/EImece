@@ -68,60 +68,60 @@
             </tbody>
         </table><table class="cart-table responsive-table stacktable large-only">
 
-                    <tbody>
+            <tbody>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+                @if (!products.IsNullOrEmpty())
+                {
+                    foreach (var item in products)
+                    {
+
+                        var product = item.product;
+                        double totalPricePerItem = product.Price * item.quantity;
+
                         <tr>
-                            <th>Item</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th></th>
+                            <td>
+                                @if (product.MainImageId.HasValue && product.ImageState)
+                                {
+                                    <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
+                                }
+
+
+                            </td>
+
+
+                            <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
+
+
+                            <td>@product.Price.CurrencySign()</td>
+
+
+                            <td>
+
+
+                                <form action="#">
+                                    <div class="qtyminus"></div>
+                                    <input type="text" name="quantity" value="@item.quantity" class="qty">
+                                    <div class="qtyplus"></div>
+                                </form>
+                            </td>
+                            <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
+                            <td><a href="@Url.Action("RemoveCart",new { id=item.product.Id })" class="cart-remove"></a></td>
                         </tr>
-                        @if (!products.IsNullOrEmpty())
-                        {
-                            foreach (var item in products)
-                            {
-
-                                var product = item.product;
-                                double totalPricePerItem = product.Price * item.quantity;
-
-                                <tr>
-                                    <td>
-                                        @if (product.MainImageId.HasValue && product.ImageState)
-                                        {
-                                            <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
-                                        }
-
-
-                                    </td>
-
-
-                                    <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
-
-
-                                    <td>@product.Price.CurrencySign()</td>
-
-
-                                    <td>
-
-
-                                        <form action="#">
-                                            <div class="qtyminus"></div>
-                                            <input type="text" name="quantity" value="@item.quantity" class="qty">
-                                            <div class="qtyplus"></div>
-                                        </form>
-                                    </td>
-                                    <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
-                                    <td><a href="@Url.Action("RemoveCart",new { id=item.product.Id })" class="cart-remove"></a></td>
-                                </tr>
-                            }
-                        }
+                    }
+                }
 
 
 
 
 
-                    </tbody>
+            </tbody>
         </table>
 
         <!-- Apply Coupon Code / Buttons -->

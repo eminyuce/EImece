@@ -1,0 +1,32 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+@{
+    var products = Model.ShoppingCartItems;
+    var customer = Model.Customer;
+}
+
+
+<div class="four columns alpha">
+    <ul class="address-review">
+        <li><strong>Billing Address</strong></li>
+        <li>@customer.FullName</li>
+        <li>@customer.Email</li>
+        <li>@customer.RegistrationAddress</li>
+        <li>@customer.ZipCode</li>
+        <li>@customer.City</li>
+        <li>@customer.Country</li>
+    </ul>
+</div>
+<div class="four columns alpha omega">
+    <ul class="address-review">
+        <li><strong>Shipping Address</strong></li>
+        <li>Same as Billing Address</li>
+    </ul>
+</div>
+<div class="clearfix"></div>

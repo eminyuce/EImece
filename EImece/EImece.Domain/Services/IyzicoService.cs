@@ -39,7 +39,7 @@ namespace EImece.Domain.Services
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart)
         {
             Options options = GetOptions();
-         
+            var customer = shoppingCart.Customer;
 
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
@@ -59,19 +59,19 @@ namespace EImece.Domain.Services
             request.EnabledInstallments = enabledInstallments;
 
             Buyer buyer = new Buyer();
-            buyer.Id = "1";
-            buyer.Name = "Cengizhan";
-            buyer.Surname = "Bozkurt";
-            buyer.GsmNumber = "-";
-            buyer.Email = "cenboz27@gmail.com";
-            buyer.IdentityNumber = "12345678911";
+            buyer.Id = customer.Id.ToString();
+            buyer.Name = customer.Name;
+            buyer.Surname = customer.Surname;
+            buyer.GsmNumber = customer.GsmNumber;
+            buyer.Email = customer.Email;
+            buyer.IdentityNumber = customer.IdentityNumber;
             buyer.LastLoginDate = "2015-10-05 12:43:35";
-            buyer.RegistrationDate = "2013-04-21 15:12:09";
-            buyer.RegistrationAddress = "Antalya";
-            buyer.Ip = "85.34.78.112";
-            buyer.City = "Antalya";
-            buyer.Country = "Turkey";
-            buyer.ZipCode = "07600";
+            buyer.RegistrationDate = customer.RegistrationDate.ToString("yyyy-MM-dd HH:mm:ss");
+            buyer.RegistrationAddress = customer.RegistrationAddress;
+            buyer.Ip = customer.Ip;
+            buyer.City = customer.City;
+            buyer.Country = customer.Country;
+            buyer.ZipCode = customer.ZipCode;
             request.Buyer = buyer;
 
             Address shippingAddress = new Address();

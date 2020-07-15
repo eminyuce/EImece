@@ -26,7 +26,7 @@ namespace EImece.Controllers
 
                 return Json(
                     new {
-                    items=allIller
+                    allIller
                 }, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
