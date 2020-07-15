@@ -1,7 +1,18 @@
-﻿
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+
 @{
     ViewBag.Title = "CheckoutBillingDetails";
+    var products = Model.ShoppingCartItems;
+    var customer = Model.Customer;
 }
+ 
 
 <section class="titlebar">
     <div class="container">
@@ -26,36 +37,38 @@
 
         <!-- Billing Details Content -->
         <div class="checkout-section active"><span>1</span> Billing Details</div>
-        <div class="checkout-content">
 
 
 
-            <div class="half first"><label>First Name: <abbr>*</abbr></label><input type="text" placeholder="" value=""></div>
-            <div class="half"><label>Last Name: <abbr>*</abbr></label><input type="text" placeholder="" value=""></div>
-            <div class="half first"><label>Email Adress: <abbr>*</abbr></label><input type="text" placeholder="" value=""></div>
-            <div class="half"><label>Phone: <abbr>*</abbr></label><input type="text" placeholder="" value=""></div>
-            <div class="fullwidth"><label>Il:  <abbr>*</abbr></label><span id="iller"></span></div>
-            <div class="fullwidth"><label>Ilce:  <abbr>*</abbr></label><span id="ilceler"></span></div>
-            <div class="half first"><label>Postcode / Zip:<abbr>*</abbr></label><input type="text" placeholder="" value=""></div>
-            <div class="fullwidth">  <label>Street Address: <abbr>*</abbr></label>   <textarea name="comment" cols="40" rows="3" id="comment"></textarea></div>
-         
+        @using (Html.BeginForm("SaveCustomer","Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="checkout-content">
+                @Html.AntiForgeryToken()
+                <div class="half first"><label>First Name: <abbr>*</abbr></label><input type="text" placeholder="" name="Name" value="@customer.Name"></div>
+                <div class="half"><label>Last Name: <abbr>*</abbr></label><input type="text" placeholder="" name="Surname"  value="@customer.Surname"></div>
+                <div class="half first"><label>Email Adress: <abbr>*</abbr></label><input type="text" placeholder="" name="Email"  value="@customer.Email"></div>
+                <div class="half"><label>Phone: <abbr>*</abbr></label><input type="text" placeholder=""  name="GsmNumber"  value="@customer.GsmNumber"></div>
+                <div class="fullwidth"><label>Il:  <abbr>*</abbr></label><span id="iller"></span></div>
+                <div class="fullwidth"><label>Ilce:  <abbr>*</abbr></label><span id="ilceler"></span></div>
+                <div class="half first"><label>Postcode / Zip:<abbr>*</abbr></label><input type="text" placeholder=""  name="ZipCode"  value="@customer.ZipCode"></div>
+                <div class="fullwidth">  <label>Street Address: <abbr>*</abbr></label>   <textarea   cols="40" rows="3"  name="RegistrationAddress"  id="comment">@customer.RegistrationAddress</textarea></div>
 
+
+                <div class="clearfix"></div>
+
+
+
+                <span class="shippping-checkbox">
+                    <input class="input-checkbox" id="shipping-address" type="checkbox" name="shipping-address" checked="checked" value="1">
+                    <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
+                </span>
+                <div class="clearfix"></div>
+
+
+            </div>
             <div class="clearfix"></div>
-
-
-
-            <span class="shippping-checkbox">
-                <input class="input-checkbox" id="shipping-address" type="checkbox" name="shipping-address" checked="checked" value="1">
-                <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
-            </span>
-            <div class="clearfix"></div>
-
-
-        </div>
-        <div class="clearfix"></div>
-
-        <a href="checkout-delivery.html" class="continue button color">Continue</a>
-
+            <input type="submit" name="saveButton" value="Continue"  class="continue button color"/>
+        }
 
         <a href="@Url.Action("CheckoutDelivery")"><div class="checkout-section"><span>2</span> Delivery</div></a>
         <a href="checkout-payment-order-review.html"><div class="checkout-section"><span>3</span> Payment &amp; Order Review</div></a>
@@ -133,7 +146,7 @@
 
 
         $(document).ready(function () {
-         
+
             GetIller();
             function GetIller() {
                 var postData = JSON.stringify({});
@@ -150,9 +163,9 @@
                     }
                     GetIlceler(il_id);
                 });
-                
+
                 function GetIlceler(il_id) {
-                    var postData = JSON.stringify({ il_id: il_id});
+                    var postData = JSON.stringify({ il_id: il_id });
                     console.log(postData);
                     ajaxMethodCall(postData, "/Ajax/GetIlceler", function (data) {
                         var p = $('#optionHtml').html();

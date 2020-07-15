@@ -12,6 +12,21 @@ namespace EImece.Domain
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public static string IyzicoSecretKey
+        {
+            get
+            {
+                return GetConfigString("IyzicoSecretKey", "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL");
+            }
+        }
+        public static string IyzicoApiKey
+        {
+            get
+            {
+               return GetConfigString("IyzicoApiKey", "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB");
+            }
+        }
+
         public static string HttpProtocolForImages
         {
             get

@@ -5,11 +5,11 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@model  ShoppingCart
+@model  ShoppingCartSession
 
 @{
     ViewBag.Title = "ShoppingCart";
-    var products = Model.shoppingCartItems;
+    var products = Model.ShoppingCartItems;
 }
 
 <section class="titlebar">

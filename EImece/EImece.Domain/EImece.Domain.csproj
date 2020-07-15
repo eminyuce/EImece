@@ -205,6 +205,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="Caching\CacheProvider.cs" />
@@ -214,12 +215,14 @@
     <Compile Include="DbContext\DbMigration.cs" />
     <Compile Include="DbContext\EImeceContext.cs" />
     <Compile Include="DbContext\IEImeceContext.cs" />
+    <Compile Include="Entities\Addres.cs" />
     <Compile Include="Entities\BaseContent.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BrowserNotification.cs" />
     <Compile Include="Entities\BrowserNotificationFeedBack.cs" />
     <Compile Include="Entities\BrowserSubscriber.cs" />
     <Compile Include="Entities\BrowserSubscription.cs" />
+    <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\FileStorage.cs" />
     <Compile Include="Entities\FileStorageTag.cs" />
     <Compile Include="Entities\List.cs" />
@@ -234,6 +237,7 @@
     <Compile Include="Entities\ProductSpecification.cs" />
     <Compile Include="Entities\ProductTag.cs" />
     <Compile Include="Entities\Setting.cs" />
+    <Compile Include="Entities\ShoppingCart.cs" />
     <Compile Include="Entities\ShortUrl.cs" />
     <Compile Include="Entities\Story.cs" />
     <Compile Include="Entities\StoryCategory.cs" />
@@ -337,7 +341,7 @@
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\RecordsStats.cs" />
     <Compile Include="Models\FrontModels\RssParams.cs" />
-    <Compile Include="Models\FrontModels\ShoppingCart.cs" />
+    <Compile Include="Models\FrontModels\ShoppingCartSession.cs" />
     <Compile Include="Models\FrontModels\ShoppingCartItem.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarStoryTagsViewModel.cs" />
@@ -353,11 +357,15 @@
     <Compile Include="Models\MigrationModels\EntityMainImage.cs" />
     <Compile Include="Models\MigrationModels\EntityMediaFile.cs" />
     <Compile Include="Models\UrlShortenModels\BitlyModels.cs" />
+    <Compile Include="Repositories\ShoppingCartRepository.cs" />
+    <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\BaseContentRepository.cs" />
     <Compile Include="Repositories\BaseEntityRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FileStorageRepository.cs" />
     <Compile Include="Repositories\FileStorageTagRepository.cs" />
+    <Compile Include="Repositories\IRepositories\ICustomerRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IShoppingCartRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseContentRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseEntityRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBaseRepository.cs" />
@@ -366,6 +374,7 @@
     <Compile Include="Repositories\IRepositories\IFileStorageTagRepository.cs" />
     <Compile Include="Repositories\IRepositories\IListItemRepository.cs" />
     <Compile Include="Repositories\IRepositories\IListRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IAddressRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMailTemplateRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMainPageImageRepository.cs" />
     <Compile Include="Repositories\IRepositories\IMenuFileRepository.cs" />
@@ -409,17 +418,22 @@
     <Compile Include="Repositories\TemplateRepository.cs" />
     <Compile Include="Scheduler\Jobs\HelloJob.cs" />
     <Compile Include="Scheduler\QuartzService.cs" />
+    <Compile Include="Services\IServices\IShoppingCartService.cs" />
+    <Compile Include="Services\ShoppingCartService.cs" />
+    <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\AdresService.cs" />
     <Compile Include="Services\BaseContentService.cs" />
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\FileStorageService.cs" />
+    <Compile Include="Services\IServices\ICustomerService.cs" />
     <Compile Include="Services\IServices\IBaseContentService.cs" />
     <Compile Include="Services\IServices\IBaseEntityService.cs" />
     <Compile Include="Services\IServices\IBaseService.cs" />
     <Compile Include="Services\IServices\IFileStorageService.cs" />
     <Compile Include="Services\IServices\IListItemService.cs" />
     <Compile Include="Services\IServices\IListService.cs" />
+    <Compile Include="Services\IServices\IAddressService.cs" />
     <Compile Include="Services\IServices\IMailTemplateService.cs" />
     <Compile Include="Services\IServices\IMainPageImageService.cs" />
     <Compile Include="Services\IServices\IMenuService.cs" />
@@ -432,8 +446,10 @@
     <Compile Include="Services\IServices\ITagCategoryService.cs" />
     <Compile Include="Services\IServices\ITagService.cs" />
     <Compile Include="Services\IServices\ITemplateService.cs" />
+    <Compile Include="Services\IyzicoService.cs" />
     <Compile Include="Services\ListItemService.cs" />
     <Compile Include="Services\ListService.cs" />
+    <Compile Include="Services\AddressService.cs" />
     <Compile Include="Services\MailTemplateService.cs" />
     <Compile Include="Services\MainPageImageService.cs" />
     <Compile Include="Services\MenuService.cs" />

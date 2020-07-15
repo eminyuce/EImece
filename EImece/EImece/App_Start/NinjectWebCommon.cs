@@ -91,50 +91,16 @@ namespace EImece.App_Start
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();
 
-            kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
-            kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
-            kernel.Bind<IListService>().To<ListService>().InRequestScope();
-            kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();
-            kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
-            kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();
-            kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
-            kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
-            kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
-            kernel.Bind<IStoryCategoryService>().To<StoryCategoryService>().InRequestScope();
-            kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();
-            kernel.Bind<ISubscriberService>().To<SubscriberService>().InRequestScope();
-            kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
-            kernel.Bind<ITagService>().To<TagService>().InRequestScope();
-            kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
-            kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
-            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
-            kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();
-            kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
-            kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();
-            kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();
-            kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope();
-            kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
-            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
-            kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
-            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
-            kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
-            kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
-            kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
-            kernel.Bind<IShortUrlRepository>().To<ShortUrlRepository>().InRequestScope();
-            kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
-            kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
-            kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();
-            kernel.Bind<IStoryTagRepository>().To<StoryTagRepository>().InRequestScope();
-            kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();
-            kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
-            kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
-            kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope();
+            BindServices(kernel);
+            BindRepositories(kernel);
+
 
             //        BindByReflection(kernel, typeof(IBaseEntityService<>), "Service");
             //      BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
             kernel.Bind<AdresService>().ToSelf().InRequestScope();
+            kernel.Bind<IyzicoService>().ToSelf().InRequestScope();
             kernel.Bind<MigrationRepository>().ToSelf().InRequestScope();
             kernel.Bind<SiteMapService>().ToSelf().InRequestScope();
             kernel.Bind<XmlEditorHelper>().ToSelf().InRequestScope();
@@ -180,6 +146,60 @@ namespace EImece.App_Start
             kernel.Bind<IHttpContextFactory>().To<HttpContextFactory>();
 
             kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
+        }
+
+        private static void BindServices(IKernel kernel)
+        {
+            kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
+            kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
+            kernel.Bind<IListService>().To<ListService>().InRequestScope();
+            kernel.Bind<IMailTemplateService>().To<MailTemplateService>().InRequestScope();
+            kernel.Bind<IMainPageImageService>().To<MainPageImageService>().InRequestScope();
+            kernel.Bind<IMenuService>().To<MenuService>().InRequestScope();
+            kernel.Bind<IProductCategoryService>().To<ProductCategoryService>().InRequestScope();
+            kernel.Bind<IProductService>().To<ProductService>().InRequestScope();
+            kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
+            kernel.Bind<IStoryCategoryService>().To<StoryCategoryService>().InRequestScope();
+            kernel.Bind<IStoryService>().To<StoryService>().InRequestScope();
+            kernel.Bind<ISubscriberService>().To<SubscriberService>().InRequestScope();
+            kernel.Bind<ITagCategoryService>().To<TagCategoryService>().InRequestScope();
+            kernel.Bind<ITagService>().To<TagService>().InRequestScope();
+            kernel.Bind<ITemplateService>().To<TemplateService>().InRequestScope();
+
+            kernel.Bind<IAddressService>().To<AddressService>().InRequestScope();
+            kernel.Bind<ICustomerService>().To<CustomerService>().InRequestScope();
+            kernel.Bind<IShoppingCartService>().To<ShoppingCartService>().InRequestScope();
+
+        }
+
+        private static void BindRepositories(IKernel kernel)
+        {
+            kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
+            kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
+            kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();
+            kernel.Bind<IListRepository>().To<ListRepository>().InRequestScope();
+            kernel.Bind<IMailTemplateRepository>().To<MailTemplateRepository>().InRequestScope();
+            kernel.Bind<IMainPageImageRepository>().To<MainPageImageRepository>().InRequestScope();
+            kernel.Bind<IMenuFileRepository>().To<MenuFileRepository>().InRequestScope();
+            kernel.Bind<IMenuRepository>().To<MenuRepository>().InRequestScope();
+            kernel.Bind<IProductCategoryRepository>().To<ProductCategoryRepository>().InRequestScope();
+            kernel.Bind<IProductFileRepository>().To<ProductFileRepository>().InRequestScope();
+            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
+            kernel.Bind<IProductSpecificationRepository>().To<ProductSpecificationRepository>().InRequestScope();
+            kernel.Bind<IProductTagRepository>().To<ProductTagRepository>().InRequestScope();
+            kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
+            kernel.Bind<IShortUrlRepository>().To<ShortUrlRepository>().InRequestScope();
+            kernel.Bind<IStoryCategoryRepository>().To<StoryCategoryRepository>().InRequestScope();
+            kernel.Bind<IStoryFileRepository>().To<StoryFileRepository>().InRequestScope();
+            kernel.Bind<IStoryRepository>().To<StoryRepository>().InRequestScope();
+            kernel.Bind<IStoryTagRepository>().To<StoryTagRepository>().InRequestScope();
+            kernel.Bind<ISubscriberRepository>().To<SubscriberRepository>().InRequestScope();
+            kernel.Bind<ITagCategoryRepository>().To<TagCategoryRepository>().InRequestScope();
+            kernel.Bind<ITagRepository>().To<TagRepository>().InRequestScope();
+            kernel.Bind<ITemplateRepository>().To<TemplateRepository>().InRequestScope();
+            kernel.Bind<IAddressRepository>().To<AddressRepository>().InRequestScope();
+            kernel.Bind<ICustomerRepository>().To<CustomerRepository>().InRequestScope();
+            kernel.Bind<IShoppingCartRepository>().To<ShoppingCartRepository>().InRequestScope();
         }
 
         private static void BindByReflection(IKernel kernel, Type typeOfInterface, string typeofText)
