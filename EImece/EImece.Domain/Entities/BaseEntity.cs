@@ -26,6 +26,7 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Position))]
         public int Position { get; set; }
+   
 
         public int Lang { get; set; }
     }

@@ -12,6 +12,13 @@ namespace EImece.Domain
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public static string IyzicoBaseUrl
+        {
+            get
+            {
+                return GetConfigString("IyzicoBaseUrl", "https://sandbox-api.iyzipay.com");
+            }
+        }
         public static string IyzicoSecretKey
         {
             get
@@ -221,5 +228,6 @@ namespace EImece.Domain
             }
         }
 
+        
     }
 }

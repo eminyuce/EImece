@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +17,16 @@ namespace EImece.Domain.Entities
         //[Display(Name ="TestColumnName")]
         //[Required(ErrorMessage ="TestColumnName")]
         //[AllowHtml]
-        public string ContactName { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string Description { get; set; }
-        public string ZipCode { get; set; }
         public int AddressType { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        public string City { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        public string Country { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        public string ZipCode { get; set; }
+
+
     }
 }

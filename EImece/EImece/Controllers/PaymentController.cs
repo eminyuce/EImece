@@ -5,6 +5,7 @@ using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
 using Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -46,12 +47,24 @@ namespace EImece.Controllers
             if (shoppingCart == null)
             {
                 shoppingCart = new ShoppingCartSession();
-                shoppingCart.Customer.Country = "Turkiye";
+                var shippingAddress = new Domain.Entities.Address();
+                shippingAddress.Country = "Turkiye";
+                shoppingCart.ShippingAddress = shippingAddress;
+                shoppingCart.BillingAddress = shippingAddress;
                 shoppingCart.Customer.IsSameAsShippingAddress = true;
+                shoppingCart.Customer.Country = "Turkiye";
+                shoppingCart.Customer.Ip = GetIpAddress();
+                shoppingCart.Customer.IdentityNumber = Guid.NewGuid().ToString();
                 Session[ShoppingCartSession] = shoppingCart;
             }
 
             return shoppingCart;
+        }
+
+        private String GetIpAddress()
+        {
+       return (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
+            Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
         }
 
         public ActionResult ShoppingCart()
@@ -122,6 +135,6 @@ namespace EImece.Controllers
 
             return View();
         }
-
+      
     }
 }

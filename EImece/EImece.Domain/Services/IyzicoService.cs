@@ -40,14 +40,13 @@ namespace EImece.Domain.Services
         {
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
-
+            
+            
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
-            request.ConversationId = "123456789";
-            request.Price = "1"; // Tutar
-            request.PaidPrice = "1.1";
+            request.ConversationId = Guid.NewGuid().ToString();
             request.Currency = Currency.TRY.ToString();
-            request.BasketId = "B67832";
+            request.BasketId = Guid.NewGuid().ToString();
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
             request.CallbackUrl = "http:/<Iyzico Api Geri Dönüş Adresi>/OdemeSonucu"; /// Geri Dönüş Urlsi
 
@@ -64,7 +63,7 @@ namespace EImece.Domain.Services
             buyer.Surname = customer.Surname;
             buyer.GsmNumber = customer.GsmNumber;
             buyer.Email = customer.Email;
-            buyer.IdentityNumber = customer.IdentityNumber;
+            buyer.IdentityNumber = "38108089458";
             buyer.LastLoginDate = "2015-10-05 12:43:35";
             buyer.RegistrationDate = customer.RegistrationDate.ToString("yyyy-MM-dd HH:mm:ss");
             buyer.RegistrationAddress = customer.RegistrationAddress;
@@ -73,31 +72,44 @@ namespace EImece.Domain.Services
             buyer.Country = customer.Country;
             buyer.ZipCode = customer.ZipCode;
             request.Buyer = buyer;
+            if (shoppingCart.Customer.IsSameAsShippingAddress)
+            {
+                Address shippingAddress = new Address();
+                shippingAddress.ContactName = shoppingCart.Customer.FullName;
+                shippingAddress.City = shoppingCart.ShippingAddress.City;
+                shippingAddress.Country = shoppingCart.ShippingAddress.Country;
+                shippingAddress.Description = shoppingCart.ShippingAddress.Description;
+                shippingAddress.ZipCode = shoppingCart.ShippingAddress.ZipCode;
+                request.ShippingAddress = shippingAddress;
+                request.BillingAddress = shippingAddress;
+            }
+            else
+            {
+                Address shippingAddress = new Address();
+                shippingAddress.ContactName = shoppingCart.Customer.FullName;
+                shippingAddress.City = shoppingCart.ShippingAddress.City;
+                shippingAddress.Country = shoppingCart.ShippingAddress.Country;
+                shippingAddress.Description = shoppingCart.ShippingAddress.Description;
+                shippingAddress.ZipCode = shoppingCart.ShippingAddress.ZipCode;
+                request.ShippingAddress = shippingAddress;
 
-            Address shippingAddress = new Address();
-            shippingAddress.ContactName = "Cengizhan Bozkurt";
-            shippingAddress.City = "Antalya";
-            shippingAddress.Country = "Turkey";
-            shippingAddress.Description = "Mahalle --- Antalya";
-            shippingAddress.ZipCode = "07600";
-            request.ShippingAddress = shippingAddress;
 
-            Address billingAddress = new Address();
-            billingAddress.ContactName = "Cengizhan Bozkurt";
-            billingAddress.City = "Turkey";
-            billingAddress.Country = "Turkey";
-            billingAddress.Description = "Mahalle --- Antalya";
-            billingAddress.ZipCode = "07600";
-            request.BillingAddress = billingAddress;
+                Address billingAddress = new Address();
+                billingAddress.ContactName = shoppingCart.Customer.FullName;
+                billingAddress.City = shoppingCart.BillingAddress.City;
+                billingAddress.Country = shoppingCart.BillingAddress.Country;
+                billingAddress.Description = shoppingCart.BillingAddress.Description;
+                billingAddress.ZipCode = shoppingCart.BillingAddress.ZipCode;
+                request.BillingAddress = billingAddress;
+            }
 
             List<BasketItem> basketItems = new List<BasketItem>();
-
             double price = 0;
             foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems) //Session'da tutmuş oldugum sepette bulunan ürünler
             {
                 var item = shoppingCartItem.product;
                 BasketItem firstBasketItem = new BasketItem();
-                firstBasketItem.Id = string.IsNullOrEmpty(item.ProductCode) ? item.Id.ToString() : item.ProductCode;
+                firstBasketItem.Id = item.ProductCode;
                 firstBasketItem.Name = item.Name;
                 firstBasketItem.Category1 = item.ProductCategory.Name;
                 firstBasketItem.Category2 = "Ürün";
@@ -109,8 +121,9 @@ namespace EImece.Domain.Services
 
             request.Price = price.ToString(); // Tutar
             request.PaidPrice = price.ToString();
-
             request.BasketItems = basketItems;
+
+
             return CheckoutFormInitialize.Create(request, options); ;
         }
 
@@ -119,7 +132,7 @@ namespace EImece.Domain.Services
             Options options = new Options();
             options.ApiKey = AppConfig.IyzicoApiKey;
             options.SecretKey = AppConfig.IyzicoSecretKey;
-            options.BaseUrl = "https://sandbox-api.iyzipay.com";
+            options.BaseUrl = AppConfig.IyzicoBaseUrl;
             return options;
         }
     }

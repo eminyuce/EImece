@@ -16,8 +16,6 @@ namespace EImece.Domain.Entities
         //[Required(ErrorMessage ="TestColumnName")]
         //[AllowHtml]
         public int CustomerId { get; set; }
-        public int ShippingAddressId { get; set; }
-        public int BillingAddressId { get; set; }
         public string Locale { get; set; }
         public string ConversationId { get; set; }
         public string Price { get; set; }
@@ -25,5 +23,10 @@ namespace EImece.Domain.Entities
         public string Currency { get; set; }
         public string BasketId { get; set; }
         public string PaymentGroup { get; set; }
+
+        public int ShippingAddressId { get; set; }
+        public Address ShippingAddress { get; set; }
+        public int BillingAddressId { get; set; }
+        public Address BillingAddress { get; set; }
     }
 }
