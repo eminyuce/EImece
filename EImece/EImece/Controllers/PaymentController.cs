@@ -36,11 +36,12 @@ namespace EImece.Controllers
             var item = new ShoppingCartItem();
             item.product = product.Product;
             item.quantity = quantity;
+            item.ShoppingCartItemId = Guid.NewGuid().ToString();
             shoppingCart.Add(item);
             Session[ShoppingCartSession] = shoppingCart;
             return RedirectToAction("Detail", "Products", new { id = productId });
         }
-
+        
         private ShoppingCartSession GetShoppingCart()
         {
             ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[ShoppingCartSession];
@@ -49,8 +50,10 @@ namespace EImece.Controllers
                 shoppingCart = new ShoppingCartSession();
                 var shippingAddress = new Domain.Entities.Address();
                 shippingAddress.Country = "Turkiye";
+                var billingAddress = new Domain.Entities.Address();
+                billingAddress.Country = "Turkiye";
                 shoppingCart.ShippingAddress = shippingAddress;
-                shoppingCart.BillingAddress = shippingAddress;
+                shoppingCart.BillingAddress = billingAddress;
                 shoppingCart.Customer.IsSameAsShippingAddress = true;
                 shoppingCart.Customer.Country = "Turkiye";
                 shoppingCart.Customer.Ip = GetIpAddress();
@@ -84,6 +87,12 @@ namespace EImece.Controllers
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
                 shoppingCart.Customer = customer;
+                if (customer.IsSameAsShippingAddress)
+                {
+
+                }
+               
+         
                 Session[ShoppingCartSession] = shoppingCart;
                 return RedirectToAction("CheckoutDelivery");
             }

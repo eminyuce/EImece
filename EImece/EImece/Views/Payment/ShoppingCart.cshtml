@@ -30,44 +30,9 @@
 
     <div class="sixteen columns">
 
-        <!-- Cart -->
-        <table class="stacktable small-only">
-            <tbody>
-                <tr class="st-space"><td></td><td></td></tr>
-                <tr class="st-new-item"><td class="st-key"></td><td class="st-val st-head-row"><img src="images/small_product_list_08.jpg" alt=""></td></tr>
-                <tr><td class="st-key">Description</td><td class="st-val"><a href="#">Converse All Star Trainers</a></td></tr>
-                <tr><td class="st-key">Price</td><td class="st-val">$79.00</td></tr>
-                <tr>
-                    <td class="st-key">Quantity</td>
-                    <td class="st-val">
-                        <form action="#">
-                            <div class="qtyminus"></div>
-                            <input type="text" name="quantity" value="1" class="qty">
-                            <div class="qtyplus"></div>
-                        </form>
-                    </td>
-                </tr>
-                <tr><td class="st-key">Total</td><td class="st-val">$79.00</td></tr>
-                <tr><td class="st-key"></td><td class="st-val"><a href="#" class="cart-remove"></a></td></tr>
-                <tr class="st-space"><td></td><td></td></tr>
-                <tr class="st-new-item"><td class="st-key"></td><td class="st-val st-head-row"><img src="images/small_product_list_09.jpg" alt=""></td></tr>
-                <tr><td class="st-key">Description</td><td class="st-val"><a href="#">Wool Two-Piece Suit</a></td></tr>
-                <tr><td class="st-key">Price</td><td class="st-val">$99.00</td></tr>
-                <tr>
-                    <td class="st-key">Quantity</td>
-                    <td class="st-val">
-                        <form action="#">
-                            <div class="qtyminus"></div>
-                            <input type="text" name="quantity" value="1" class="qty">
-                            <div class="qtyplus"></div>
-                        </form>
-                    </td>
-                </tr>
-                <tr><td class="st-key">Total</td><td class="st-val">$99.00</td></tr>
-                <tr><td class="st-key"></td><td class="st-val"><a href="#" class="cart-remove"></a></td></tr>
-            </tbody>
-        </table><table class="cart-table responsive-table stacktable large-only">
 
+
+        <table class="cart-table responsive-table stacktable large-only">
             <tbody>
                 <tr>
                     <th>Item</th>
@@ -77,49 +42,41 @@
                     <th>Total</th>
                     <th></th>
                 </tr>
+
+
                 @if (!products.IsNullOrEmpty())
                 {
-                    foreach (var item in products)
+                    for (int i = 0; i < products.Count; i++)
                     {
-
+                        var item = products[i];
                         var product = item.product;
                         double totalPricePerItem = product.Price * item.quantity;
 
                         <tr>
                             <td>
+                                <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
                                 @if (product.MainImageId.HasValue && product.ImageState)
                                 {
                                     <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
                                 }
-
-
                             </td>
-
-
                             <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
-
-
-                            <td>@product.Price.CurrencySign()</td>
-
-
                             <td>
+                                <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
+                                <span> @product.Price.CurrencySign()</span>
 
-
-                                <form action="#">
-                                    <div class="qtyminus"></div>
-                                    <input type="text" name="quantity" value="@item.quantity" class="qty">
-                                    <div class="qtyplus"></div>
-                                </form>
                             </td>
-                            <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
+                            <td>
+                                <input type="text" name=@String.Format("quantity[{0}]", i)
+                                       data-shopping-quantity-id="@item.ShoppingCartItemId"
+                                       value="@item.quantity" autocomplete='off'
+                                       class="qty">
+                            </td>
+                            <td class="cart-total"><span data-shopping-item-total-price="@item.ShoppingCartItemId"  > @totalPricePerItem.CurrencySign()</span></td>
                             <td><a href="@Url.Action("RemoveCart",new { id=item.product.Id })" class="cart-remove"></a></td>
                         </tr>
                     }
                 }
-
-
-
-
 
             </tbody>
         </table>
@@ -130,14 +87,9 @@
             <tbody>
                 <tr>
                     <th>
-                        <form action="#" method="get" class="apply-coupon">
-                            <input class="search-field" type="text" placeholder="Coupon Code" value="">
-                            <a href="#" class="button gray">Apply Coupon</a>
-                        </form>
-
                         <div class="cart-btns">
                             <a href="@Url.Action("CheckoutBillingDetails")" class="button color cart-btns proceed">Proceed to Checkout</a>
-                            <a href="#" class="button gray cart-btns">Update Cart</a>
+                            <a id="test2" href="#" class="button gray cart-btns">Update Cart</a>
                         </div>
                     </th>
                 </tr>
@@ -176,3 +128,40 @@
     </div>
 
 </div>
+
+@section Scripts{
+
+    <script id="priceHtml" type="text/template">
+        ₺{{totalPrice}},00
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            console.log("jquery is working");
+            bindOnChangeQuantity();
+        });
+
+        function bindOnChangeQuantity() {
+            // $('[data-message-id] .full-text').slideUp();
+
+            $('[data-shopping-quantity-id]').each(function () {
+                $(this).off("blur");
+                $(this).on("blur", function (e) {
+                    var caller = e.target;
+                    var shoppingItem = $(caller).attr('data-shopping-quantity-id');
+                    console.log(shoppingItem);
+                    var itemPrice = $('[data-shopping-item-price=' + shoppingItem + ']').val();
+                    var totalPrice = parseFloat(itemPrice) * caller.value;
+                    console.log(totalPrice);
+                    var data = { totalPrice: totalPrice };
+                    $('[data-shopping-item-total-price=' + shoppingItem + ']').html(Mustache.render($('#priceHtml').html(), data));
+                });
+            });
+        }
+
+
+
+
+    </script>
+}
