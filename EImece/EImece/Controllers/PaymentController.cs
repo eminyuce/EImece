@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using Iyzipay;
@@ -111,20 +112,24 @@ namespace EImece.Controllers
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
             return View(shoppingCart);
+        }   
+        public ActionResult RenderPrice(double price)
+        {
+            return Json(new { status = "success", price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
         }
-         public ActionResult RemoveCart(int id)
+         public ActionResult RemoveCart(String shoppingItemId)
         {
             ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[ShoppingCartSession];
-            var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.product.Id == id);
+            var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId,StringComparison.InvariantCultureIgnoreCase));
             if (item != null)
             {
                 shoppingCart.ShoppingCartItems.Remove(item);
                 Session[ShoppingCartSession] = shoppingCart;
-                return Json(new { status = "success", id }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { status = "failed", id }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "failed", shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
         }
         // GET: Home

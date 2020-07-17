@@ -126,10 +126,6 @@
 
 @section Scripts{
 
-    <script id="priceHtml" type="text/template">
-        ₺{{totalPrice}},00
-    </script>
-
 
     <script>
      
@@ -145,13 +141,17 @@
                     var totalPrice = parseFloat(itemPrice) * caller.value;
                     $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(caller.value);
                     console.log(totalPrice);
-                    var data = { totalPrice: totalPrice };
-                    $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(Mustache.render($('#priceHtml').html(), data));
+                    renderPrice(totalPrice, function (data) {
+                        $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
+                    });
                     bindCalcuateTotalPrice();
                 });
             });
 
-
+            function renderPrice(price,success) {
+                var postData = JSON.stringify({ price: price });
+                ajaxMethodCall(postData, "/Payment/RenderPrice", success);
+            }
 
             function bindOnRemove() {
                 $('[data-shopping-item-remove]').each(function () {
@@ -160,8 +160,12 @@
                         e.preventDefault();
                         var caller = e.target;
                         var shoppingItemId = $(caller).attr('data-shopping-item-remove');
-                        $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
-                        bindCalcuateTotalPrice();
+                        var postData = JSON.stringify({ shoppingItemId: shoppingItemId });
+                        console.log(postData);
+                        ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
+                            $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
+                            bindCalcuateTotalPrice();
+                        });
                     });
                 });
             }
@@ -175,10 +179,10 @@
                     grandTotalPrice = grandTotalPrice + totalPrice;
                 });
                 var data = { totalPrice: grandTotalPrice };
-                $('#TotalPrice').html(Mustache.render($('#priceHtml').html(), data));
+                renderPrice(grandTotalPrice, function (data) {
+                    $('#TotalPrice').html(data.price);
+                });
             }
-
-
         });
 
        
