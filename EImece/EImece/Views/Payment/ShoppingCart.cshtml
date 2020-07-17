@@ -138,13 +138,18 @@
                     var caller = e.target;
                     var shoppingItemId = $(caller).attr('data-shopping-quantity-id');
                     var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
-                    var totalPrice = parseFloat(itemPrice) * caller.value;
-                    $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(caller.value);
-                    console.log(totalPrice);
-                    renderPrice(totalPrice, function (data) {
-                        $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
+                    var quantity = caller.value;
+                    var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
+                    console.log(postData);
+                    ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
+                        var totalPrice = parseFloat(itemPrice) * quantity;
+                        $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(quantity);
+                        console.log(totalPrice);
+                        renderPrice(totalPrice, function (data) {
+                            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
+                        });
+                        bindCalcuateTotalPrice();
                     });
-                    bindCalcuateTotalPrice();
                 });
             });
 

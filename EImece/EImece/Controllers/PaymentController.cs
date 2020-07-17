@@ -117,6 +117,21 @@ namespace EImece.Controllers
         {
             return Json(new { status = "success", price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult UpdateQuantity(String shoppingItemId, int quantity)
+        {
+            ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[ShoppingCartSession];
+            var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId, StringComparison.InvariantCultureIgnoreCase));
+            if (item != null)
+            {
+                item.quantity = quantity;
+                Session[ShoppingCartSession] = shoppingCart;
+                return Json(new { status = "success", shoppingItemId }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { status = "failed", shoppingItemId }, JsonRequestBehavior.AllowGet);
+            }
+        }
          public ActionResult RemoveCart(String shoppingItemId)
         {
             ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[ShoppingCartSession];
