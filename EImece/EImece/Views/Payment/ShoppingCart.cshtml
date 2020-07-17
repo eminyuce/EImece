@@ -89,7 +89,6 @@
                     <th>
                         <div class="cart-btns">
                             <a href="@Url.Action("CheckoutBillingDetails")" class="button color cart-btns proceed">Proceed to Checkout</a>
-                            <a id="test2" href="#" class="button gray cart-btns">Update Cart</a>
                         </div>
                     </th>
                 </tr>
@@ -106,10 +105,6 @@
         <table class="cart-table margin-top-5">
 
             <tbody>
-                <tr>
-                    <th>Cart Subtotal</th>
-                    <td><strong>@Model.SubTotalPrice.CurrencySign()</strong></td>
-                </tr>
 
                 <tr>
                     <th>Shipping and Handling</th>
@@ -137,55 +132,59 @@
 
 
     <script>
-        bindOnRemove();
+     
         $(document).ready(function () {
+            bindOnRemove();
             console.log("jquery is working");
-            bindOnChangeQuantity();
-        });
-
-        function bindOnChangeQuantity() {
-            // $('[data-message-id] .full-text').slideUp();
-
             $('[data-shopping-quantity-id]').each(function () {
                 $(this).off("blur");
                 $(this).on("blur", function (e) {
                     var caller = e.target;
                     var shoppingItemId = $(caller).attr('data-shopping-quantity-id');
-                    console.log(shoppingItem);
                     var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
                     var totalPrice = parseFloat(itemPrice) * caller.value;
+                    $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(caller.value);
                     console.log(totalPrice);
                     var data = { totalPrice: totalPrice };
                     $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(Mustache.render($('#priceHtml').html(), data));
-                });
-            });
-        }
-
-
-        function bindOnRemove() {
-            $('[data-shopping-item-remove]').each(function () {
-                $(this).off("click");
-                $(this).on("click", function (e) {
-                    e.preventDefault();
-                    var caller = e.target;
-                    var shoppingItemId = $(caller).attr('data-shopping-item-remove');
-                    $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
                     bindCalcuateTotalPrice();
                 });
             });
-        }
-        function bindCalcuateTotalPrice() {
-            var grandTotalPrice = 0;
-            $('[data-shopping-item-row]').each(function () {
-                var shoppingItemId = $(this).attr('data-shopping-item-row');
-                var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
-                var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
-                var totalPrice = parseFloat(itemPrice) * quantity;
-                grandTotalPrice = grandTotalPrice + totalPrice;
-            });
-            var data = { totalPrice: grandTotalPrice };
-            $('#TotalPrice').html(Mustache.render($('#priceHtml').html(), data));
-        }
+
+
+
+            function bindOnRemove() {
+                $('[data-shopping-item-remove]').each(function () {
+                    $(this).off("click");
+                    $(this).on("click", function (e) {
+                        e.preventDefault();
+                        var caller = e.target;
+                        var shoppingItemId = $(caller).attr('data-shopping-item-remove');
+                        $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
+                        bindCalcuateTotalPrice();
+                    });
+                });
+            }
+            function bindCalcuateTotalPrice() {
+                var grandTotalPrice = 0;
+                $('[data-shopping-item-row]').each(function () {
+                    var shoppingItemId = $(this).attr('data-shopping-item-row');
+                    var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
+                    var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
+                    var totalPrice = parseFloat(itemPrice) * quantity;
+                    grandTotalPrice = grandTotalPrice + totalPrice;
+                });
+                var data = { totalPrice: grandTotalPrice };
+                $('#TotalPrice').html(Mustache.render($('#priceHtml').html(), data));
+            }
+
+
+        });
+
+       
+            
+
+         
 
     </script>
 }
