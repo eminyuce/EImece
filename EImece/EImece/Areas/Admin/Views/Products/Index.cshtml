@@ -109,18 +109,23 @@
                                 </div>
                             </div>
 
-);
+       );
 
-if (isProductPriceEnable.SettingValue.ToBool(true))
-{
-columns.Add(c => c.Price).Titled(AdminResource.Price);
+       if (isProductPriceEnable.SettingValue.ToBool(true))
+       {
+           columns.Add(c => c.Price).
+        Titled(AdminResource.Price).
+        Sanitized(false).
+        Sortable(true).
+        RenderValueAs(o => o.Price.CurrencySign());
+               
 
-}
+       }
 
-columns.Add(c => c.ProductCode)
+       columns.Add(c => c.ProductCode)
 .Titled(AdminResource.ProductCode);
 
-columns.Add(o => o.Position)
+       columns.Add(o => o.Position)
 .Encoded(false).
 Sanitized(false).
 Css("smallGridColumn").

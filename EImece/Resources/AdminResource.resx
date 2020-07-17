@@ -744,4 +744,7 @@
   <data name="ProductCodeErrorMessage" xml:space="preserve">
     <value>Ürün Kodu Zorunludur.</value>
   </data>
+  <data name="MandatoryField" xml:space="preserve">
+    <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
+  </data>
 </root>

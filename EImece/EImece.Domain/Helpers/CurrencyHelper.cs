@@ -8,9 +8,13 @@ namespace EImece.Domain.Helpers
 {
     public static class CurrencyHelper
     {
+        public static string CurrencySign(this decimal price)
+        {
+            return price.ToString("C1");
+        }
         public static string CurrencySign(this double price)
         {
-            return price.ToString("C2");
+            return price.ToString("C1");
         }
     }
 }

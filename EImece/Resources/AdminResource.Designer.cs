@@ -988,6 +988,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zorunlu Alan. Lütfen Boş bırakmayınız..
+        /// </summary>
+        public static string MandatoryField {
+            get {
+                return ResourceManager.GetString("MandatoryField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
         public static string Menu {

@@ -25,6 +25,7 @@ namespace EImece.Domain.Entities
         public string ShortDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
+        [DataType(DataType.Currency)]
         public double Price { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Discount))]

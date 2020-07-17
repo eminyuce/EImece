@@ -99,9 +99,14 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var isProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
                     if (product.ProductCategoryId == 0)
                     {
                         ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
+                    }
+                    else if (isProductPriceEnable.SettingValue.ToBool(false) && product.Price <= 0)
+                    {
+                        ModelState.AddModelError("Price", AdminResource.MandatoryField);
                     }
                     else
                     {

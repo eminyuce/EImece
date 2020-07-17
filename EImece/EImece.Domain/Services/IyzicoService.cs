@@ -32,9 +32,9 @@ namespace EImece.Domain.Services
             string data = "";
             Options options = GetOptions();
             data = model.Token;
-            RetrieveCheckoutFormRequest request = new RetrieveCheckoutFormRequest();
+            var request = new RetrieveCheckoutFormRequest();
             request.Token = data;
-            return CheckoutForm.Retrieve(request, options); ;
+            return CheckoutForm.Retrieve(request, options); 
         }
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart)
         {
