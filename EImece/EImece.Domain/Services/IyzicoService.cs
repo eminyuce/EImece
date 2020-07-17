@@ -76,10 +76,11 @@ namespace EImece.Domain.Services
             {
                 Address shippingAddress = new Address();
                 shippingAddress.ContactName = shoppingCart.Customer.FullName;
-                shippingAddress.City = shoppingCart.ShippingAddress.City;
-                shippingAddress.Country = shoppingCart.ShippingAddress.Country;
-                shippingAddress.Description = shoppingCart.ShippingAddress.Description;
-                shippingAddress.ZipCode = shoppingCart.ShippingAddress.ZipCode;
+                Entities.Address shippingAddress1 = shoppingCart.ShippingAddress;
+                shippingAddress.City = shippingAddress1.City;
+                shippingAddress.Country = shippingAddress1.Country;
+                shippingAddress.Description = shippingAddress1.Description;
+                shippingAddress.ZipCode = shippingAddress1.ZipCode;
                 request.ShippingAddress = shippingAddress;
                 request.BillingAddress = shippingAddress;
             }
@@ -96,10 +97,11 @@ namespace EImece.Domain.Services
 
                 Address billingAddress = new Address();
                 billingAddress.ContactName = shoppingCart.Customer.FullName;
-                billingAddress.City = shoppingCart.BillingAddress.City;
-                billingAddress.Country = shoppingCart.BillingAddress.Country;
-                billingAddress.Description = shoppingCart.BillingAddress.Description;
-                billingAddress.ZipCode = shoppingCart.BillingAddress.ZipCode;
+                Entities.Address billingAddress1 = shoppingCart.BillingAddress;
+                billingAddress.City = billingAddress1.City;
+                billingAddress.Country = billingAddress1.Country;
+                billingAddress.Description = billingAddress1.Description;
+                billingAddress.ZipCode = billingAddress1.ZipCode;
                 request.BillingAddress = billingAddress;
             }
 

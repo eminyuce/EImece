@@ -9,6 +9,7 @@
 @{
     var products = Model.ShoppingCartItems;
     var customer = Model.Customer;
+    var billingAddress = Model.BillingAddress;
 }
 
 
@@ -17,10 +18,10 @@
         <li><strong>Billing Address</strong></li>
         <li>@customer.FullName</li>
         <li>@customer.Email</li>
-        <li>@customer.RegistrationAddress</li>
-        <li>@customer.ZipCode</li>
-        <li>@customer.City</li>
-        <li>@customer.Country</li>
+        <li>@billingAddress.Description</li>
+        <li>@billingAddress.ZipCode</li>
+        <li>@billingAddress.City</li>
+        <li>@billingAddress.Country</li>
     </ul>
 </div>
 <div class="four columns alpha omega">

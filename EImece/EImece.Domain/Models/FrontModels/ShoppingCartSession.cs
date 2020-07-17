@@ -10,10 +10,54 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ShoppingCartSession
     {
-        public List<ShoppingCartItem> ShoppingCartItems = new List<ShoppingCartItem>();
-        public Customer Customer = new Customer();
-        public Address ShippingAddress = new Address();
-        public Address BillingAddress = new Address();
+        private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
+        private Customer _customer = new Customer();
+        private Address _shippingAddress = new Address();
+        private Address _billingAddress = new Address();
+
+
+        public List<ShoppingCartItem> ShoppingCartItems
+        { 
+            get {
+                return _shoppingCartItems;
+            }
+            set {
+                _shoppingCartItems = value;
+            }
+        }
+        public Customer Customer
+        {
+            get
+            {
+                return _customer;
+            }
+            set
+            {
+                _customer = value;
+            }
+        }
+        public Address ShippingAddress
+        {
+            get
+            {
+                return _shippingAddress;
+            }
+            set
+            {
+                _shippingAddress = value;
+            }
+        }
+        public Address BillingAddress
+        {
+            get
+            {
+                return _billingAddress;
+            }
+            set
+            {
+                _billingAddress = value;
+            }
+        }
 
         public void Add(ShoppingCartItem item)
         {

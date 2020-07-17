@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using Iyzipay;
@@ -95,10 +96,11 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 if (customer.IsSameAsShippingAddress)
                 {
-
+                    setAddress(customer, shoppingCart.ShippingAddress);
+                    setAddress(customer, shoppingCart.BillingAddress);
                 }
-               
-         
+
+
                 Session[ShoppingCartSession] = shoppingCart;
                 return RedirectToAction("CheckoutDelivery");
             }
@@ -107,6 +109,15 @@ namespace EImece.Controllers
                 return RedirectToAction("CheckoutBillingDetails");
             }
         }
+
+        private static void setAddress(Customer customer, Domain.Entities.Address address)
+        {
+            address.City = customer.City;
+            address.Country = customer.Country;
+            address.ZipCode = customer.ZipCode;
+            address.Description = customer.RegistrationAddress;
+        }
+
         public ActionResult CheckoutDelivery()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -156,8 +167,20 @@ namespace EImece.Controllers
         public ActionResult PlaceOrder()
         {
             ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[ShoppingCartSession];
-            CheckoutFormInitialize checkoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart);
-            return View(checkoutFormInitialize);
+            if(shoppingCart == null || shoppingCart.ShoppingCartItems.IsNullOrEmpty())
+            {
+                return Content("ShoppingCartItems is EMPTY");
+            }
+            if (shoppingCart.Customer.isValid())
+            {
+                CheckoutFormInitialize checkoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart);
+                return View(checkoutFormInitialize);
+            }
+            else
+            {
+                return Content("Customer is NOT valid");
+            }
+            
         }
 
        

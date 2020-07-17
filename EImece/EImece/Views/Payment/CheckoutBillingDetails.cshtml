@@ -89,7 +89,7 @@
 
 
         <span class="shippping-checkbox">
-            <input class="input-checkbox" id="shipping-address" type="checkbox" name="customer.IsSameAsShippingAddress"  @(customer.IsSameAsShippingAddress ? String.Format("checked='checked'") : "" )>
+            @Html.CheckBoxFor(model => customer.IsSameAsShippingAddress, new { @class = "input-checkbox" })
             <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
         </span>
         <div class="clearfix"></div>
@@ -106,7 +106,7 @@
     <!-- Billing Details / Enc -->
     <!-- Checkout Cart -->
     <div class="eight columns">
-        @Html.Partial("_ShoppingCartProducts", Model)
+        @Html.Partial("ShoppingCartTemplates/_ShoppingCartProducts", Model)
     </div>
     <!-- Checkout Cart / End -->
 

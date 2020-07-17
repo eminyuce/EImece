@@ -37,7 +37,7 @@
         <!-- Checkout Content -->
         <a href="@Url.Action("CheckoutBillingDetails")"><div class="checkout-section"><span>1</span> Billing Details <strong><i class="fa fa-edit"></i>Edit</strong> </div></a>
         <div class="checkout-content">
-            @Html.Partial("_AddressReview", Model)
+            @Html.Partial("ShoppingCartTemplates/_AddressReview", Model)
         </div>
 
 
@@ -112,7 +112,7 @@
     <!-- Checkout Content / End -->
     <!-- Checkout Cart -->
     <div class="eight columns">
-        @Html.Partial("_ShoppingCartProducts", Model)
+        @Html.Partial("ShoppingCartTemplates/_ShoppingCartProducts", Model)
     </div>
     <!-- Checkout Cart / End -->
 

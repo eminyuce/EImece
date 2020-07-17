@@ -1,4 +1,5 @@
-﻿using Resources;
+﻿using EImece.Domain.Models.Enums;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,6 +28,14 @@ namespace EImece.Domain.Entities
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string ZipCode { get; set; }
 
+        public Address()
+        {
+
+        }
+        public Address(AddressType addressType)
+        {
+            this.AddressType = (int)addressType;
+        }
 
     }
 }
