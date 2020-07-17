@@ -891,8 +891,9 @@
     <Content Include="Views\Payment\CheckoutBillingDetails.cshtml" />
     <Content Include="Views\Payment\CheckoutDelivery.cshtml" />
     <Content Include="Views\Payment\CheckoutPaymentOrderReview.cshtml" />
-    <Content Include="Views\Shared\_ShoppingCartProducts.cshtml" />
+    <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartProducts.cshtml" />
     <Content Include="Views\Shared\_AddressReview.cshtml" />
+    <Content Include="Views\Shared\ShoppingCartTemplates\_HomePageShoppingCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

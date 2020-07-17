@@ -28,6 +28,11 @@ namespace EImece.Controllers
         {
             return View();
         }
+         public ActionResult HomePageShoppingCart()
+        {
+            ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[ShoppingCartSession];
+            return PartialView("ShoppingCartTemplates/_HomePageShoppingCart", shoppingCart);
+        }
 
         public ActionResult AddToCart(int productId, int quantity)
         {

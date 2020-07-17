@@ -169,6 +169,7 @@
                         console.log(postData);
                         ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
                             $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
+                            $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
                             bindCalcuateTotalPrice();
                         });
                     });
@@ -186,6 +187,7 @@
                 var data = { totalPrice: grandTotalPrice };
                 renderPrice(grandTotalPrice, function (data) {
                     $('#TotalPrice').html(data.price);
+                    $('#HomePageTotalPrice').html(data.price);
                 });
             }
         });
