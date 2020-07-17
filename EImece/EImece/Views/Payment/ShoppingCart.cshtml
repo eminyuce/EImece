@@ -52,7 +52,7 @@
                         var product = item.product;
                         double totalPricePerItem = product.Price * item.quantity;
 
-                        <tr>
+                        <tr data-shopping-item-row="@item.ShoppingCartItemId">
                             <td>
                                 <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
                                 @if (product.MainImageId.HasValue && product.ImageState)
@@ -73,7 +73,7 @@
                                        class="qty">
                             </td>
                             <td class="cart-total"><span data-shopping-item-total-price="@item.ShoppingCartItemId"  > @totalPricePerItem.CurrencySign()</span></td>
-                            <td><a href="@Url.Action("RemoveCart",new { id=item.product.Id })" class="cart-remove"></a></td>
+                            <td><a data-shopping-item-remove="@item.ShoppingCartItemId"  class="cart-remove"></a></td>
                         </tr>
                     }
                 }
@@ -118,7 +118,7 @@
 
                 <tr>
                     <th>Order Total</th>
-                    <td><strong>@Model.TotalPrice.CurrencySign()</strong></td>
+                    <td><strong><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></strong></td>
                 </tr>
 
             </tbody>
@@ -137,6 +137,7 @@
 
 
     <script>
+        bindOnRemove();
         $(document).ready(function () {
             console.log("jquery is working");
             bindOnChangeQuantity();
@@ -149,19 +150,42 @@
                 $(this).off("blur");
                 $(this).on("blur", function (e) {
                     var caller = e.target;
-                    var shoppingItem = $(caller).attr('data-shopping-quantity-id');
+                    var shoppingItemId = $(caller).attr('data-shopping-quantity-id');
                     console.log(shoppingItem);
-                    var itemPrice = $('[data-shopping-item-price=' + shoppingItem + ']').val();
+                    var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
                     var totalPrice = parseFloat(itemPrice) * caller.value;
                     console.log(totalPrice);
                     var data = { totalPrice: totalPrice };
-                    $('[data-shopping-item-total-price=' + shoppingItem + ']').html(Mustache.render($('#priceHtml').html(), data));
+                    $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(Mustache.render($('#priceHtml').html(), data));
                 });
             });
         }
 
 
-
+        function bindOnRemove() {
+            $('[data-shopping-item-remove]').each(function () {
+                $(this).off("click");
+                $(this).on("click", function (e) {
+                    e.preventDefault();
+                    var caller = e.target;
+                    var shoppingItemId = $(caller).attr('data-shopping-item-remove');
+                    $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
+                    bindCalcuateTotalPrice();
+                });
+            });
+        }
+        function bindCalcuateTotalPrice() {
+            var grandTotalPrice = 0;
+            $('[data-shopping-item-row]').each(function () {
+                var shoppingItemId = $(this).attr('data-shopping-item-row');
+                var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
+                var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
+                var totalPrice = parseFloat(itemPrice) * quantity;
+                grandTotalPrice = grandTotalPrice + totalPrice;
+            });
+            var data = { totalPrice: grandTotalPrice };
+            $('#TotalPrice').html(Mustache.render($('#priceHtml').html(), data));
+        }
 
     </script>
 }

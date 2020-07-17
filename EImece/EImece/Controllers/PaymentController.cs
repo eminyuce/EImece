@@ -120,9 +120,12 @@ namespace EImece.Controllers
             {
                 shoppingCart.ShoppingCartItems.Remove(item);
                 Session[ShoppingCartSession] = shoppingCart;
+                return Json(new { status = "success", id }, JsonRequestBehavior.AllowGet);
             }
-
-            return RedirectToAction("ShoppingCart");
+            else
+            {
+                return Json(new { status = "failed", id }, JsonRequestBehavior.AllowGet);
+            }
         }
         // GET: Home
         public ActionResult PlaceOrder()
