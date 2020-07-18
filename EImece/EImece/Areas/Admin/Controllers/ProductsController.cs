@@ -222,19 +222,26 @@ namespace EImece.Areas.Admin.Controllers
 
             return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage));
         }
-        public ActionResult MoveProductsInTrees(int id=0)
+        public ActionResult MoveProductsInTrees(int id=0, int oldCategoryId=0)
         {
             ViewBag.TreeLeft = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.TreeRight = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, "", CurrentLanguage);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            if(id > 0 && oldCategoryId > 0)
+            {
+                var newCategory = ProductCategoryService.GetSingle(id);
+                var oldCategory = ProductCategoryService.GetSingle(oldCategoryId);
+                ViewBag.MoveProductsMessage = String.Format("Seçilen {0} Ürün '{1}' kategorisinden '{2}' kategorisine tasindi", products.Count().ToString(),  oldCategory.Name, newCategory.Name);
+            }
+
             return View(products);
         }
-        public ActionResult MoveProducts(int id, string products)
+        public ActionResult MoveProducts(int id, string products,int oldCategoryId)
         {
-            ProductService.MoveProductsInTrees(id, products);
-            return RedirectToAction("MoveProductsInTrees", new { id });
+           ProductService.MoveProductsInTrees(id, products);
+           return RedirectToAction("MoveProductsInTrees", new { id, oldCategoryId });
         }
     }
 }
