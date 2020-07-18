@@ -313,5 +313,20 @@ namespace EImece.Domain.Services
 
             SaveProductSpecifications(Specifications);
         }
+
+        public void MoveProductsInTrees(int newCategoryId, String products)
+        {
+            if(!String.IsNullOrEmpty(products))
+            {
+                var productIdList = products.Split(',');
+                foreach (var id in productIdList)
+                {
+                    var product = ProductRepository.GetProduct(id.ToInt());
+                    product.ProductCategoryId = newCategoryId;
+                    ProductRepository.Edit(product);
+                }
+                ProductRepository.Save();
+            }
+        }
     }
 }

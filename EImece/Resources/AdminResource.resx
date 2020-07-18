@@ -747,4 +747,7 @@
   <data name="MandatoryField" xml:space="preserve">
     <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
   </data>
+  <data name="MoveProductsInTrees" xml:space="preserve">
+    <value>Ürünleri Tasi</value>
+  </data>
 </root>

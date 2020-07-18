@@ -222,5 +222,19 @@ namespace EImece.Areas.Admin.Controllers
 
             return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage));
         }
+        public ActionResult MoveProductsInTrees(int id=0)
+        {
+            ViewBag.TreeLeft = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.TreeRight = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            var products = ProductService.GetAdminPageList(id, "", CurrentLanguage);
+            ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            return View(products);
+        }
+        public ActionResult MoveProducts(int id, string products)
+        {
+            ProductService.MoveProductsInTrees(id, products);
+            return RedirectToAction("MoveProductsInTrees", new { id });
+        }
     }
 }

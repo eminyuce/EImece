@@ -1060,6 +1060,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürünleri Tasi.
+        /// </summary>
+        public static string MoveProductsInTrees {
+            get {
+                return ResourceManager.GetString("MoveProductsInTrees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string Name {

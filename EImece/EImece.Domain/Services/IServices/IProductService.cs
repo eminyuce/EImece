@@ -44,5 +44,6 @@ namespace EImece.Domain.Services.IServices
          int language);
 
         void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request);
+        void MoveProductsInTrees(int newCategoryId, string products);
     }
 }
