@@ -86,7 +86,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
             includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
             Expression<Func<ProductCategory, bool>> match = r => r.IsActive;
-            var item = EntityFilterHelper.FilterProductCategory(GetSingleIncluding(categoryId, includeProperties.ToArray(), match));
+            var item = GetSingleIncluding(categoryId, includeProperties.ToArray(), match);
             return item;
         }
 

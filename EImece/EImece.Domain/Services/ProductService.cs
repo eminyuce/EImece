@@ -112,26 +112,27 @@ namespace EImece.Domain.Services
             ProductDetailViewModel result = null;
 
             result = new ProductDetailViewModel();
-            var r = ProductRepository.GetProduct(id);
+            var product = ProductRepository.GetProduct(id);
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
 
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, r.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
-            result.Product = r;
-            result.Template = TemplateService.GetTemplate(r.ProductCategory.TemplateId.Value);
-            result.BreadCrumb = ProductCategoryService.GetBreadCrumb(r.ProductCategoryId, r.Lang);
+            result.Product =  product;
+            EntityFilterHelper.FilterProduct(result.Product);
+            result.Template = TemplateService.GetTemplate(product.ProductCategory.TemplateId.Value);
+            result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
             result.RelatedStories = new List<Story>();
-            if (r != null && r.ProductTags.Any())
+            if (product != null && product.ProductTags.Any())
             {
-                var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
-                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, r.Lang, 0);
+                var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
+                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, product.Lang, 0);
             }
             result.RelatedProducts = new List<Product>();
-            if (r != null && r.ProductTags.Any())
+            if (product != null && product.ProductTags.Any())
             {
-                var tagIdList = r.ProductTags.Select(t => t.TagId).ToArray();
-                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, r.Lang, id);
+                var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
+                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, product.Lang, id);
             }
 
             return result;

@@ -17,17 +17,61 @@ namespace EImece.Domain.Helpers
                 return productCategory;
             }
             productCategory.Products = FilterProducts(productCategory.Products);
+         
+
             return productCategory;
         }
-
+ 
         public static ICollection<Product> FilterProducts(ICollection<Product> items)
         {
+            var result = new List<Product>();
             if (items == null)
             {
-                return items;
+                return result;
+            }
+            foreach(var item in items)
+            {
+                FilterProduct(item);
+            }
+
+
+            return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+        }
+
+        public static void FilterProduct(Product item)
+        {
+            item.ProductTags = FilterProductTags(item.ProductTags);
+            item.ProductSpecifications = FilterProductSpecifications(item.ProductSpecifications);
+        }
+
+        public static ICollection<ProductSpecification> FilterProductSpecifications(ICollection<ProductSpecification> items)
+        {
+            var result = new List<ProductSpecification>();
+            if (items == null)
+            {
+                return result;
             }
             return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
         }
+
+        public static ICollection<ProductTag> FilterProductTags(ICollection<ProductTag> items)
+        {
+            var result = new List<ProductTag>();
+            if (items == null)
+            {
+                return result;
+            }
+            foreach (var item in items)
+            {
+                if(item.Tag != null && item.Tag.IsActive)
+                {
+                    result.Add(item);
+                }
+            }
+
+            return result; 
+        }
+
         public static List<TagCategory> FilterTagCategories(List<TagCategory> tagCategories)
         {
             var result = new List<TagCategory>();

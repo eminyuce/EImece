@@ -52,7 +52,7 @@ namespace EImece.Domain.Services
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = ProductCategoryRepository.GetProductCategory(categoryId);
+                result = EntityFilterHelper.FilterProductCategory(ProductCategoryRepository.GetProductCategory(categoryId));
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
