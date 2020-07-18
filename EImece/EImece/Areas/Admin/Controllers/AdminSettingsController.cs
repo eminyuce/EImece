@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Models.AdminModels;
+using Resources;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -16,7 +17,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(SettingModel settingModel)
         {
             SettingService.SaveSettingModel(settingModel);
-            return RedirectToAction("Index");
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(SettingService.GetSettingModel());
         }
     }
 }
