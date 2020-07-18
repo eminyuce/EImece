@@ -12,30 +12,32 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-
-       @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.CreatedDate)
-        @Html.HiddenFor(model => model.UpdatedDate)
-        @Html.HiddenFor(model => model.Name)
-        @Html.HiddenFor(model => model.IsActive)
-        @Html.HiddenFor(model => model.Position)
-        @Html.HiddenFor(model => model.SettingValue)
-        @Html.HiddenFor(model => model.SettingKey)
-
+       
         <div class="form-group">
-            <div class="col-md-12">
-                @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "privacypolicy", @style = "margin: 0px; width: 100%; height: 125px;" })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            <div class="col-md-9">
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
             </div>
-        </div>
+                <div class="col-md-3">
+                    <input type="submit" value="@saveButtonText" class="btn btn-success btn-block" />
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.UpdatedDate)
+            @Html.HiddenFor(model => model.Name)
+            @Html.HiddenFor(model => model.IsActive)
+            @Html.HiddenFor(model => model.Position)
+            @Html.HiddenFor(model => model.SettingValue)
+            @Html.HiddenFor(model => model.SettingKey)
 
-        <div class="form-group">
-            <div class="col-md-offset-9 col-md-3">
-                <input type="submit" value="@saveButtonText" class="btn btn-success btn-block" />
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "privacypolicy", @style = "margin: 0px; width: 100%; height: 125px;" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
             </div>
+
         </div>
-    </div>
 }
 
 <div>
