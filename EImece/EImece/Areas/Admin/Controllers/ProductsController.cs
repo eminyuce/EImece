@@ -57,6 +57,7 @@ namespace EImece.Areas.Admin.Controllers
             var productDetailViewModel = ProductService.GetProductById(id);
             Product content = productDetailViewModel.Product;
             ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
+            RemoveModelState();
             return View(content);
         }
 
@@ -103,11 +104,11 @@ namespace EImece.Areas.Admin.Controllers
                     var isProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
                     if (product.ProductCategoryId == 0)
                     {
-                        ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
+                        ModelState.AddModelError("", AdminResource.ProductCategoryIdErrorMessage);
                     }
                     else if (isProductPriceEnable.SettingValue.ToBool(false) && product.Price <= 0)
                     {
-                        ModelState.AddModelError("Price", AdminResource.MandatoryField);
+                        ModelState.AddModelError("", AdminResource.MandatoryField);
                     }
                     else
                     {
@@ -146,10 +147,11 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid  && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
+            RemoveModelState();
             return View(product);
         }
 

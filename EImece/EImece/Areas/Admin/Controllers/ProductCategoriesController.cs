@@ -103,6 +103,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
+            RemoveModelState();
             return View(productCategory);
         }
 

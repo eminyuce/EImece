@@ -92,10 +92,11 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
+            RemoveModelState();
             return View(menu);
         }
 

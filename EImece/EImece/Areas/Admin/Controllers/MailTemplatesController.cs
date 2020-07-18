@@ -85,6 +85,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
             ViewBag.RazorRenderResult = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
+            RemoveModelState();
             return View(MailTemplate);
         }
 

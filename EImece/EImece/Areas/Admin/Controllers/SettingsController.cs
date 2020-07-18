@@ -87,6 +87,7 @@ namespace EImece.Areas.Admin.Controllers
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
+
         public ActionResult AddAboutUs()
         {
             var setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
@@ -131,6 +132,7 @@ namespace EImece.Areas.Admin.Controllers
                     setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
             }
             catch (Exception ex)
@@ -139,9 +141,11 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+           
+            RemoveModelState();
             return View(setting);
         }
+
         public ActionResult AddTermsAndConditions()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
@@ -186,6 +190,7 @@ namespace EImece.Areas.Admin.Controllers
                     setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
             }
             catch (Exception ex)
@@ -194,7 +199,8 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+          
+            RemoveModelState();
             return View(setting);
         }
 
@@ -214,7 +220,6 @@ namespace EImece.Areas.Admin.Controllers
             content.IsActive = true;
             if (id == 0)
             {
-
             }
             else
             {
@@ -233,7 +238,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-       
                 if (setting == null)
                 {
                     return HttpNotFound();
@@ -245,8 +249,8 @@ namespace EImece.Areas.Admin.Controllers
                     setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
-               
             }
             catch (Exception ex)
             {
@@ -254,13 +258,13 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            
+            RemoveModelState();
             return View(setting);
         }
 
         public ActionResult WebSiteLogo(int id = 0)
         {
-
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
             if (id == 0)
@@ -276,26 +280,34 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
         {
-            var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
-            if (id > 0)
+
+            if (postedImage != null)
             {
-                webSiteLogoSetting = SettingService.GetSingle(id);
-                FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
-                id = webSiteLogoSetting.Id;
+                 var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
+                if (id > 0)
+                {
+                    webSiteLogoSetting = SettingService.GetSingle(id);
+                    FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
+                    id = webSiteLogoSetting.Id;
+                }
+
+                var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
+                webSiteLogoSetting.Name = Constants.WebSiteLogo;
+                webSiteLogoSetting.Description = "";
+                webSiteLogoSetting.EntityHash = "";
+                webSiteLogoSetting.SettingValue = result.NewFileName;
+                webSiteLogoSetting.SettingKey = Constants.WebSiteLogo;
+                webSiteLogoSetting.IsActive = true;
+                webSiteLogoSetting.Position = 1;
+                webSiteLogoSetting.Lang = CurrentLanguage;
+                SettingService.SaveOrEditEntity(webSiteLogoSetting);
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                RemoveModelState();
+                return View("WebSiteLogo",webSiteLogoSetting);
             }
-
-            var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
-            webSiteLogoSetting.Name = Constants.WebSiteLogo;
-            webSiteLogoSetting.Description = "";
-            webSiteLogoSetting.EntityHash = "";
-            webSiteLogoSetting.SettingValue = result.NewFileName;
-            webSiteLogoSetting.SettingKey = Constants.WebSiteLogo;
-            webSiteLogoSetting.IsActive = true;
-            webSiteLogoSetting.Position = 1;
-            webSiteLogoSetting.Lang = CurrentLanguage;
-            SettingService.SaveOrEditEntity(webSiteLogoSetting);
-
-            return RedirectToAction("WebSiteLogo", new { id = webSiteLogoSetting.Id });
+            ModelState.AddModelError("", "Lütfen logo resmi seçiniz");
+            var l = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            return View("WebSiteLogo", l);
         }
 
         [HttpPost, ActionName("Delete")]

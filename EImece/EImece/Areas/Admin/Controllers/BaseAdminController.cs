@@ -223,5 +223,20 @@ namespace EImece.Areas.Admin.Controllers
                 return File(data, "text/csv", fileName + ".csv");
             }
         }
+        protected void RemoveModelState()
+        {
+            RemoveModelState("Id");
+            RemoveModelState("CreatedDate");
+            RemoveModelState("UpdatedDate");
+            RemoveModelState("Lang");
+        }
+
+        private void RemoveModelState(string key)
+        {
+            if (ModelState.ContainsKey(key))
+            {
+                ModelState.Remove(key);
+            }
+        }
     }
 }

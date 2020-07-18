@@ -63,14 +63,14 @@ namespace EImece.Areas.Admin.Controllers
                         EImeceImageType.StoryMainImage, story);
 
                     story.Lang = CurrentLanguage;
-                    StoryService.SaveOrEditEntity(story);
+                    story = StoryService.SaveOrEditEntity(story);
 
                     if (tags != null)
                     {
                         StoryService.SaveStoryTags(story.Id, tags);
                     }
 
-                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText,StringComparison.InvariantCultureIgnoreCase))
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return ReturnTempUrl("Index");
                     }
@@ -83,12 +83,16 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
+            RemoveModelState();
+
             return View(story);
         }
+
+   
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
