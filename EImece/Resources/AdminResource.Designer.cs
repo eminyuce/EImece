@@ -592,7 +592,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yayınla.
+        ///   Looks up a localized string similar to Seçilenleri Yayınla.
         /// </summary>
         public static string GridActiveSelectedButtonText {
             get {

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="GridActiveSelectedButtonText" xml:space="preserve">
-    <value>Yayınla</value>
+    <value>Seçilenleri Yayınla</value>
   </data>
   <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
     <value>Yayından Kaldır</value>
