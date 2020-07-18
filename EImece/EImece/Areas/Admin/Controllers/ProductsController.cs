@@ -2,6 +2,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
@@ -227,11 +228,17 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.TreeLeft = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.TreeRight = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, "", CurrentLanguage);
-            ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
-            if(id > 0 && oldCategoryId > 0)
+            if (products.IsNullOrEmpty())
             {
-                var newCategory = ProductCategoryService.GetSingle(id);
+                products = new System.Collections.Generic.List<Product>();
+            }
+
+           
+            var newCategory = ProductCategoryService.GetSingle(id);
+            ViewBag.SelectedCategory = newCategory;
+
+            if (id > 0 && oldCategoryId > 0)
+            {
                 var oldCategory = ProductCategoryService.GetSingle(oldCategoryId);
                 ViewBag.MoveProductsMessage = String.Format("Seçilen {0} Ürün '{1}' kategorisinden '{2}' kategorisine tasindi", products.Count().ToString(),  oldCategory.Name, newCategory.Name);
             }

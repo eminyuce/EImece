@@ -11,27 +11,19 @@
 @{
     ViewBag.Title = "Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-
+    var products = Model;
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
-    var controllerName = "Products";
-    var gridName = "productGrid";
-    var contents = Model;
+    var gridName = "productsGrid";
+    var baseList = products.DownCasting<Product>();
     ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
-    var products = Model;
-    var baseList = contents.DownCasting<Product>();
-    var gridImagesText = AdminResource.GridImagesText;
-    var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var gridDetailText = AdminResource.GridDetailText;
 
-    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
 
 }
 
 <div class="row">
     <div class="col-md-2">
-           <input type="hidden" id="selectedCategory" value="@selectedCategory.Id" />
+        
         @Html.SharkDev().TreeView(settings =>
     {
         settings.Id = "TreeLeft";
@@ -49,6 +41,7 @@
     <div class="col-md-8">
         @if (selectedCategory != null)
         {
+             
         <span>
             @{
                 <span>
@@ -62,6 +55,7 @@
             <a href="@Url.Action("MoveProductsInTrees", "Products",new { id=0 })">
                 <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
             </a>
+            <input type="hidden" id="selectedCategory" value="@selectedCategory.Id" />
             @if (!String.IsNullOrEmpty(ViewBag.MoveProductsMessage))
             {
                 <div class="alert alert-success" role="alert">
@@ -74,7 +68,7 @@
         }
         <div class="panel panel-primary">
             @Html.Partial("pGridDropDown", baseList)
-            @Html.Grid(contents).Named(gridName).Columns(columns =>
+            @Html.Grid(products).Named(gridName).Columns(columns =>
     {
 
     columns.Add(o => o.Id, true);
