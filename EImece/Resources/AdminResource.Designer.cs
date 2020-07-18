@@ -592,7 +592,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seçilen Kayıtları Etkinleştir.
+        ///   Looks up a localized string similar to Yayınla.
         /// </summary>
         public static string GridActiveSelectedButtonText {
             get {
@@ -601,7 +601,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seçilen Kayıtları Devre Dışı Bırak.
+        ///   Looks up a localized string similar to Yayından Kaldır.
         /// </summary>
         public static string GridDeActiveSelectedButtonText {
             get {
@@ -628,7 +628,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tüm seçimleri kaldır.
+        ///   Looks up a localized string similar to Seçilenleri Kaldır.
         /// </summary>
         public static string GridDeSelectAllButtonText {
             get {
@@ -718,7 +718,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hepsini seç.
+        ///   Looks up a localized string similar to Hepsi.
         /// </summary>
         public static string GridSelectAllButtonText {
             get {

@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="GridActiveSelectedButtonText" xml:space="preserve">
-    <value>Seçilen Kayıtları Etkinleştir</value>
+    <value>Yayınla</value>
   </data>
   <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
-    <value>Seçilen Kayıtları Devre Dışı Bırak</value>
+    <value>Yayından Kaldır</value>
   </data>
   <data name="GridDeleteSelectedButtonText" xml:space="preserve">
     <value>Seçilen Kayıtları Sil</value>
@@ -130,7 +130,7 @@
     <value>Sil</value>
   </data>
   <data name="GridDeSelectAllButtonText" xml:space="preserve">
-    <value>Tüm seçimleri kaldır</value>
+    <value>Seçilenleri Kaldır</value>
   </data>
   <data name="GridDetailText" xml:space="preserve">
     <value>Detay</value>
@@ -157,7 +157,7 @@
     <value>Arama</value>
   </data>
   <data name="GridSelectAllButtonText" xml:space="preserve">
-    <value>Hepsini seç</value>
+    <value>Hepsi</value>
   </data>
   <data name="NewRecordText" xml:space="preserve">
     <value>Yeni Giriş</value>

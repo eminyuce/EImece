@@ -56,55 +56,37 @@
                 <div class="btn-toolbar" role="toolbar" aria-label="...">
                     @if (selectAll)
                     {
+
+                        <span class="btn btn-sm  btn-link" id="SelectAll">
+                            @GridSelectAllButtonText<span class="vl"></span>
+                        </span>
                         <div class="btn-group" role="group">
-                            <span class="btn btn-sm btn-default " id="SelectAll">
-                                @GridSelectAllButtonText
-                            </span>
-                            <span class="btn btn-sm btn-default" id="DeselectAll">
-                                @GridDeSelectAllButtonText
-                            </span>
                         </div>
+                        <span class="btn btn-sm  btn-link" id="DeselectAll">
+                            @GridDeSelectAllButtonText<span class="vl"></span>
+                        </span>
                     }
 
-                    @if (deleteAll || SetStateOnOrOff)
+                    @if (deleteAll)
                     {
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 @AdminResource.ActionOptionsOfSelectedItems
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                @if (deleteAll)
-                                {
-                                    <li>
-                                        <a href="#" id="DeleteAll">
-                                            @GridDeleteSelectedButtonText
-                                        </a>
-                                    </li>
-                                }
-                                @if (SetStateOnOrOff)
-                                {
-                                    <li>
-                                        <a href="#" id="SetStateOnAll">@GridActiveSelectedButtonText</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" id="SetStateOffAll">@GridDeActiveSelectedButtonText</a>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
+                        <a href="#" class="btn btn-sm  btn-link" id="DeleteAll">
+                            @GridDeleteSelectedButtonText<span class="vl"></span>
+                        </a>
                     }
+
+
 
                     @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                     {
-                        <div class="btn-group" role="group">
-                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                                <option value="State">@State</option>
-                                <option value="ImageState">@ImageState</option>
-                                <option value="MainPage">@MainPage</option>
-                                <option value="IsCampaign">@IsCampaign</option>
-                            </select>
-                        </div>
+                <div class="btn-group" role="group">
+                    <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">@State</option>
+                        <option value="ImageState">@ImageState</option>
+                        <option value="MainPage">@MainPage</option>
+                        <option value="IsCampaign">@IsCampaign</option>
+                    </select>
+             
+                </div>
                     }
                     else if (StateTypes.Equals("State,ImageState,MainPage"))
                     {
@@ -130,27 +112,38 @@
                         <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
                     }
 
-                    @if (orderingButton)
+
+                    @if (SetStateOnOrOff)
                     {
-                        <div class="btn-group" role="group">
-                            <span class="btn btn-sm btn-default" id="OrderingAll">
-                                @GridOrderingAllButtonText
-                            </span>
-                        </div>
-                    }
-                    @if (IsExcelButtonEnabled)
-                    {
-                        <div class="btn-group pull-right" role="group">
-                            <a href="@Url.Action("ExportExcel", controllerName)">
-                                <span>
-                                    <img src="~/Areas/Admin/Content/main/excel.jpg" />
-                                    @AdminResource.Excel
-                                </span>
-                            </a>
-                        </div>
-                    }
+                <div class="btn-group" role="group">
+                    <span>
+                        <a href="#" class="btn btn-sm  btn-link" id="SetStateOnAll">@GridActiveSelectedButtonText <span class="vl"></span></a>
+                        <a href="#" class="btn btn-sm  btn-link" id="SetStateOffAll">@GridDeActiveSelectedButtonText <span class="vl"></span></a>
+                    </span>
                 </div>
-            </div>
+                            }
+
+                            @if (orderingButton)
+                            {
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm  btn-link" id="OrderingAll">
+                                        @GridOrderingAllButtonText
+                                    </span>
+                                </div>
+                            }
+                            @if (IsExcelButtonEnabled)
+                            {
+                                <div class="btn-group pull-right" role="group">
+                                    <a href="@Url.Action("ExportExcel", controllerName)">
+                                        <span>
+                                            <img src="~/Areas/Admin/Content/main/excel.jpg" />
+                                            @AdminResource.Excel
+                                        </span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
         </div>
 
         <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
@@ -167,8 +160,8 @@
             <div class="modal-body" id="confirmMessage">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="confirmOk">@AdminResource.ButtonOk</button>
-                <button type="button" class="btn btn-default" id="confirmCancel">@AdminResource.ButtonCancel</button>
+                <button type="button" class="btn btn-link" id="confirmOk">@AdminResource.ButtonOk</button>
+                <button type="button" class="btn btn-link" id="confirmCancel">@AdminResource.ButtonCancel</button>
             </div>
         </div>
     </div>
