@@ -155,5 +155,9 @@ namespace EImece.Domain.Repositories
         {
             return new List<Expression<Func<T, object>>>();
         }
+        public List<Expression<Func<T, bool>>> GetWherePropertyExpressionList()
+        {
+            return new List<Expression<Func<T, bool>>>();
+        }
     }
 }

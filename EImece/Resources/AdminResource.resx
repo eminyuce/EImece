@@ -145,7 +145,7 @@
     <value>Resim</value>
   </data>
   <data name="GridOrderingAllButtonText" xml:space="preserve">
-    <value>Konumu Düzenle</value>
+    <value>Sıra Güncelle</value>
   </data>
   <data name="GridPagingDropDownText" xml:space="preserve">
     <value>Sayfalama</value>

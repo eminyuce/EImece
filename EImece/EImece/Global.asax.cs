@@ -27,9 +27,6 @@ namespace EImece
             MvcHandler.DisableMvcResponseHeader = true;
 
             var adresService = DependencyResolver.Current.GetService<AdresService>();
-            var turkiyeAdres = adresService.GetTurkiyeAdres();
-            turkiyeAdres = adresService.GetTurkiyeAdres();
-            turkiyeAdres = adresService.GetTurkiyeAdres();
             //  var quartzService = DependencyResolver.Current.GetService<QuartzService>();
             //  quartzService.StartSchedulerService();
 

@@ -1,0 +1,70 @@
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EImece.Domain.Helpers
+{
+    public  static class EntityFilterHelper 
+    {
+        public static ProductCategory FilterProductCategory(ProductCategory productCategory)
+        {
+            if(productCategory == null)
+            {
+                return productCategory;
+            }
+            productCategory.Products = FilterProducts(productCategory.Products);
+            return productCategory;
+        }
+
+        public static ICollection<Product> FilterProducts(ICollection<Product> items)
+        {
+            if (items == null)
+            {
+                return items;
+            }
+            return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+        }
+        public static List<TagCategory> FilterTagCategories(List<TagCategory> tagCategories)
+        {
+            var result = new List<TagCategory>();
+            if (tagCategories.IsNullOrEmpty())
+            {
+                return result;
+            }
+            foreach (var item in tagCategories)
+            {
+                result.Add(FilterTagCategory(item));
+            }
+            return tagCategories;
+        }
+        public static TagCategory FilterTagCategory(TagCategory tagCategory)
+        {
+            if (tagCategory == null)
+            {
+                return tagCategory;
+            }
+            tagCategory.Tags = FilterTags(tagCategory.Tags);
+            return tagCategory;
+        }
+        public static ICollection<Tag> FilterTags(ICollection<Tag> items)
+        {
+            if (items == null)
+            {
+                return items;
+            }
+            return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+        }
+        public static ICollection<ProductCategory> FilterProductCategories(ICollection<ProductCategory> items)
+        {
+            if (items == null)
+            {
+                return items;
+            }
+            return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+        }
+    }
+}

@@ -44,7 +44,7 @@ namespace EImece.Domain.Repositories
             }
             pcList = pcList.Where(r => r.Lang == language);
 
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Count() });
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => r.IsActive).Count() });
             List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
@@ -66,7 +66,7 @@ namespace EImece.Domain.Repositories
             var pcList = GetAll();
             pcList = pcList.Where(r => r.Lang == language);
             List<Node> _lstTreeNodes = new List<Node>();
-            var prod = pcList.OrderBy(r => r.Position).Select(c => new { c.Id, c.ParentId, c.Name, ProductCount = c.Products.Count() });
+            var prod = pcList.OrderBy(r => r.Position).Select(c => new { c.Id, c.ParentId, c.Name, ProductCount = c.Products.Where(r=>r.IsActive).Count() });
 
             foreach (var p in prod.ToList())
             {
@@ -80,9 +80,11 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.Products);
             includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
             includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
-            var item = GetSingleIncluding(categoryId, includeProperties.ToArray());
+            Expression<Func<ProductCategory, bool>> match = r => r.IsActive;
+            var item = EntityFilterHelper.FilterProductCategory(GetSingleIncluding(categoryId, includeProperties.ToArray(), match));
             return item;
         }
 
@@ -149,5 +151,6 @@ namespace EImece.Domain.Repositories
             var result = items.ToList();
             return result;
         }
+      
     }
 }

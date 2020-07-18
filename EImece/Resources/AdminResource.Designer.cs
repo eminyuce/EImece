@@ -682,7 +682,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Konumu Düzenle.
+        ///   Looks up a localized string similar to Sıra Güncelle.
         /// </summary>
         public static string GridOrderingAllButtonText {
             get {

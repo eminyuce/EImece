@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
@@ -308,7 +309,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-
+        
         [HttpPost]
         public async Task<JsonResult> ChangeProductGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
@@ -375,6 +376,13 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 var tags = TagCategoryService.GetTagsByTagType(language);
+            if (tags.IsNullOrEmpty())
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                tags = EntityFilterHelper.FilterTagCategories(tags);
                 var productTags = ProductService.GetProductTagsByProductId(productId).Select(r => r.TagId).ToList();
                 var tempData = new TempDataDictionary();
                 tempData["selectedTags"] = productTags;
@@ -382,6 +390,7 @@ namespace EImece.Areas.Admin.Controllers
                             @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
                             new ViewDataDictionary(tags), tempData);
                 return Json(html, JsonRequestBehavior.AllowGet);
+                }
             }).ConfigureAwait(true);
         }
 
@@ -391,13 +400,22 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 var tags = TagCategoryService.GetTagsByTagType(language);
-                var storyTags = StoryService.GetStoryTagsByStoryId(storyId).Select(r => r.TagId).ToList();
-                var tempData = new TempDataDictionary();
-                tempData["selectedTags"] = storyTags;
-                var html = this.RenderPartialToString(
-                            @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
-                            new ViewDataDictionary(tags), tempData);
-                return Json(html, JsonRequestBehavior.AllowGet);
+                if (tags.IsNullOrEmpty())
+                {
+                    return Json("", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    tags = EntityFilterHelper.FilterTagCategories(tags);
+                    var storyTags = StoryService.GetStoryTagsByStoryId(storyId).Select(r => r.TagId).ToList();
+                    var tempData = new TempDataDictionary();
+                    tempData["selectedTags"] = storyTags;
+                    var html = this.RenderPartialToString(
+                                @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
+                                new ViewDataDictionary(tags), tempData);
+                    return Json(html, JsonRequestBehavior.AllowGet);
+                }
+                
             }).ConfigureAwait(true);
         }
 

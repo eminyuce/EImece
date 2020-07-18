@@ -44,7 +44,7 @@ namespace EImece.Domain.Services
 
         public new virtual T SaveOrEditEntity(T entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new ArgumentException("entity cannot be null");
             }
@@ -64,18 +64,18 @@ namespace EImece.Domain.Services
 
         public virtual void ChangeGridBaseEntityOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
-            try
+            if (values == null)
             {
-                if (values == null)
-                {
-                    throw new ArgumentException("values cannot be null");
-                }
+                throw new ArgumentException("values cannot be null");
+            }
 
-                foreach (OrderingItem item in values)
+            foreach (OrderingItem item in values)
+            {
+                var t = baseEntityRepository.GetSingle(item.Id);
+                var baseContent = t as BaseEntity;
+                if (baseContent != null)
                 {
-                    var t = baseEntityRepository.GetSingle(item.Id);
-                    var baseContent = t as BaseEntity;
-                    if (baseContent != null)
+                    try
                     {
                         if (String.IsNullOrEmpty(checkbox))
                         {
@@ -119,14 +119,14 @@ namespace EImece.Domain.Services
                                 product.IsCampaign = item.IsActive;
                             }
                         }
+                        baseEntityRepository.Edit(t);
+                        baseEntityRepository.Save();
                     }
-                    baseEntityRepository.Edit(t);
+                    catch (Exception exception)
+                    {
+                        BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + item.Id, checkbox);
+                    }
                 }
-                baseEntityRepository.Save();
-            }
-            catch (Exception exception)
-            {
-                BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + String.Join(",", values), checkbox);
             }
         }
     }
