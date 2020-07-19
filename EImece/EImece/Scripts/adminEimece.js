@@ -232,16 +232,26 @@ function GetSelectedCheckBoxValuesArray() {
 function displayMessage(messageType, message) {
     var messagePanel = $("#ErrorMessagePanel");
     var errorMessage = $("#ErrorMessage");
-    messagePanel.show();
+
+    messagePanel.fadeIn(500);
     if (messageType === "info") {
         messagePanel.attr("class", "alert alert-info");
         errorMessage.text(message);
+        fadeOutAfterInterval(messagePanel);
     } else if (messageType === "error") {
         messagePanel.attr("class", "alert alert-danger");
         errorMessage.text(message);
+        fadeOutAfterInterval(messagePanel);
     } else if (messageType === "hide") {
-        messagePanel.hide();
+        fadeOutAfterInterval(messagePanel);
     }
+}
+function fadeOutAfterInterval(messagePanel) {
+    var timeoutFadeOut = 2000;
+    var intervalTime = 5000;
+    window.setInterval(function () { // 3
+        messagePanel.fadeOut(timeoutFadeOut);
+    }, intervalTime);
 }
 function hasQueryStringParameter(originalURL) {
     if (originalURL.split('?').length > 1) {
