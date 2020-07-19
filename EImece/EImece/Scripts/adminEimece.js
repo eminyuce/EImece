@@ -232,7 +232,9 @@ function GetSelectedCheckBoxValuesArray() {
 function displayMessage(messageType, message) {
     var messagePanel = $("#ErrorMessagePanel");
     var errorMessage = $("#ErrorMessage");
-
+    if (isEmpty(message)) {
+        return;
+    }
     messagePanel.fadeIn(500);
     if (messageType === "info") {
         messagePanel.attr("class", "alert alert-info");

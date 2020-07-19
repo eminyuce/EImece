@@ -120,7 +120,10 @@ namespace EImece.Domain.Services
 
             result.Product =  product;
             EntityFilterHelper.FilterProduct(result.Product);
-            result.Template = TemplateService.GetTemplate(product.ProductCategory.TemplateId.Value);
+            if (product.ProductCategory.TemplateId.HasValue)
+            {
+                result.Template = TemplateService.GetTemplate(product.ProductCategory.TemplateId.Value);
+            }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
             result.RelatedStories = new List<Story>();
             if (product != null && product.ProductTags.Any())
