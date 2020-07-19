@@ -178,7 +178,7 @@
     <value>Mevcut Ana Resim</value>
   </data>
   <data name="ImageState" xml:space="preserve">
-    <value>Resim Durumu</value>
+    <value>Resmi Göster</value>
   </data>
   <data name="MainPage" xml:space="preserve">
     <value>Ana Sayfa</value>
@@ -205,10 +205,10 @@
     <value>Ana Sayfa Resmi</value>
   </data>
   <data name="IsActive" xml:space="preserve">
-    <value>Aktif Mi?</value>
+    <value>Yayında mı</value>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Pozisyon</value>
+    <value>Sırası</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>İçerik açıklaması</value>
@@ -250,10 +250,10 @@
     <value>Menu Ana Kategori</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Link</value>
+    <value>Dış Sayfa Link</value>
   </data>
   <data name="LinkIsActive" xml:space="preserve">
-    <value>Link aktif mi?</value>
+    <value>Dış Link Aktif mi?</value>
   </data>
   <data name="MenuLink" xml:space="preserve">
     <value>Menu Link</value>
@@ -316,7 +316,7 @@
     <value>Tüm Ürünlerin Linki</value>
   </data>
   <data name="IsCampaign" xml:space="preserve">
-    <value>Kampanyada mı?</value>
+    <value>Kampanya Ürünü</value>
   </data>
   <data name="ButtonCancel" xml:space="preserve">
     <value>İptal</value>
@@ -719,9 +719,6 @@
   </data>
   <data name="AboutUs" xml:space="preserve">
     <value>Hakkimizda</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value>Hakkımızda</value>
   </data>
   <data name="PasswordRequired" xml:space="preserve">
     <value>{0} alanı zorunludur.</value>

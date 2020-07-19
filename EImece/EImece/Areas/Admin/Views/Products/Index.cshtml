@@ -125,7 +125,7 @@
        columns.Add(c => c.ProductCode)
 .Titled(AdminResource.ProductCode);
 
-       columns.Add(o => o.Position)
+        columns.Add(o => o.Position).Titled(AdminResource.Position)
 .Encoded(false).
 Sanitized(false).
 Css("smallGridColumn").
@@ -133,7 +133,7 @@ Css("smallGridColumn").
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
-.Titled(AdminResource.State)
+.Titled(AdminResource.IsActive)
 .Sortable(true)
 .Css("smallGridColumn")
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).

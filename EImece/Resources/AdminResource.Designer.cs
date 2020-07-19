@@ -754,7 +754,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim Durumu.
+        ///   Looks up a localized string similar to Resmi Göster.
         /// </summary>
         public static string ImageState {
             get {
@@ -781,7 +781,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aktif Mi?.
+        ///   Looks up a localized string similar to Yayında mı.
         /// </summary>
         public static string IsActive {
             get {
@@ -790,7 +790,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kampanyada mı?.
+        ///   Looks up a localized string similar to Kampanya Ürünü.
         /// </summary>
         public static string IsCampaign {
             get {
@@ -844,7 +844,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link.
+        ///   Looks up a localized string similar to Dış Sayfa Link.
         /// </summary>
         public static string Link {
             get {
@@ -862,7 +862,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link aktif mi?.
+        ///   Looks up a localized string similar to Dış Link Aktif mi?.
         /// </summary>
         public static string LinkIsActive {
             get {
@@ -1240,7 +1240,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pozisyon.
+        ///   Looks up a localized string similar to Sırası.
         /// </summary>
         public static string Position {
             get {
@@ -1704,15 +1704,6 @@ namespace Resources {
         public static string StoryPageTitle {
             get {
                 return ResourceManager.GetString("StoryPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hakkımızda.
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
