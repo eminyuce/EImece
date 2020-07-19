@@ -35,11 +35,11 @@
         <table class="cart-table responsive-table stacktable large-only">
             <tbody>
                 <tr>
-                    <th>Item</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
+                    <th> </th>
+                    <th>@Resource.Description</th>
+                    <th>@Resource.Price</th>
+                    <th>@Resource.Quantity</th>
+                    <th>@Resource.Total</th>
                     <th></th>
                 </tr>
 
@@ -71,6 +71,7 @@
                                        data-shopping-quantity-id="@item.ShoppingCartItemId"
                                        value="@item.quantity" autocomplete='off'
                                        class="qty">
+                                <input type="button" data-shopping-button-price="@item.ShoppingCartItemId" value="@AdminResource.Update" />
                             </td>
                             <td class="cart-total"><span data-shopping-item-total-price="@item.ShoppingCartItemId"  > @totalPricePerItem.CurrencySign()</span></td>
                             <td><a data-shopping-item-remove="@item.ShoppingCartItemId"  class="cart-remove"></a></td>
@@ -137,23 +138,33 @@
                 $(this).on("blur", function (e) {
                     var caller = e.target;
                     var shoppingItemId = $(caller).attr('data-shopping-quantity-id');
-                    var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
                     var quantity = caller.value;
-                    var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
-                    console.log(postData);
-                    ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
-                        var totalPrice = parseFloat(itemPrice) * quantity;
-                        $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(quantity);
-                        console.log(totalPrice);
-                        renderPrice(totalPrice, function (data) {
-                            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
-                        });
-                        bindCalcuateTotalPrice();
-           
-                    });
+                    $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(quantity);
                 });
             });
+            function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
+                var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
+                var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
+                var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
+                console.log(postData);
+                ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
+                    var totalPrice = parseFloat(itemPrice) * quantity;
+                    console.log(totalPrice);
+                    renderPrice(totalPrice, function (data) {
+                        $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
+                    });
+                    bindCalcuateTotalPrice();
 
+                });
+            }
+            $('[data-shopping-button-price]').each(function () {
+                $(this).off("click");
+                $(this).on("click", function (e) {
+                    var caller = e.target;
+                    var shoppingItemId = $(caller).attr('data-shopping-button-price');
+                    triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
+                });
+            });
             function renderPrice(price,success) {
                 var postData = JSON.stringify({ price: price });
                 ajaxMethodCall(postData, "/Payment/RenderPrice", success);

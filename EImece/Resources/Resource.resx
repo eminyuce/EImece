@@ -321,4 +321,19 @@
   <data name="ProceedToCheckout" xml:space="preserve">
     <value>Alışverişi Tamamla</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Fiyat</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
 </root>

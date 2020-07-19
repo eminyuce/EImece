@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Açıklama.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-Posta.
         /// </summary>
         public static string Email {
@@ -264,6 +273,15 @@ namespace Resources {
         public static string IsCampaign {
             get {
                 return ResourceManager.GetString("IsCampaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string Item {
+            get {
+                return ResourceManager.GetString("Item", resourceCulture);
             }
         }
         
@@ -358,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fiyat.
+        /// </summary>
+        public static string Price {
+            get {
+                return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gizlilik Politikası.
         /// </summary>
         public static string PrivacyPolicy {
@@ -408,6 +435,15 @@ namespace Resources {
         public static string ProductsInfo {
             get {
                 return ResourceManager.GetString("ProductsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miktar.
+        /// </summary>
+        public static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
         
@@ -660,6 +696,15 @@ namespace Resources {
         public static string ThankYouForContactingUs {
             get {
                 return ResourceManager.GetString("ThankYouForContactingUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toplam.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
             }
         }
         

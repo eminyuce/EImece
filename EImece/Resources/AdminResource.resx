@@ -750,4 +750,7 @@
   <data name="CheckboxesDataTableDoesNotSelected" xml:space="preserve">
     <value>Veri tablosundaki onay kutuları seçilmedi</value>
   </data>
+  <data name="Update" xml:space="preserve">
+    <value>Güncelle</value>
+  </data>
 </root>

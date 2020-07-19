@@ -1852,6 +1852,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Güncelle.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Güncelleme Tarihi.
         /// </summary>
         public static string UpdatedDate {
