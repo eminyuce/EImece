@@ -1,0 +1,22 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@{
+    ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[Constants.ShoppingCartSession];
+    string totalNumber = shoppingCart == null ? "":  shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount+"") : "";
+
+
+}
+
+<ul id="ShoppingCartsLink">
+    <li>
+        <a href="@Url.Action("ShoppingCart", "Payment")"> @Resource.MyBasket </a><span id="ShoppingCartItemCount">@totalNumber</span>
+    </li>
+    <li>@Html.ActionLink(@Resource.ProceedToCheckout, "CheckoutBillingDetails", "Payment")</li>
+    <li>@Html.ActionLink(@Resource.CustomerAccount, "CustomerAccount", "Payment")</li>
+</ul>

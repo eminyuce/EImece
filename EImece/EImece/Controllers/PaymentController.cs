@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
@@ -46,15 +47,27 @@ namespace EImece.Controllers
             item.ShoppingCartItemId = Guid.NewGuid().ToString();
             shoppingCart.Add(item);
             Session[Constants.ShoppingCartSession] = shoppingCart;
-            return ShoppingCartItemsCount();
+            return Json("", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ShoppingCartItemsCount()
-        {
-            ShoppingCartSession shoppingCart = GetShoppingCart();
-            var totalItemNumber = shoppingCart.ShoppingCartItems.IsNullOrEmpty() ? "" : shoppingCart.ShoppingCartItems.Count() + "";
-            return Json(new { totalItemNumber }, JsonRequestBehavior.AllowGet);
+       
+        [NoCache]
+        public ActionResult GetShoppingCartLinks()
+        { 
+            var tempData = new TempDataDictionary();
+            var html = this.RenderPartialToString(
+                        @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks.cshtml",
+                        new ViewDataDictionary(), tempData);
+            return Json(html, JsonRequestBehavior.AllowGet);
         }
+
+        [ChildActionOnly]
+        [NoCache]
+        public ActionResult ShoppingCartLink()
+        {
+            return PartialView("ShoppingCartTemplates/_ShoppingCartLinks");
+        }
+
 
         private ShoppingCartSession GetShoppingCart()
         {

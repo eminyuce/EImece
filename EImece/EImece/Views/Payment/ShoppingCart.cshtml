@@ -149,6 +149,7 @@
                             $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
                         });
                         bindCalcuateTotalPrice();
+           
                     });
                 });
             });
@@ -171,6 +172,7 @@
                             $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
                             $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
                             bindCalcuateTotalPrice();
+                            GetShoppingCartLinks();
                         });
                     });
                 });

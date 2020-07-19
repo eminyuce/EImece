@@ -91,5 +91,12 @@ namespace EImece.Domain.Models.FrontModels
                 return TotalPrice;
             }
         }
+        public int TotalItemCount
+        {
+            get
+            {
+                return ShoppingCartItems.IsNullOrEmpty() ? 0 : ShoppingCartItems.Count;
+            }
+        }
     }
 }

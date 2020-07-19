@@ -256,6 +256,7 @@
     <Compile Include="Helpers\AttributeHelper\CompressContentAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\CustomOutputCacheAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\NoCacheAttribute.cs" />
     <Compile Include="Helpers\Base32Custom.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\CsvExport.cs" />

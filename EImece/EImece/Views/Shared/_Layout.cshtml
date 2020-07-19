@@ -70,13 +70,7 @@
             <!-- Additional Menu -->
             <div class="twelve columns">
                 <div id="additional-menu">
-                    <ul>
-                        <li>
-                            <a href="@Url.Action("ShoppingCart", "Payment")"> @Resource.MyBasket </a><span id="ShoppingCartItemCount"></span>
-                                            </li>
-                        <li>@Html.ActionLink(@Resource.ProceedToCheckout, "CheckoutBillingDetails", "Payment")</li>
-                        <li>@Html.ActionLink(@Resource.CustomerAccount, "CustomerAccount", "Payment")</li>
-                    </ul>
+                    @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
                 </div>
             </div>
 
@@ -155,17 +149,19 @@
         <script src="~/Scripts/cookie-consent.js?v=1"></script>
         <script>
             CookieConsent();
+            GetShoppingCartLinks();
             $(document).ready(function () {
                 $("#AddToCart").click(function () {
-                    var postData = JSON.stringify({ productId: $("#productId").val(), quantity: $("#quantity").val()});
+                    var postData = JSON.stringify({ productId: $("#productId").val(), quantity: $("#quantity").val() });
                     console.log(postData);
                     ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
                         console.log(data);
-                        alert("Isleminiz tamamlandi");
-                        $("#ShoppingCartItemCount").html(data.totalItemNumber);
+                        GetShoppingCartLinks();
                     });
                 });
+
             });
+
         </script>
 </body>
 </html>

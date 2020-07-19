@@ -1,4 +1,15 @@
-﻿jQuery(function () {
+﻿
+function GetShoppingCartLinks() {
+    var postData = JSON.stringify({});
+    ajaxMethodCall(postData, "/Payment/GetShoppingCartLinks", function (data) {
+        $("#ShoppingCartsLink").html(data);
+    });
+}
+
+
+jQuery(function () {
+
+
     $("#btn-search").click(function () {
         console.log("eee");
         $(".error").hide();
