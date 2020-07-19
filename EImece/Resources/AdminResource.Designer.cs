@@ -637,7 +637,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hiçbiri.
+        ///   Looks up a localized string similar to Seçilenleri Kaldır.
         /// </summary>
         public static string GridDeSelectAllButtonText {
             get {
@@ -727,7 +727,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hepsi.
+        ///   Looks up a localized string similar to Hepsi seç.
         /// </summary>
         public static string GridSelectAllButtonText {
             get {
@@ -1420,7 +1420,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tazele.
+        ///   Looks up a localized string similar to Yenile.
         /// </summary>
         public static string Refresh {
             get {

@@ -214,6 +214,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hesabim.
+        /// </summary>
+        public static string CustomerAccount {
+            get {
+                return ResourceManager.GetString("CustomerAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-Posta.
         /// </summary>
         public static string Email {
@@ -295,6 +304,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sepetim.
+        /// </summary>
+        public static string MyBasket {
+            get {
+                return ResourceManager.GetString("MyBasket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Isim.
         /// </summary>
         public static string Name {
@@ -345,6 +363,15 @@ namespace Resources {
         public static string PrivacyPolicy {
             get {
                 return ResourceManager.GetString("PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alışverişi Tamamla.
+        /// </summary>
+        public static string ProceedToCheckout {
+            get {
+                return ResourceManager.GetString("ProceedToCheckout", resourceCulture);
             }
         }
         

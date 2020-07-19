@@ -1,4 +1,7 @@
-﻿using EImece.Domain.Services;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -9,6 +12,18 @@ namespace EImece.Controllers
     {
         private AdresService adresService { get; set; }
 
+       
+
+        [HttpPost]
+        public JsonResult HomePageShoppingCart()
+        {
+            var tempData = new TempDataDictionary();
+            var html = this.RenderPartialToString(
+                        @"~\Views\Shared\ShoppingCartTemplates\_HomePageShoppingCart.cshtml",
+                        new ViewDataDictionary(), tempData);
+            return Json(html, JsonRequestBehavior.AllowGet);
+        }
+        
         public AjaxController(AdresService adresService)
         {
             this.adresService = adresService;

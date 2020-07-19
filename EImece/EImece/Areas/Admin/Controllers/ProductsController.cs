@@ -2,12 +2,10 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
 using System;
-using System.Data;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;

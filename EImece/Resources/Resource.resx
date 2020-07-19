@@ -312,4 +312,13 @@
   <data name="MandatoryField" xml:space="preserve">
     <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
   </data>
+  <data name="CustomerAccount" xml:space="preserve">
+    <value>Hesabim</value>
+  </data>
+  <data name="MyBasket" xml:space="preserve">
+    <value>Sepetim</value>
+  </data>
+  <data name="ProceedToCheckout" xml:space="preserve">
+    <value>Alışverişi Tamamla</value>
+  </data>
 </root>

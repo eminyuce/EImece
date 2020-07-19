@@ -5,18 +5,19 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@model  ShoppingCartSession
-
+@{ 
+    ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[Constants.ShoppingCartSession];
+}
  
-@if (Model !=null && !Model.ShoppingCartItems.IsNullOrEmpty())
+@if (shoppingCart != null && !shoppingCart.ShoppingCartItems.IsNullOrEmpty())
 {
-    var products = Model.ShoppingCartItems;
-    var customer = Model.Customer;
+    var products = shoppingCart.ShoppingCartItems;
+    var customer = shoppingCart.Customer;
         <div id="cart">
 
             <!-- Button -->
             <div class="cart-btn">
-                <a href="@Url.Action("ShoppingCart","Payment")" class="button adc"><span id="HomePageTotalPrice">@Model.TotalPrice.CurrencySign()</span></a>
+                <a href="@Url.Action("ShoppingCart","Payment")" class="button adc"><span id="HomePageTotalPrice">@shoppingCart.TotalPrice.CurrencySign()</span></a>
             </div>
 
             <div class="cart-list" style="display: none;">

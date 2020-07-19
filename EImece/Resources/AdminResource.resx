@@ -130,7 +130,7 @@
     <value>Sil</value>
   </data>
   <data name="GridDeSelectAllButtonText" xml:space="preserve">
-    <value>Hiçbiri</value>
+    <value>Seçilenleri Kaldır</value>
   </data>
   <data name="GridDetailText" xml:space="preserve">
     <value>Detay</value>
@@ -157,7 +157,7 @@
     <value>Arama</value>
   </data>
   <data name="GridSelectAllButtonText" xml:space="preserve">
-    <value>Hepsi</value>
+    <value>Hepsi seç</value>
   </data>
   <data name="NewRecordText" xml:space="preserve">
     <value>Yeni Giriş</value>
@@ -463,7 +463,7 @@
     <value>Ürünler</value>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>Tazele</value>
+    <value>Yenile</value>
   </data>
   <data name="Stories" xml:space="preserve">
     <value>Bloglar</value>
