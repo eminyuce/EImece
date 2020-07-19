@@ -601,7 +601,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seçilenleri Yayınadan Kaldır.
+        ///   Looks up a localized string similar to Seçilenleri Yayından Kaldır.
         /// </summary>
         public static string GridDeActiveSelectedButtonText {
             get {
@@ -628,7 +628,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seçilenleri Kaldır.
+        ///   Looks up a localized string similar to Hiçbiri.
         /// </summary>
         public static string GridDeSelectAllButtonText {
             get {

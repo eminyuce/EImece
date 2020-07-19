@@ -44,7 +44,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(MainPageImage mainpageimage, HttpPostedFileBase postedImage = null)
+        public ActionResult SaveOrEdit(MainPageImage mainpageimage, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -63,7 +63,10 @@ namespace EImece.Areas.Admin.Controllers
 
                     mainpageimage.ImageState = true;
                     MainPageImageService.SaveOrEditEntity(mainpageimage);
-                    return RedirectToAction("Index");
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return ReturnTempUrl("Index");
+                    }
                 }
             }
             catch (Exception ex)
@@ -72,7 +75,11 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
+            RemoveModelState();
             return View(mainpageimage);
         }
 

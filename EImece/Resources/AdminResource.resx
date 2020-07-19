@@ -121,7 +121,7 @@
     <value>Seçilenleri Yayınla</value>
   </data>
   <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
-    <value>Seçilenleri Yayınadan Kaldır</value>
+    <value>Seçilenleri Yayından Kaldır</value>
   </data>
   <data name="GridDeleteSelectedButtonText" xml:space="preserve">
     <value>Seçilen Kayıtları Sil</value>
@@ -130,7 +130,7 @@
     <value>Sil</value>
   </data>
   <data name="GridDeSelectAllButtonText" xml:space="preserve">
-    <value>Seçilenleri Kaldır</value>
+    <value>Hiçbiri</value>
   </data>
   <data name="GridDetailText" xml:space="preserve">
     <value>Detay</value>
