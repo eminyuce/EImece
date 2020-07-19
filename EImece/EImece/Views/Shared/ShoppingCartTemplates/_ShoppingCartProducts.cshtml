@@ -37,10 +37,12 @@
                     <td class="hide-on-mobile">
                         @if (product.MainImageId.HasValue && product.ImageState)
                         {
+                        <a href="@Url.Action("Detail","Products",new { id=product.Id })">
                             <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
-                        }
-                     
-                    </td>
+                        </a>
+                                }
+
+                        </td>
                     <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
                     <td>@product.Price.CurrencySign()</td>
                     <td class="qty-checkout">@item.quantity</td>
