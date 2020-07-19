@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Düzenle.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-Posta.
         /// </summary>
         public static string Email {
@@ -372,6 +381,15 @@ namespace Resources {
         public static string Pages {
             get {
                 return ResourceManager.GetString("Pages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişi Onayla.
+        /// </summary>
+        public static string PlaceOrder {
+            get {
+                return ResourceManager.GetString("PlaceOrder", resourceCulture);
             }
         }
         

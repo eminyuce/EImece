@@ -336,4 +336,10 @@
   <data name="Total" xml:space="preserve">
     <value>Toplam</value>
   </data>
+  <data name="PlaceOrder" xml:space="preserve">
+    <value>Siparişi Onayla</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
 </root>

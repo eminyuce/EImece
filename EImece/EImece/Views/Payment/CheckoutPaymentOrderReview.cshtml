@@ -35,81 +35,16 @@
 
 
         <!-- Checkout Content -->
-        <a href="@Url.Action("CheckoutBillingDetails")"><div class="checkout-section"><span>1</span> Billing Details <strong><i class="fa fa-edit"></i>Edit</strong> </div></a>
+        <a href="@Url.Action("CheckoutBillingDetails")"><div class="checkout-section"><span>1</span> Billing Details <strong><i class="fa fa-edit"></i>@Resource.Edit</strong> </div></a>
         <div class="checkout-content">
             @Html.Partial("ShoppingCartTemplates/_AddressReview", Model)
         </div>
 
 
-        <a href="@Url.Action("CheckoutDelivery")"><div class="checkout-section"><span>2</span> Delivery <strong><i class="fa fa-edit"></i>Edit</strong> </div></a>
-        <div class="checkout-delivery">
+        <a href="@Url.Action("CheckoutDelivery")"><div class="checkout-section"><span>2</span> Delivery <strong><i class="fa fa-edit"></i>@Resource.Edit</strong> </div></a>
+   
 
-            <div class="eight columns alpha omega">
-                <ul class="address-review delivery">
-                    <li><strong>Express Delivery <span class="delivery-summary">$14.99 <span class="sep">|</span> Delivery in 1 to 2 Business Days</span></strong></li>
-                </ul>
-            </div>
-            <div class="clearfix"></div>
-
-        </div>
-        <div class="clearfix"></div>
-
-        <div class="checkout-section active"><span>3</span> Payment &amp; Order Review</div>
-        <div class="checkout-summary">
-            <div class="eight columns alpha omega">
-                <ul class="address-review summary">
-                    <li><strong>Credit Card</strong></li>
-                    <li>
-                        <ul class="payment-icons checkout">
-                            <li><img src="images/visa.png" alt=""></li>
-                            <li><img src="images/mastercard.png" alt=""></li>
-                            <li><img src="images/skrill.png" alt=""></li>
-                            <li><img src="images/moneybookers.png" alt=""></li>
-                            <li><img src="images/paypal.png" alt=""></li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </li>
-                    <li class="credit-card-fields">
-                        <span><label>Credit Card Number:</label><input type="text" value=""></span>
-
-                        <span>
-                            <label>Month:</label>
-                            <select>
-                                <option value="">01</option>
-                                <option value="">02</option>
-                                <option value="">03</option>
-                                <option value="">04</option>
-                                <option value="">05</option>
-                                <option value="">06</option>
-                                <option value="">07</option>
-                                <option value="">08</option>
-                                <option value="">09</option>
-                                <option value="">10</option>
-                                <option value="">11</option>
-                                <option value="">12</option>
-                            </select>
-                        </span>
-
-                        <span>
-                            <label>Year:</label>
-                            <select>
-                                <option value="">2018</option>
-                                <option value="">2019</option>
-                                <option value="">2020</option>
-                                <option value="">2021</option>
-                                <option value="">2022</option>
-                                <option value="">2023</option>
-                                <option value="">2024</option>
-                                <option value="">2025</option>
-                            </select>
-                        </span>
-                        <div class="clearfix"></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <a href="@Url.Action("PlaceOrder")" class="continue button color">Place Order</a>
+        <a href="@Url.Action("PlaceOrder")" class="continue button color">@Resource.PlaceOrder</a>
 
     </div>
     <!-- Checkout Content / End -->
