@@ -133,7 +133,7 @@ Css("smallGridColumn").
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
-.Titled(AdminResource.IsActive)
+.Titled(AdminResource.State)
 .Sortable(true)
 .Css("smallGridColumn")
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
@@ -157,7 +157,7 @@ columns.Add(r => r.ImageState
     <ul>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
-                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.State))
+                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
         </li>
         <li>
             @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
