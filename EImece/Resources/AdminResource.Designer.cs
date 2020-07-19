@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Secilenleri silmeyi onayliyor musunuz?.
+        ///   Looks up a localized string similar to Seçilenleri silmeyi onayliyor musunuz?.
         /// </summary>
         public static string AdminDeleteConfirmMessage {
             get {
@@ -264,6 +264,15 @@ namespace Resources {
         public static string ChangePassword {
             get {
                 return ResourceManager.GetString("ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Veri tablosundaki onay kutuları seçilmedi.
+        /// </summary>
+        public static string CheckboxesDataTableDoesNotSelected {
+            get {
+                return ResourceManager.GetString("CheckboxesDataTableDoesNotSelected", resourceCulture);
             }
         }
         

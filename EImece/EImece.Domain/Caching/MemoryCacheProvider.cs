@@ -26,7 +26,6 @@ namespace EImece.Domain.Caching
                     return false;
                 }
                 value = (T)_cache[key];
-                Logger.Info("MemoryCacheProvider CacheKey:" + key);
                 return true;
             }
             try

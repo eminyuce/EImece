@@ -190,7 +190,7 @@
     <value>Excel Dosyasına Aktar</value>
   </data>
   <data name="AdminDeleteConfirmMessage" xml:space="preserve">
-    <value>Secilenleri silmeyi onayliyor musunuz?</value>
+    <value>Seçilenleri silmeyi onayliyor musunuz?</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Temizle</value>
@@ -746,5 +746,8 @@
   </data>
   <data name="MoveProductsInTrees" xml:space="preserve">
     <value>Ürünleri Tasi</value>
+  </data>
+  <data name="CheckboxesDataTableDoesNotSelected" xml:space="preserve">
+    <value>Veri tablosundaki onay kutuları seçilmedi</value>
   </data>
 </root>

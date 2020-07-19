@@ -140,7 +140,7 @@ $(document).ready(function () {
             ajaxMethodCall(postData, "/admin/Ajax/Change" + tableName + "OrderingOrState", changeStateSuccess);
             displayMessage("hide", "");
         } else {
-            displayMessage("error", "Checkboxes on the grid does not selected");
+            displayMessage("error", $("#CheckboxesDataTableDoesNotSelected").val());
         }
     }
     $("#GridListItemSize").change(function (e) {
