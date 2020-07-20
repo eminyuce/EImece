@@ -146,7 +146,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             SendEmail(emailAccount, Resource.ContactUsMessage, contact.Message, from, to);
         }
 
-        public void SendForgotPasswordEmail(string destination, string subject, string body)
+        public void SendEmail(string destination, string subject, string body)
         {
             var emailAccount = SettingService.GetEmailAccount();
             SendEmail(destination, subject, body, emailAccount);

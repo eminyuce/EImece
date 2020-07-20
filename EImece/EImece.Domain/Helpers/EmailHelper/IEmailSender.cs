@@ -44,6 +44,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null);
 
-        void SendForgotPasswordEmail(string destination, string subject, string body);
+        void SendEmail(string destination, string subject, string body);
     }
 }

@@ -19,7 +19,7 @@ namespace EImece
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            EmailSender.SendForgotPasswordEmail(message.Destination, message.Subject, message.Body);
+            EmailSender.SendEmail(message.Destination, message.Subject, message.Body);
             return Task.FromResult(0);
         }
     }
