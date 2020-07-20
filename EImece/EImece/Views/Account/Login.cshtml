@@ -29,7 +29,9 @@
                 <p class="lost_password">
                     @Html.ActionLink(@Resource.LostYourPassword, "ForgotPassword")
                 </p>
-
+                <p>
+                    @Html.ActionLink(Resource.CustomerRegister, "Register")
+                </p>
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
             {
                     @Html.AntiForgeryToken()
@@ -66,11 +68,7 @@
 
                 }
             </div>
-            @*<div class="col-md-4">
-                <section id="socialLoginForm">
-                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                </section>
-            </div>*@
+       
         </div>
     </div>
 </div>

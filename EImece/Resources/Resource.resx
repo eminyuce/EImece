@@ -342,4 +342,10 @@
   <data name="Edit" xml:space="preserve">
     <value>Düzenle</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>Kayıt ol</value>
+  </data>
+  <data name="CustomerRegister" xml:space="preserve">
+    <value>Üye ol</value>
+  </data>
 </root>

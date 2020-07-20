@@ -753,4 +753,7 @@
   <data name="Update" xml:space="preserve">
     <value>Güncelle</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Kayıt ol</value>
+  </data>
 </root>

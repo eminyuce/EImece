@@ -5,13 +5,17 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
+using EImece.Models;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
+using Microsoft.Owin.Security;
+using Ninject;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -20,11 +24,20 @@ namespace EImece.Controllers
     {
        
         private readonly IyzicoService iyzicoService;
-        public PaymentController(IyzicoService iyzicoService)
+
+        [Inject]
+        public IAuthenticationManager AuthenticationManager { get; set; }
+
+        public ApplicationSignInManager SignInManager { get; set; }
+
+        public ApplicationUserManager UserManager { get; set; }
+
+        public PaymentController(IyzicoService iyzicoService,ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             this.iyzicoService = iyzicoService;
+            UserManager = userManager;
+            SignInManager = signInManager;
         }
-
 
         public ActionResult Index()
         {
@@ -102,11 +115,7 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = GetShoppingCart();
             return View(shoppingCart);
         }
-        public ActionResult CustomerAccount()
-        {
-            return View();
-        }
-
+       
         public ActionResult CheckoutBillingDetails()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();

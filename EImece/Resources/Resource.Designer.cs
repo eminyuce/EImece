@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Üye ol.
+        /// </summary>
+        public static string CustomerRegister {
+            get {
+                return ResourceManager.GetString("CustomerRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Açıklama.
         /// </summary>
         public static string Description {
@@ -498,6 +507,15 @@ namespace Resources {
         public static string RecoverPasswordText {
             get {
                 return ResourceManager.GetString("RecoverPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kayıt ol.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
             }
         }
         
