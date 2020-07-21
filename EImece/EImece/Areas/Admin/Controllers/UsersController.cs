@@ -74,7 +74,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        // [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -115,7 +115,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditUserViewModel model)
         {
@@ -173,7 +173,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        // [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public ActionResult DeleteConfirmed(string id)
         {
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
@@ -182,7 +182,7 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        // [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public ActionResult UserRoles(string id)
         {
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
@@ -191,7 +191,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        //   [Authorize(Roles = "Admin")]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         [ValidateAntiForgeryToken]
         public ActionResult UserRoles(SelectUserRolesViewModel model)
         {

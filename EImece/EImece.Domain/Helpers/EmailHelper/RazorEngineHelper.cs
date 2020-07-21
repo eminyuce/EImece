@@ -32,7 +32,29 @@ namespace EImece.Domain.Helpers.EmailHelper
         [Inject]
         public BitlyRepository BitlyRepository { get; set; }
 
-        public string ForgotPasswordEmailBody(string email, string callbackUrl)
+        public Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
+        {
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ConfirmYourAccount");
+            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
+
+            var Request = HttpContext.Create().Request;
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+
+            var model = new
+            {
+                Email = email,
+                callbackUrl = callbackUrl,
+                Name = name
+            };
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string result = Engine.Razor.RunCompile(template, templateKey, null, model);
+
+            return new Tuple<string, string>(emailTemplate.Subject, result);
+        }
+
+        public Tuple<string,string> ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ForgotPassword");
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -52,7 +74,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
 
-            return result;
+            return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)

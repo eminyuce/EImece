@@ -172,7 +172,8 @@ namespace EImece.Controllers
                    // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                      var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var emailTemplate =   RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName+" "+model.LastName, callbackUrl);
+                    await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -228,9 +229,8 @@ namespace EImece.Controllers
                     new { userId = user.Id, code = code },
                     protocol: Request.Url.Scheme);
 
-                String emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
-                emailBody = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", emailBody);
+                var  emailTemplate = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
+                await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
