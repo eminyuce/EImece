@@ -448,6 +448,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E-posta Başlık.
+        /// </summary>
+        public static string EmailSubject {
+            get {
+                return ResourceManager.GetString("EmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kurtarmak için E-postanızı Girin.
         /// </summary>
         public static string EnterYourEmailToRecover {

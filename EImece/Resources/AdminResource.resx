@@ -756,4 +756,7 @@
   <data name="String1" xml:space="preserve">
     <value>Kayıt ol</value>
   </data>
+  <data name="EmailSubject" xml:space="preserve">
+    <value>E-posta Başlık</value>
+  </data>
 </root>
