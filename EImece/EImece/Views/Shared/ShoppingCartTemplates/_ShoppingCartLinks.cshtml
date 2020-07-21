@@ -1,14 +1,15 @@
-﻿@using EImece.Domain.Helpers;
+﻿@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@using System.Threading;
-@using EImece.Domain.Models.Enums;
-@using EImece.Domain.Helpers;
-@using EImece.Domain.Models.FrontModels;
 @{
     ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[Constants.ShoppingCartSession];
-    string totalNumber = shoppingCart == null ? "":  shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount+"") : "";
+    string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount + "") : "";
 
 
 }

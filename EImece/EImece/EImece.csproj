@@ -893,6 +893,7 @@
     <Content Include="Views\Shared\ShoppingCartTemplates\_AddressReview.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_HomePageShoppingCart.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks.cshtml" />
+    <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks222.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

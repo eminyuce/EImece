@@ -17,5 +17,19 @@ namespace EImece.Domain.Models.FrontModels
         {
             return String.Format("quantity:%d product:%d", quantity, product.Id);
         }
+        public double UnitPrice
+        {
+            get
+            {
+                return product.Price;
+            }
+        }
+        public string PName
+        {
+            get
+            {
+                return product.Name;
+            }
+        }
     }
 }
