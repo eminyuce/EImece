@@ -58,14 +58,6 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-columns.Add()
-   .Encoded(false)
-   .Sanitized(false)
-   .SetWidth(30)
-   .RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(AdminResource.Edit, "Edit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm" })
-</b>);
 
 columns.Add()
 .Encoded(false)
@@ -106,5 +98,5 @@ columns.Add()
             .Titled(AdminResource.Name)
             .RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
 
-    }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false);
+    }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
