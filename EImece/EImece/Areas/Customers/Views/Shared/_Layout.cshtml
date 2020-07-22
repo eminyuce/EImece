@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Services.IServices;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -20,6 +28,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
+                        @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                        }
+                    </li>
                 </ul>
             </div>
         </div>

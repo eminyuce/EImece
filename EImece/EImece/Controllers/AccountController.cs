@@ -18,7 +18,7 @@ namespace EImece.Controllers
     public class AccountController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        private const string CaptchaAdminLogin = "CaptchaAdminLogin";
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
@@ -29,6 +29,9 @@ namespace EImece.Controllers
 
         public ApplicationUserManager UserManager { get; set; }
 
+        [Inject]
+        public ApplicationDbContext ApplicationDbContext { get; set; }
+
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -38,7 +41,7 @@ namespace EImece.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl = "")
         {
             //if (Request.IsAuthenticated)
             //{
@@ -49,14 +52,12 @@ namespace EImece.Controllers
             return View();
         }
 
-        private const string CaptchaAdminLogin = "CaptchaAdminLogin";
-
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl="")
         {
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
@@ -81,7 +82,18 @@ namespace EImece.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        bool isCustomer = User.IsInRole(Domain.Constants.CustomerRole);
+
+                        var users = ApplicationDbContext.Users.AsQueryable();
+                        var usersRoles = from u in ApplicationDbContext.Users
+                                     from ur in u.Roles
+                                     join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                                     where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
+                                     select new
+                                     {
+                                         Role = r.Name
+                                     };
+
+                        bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole));
                         if (isCustomer)
                         {
                             return RedirectToAction("Index", "Home", new { @area = "customers" });
@@ -454,7 +466,7 @@ namespace EImece.Controllers
             }
         }
 
-        private ActionResult RedirectToLocal(string returnUrl )
+        private ActionResult RedirectToLocal(string returnUrl ="")
         {
             bool isAdmin = User.IsInRole(Domain.Constants.AdministratorRole) || User.IsInRole(Domain.Constants.EditorRole);
             if (isAdmin)

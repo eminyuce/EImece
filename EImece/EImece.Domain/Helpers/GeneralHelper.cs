@@ -32,7 +32,7 @@ namespace EImece.Domain.Helpers
         /// <returns>A random password</returns>
         public static string GenerateRandomPassword()
         {
-            int RequiredLength = 6;
+            int RequiredLength = 8;
             bool RequireDigit = true;
             bool RequireLowercase = true;
             bool RequireUppercase = true;
@@ -40,7 +40,8 @@ namespace EImece.Domain.Helpers
             string[] randomChars = new[] {
             "ABCDEFGHJKLMNOPQRSTUVWXYZ",    // uppercase 
             "abcdefghijkmnopqrstuvwxyz",    // lowercase
-            "0123456789"                   // digits
+            "0123456789",                   // digits
+            "."                        // non-alphanumeric
         };
 
             Random rand = new Random(Environment.TickCount);

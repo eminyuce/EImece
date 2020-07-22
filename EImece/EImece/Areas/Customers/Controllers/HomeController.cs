@@ -1,30 +1,30 @@
 ﻿using EImece.Domain;
-using EImece.Domain.Caching;
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Services.IServices;
-using EImece.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Customers.Controllers
 {
-    [AuthorizeRoles(Constants.CustomerRole)]
+    [AuthorizeRoles(Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
+        [Inject]
+        public IAuthenticationManager AuthenticationManager { get; set; }
+
         // GET: Customers/Home
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home", new { @area = "" });
         }
     }
 }
