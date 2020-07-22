@@ -29,8 +29,6 @@ namespace EImece.Controllers
 
         public ApplicationUserManager UserManager { get; set; }
 
-
-
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -78,29 +76,40 @@ namespace EImece.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            Logger.Debug("The account " + model.Email + "   " + result.ToString());
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+             
+                Logger.Debug("The account " + model.Email + "   " + result.ToString());
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        bool isCustomer = User.IsInRole(Domain.Constants.CustomerRole);
+                        if (isCustomer)
+                        {
+                            return RedirectToAction("Index", "Home", new { @area = "customers" });
+                        }
+                        else
+                        {
+                            return RedirectToLocal(returnUrl);
+                        }
 
-                case SignInStatus.LockedOut:
-                    Logger.Debug("The account  " + model.Email + " LockedOut ");
-                    return View("Lockout");
+                    case SignInStatus.LockedOut:
+                        Logger.Debug("The account  " + model.Email + " LockedOut ");
+                        ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
+                        return View("Lockout");
 
-                case SignInStatus.RequiresVerification:
-                    Logger.Debug("The account  " + model.Email + " RequiresVerification ");
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.RequiresVerification:
+                        Logger.Debug("The account  " + model.Email + " RequiresVerification ");
+                        ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
-                case SignInStatus.Failure:
-                    ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
-                    return View(model);
+                    case SignInStatus.Failure:
+                        ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                        return View(model);
 
-                default:
-                    Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
+                    default:
+                        Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
             }
         }
 
@@ -171,13 +180,13 @@ namespace EImece.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                   await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                   // Send an email with this link
+                    // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    var emailTemplate =   RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName+" "+model.LastName, callbackUrl);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                     return RedirectToAction("Index", "Home");
@@ -185,7 +194,7 @@ namespace EImece.Controllers
                 AddErrors(result);
             }
 
-           // If we got this far, something failed, redisplay form
+            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -234,7 +243,7 @@ namespace EImece.Controllers
                     new { userId = user.Id, code = code },
                     protocol: Request.Url.Scheme);
 
-                var  emailTemplate = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
+                var emailTemplate = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
                 await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
@@ -445,13 +454,14 @@ namespace EImece.Controllers
             }
         }
 
-        private ActionResult RedirectToLocal(string returnUrl = "")
+        private ActionResult RedirectToLocal(string returnUrl )
         {
-            if (!String.IsNullOrEmpty(returnUrl) && returnUrl.Contains("login"))
+            bool isAdmin = User.IsInRole(Domain.Constants.AdministratorRole) || User.IsInRole(Domain.Constants.EditorRole);
+            if (isAdmin)
             {
                 return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
             }
-            if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            else if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }

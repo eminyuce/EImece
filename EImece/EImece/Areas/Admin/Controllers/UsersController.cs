@@ -150,14 +150,14 @@ namespace EImece.Areas.Admin.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+       
         public ActionResult GenerateNewPassword(string id = null)
         {
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
             // Send an email with this link
             string code = UserManager.GeneratePasswordResetToken(user.Id);
-            String newPassWord = "1" + Membership.GeneratePassword(7, 2);
+            String newPassWord = GeneralHelper.GenerateRandomPassword();
             var result = UserManager.ResetPassword(user.Id, code, newPassWord);
 
             if (result.Succeeded)

@@ -313,6 +313,8 @@
     <Compile Include="Areas\Amp\Controllers\HomeController.cs" />
     <Compile Include="Areas\Amp\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Amp\Controllers\StoriesController.cs" />
+    <Compile Include="Areas\Customers\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Customers\CustomersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -686,6 +688,10 @@
     <Content Include="App_Data\il-ilce-mahalle\ilceler.json" />
     <Content Include="Areas\Admin\Views\Products\MoveProductsInTrees.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Customers.cshtml" />
+    <Content Include="Areas\Customers\Views\web.config" />
+    <Content Include="Areas\Customers\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Customers\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Customers\Views\Home\Index.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -898,6 +904,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
+    <Folder Include="Areas\Customers\Data\" />
     <Folder Include="Scripts\codemirror\addon\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>

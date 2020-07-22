@@ -33,9 +33,9 @@
                     @Html.ActionLink(Resource.CustomerRegister, "Register")
                 </p>
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
-            {
+                {
                     @Html.AntiForgeryToken()
-
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
                     <p class="form-row form-row-wide">
                         @Html.LabelFor(model => model.Email)
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
