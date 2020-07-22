@@ -376,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteriler.
+        /// </summary>
+        public static string Customers {
+            get {
+                return ResourceManager.GetString("Customers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Varsayılan Resim Yüksekliği.
         /// </summary>
         public static string DefaultImageHeight {
@@ -934,7 +943,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posta Konusu.
+        ///   Looks up a localized string similar to E-posta Başlık.
         /// </summary>
         public static string MailSubject {
             get {
@@ -943,7 +952,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posta konusunun uygun hata mesajı olmalıdır.
+        ///   Looks up a localized string similar to E-posta konusunun uygun hata mesajı olmalıdır.
         /// </summary>
         public static string MailSubjectPropertyErrorMessage {
             get {
@@ -952,7 +961,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posta Konusu Zorunlu.
+        ///   Looks up a localized string similar to E-posta Başlık Zorunlu.
         /// </summary>
         public static string MailSubjectPropertyRequiredErrorMessage {
             get {
@@ -961,7 +970,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posta Şablonları.
+        ///   Looks up a localized string similar to E-posta Şablonları.
         /// </summary>
         public static string MailTemplates {
             get {

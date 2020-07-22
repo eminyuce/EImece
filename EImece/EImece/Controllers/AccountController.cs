@@ -19,11 +19,8 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
+        [Inject]
+        public IdentityManager IdentityManager { get; set; }
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
@@ -31,6 +28,14 @@ namespace EImece.Controllers
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
+
+
+
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
 
         //
         // GET: /Account/Login
@@ -174,7 +179,7 @@ namespace EImece.Controllers
                      var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     var emailTemplate =   RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName+" "+model.LastName, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
-
+                    IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

@@ -367,7 +367,7 @@
     <value>Aboneler</value>
   </data>
   <data name="MailTemplates" xml:space="preserve">
-    <value>Posta Şablonları</value>
+    <value>E-posta Şablonları</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Ürün</value>
@@ -406,13 +406,13 @@
     <value>İçerik Zorunlu</value>
   </data>
   <data name="MailSubject" xml:space="preserve">
-    <value>Posta Konusu</value>
+    <value>E-posta Başlık</value>
   </data>
   <data name="MailSubjectPropertyErrorMessage" xml:space="preserve">
-    <value>Posta konusunun uygun hata mesajı olmalıdır</value>
+    <value>E-posta konusunun uygun hata mesajı olmalıdır</value>
   </data>
   <data name="MailSubjectPropertyRequiredErrorMessage" xml:space="preserve">
-    <value>Posta Konusu Zorunlu</value>
+    <value>E-posta Başlık Zorunlu</value>
   </data>
   <data name="SaveButtonAndCloseText" xml:space="preserve">
     <value>Kayit Et ve Kapat</value>
@@ -758,5 +758,8 @@
   </data>
   <data name="EmailSubject" xml:space="preserve">
     <value>E-posta Başlık</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Müşteriler</value>
   </data>
 </root>

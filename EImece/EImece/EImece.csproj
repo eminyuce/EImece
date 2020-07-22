@@ -685,6 +685,7 @@
     <Content Include="App_Data\il-ilce-mahalle\iller.json" />
     <Content Include="App_Data\il-ilce-mahalle\ilceler.json" />
     <Content Include="Areas\Admin\Views\Products\MoveProductsInTrees.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Customers.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

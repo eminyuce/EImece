@@ -46,6 +46,7 @@
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
+        public const string CustomerRole = "Customer";
         public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
         public const string SelectedLanguage = "SelectedLanguage";

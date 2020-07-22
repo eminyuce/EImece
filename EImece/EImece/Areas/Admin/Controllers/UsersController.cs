@@ -28,8 +28,18 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search = "")
         {
-            //var users = ApplicationDbContext.Users.AsQueryable();
-
+            List<EditUserViewModel> model = GetUsers(search);
+            model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole,StringComparison.InvariantCultureIgnoreCase)).OrderBy(r=>r.FirstName).ToList();
+            return View(model);
+        }
+        public ActionResult Customers(String search = "")
+        {
+            List<EditUserViewModel> model = GetUsers(search);
+            model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
+            return View(model);
+        }
+        private List<EditUserViewModel> GetUsers(string search)
+        {
             var users = ApplicationDbContext.Users.AsQueryable();
 
             var users2 = from u in ApplicationDbContext.Users
@@ -63,7 +73,8 @@ namespace EImece.Areas.Admin.Controllers
                 u.Role = p == null ? String.Empty : p.Role.ToStr();
                 model.Add(u);
             }
-            return View(model);
+
+            return model;
         }
 
         //[Authorize(Roles = "Admin")]
