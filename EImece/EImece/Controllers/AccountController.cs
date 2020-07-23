@@ -1,4 +1,6 @@
-﻿using EImece.Domain.Helpers.EmailHelper;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Services;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;

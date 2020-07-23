@@ -1,5 +1,6 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Caching;
+using EImece.Domain.DbContext;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;

@@ -1,4 +1,5 @@
-﻿using EImece.Models;
+﻿using EImece.Domain.Services;
+using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System.Linq;
@@ -11,15 +12,15 @@ namespace EImece.Controllers
     [Authorize]
     public class ManageController : BaseController
     {
+        public ApplicationSignInManager SignInManager { get; set; }
+
+        public ApplicationUserManager UserManager { get; set; }
+
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
-
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        public ApplicationUserManager UserManager { get; set; }
 
         //
         // GET: /Manage/Index

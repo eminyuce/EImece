@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Services;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Ninject;

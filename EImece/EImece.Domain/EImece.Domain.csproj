@@ -235,6 +235,7 @@
     <Compile Include="Caching\CacheProvider.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
     <Compile Include="Caching\MemoryCacheProvider.cs" />
+    <Compile Include="DbContext\ApplicationDbContext.cs" />
     <Compile Include="DbContext\DatabaseUtility.cs" />
     <Compile Include="DbContext\DbMigration.cs" />
     <Compile Include="DbContext\EImeceContext.cs" />
@@ -445,6 +446,9 @@
     <Compile Include="Repositories\TemplateRepository.cs" />
     <Compile Include="Scheduler\Jobs\HelloJob.cs" />
     <Compile Include="Scheduler\QuartzService.cs" />
+    <Compile Include="Services\ApplicationSignInManager.cs" />
+    <Compile Include="Services\ApplicationUserManager.cs" />
+    <Compile Include="Services\IdentityManager.cs" />
     <Compile Include="Services\IServices\IShoppingCartService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\CustomerService.cs" />
