@@ -7,11 +7,10 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
+@model  ShoppingCartSession
 @{
-    ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[Constants.ShoppingCartSession];
+    ShoppingCartSession shoppingCart = Model;
     string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount + "") : "";
-
-
 }
 
 <ul id="ShoppingCartsLink">

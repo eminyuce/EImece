@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels.ShoppingCart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
+    [Serializable]
     public class ShoppingCartItem
     {
         public string ShoppingCartItemId { set; get; }
         public int quantity { set; get; }
-        public Product product { set; get; }
+        public ShoppingCartProduct product { set; get; }
 
         public override string ToString()
         {

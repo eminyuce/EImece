@@ -5,8 +5,9 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
+@model  ShoppingCartSession
 @{ 
-    ShoppingCartSession shoppingCart = (ShoppingCartSession)Session[Constants.ShoppingCartSession];
+    ShoppingCartSession shoppingCart = Model;
 }
  
 @if (shoppingCart != null && !shoppingCart.ShoppingCartItems.IsNullOrEmpty())
@@ -33,9 +34,10 @@
                 <ul data-shopping-home-page-item="@item.ShoppingCartItemId">
                     <li>
 
-                            @if (product.MainImageId.HasValue && product.ImageState)
+                            @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                             {
-                             <a href="@Url.Action("Detail","Products",new { id=product.Id })">  <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" /></a>
+                             <a href="@Url.Action("Detail","Products",new { id=product.Id })">  
+                        <img class="rsImg" src="@product.CroppedImageUrl" alt="" /></a>
                             }
 
                         <a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a>

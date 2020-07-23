@@ -55,10 +55,10 @@
                         <tr data-shopping-item-row="@item.ShoppingCartItemId">
                             <td>
                                 <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
-                                @if (product.MainImageId.HasValue && product.ImageState)
+                                @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                                 {
                             <a href="@Url.Action("Detail","Products",new { id=product.Id })">
-                                <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
+                                <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
                             </a>
                                 }
                     </td>

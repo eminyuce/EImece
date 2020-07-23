@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
+    [Serializable]
     public class ShoppingCartSession
     {
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();

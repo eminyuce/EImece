@@ -256,6 +256,8 @@
     <Compile Include="Entities\MainPageImage.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuFile.cs" />
+    <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\OrderProduct.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\ProductFile.cs" />
@@ -369,8 +371,9 @@
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\RecordsStats.cs" />
     <Compile Include="Models\FrontModels\RssParams.cs" />
-    <Compile Include="Models\FrontModels\ShoppingCartSession.cs" />
-    <Compile Include="Models\FrontModels\ShoppingCartItem.cs" />
+    <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartProduct.cs" />
+    <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartSession.cs" />
+    <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartItem.cs" />
     <Compile Include="Models\FrontModels\SimiliarProductTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\SimiliarStoryTagsViewModel.cs" />
     <Compile Include="Models\FrontModels\StoryCategoryViewModel.cs" />
@@ -519,9 +522,7 @@
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\FrontModels\ShoppingCart\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

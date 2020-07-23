@@ -35,10 +35,10 @@
                 <!-- Item #1 -->
                 <tr>
                     <td class="hide-on-mobile">
-                        @if (product.MainImageId.HasValue && product.ImageState)
+                        @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                         {
                         <a href="@Url.Action("Detail","Products",new { id=product.Id })">
-                            <img class="rsImg" src="@product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80)" alt="" />
+                            <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
                         </a>
                                 }
 

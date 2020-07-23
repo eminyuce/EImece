@@ -113,7 +113,7 @@ namespace EImece.Domain.Services
                 BasketItem firstBasketItem = new BasketItem();
                 firstBasketItem.Id = item.ProductCode;
                 firstBasketItem.Name = item.Name;
-                firstBasketItem.Category1 = item.ProductCategory.Name;
+                firstBasketItem.Category1 = item.CategoryName;
                 firstBasketItem.Category2 = "Ürün";
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
                 firstBasketItem.Price = item.Price.ToString();

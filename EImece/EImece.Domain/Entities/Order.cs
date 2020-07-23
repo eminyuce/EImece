@@ -1,13 +1,14 @@
-﻿using System;
+﻿using GenericRepository;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
-    [Serializable]
-    public class ShoppingCart :  BaseEntity
+    public class Order : IEntity<int>
     {
         // Entity annotions
         //[DataType(DataType.Text)]
@@ -15,14 +16,12 @@ namespace EImece.Domain.Entities
         //[Display(Name ="TestColumnName")]
         //[Required(ErrorMessage ="TestColumnName")]
         //[AllowHtml]
+        [Key]
+        public int Id { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime DeliveryDate { get; set; }
         public int CustomerId { get; set; }
-        public string Locale { get; set; }
-        public string ConversationId { get; set; }
-        public string Price { get; set; }
-        public string PaidPrice { get; set; }
-        public string Currency { get; set; }
-        public string BasketId { get; set; }
-        public string PaymentGroup { get; set; }
-
+        public int ShippingAddressId { get; set; }
+        public int BillingAddressId { get; set; }
     }
 }

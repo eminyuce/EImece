@@ -2,8 +2,8 @@
 function GetShoppingCartLinks() {
     var postData = JSON.stringify({});
     ajaxMethodCall(postData, "/Payment/GetShoppingCartLinks", function (data) {
-        $("#cart").empty();
-        $("#cart").html(data);
+        $("#ShoppingCartsLink").empty();
+        $("#ShoppingCartsLink").html(data);
     });
 }
 
