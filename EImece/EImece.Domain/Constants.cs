@@ -59,7 +59,7 @@
         public const string FileUploadDeleteURL = "/FileUpload/DeleteFile/?file=";
         public const string AdminCultureCookieName = "_adminCulture";
         public const string CultureCookieName = "_culture";
-        public const string ShoppingCartKey = "ShoppingCartKey";
+        public const string ShoppingCartKey = "ShoppingCartKey1";
         public static object DeleteButtonHtmlAttribute
         {
             get

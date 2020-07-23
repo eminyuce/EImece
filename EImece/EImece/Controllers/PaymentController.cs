@@ -54,7 +54,7 @@ namespace EImece.Controllers
         public ActionResult AddToCart(int productId, int quantity)
         {
             var product = ProductService.GetProductById(productId);
-            ShoppingCartSession shoppingCart = GetShoppingCart();
+            var shoppingCart = GetShoppingCart();
             var item = new ShoppingCartItem();
             item.product = new ShoppingCartProduct(product.Product);
             item.quantity = quantity;
@@ -86,32 +86,36 @@ namespace EImece.Controllers
 
         private void SaveShoppingCart(ShoppingCartSession shoppingCart)
         {
-             Session[Constants.ShoppingCartKey] = shoppingCart;
+            //   Session[Constants.ShoppingCartKey] = shoppingCart;
 
-            //    SaveShoppingCartCookie(shoppingCart);
+            SaveShoppingCartCookie(shoppingCart);
 
         }
 
         private void SaveShoppingCartCookie(ShoppingCartSession shoppingCart)
         {
-            if (Request.Cookies[Constants.ShoppingCartKey] != null)
-            {
-                var shoppingCartCookie = Request.Cookies[Constants.ShoppingCartKey];
-                shoppingCartCookie.Value = JsonConvert.SerializeObject(shoppingCart);
-            }
-            else
-            {
-                var shoppingCartJson = JsonConvert.SerializeObject(shoppingCart);
-                var shoppingCartCookie = new HttpCookie(Constants.ShoppingCartKey, shoppingCartJson);
-                Request.Cookies.Add(shoppingCartCookie);
-            }
-         
+            SetCookie(Constants.ShoppingCartKey, JsonConvert.SerializeObject(shoppingCart), 120);
         }
+        public bool SetCookie(string cookieName, string value, int expires)
+        {
+            try
+            {
+                HttpCookie cookie_clc = new HttpCookie(cookieName, value);
+                cookie_clc.Expires = DateTime.Now.AddMinutes(expires);
+                cookie_clc.Path = "/"+ cookieName;
+                Response.Cookies.Add(cookie_clc);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
+        }
         private ShoppingCartSession GetShoppingCartFromDataSource()
         {
-            //   return GetShoppingCartFromFromCookie();
-            return GetShoppingCartFromFromSession();
+               return GetShoppingCartFromFromCookie();
+            //return GetShoppingCartFromFromSession();
         }
 
         private ShoppingCartSession GetShoppingCartFromFromSession()
@@ -128,29 +132,25 @@ namespace EImece.Controllers
 
         private ShoppingCartSession GetShoppingCartFromFromCookie()
         {
-            var shoppingCartCookie = Response.Cookies.Get(Constants.ShoppingCartKey);
-            string shoppingCartJson = shoppingCartCookie.Value;
-            if (String.IsNullOrEmpty(shoppingCartJson))
+            HttpCookie shoppingCartCookie = GetShoppingCookie();
+            if (shoppingCartCookie == null || String.IsNullOrEmpty(shoppingCartCookie.Value))
             {
-                var shoppingCart = CreateDefaultShopingCard();
-                SaveShoppingCart(shoppingCart);
-                return shoppingCart;
+                return CreateDefaultShopingCard();
             }
             else
             {
-                return JsonConvert.DeserializeObject<ShoppingCartSession>(shoppingCartJson);
+                return JsonConvert.DeserializeObject<ShoppingCartSession>(shoppingCartCookie.Value);
             }
+        }
+
+        private HttpCookie GetShoppingCookie()
+        {
+            return Response.Cookies[Constants.ShoppingCartKey];
         }
 
         private ShoppingCartSession GetShoppingCart()
         {
-            ShoppingCartSession shoppingCart = GetShoppingCartFromDataSource();
-            if (shoppingCart == null)
-            {
-                shoppingCart = CreateDefaultShopingCard();
-            }
-
-            return shoppingCart;
+            return GetShoppingCartFromDataSource();
         }
 
         private ShoppingCartSession CreateDefaultShopingCard()
@@ -166,7 +166,7 @@ namespace EImece.Controllers
             shoppingCart.Customer.Country = "Turkiye";
             shoppingCart.Customer.Ip = GetIpAddress();
             shoppingCart.Customer.IdentityNumber = Guid.NewGuid().ToString();
-            SaveShoppingCart(shoppingCart);
+          
             return shoppingCart;
         }
 
