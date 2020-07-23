@@ -448,6 +448,7 @@
     <Compile Include="Scheduler\QuartzService.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
+    <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\IdentityManager.cs" />
     <Compile Include="Services\IServices\IShoppingCartService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
@@ -488,6 +489,7 @@
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Services\SiteMapService.cs" />
+    <Compile Include="Services\SmsService.cs" />
     <Compile Include="Services\StoryCategoryService.cs" />
     <Compile Include="Services\StoryService.cs" />
     <Compile Include="Services\SubsciberService.cs" />
