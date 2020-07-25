@@ -26,6 +26,13 @@ namespace EImece.Domain.Models.FrontModels
                 return product.Price;
             }
         }
+        public double TotalPrice
+        {
+            get
+            {
+                return product.Price * quantity;
+            }
+        }
         public string PName
         {
             get

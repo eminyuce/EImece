@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Models.FrontModels;
+using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 
@@ -45,5 +46,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             string attachmentFilePath = null, string attachmentFileName = null);
 
         void SendEmail(string destination, string subject, string body);
+        void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate);
     }
 }

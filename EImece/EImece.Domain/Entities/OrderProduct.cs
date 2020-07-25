@@ -21,6 +21,13 @@ namespace EImece.Domain.Entities
         public int OrderId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public float TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
+
+        public OrderProduct()
+        {
+
+        }
+
+         
     }
 }

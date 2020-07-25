@@ -5,6 +5,7 @@ using EImece.Domain.Services.IServices;
 using Iyzipay.Model;
 using Ninject;
 using NLog;
+using RazorEngine.Compilation.ImpromptuInterface;
 using System;
 
 namespace EImece.Domain.Services
@@ -19,18 +20,22 @@ namespace EImece.Domain.Services
 
         private IAddressService AddressService;
 
+        private IOrderProductService OrderProductService;
+
         private IShoppingCartRepository ShoppingCartRepository { get; set; }
 
 
         public ShoppingCartService(IShoppingCartRepository repository,
             IOrderService orderService,
             ICustomerService customerService,
-            IAddressService addressService) : base(repository)
+            IAddressService addressService,
+            IOrderProductService orderProductService) : base(repository)
         {
             ShoppingCartRepository = repository;
             this.OrderService = orderService;
             this.CustomerService = customerService;
             this.AddressService = addressService;
+            this.OrderProductService = orderProductService;
         }
 
         public void SaveOrEditShoppingCart(ShoppingCart item)
@@ -50,6 +55,10 @@ namespace EImece.Domain.Services
         public ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
             return ShoppingCartRepository.GetShoppingCartByOrderGuid(orderGuid);
+        }
+        public void DeleteByOrderGuid(string orderGuid)
+        {
+            ShoppingCartRepository.DeleteByWhereCondition(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
@@ -101,8 +110,22 @@ namespace EImece.Domain.Services
             item.ErrorMessage = checkoutForm.ErrorMessage;
             item.Locale = checkoutForm.Locale;
             item.SystemTime = checkoutForm.SystemTime;
-            Order id = OrderService.SaveOrEditEntity(item);
+            Order savedOrder = OrderService.SaveOrEditEntity(item);
 
+            foreach(var shoppingCartItem in shoppingCart.ShoppingCartItems)
+            {
+
+                OrderProductService.SaveOrEditEntity(new OrderProduct() {
+                    OrderId = savedOrder.Id, 
+                    ProductId = shoppingCartItem.product.Id, 
+                    Quantity = shoppingCartItem.quantity,
+                    TotalPrice = shoppingCartItem.TotalPrice
+                });
+
+            }
+                
         }
+
+    
     }
 }

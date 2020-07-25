@@ -76,7 +76,32 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
+        public Tuple<string, string> OrderConfirmationEmail(ShoppingCartSession shoppingCart)
+        {
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("OrderConfirmationEmail");
+            if(emailTemplate == null)
+            {
+                return new Tuple<string, string>("", "");
+            }
+            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
+            var Request = HttpContext.Create().Request;
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+
+            var model = new
+            {
+                Customer = shoppingCart.Customer,
+                BillingAddress = shoppingCart.BillingAddress,
+                ShippingAddress = shoppingCart.ShippingAddress,
+                TotalPrice = shoppingCart.TotalPrice
+            };
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string result = Engine.Razor.RunCompile(template, templateKey, null, model);
+
+            return new Tuple<string, string>(emailTemplate.Subject, result);
+        }
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ContactUsAboutProductInfo");
@@ -149,5 +174,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             return result;
         }
+
+      
     }
 }

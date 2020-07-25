@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Models.FrontModels;
+﻿using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
@@ -167,6 +168,28 @@ namespace EImece.Domain.Helpers.EmailHelper
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(destination);
             SendEmail(emailAccount, subject, body, from, to);
+        }
+
+        public void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate)
+        {
+            if(renderedEmailTemplate.Item1.IsNullOrEmpty() && renderedEmailTemplate.Item2.IsNullOrEmpty())
+            {
+                return;
+            }
+            
+            var fromAddress = emailAccount.Email;
+            if (string.IsNullOrEmpty(fromAddress))
+            {
+                throw new ArgumentException("From Address cannot be null");
+            }
+            var fromAddressDisplayName = emailAccount.DisplayName;
+            if (string.IsNullOrEmpty(fromAddressDisplayName))
+            {
+                throw new ArgumentException("from Address DisplayName cannot be null");
+            }
+            var from = new MailAddress(fromAddress, fromAddressDisplayName);
+            var to = new MailAddress(shoppingCart.Customer.Email, shoppingCart.Customer.FullName);
+            SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2, from, to);
         }
     }
 }
