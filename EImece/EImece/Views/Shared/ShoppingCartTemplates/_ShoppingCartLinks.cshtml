@@ -15,7 +15,7 @@
 
 <ul id="ShoppingCartsLink">
     <li>
-        <a id="ShoppingCartsLinkDetail"> @Resource.MyBasket </a><span id="ShoppingCartItemCount">@totalNumber</span>
+        <a href="@Url.Action("shoppingcart","payment")"> @Resource.MyBasket </a><span id="ShoppingCartItemCount">@totalNumber</span>
     </li>
     <li>@Html.ActionLink(@Resource.CustomerAccount, "Login", "Account")</li>
 </ul>

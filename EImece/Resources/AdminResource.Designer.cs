@@ -529,6 +529,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sıkça Sorulan Sorular.
+        /// </summary>
+        public static string Faq {
+            get {
+                return ResourceManager.GetString("Faq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dosya Yükleme Sayfası.
         /// </summary>
         public static string FileUploadingPage {
@@ -1434,6 +1443,15 @@ namespace Resources {
         public static string ProductSpecTemplateItemList {
             get {
                 return ResourceManager.GetString("ProductSpecTemplateItemList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soru.
+        /// </summary>
+        public static string Question {
+            get {
+                return ResourceManager.GetString("Question", resourceCulture);
             }
         }
         

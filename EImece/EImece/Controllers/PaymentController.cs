@@ -295,5 +295,10 @@ namespace EImece.Controllers
         {
             return Content("PaymentSuccess is done");
         }
+
+        public ActionResult RegisterCustomer()
+        {
+            return View();
+        }
     }
 }

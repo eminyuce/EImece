@@ -248,6 +248,7 @@
     <Compile Include="Entities\BrowserSubscriber.cs" />
     <Compile Include="Entities\BrowserSubscription.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\Faq.cs" />
     <Compile Include="Entities\FileStorage.cs" />
     <Compile Include="Entities\FileStorageTag.cs" />
     <Compile Include="Entities\List.cs" />
@@ -388,8 +389,10 @@
     <Compile Include="Models\MigrationModels\EntityMainImage.cs" />
     <Compile Include="Models\MigrationModels\EntityMediaFile.cs" />
     <Compile Include="Models\UrlShortenModels\BitlyModels.cs" />
+    <Compile Include="Repositories\FaqRepository.cs" />
     <Compile Include="Repositories\IRepositories\IOrderProductRepository.cs" />
     <Compile Include="Repositories\IRepositories\IOrderRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IFaqRepository.cs" />
     <Compile Include="Repositories\OrderProductRepository.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\ShoppingCartRepository.cs" />
@@ -456,7 +459,9 @@
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\FaqService.cs" />
     <Compile Include="Services\IdentityManager.cs" />
+    <Compile Include="Services\IServices\IFaqService.cs" />
     <Compile Include="Services\IServices\IOrderProductService.cs" />
     <Compile Include="Services\IServices\IOrderService.cs" />
     <Compile Include="Services\IServices\IShoppingCartService.cs" />

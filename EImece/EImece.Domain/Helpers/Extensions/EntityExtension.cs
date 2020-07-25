@@ -257,7 +257,7 @@ namespace EImece.Domain.Helpers.Extensions
         {
             String imageTag = "";
 
-            if (entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
+            if (entity != null && entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                 String partThumb2 = GetFullPathImageUrlFromFileSystem(entity, true);
                 imageTag = String.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
@@ -268,18 +268,26 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
-            if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
+            try
             {
-                String imagePath = Constants.UrlBase + entity.MainImage.FileName;
-                if (isThump)
+                if (entity != null && entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
                 {
-                    String fileName = entity.MainImage.FileName;
-                    String partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                    String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
-                    imagePath = partThumb2;
+                    String imagePath = Constants.UrlBase + entity.MainImage.FileName;
+                    if (isThump)
+                    {
+                        String fileName = entity.MainImage.FileName;
+                        String partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                        String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                        imagePath = partThumb2;
+                    }
+                    return imagePath;
                 }
-                return imagePath;
             }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
+            }
+          
             return String.Empty;
         }
 

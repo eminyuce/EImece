@@ -293,6 +293,7 @@
     <Compile Include="Areas\Admin\Controllers\ImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImportDataController.cs" />
     <Compile Include="Areas\Admin\Controllers\ListsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FaqController.cs" />
     <Compile Include="Areas\Admin\Controllers\MailTemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainPageImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MediaController.cs" />
@@ -686,6 +687,8 @@
     <Content Include="Areas\Customers\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Customers\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Customers\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Faq\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Faq\SaveOrEdit.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -898,6 +901,7 @@
     <Content Include="Views\Shared\_WebSiteLogoOLD.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartDetails.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartProducts.cshtml" />
+    <Content Include="Views\Payment\RegisterCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

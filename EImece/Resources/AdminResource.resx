@@ -762,4 +762,10 @@
   <data name="Customers" xml:space="preserve">
     <value>Müşteriler</value>
   </data>
+  <data name="Faq" xml:space="preserve">
+    <value>Sıkça Sorulan Sorular</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Soru</value>
+  </data>
 </root>
