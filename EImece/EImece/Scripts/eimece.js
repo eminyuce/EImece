@@ -4,9 +4,109 @@ function GetShoppingCartLinks() {
     ajaxMethodCall(postData, "/Payment/GetShoppingCartLinks", function (data) {
         $("#ShoppingCartsLink").empty();
         $("#ShoppingCartsLink").html(data);
+        addShoppingCartsLinkDetailClick();
     });
 }
+function addShoppingCartsLinkDetailClick() {
+    $("#ShoppingCartsLinkDetail").click(function () {
+        var orderGuid = getCookie("orderGuid");
+        var postData = JSON.stringify({
+            orderGuid: orderGuid
+        });
+        console.log(postData);
+        ajaxMethodCall(postData, "/Payment/GetShoppingCartSmallDetails", function (data) {
+            $("#ShoppingCartsDetail").html(data);
+            bindOnRemove();
+        });
+    });
+}
+function removeCart(shoppingItemId) {
+    console.log(shoppingItemId);
+    var postData = JSON.stringify({ shoppingItemId  });
+    ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
+        $('[data-shopping-item=' + shoppingItemId + ']').remove();
+        console.log(data);
+        if (data.TotalItemCount === 0) {
+            $("#ShoppingCartsDetail").hide();
+        } else {
+            $("#ShoppingCartsDetail").show();
+        }
+        GetShoppingCartLinks();
+    });
+}
+function bindOnRemove() {
+    $('[data-shopping-item-remove]').each(function () {
+        $(this).off("click");
+        $(this).on("click", function (e) {
+            e.preventDefault();
+            var caller = e.target;
+            var shoppingItemId = $(caller).attr('data-shopping-item-remove');
+            var postData = JSON.stringify({ shoppingItemId: shoppingItemId });
+            console.log(postData);
+            ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
+                $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
+                $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
+                bindCalcuateTotalPrice();
+                GetShoppingCartLinks();
+            });
+        });
+    });
+}
+bindOnRemove();
+console.log("jquery is working");
+$('[data-shopping-quantity-id]').each(function () {
+    $(this).off("blur");
+    $(this).on("blur", function (e) {
+        var caller = e.target;
+        var shoppingItemId = $(caller).attr('data-shopping-quantity-id');
+        var quantity = caller.value;
+        $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(quantity);
+    });
+});
+function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
+    var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
+    var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
+    var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
+    console.log(postData);
+    ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
+        var totalPrice = parseFloat(itemPrice) * quantity;
+        console.log(totalPrice);
+        renderPrice(totalPrice, function (data) {
+            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
+        });
+        bindCalcuateTotalPrice();
 
+    });
+}
+$('[data-shopping-button-price]').each(function () {
+    $(this).off("click");
+    $(this).on("click", function (e) {
+        var caller = e.target;
+        var shoppingItemId = $(caller).attr('data-shopping-button-price');
+        triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
+    });
+});
+function renderPrice(price, success) {
+    var postData = JSON.stringify({ price: price });
+    ajaxMethodCall(postData, "/Payment/RenderPrice", success);
+}
+
+
+function bindCalcuateTotalPrice() {
+    var grandTotalPrice = 0;
+    $('[data-shopping-item-row]').each(function () {
+        var shoppingItemId = $(this).attr('data-shopping-item-row');
+        var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
+        var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
+        var totalPrice = parseFloat(itemPrice) * quantity;
+        grandTotalPrice = grandTotalPrice + totalPrice;
+    });
+    var data = { totalPrice: grandTotalPrice };
+    renderPrice(grandTotalPrice, function (data) {
+        $('#TotalPrice').html(data.price);
+        $('#HomePageTotalPrice').html(data.price);
+    });
+}
 
 jQuery(function () {
 

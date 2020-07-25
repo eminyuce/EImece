@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -139,26 +140,29 @@ namespace EImece.Controllers
         }
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult Logo()
+        public async Task<FileContentResult> Logo()
         {
-            var cacheKey = String.Format("WebSiteLogo");
-            FileContentResult result = null;
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            return await Task.Run(() =>
             {
-                var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-                var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
-                var isFullFileExits = System.IO.File.Exists(p.Item1);
-                if (isFullFileExits)
+                var cacheKey = String.Format("WebSiteLogo");
+                FileContentResult result = null;
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
-                    var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
-                    result = File(ms.ToArray(), "image/Jpeg");
-                    ms.Dispose();
+                    var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+                    var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
+                    var isFullFileExits = System.IO.File.Exists(p.Item1);
+                    if (isFullFileExits)
+                    {
+                        var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
+                        result = File(ms.ToArray(), "image/Jpeg");
+                        ms.Dispose();
+                    }
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
+                    Logger.Info("Image Cache is worked.");
                 }
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
-                Logger.Info("Image Cache is worked.");
-            }
 
-            return result;
+                return result;
+            }).ConfigureAwait(true);
         }
     }
 }

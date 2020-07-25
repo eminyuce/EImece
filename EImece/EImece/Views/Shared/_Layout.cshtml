@@ -71,6 +71,7 @@
             <div class="twelve columns">
                 <div id="additional-menu">
                     @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+                    <span id="ShoppingCartsDetail"></span>
                 </div>
             </div>
                 <!-- Search -->
@@ -149,8 +150,13 @@
         <script>
             CookieConsent();
             GetShoppingCartLinks();
+
+          
+          
+
+
             $(document).ready(function () {
-              
+               
                 $("#AddToCart").click(function () {
                     var orderGuid = getCookie("orderGuid");
                     if (orderGuid != "") {
@@ -166,7 +172,6 @@
                     });
                     console.log(postData);
                     ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-                        console.log(data);
                         GetShoppingCartLinks();
                     });
                 });

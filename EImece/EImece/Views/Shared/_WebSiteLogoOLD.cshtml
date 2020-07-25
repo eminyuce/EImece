@@ -1,0 +1,24 @@
+﻿@model List<Setting>
+
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@{
+    bool isThumb = ViewData["isThumb"].ToBool(false);
+}
+@{
+    if (Model.Any())
+    {
+        var webSiteLogo = Model.FirstOrDefault();
+        var companyName = Model.Skip(1).FirstOrDefault();
+        string companyNametxt = companyName.SettingValue;
+        string fullPath = Path.Combine(Constants.ServerMapPath, webSiteLogo.SettingValue);
+        var isFullFileExits = File.Exists(fullPath);
+        string partThumb2 = Path.Combine(Path.Combine(Constants.ServerMapPath, "thumbs"), "thb" + webSiteLogo.SettingValue);
+        var isThump2FileExits = File.Exists(partThumb2);
+
+        <a href="/">
+            <img alt="@companyNametxt" src="@partThumb2.Replace("~","")" />
+        </a>
+    }
+}

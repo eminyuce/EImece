@@ -79,6 +79,16 @@ namespace EImece.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
+        [NoCache]
+        public ActionResult GetShoppingCartSmallDetails()
+        {
+            ShoppingCartSession shoppingCart = GetShoppingCartFromDataSource();
+            var tempData = new TempDataDictionary();
+            var html = this.RenderPartialToString(
+                        @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartSmallDetails.cshtml",
+                        new ViewDataDictionary(shoppingCart), tempData);
+            return Json(html, JsonRequestBehavior.AllowGet);
+        }
        
         [NoCache]
         public ActionResult GetShoppingCartLinks()
@@ -229,11 +239,11 @@ namespace EImece.Controllers
             {
                 shoppingCart.ShoppingCartItems.Remove(item);
                 SaveShoppingCart(shoppingCart);
-                return Json(new { status = SUCCESS, shoppingItemId }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = SUCCESS, shoppingItemId, TotalItemCount= shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { status =FAILED, shoppingItemId }, JsonRequestBehavior.AllowGet);
+                return Json(new { status =FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
         // GET: Home
