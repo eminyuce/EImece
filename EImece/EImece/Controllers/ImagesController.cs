@@ -1,7 +1,10 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using Microsoft.Ajax.Utilities;
+using Ninject;
+using NLog;
 using System;
 using System.Drawing;
 using System.IO;
@@ -13,6 +16,22 @@ namespace EImece.Controllers
 {
     public class ImagesController : BaseController
     {
+        private ICacheProvider _memoryCacheProvider { get; set; }
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public ICacheProvider MemoryCacheProvider
+        {
+            get
+            {
+                return _memoryCacheProvider;
+            }
+            set
+            {
+                _memoryCacheProvider = value;
+            }
+        }
+
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
@@ -122,17 +141,24 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public ActionResult Logo()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
-            var isFullFileExits = System.IO.File.Exists(p.Item1);
-            if (isFullFileExits)
+            var cacheKey = String.Format("WebSiteLogo");
+            FileContentResult result = null;
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
-                var result = File(ms.ToArray(), "image/Jpeg");
-                ms.Dispose();
-                return result;
+                var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+                var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
+                var isFullFileExits = System.IO.File.Exists(p.Item1);
+                if (isFullFileExits)
+                {
+                    var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
+                    result = File(ms.ToArray(), "image/Jpeg");
+                    ms.Dispose();
+                }
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
+                Logger.Info("Image Cache is worked.");
             }
-            return Content(p.Item1);
+
+            return result;
         }
     }
 }
