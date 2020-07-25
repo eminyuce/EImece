@@ -294,7 +294,6 @@ namespace EImece.Areas.Admin.Controllers
                 var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
                 webSiteLogoSetting.Name = Constants.WebSiteLogo;
                 webSiteLogoSetting.Description = "";
-                webSiteLogoSetting.EntityHash = "";
                 webSiteLogoSetting.SettingValue = result.NewFileName;
                 webSiteLogoSetting.SettingKey = Constants.WebSiteLogo;
                 webSiteLogoSetting.IsActive = true;

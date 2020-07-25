@@ -226,7 +226,7 @@ namespace EImece.Domain.Services
             try
             {
                 var requestContext = HttpContext.Current.Request.RequestContext;
-
+           
                 var menus = MenuService.GetActiveBaseEntitiesFromCache(true, language);
 
                 foreach (var c in menus)
@@ -244,11 +244,12 @@ namespace EImece.Domain.Services
 
                         if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
                         {
+                            string url = new UrlHelper(requestContext).Action("detail",
+                                                            controller,
+                                                            new { id = c.GetSeoUrl() },
+                                                            AppConfig.HttpProtocol);
                             var siteMap = new SitemapItem(
-                                new UrlHelper(requestContext).Action("detail",
-                                controller,
-                                new { id = c.GetSeoUrl() },
-                                AppConfig.HttpProtocol),
+                                url,
                                 lastModified,
                                 changeFrequency: SitemapChangeFrequency.Daily,
                                 priority: 1.0);

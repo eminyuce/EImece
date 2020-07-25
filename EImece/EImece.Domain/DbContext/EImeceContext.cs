@@ -45,6 +45,8 @@ namespace EImece.Domain.DbContext
         public IDbSet<BrowserNotification> BrowserNotifications { get; set; }
         public IDbSet<Customer> Customers { get; set; }
         public IDbSet<Address> Addresses { get; set; }
-        public  IDbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public IDbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public IDbSet<Order> Orders { get; set; }
+        public IDbSet<OrderProduct> OrderProducts { get; set; }
     }
 }

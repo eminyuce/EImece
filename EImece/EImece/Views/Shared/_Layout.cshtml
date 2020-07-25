@@ -150,8 +150,20 @@
             CookieConsent();
             GetShoppingCartLinks();
             $(document).ready(function () {
+              
                 $("#AddToCart").click(function () {
-                    var postData = JSON.stringify({ productId: $("#productId").val(), quantity: $("#quantity").val() });
+                    var orderGuid = getCookie("orderGuid");
+                    if (orderGuid != "") {
+                        
+                    } else {
+                        orderGuid = createUUID();
+                        setCookie("orderGuid", orderGuid, 365);
+                    }
+                    var postData = JSON.stringify({
+                        productId: $("#productId").val(),
+                        quantity: $("#quantity").val(),
+                        orderGuid: orderGuid
+                    });
                     console.log(postData);
                     ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
                         console.log(data);

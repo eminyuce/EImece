@@ -674,11 +674,6 @@
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\SelectUserRolesViewModel.cshtml" />
-    <Content Include="Areas\Admin\Views\TestAsync\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\TestAsync\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\TestAsync\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\TestAsync\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\TestAsync\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags - Copy.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\_pPageSetting.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\AboutUs.cshtml" />
@@ -900,6 +895,7 @@
     <Content Include="Views\Shared\ShoppingCartTemplates\_HomePageShoppingCart.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks222.cshtml" />
+    <Content Include="Views\Payment\PaymentResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

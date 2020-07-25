@@ -23,6 +23,7 @@ namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
+      
         /// <summary>
         /// Generates a Random Password
         /// respecting the given strength requirements.

@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 namespace EImece.Domain.Repositories
 {
     public abstract class BaseRepository<T> : EntityRepository<T, int>
-       where T : class, IEntity<int>
+       where T : class, IEntity<int>    
     {
         protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
@@ -35,19 +35,28 @@ namespace EImece.Domain.Repositories
             //((EImeceContext)DbContext).Configuration.ProxyCreationEnabled = false;
             //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
         }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
+        ~BaseRepository()
         {
-            if (!this.disposed)
+            Dispose(false);
+        }
+
+        protected void Dispose(Boolean disposing)
+        {
+            // free unmanaged ressources here
+            if (disposing)
             {
-                if (disposing)
+                // This method is called from Dispose() so it is safe to
+                // free managed ressources here
+                if (DbContext != null)
                 {
                     DbContext.Dispose();
                 }
             }
-            this.disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public virtual bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda)
@@ -71,12 +80,6 @@ namespace EImece.Domain.Repositories
             return isResult;
         }
 
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         public virtual EntitiesContext GetDbContext()
         {
             return EImeceDbContext;
@@ -84,17 +87,36 @@ namespace EImece.Domain.Repositories
 
         public virtual int SaveOrEdit(T item)
         {
-            item.TrimAllStrings();
-            if (item.Id.ToInt() == 0)
+            try
             {
-                this.Add(item);
-            }
-            else
-            {
-                this.Edit(item);
-            }
+                item.TrimAllStrings();
+                if (item.Id.ToInt() == 0)
+                {
+                    this.Add(item);
+                }
+                else
+                {
+                    this.Edit(item);
+                }
 
-            return this.Save();
+                return this.Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string errorMessage = "";
+                foreach (var errors in ex.EntityValidationErrors)
+                {
+                  
+                    foreach (var validationError in errors.ValidationErrors)
+                    {
+                        // get the error message 
+                          errorMessage += validationError.ErrorMessage;
+                    }
+                }
+                BaseLogger.Error(errorMessage);
+                throw new Exception(errorMessage);
+            }
+          
         }
 
         public virtual int DeleteItem(T item)

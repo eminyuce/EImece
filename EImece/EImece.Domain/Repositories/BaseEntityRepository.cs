@@ -14,7 +14,7 @@ namespace EImece.Domain.Repositories
     {
         protected static readonly Logger BaseEntityLogger = LogManager.GetCurrentClassLogger();
 
-        public BaseEntityRepository(IEImeceContext dbContext) : base(dbContext)
+        protected BaseEntityRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
 
@@ -48,5 +48,6 @@ namespace EImece.Domain.Repositories
             var result = menus.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             return result;
         }
+
     }
 }

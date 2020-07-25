@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain;
-using EImece.Domain.Services;
-using Microsoft.AspNet.Identity;
+﻿using EImece.Domain.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.DbContext
 {

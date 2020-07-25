@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace EImece.Domain.Models.FrontModels
         private Customer _customer = new Customer();
         private Address _shippingAddress = new Address();
         private Address _billingAddress = new Address();
-
+        public string OrderGuid { get; set; }
 
         public List<ShoppingCartItem> ShoppingCartItems
         { 
@@ -98,6 +99,33 @@ namespace EImece.Domain.Models.FrontModels
             {
                 return ShoppingCartItems.IsNullOrEmpty() ? 0 : ShoppingCartItems.Count;
             }
+        }
+
+        public static ShoppingCartSession CreateDefaultShopingCard(int currentLanguage, string ip)
+        {
+            ShoppingCartSession shoppingCart = new ShoppingCartSession();
+            var shippingAddress = new Domain.Entities.Address();
+            shippingAddress.Country = "Turkiye";
+            shippingAddress.AddressType = (int)AddressType.ShippingAddress;
+            var billingAddress = new Domain.Entities.Address();
+            billingAddress.Country = "Turkiye";
+            billingAddress.AddressType = (int)AddressType.BillingAddress;
+            shoppingCart.ShippingAddress = shippingAddress;
+            shoppingCart.BillingAddress = billingAddress;
+
+            Customer customer = shoppingCart.Customer;
+            customer.IsSameAsShippingAddress = true;
+            customer.Country = "Turkiye";
+            customer.Ip = ip;
+            customer.IdentityNumber = Guid.NewGuid().ToString();
+            customer.CreatedDate = DateTime.Now;
+            customer.UpdatedDate = DateTime.Now;
+            customer.IsActive = true;
+            customer.Position = 1;
+            customer.Lang = currentLanguage;
+            shoppingCart.Customer = customer;
+
+            return shoppingCart;
         }
     }
 }

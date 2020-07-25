@@ -2,10 +2,13 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Iyzipay;
 using Iyzipay.Model;
@@ -25,7 +28,11 @@ namespace EImece.Controllers
 {
     public class PaymentController : BaseController
     {
+        private const string OrderGuidCookieKey = "orderGuid";
         private readonly IyzicoService iyzicoService;
+
+        [Inject]
+        public IShoppingCartService ShoppingCartService { get; set; }
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
@@ -33,6 +40,10 @@ namespace EImece.Controllers
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
+
+
+        [Inject]
+        public IEmailSender EmailSender { get; set; }
 
         public PaymentController(IyzicoService iyzicoService,ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -51,10 +62,11 @@ namespace EImece.Controllers
             return PartialView("ShoppingCartTemplates/_HomePageShoppingCart", GetShoppingCart());
         }
 
-        public ActionResult AddToCart(int productId, int quantity)
+        public ActionResult AddToCart(int productId, int quantity, string orderGuid)
         {
             var product = ProductService.GetProductById(productId);
             var shoppingCart = GetShoppingCart();
+            shoppingCart.OrderGuid = orderGuid;
             var item = new ShoppingCartItem();
             item.product = new ShoppingCartProduct(product.Product);
             item.quantity = quantity;
@@ -86,95 +98,45 @@ namespace EImece.Controllers
 
         private void SaveShoppingCart(ShoppingCartSession shoppingCart)
         {
-            //   Session[Constants.ShoppingCartKey] = shoppingCart;
-
             SaveShoppingCartCookie(shoppingCart);
-
         }
 
         private void SaveShoppingCartCookie(ShoppingCartSession shoppingCart)
         {
-            SetCookie(Constants.ShoppingCartKey, JsonConvert.SerializeObject(shoppingCart), 120);
-        }
-        public bool SetCookie(string cookieName, string value, int expires)
-        {
-            try
-            {
-                HttpCookie cookie_clc = new HttpCookie(cookieName, value);
-                cookie_clc.Expires = DateTime.Now.AddMinutes(expires);
-                cookie_clc.Path = "/"+ cookieName;
-                Response.Cookies.Add(cookie_clc);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            var item = new Domain.Entities.ShoppingCart();
+            item.CreatedDate = DateTime.Today;
+            item.UpdatedDate = DateTime.Today;
+            item.Name = "Name";
+            item.IsActive = false;
+            item.Lang = CurrentLanguage;
+            item.Position = 0;
+            item.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCart);
+            item.OrderGuid = shoppingCart.OrderGuid;
+            ShoppingCartService.SaveOrEditShoppingCart(item);
+      }
 
+        private String GetIpAddress()
+        {
+            return (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
+                 Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
         }
         private ShoppingCartSession GetShoppingCartFromDataSource()
         {
-               return GetShoppingCartFromFromCookie();
-            //return GetShoppingCartFromFromSession();
-        }
-
-        private ShoppingCartSession GetShoppingCartFromFromSession()
-        {
-            var result = (ShoppingCartSession)Session[Constants.ShoppingCartKey];
-            if (result == null)
+            HttpCookie orderGuid =  Request.Cookies[OrderGuidCookieKey];
+            var item = orderGuid !=null ?  ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid.Value) : null;
+            if (item == null)
             {
-                var shoppingCart = CreateDefaultShopingCard();
-                SaveShoppingCart(shoppingCart);
-                return shoppingCart;
-            }
-            return result;
-        }
-
-        private ShoppingCartSession GetShoppingCartFromFromCookie()
-        {
-            HttpCookie shoppingCartCookie = GetShoppingCookie();
-            if (shoppingCartCookie == null || String.IsNullOrEmpty(shoppingCartCookie.Value))
-            {
-                return CreateDefaultShopingCard();
+                return ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GetIpAddress()); 
             }
             else
             {
-                return JsonConvert.DeserializeObject<ShoppingCartSession>(shoppingCartCookie.Value);
+                return JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
             }
-        }
-
-        private HttpCookie GetShoppingCookie()
-        {
-            return Response.Cookies[Constants.ShoppingCartKey];
         }
 
         private ShoppingCartSession GetShoppingCart()
         {
             return GetShoppingCartFromDataSource();
-        }
-
-        private ShoppingCartSession CreateDefaultShopingCard()
-        {
-            ShoppingCartSession shoppingCart = new ShoppingCartSession();
-            var shippingAddress = new Domain.Entities.Address();
-            shippingAddress.Country = "Turkiye";
-            var billingAddress = new Domain.Entities.Address();
-            billingAddress.Country = "Turkiye";
-            shoppingCart.ShippingAddress = shippingAddress;
-            shoppingCart.BillingAddress = billingAddress;
-            shoppingCart.Customer.IsSameAsShippingAddress = true;
-            shoppingCart.Customer.Country = "Turkiye";
-            shoppingCart.Customer.Ip = GetIpAddress();
-            shoppingCart.Customer.IdentityNumber = Guid.NewGuid().ToString();
-          
-            return shoppingCart;
-        }
-
-
-        private String GetIpAddress()
-        {
-       return (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
-            Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
         }
 
         public ActionResult ShoppingCart()
@@ -196,8 +158,8 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 if (customer.IsSameAsShippingAddress)
                 {
-                    setAddress(customer, shoppingCart.ShippingAddress);
-                    setAddress(customer, shoppingCart.BillingAddress);
+                    SetAddress(customer, shoppingCart.ShippingAddress);
+                    SetAddress(customer, shoppingCart.BillingAddress);
                 }
 
                 SaveShoppingCart(shoppingCart);
@@ -211,12 +173,18 @@ namespace EImece.Controllers
 
       
 
-        private static void setAddress(Customer customer, Domain.Entities.Address address)
+        private void SetAddress(Customer customer, Domain.Entities.Address address)
         {
             address.City = customer.City;
             address.Country = customer.Country;
             address.ZipCode = customer.ZipCode;
             address.Description = customer.RegistrationAddress;
+            address.Name = customer.FullName;
+            address.CreatedDate = DateTime.Now;
+            address.UpdatedDate = DateTime.Now;
+            address.IsActive = true;
+            address.Position = 1;
+            address.Lang = CurrentLanguage;
         }
 
         public ActionResult CheckoutDelivery()
@@ -284,18 +252,31 @@ namespace EImece.Controllers
             }
             
         }
-        
 
-        public ActionResult Sonuc(RetrieveCheckoutFormRequest model)
+        public ActionResult PaymentResult(RetrieveCheckoutFormRequest model)
         {
             CheckoutForm checkoutForm = iyzicoService.GetCheckoutForm(model);
-            if (checkoutForm.PaymentStatus == "SUCCESS")
+            if (checkoutForm.PaymentStatus.Equals("SUCCESS", StringComparison.InvariantCultureIgnoreCase))
             {
-                return RedirectToAction("Onay");
-            }
+                ShoppingCartSession shoppingCart = GetShoppingCart();
+                ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm);
+               // ClearCart();
+               // EmailSender.SendOrderReceivedEmail(order, Request, Url);
+               // var emailTemplate = RazorEngineHelper.OrderReceivedEmailEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
+               // await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
 
-            return View();
+            }
+            return View(checkoutForm);
         }
-      
+
+        private void ClearCart( )
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActionResult PaymentSuccess(RetrieveCheckoutFormRequest model)
+        {
+            return Content("PaymentSuccess is done");
+        }
     }
 }

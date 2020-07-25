@@ -20,7 +20,7 @@ namespace EImece.Domain.Entities
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int ProductId { get; set; }
-        public int Qty { get; set; }
-        public decimal  TotalSale { get; set; }
+        public int Quantity { get; set; }
+        public float TotalPrice { get; set; }
     }
 }

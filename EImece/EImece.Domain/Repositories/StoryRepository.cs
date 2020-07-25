@@ -45,7 +45,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
             Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
-            Expression<Func<Story, DateTime>> keySelector = t => t.UpdatedDate.Value;
+            Expression<Func<Story, DateTime>> keySelector = t => t.UpdatedDate;
             var items = this.FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
 
             return items.ToList();

@@ -489,7 +489,6 @@ namespace EImece.Domain.Helpers
             fileStorage.FileSize = result.ImageSize;
             fileStorage.Type = imageType.ToStr();
             fileStorage.Lang = CurrentLanguage;
-            fileStorage.EntityHash = result.FileHash;
             fileStorage.IsFileExist = NormalFileExists(fileStorage.FileName);
             return fileStorage;
         }

@@ -19,6 +19,7 @@ namespace EImece.Domain
                 return GetConfigString("IyzicoBaseUrl", "https://sandbox-api.iyzipay.com");
             }
         }
+
         public static string IyzicoSecretKey
         {
             get
@@ -26,11 +27,12 @@ namespace EImece.Domain
                 return GetConfigString("IyzicoSecretKey", "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL");
             }
         }
+
         public static string IyzicoApiKey
         {
             get
             {
-               return GetConfigString("IyzicoApiKey", "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB");
+                return GetConfigString("IyzicoApiKey", "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB");
             }
         }
 
@@ -54,7 +56,6 @@ namespace EImece.Domain
             }
         }
 
-     
         public static string Domain
         {
             get
@@ -171,6 +172,7 @@ namespace EImece.Domain
                 return GetConfigInt("CacheLongSeconds", 1800);
             }
         }
+
         public static int CacheVeryLongSeconds
         {
             get
@@ -227,7 +229,5 @@ namespace EImece.Domain
                 return GetConfigBool("IsCacheActive", true);
             }
         }
-
-        
     }
 }

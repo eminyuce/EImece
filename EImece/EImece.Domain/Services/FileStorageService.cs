@@ -71,7 +71,7 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    fileStorage.EntityHash = file.imageHash;
+                    //fileStorage.EntityHash = file.imageHash;
                     fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;

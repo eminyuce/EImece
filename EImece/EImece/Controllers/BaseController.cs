@@ -56,8 +56,6 @@ namespace EImece.Controllers
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
 
         [Inject]
         public RazorEngineHelper RazorEngineHelper { get; set; }

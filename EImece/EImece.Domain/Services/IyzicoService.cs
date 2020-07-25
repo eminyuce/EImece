@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Ninject;
+using System.Web;
 
 namespace EImece.Domain.Services
 {
@@ -40,15 +41,19 @@ namespace EImece.Domain.Services
         {
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
-            
-            
+            var requestContext = HttpContext.Current.Request.RequestContext;
+            string CallbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
+                                               "Payment",
+                                               null,
+                                               AppConfig.HttpProtocol);
+
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
-            request.ConversationId = Guid.NewGuid().ToString();
+            request.ConversationId = shoppingCart.OrderGuid;
             request.Currency = Currency.TRY.ToString();
-            request.BasketId = Guid.NewGuid().ToString();
+            request.BasketId = shoppingCart.OrderGuid;
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
-            request.CallbackUrl = "http:/<Iyzico Api Geri Dönüş Adresi>/OdemeSonucu"; /// Geri Dönüş Urlsi
+            request.CallbackUrl = CallbackUrl; /// Geri Dönüş Urlsi
 
             List<int> enabledInstallments = new List<int>();
             enabledInstallments.Add(2);
@@ -65,7 +70,7 @@ namespace EImece.Domain.Services
             buyer.Email = customer.Email;
             buyer.IdentityNumber = "38108089458";
             buyer.LastLoginDate = "2015-10-05 12:43:35";
-            buyer.RegistrationDate = customer.RegistrationDate.ToString("yyyy-MM-dd HH:mm:ss");
+            buyer.RegistrationDate = customer.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
             buyer.RegistrationAddress = customer.RegistrationAddress;
             buyer.Ip = customer.Ip;
             buyer.City = customer.City;

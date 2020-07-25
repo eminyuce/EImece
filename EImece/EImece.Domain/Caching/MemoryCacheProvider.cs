@@ -74,7 +74,6 @@ namespace EImece.Domain.Caching
             }
         }
 
-
         public override void ClearAll()
         {
             List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();

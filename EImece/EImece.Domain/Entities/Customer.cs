@@ -12,13 +12,6 @@ namespace EImece.Domain.Entities
     [Serializable]
     public class Customer : BaseEntity
     {
-        // Entity annotions
-        //[DataType(DataType.Text)]
-        //[StringLength(100, ErrorMessage = "TestColumnName cannot be longer than 100 characters.")]
-        //[Display(Name ="TestColumnName")]
-        //[Required(ErrorMessage ="TestColumnName")]
-        //[AllowHtml]
-
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string Surname { get; set; }
@@ -28,14 +21,17 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
         public string IdentityNumber { get; set; }
-        public DateTime RegistrationDate { get; set; }
+        [NotMapped]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string RegistrationAddress { get; set; }
         public string Ip { get; set; }
+        [NotMapped]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string City { get; set; }
+        [NotMapped]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string Country { get; set; }
+        [NotMapped]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string ZipCode { get; set; }
 

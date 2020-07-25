@@ -34,5 +34,7 @@ namespace EImece.Domain.DbContext
         IDbSet<Customer> Customers { get; set; }
         IDbSet<Address> Addresses { get; set; }
         IDbSet<ShoppingCart> ShoppingCarts { get; set; }
+        IDbSet<Order> Orders { get; set; }
+        IDbSet<OrderProduct> OrderProducts { get; set; }
     }
 }

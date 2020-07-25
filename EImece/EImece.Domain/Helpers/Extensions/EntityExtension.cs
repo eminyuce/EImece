@@ -30,7 +30,7 @@ namespace EImece.Domain.Helpers.Extensions
                 ub.Query = rssParams.GetAnalyticsQueryString();
             }
             var si = new SyndicationItem(product.Name, desc, ub.Uri);
-            si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
+            si.PublishDate = product.UpdatedDate.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(categoryName))
             {
@@ -74,7 +74,7 @@ namespace EImece.Domain.Helpers.Extensions
                 ub.Query = rssParams.GetAnalyticsQueryString();
             }
             var si = new SyndicationItem(product.Name, desc, ub.Uri);
-            si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
+            si.PublishDate = product.UpdatedDate.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(categoryName))
             {
@@ -109,7 +109,7 @@ namespace EImece.Domain.Helpers.Extensions
                 ub.Query = rssParams.GetAnalyticsQueryString();
             }
             var si = new SyndicationItem(product.Name, desc, ub.Uri);
-            si.PublishDate = product.UpdatedDate.Value.ToUniversalTime();
+            si.PublishDate = product.UpdatedDate.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(product.ProductCategory.Name))
             {
@@ -157,6 +157,10 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static void TrimAllStrings<T>(this T obj)
         {
+            try
+            {
+
+            
             if (obj == null)
                 return;
 
@@ -168,7 +172,7 @@ namespace EImece.Domain.Helpers.Extensions
                 if (currentNodeType == typeof(String))
                 {
                     string currentValue = (string)p.GetValue(obj, null);
-                    if (currentValue != null)
+                    if (currentValue != null && p.CanWrite)
                     {
                         p.SetValue(obj, currentValue.Trim(), null);
                     }
@@ -186,6 +190,13 @@ namespace EImece.Domain.Helpers.Extensions
                     }
                 }
             }
+
+            }
+            catch
+            {
+
+            }
+
         }
 
         #endregion trimAllString

@@ -117,7 +117,7 @@
   .Titled(AdminResource.UpdatedDate)
   .Sortable(true)
   .Css("gridDateClass")
-  .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()))
+  .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()))
   .SortInitialDirection(GridSortDirection.Descending);
 
   }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)

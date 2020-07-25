@@ -170,6 +170,8 @@ namespace EImece.App_Start
             kernel.Bind<ICustomerService>().To<CustomerService>().InRequestScope();
             kernel.Bind<IShoppingCartService>().To<ShoppingCartService>().InRequestScope();
 
+            kernel.Bind<IOrderService>().To<OrderService>().InRequestScope();
+
         }
 
         private static void BindRepositories(IKernel kernel)
@@ -200,6 +202,7 @@ namespace EImece.App_Start
             kernel.Bind<IAddressRepository>().To<AddressRepository>().InRequestScope();
             kernel.Bind<ICustomerRepository>().To<CustomerRepository>().InRequestScope();
             kernel.Bind<IShoppingCartRepository>().To<ShoppingCartRepository>().InRequestScope();
+            kernel.Bind<IOrderRepository>().To<OrderRepository>().InRequestScope();
         }
 
         private static void BindByReflection(IKernel kernel, Type typeOfInterface, string typeofText)

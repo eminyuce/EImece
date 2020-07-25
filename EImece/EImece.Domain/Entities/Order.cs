@@ -8,20 +8,43 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Entities
 {
-    public class Order : IEntity<int>
+    public class Order : BaseEntity
     {
-        // Entity annotions
-        //[DataType(DataType.Text)]
-        //[StringLength(100, ErrorMessage = "TestColumnName cannot be longer than 100 characters.")]
-        //[Display(Name ="TestColumnName")]
-        //[Required(ErrorMessage ="TestColumnName")]
-        //[AllowHtml]
-        [Key]
-        public int Id { get; set; }
-        public DateTime OrderDate { get; set; }
         public DateTime DeliveryDate { get; set; }
         public int CustomerId { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
+        public string OrderGuid { get; set; }
+        public string Coupon { get; set; }
+        public string Token { get; set; }
+        public string Price { get; set; }
+        public string PaidPrice { get; set; }
+        public string Installment { get; set; }
+        public string Currency { get; set; }
+        public string PaymentId { get; set; }
+        public string PaymentStatus { get; set; }
+        public int ? FraudStatus { get; set; }
+        public string MerchantCommissionRate { get; set; }
+        public string MerchantCommissionRateAmount { get; set; }
+        public string IyziCommissionRateAmount { get; set; }
+        public string IyziCommissionFee { get; set; }
+        public string CardType { get; set; }
+        public string CardAssociation { get; set; }
+        public string CardFamily { get; set; }
+        public string CardToken { get; set; }
+        public string CardUserKey { get; set; }
+        public string BinNumber { get; set; }
+        public string LastFourDigits { get; set; }
+        public string BasketId { get; set; }
+        public string ConversationId { get; set; }
+        public string ConnectorName { get; set; }
+        public string AuthCode { get; set; }
+        public string HostReference { get; set; }
+        public string Phase { get; set; }
+        public string Status { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorMessage { get; set; }
+        public string Locale { get; set; }
+        public long SystemTime { get; set; }
     }
 }

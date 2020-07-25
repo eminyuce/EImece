@@ -388,6 +388,8 @@
     <Compile Include="Models\MigrationModels\EntityMainImage.cs" />
     <Compile Include="Models\MigrationModels\EntityMediaFile.cs" />
     <Compile Include="Models\UrlShortenModels\BitlyModels.cs" />
+    <Compile Include="Repositories\IRepositories\IOrderRepository.cs" />
+    <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\ShoppingCartRepository.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\BaseContentRepository.cs" />
@@ -453,7 +455,9 @@
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\IdentityManager.cs" />
+    <Compile Include="Services\IServices\IOrderService.cs" />
     <Compile Include="Services\IServices\IShoppingCartService.cs" />
+    <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\AdresService.cs" />

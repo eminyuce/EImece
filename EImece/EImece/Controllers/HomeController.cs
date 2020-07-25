@@ -27,6 +27,9 @@ namespace EImece.Controllers
         [Inject]
         public ICacheProvider MemoryCacheProvider { get; set; }
 
+        [Inject]
+        public IEmailSender EmailSender { get; set; }
+
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
@@ -257,7 +260,6 @@ namespace EImece.Controllers
             s.Name = contact.Name.ToStr();
             s.UpdatedDate = DateTime.Now;
             s.Position = 1;
-            s.EntityHash = "";
             s.Lang = CurrentLanguage;
             s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
                 contact.CompanyName,

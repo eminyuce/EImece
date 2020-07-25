@@ -5,6 +5,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IShoppingCartRepository : IBaseEntityRepository<ShoppingCart>, IDisposable
     {
-
+        ShoppingCart GetShoppingCartByOrderGuid(string orderGuid);
     }
 }

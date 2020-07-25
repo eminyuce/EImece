@@ -101,14 +101,14 @@ if (UserRoleHelper.IsDeletedEnableRoles())
         .Titled("CreatedDate")
         .Sortable(true)
         .Css("gridDateClass")
-        .RenderValueAs(o => String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) )
+        .RenderValueAs(o => String.Format("{0}", o.CreatedDate.ToShortDateString()) )
         .SortInitialDirection(GridSortDirection.Descending);
 
     columns.Add(o => o.UpdatedDate)
        .Titled("UpdatedDate")
        .Sortable(true)
        .Css("gridDateClass")
-       .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.Value.ToShortDateString()) )
+       .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()) )
        .SortInitialDirection(GridSortDirection.Descending);
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)

@@ -17,6 +17,9 @@ namespace EImece.Domain.Repositories
         {
         }
 
-       
+        public ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
+        {
+            return FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
     }
 }
