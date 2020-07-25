@@ -1,9 +1,11 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
@@ -115,6 +117,22 @@ namespace EImece.Controllers
             }
 
             return img;
+        }
+        [AcceptVerbs(HttpVerbs.Get)]
+        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
+        public ActionResult Logo()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
+            var isFullFileExits = System.IO.File.Exists(p.Item1);
+            if (isFullFileExits)
+            {
+                var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
+                var result = File(ms.ToArray(), "image/Jpeg");
+                ms.Dispose();
+                return result;
+            }
+            return Content(p.Item1);
         }
     }
 }

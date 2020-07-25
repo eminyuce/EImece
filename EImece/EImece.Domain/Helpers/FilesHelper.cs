@@ -510,6 +510,19 @@ namespace EImece.Domain.Helpers
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
         }
 
+        public Tuple<string, string, string> GetFileNames2(String fileName)
+        {
+
+            String fullPath = Path.Combine(StorageRoot, fileName);
+            System.Diagnostics.Debug.WriteLine(fullPath);
+            System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
+            String partThumb1 = Path.Combine(StorageRoot, THUMBS);
+            String candidatePathThb = Path.Combine(partThumb1, THB + fileName);
+
+            return new Tuple<string, string, string>(fullPath, candidatePathThb, fileName);
+        }
+
+
         public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";

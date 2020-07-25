@@ -38,7 +38,13 @@ namespace EImece
             SinglePageRouting(routes, "privacypolicy");
             SinglePageRouting(routes, "termsandconditions");
 
-           
+            routes.MapRoute(
+                     name: "Getlogo",
+                     url: "images/logo.jpg",
+                     defaults: new { controller = "images", action = "logo" },
+                     namespaces: new[] { "EImece.Controllers" }
+                 );
+
             routes.MapRoute(
                       name: "getcaptcha",
                       url: "images/getcaptcha",

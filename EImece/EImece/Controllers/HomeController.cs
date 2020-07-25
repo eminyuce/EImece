@@ -164,6 +164,9 @@ namespace EImece.Controllers
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
             var CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+
+   
+
             var s = new List<Setting>() { webSiteLogo, CompanyName };
             return PartialView("_WebSiteLogo", s);
         }
