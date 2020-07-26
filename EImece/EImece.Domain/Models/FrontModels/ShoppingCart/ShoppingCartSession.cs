@@ -114,6 +114,7 @@ namespace EImece.Domain.Models.FrontModels
             shoppingCart.BillingAddress = billingAddress;
 
             Customer customer = shoppingCart.Customer;
+         
             customer.IsSameAsShippingAddress = true;
             customer.Country = "Turkiye";
             customer.Ip = ip;

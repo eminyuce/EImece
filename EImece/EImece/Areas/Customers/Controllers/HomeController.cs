@@ -18,6 +18,10 @@ namespace EImece.Areas.Customers.Controllers
         {
             return View();
         }
+        public ActionResult CustomerOrders()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

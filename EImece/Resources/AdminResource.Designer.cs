@@ -1249,7 +1249,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tel No.
+        ///   Looks up a localized string similar to Cep Telefonu Numaranız.
         /// </summary>
         public static string PhoneNumber {
             get {

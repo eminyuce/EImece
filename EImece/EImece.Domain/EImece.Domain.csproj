@@ -389,6 +389,12 @@
     <Compile Include="Models\MigrationModels\EntityMainImage.cs" />
     <Compile Include="Models\MigrationModels\EntityMediaFile.cs" />
     <Compile Include="Models\UrlShortenModels\BitlyModels.cs" />
+    <Compile Include="Models\UserModels\AccountViewModels.cs" />
+    <Compile Include="Models\UserModels\EditUserViewModel.cs" />
+    <Compile Include="Models\UserModels\IdentityModels.cs" />
+    <Compile Include="Models\UserModels\ManageViewModels.cs" />
+    <Compile Include="Models\UserModels\SelectRoleEditorViewModel.cs" />
+    <Compile Include="Models\UserModels\SelectUserRolesViewModel.cs" />
     <Compile Include="Repositories\FaqRepository.cs" />
     <Compile Include="Repositories\IRepositories\IOrderProductRepository.cs" />
     <Compile Include="Repositories\IRepositories\IOrderRepository.cs" />

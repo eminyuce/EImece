@@ -7,15 +7,34 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
 @model  ShoppingCartSession
 @{
     ShoppingCartSession shoppingCart = Model;
     string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount + "") : "";
+    var userName = User.Identity.GetUserName();
 }
 
-<ul id="ShoppingCartsLink">
-    <li>
-        <a href="@Url.Action("shoppingcart","payment")"> @Resource.MyBasket </a><span id="ShoppingCartItemCount">@totalNumber</span>
-    </li>
-    <li>@Html.ActionLink(@Resource.CustomerAccount, "Login", "Account")</li>
-</ul>
+    <ul id="ShoppingCartsLink">
+        <li>
+            <a href="@Url.Action("shoppingcart","payment")"> @Resource.MyBasket </a><span id="ShoppingCartItemCount">@totalNumber</span>
+        </li>
+        @if (Request.IsAuthenticated)
+        {
+            <span class="text-primary">@userName</span>
+            @Html.ActionLink("Siparislerim", "CustomerOrders", "Home", new { area = "customer" }, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hesabim", "Index", "Home", new { area = "customer" }, htmlAttributes: new { title = "Manage" })
+            <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+            }
+
+        }
+        else
+        {
+            <li>@Html.ActionLink(@Resource.CustomerAccount, "Login", "Account")</li>
+        }
+
+    </ul>

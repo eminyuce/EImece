@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -34,12 +35,17 @@ namespace EImece.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ICustomerService CustomerService;
+
+
+        public AccountController(ApplicationUserManager userManager, 
+            ApplicationSignInManager signInManager, ICustomerService customerService)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            CustomerService = customerService;
         }
-
+        
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -98,7 +104,16 @@ namespace EImece.Controllers
                         bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole));
                         if (isCustomer)
                         {
-                            return RedirectToAction("Index", "Home", new { @area = "customers" });
+                            if (String.IsNullOrEmpty(returnUrl))
+                            {
+                                return RedirectToAction("Index", "Home", new { @area = "customers" });
+                            }
+                            else
+                            { 
+                                return RedirectToLocal(returnUrl);
+                               
+                            }
+                         
                         }
                         else
                         {
@@ -177,7 +192,9 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            var model = new RegisterViewModel();
+            model.IsPermissionGranted = true;
+            return View(model);
         }
 
         //
@@ -201,8 +218,10 @@ namespace EImece.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
-                    await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
+                  //  await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
+                    CustomerService.SaveRegisterViewModel(model);
+
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

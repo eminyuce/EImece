@@ -35,6 +35,10 @@ namespace EImece.Domain.Helpers.EmailHelper
         public Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ConfirmYourAccount");
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException("ConfirmYourAccount email template does not exists");
+            }
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
             var Request = HttpContext.Create().Request;
@@ -57,6 +61,10 @@ namespace EImece.Domain.Helpers.EmailHelper
         public Tuple<string,string> ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ForgotPassword");
+            if (emailTemplate == null)
+            {
+                return new Tuple<string, string>("", "");
+            }
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
             var Request = HttpContext.Create().Request;

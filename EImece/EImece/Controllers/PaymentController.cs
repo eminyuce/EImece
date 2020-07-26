@@ -128,23 +128,26 @@ namespace EImece.Controllers
             ShoppingCartService.SaveOrEditShoppingCart(item);
       }
 
-        private String GetIpAddress()
-        {
-            return (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
-                 Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
-        }
+       
         private ShoppingCartSession GetShoppingCartFromDataSource()
         {
             HttpCookie orderGuid =  Request.Cookies[OrderGuidCookieKey];
+            ShoppingCartSession result = null;
             var item = orderGuid !=null ?  ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid.Value) : null;
             if (item == null)
             {
-                return ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GetIpAddress()); 
+                result =  ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GeneralHelper.GetIpAddress());
+                if (Request.IsAuthenticated)
+                {
+                   
+                }
+               
             }
             else
             {
-                return JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
+                result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
             }
+            return result;
         }
 
         private ShoppingCartSession GetShoppingCart()
@@ -160,8 +163,15 @@ namespace EImece.Controllers
        
         public ActionResult CheckoutBillingDetails()
         {
-            ShoppingCartSession shoppingCart = GetShoppingCart();
-            return View(shoppingCart);
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("CheckoutPaymentOrderReview", "Payment");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account",
+                    new { returnUrl = Url.Action("CheckoutPaymentOrderReview", "Payment") });
+            }
         }
         public ActionResult SaveCustomer(Customer customer)
         {
@@ -183,9 +193,6 @@ namespace EImece.Controllers
                 return RedirectToAction("CheckoutBillingDetails");
             }
         }
-
-      
-
         private void SetAddress(Customer customer, Domain.Entities.Address address)
         {
             address.City = customer.City;
@@ -213,7 +220,7 @@ namespace EImece.Controllers
         }   
         public ActionResult RenderPrice(double price)
         {
-            return Json(new { status = "success", price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
+            return Json(new { status = SUCCESS, price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult UpdateQuantity(String shoppingItemId, int quantity)
         {
@@ -246,7 +253,8 @@ namespace EImece.Controllers
                 return Json(new { status =FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
-        // GET: Home
+     
+
         public ActionResult PlaceOrder()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -261,9 +269,8 @@ namespace EImece.Controllers
             }
             else
             {
-                return Content("Customer is NOT valid");
+                return Content("RegisterCustomer");
             }
-            
         }
 
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model)
@@ -294,11 +301,6 @@ namespace EImece.Controllers
         public ActionResult PaymentSuccess(RetrieveCheckoutFormRequest model)
         {
             return Content("PaymentSuccess is done");
-        }
-
-        public ActionResult RegisterCustomer()
-        {
-            return View();
         }
     }
 }
