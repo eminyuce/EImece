@@ -768,4 +768,7 @@
   <data name="Question" xml:space="preserve">
     <value>Soru</value>
   </data>
+  <data name="OrderDetail" xml:space="preserve">
+    <value>Sipariş detayı</value>
+  </data>
 </root>

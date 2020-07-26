@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -17,6 +18,10 @@ namespace EImece.Domain.Repositories
         {
         }
 
-       
+        public Customer GetUserId(string userId)
+        {
+            return FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
+
     }
 }

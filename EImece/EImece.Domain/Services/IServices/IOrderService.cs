@@ -9,6 +9,8 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IOrderService : IBaseEntityService<Order>
     {
-
+        List<Order> GetOrdersUserId(string userId);
+        Order GetByOrderGuid(string orderGuid);
+        List<Order> GetOrdersUserId(string userId, string search);
     }
 }

@@ -1,0 +1,169 @@
+﻿@using EImece.Domain.Helpers;
+@using Resources;
+
+@{
+    var controllerName = ViewData["controllerName"].ToStr();
+
+    var orderingButton = ViewData["orderingButton"].ToBool(true);
+    var selectAll = ViewData["selectAll"].ToBool(true);
+    var deleteAll = ViewData["deleteAll"].ToBool(true) && UserRoleHelper.IsDeletedEnableRoles();
+
+    var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
+    var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
+    var isNewRecordButtonEnabled = ViewData["IsNewRecordButtonEnabled"].ToBool(true);
+    var IsExcelButtonEnabled = ViewData["IsExcelButtonEnabled"].ToBool(false);
+    var NewRecordText = AdminResource.NewRecordText;
+
+    var GridSelectAllButtonText = AdminResource.GridSelectAllButtonText;
+    var GridDeSelectAllButtonText = AdminResource.GridDeSelectAllButtonText;
+    var GridDeleteSelectedButtonText = AdminResource.GridDeleteSelectedButtonText;
+    var GridActiveSelectedButtonText = AdminResource.GridActiveSelectedButtonText;
+    var GridDeActiveSelectedButtonText = AdminResource.GridDeActiveSelectedButtonText;
+    var GridOrderingAllButtonText = AdminResource.GridOrderingAllButtonText;
+    var State = AdminResource.State;
+    var ImageState = AdminResource.ImageState;
+    var MainPage = AdminResource.MainPage;
+    var IsCampaign = AdminResource.IsCampaign;
+    var AdminDeleteConfirmMessage = AdminResource.AdminDeleteConfirmMessage;
+
+}
+
+<div class="panel panel-info">
+    <div class="panel-body">
+
+        <div class="row">
+            @if (isNewRecordButtonEnabled)
+            {
+                <span class="col-md-3">
+                    <p>
+                        @Html.ActionLink(NewRecordText, "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block" })
+                    </p>
+                </span>
+                <span class="col-md-9">
+                    @Html.Partial("pSearchForm")
+                </span>
+            }
+            else
+            {
+                <span class="col-md-12">
+                    @Html.Partial("pSearchForm")
+                </span>
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-toolbar" role="toolbar" aria-label="...">
+                    @if (selectAll)
+                    {
+
+                        <span class="btn btn-sm  btn-link" id="SelectAll">
+                            @GridSelectAllButtonText<span class="vl"></span>
+                        </span>
+                        <div class="btn-group" role="group">
+                        </div>
+                        <span class="btn btn-sm  btn-link" id="DeselectAll">
+                            @GridDeSelectAllButtonText<span class="vl"></span>
+                        </span>
+                    }
+
+                    @if (deleteAll)
+                    {
+                        <a href="#" class="btn btn-sm  btn-link" id="DeleteAll">
+                            @GridDeleteSelectedButtonText<span class="vl"></span>
+                        </a>
+                    }
+
+
+
+                    @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
+                    {
+                <div class="btn-group" role="group">
+                    <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">@State</option>
+                        <option value="ImageState">@ImageState</option>
+                        <option value="MainPage">@MainPage</option>
+                        <option value="IsCampaign">@IsCampaign</option>
+                    </select>
+             
+                </div>
+                    }
+                    else if (StateTypes.Equals("State,ImageState,MainPage"))
+                    {
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                            </select>
+                        </div>
+                    }
+                    else if (StateTypes.Equals("State,ImageState"))
+                    {
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                            </select>
+                        </div>
+                    }
+                    else if (StateTypes.Equals("State"))
+                    {
+                        <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                    }
+
+
+                    @if (SetStateOnOrOff)
+                    {
+                <div class="btn-group"   role="group">
+                    <span>
+            
+    <a href="#" class="btn btn-sm  btn-link" id="SetStateOnAll">@GridActiveSelectedButtonText <span class="vl"></span></a>
+    <a href="#" class="btn btn-sm  btn-link" id="SetStateOffAll">@GridDeActiveSelectedButtonText <span class="vl"></span></a>
+</span>
+                </div>
+                            }
+
+                            @if (orderingButton)
+                            {
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm  btn-link" id="OrderingAll">
+                                        @GridOrderingAllButtonText
+                                    </span>
+                                </div>
+                            }
+                            @if (IsExcelButtonEnabled)
+                            {
+                                <div class="btn-group pull-right" role="group">
+                                    <a href="@Url.Action("ExportExcel", controllerName)">
+                                        <span>
+                                            <img src="~/Areas/Admin/Content/main/excel.jpg" />
+                                            @AdminResource.Excel
+                                        </span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+        </div>
+
+        <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
+            <span id="ErrorMessage"></span>
+        </div>
+    </div>
+</div>
+<span style="display:none;" id="AdminMultiSelectDeleteConfirmMessage">@AdminDeleteConfirmMessage</span>
+
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 1050;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="confirmMessage">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" id="confirmOk">@AdminResource.ButtonOk</button>
+                <button type="button" class="btn btn-link" id="confirmCancel">@AdminResource.ButtonCancel</button>
+            </div>
+        </div>
+    </div>
+</div>

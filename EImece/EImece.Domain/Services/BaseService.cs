@@ -63,8 +63,6 @@ namespace EImece.Domain.Services
         {
             // Get call stack
             StackTrace stackTrace = new StackTrace();
-            // Get calling method name
-            Console.WriteLine("GetSingle  " + stackTrace.GetFrame(1).GetMethod().Name);
             return baseRepository.GetSingle(id);
         }
 
@@ -78,6 +76,10 @@ namespace EImece.Domain.Services
         {
             var result = this.baseRepository.DeleteItem(entity);
             return result == 1;
+        }
+        public virtual bool DeleteById(int id)
+        {
+            return this.baseRepository.DeleteByWhereCondition(r => r.Id == id);
         }
 
         public virtual void DeleteBaseEntity(List<string> values)

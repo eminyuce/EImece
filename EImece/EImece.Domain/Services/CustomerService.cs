@@ -15,16 +15,19 @@ namespace EImece.Domain.Services
 
         private ICustomerRepository CustomerRepository { get; set; }
 
-        public CustomerService(ICustomerRepository repository) : base(repository)
+        private IAddressService AddressService { get; set; }
+
+        public CustomerService(ICustomerRepository repository, IAddressService addressService) : base(repository)
         {
             CustomerRepository = repository;
+            AddressService = addressService;
         }
 
-        public void SaveRegisterViewModel(RegisterViewModel model)
+        public void SaveRegisterViewModel(string userId,RegisterViewModel model)
         {
             var item = new Customer();
 
-            item.UserId = model.GetUser().Id;
+            item.UserId = userId;
             item.Name = model.FirstName;
             item.Surname = model.LastName;
             item.GsmNumber = model.PhoneNumber;
@@ -37,7 +40,33 @@ namespace EImece.Domain.Services
             item.Position = 1;
             item.Lang = 1;
             item.IsPermissionGranted = true;
-             CustomerRepository.SaveOrEdit(item);
+            CustomerRepository.SaveOrEdit(item);
+        }
+
+        public Customer GetUserId(string userId)
+        {
+            return CustomerRepository.GetUserId(userId);
+        }
+
+        public void DeleteByUserId(string userId)
+        {
+            var customer = CustomerRepository.GetUserId(userId);
+            if(customer != null)
+            {
+                AddressService.DeleteById(customer.AddressId);
+                DeleteEntity(customer);
+            }
+
+        }
+
+        public void SaveShippingAddress(string userId, int addressId)
+        {
+            var customer = CustomerRepository.GetUserId(userId);
+            if (customer != null)
+            {
+                customer.AddressId = addressId;
+                SaveOrEditEntity(customer);
+            }
         }
     }
 }

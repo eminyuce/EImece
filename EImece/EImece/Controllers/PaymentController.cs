@@ -49,11 +49,20 @@ namespace EImece.Controllers
         [Inject]
         public IEmailSender EmailSender { get; set; }
 
-        public PaymentController(IyzicoService iyzicoService,ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public IAddressService AddressService { get; set; }
+
+        public ICustomerService CustomerService { get; set; }
+
+    public PaymentController(IyzicoService iyzicoService,
+        ApplicationUserManager userManager,
+        ApplicationSignInManager signInManager,
+         AddressService addressService, CustomerService customerService)
         {
             this.iyzicoService = iyzicoService;
             UserManager = userManager;
             SignInManager = signInManager;
+            AddressService = addressService;
+            CustomerService = customerService;
         }
 
         public ActionResult Index()
@@ -140,7 +149,16 @@ namespace EImece.Controllers
                 result =  ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GeneralHelper.GetIpAddress());
                 if (Request.IsAuthenticated)
                 {
-                   
+                    var user = UserManager.FindByName(User.Identity.GetUserName());
+                    if (user != null)
+                    {
+                        result.Customer = CustomerService.GetUserId(user.Id);
+                        if (result.Customer != null)
+                        {
+                            var address = AddressService.GetSingle(result.Customer.AddressId);
+                            result.ShippingAddress = address == null ? result.ShippingAddress : address;
+                        }
+                    }
                 }
                
             }
@@ -166,7 +184,8 @@ namespace EImece.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                return RedirectToAction("CheckoutPaymentOrderReview", "Payment");
+                ShoppingCartSession shoppingCart = GetShoppingCart();
+                return View(shoppingCart);
             }
             else
             {
@@ -174,6 +193,8 @@ namespace EImece.Controllers
                     new { returnUrl = Url.Action("CheckoutPaymentOrderReview", "Payment") });
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveCustomer(Customer customer)
         {
             if (customer != null && customer.isValid())
@@ -182,9 +203,14 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 if (customer.IsSameAsShippingAddress)
                 {
-                    SetAddress(customer, shoppingCart.ShippingAddress);
-                    SetAddress(customer, shoppingCart.BillingAddress);
+                
                 }
+
+                shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
+                shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
+                shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
+
 
                 SaveShoppingCart(shoppingCart);
                 return RedirectToAction("CheckoutDelivery");
@@ -194,8 +220,12 @@ namespace EImece.Controllers
                 return RedirectToAction("CheckoutBillingDetails");
             }
         }
-        private void SetAddress(Customer customer, Domain.Entities.Address address)
+        private Domain.Entities.Address SetAddress(Customer customer, Domain.Entities.Address address)
         {
+            if(address == null)
+            {
+                address = new Domain.Entities.Address();
+            }
             address.City = customer.City;
             address.Country = customer.Country;
             address.ZipCode = customer.ZipCode;
@@ -206,6 +236,7 @@ namespace EImece.Controllers
             address.IsActive = true;
             address.Position = 1;
             address.Lang = CurrentLanguage;
+            return address;
         }
 
         public ActionResult CheckoutDelivery()
@@ -280,7 +311,6 @@ namespace EImece.Controllers
             if (checkoutForm.PaymentStatus.Equals(SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
-                shoppingCart.UserId = User.Identity.GetUserId();
                 ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm);
                 ClearCart(shoppingCart);
                 Task.Run(() =>
@@ -296,7 +326,12 @@ namespace EImece.Controllers
 
         private void ClearCart(ShoppingCartSession shoppingCart)
         {
-            Request.Cookies.Remove(OrderGuidCookieKey);
+            if (Request.Browser.Cookies)
+            {
+                Response.Cookies.Remove(OrderGuidCookieKey);
+                var aCookie = new HttpCookie(OrderGuidCookieKey) { Expires = DateTime.Now.AddDays(-1) };
+                Response.Cookies.Add(aCookie);
+            }
             ShoppingCartService.DeleteByOrderGuid(shoppingCart.OrderGuid);
         }
 

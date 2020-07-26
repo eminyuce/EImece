@@ -7,6 +7,8 @@ using Ninject;
 using NLog;
 using RazorEngine.Compilation.ImpromptuInterface;
 using System;
+using Microsoft.AspNet.Identity;
+using System.Web;
 
 namespace EImece.Domain.Services
 {
@@ -24,14 +26,17 @@ namespace EImece.Domain.Services
 
         private IShoppingCartRepository ShoppingCartRepository { get; set; }
 
+        public ApplicationUserManager UserManager { get; set; }
 
-        public ShoppingCartService(IShoppingCartRepository repository,
+        public ShoppingCartService(ApplicationUserManager userManager, 
+            IShoppingCartRepository repository,
             IOrderService orderService,
             ICustomerService customerService,
             IAddressService addressService,
             IOrderProductService orderProductService) : base(repository)
         {
             ShoppingCartRepository = repository;
+            this.UserManager = userManager;
             this.OrderService = orderService;
             this.CustomerService = customerService;
             this.AddressService = addressService;
@@ -63,14 +68,35 @@ namespace EImece.Domain.Services
 
         public void SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
         {
-         
-            var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
-            var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
-            var customer = CustomerService.SaveOrEditEntity(shoppingCart.Customer);
-            customer.AddressId = shippingAddress.Id;
-            var item = new  Order();
+            var userName = HttpContext.Current.User.Identity.GetUserName();
+            var user =  UserManager.FindByName(userName);
+            if(user == null)
+            {
+                throw new ArgumentException("User cannot be null " + userName);
+            }
+            int shippingAddressId = shoppingCart.ShippingAddress.Id;
+            int billingAddressId = shoppingCart.BillingAddress.Id;
+            if (shippingAddressId == 0)
+            {
+                var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
+                shippingAddressId = shippingAddress.Id;
+            }
+            if (billingAddressId == 0)
+            {
+                var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
+                billingAddressId = billingAddress.Id;
+            }
+            CustomerService.SaveShippingAddress(user.Id, shippingAddressId);
+            Order savedOrder = SaveOrder(user.Id,shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
+            SaveOrderProduct(shoppingCart, savedOrder);
 
-            item.UserId = shoppingCart.UserId;
+        }
+        private Order SaveOrder(String userId,ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
+            int shippingAddressId,
+           int billingAddressId)
+        {
+            var item = new Order();
+            item.UserId = userId;
             item.Name = shoppingCart.Customer.FullName;
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
@@ -78,8 +104,8 @@ namespace EImece.Domain.Services
             item.Position = 1;
             item.Lang = 1;
             item.DeliveryDate = DateTime.Now;
-            item.ShippingAddressId = shippingAddress.Id;
-            item.BillingAddressId = billingAddress.Id;
+            item.ShippingAddressId = shippingAddressId;
+            item.BillingAddressId = billingAddressId;
             item.OrderGuid = shoppingCart.OrderGuid;
             item.Coupon = "";
             item.Token = checkoutForm.Token;
@@ -113,21 +139,24 @@ namespace EImece.Domain.Services
             item.Locale = checkoutForm.Locale;
             item.SystemTime = checkoutForm.SystemTime;
             Order savedOrder = OrderService.SaveOrEditEntity(item);
+            return savedOrder;
+        }
 
-            foreach(var shoppingCartItem in shoppingCart.ShoppingCartItems)
+        private void SaveOrderProduct(ShoppingCartSession shoppingCart, Order savedOrder)
+        {
+            foreach (var shoppingCartItem in shoppingCart.ShoppingCartItems)
             {
 
-                OrderProductService.SaveOrEditEntity(new OrderProduct() {
-                    OrderId = savedOrder.Id, 
-                    ProductId = shoppingCartItem.product.Id, 
+                OrderProductService.SaveOrEditEntity(new OrderProduct()
+                {
+                    OrderId = savedOrder.Id,
+                    ProductId = shoppingCartItem.product.Id,
                     Quantity = shoppingCartItem.quantity,
                     TotalPrice = shoppingCartItem.TotalPrice
                 });
 
             }
-                
         }
 
-    
     }
 }

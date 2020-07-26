@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Ninject;
@@ -26,6 +27,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public IdentityManager IdentityManager { get; set; }
+
+        [Inject]
+        public ICustomerService CustomerService { get; set; }
 
         public ActionResult Index(String search = "")
         {
@@ -191,6 +195,7 @@ namespace EImece.Areas.Admin.Controllers
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             ApplicationDbContext.Users.Remove(user);
             ApplicationDbContext.SaveChanges();
+            CustomerService.DeleteByUserId(user.Id);
             return RedirectToAction("Index");
         }
 

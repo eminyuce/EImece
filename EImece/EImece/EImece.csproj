@@ -684,6 +684,12 @@
     <Content Include="Areas\Admin\Views\Faq\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Faq\SaveOrEdit.cshtml" />
     <Content Include="Areas\Customers\Views\Home\CustomerOrders.cshtml" />
+    <Content Include="Views\Shared\pGridOperations.cshtml" />
+    <Content Include="Views\Shared\pSearchForm.cshtml" />
+    <Content Include="Views\Shared\pGridDropDown.cshtml" />
+    <Content Include="Views\Shared\pGridCheckbox.cshtml" />
+    <Content Include="Views\Shared\pGridImageMainPage.cshtml" />
+    <Content Include="Areas\Customers\Views\Home\OrderDetail.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

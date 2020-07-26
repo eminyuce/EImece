@@ -44,8 +44,7 @@
         {
     <div class="checkout-content">
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => customer.Country)
-       @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
 
         <div class="half first">
             <label>First Name: <abbr>*       </abbr></label>
@@ -76,6 +75,11 @@
             <label>Postcode / Zip:<abbr>*</abbr></label>
             @Html.EditorFor(model => customer.ZipCode)
             @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="half first">
+            <label>Country:<abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.Country)
+            @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
         </div>
         <div class="fullwidth">
             <label>Street Address: <abbr>*</abbr></label>

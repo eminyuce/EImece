@@ -5,6 +5,6 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface ICustomerRepository : IBaseEntityRepository<Customer>, IDisposable
     {
-
+        Customer GetUserId(string userId);
     }
 }

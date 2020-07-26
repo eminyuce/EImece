@@ -1,1 +1,74 @@
-﻿
+﻿@model List<Order>
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Customers/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "Home";
+    var gridName = "OrderGrid";
+    var contents = Model;
+    var baseList = contents.DownCasting<Order>();
+
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+    var gridMainPageImageText = AdminResource.GridMainPageImageText;
+
+}
+<hr class="adminLine" />
+
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+        {"controllerName",controllerName}
+                 ,{"StateTypes","State,ImageState,MainPage"}
+       ,{"orderingButton",true}
+       ,{"selectAll",true}
+       ,{"deleteAll",true}
+        ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
+
+<div class="panel panel-primary">
+    @Html.Partial("pGridDropDown", baseList)
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+
+columns.Add()
+               .Encoded(false)
+               .Sanitized(false)
+                .Css("gridButtons")
+               .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
+
+     columns.Add(c => c.Id)
+.Filterable(true)
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(d =>
+@<b>
+    @Html.ActionLink(AdminResource.OrderDetail, "OrderDetail", "Home", new { area = "customers", id = d.OrderGuid }, new { @class = "btn btn-success", @target = "_blank" })
+</b>);
+
+ 
+    columns.Add(o => o.OrderGuid);
+    columns.Add(o => o.PaymentStatus);
+    columns.Add(o => o.Price);
+
+
+
+    columns.Add(o => o.CreatedDate)
+       .Titled(AdminResource.CreatedDate)
+    .Sortable(true)
+    .Css("gridDateClass")
+    .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
+    .SortInitialDirection(GridSortDirection.Descending);
+
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+</div>

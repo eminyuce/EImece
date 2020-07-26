@@ -17,7 +17,6 @@ namespace EImece.Domain.Models.FrontModels
         private Address _shippingAddress = new Address();
         private Address _billingAddress = new Address();
         public string OrderGuid { get; set; }
-        public string UserId { get; set; }
 
         public List<ShoppingCartItem> ShoppingCartItems
         { 
@@ -113,9 +112,7 @@ namespace EImece.Domain.Models.FrontModels
             billingAddress.AddressType = (int)AddressType.BillingAddress;
             shoppingCart.ShippingAddress = shippingAddress;
             shoppingCart.BillingAddress = billingAddress;
-
             Customer customer = shoppingCart.Customer;
-         
             customer.IsSameAsShippingAddress = true;
             customer.Country = "Turkiye";
             customer.Ip = ip;

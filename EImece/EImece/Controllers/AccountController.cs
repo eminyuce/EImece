@@ -101,7 +101,7 @@ namespace EImece.Controllers
                                          Role = r.Name
                                      };
 
-                        bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole));
+                        bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole,StringComparison.InvariantCultureIgnoreCase));
                         if (isCustomer)
                         {
                             if (String.IsNullOrEmpty(returnUrl))
@@ -220,8 +220,8 @@ namespace EImece.Controllers
                     var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
                   //  await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
-                    CustomerService.SaveRegisterViewModel(model);
-
+                    CustomerService.SaveRegisterViewModel(user.Id, model);
+                     
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
