@@ -25,50 +25,46 @@
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
 
 }
+<h2>@AdminResource.MyOrder</h2>
 <hr class="adminLine" />
 
-@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-        {"controllerName",controllerName}
-                 ,{"StateTypes","State,ImageState,MainPage"}
-       ,{"orderingButton",true}
-       ,{"selectAll",true}
-       ,{"deleteAll",true}
-        ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
-
-<div class="panel panel-primary">
-    @Html.Partial("pGridDropDown", baseList)
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
+@Html.Partial("pSearchForm")
+<br />
+@foreach (var o in contents)
 {
+    <li class="accOrder">
+        <div class="orderHead orderTable">
+            <div class="row">
+                <div class="cell meta">
+                    <p class="split"><span class="label">Sipariş Tarihi :</span> 07/06/2020 </p>
+                    <p> <span class="label">Sipariş Kodu :</span> @o.OrderGuid <span class="orderNumber">205511813878</span> </p>
+                </div>
+                <div class="cell amount">
+                    <p> <span class="label split">Ödenen Tutar</span> <strong>129,00 TL</strong> </p>
+                </div>
+                <div class="cell address">
+                    <span class="label split">Adres</span>
+                    <div class="hTMItem hasMenu">
+                        <span class="btnMenu">Tuzla</span>
+                        <div class="hOpenMenu">
+                            <div class="hOpenMenuContent">
+                                <p>Aydınlı Mh. AYDINLI MAH. DOĞAKENT SİTESİ AKASYA BLOK NO: 20 İÇ KAPI NO: 15 TUZLA / İSTANBULYABANGÜLÜ SK 34953 Tuzla İstanbul</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell detail"> <a class="link" href="@Url.Action("OrderDetail")">Sipariş Detayını Gör</a> </div>
+            </div>
+        </div>
+        <div class="orderBody">
 
-columns.Add()
-               .Encoded(false)
-               .Sanitized(false)
-                .Css("gridButtons")
-               .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-     columns.Add(c => c.Id)
-.Filterable(true)
-.Encoded(false)
-.Sanitized(false)
-.RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(AdminResource.OrderDetail, "OrderDetail", "Home", new { area = "customers", id = d.OrderGuid }, new { @class = "btn btn-success", @target = "_blank" })
-</b>);
-
- 
-    columns.Add(o => o.OrderGuid);
-    columns.Add(o => o.PaymentStatus);
-    columns.Add(o => o.Price);
+        </div>
+    </li>
+    
 
 
 
-    columns.Add(o => o.CreatedDate)
-       .Titled(AdminResource.CreatedDate)
-    .Sortable(true)
-    .Css("gridDateClass")
-    .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
-    .SortInitialDirection(GridSortDirection.Descending);
 
-}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-</div>
+
+
+}

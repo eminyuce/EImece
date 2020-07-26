@@ -1105,6 +1105,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hesabım.
+        /// </summary>
+        public static string MyAccount {
+            get {
+                return ResourceManager.GetString("MyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişlerim.
+        /// </summary>
+        public static string MyOrder {
+            get {
+                return ResourceManager.GetString("MyOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string Name {
@@ -1587,6 +1605,15 @@ namespace Resources {
         public static string SendEmailLink {
             get {
                 return ResourceManager.GetString("SendEmailLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Satıcıya Mesaj Gönder.
+        /// </summary>
+        public static string SendMessageToSeller {
+            get {
+                return ResourceManager.GetString("SendMessageToSeller", resourceCulture);
             }
         }
         

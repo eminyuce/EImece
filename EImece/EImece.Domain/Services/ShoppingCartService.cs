@@ -9,6 +9,7 @@ using RazorEngine.Compilation.ImpromptuInterface;
 using System;
 using Microsoft.AspNet.Identity;
 using System.Web;
+using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Services
 {
@@ -96,6 +97,7 @@ namespace EImece.Domain.Services
            int billingAddressId)
         {
             var item = new Order();
+            item.OrderNumber = GeneralHelper.RandomNumber(12);
             item.UserId = userId;
             item.Name = shoppingCart.Customer.FullName;
             item.CreatedDate = DateTime.Now;

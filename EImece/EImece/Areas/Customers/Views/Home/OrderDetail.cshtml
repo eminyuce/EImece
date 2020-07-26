@@ -1,348 +1,60 @@
 ﻿@model EImece.Domain.Entities.Order
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DeliveryDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeliveryDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShippingAddressId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShippingAddressId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BillingAddressId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BillingAddressId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderGuid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderGuid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Coupon)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Coupon)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Token)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Token)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaidPrice)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaidPrice)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Installment)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Installment)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Currency)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Currency)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaymentId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaymentId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaymentStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaymentStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FraudStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FraudStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MerchantCommissionRate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MerchantCommissionRate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MerchantCommissionRateAmount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MerchantCommissionRateAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IyziCommissionRateAmount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IyziCommissionRateAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IyziCommissionFee)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IyziCommissionFee)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CardType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CardType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CardAssociation)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CardAssociation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CardFamily)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CardFamily)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CardToken)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CardToken)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CardUserKey)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CardUserKey)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BinNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BinNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastFourDigits)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastFourDigits)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BasketId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BasketId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ConversationId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ConversationId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ConnectorName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ConnectorName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AuthCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AuthCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HostReference)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HostReference)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Phase)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Phase)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ErrorCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ErrorCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ErrorMessage)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ErrorMessage)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Locale)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Locale)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SystemTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SystemTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Position)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Position)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Lang)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Lang)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <div class="container mt-5 mb-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-10">
+                <div class="receipt bg-white p-3 rounded">
+                    <img src="https://i.imgur.com/zCAnG06.png" width="120">
+                    <h4 class="mt-2 mb-3">Your order is confirmed!</h4>
+                    <h6 class="name">Hello John,</h6><span class="fs-12 text-black-50">your order has been confirmed and will be shipped in two days</span>
+                    <hr>
+                    <div class="d-flex flex-row justify-content-between align-items-center order-details">
+                        <div><span class="d-block fs-12">Order date</span><span class="font-weight-bold">12 March 2020</span></div>
+                        <div><span class="d-block fs-12">Order number</span><span class="font-weight-bold">OD44434324</span></div>
+                        <div><span class="d-block fs-12">Payment method</span><span class="font-weight-bold">Credit card</span><img class="ml-1 mb-1" src="https://i.imgur.com/ZZr3Yqj.png" width="20"></div>
+                        <div><span class="d-block fs-12">Shipping Address</span><span class="font-weight-bold text-success">New Delhi</span></div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center product-details">
+                        <div class="d-flex flex-row product-name-image">
+                            <img class="rounded" src="https://i.imgur.com/GsFeDLn.jpg" width="80">
+                            <div class="d-flex flex-column justify-content-between ml-2">
+                                <div><span class="d-block font-weight-bold p-name">Ralco formal shirts for men</span><span class="fs-12">Clothes</span></div><span class="fs-12">Qty: 1pcs</span>
+                            </div>
+                        </div>
+                        <div class="product-price">
+                            <h5>$70</h5>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center product-details">
+                        <div class="d-flex flex-row product-name-image">
+                            <img class="rounded" src="https://i.imgur.com/b7Ve3fJ.jpg" width="80">
+                            <div class="d-flex flex-column justify-content-between ml-2">
+                                <div><span class="d-block font-weight-bold p-name">Ralco formal Belt for men</span><span class="fs-12">Accessories</span></div><span class="fs-12">Qty: 1pcs</span>
+                            </div>
+                        </div>
+                        <div class="product-price">
+                            <h6>$50</h6>
+                        </div>
+                    </div>
+                    <div class="mt-5 amount row">
+                        <div class="col-md-6">
+                            <div class="billing">
+                                <div class="d-flex justify-content-between"><span>Subtotal</span><span class="font-weight-bold">$120</span></div>
+                                <div class="d-flex justify-content-between mt-2"><span>Shipping fee</span><span class="font-weight-bold">$15</span></div>
+                                <div class="d-flex justify-content-between mt-2"><span>Tax</span><span class="font-weight-bold">$5</span></div>
+                                <div class="d-flex justify-content-between mt-2"><span class="text-success">Discount</span><span class="font-weight-bold text-success">$25</span></div>
+                                <hr>
+                                <div class="d-flex justify-content-between mt-1"><span class="font-weight-bold">Total</span><span class="font-weight-bold text-success">$165</span></div>
+                            </div>
+                        </div>
+                    </div><span class="d-block">Expected delivery date</span><span class="font-weight-bold text-success">12 March 2020</span><span class="d-block mt-3 text-black-50 fs-15">We will be sending a shipping confirmation email when the item is shipped!</span>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center footer">
+                        <div class="thanks"><span class="d-block font-weight-bold">Thanks for shopping</span><span>Amazon team</span></div>
+                        <div class="d-flex flex-column justify-content-end align-items-end"><span class="d-block font-weight-bold">Need Help?</span><span>Call - 974493933</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

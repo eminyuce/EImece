@@ -39,41 +39,64 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <body class="fullscreen-container">
+
+        <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
+
+        <nav class="navbar navbar-default" id="nav-1">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
+                            @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-default" id="nav-2">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
-                        @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        {
-                            @Html.AntiForgeryToken()
-
-                        }
-                    </li>
+            <div class="collapse navbar-collapse" id="navbar-collapse-2">
+                <p class="navbar-text" style="font-weight:bold;">
+                    @String.Format("{0}", DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture))
+                </p>
+                <ul class="nav navbar-nav pull-right">
+                    <li>@Html.ActionLink(AdminResource.MyAccount, "Index", "Home", new { area = "customers" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.MyOrder, "CustomerOrders", "Home", new { area = "customers" }, null)</li>
+                    <li>@Html.ActionLink(AdminResource.SendMessageToSeller, "SendMessageToSeller", "Home", new { area = "customers" }, null)</li>
                 </ul>
             </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+
         </div>
-    </div>
+ 
+    </body>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>

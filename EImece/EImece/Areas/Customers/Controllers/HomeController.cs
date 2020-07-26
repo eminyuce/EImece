@@ -27,6 +27,10 @@ namespace EImece.Areas.Customers.Controllers
         public ActionResult Index()
         {
             return View();
+        } 
+        public ActionResult SendMessageToSeller()
+        {
+            return View();
         }
         public ActionResult CustomerOrders(string search = "")
         {

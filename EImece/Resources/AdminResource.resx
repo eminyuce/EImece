@@ -771,4 +771,13 @@
   <data name="OrderDetail" xml:space="preserve">
     <value>Sipariş detayı</value>
   </data>
+  <data name="MyOrder" xml:space="preserve">
+    <value>Siparişlerim</value>
+  </data>
+  <data name="MyAccount" xml:space="preserve">
+    <value>Hesabım</value>
+  </data>
+  <data name="SendMessageToSeller" xml:space="preserve">
+    <value>Satıcıya Mesaj Gönder</value>
+  </data>
 </root>

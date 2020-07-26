@@ -66,13 +66,6 @@ namespace EImece.Controllers
             return Json(jsonContent, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
