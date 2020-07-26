@@ -9,13 +9,26 @@
 }
 
 
-<div id="iyzipay-checkout-form" class="responsive"></div> 
- @*
+<div id="iyzipay-checkout-form" class="responsive"></div>
+@*
     İyzico Ödeme Ekranı
-    Html.Raw(checkoutFormInitialize.CheckoutFormContent)
-*@
 
+
+     Html.DisplayFor(model => checkoutFormInitialize)
+*@
+<br />
 <b>
-    @Html.DisplayFor(model => checkoutFormInitialize)
+    @Html.Raw(checkoutFormInitialize.CheckoutFormContent)
 </b>
+@Html.DisplayFor(model => checkoutFormInitialize)
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 

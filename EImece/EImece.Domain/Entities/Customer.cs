@@ -41,7 +41,7 @@ namespace EImece.Domain.Entities
 
         public String UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
-
+        public int  AddressId { get; set; }
         public String FullName
         {
             get {

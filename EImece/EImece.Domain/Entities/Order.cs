@@ -11,7 +11,7 @@ namespace EImece.Domain.Entities
     public class Order : BaseEntity
     {
         public DateTime DeliveryDate { get; set; }
-        public int CustomerId { get; set; }
+        public string UserId { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
         public string OrderGuid { get; set; }

@@ -23,8 +23,8 @@
         @if (Request.IsAuthenticated)
         {
             <span class="text-primary">@userName</span>
-            @Html.ActionLink("Siparislerim", "CustomerOrders", "Home", new { area = "customer" }, htmlAttributes: new { title = "Manage" })
-            @Html.ActionLink("Hesabim", "Index", "Home", new { area = "customer" }, htmlAttributes: new { title = "Manage" })
+            <a href="/customers/home/customerOrders" title="Manage">Siparislerim</a>
+            <a href="/customers/home/index" title="Manage">Hesabim</a>
             <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
             using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
             {

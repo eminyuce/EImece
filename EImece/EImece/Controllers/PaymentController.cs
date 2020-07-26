@@ -13,6 +13,7 @@ using EImece.Models;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using Ninject;
@@ -279,6 +280,7 @@ namespace EImece.Controllers
             if (checkoutForm.PaymentStatus.Equals(SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
+                shoppingCart.UserId = User.Identity.GetUserId();
                 ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm);
                 ClearCart(shoppingCart);
                 Task.Run(() =>

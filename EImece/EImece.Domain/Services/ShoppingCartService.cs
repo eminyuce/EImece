@@ -63,11 +63,14 @@ namespace EImece.Domain.Services
 
         public void SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
         {
-            var customer =  CustomerService.SaveOrEditEntity(shoppingCart.Customer);
+         
             var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
             var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
+            var customer = CustomerService.SaveOrEditEntity(shoppingCart.Customer);
+            customer.AddressId = shippingAddress.Id;
             var item = new  Order();
 
+            item.UserId = shoppingCart.UserId;
             item.Name = shoppingCart.Customer.FullName;
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
@@ -75,7 +78,6 @@ namespace EImece.Domain.Services
             item.Position = 1;
             item.Lang = 1;
             item.DeliveryDate = DateTime.Now;
-            item.CustomerId = customer.Id;
             item.ShippingAddressId = shippingAddress.Id;
             item.BillingAddressId = billingAddress.Id;
             item.OrderGuid = shoppingCart.OrderGuid;
