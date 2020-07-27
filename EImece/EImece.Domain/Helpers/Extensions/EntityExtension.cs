@@ -315,7 +315,11 @@ namespace EImece.Domain.Helpers.Extensions
 
             return imageTag;
         }
-
+        public static String GetCroppedImageUrl(this BaseEntity entity, int ? fileStorageIdOptional, int width = 0, int height = 0)
+        {
+            var fileStorageId = fileStorageIdOptional.HasValue ? fileStorageIdOptional.Value : 0;
+            return GetCroppedImageUrl(entity, fileStorageId, width, height);
+        }
         public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             if (entity != null)

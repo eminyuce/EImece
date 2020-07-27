@@ -140,14 +140,14 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Menu()
+        public ActionResult Navigation()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
         }
 
         [ChildActionOnly]
-        public ActionResult ProductTree()
+        public ActionResult ProductCategoryTree()
         {
             var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
             return PartialView("_ProductCategoryTree", tree);
