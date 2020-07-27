@@ -1,11 +1,15 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Customers.Controllers
 {
@@ -18,6 +22,13 @@ namespace EImece.Areas.Customers.Controllers
         public ICustomerService CustomerService { get; set; }
         [Inject]
         public IOrderService OrderService { get; set; }
+
+        [Inject]
+        public ApplicationSignInManager SignInManager { get; set; }
+
+        [Inject]
+        public IdentityManager IdentityManager { get; set; }
+
         public ApplicationUserManager UserManager { get; set; }
         public HomeController(ApplicationUserManager userManager)
         {
@@ -26,8 +37,16 @@ namespace EImece.Areas.Customers.Controllers
         // GET: Customers/Home
         public ActionResult Index()
         {
-            return View();
-        } 
+            var user = UserManager.FindByName(User.Identity.GetUserName());
+            var customer = CustomerService.GetUserId(user.Id);
+            return View(customer);
+        }
+        [HttpPost]
+        public ActionResult Index(Customer customer)
+        {
+            CustomerService.SaveOrEditEntity(customer);
+            return RedirectToAction("Index");
+        }
         public ActionResult SendMessageToSeller()
         {
             return View();
@@ -51,6 +70,44 @@ namespace EImece.Areas.Customers.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home", new { @area = "" });
+        }
+
+        //
+        // GET: /Manage/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+            AddErrors(result);
+            return View(model);
+        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
         }
     }
 }

@@ -155,8 +155,7 @@ namespace EImece.Controllers
                         result.Customer = CustomerService.GetUserId(user.Id);
                         if (result.Customer != null)
                         {
-                            var address = AddressService.GetSingle(result.Customer.AddressId);
-                            result.ShippingAddress = address == null ? result.ShippingAddress : address;
+                            result.ShippingAddress = result.ShippingAddress ;
                         }
                     }
                 }
@@ -229,7 +228,7 @@ namespace EImece.Controllers
             address.City = customer.City;
             address.Country = customer.Country;
             address.ZipCode = customer.ZipCode;
-            address.Description = customer.RegistrationAddress;
+            address.Description = customer.Description;
             address.Name = customer.FullName;
             address.CreatedDate = DateTime.Now;
             address.UpdatedDate = DateTime.Now;

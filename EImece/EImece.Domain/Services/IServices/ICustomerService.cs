@@ -8,6 +8,6 @@ namespace EImece.Domain.Services.IServices
         void SaveRegisterViewModel(string userId,RegisterViewModel model);
         Customer GetUserId(string userId);
         void DeleteByUserId(string userId);
-        void SaveShippingAddress(string userId, int addressId);
+        void SaveShippingAddress(string userId);
     }
 }

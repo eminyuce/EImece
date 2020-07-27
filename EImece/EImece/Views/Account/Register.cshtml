@@ -64,7 +64,7 @@
                     </div>
                     @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "form-control" })
             <span>
-                XXXXYYYYZZZ'un bana ticari elektronik ileti göndermesine, kişisel verilerimi pazarlama faaliyetleri için  işlemesine ve destek aldığı tedarikçileriyle paylaşmasına izin veriyorum.
+                @AdminResource.IsPermissionGrantedDescription
             </span>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">

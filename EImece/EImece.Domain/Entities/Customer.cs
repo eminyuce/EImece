@@ -12,6 +12,9 @@ namespace EImece.Domain.Entities
     [Serializable]
     public class Customer : BaseEntity
     {
+
+        
+            
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         //   [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string Surname { get; set; }
@@ -22,17 +25,13 @@ namespace EImece.Domain.Entities
         [EmailAddress]
         public string Email { get; set; }
         public string IdentityNumber { get; set; }
-        [NotMapped]
         //    [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        public string RegistrationAddress { get; set; }
+        public string Description { get; set; }
         public string Ip { get; set; }
-        [NotMapped]
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string City { get; set; }
-        [NotMapped]
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string Country { get; set; }
-        [NotMapped]
         //    [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string ZipCode { get; set; }
 
@@ -41,10 +40,16 @@ namespace EImece.Domain.Entities
 
         public String UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
-        public int  AddressId { get; set; }
+        public DateTime BirthDate { get; set; }
+        public int Gender { get; set; }
+        public string Street { get; set; }
+        public string District { get; set; }
 
-        public Address Address { get; set; }
+        [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
+        public String Captcha { get; set; }
 
+ 
         public String FullName
         {
             get {
@@ -58,7 +63,7 @@ namespace EImece.Domain.Entities
             return !(string.IsNullOrEmpty(Name)  
                 && string.IsNullOrEmpty(Surname) && string.IsNullOrEmpty(GsmNumber)
                 && string.IsNullOrEmpty(Email) 
-                            && string.IsNullOrEmpty(RegistrationAddress) && string.IsNullOrEmpty(City)
+                            && string.IsNullOrEmpty(Description) && string.IsNullOrEmpty(City)
                                             && string.IsNullOrEmpty(Country) && string.IsNullOrEmpty(ZipCode));
         }
     }

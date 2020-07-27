@@ -101,8 +101,7 @@ namespace EImece.Models
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }
-
-        public bool IsPermissionGranted { get; set; }
+  public bool IsPermissionGranted { get; set; }
         //[Required]
         //[Display(Name = "User Name")]
         //public string UserName { get; set; }

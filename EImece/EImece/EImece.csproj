@@ -691,6 +691,7 @@
     <Content Include="Views\Shared\pGridImageMainPage.cshtml" />
     <Content Include="Areas\Customers\Views\Home\OrderDetail.cshtml" />
     <Content Include="Areas\Customers\Views\Home\SendMessageToSeller.cshtml" />
+    <Content Include="Areas\Customers\Views\Home\ChangePassword.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -835,6 +835,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Önemli kampanyalardan eposta ile haberdar olmak istiyorum..
+        /// </summary>
+        public static string IsPermissionGrantedDescription {
+            get {
+                return ResourceManager.GetString("IsPermissionGrantedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Fiyatı Etkin mi?.
         /// </summary>
         public static string IsProductPriceEnable {

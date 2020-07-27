@@ -780,4 +780,7 @@
   <data name="SendMessageToSeller" xml:space="preserve">
     <value>Satıcıya Mesaj Gönder</value>
   </data>
+  <data name="IsPermissionGrantedDescription" xml:space="preserve">
+    <value>Önemli kampanyalardan eposta ile haberdar olmak istiyorum.</value>
+  </data>
 </root>

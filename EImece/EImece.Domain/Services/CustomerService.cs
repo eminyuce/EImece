@@ -53,18 +53,16 @@ namespace EImece.Domain.Services
             var customer = CustomerRepository.GetUserId(userId);
             if(customer != null)
             {
-                AddressService.DeleteById(customer.AddressId);
                 DeleteEntity(customer);
             }
 
         }
 
-        public void SaveShippingAddress(string userId, int addressId)
+        public void SaveShippingAddress(string userId)
         {
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
-                customer.AddressId = addressId;
                 SaveOrEditEntity(customer);
             }
         }

@@ -67,6 +67,16 @@
             @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
         </div>
         <div class="half first">
+            <label>Street:<abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.Street)
+            @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
+        </div>
+        <div class="half first">
+            <label>District:<abbr>*</abbr></label>
+            @Html.EditorFor(model => customer.District)
+            @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+        </div>
+        <div class="half first">
             <label>City:<abbr>*</abbr></label>
             @Html.EditorFor(model => customer.City)
             @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
@@ -83,8 +93,8 @@
         </div>
         <div class="fullwidth">
             <label>Street Address: <abbr>*</abbr></label>
-            @Html.TextAreaFor(model => customer.RegistrationAddress, 3, 40, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => customer.RegistrationAddress, "", new { @class = "text-danger" })
+            @Html.TextAreaFor(model => customer.Description, 3, 40, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
         </div>
 
 

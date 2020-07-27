@@ -6,6 +6,9 @@
 @using EImece.Domain.Services.IServices;
 @using Microsoft.AspNet.Identity;
 @using System.Globalization;
+@{
+    var userName = User.Identity.GetUserName();
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +26,8 @@
     <link href="~/Content/deleteStyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
-
+    @RenderSection("scripts", required: false)
+    @RenderSection("styles", required: false)
     <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
     <script src="~/Scripts/codemirror/codemirror.js"></script>
     <script src="~/Scripts/codemirror/xml/xml.js"></script>
@@ -57,7 +61,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
-                            @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                             {
                                 @Html.AntiForgeryToken()
                             }
@@ -80,6 +84,12 @@
                 <p class="navbar-text" style="font-weight:bold;">
                     @String.Format("{0}", DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture))
                 </p>
+
+                <ul class="nav navbar-nav">
+                    <li>
+                        @Html.ActionLink(AdminResource.Hello + " " + userName + "!", "changepassword", "home", routeValues: new { @area = "customers" }, htmlAttributes: new { title = "Manage" })
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav pull-right">
                     <li>@Html.ActionLink(AdminResource.MyAccount, "Index", "Home", new { area = "customers" }, null)</li>
                     <li>@Html.ActionLink(AdminResource.MyOrder, "CustomerOrders", "Home", new { area = "customers" }, null)</li>

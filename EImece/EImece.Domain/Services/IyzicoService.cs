@@ -71,7 +71,7 @@ namespace EImece.Domain.Services
             buyer.IdentityNumber = "38108089458";
             buyer.LastLoginDate = "2015-10-05 12:43:35";
             buyer.RegistrationDate = customer.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
-            buyer.RegistrationAddress = customer.RegistrationAddress;
+            buyer.RegistrationAddress = customer.Description;
             buyer.Ip = customer.Ip;
             buyer.City = customer.City;
             buyer.Country = customer.Country;
