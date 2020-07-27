@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IProductRepository : IBaseContentRepository<Product>, IDisposable
+    public interface IProductRepository : IBaseContentRepository<Product>
     {
         PaginatedList<Product> GetActiveProducts(int pageIndex, int pageSize, int language);
 

@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IMailTemplateRepository : IBaseEntityRepository<MailTemplate>, IDisposable
+    public interface IMailTemplateRepository : IBaseEntityRepository<MailTemplate>
     {
         MailTemplate GetMailTemplateByName(string templatename);
     }

@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IMainPageImageRepository : IBaseContentRepository<MainPageImage>, IDisposable
+    public interface IMainPageImageRepository : IBaseContentRepository<MainPageImage>
     {
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IShortUrlRepository : IBaseEntityRepository<ShortUrl>, IDisposable
+    public interface IShortUrlRepository : IBaseEntityRepository<ShortUrl>
     {
         ShortUrl GetShortUrlByUrl(string url);
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IProductCategoryRepository : IBaseContentRepository<ProductCategory>, IDisposable
+    public interface IProductCategoryRepository : IBaseContentRepository<ProductCategory>
     {
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
 

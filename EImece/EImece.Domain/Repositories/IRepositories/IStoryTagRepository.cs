@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IStoryTagRepository : IBaseRepository<StoryTag>, IDisposable
+    public interface IStoryTagRepository : IBaseRepository<StoryTag>
     {
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
 

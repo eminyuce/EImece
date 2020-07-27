@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ISubscriberRepository : IBaseEntityRepository<Subscriber>, IDisposable
+    public interface ISubscriberRepository : IBaseEntityRepository<Subscriber>
     {
     }
 }

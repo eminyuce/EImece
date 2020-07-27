@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ICustomerRepository : IBaseEntityRepository<Customer>, IDisposable
+    public interface ICustomerRepository : IBaseEntityRepository<Customer>
     {
         Customer GetUserId(string userId);
     }

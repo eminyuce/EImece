@@ -9,7 +9,7 @@
 
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
-    var mainPageProductCategories = Model.MainPageProductCategories.Where(r=>r.ParentId == 0).ToList();
+    var mainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
 
     var mainPageStories = Model.StoryIndexViewModel.Stories;
     var campaignProducts = Model.CampaignProducts;
@@ -19,25 +19,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
-<!-- Slider
-================================================== -->
-<div class="container fullwidth-element home-slider">
-    @if (isUserAuthenticated)
-    {
-        @Html.ActionLink(Resource.AdminEdit, "index", "mainpageimages", new { @area = "admin" }, new { })
-    }
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
-                @for (int i = 0; i < mainPageImages.Count; i++)
-                {
-                    var mainPageImage = mainPageImages[i];
-                    @Html.DisplayFor(model => mainPageImage, "MainPageImage", new { index = i })
-                }
-            </ul>
-        </div>
-    </div>
-</div>
+
 
 <div class="container">
 
@@ -59,83 +41,6 @@
 
 }
 
-<div class="container margin-bottom-25">
-
-@if (mainPageProducts != null && mainPageProducts.Any())
-{
-    <div class="one-third column">
-
-        <!-- Headline -->
-        <h3 class="headline">VİTRİN ÜRÜNLERİ</h3>
-        <span class="line margin-bottom-0"></span>
-        <div class="clearfix"></div>
-
-        <ul class="product-list">
-
-            @for (int i = 0; i < mainPageProducts.Count; i++)
-            {
-                var p = mainPageProducts[i];
-                @Html.DisplayFor(model => p, "MainPageProductShort",new { Width=80, Height=80 })
-            }
-
-            <li>
-                <div class="clearfix"></div>
-            </li>
-        </ul>
-    </div>
-
-}
-
-    @if(campaignProducts!=null && campaignProducts.Any())
-    {
-
-    <div class="one-third column">
-
-        <!-- Headline -->
-        <h3 class="headline">KAMPANYALI ÜRÜNLER</h3>
-        <span class="line margin-bottom-0"></span>
-        <div class="clearfix"></div>
-
-        <ul class="product-list">
-
-            @for (int i = 0; i < campaignProducts.Count; i++)
-            {
-                var p = campaignProducts[i];
-                @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
-
-            }
-
-            <li>
-                <div class="clearfix"></div>
-            </li>
-        </ul>
-    </div>
-
-    }
-
-    @if(latestProducts!=null && latestProducts.Any())
-    {
-    <div class="one-third column">
-        <!-- Headline -->
-        <h3 class="headline">YENİ ÜRÜNLER</h3>
-        <span class="line margin-bottom-0"></span>
-        <div class="clearfix"></div>
-        <ul class="product-list">
-
-            @for (int i = 0; i < latestProducts.Count; i++)
-            {
-                var p = latestProducts[i];
-                @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
-
-            }
-
-            <li>
-                <div class="clearfix"></div>
-            </li>
-        </ul>
-    </div>
-    }
-</div>
 
 @if (latestStories.Count > 0)
 {
@@ -157,4 +62,49 @@
 
 }
 
-<div class="clearfix"></div>
+
+<!-- Featured products grid-->
+<section class="container px-3 pt-4 mt-3">
+    <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+        <h2 class="h3 mb-3">Featured products</h2><a class="btn btn-outline-primary btn-sm border-0 mb-3" href="shop-style2-ls.html">More products<i class="ml-1 mr-n2" data-feather="chevron-right"></i></a>
+    </div>
+    <div class="row no-gutters">
+        @for (int i = 0; i < mainPageProducts.Count; i++)
+        {
+            var p = mainPageProducts[i];
+            @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
+        }
+
+    </div>
+</section>
+
+
+<!-- Product widgets-->
+<section class="container px-3 pt-2 pb-4 mb-md-2">
+    <div class="row">
+        @CreateProductWidget("VİTRİN ÜRÜNLERİ", mainPageProducts)
+        @CreateProductWidget("KAMPANYALI ÜRÜNLER", campaignProducts)
+        @CreateProductWidget("YENİ ÜRÜNLER", latestProducts)
+    </div>
+</section>
+
+@helper  CreateProductWidget(String title, List<Product> products)
+{
+    if (!products.IsNullOrEmpty())
+    {
+        <div class="col-md-4 col-sm-6 mb-2 py-3">
+            <div class="widget widget-featured-entries">
+                <h3 class="widget-title font-size-lg">@title</h3>
+
+                @for (int i = 0; i < products.Count; i++)
+                {
+                    var p = products[i];
+                    @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+                }
+
+            </div>
+        </div>
+    }
+}
+
+ 

@@ -72,15 +72,13 @@ namespace EImece.Tests.Controllers
         {
             using (var db = new EImeceContext(ConnectionString))
             {
-                using (SettingRepository repository = new SettingRepository(db))
-                {
+                var repository = new SettingRepository(db);
                     var SettingService = new SettingService(repository);
                     SettingService.MemoryCacheProvider = new MemoryCacheProvider();
                     EmailAccount emailAccount = SettingService.GetEmailAccount();
                     Console.WriteLine(emailAccount.ToString());
                     EmailSender emailSender = new EmailSender();
                     //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
-                }
             }
         }
 

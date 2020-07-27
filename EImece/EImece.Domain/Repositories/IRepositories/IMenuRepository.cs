@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IMenuRepository : IBaseContentRepository<Menu>, IDisposable
+    public interface IMenuRepository : IBaseContentRepository<Menu>
     {
         List<Menu> BuildTree(bool? isActive, int language);
 

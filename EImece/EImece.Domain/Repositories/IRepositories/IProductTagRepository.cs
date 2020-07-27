@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IProductTagRepository : IBaseRepository<ProductTag>, IDisposable
+    public interface IProductTagRepository : IBaseRepository<ProductTag>
     {
         List<ProductTag> GetAllByProductId(int productId);
 

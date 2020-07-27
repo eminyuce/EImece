@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ISettingRepository : IBaseEntityRepository<Setting>, IDisposable
+    public interface ISettingRepository : IBaseEntityRepository<Setting>
     {
         List<Setting> GetAllSettings();
 

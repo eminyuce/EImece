@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IShoppingCartRepository : IBaseEntityRepository<ShoppingCart>, IDisposable
+    public interface IShoppingCartRepository : IBaseEntityRepository<ShoppingCart>
     {
         ShoppingCart GetShoppingCartByOrderGuid(string orderGuid);
     }

@@ -3,7 +3,7 @@ using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IMenuFileRepository : IBaseEntityRepository<MenuFile>, IDisposable
+    public interface IMenuFileRepository : IBaseEntityRepository<MenuFile>
     {
     }
 }

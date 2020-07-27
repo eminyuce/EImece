@@ -5,11 +5,21 @@
     Subscriber subscriber = new Subscriber();
 }
 
-@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post))
-{
+ 
 
-    <button class="newsletter-btn" type="submit">@Resource.SubscriberButtonText</button>
+    @using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post,new {@class= "validate pb-4", @name = "mc-embedded-subscribe-form", @id = "mc-embedded-subscribe-form" }))
+    {
 
-    @Html.TextBoxFor(model => subscriber.Email, new { @placeholder = @Resource.Email, @class = "newsletter" })
-
-}
+<div class="input-group mb-2">
+    <div class="input-group-prepend"><span class="input-group-text" style="background-color: #e8e8e8;"><i data-feather="mail"></i></span></div>
+    @Html.TextBoxFor(model => subscriber.Email, new { @class="form-control border-0 box-shadow-0 bg-secondary", @placeholder = @Resource.Email })
+</div>
+        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+            <input type="text" name="b_c7103e2c981361a6639545bd5_29ca296126" tabindex="-1">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" name="subscribe" id="mc-embedded-subscribe">Subscribe*</button>
+        <p class="font-size-xs text-white opacity-60 pt-2 mb-2" id="mc-helper">*Subscribe to our newsletter to receive early discount offers, updates and new products info.</p>
+        <!-- Subscription status-->
+        <div class="subscribe-status"></div>
+    }

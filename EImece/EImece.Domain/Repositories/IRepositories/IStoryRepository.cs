@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IStoryRepository : IBaseContentRepository<Story>, IDisposable
+    public interface IStoryRepository : IBaseContentRepository<Story>
     {
         List<Story> GetAdminPageList(int categoryId, string search, int lang);
 

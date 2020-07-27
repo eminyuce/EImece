@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface ITagRepository : IBaseEntityRepository<Tag>, IDisposable
+    public interface ITagRepository : IBaseEntityRepository<Tag>
     {
         List<Tag> GetAdminPageList(String search, int language);
 

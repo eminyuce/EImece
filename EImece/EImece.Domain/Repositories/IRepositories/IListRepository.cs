@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IListRepository : IBaseEntityRepository<List>, IDisposable
+    public interface IListRepository : IBaseEntityRepository<List>
     {
         List GetListById(int id);
 
