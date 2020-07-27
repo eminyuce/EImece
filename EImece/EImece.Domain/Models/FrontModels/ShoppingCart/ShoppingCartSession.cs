@@ -4,8 +4,6 @@ using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -19,14 +17,17 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
 
         public List<ShoppingCartItem> ShoppingCartItems
-        { 
-            get {
+        {
+            get
+            {
                 return _shoppingCartItems;
             }
-            set {
+            set
+            {
                 _shoppingCartItems = value;
             }
         }
+
         public Customer Customer
         {
             get
@@ -38,6 +39,7 @@ namespace EImece.Domain.Models.FrontModels
                 _customer = value;
             }
         }
+
         public Address ShippingAddress
         {
             get
@@ -49,6 +51,7 @@ namespace EImece.Domain.Models.FrontModels
                 _shippingAddress = value;
             }
         }
+
         public Address BillingAddress
         {
             get
@@ -63,7 +66,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public void Add(ShoppingCartItem item)
         {
-            if(ShoppingCartItems.Any(r=>r.product.Id == item.product.Id))
+            if (ShoppingCartItems.Any(r => r.product.Id == item.product.Id))
             {
                 ShoppingCartItem existingItem = ShoppingCartItems.FirstOrDefault(r => r.product.Id == item.product.Id);
                 existingItem.quantity += item.quantity;
@@ -72,7 +75,6 @@ namespace EImece.Domain.Models.FrontModels
             {
                 ShoppingCartItems.Add(item);
             }
-           
         }
 
         public double TotalPrice
@@ -86,6 +88,7 @@ namespace EImece.Domain.Models.FrontModels
                 return ShoppingCartItems.Sum(r => r.product.Price * r.quantity);
             }
         }
+
         public double SubTotalPrice
         {
             get
@@ -93,6 +96,7 @@ namespace EImece.Domain.Models.FrontModels
                 return TotalPrice;
             }
         }
+
         public int TotalItemCount
         {
             get

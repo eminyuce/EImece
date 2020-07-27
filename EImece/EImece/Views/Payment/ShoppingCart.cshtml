@@ -30,8 +30,6 @@
 
     <div class="sixteen columns">
 
-
-
         <table class="cart-table responsive-table stacktable large-only">
             <tbody>
                 <tr>
@@ -42,7 +40,6 @@
                     <th>@Resource.Total</th>
                     <th></th>
                 </tr>
-
 
                 @if (!products.IsNullOrEmpty())
                 {
@@ -57,16 +54,15 @@
                                 <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
                                 @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                                 {
-                            <a href="@Url.Action("Detail","Products",new { id=product.Id })">
-                                <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
-                            </a>
+                                    <a href="@Url.Action("Detail","Products",new { id=product.Id })">
+                                        <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+                                    </a>
                                 }
-                    </td>
+                            </td>
                             <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
                             <td>
                                 <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
                                 <span> @product.Price.CurrencySign()</span>
-
                             </td>
                             <td>
                                 <input type="text" name=@String.Format("quantity[{0}]", i)
@@ -75,12 +71,11 @@
                                        class="qty">
                                 <input type="button" data-shopping-button-price="@item.ShoppingCartItemId" value="@AdminResource.Update" />
                             </td>
-                            <td class="cart-total"><span data-shopping-item-total-price="@item.ShoppingCartItemId"  > @totalPricePerItem.CurrencySign()</span></td>
-                            <td><a data-shopping-item-remove="@item.ShoppingCartItemId"  class="cart-remove"></a></td>
+                            <td class="cart-total"><span data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span></td>
+                            <td><a data-shopping-item-remove="@item.ShoppingCartItemId" class="cart-remove"></a></td>
                         </tr>
                     }
                 }
-
             </tbody>
         </table>
 
@@ -95,11 +90,9 @@
                         </div>
                     </th>
                 </tr>
-
             </tbody>
         </table>
     </div>
-
 
     <!-- Cart Totals -->
     <div class="eight columns cart-totals">
@@ -118,28 +111,19 @@
                     <th>Order Total</th>
                     <td><strong><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></strong></td>
                 </tr>
-
             </tbody>
         </table>
         <br>
         <!-- <a href="#" class="calculate-shipping"><i class="fa fa-arrow-circle-down"></i> Calculate Shipping</a> -->
     </div>
-
 </div>
 
 @section Scripts{
 
-
     <script>
-     
+
         $(document).ready(function () {
-           
+
         });
-
-       
-            
-
-         
-
     </script>
 }

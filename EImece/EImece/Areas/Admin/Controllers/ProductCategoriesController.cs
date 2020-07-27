@@ -108,7 +108,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int ? id)
+        public ActionResult DeleteConfirmed(int? id)
         {
             if (id == null)
             {
@@ -124,7 +124,6 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ProductCategoryService.DeleteProductCategory(productCategory.Id);
                 return ReturnIndexIfNotUrlReferrer("Index");
-
             }
             catch (Exception ex)
             {
@@ -147,7 +146,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name,r.Name,StringComparison.OrdinalIgnoreCase);
+            Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name, r.Name, StringComparison.OrdinalIgnoreCase);
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in productCategories

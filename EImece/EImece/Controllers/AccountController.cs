@@ -22,6 +22,7 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string CaptchaAdminLogin = "CaptchaAdminLogin";
+
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
@@ -37,15 +38,14 @@ namespace EImece.Controllers
 
         public ICustomerService CustomerService;
 
-
-        public AccountController(ApplicationUserManager userManager, 
+        public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ICustomerService customerService)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             CustomerService = customerService;
         }
-        
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -65,7 +65,7 @@ namespace EImece.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl="")
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace EImece.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-             
+
                 Logger.Debug("The account " + model.Email + "   " + result.ToString());
                 switch (result)
                 {
@@ -93,15 +93,15 @@ namespace EImece.Controllers
 
                         var users = ApplicationDbContext.Users.AsQueryable();
                         var usersRoles = from u in ApplicationDbContext.Users
-                                     from ur in u.Roles
-                                     join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
-                                     where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
-                                     select new
-                                     {
-                                         Role = r.Name
-                                     };
+                                         from ur in u.Roles
+                                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                                         where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
+                                         select new
+                                         {
+                                             Role = r.Name
+                                         };
 
-                        bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole,StringComparison.InvariantCultureIgnoreCase));
+                        bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase));
                         if (isCustomer)
                         {
                             if (String.IsNullOrEmpty(returnUrl))
@@ -109,11 +109,9 @@ namespace EImece.Controllers
                                 return RedirectToAction("Index", "Home", new { @area = "customers" });
                             }
                             else
-                            { 
+                            {
                                 return RedirectToLocal(returnUrl);
-                               
                             }
-                         
                         }
                         else
                         {
@@ -218,10 +216,10 @@ namespace EImece.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
-                  //  await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
+                    //  await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                     CustomerService.SaveRegisterViewModel(user.Id, model);
-                     
+
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -487,7 +485,7 @@ namespace EImece.Controllers
             }
         }
 
-        private ActionResult RedirectToLocal(string returnUrl ="")
+        private ActionResult RedirectToLocal(string returnUrl = "")
         {
             bool isAdmin = User.IsInRole(Domain.Constants.AdministratorRole) || User.IsInRole(Domain.Constants.EditorRole);
             if (isAdmin)

@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -65,68 +64,66 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
-          
-                if (emailAccount == null)
+            if (emailAccount == null)
+            {
+                throw new ArgumentException("No email account is defined.");
+            }
+            var message = new MailMessage();
+            message.From = from;
+            message.To.Add(to);
+            if (bcc != null)
+            {
+                foreach (var address in bcc.Where(bccValue => !String.IsNullOrWhiteSpace(bccValue)))
                 {
-                    throw new ArgumentException("No email account is defined.");
+                    message.Bcc.Add(address.Trim());
                 }
-                var message = new MailMessage();
-                message.From = from;
-                message.To.Add(to);
-                if (bcc != null)
+            }
+            if (cc != null)
+            {
+                foreach (var address in cc.Where(ccValue => !String.IsNullOrWhiteSpace(ccValue)))
                 {
-                    foreach (var address in bcc.Where(bccValue => !String.IsNullOrWhiteSpace(bccValue)))
-                    {
-                        message.Bcc.Add(address.Trim());
-                    }
+                    message.CC.Add(address.Trim());
                 }
-                if (cc != null)
-                {
-                    foreach (var address in cc.Where(ccValue => !String.IsNullOrWhiteSpace(ccValue)))
-                    {
-                        message.CC.Add(address.Trim());
-                    }
-                }
-                message.Subject = subject;
-                message.Body = body;
-                message.IsBodyHtml = true;
+            }
+            message.Subject = subject;
+            message.Body = body;
+            message.IsBodyHtml = true;
 
-                //create  the file attachment for this e-mail message
-                if (!String.IsNullOrEmpty(attachmentFilePath) &&
-                    File.Exists(attachmentFilePath))
+            //create  the file attachment for this e-mail message
+            if (!String.IsNullOrEmpty(attachmentFilePath) &&
+                File.Exists(attachmentFilePath))
+            {
+                var attachment = new Attachment(attachmentFilePath);
+                attachment.ContentDisposition.CreationDate = File.GetCreationTime(attachmentFilePath);
+                attachment.ContentDisposition.ModificationDate = File.GetLastWriteTime(attachmentFilePath);
+                attachment.ContentDisposition.ReadDate = File.GetLastAccessTime(attachmentFilePath);
+                if (!String.IsNullOrEmpty(attachmentFileName))
                 {
-                    var attachment = new Attachment(attachmentFilePath);
-                    attachment.ContentDisposition.CreationDate = File.GetCreationTime(attachmentFilePath);
-                    attachment.ContentDisposition.ModificationDate = File.GetLastWriteTime(attachmentFilePath);
-                    attachment.ContentDisposition.ReadDate = File.GetLastAccessTime(attachmentFilePath);
-                    if (!String.IsNullOrEmpty(attachmentFileName))
-                    {
-                        attachment.Name = attachmentFileName;
-                    }
-                    message.Attachments.Add(attachment);
+                    attachment.Name = attachmentFileName;
+                }
+                message.Attachments.Add(attachment);
+            }
+
+            using (var smtpClient = new SmtpClient())
+            {
+                smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
+                smtpClient.Host = emailAccount.Host;
+                smtpClient.Port = emailAccount.Port;
+                smtpClient.EnableSsl = emailAccount.EnableSsl;
+                if (emailAccount.UseDefaultCredentials)
+                {
+                    smtpClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                }
+                else
+                {
+                    smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
                 }
 
-                using (var smtpClient = new SmtpClient())
-                {
-                    smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
-                    smtpClient.Host = emailAccount.Host;
-                    smtpClient.Port = emailAccount.Port;
-                    smtpClient.EnableSsl = emailAccount.EnableSsl;
-                    if (emailAccount.UseDefaultCredentials)
-                    {
-                        smtpClient.Credentials = CredentialCache.DefaultNetworkCredentials;
-                    }
-                    else
-                    {
-                        smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                    }
+                smtpClient.Send(message);
 
-                    smtpClient.Send(message);
-
-                    Logger.Info("Email Body" + message.Body);
-                    Logger.Trace("Email is sent to " + emailAccount.Username);
-                }
-          
+                Logger.Info("Email Body" + message.Body);
+                Logger.Trace("Email is sent to " + emailAccount.Username);
+            }
         }
 
         public void SendEmailContactingUs(ContactUsFormViewModel contact)
@@ -172,11 +169,11 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate)
         {
-            if(renderedEmailTemplate.Item1.IsNullOrEmpty() && renderedEmailTemplate.Item2.IsNullOrEmpty())
+            if (renderedEmailTemplate.Item1.IsNullOrEmpty() && renderedEmailTemplate.Item2.IsNullOrEmpty())
             {
                 return;
             }
-            
+
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
             {

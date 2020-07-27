@@ -27,6 +27,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
+
         [HttpGet]
         public ActionResult SaveOrEditProductSpecs(int id = 0)
         {
@@ -123,7 +124,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         ProductService.SaveProductTags(product.Id, tags);
 
-                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText,StringComparison.InvariantCultureIgnoreCase))
+                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                         {
                             return ReturnTempUrl("Index");
                         }
@@ -145,7 +146,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
-            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid  && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
@@ -194,9 +195,9 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 return DownloadFile();
-
             }).ConfigureAwait(true);
         }
+
         private ActionResult DownloadFile()
         {
             var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
@@ -223,16 +224,16 @@ namespace EImece.Areas.Admin.Controllers
 
             return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage));
         }
-        public ActionResult MoveProductsInTrees(int id=0, string productIdList = "", int oldCategoryId=0)
+
+        public ActionResult MoveProductsInTrees(int id = 0, string productIdList = "", int oldCategoryId = 0)
         {
             ViewBag.TreeLeft = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
             ViewBag.TreeRight = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
-            var products = new System.Collections.Generic.List<Product>(); 
+            var products = new System.Collections.Generic.List<Product>();
             if (id > 0)
             {
                 products = ProductService.GetAdminPageList(id, "", CurrentLanguage);
             }
-
 
             var newCategory = ProductCategoryService.GetSingle(id);
             ViewBag.SelectedCategory = newCategory;
@@ -240,15 +241,16 @@ namespace EImece.Areas.Admin.Controllers
             if (id > 0 && oldCategoryId > 0)
             {
                 var oldCategory = ProductCategoryService.GetSingle(oldCategoryId);
-                ViewBag.MoveProductsMessage = String.Format("Seçilen {0} Ürün '{1}' kategorisinden '{2}' kategorisine tasindi", productIdList.Split(',').Count().ToString(),  oldCategory.Name, newCategory.Name);
+                ViewBag.MoveProductsMessage = String.Format("Seçilen {0} Ürün '{1}' kategorisinden '{2}' kategorisine tasindi", productIdList.Split(',').Count().ToString(), oldCategory.Name, newCategory.Name);
             }
 
             return View(products);
         }
-        public ActionResult MoveProducts(int id, string productIdList,int oldCategoryId)
+
+        public ActionResult MoveProducts(int id, string productIdList, int oldCategoryId)
         {
-           ProductService.MoveProductsInTrees(id, productIdList);
-           return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
+            ProductService.MoveProductsInTrees(id, productIdList);
+            return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
         }
     }
 }

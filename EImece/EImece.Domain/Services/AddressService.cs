@@ -15,7 +15,5 @@ namespace EImece.Domain.Services
         {
             AddressRepository = repository;
         }
-
-       
     }
 }

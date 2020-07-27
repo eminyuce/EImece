@@ -115,7 +115,7 @@
 
         checkSeek: function () {
             if (this.stateChange === YT.PlayerState.PAUSED ||
-                    this.stateChange === YT.PlayerState.ENDED) {
+                this.stateChange === YT.PlayerState.ENDED) {
                 // check if current state change is actually paused
                 this.listeners.pause();
                 delete this.playStatus;
@@ -124,14 +124,14 @@
 
         onStateChange: function (event) {
             switch (event.data) {
-            case YT.PlayerState.PLAYING:
-                this.hasPlayed = true;
-                this.onPlaying();
-                break;
-            case YT.PlayerState.PAUSED:
-            case YT.PlayerState.ENDED:
-                this.onPause();
-                break;
+                case YT.PlayerState.PLAYING:
+                    this.hasPlayed = true;
+                    this.onPlaying();
+                    break;
+                case YT.PlayerState.PAUSED:
+                case YT.PlayerState.ENDED:
+                    this.onPause();
+                    break;
             }
             // Save most recent state change to this.stateChange
             this.stateChange = event.data;
@@ -149,7 +149,7 @@
             }
             if (this.ready) {
                 if (!this.hasPlayed && (this.clickToPlay || (window.navigator &&
-                        /iP(hone|od|ad)/.test(window.navigator.platform)))) {
+                    /iP(hone|od|ad)/.test(window.navigator.platform)))) {
                     // Manually trigger the playing callback if clickToPlay
                     // is enabled and to workaround a limitation in iOS,
                     // which requires synchronous user interaction to start

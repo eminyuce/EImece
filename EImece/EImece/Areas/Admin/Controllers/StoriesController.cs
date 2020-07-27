@@ -92,8 +92,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(story);
         }
 
-   
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
@@ -117,20 +115,22 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(Story);
         }
+
         [HttpGet]
         public ActionResult Media(int id)
         {
             return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
         }
+
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
             return await Task.Run(() =>
             {
                 return DownloadFile();
-
             }).ConfigureAwait(true);
         }
+
         private ActionResult DownloadFile()
         {
             String search = "";

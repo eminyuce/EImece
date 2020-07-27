@@ -80,16 +80,16 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
-        [Required(ErrorMessageResourceType  = typeof(AdminResource), ErrorMessageResourceName =   nameof(AdminResource.PasswordRequired))]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
         [StringLength(100, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordStringLength), MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }
 
-     //   [DataType(DataType.Password)]
-    //    [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
-    //    [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
-      //  public string ConfirmPassword { get; set; }
+        //   [DataType(DataType.Password)]
+        //    [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
+        //    [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
+        //  public string ConfirmPassword { get; set; }
 
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
@@ -98,10 +98,12 @@ namespace EImece.Models
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string LastName { get; set; }
+
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }
-  public bool IsPermissionGranted { get; set; }
+
+        public bool IsPermissionGranted { get; set; }
         //[Required]
         //[Display(Name = "User Name")]
         //public string UserName { get; set; }

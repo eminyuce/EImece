@@ -1,10 +1,4 @@
-﻿using GenericRepository;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace EImece.Domain.Entities
 {
@@ -24,7 +18,7 @@ namespace EImece.Domain.Entities
         public string Currency { get; set; }
         public string PaymentId { get; set; }
         public string PaymentStatus { get; set; }
-        public int ? FraudStatus { get; set; }
+        public int? FraudStatus { get; set; }
         public string MerchantCommissionRate { get; set; }
         public string MerchantCommissionRateAmount { get; set; }
         public string IyziCommissionRateAmount { get; set; }
@@ -47,5 +41,8 @@ namespace EImece.Domain.Entities
         public string ErrorMessage { get; set; }
         public string Locale { get; set; }
         public long SystemTime { get; set; }
+
+        public Address ShippingAddress { get; set; }
+        public Address BillingAddress { get; set; }
     }
 }

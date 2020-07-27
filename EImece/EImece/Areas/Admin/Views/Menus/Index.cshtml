@@ -33,7 +33,7 @@
 
 <h2>@AdminResource.Menu</h2>
 <hr class="adminLine" />
-<div  class="row" style="padding:20px;">
+<div class="row" style="padding:20px;">
 
     <div class="col-md-2">
 
@@ -89,7 +89,7 @@ window.location='/admin/menus/saveoredit/'+e.id;
                            .Filterable(true)
                             .Encoded(false)
                              .Sanitized(false)
-                       .RenderValueAs(d => GridDetailLink(d, controllerName) );
+                       .RenderValueAs(d => GridDetailLink(d, controllerName));
 
             columns.Add(o => o.Position).Titled(AdminResource.Position)
               .Encoded(false).
@@ -135,35 +135,35 @@ window.location='/admin/menus/saveoredit/'+e.id;
 @helper GridDetailLink(Menu d, String controllerName)
 {
 
-<b>
-    @{
+    <b>
+        @{
 
-        var p = d.MenuLink.Split("_".ToCharArray());
-        var parts = p.First().Split("-".ToCharArray());
-        var action = parts[1];
-        var controller = parts[0];
-        String mid = "";
-        mid = p.Last();
-        if (d.LinkIsActive && !String.IsNullOrEmpty(d.Link))
-        {
-            <a class="btn btn-link" target = "_blank" href="@d.Link">@d.Name</a>
-        }
-        else  if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-        {
-            @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
-        }
-        else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-            && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
-        {
-            @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
-        }
-        else
-        {
-            @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
-        }
+            var p = d.MenuLink.Split("_".ToCharArray());
+            var parts = p.First().Split("-".ToCharArray());
+            var action = parts[1];
+            var controller = parts[0];
+            String mid = "";
+            mid = p.Last();
+            if (d.LinkIsActive && !String.IsNullOrEmpty(d.Link))
+            {
+                <a class="btn btn-link" target="_blank" href="@d.Link">@d.Name</a>
+            }
+            else if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+            {
+                @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+            }
+            else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
+            }
+            else
+            {
+                @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
+            }
 
-    }
-</b>
+        }
+    </b>
 
 }
 @helper GridToolsColumn(Menu d, List<Menu> menuTreeNodeList, String controllerName)
@@ -181,16 +181,16 @@ window.location='/admin/menus/saveoredit/'+e.id;
         @if (UserRoleHelper.IsDeletedEnableRoles())
         {
 
-         if (menuTreeNodeList.Any(r => r.Id == d.Id))
+            if (menuTreeNodeList.Any(r => r.Id == d.Id))
             {
-    <span>
+                <span>
 
-       @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-        { "ItemId", d.Id },
-        {"controllerName",controllerName},
-        { "DeleteIcon", "gridBtn btn-xs btn btn-danger glyphicon  glyphicon-remove-circle" },
-        { "ItemDescription", d.Name } })
-    </span>
+                    @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+                     { "ItemId", d.Id },
+                     {"controllerName",controllerName},
+                     { "DeleteIcon", "gridBtn btn-xs btn btn-danger glyphicon  glyphicon-remove-circle" },
+                     { "ItemDescription", d.Name } })
+                </span>
             }
             else
             {

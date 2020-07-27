@@ -309,7 +309,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-        
+
         [HttpPost]
         public async Task<JsonResult> ChangeProductGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
@@ -376,20 +376,20 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 var tags = TagCategoryService.GetTagsByTagType(language);
-            if (tags.IsNullOrEmpty())
-            {
-                return Json("", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                tags = EntityFilterHelper.FilterTagCategories(tags);
-                var productTags = ProductService.GetProductTagsByProductId(productId).Select(r => r.TagId).ToList();
-                var tempData = new TempDataDictionary();
-                tempData["selectedTags"] = productTags;
-                var html = this.RenderPartialToString(
-                            @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
-                            new ViewDataDictionary(tags), tempData);
-                return Json(html, JsonRequestBehavior.AllowGet);
+                if (tags.IsNullOrEmpty())
+                {
+                    return Json("", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    tags = EntityFilterHelper.FilterTagCategories(tags);
+                    var productTags = ProductService.GetProductTagsByProductId(productId).Select(r => r.TagId).ToList();
+                    var tempData = new TempDataDictionary();
+                    tempData["selectedTags"] = productTags;
+                    var html = this.RenderPartialToString(
+                                @"~/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
+                                new ViewDataDictionary(tags), tempData);
+                    return Json(html, JsonRequestBehavior.AllowGet);
                 }
             }).ConfigureAwait(true);
         }
@@ -415,7 +415,6 @@ namespace EImece.Areas.Admin.Controllers
                                 new ViewDataDictionary(tags), tempData);
                     return Json(html, JsonRequestBehavior.AllowGet);
                 }
-                
             }).ConfigureAwait(true);
         }
 

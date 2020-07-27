@@ -8,8 +8,8 @@
  * Copyright (c) 2012-2014 Alexander Brovikov
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  */
-(function($) {
-    $.fn.appear = function(fn, options) {
+(function ($) {
+    $.fn.appear = function (fn, options) {
         var settings = $.extend({
             //arbitrary data to pass to fn
             data: undefined,
@@ -22,7 +22,7 @@
             accY: 0
         }, options);
 
-        return this.each(function() {
+        return this.each(function () {
             var t = $(this);
 
             //whether the element is currently visible
@@ -37,7 +37,7 @@
             var w = $(window);
 
             //fires the appear event when appropriate
-            var check = function() {
+            var check = function () {
                 //is the element hidden?
                 if (!t.is(':visible')) {
                     //it became hidden
@@ -72,7 +72,7 @@
             };
 
             //create a modified fn with some additional logic
-            var modifiedFn = function() {
+            var modifiedFn = function () {
                 //mark the element as visible
                 t.appeared = true;
 
@@ -109,13 +109,13 @@
         timeout: null,
 
         //process the queue
-        checkAll: function() {
+        checkAll: function () {
             var length = $.fn.appear.checks.length;
             if (length > 0) while (length--) ($.fn.appear.checks[length])();
         },
 
         //check the queue asynchronously
-        run: function() {
+        run: function () {
             if ($.fn.appear.timeout) clearTimeout($.fn.appear.timeout);
             $.fn.appear.timeout = setTimeout($.fn.appear.checkAll, 20);
         }
@@ -124,14 +124,14 @@
     //run checks when these methods are called
     $.each(['append', 'prepend', 'after', 'before', 'attr',
         'removeAttr', 'addClass', 'removeClass', 'toggleClass',
-        'remove', 'css', 'show', 'hide'], function(i, n) {
-        var old = $.fn[n];
-        if (old) {
-            $.fn[n] = function() {
-                var r = old.apply(this, arguments);
-                $.fn.appear.run();
-                return r;
+        'remove', 'css', 'show', 'hide'], function (i, n) {
+            var old = $.fn[n];
+            if (old) {
+                $.fn[n] = function () {
+                    var r = old.apply(this, arguments);
+                    $.fn.appear.run();
+                    return r;
+                }
             }
-        }
-    });
+        });
 })(jQuery);

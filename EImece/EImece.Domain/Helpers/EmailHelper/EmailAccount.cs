@@ -66,6 +66,5 @@ namespace EImece.Domain.Helpers.EmailHelper
                     + ", Username=" + Username + ", Password=" + Password + ", EnableSsl=" + EnableSsl
                     + ", UseDefaultCredentials=" + UseDefaultCredentials + "]";
         }
-
     }
 }

@@ -5,8 +5,6 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -26,24 +24,9 @@ namespace EImece.Domain.Services
             return OrderRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         }
 
-        public List<Order> GetOrdersUserId(string userId)
+        public List<Order> GetOrdersUserId(string userId, string search = "")
         {
-            return OrderRepository.FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-        }
-
-        public List<Order> GetOrdersUserId(string userId, string search)
-        {
-            if (String.IsNullOrEmpty(search))
-            {
-                return GetOrdersUserId(userId);
-            }
-            else
-            {
-                return OrderRepository.FindBy(r =>
-                r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)
-                &&  r.OrderGuid.Equals(search, StringComparison.InvariantCultureIgnoreCase)
-                ).ToList();
-            }
+            return OrderRepository.GetOrdersUserId(userId, search);
         }
     }
 }

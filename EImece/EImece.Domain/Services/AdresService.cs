@@ -11,9 +11,10 @@ namespace EImece.Domain.Services
     {
         public AdresService()
         {
-
         }
+
         private ICacheProvider _memoryCacheProvider { get; set; }
+
         [Inject]
         public ICacheProvider MemoryCacheProvider
         {
@@ -27,16 +28,17 @@ namespace EImece.Domain.Services
                 _memoryCacheProvider = value;
             }
         }
+
         public TurkiyeAdres GetTurkiyeAdres()
         {
             var cacheKey = String.Format("GetTurkiyeAdres");
-            TurkiyeAdres turkiyeAdres =null;
-           if (!MemoryCacheProvider.Get(cacheKey, out turkiyeAdres))
+            TurkiyeAdres turkiyeAdres = null;
+            if (!MemoryCacheProvider.Get(cacheKey, out turkiyeAdres))
             {
                 turkiyeAdres = GetTurkiyeAdres(cacheKey);
             }
-            
-           if(turkiyeAdres == null)
+
+            if (turkiyeAdres == null)
             {
                 turkiyeAdres = GetTurkiyeAdres(cacheKey);
             }
@@ -57,6 +59,7 @@ namespace EImece.Domain.Services
         {
             return JsonConvert.DeserializeObject<IlceRoot>(read(@"~\App_Data\il-ilce-mahalle\ilceler.json"));
         }
+
         public IlRoot GetIlRoot()
         {
             return JsonConvert.DeserializeObject<IlRoot>(read(@"~\App_Data\il-ilce-mahalle\iller.json"));

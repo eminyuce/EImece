@@ -68,6 +68,5 @@ namespace EImece.Domain.Repositories
             var result = menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             return result;
         }
-      
     }
 }

@@ -1,33 +1,16 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
+using Ninject;
 using NLog;
 using Resources;
 using System;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Web.Mvc;
-using Ninject;
-using EImece.Domain;
-using EImece.Domain.Caching;
-using EImece.Domain.DbContext;
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Services.IServices;
-using EImece.Models;
-using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -105,7 +88,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(faq);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
@@ -129,15 +111,16 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(Faq);
         }
+
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
             return await Task.Run(() =>
             {
                 return DownloadFile();
-
             }).ConfigureAwait(true);
         }
+
         private ActionResult DownloadFile()
         {
             String search = "";

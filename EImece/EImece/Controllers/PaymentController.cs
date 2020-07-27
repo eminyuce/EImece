@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -9,17 +8,13 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Models;
-using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using Ninject;
-using Resources;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -45,7 +40,6 @@ namespace EImece.Controllers
 
         public ApplicationUserManager UserManager { get; set; }
 
-
         [Inject]
         public IEmailSender EmailSender { get; set; }
 
@@ -53,10 +47,10 @@ namespace EImece.Controllers
 
         public ICustomerService CustomerService { get; set; }
 
-    public PaymentController(IyzicoService iyzicoService,
-        ApplicationUserManager userManager,
-        ApplicationSignInManager signInManager,
-         AddressService addressService, CustomerService customerService)
+        public PaymentController(IyzicoService iyzicoService,
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+             AddressService addressService, CustomerService customerService)
         {
             this.iyzicoService = iyzicoService;
             UserManager = userManager;
@@ -69,6 +63,7 @@ namespace EImece.Controllers
         {
             return View();
         }
+
         [ChildActionOnly]
         public ActionResult HomePageShoppingCart()
         {
@@ -99,7 +94,7 @@ namespace EImece.Controllers
                         new ViewDataDictionary(shoppingCart), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
-       
+
         [NoCache]
         public ActionResult GetShoppingCartLinks()
         {
@@ -136,36 +131,35 @@ namespace EImece.Controllers
             item.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCart);
             item.OrderGuid = shoppingCart.OrderGuid;
             ShoppingCartService.SaveOrEditShoppingCart(item);
-      }
+        }
 
-       
         private ShoppingCartSession GetShoppingCartFromDataSource()
         {
-            HttpCookie orderGuid =  Request.Cookies[OrderGuidCookieKey];
+            HttpCookie orderGuid = Request.Cookies[OrderGuidCookieKey];
             ShoppingCartSession result = null;
-            var item = orderGuid !=null ?  ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid.Value) : null;
+            var item = orderGuid != null ? ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid.Value) : null;
             if (item == null)
             {
-                result =  ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GeneralHelper.GetIpAddress());
-                if (Request.IsAuthenticated)
-                {
-                    var user = UserManager.FindByName(User.Identity.GetUserName());
-                    if (user != null)
-                    {
-                        result.Customer = CustomerService.GetUserId(user.Id);
-                        if (result.Customer != null)
-                        {
-                            result.ShippingAddress = result.ShippingAddress ;
-                        }
-                    }
-                }
-               
+                result = ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GeneralHelper.GetIpAddress());
+                GetCustomerIfAuthenticated(result);
             }
             else
             {
                 result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
             }
             return result;
+        }
+
+        private void GetCustomerIfAuthenticated(ShoppingCartSession result)
+        {
+            if (Request.IsAuthenticated)
+            {
+                var user = UserManager.FindByName(User.Identity.GetUserName());
+                if (user != null)
+                {
+                    result.Customer = CustomerService.GetUserId(user.Id);
+                }
+            }
         }
 
         private ShoppingCartSession GetShoppingCart()
@@ -178,12 +172,16 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = GetShoppingCart();
             return View(shoppingCart);
         }
-       
+
         public ActionResult CheckoutBillingDetails()
         {
             if (Request.IsAuthenticated)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
+                if (shoppingCart.Customer.IsEmpty())
+                {
+                    GetCustomerIfAuthenticated(shoppingCart);
+                }
                 return View(shoppingCart);
             }
             else
@@ -192,6 +190,7 @@ namespace EImece.Controllers
                     new { returnUrl = Url.Action("CheckoutPaymentOrderReview", "Payment") });
             }
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SaveCustomer(Customer customer)
@@ -202,14 +201,12 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 if (customer.IsSameAsShippingAddress)
                 {
-                
                 }
 
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
                 shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
-
 
                 SaveShoppingCart(shoppingCart);
                 return RedirectToAction("CheckoutDelivery");
@@ -219,12 +216,15 @@ namespace EImece.Controllers
                 return RedirectToAction("CheckoutBillingDetails");
             }
         }
+
         private Domain.Entities.Address SetAddress(Customer customer, Domain.Entities.Address address)
         {
-            if(address == null)
+            if (address == null)
             {
                 address = new Domain.Entities.Address();
             }
+            address.Street = customer.Street;
+            address.District = customer.District;
             address.City = customer.City;
             address.Country = customer.Country;
             address.ZipCode = customer.ZipCode;
@@ -248,11 +248,13 @@ namespace EImece.Controllers
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
             return View(shoppingCart);
-        }   
+        }
+
         public ActionResult RenderPrice(double price)
         {
             return Json(new { status = SUCCESS, price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult UpdateQuantity(String shoppingItemId, int quantity)
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -268,23 +270,22 @@ namespace EImece.Controllers
                 return Json(new { status = FAILED, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
         }
-      
+
         public ActionResult RemoveCart(String shoppingItemId)
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
-            var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId,StringComparison.InvariantCultureIgnoreCase));
+            var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId, StringComparison.InvariantCultureIgnoreCase));
             if (item != null)
             {
                 shoppingCart.ShoppingCartItems.Remove(item);
                 SaveShoppingCart(shoppingCart);
-                return Json(new { status = SUCCESS, shoppingItemId, TotalItemCount= shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { status =FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
-     
 
         public ActionResult PlaceOrder()
         {
@@ -317,8 +318,6 @@ namespace EImece.Controllers
                     var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(shoppingCart);
                     EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), shoppingCart, emailTemplate);
                 });
-             
-
             }
             return View(checkoutForm);
         }

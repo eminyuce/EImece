@@ -118,7 +118,7 @@ namespace EImece.Domain.Services
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
-            result.Product =  product;
+            result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
             if (product.ProductCategory.TemplateId.HasValue)
             {
@@ -319,7 +319,7 @@ namespace EImece.Domain.Services
 
         public void MoveProductsInTrees(int newCategoryId, String products)
         {
-            if(!String.IsNullOrEmpty(products))
+            if (!String.IsNullOrEmpty(products))
             {
                 var productIdList = products.Split(',');
                 foreach (var id in productIdList)

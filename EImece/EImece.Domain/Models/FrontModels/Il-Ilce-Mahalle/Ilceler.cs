@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle
 {
@@ -17,10 +13,9 @@ namespace EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle
     {
         public List<Ilce> ilce { get; set; }
     }
+
     public class IlceRoot
     {
         public Ilceler ilceler { get; set; }
-
     }
-
 }

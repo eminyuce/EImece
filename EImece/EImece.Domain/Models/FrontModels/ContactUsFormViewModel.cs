@@ -38,6 +38,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public String OrderGuid { get; set; }
         public String Reasons { get; set; }
+
         public static ContactUsFormViewModel CreateContactUsFormViewModel(string contactFormType, int itemId, EImeceItemType itemType)
         {
             var result = new ContactUsFormViewModel();

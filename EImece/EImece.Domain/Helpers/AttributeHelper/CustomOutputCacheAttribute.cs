@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.AttributeHelper
 {
@@ -19,7 +18,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 base.OnActionExecuting(filterContext);
             }
         }
- 
+
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             var httpContext = filterContext.HttpContext;

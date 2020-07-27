@@ -620,10 +620,10 @@ DateTimeFilterWidget = (function ($) {
                             <option value="6" ' + (this.value.filterType == "6" ? "selected=\"selected\"" : "") + '>' + this.lang.filterSelectTypes.LessThan + '</option>\
                         </select>\
                     </div>' +
-                        (this.datePickerIncluded ?
-                            '<div class="grid-filter-datepicker"></div>'
-                            :
-                            '<div class="form-group">\
+            (this.datePickerIncluded ?
+                '<div class="grid-filter-datepicker"></div>'
+                :
+                '<div class="form-group">\
                                 <label>' + this.lang.filterValueLabel + '</label>\
                                 <input type="text" class="grid-filter-input form-control" value="' + this.value.filterValue + '" />\
                              </div>\

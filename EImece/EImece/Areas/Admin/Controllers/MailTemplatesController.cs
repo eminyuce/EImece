@@ -1,7 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.AdminModels;
 using Microsoft.AspNet.Identity;
 using NLog;
 using Resources;
@@ -112,15 +111,16 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(MailTemplate);
         }
+
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
             return await Task.Run(() =>
             {
                 return DownloadFile();
-
             }).ConfigureAwait(true);
         }
+
         private ActionResult DownloadFile()
         {
             String search = "";

@@ -11,19 +11,18 @@ namespace EImece.MyConsole
         private static String connectionString = @"";
 
         private static void Main(string[] args)
-        
- {
+
+        {
             for (int i = 0; i < 1000; i++)
             {
                 Console.WriteLine(GeneralHelper.RandomNumber(12).ToUpper());
-
             }
             Console.ReadLine();
-
         }
-        
-        private static void NewMethod33() { 
-        var filePath = @"D:\Projects\Temp\hubspot-contacts-everyone-2018-01-17\contacts.xlsx";
+
+        private static void NewMethod33()
+        {
+            var filePath = @"D:\Projects\Temp\hubspot-contacts-everyone-2018-01-17\contacts.xlsx";
             var dt = ExcelHelper.ExcelToDataTable(filePath, "contacts$");
             dt.TableName = "Atcom_Contact_201801_5";
             ExcelHelper.SaveTable(dt, @"data source=devsqlserver;Integrated Security=SSPI;Initial Catalog=TestEY");

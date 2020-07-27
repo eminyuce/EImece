@@ -61,7 +61,7 @@
                             callback(
                                 200,
                                 'OK',
-                                {text: xdr.responseText},
+                                { text: xdr.responseText },
                                 'Content-Type: ' + xdr.contentType
                             );
                         };

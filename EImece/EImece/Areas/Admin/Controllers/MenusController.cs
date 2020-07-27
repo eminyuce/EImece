@@ -21,6 +21,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         [HttpGet]
         public ActionResult Index(String search = "")
         {
@@ -78,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
 
                     menu.Lang = CurrentLanguage;
                     MenuService.SaveOrEditEntity(menu);
-                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText,StringComparison.InvariantCultureIgnoreCase))
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return ReturnTempUrl("Index");
                     }
@@ -92,7 +93,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
-            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText,StringComparison.InvariantCultureIgnoreCase))
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
@@ -126,14 +127,13 @@ namespace EImece.Areas.Admin.Controllers
             return View(menu);
         }
 
-       
-
         [HttpGet]
         public ActionResult GetMenus()
         {
             List<Menu> treelist = MenuService.BuildTree(null, CurrentLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
+
         [HttpGet]
         public ActionResult Media(int id)
         {
@@ -183,9 +183,9 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 return DownloadFile();
-
             }).ConfigureAwait(true);
         }
+
         private ActionResult DownloadFile()
         {
             String search = "";

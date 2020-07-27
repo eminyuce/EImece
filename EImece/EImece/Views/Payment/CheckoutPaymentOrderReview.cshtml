@@ -5,7 +5,7 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@model  ShoppingCartSession 
+@model  ShoppingCartSession
 
 @{
     ViewBag.Title = "CheckoutPaymentOrderReview";
@@ -33,19 +33,15 @@
 
     <div class="eight columns">
 
-
         <!-- Checkout Content -->
         <a href="@Url.Action("CheckoutBillingDetails")"><div class="checkout-section"><span>1</span> Billing Details <strong><i class="fa fa-edit"></i>@Resource.Edit</strong> </div></a>
         <div class="checkout-content">
             @Html.Partial("ShoppingCartTemplates/_AddressReview", Model)
         </div>
 
-
         <a href="@Url.Action("CheckoutDelivery")"><div class="checkout-section"><span>2</span> Delivery <strong><i class="fa fa-edit"></i>@Resource.Edit</strong> </div></a>
-   
 
         <a href="@Url.Action("PlaceOrder")" class="continue button color">@Resource.PlaceOrder</a>
-
     </div>
     <!-- Checkout Content / End -->
     <!-- Checkout Cart -->
@@ -53,6 +49,4 @@
         @Html.Partial("ShoppingCartTemplates/_ShoppingCartProducts", Model)
     </div>
     <!-- Checkout Cart / End -->
-
-
 </div>

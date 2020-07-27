@@ -38,8 +38,8 @@ namespace EImece.Domain.Models.AdminModels
 
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GoogleAnalyticsTrackingScript))]
-        public string GoogleAnalyticsTrackingScript { get; set; } 
-        
+        public string GoogleAnalyticsTrackingScript { get; set; }
+
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WhatsAppCommunicationScript))]
         public string WhatsAppCommunicationScript { get; set; }

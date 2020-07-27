@@ -12,10 +12,9 @@
         var webSiteLogo = Model.FirstOrDefault();
         var companyName = Model.Skip(1).FirstOrDefault();
         string companyNametxt = companyName.SettingValue;
-      
 
-            <a href="/">
-                <img alt="@companyNametxt" src="/images/logo.jpg" />
-            </a>
+        <a href="/">
+            <img alt="@companyNametxt" src="/images/logo.jpg" />
+        </a>
     }
 }

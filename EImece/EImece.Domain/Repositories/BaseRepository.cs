@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 namespace EImece.Domain.Repositories
 {
     public abstract class BaseRepository<T> : EntityRepository<T, int>
-       where T : class, IEntity<int>    
+       where T : class, IEntity<int>
     {
         protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
@@ -35,6 +35,7 @@ namespace EImece.Domain.Repositories
             //((EImeceContext)DbContext).Configuration.ProxyCreationEnabled = false;
             //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
         }
+
         ~BaseRepository()
         {
             Dispose(false);
@@ -53,6 +54,7 @@ namespace EImece.Domain.Repositories
                 }
             }
         }
+
         public void Dispose()
         {
             Dispose(true);
@@ -106,17 +108,15 @@ namespace EImece.Domain.Repositories
                 string errorMessage = "";
                 foreach (var errors in ex.EntityValidationErrors)
                 {
-                  
                     foreach (var validationError in errors.ValidationErrors)
                     {
-                        // get the error message 
-                          errorMessage += validationError.ErrorMessage;
+                        // get the error message
+                        errorMessage += validationError.ErrorMessage;
                     }
                 }
                 BaseLogger.Error(errorMessage);
                 throw new Exception(errorMessage);
             }
-          
         }
 
         public virtual int DeleteItem(T item)
@@ -177,6 +177,7 @@ namespace EImece.Domain.Repositories
         {
             return new List<Expression<Func<T, object>>>();
         }
+
         public List<Expression<Func<T, bool>>> GetWherePropertyExpressionList()
         {
             return new List<Expression<Func<T, bool>>>();

@@ -6,10 +6,10 @@
 @using EImece.Domain;
 @using Resources;
 @model  ShoppingCartSession
-@{ 
+@{
     ShoppingCartSession shoppingCart = Model;
 }
- 
+
 @if (shoppingCart != null && !shoppingCart.ShoppingCartItems.IsNullOrEmpty())
 {
     var products = shoppingCart.ShoppingCartItems;
@@ -36,7 +36,7 @@
 
                             @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                             {
-                             <a href="@Url.Action("Detail","Products",new { id=product.Id })">  
+                             <a href="@Url.Action("Detail","Products",new { id=product.Id })">
                         <img class="rsImg" src="@product.CroppedImageUrl" alt="" /></a>
                             }
 
@@ -44,7 +44,6 @@
                         <span>@item.quantity x @product.Price.CurrencySign()</span>
                         <div class="clearfix"></div>
                     </li>
-                 
                 </ul>
                 }
                 <div class="cart-buttons button">
@@ -52,12 +51,8 @@
                     <a href="@Url.Action("CheckoutBillingDetails","Payment")" class="checkout"><span data-hover="Checkout">Checkout</span></a>
                 </div>
                 <div class="clearfix">
-
                 </div>
             </div>
-
         </div>
-   
+
 }
-
-

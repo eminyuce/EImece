@@ -19,7 +19,7 @@ $(document).ready(function () {
     });
     function bindCKEDITOR() {
         $('[data-ckeditor-field]').each(function () {
-           // CKEDITOR.replace(this);
+            // CKEDITOR.replace(this);
             CKEDITOR.replace(this, {
                 //uiColor: '#14B8C4',
                 //toolbar: [
@@ -387,7 +387,7 @@ function searchAutoComplete() {
             //  console.log(jsonRequest);
             if (request.term.length > 2) {
                 ajaxMethodCall(jsonRequest, "/admin/Ajax/SearchAutoComplete", function (data) {
-                    for (var i = 0; i < data.length ; i++) {
+                    for (var i = 0; i < data.length; i++) {
                         items[i] = { text: data[i], value: data[i] };
                     }
                     //  console.log(items);

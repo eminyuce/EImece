@@ -24,7 +24,7 @@
     }
     @{
         String seoId = (String)ViewBag.SeoId;
-     
+
     }
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
@@ -52,7 +52,7 @@
         </div>
 
         <!-- Header
-    ================================================== -->
+        ================================================== -->
         <div class="container">
 
             <!-- Logo -->
@@ -74,110 +74,100 @@
                     <span id="ShoppingCartsDetail"></span>
                 </div>
             </div>
-                <!-- Search -->
-                <nav class="top-search">
-                    @Html.Partial("_SearchProductForm")
-                </nav>
-
-
-            </div>
-
+            <!-- Search -->
+            <nav class="top-search">
+                @Html.Partial("_SearchProductForm")
+            </nav>
         </div>
-
-     
-
-        <div class="container">
-            <div class="sixteen columns">
-                <nav id="navigation">
-                    @*@Html.Action("ProductTree", "Home")*@
-                    @{Html.RenderAction("ProductTree", "Home"); }
-                </nav>
-            </div>
-        </div>
-
-        <div>
-            @RenderBody()
-        </div>
-        <footer>
-            <div id="footer">
-                @Html.Action("Footer", "Home")
-                </ div>
-                < div id="footer-bottom">
-                <!-- Container -->
-                <div class="container">
-                    <div class="eight columns">Design by<a href="http:\\www.erayweb.com"> erayweb</a> All Rights Reserved ©</div>
-                </div>
-            </div>
-        </footer>
     </div>
-        @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
 
-        <!-- Java Script
+    <div class="container">
+        <div class="sixteen columns">
+            <nav id="navigation">
+                @*@Html.Action("ProductTree", "Home")*@
+                @{Html.RenderAction("ProductTree", "Home"); }
+            </nav>
+        </div>
+    </div>
+
+    <div>
+        @RenderBody()
+    </div>
+    <footer>
+        <div id="footer">
+            @Html.Action("Footer", "Home")
+            </ div>
+            < div id="footer-bottom">
+            <!-- Container -->
+            <div class="container">
+                <div class="eight columns">Design by<a href="http:\\www.erayweb.com"> erayweb</a> All Rights Reserved ©</div>
+            </div>
+        </div>
+    </footer>
+    </div>
+    @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
+
+    <!-- Java Script
     ================================================== -->
-        @*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script*@
+    @*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script*@
 
-        @*@Scripts.Render("~/bundles/jquery")*@
-        <script src="~/Scripts/trizzy/scripts/jquery-2.1.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    @*@Scripts.Render("~/bundles/jquery")*@
+    <script src="~/Scripts/trizzy/scripts/jquery-2.1.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
-        <script src="~/Scripts/eimece.js?v=2"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
-        <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.pureparallax.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.pricefilter.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.selectric.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.royalslider.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/SelectBox.js"></script>
-        @*<script src="~/Scripts/trizzy/scripts/modernizr.custom.js"></script>*@
-        <script src="~/Scripts/trizzy/scripts/waypoints.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.flexslider-min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.counterup.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.tooltips.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/jquery.isotope.min.js"></script>
-        <script src="~/Scripts/trizzy/scripts/puregrid.js"></script>
-        <script src="~/Scripts/trizzy/scripts/stacktable.js"></script>
-        <script src="~/Scripts/trizzy/scripts/custom.js"></script>
-        <script src="~/Scripts/cookie-consent.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>
-        @RenderSection("scripts", required: false)
+    <script src="~/Scripts/eimece.js?v=2"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.jpanelmenu.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.plugins.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.revolution.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.themepunch.showbizpro.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.magnific-popup.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/hoverIntent.js"></script>
+    <script src="~/Scripts/trizzy/scripts/superfish.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.pureparallax.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.pricefilter.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.selectric.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.royalslider.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/SelectBox.js"></script>
+    @*<script src="~/Scripts/trizzy/scripts/modernizr.custom.js"></script>*@
+    <script src="~/Scripts/trizzy/scripts/waypoints.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.flexslider-min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.counterup.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.tooltips.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/jquery.isotope.min.js"></script>
+    <script src="~/Scripts/trizzy/scripts/puregrid.js"></script>
+    <script src="~/Scripts/trizzy/scripts/stacktable.js"></script>
+    <script src="~/Scripts/trizzy/scripts/custom.js"></script>
+    <script src="~/Scripts/cookie-consent.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>
+    @RenderSection("scripts", required: false)
 
-        <script src="~/Scripts/cookie-consent.js?v=1"></script>
-        <script>
-            CookieConsent();
-            GetShoppingCartLinks();
+    <script src="~/Scripts/cookie-consent.js?v=1"></script>
+    <script>
+        CookieConsent();
+        GetShoppingCartLinks();
 
-          
-          
+        $(document).ready(function () {
 
+            $("#AddToCart").click(function () {
+                var orderGuid = getCookie("orderGuid");
+                if (orderGuid != "") {
 
-            $(document).ready(function () {
-               
-                $("#AddToCart").click(function () {
-                    var orderGuid = getCookie("orderGuid");
-                    if (orderGuid != "") {
-                        
-                    } else {
-                        orderGuid = createUUID();
-                        setCookie("orderGuid", orderGuid, 365);
-                    }
-                    var postData = JSON.stringify({
-                        productId: $("#productId").val(),
-                        quantity: $("#quantity").val(),
-                        orderGuid: orderGuid
-                    });
-                    console.log(postData);
-                    ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-                        GetShoppingCartLinks();
-                    });
+                } else {
+                    orderGuid = createUUID();
+                    setCookie("orderGuid", orderGuid, 365);
+                }
+                var postData = JSON.stringify({
+                    productId: $("#productId").val(),
+                    quantity: $("#quantity").val(),
+                    orderGuid: orderGuid
                 });
-
+                console.log(postData);
+                ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
+                    GetShoppingCartLinks();
+                });
             });
 
-        </script>
+        });
+    </script>
 </body>
 </html>

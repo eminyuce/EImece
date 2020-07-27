@@ -32,15 +32,14 @@
 <br />
 @foreach (var o in contents)
 {
-    <li class="accOrder">
-        <div class="orderHead orderTable">
+        <div style="border:1px solid black;padding:20px;" class="orderHead orderTable">
             <div class="row">
                 <div class="cell meta">
-                    <p class="split"><span class="label">Sipariş Tarihi :</span> 07/06/2020 </p>
-                    <p> <span class="label">Sipariş Kodu :</span> @o.OrderGuid <span class="orderNumber">205511813878</span> </p>
+                    <p class="split"><span class="label">Sipariş Tarihi :</span> @o.CreatedDate </p>
+                    <p> <span class="label">Sipariş Kodu :</span> @o.OrderGuid <span class="orderNumber">@o.OrderNumber</span> </p>
                 </div>
                 <div class="cell amount">
-                    <p> <span class="label split">Ödenen Tutar</span> <strong>129,00 TL</strong> </p>
+                    <p> <span class="label split">Ödenen Tutar</span> <strong>@o.Price</strong> </p>
                 </div>
                 <div class="cell address">
                     <span class="label split">Adres</span>
@@ -48,7 +47,9 @@
                         <span class="btnMenu">Tuzla</span>
                         <div class="hOpenMenu">
                             <div class="hOpenMenuContent">
-                                <p>Aydınlı Mh. AYDINLI MAH. DOĞAKENT SİTESİ AKASYA BLOK NO: 20 İÇ KAPI NO: 15 TUZLA / İSTANBULYABANGÜLÜ SK 34953 Tuzla İstanbul</p>
+                                <p>
+                                    @o.ShippingAddress.Description
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -57,14 +58,6 @@
             </div>
         </div>
         <div class="orderBody">
-
         </div>
-    </li>
-    
-
-
-
-
-
 
 }

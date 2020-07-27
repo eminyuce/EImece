@@ -3,7 +3,6 @@
 
 namespace EImece.App_Start
 {
-    using Domain;
     using Domain.ApiRepositories;
     using Domain.Caching;
     using Domain.DbContext;
@@ -13,14 +12,12 @@ namespace EImece.App_Start
     using Domain.Helpers.EmailHelper;
     using Domain.Repositories;
     using Domain.Repositories.IRepositories;
-    using Domain.Scheduler;
     using Domain.Services;
     using Domain.Services.IServices;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
-    using Models;
     using Ninject;
     using Ninject.Web.Common;
     using NLog;
@@ -93,7 +90,6 @@ namespace EImece.App_Start
 
             BindServices(kernel);
             BindRepositories(kernel);
-
 
             //        BindByReflection(kernel, typeof(IBaseEntityService<>), "Service");
             //      BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
@@ -207,7 +203,6 @@ namespace EImece.App_Start
             kernel.Bind<IOrderRepository>().To<OrderRepository>().InRequestScope();
             kernel.Bind<IOrderProductRepository>().To<OrderProductRepository>().InRequestScope();
             kernel.Bind<IFaqRepository>().To<FaqRepository>().InRequestScope();
-
         }
 
         private static void BindByReflection(IKernel kernel, Type typeOfInterface, string typeofText)

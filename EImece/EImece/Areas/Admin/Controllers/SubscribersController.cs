@@ -24,9 +24,9 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 return DownloadFile();
-
             }).ConfigureAwait(true);
         }
+
         private ActionResult DownloadFile()
         {
             var subscibers = SubscriberService.GetAll().ToList();

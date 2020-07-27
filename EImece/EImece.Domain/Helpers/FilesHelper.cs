@@ -65,6 +65,7 @@ namespace EImece.Domain.Helpers
             //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
             Init(Constants.DeleteURL, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
+
         public void InitFilesMediaFolder(String deleteUrl)
         {
             //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
@@ -74,7 +75,8 @@ namespace EImece.Domain.Helpers
             //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
             Init(deleteUrl, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
-        private void Init(string deleteURL, string deleteType, string storageRoot, string urlBase, 
+
+        private void Init(string deleteURL, string deleteType, string storageRoot, string urlBase,
             string tempPath, string serverMapPath)
         {
             this.DeleteURL = deleteURL;
@@ -512,7 +514,6 @@ namespace EImece.Domain.Helpers
 
         public Tuple<string, string, string> GetFileNames2(String fileName)
         {
-
             String fullPath = Path.Combine(StorageRoot, fileName);
             System.Diagnostics.Debug.WriteLine(fullPath);
             System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
@@ -521,7 +522,6 @@ namespace EImece.Domain.Helpers
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, fileName);
         }
-
 
         public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
         {

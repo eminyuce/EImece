@@ -5,14 +5,14 @@
 @using Resources;
 @{
     var menu = Model.Menu;
-    ViewBag.Title = string.Format("{0} {1}",Model.CompanyName.SettingValue, menu.GetSeoTitle());
-    ViewBag.Description =  menu.GetSeoDescription();
+    ViewBag.Title = string.Format("{0} {1}", Model.CompanyName.SettingValue, menu.GetSeoTitle());
+    ViewBag.Description = menu.GetSeoDescription();
     menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
     var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"     })
+    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
 }
 @Html.Partial(selectedPagePath, Model)

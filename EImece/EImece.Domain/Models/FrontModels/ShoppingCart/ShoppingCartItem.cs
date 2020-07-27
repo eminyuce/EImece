@@ -1,10 +1,5 @@
-﻿using EImece.Domain.Entities;
-using EImece.Domain.Models.FrontModels.ShoppingCart;
+﻿using EImece.Domain.Models.FrontModels.ShoppingCart;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -19,6 +14,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             return String.Format("quantity:%d product:%d", quantity, product.Id);
         }
+
         public double UnitPrice
         {
             get
@@ -26,6 +22,7 @@ namespace EImece.Domain.Models.FrontModels
                 return product.Price;
             }
         }
+
         public double TotalPrice
         {
             get
@@ -33,6 +30,7 @@ namespace EImece.Domain.Models.FrontModels
                 return product.Price * quantity;
             }
         }
+
         public string PName
         {
             get

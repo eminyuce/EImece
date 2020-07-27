@@ -81,10 +81,10 @@
                         <option value="1" selected="selected">1</option>
                         @for (int i = 2; i < 31; i++)
                         {
-                            <option value="@i"  >@i</option>
+                            <option value="@i">@i</option>
                         }
                     </select>
-                    <a  id="AddToCart" class="button adc">Add to Cart</a>
+                    <a id="AddToCart" class="button adc">Add to Cart</a>
                     <div class="clearfix"></div>
 
                     <span class="product-price-discount">@String.Format("${0}", product.Price)<i>@String.Format("${0}", product.GetProductPrice())</i></span>

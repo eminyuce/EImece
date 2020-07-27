@@ -44,8 +44,7 @@ namespace EImece.Domain.Repositories
                 pcList = pcList.Where(r => r.IsActive == isActive);
             }
             pcList = pcList.Where(r => r.Lang == language);
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r=> isActived ? r.IsActive : true).Count() });
-
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count() });
 
             List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
@@ -153,6 +152,5 @@ namespace EImece.Domain.Repositories
             var result = items.ToList();
             return result;
         }
-      
     }
 }

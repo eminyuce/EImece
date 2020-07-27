@@ -226,7 +226,7 @@ namespace EImece.Domain.Services
             try
             {
                 var requestContext = HttpContext.Current.Request.RequestContext;
-           
+
                 var menus = MenuService.GetActiveBaseEntitiesFromCache(true, language);
 
                 foreach (var c in menus)

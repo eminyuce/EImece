@@ -32,15 +32,15 @@
 <h2>@AdminResource.MainPageImages</h2>
 <hr class="adminLine" />
 
-<div  class="row" style="padding:20px;">
+<div class="row" style="padding:20px;">
 
-        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-            {"controllerName",controllerName}
-                      ,{"StateTypes","State"}
-           ,{"orderingButton",true}
-           ,{"selectAll",true}
-           ,{"deleteAll",true}
-            ,{"SetStateOnOrOff",true}})
+    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+        {"controllerName",controllerName}
+                  ,{"StateTypes","State"}
+       ,{"orderingButton",true}
+       ,{"selectAll",true}
+       ,{"deleteAll",true}
+        ,{"SetStateOnOrOff",true}})
     <div class="panel panel-primary">
         @Html.Partial("pGridDropDown", baseList)
 
@@ -65,61 +65,61 @@
                                     @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
                                 </b>);
 
-                           columns.Add()
-                                  .Encoded(false)
-                                  .Sanitized(false)
-                                  .SetWidth(30)
-                                  .RenderValueAs(d =>
-                                @<b>
-                                    @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     " })
-                                </b>);
+                       columns.Add()
+                              .Encoded(false)
+                              .Sanitized(false)
+                              .SetWidth(30)
+                              .RenderValueAs(d =>
+        @<b>
+            @Html.ActionLink(gridDetailText, "Details", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm     " })
+        </b>);
 
-       if (UserRoleHelper.IsDeletedEnableRoles())
-       {
-           columns.Add()
+if (UserRoleHelper.IsDeletedEnableRoles())
+{
+columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-        { "ItemId", d.Id },
-        {"controllerName",controllerName},
-        { "DeleteText", gridDeleteText },
-        { "ItemDescription", d.Name } }));
+{ "ItemId", d.Id },
+{"controllerName",controllerName},
+{ "DeleteText", gridDeleteText },
+{ "ItemDescription", d.Name } }));
 
-       }
-       columns.Add(c => c.Name)
-                 .Titled(AdminResource.Name)
-              .Filterable(true);
+}
+columns.Add(c => c.Name)
+.Titled(AdminResource.Name)
+.Filterable(true);
 
-        columns.Add(o => o.Position).Titled(AdminResource.Position)
-          .Encoded(false).
-               Sanitized(false).
-               SetWidth(10).
-               RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+columns.Add(o => o.Position).Titled(AdminResource.Position)
+.Encoded(false).
+Sanitized(false).
+SetWidth(10).
+RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-       columns.Add(o => o.IsActive)
-                  .Titled(AdminResource.IsActive)
-              .Sortable(true)
-              .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-               Sanitized(false)
-              .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                                o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+columns.Add(o => o.IsActive)
+.Titled(AdminResource.IsActive)
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
-       columns.Add(o => o.UpdatedDate)
-                  .Titled(AdminResource.UpdatedDate)
-              .Sortable(true)
-              .Css("gridDateClass")
-              .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
-              .SortInitialDirection(GridSortDirection.Descending);
+columns.Add(o => o.UpdatedDate)
+.Titled(AdminResource.UpdatedDate)
+.Sortable(true)
+.Css("gridDateClass")
+.RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
+.SortInitialDirection(GridSortDirection.Descending);
 
-       columns.Add()
-           .Titled(AdminResource.Images)
-       .Encoded(false)
-       .Sanitized(false)
+columns.Add()
+.Titled(AdminResource.Images)
+.Encoded(false)
+.Sanitized(false)
 
-       .SetWidth(30)
-       .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+.SetWidth(30)
+.RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-   }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
     </div>
-    </div>
+</div>

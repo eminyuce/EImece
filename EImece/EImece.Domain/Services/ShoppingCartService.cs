@@ -1,15 +1,13 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Model;
-using Ninject;
-using NLog;
-using RazorEngine.Compilation.ImpromptuInterface;
-using System;
 using Microsoft.AspNet.Identity;
+using NLog;
+using System;
 using System.Web;
-using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Services
 {
@@ -29,7 +27,7 @@ namespace EImece.Domain.Services
 
         public ApplicationUserManager UserManager { get; set; }
 
-        public ShoppingCartService(ApplicationUserManager userManager, 
+        public ShoppingCartService(ApplicationUserManager userManager,
             IShoppingCartRepository repository,
             IOrderService orderService,
             ICustomerService customerService,
@@ -47,7 +45,7 @@ namespace EImece.Domain.Services
         public void SaveOrEditShoppingCart(ShoppingCart item)
         {
             var shoppingCart = ShoppingCartRepository.GetShoppingCartByOrderGuid(item.OrderGuid);
-            if(shoppingCart == null)
+            if (shoppingCart == null)
             {
                 shoppingCart = item;
             }
@@ -62,6 +60,7 @@ namespace EImece.Domain.Services
         {
             return ShoppingCartRepository.GetShoppingCartByOrderGuid(orderGuid);
         }
+
         public void DeleteByOrderGuid(string orderGuid)
         {
             ShoppingCartRepository.DeleteByWhereCondition(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase));
@@ -70,8 +69,8 @@ namespace EImece.Domain.Services
         public void SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
         {
             var userName = HttpContext.Current.User.Identity.GetUserName();
-            var user =  UserManager.FindByName(userName);
-            if(user == null)
+            var user = UserManager.FindByName(userName);
+            if (user == null)
             {
                 throw new ArgumentException("User cannot be null " + userName);
             }
@@ -88,11 +87,11 @@ namespace EImece.Domain.Services
                 billingAddressId = billingAddress.Id;
             }
             CustomerService.SaveShippingAddress(user.Id);
-            Order savedOrder = SaveOrder(user.Id,shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
+            Order savedOrder = SaveOrder(user.Id, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
             SaveOrderProduct(shoppingCart, savedOrder);
-
         }
-        private Order SaveOrder(String userId,ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
+
+        private Order SaveOrder(String userId, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
             int shippingAddressId,
            int billingAddressId)
         {
@@ -148,7 +147,6 @@ namespace EImece.Domain.Services
         {
             foreach (var shoppingCartItem in shoppingCart.ShoppingCartItems)
             {
-
                 OrderProductService.SaveOrEditEntity(new OrderProduct()
                 {
                     OrderId = savedOrder.Id,
@@ -156,9 +154,7 @@ namespace EImece.Domain.Services
                     Quantity = shoppingCartItem.quantity,
                     TotalPrice = shoppingCartItem.TotalPrice
                 });
-
             }
         }
-
     }
 }

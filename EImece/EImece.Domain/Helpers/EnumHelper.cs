@@ -38,21 +38,20 @@ namespace EImece.Domain.Helpers
 
         public static int GetEnumFromDescription(string description, Type enumType)
         {
-            if(enumType == null)
+            if (enumType == null)
             {
                 throw new ArgumentException();
             }
 
             foreach (var field in enumType.GetFields())
             {
-              
-                    DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-                    if (attribute == null)
-                        continue;
-                    if (string.Equals(attribute.Description, description,StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return (int)field.GetValue(null);
-                    }
+                DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                if (attribute == null)
+                    continue;
+                if (string.Equals(attribute.Description, description, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return (int)field.GetValue(null);
+                }
             }
             return 0;
         }
@@ -81,16 +80,15 @@ namespace EImece.Domain.Helpers
                     }).ToList();
         }
 
-
         public static List<SelectListItem> ToSelectList3(string cookieName)
         {
             var cultureCookie = HttpContext.Current.Request.Cookies[cookieName];
-            string selected = cultureCookie == null? "": cultureCookie.Values[Constants.ELanguage];
+            string selected = cultureCookie == null ? "" : cultureCookie.Values[Constants.ELanguage];
             if (String.IsNullOrEmpty(selected))
             {
                 selected = AppConfig.MainLanguage + "";
             }
-          
+
             var values = ConfigureLanguagesFromAppConfigs();
 
             return (from EImeceLanguage e in values
@@ -100,7 +98,6 @@ namespace EImece.Domain.Helpers
                         Text = e.GetDisplayValue(),
                         Value = ((int)e).ToStr()
                     }).ToList();
-
         }
 
         private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs()

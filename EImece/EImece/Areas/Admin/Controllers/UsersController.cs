@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Security;
 using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Admin.Controllers
@@ -34,15 +33,17 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             List<EditUserViewModel> model = GetUsers(search);
-            model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole,StringComparison.InvariantCultureIgnoreCase)).OrderBy(r=>r.FirstName).ToList();
+            model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
             return View(model);
         }
+
         public ActionResult Customers(String search = "")
         {
             List<EditUserViewModel> model = GetUsers(search);
             model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
             return View(model);
         }
+
         private List<EditUserViewModel> GetUsers(string search)
         {
             var users = ApplicationDbContext.Users.AsQueryable();
@@ -113,7 +114,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
             }
-        
+
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -155,7 +156,7 @@ namespace EImece.Areas.Admin.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-       
+
         public ActionResult GenerateNewPassword(string id = null)
         {
             var user = ApplicationDbContext.Users.First(u => u.Id == id);

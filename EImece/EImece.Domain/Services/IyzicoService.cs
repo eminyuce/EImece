@@ -1,32 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Models.FrontModels;
+﻿using EImece.Domain.Models.FrontModels;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 using Ninject;
+using System.Collections.Generic;
 using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
+        [Inject]
+        private CustomerService CustomerService;
 
         [Inject]
-        CustomerService CustomerService;
+        private ShoppingCartService ShoppingCartService;
 
         [Inject]
-        ShoppingCartService ShoppingCartService;
-
-        [Inject]
-        AddressService AddressService;
-
+        private AddressService AddressService;
 
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
         {
@@ -35,8 +27,9 @@ namespace EImece.Domain.Services
             data = model.Token;
             var request = new RetrieveCheckoutFormRequest();
             request.Token = data;
-            return CheckoutForm.Retrieve(request, options); 
+            return CheckoutForm.Retrieve(request, options);
         }
+
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart)
         {
             Options options = GetOptions();
@@ -99,7 +92,6 @@ namespace EImece.Domain.Services
                 shippingAddress.ZipCode = shoppingCart.ShippingAddress.ZipCode;
                 request.ShippingAddress = shippingAddress;
 
-
                 Address billingAddress = new Address();
                 billingAddress.ContactName = shoppingCart.Customer.FullName;
                 Entities.Address billingAddress1 = shoppingCart.BillingAddress;
@@ -130,11 +122,10 @@ namespace EImece.Domain.Services
             request.PaidPrice = price.ToString();
             request.BasketItems = basketItems;
 
-
             return CheckoutFormInitialize.Create(request, options); ;
         }
 
-        private  Options GetOptions()
+        private Options GetOptions()
         {
             Options options = new Options();
             options.ApiKey = AppConfig.IyzicoApiKey;

@@ -100,36 +100,35 @@
                .Encoded(false)
                 .Sanitized(false)
           .RenderValueAs(d =>
-                            @<div>
-                         
-            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
-                                
-            <div>
-                                    @GridToolsColumnAlt(d, controllerName)
+                                @<div>
+
+                                    @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+
+                                    <div>
+                                        @GridToolsColumnAlt(d, controllerName)
+                                    </div>
                                 </div>
-                            </div>
 
-       );
+     );
 
-       if (isProductPriceEnable.SettingValue.ToBool(true))
-       {
-           columns.Add(c => c.Price).
-        Titled(AdminResource.Price).
-        Sanitized(false).
-        Sortable(true).
-        RenderValueAs(o => o.Price.CurrencySign());
-               
+     if (isProductPriceEnable.SettingValue.ToBool(true))
+     {
+         columns.Add(c => c.Price).
+      Titled(AdminResource.Price).
+      Sanitized(false).
+      Sortable(true).
+      RenderValueAs(o => o.Price.CurrencySign());
 
-       }
+     }
 
-       columns.Add(c => c.ProductCode)
+     columns.Add(c => c.ProductCode)
 .Titled(AdminResource.ProductCode);
 
-        columns.Add(o => o.Position).Titled(AdminResource.Position)
+      columns.Add(o => o.Position).Titled(AdminResource.Position)
 .Encoded(false).
 Sanitized(false).
 Css("smallGridColumn").
-        @*SetWidth(10). *@
+@*SetWidth(10). *@
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)

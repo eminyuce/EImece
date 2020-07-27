@@ -24,12 +24,14 @@ namespace EImece.Domain.Helpers
     public class GeneralHelper
     {
         private static Random random = new Random();
+
         public static string RandomNumber(int length)
         {
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
         public static String GetIpAddress()
         {
             return (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
@@ -51,7 +53,7 @@ namespace EImece.Domain.Helpers
             bool RequireUppercase = true;
 
             string[] randomChars = new[] {
-            "ABCDEFGHJKLMNOPQRSTUVWXYZ",    // uppercase 
+            "ABCDEFGHJKLMNOPQRSTUVWXYZ",    // uppercase
             "abcdefghijkmnopqrstuvwxyz",    // lowercase
             "0123456789",                   // digits
             "."                        // non-alphanumeric
@@ -85,6 +87,7 @@ namespace EImece.Domain.Helpers
 
             return new string(chars.ToArray());
         }
+
         public static int FromBase64Int(string plainText)
         {
             return FromBase64String(plainText).ToInt();

@@ -26,8 +26,14 @@
     <link href="~/Content/deleteStyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    @Styles.Render("~/Content/admincss")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     @RenderSection("styles", required: false)
+    @Styles.Render("~/Content/themes/base/css")
     <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
     <script src="~/Scripts/codemirror/codemirror.js"></script>
     <script src="~/Scripts/codemirror/xml/xml.js"></script>
@@ -40,7 +46,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="~/Content/checkBoxStyle.css" rel="stylesheet" />
     <link href="~/Content/adminSite.css" rel="stylesheet" />
-
 </head>
 <body>
     <body class="fullscreen-container">
@@ -103,10 +108,7 @@
                     @RenderBody()
                 </div>
             </div>
-
         </div>
- 
     </body>
-
 </body>
 </html>

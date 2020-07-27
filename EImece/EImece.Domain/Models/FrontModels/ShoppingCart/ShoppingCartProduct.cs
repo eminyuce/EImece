@@ -1,10 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels.ShoppingCart
 {
@@ -20,8 +15,8 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
 
         public ShoppingCartProduct()
         {
-
         }
+
         public ShoppingCartProduct(Product product)
         {
             this.Id = product.Id;

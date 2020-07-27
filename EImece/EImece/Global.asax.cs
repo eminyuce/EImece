@@ -1,7 +1,6 @@
 ﻿using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Domain.Scheduler;
 using EImece.Domain.Services;
 using NLog;
 using System;
@@ -57,12 +56,10 @@ namespace EImece
                     cultureCookieValue,
                     Guid.NewGuid().ToString());
                 }
-                 
             }
 
             return base.GetVaryByCustomString(context, custom);
         }
-  
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {

@@ -58,7 +58,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
-        public Tuple<string,string> ForgotPasswordEmailBody(string email, string callbackUrl)
+        public Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ForgotPassword");
             if (emailTemplate == null)
@@ -84,10 +84,11 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
+
         public Tuple<string, string> OrderConfirmationEmail(ShoppingCartSession shoppingCart)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("OrderConfirmationEmail");
-            if(emailTemplate == null)
+            if (emailTemplate == null)
             {
                 return new Tuple<string, string>("", "");
             }
@@ -110,6 +111,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
+
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ContactUsAboutProductInfo");
@@ -182,7 +184,5 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             return result;
         }
-
-      
     }
 }

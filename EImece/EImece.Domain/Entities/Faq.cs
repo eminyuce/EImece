@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using GenericRepository;
-using Resources;
-using System;
+﻿using Resources;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -19,8 +11,10 @@ namespace EImece.Domain.Entities
         [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Question))]
         public string Question { get; set; }
+
         [AllowHtml]
         public string Answer { get; set; }
+
         public string AddUserId { get; set; }
         public string UpdateUserId { get; set; }
     }

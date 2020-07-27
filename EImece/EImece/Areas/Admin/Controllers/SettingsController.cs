@@ -141,7 +141,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-           
+
             RemoveModelState();
             return View(setting);
         }
@@ -199,7 +199,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-          
+
             RemoveModelState();
             return View(setting);
         }
@@ -258,7 +258,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            
+
             RemoveModelState();
             return View(setting);
         }
@@ -280,10 +280,9 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
         {
-
             if (postedImage != null)
             {
-                 var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
+                var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
                 if (id > 0)
                 {
                     webSiteLogoSetting = SettingService.GetSingle(id);
@@ -302,7 +301,7 @@ namespace EImece.Areas.Admin.Controllers
                 SettingService.SaveOrEditEntity(webSiteLogoSetting);
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 RemoveModelState();
-                return View("WebSiteLogo",webSiteLogoSetting);
+                return View("WebSiteLogo", webSiteLogoSetting);
             }
             ModelState.AddModelError("", "Lütfen logo resmi seçiniz");
             var l = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);

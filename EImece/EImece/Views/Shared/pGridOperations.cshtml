@@ -74,8 +74,6 @@
                         </a>
                     }
 
-
-
                     @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                     {
                 <div class="btn-group" role="group">
@@ -85,7 +83,6 @@
                         <option value="MainPage">@MainPage</option>
                         <option value="IsCampaign">@IsCampaign</option>
                     </select>
-             
                 </div>
                     }
                     else if (StateTypes.Equals("State,ImageState,MainPage"))
@@ -112,12 +109,11 @@
                         <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
                     }
 
-
                     @if (SetStateOnOrOff)
                     {
                 <div class="btn-group"   role="group">
                     <span>
-            
+
     <a href="#" class="btn btn-sm  btn-link" id="SetStateOnAll">@GridActiveSelectedButtonText <span class="vl"></span></a>
     <a href="#" class="btn btn-sm  btn-link" id="SetStateOffAll">@GridDeActiveSelectedButtonText <span class="vl"></span></a>
 </span>

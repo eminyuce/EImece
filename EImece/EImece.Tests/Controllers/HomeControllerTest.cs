@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,7 +22,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Mail;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -82,11 +80,10 @@ namespace EImece.Tests.Controllers
                     Console.WriteLine(emailAccount.ToString());
                     EmailSender emailSender = new EmailSender();
                     //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
-
- 
                 }
             }
         }
+
         [TestMethod]
         public void GetProductService()
         {
@@ -94,6 +91,7 @@ namespace EImece.Tests.Controllers
             var products = productService.GetAll();
             Console.WriteLine(products.Count);
         }
+
         private String ConnectionString { get { return Constants.DbConnectionKey; } }
 
         private int CurrentLanguage
@@ -193,9 +191,9 @@ namespace EImece.Tests.Controllers
             var ilceStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\ilceler.json");
             var illerStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\iller.json");
             var IlceRoot = JsonConvert.DeserializeObject(ilceStr, typeof(IlceRoot));
-            var IlRoot =  JsonConvert.DeserializeObject(illerStr, typeof(IlRoot));
-
+            var IlRoot = JsonConvert.DeserializeObject(illerStr, typeof(IlRoot));
         }
+
         [TestMethod]
         public void GetActiveBaseContents()
         {

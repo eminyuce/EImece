@@ -1,12 +1,9 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using GenericRepository.EntityFramework.Enums;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -22,6 +19,5 @@ namespace EImece.Domain.Repositories
         {
             return FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         }
-
     }
 }

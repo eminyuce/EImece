@@ -5,6 +5,5 @@ namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IAddressRepository : IBaseEntityRepository<Address>, IDisposable
     {
-
     }
 }

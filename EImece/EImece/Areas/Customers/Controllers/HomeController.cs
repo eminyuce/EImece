@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -7,6 +6,8 @@ using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
@@ -16,10 +17,14 @@ namespace EImece.Areas.Customers.Controllers
     [AuthorizeRoles(Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
+        private const string CaptchaCustomerEdit = "CaptchaCustomerEdit";
+
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
+
         [Inject]
         public ICustomerService CustomerService { get; set; }
+
         [Inject]
         public IOrderService OrderService { get; set; }
 
@@ -30,10 +35,12 @@ namespace EImece.Areas.Customers.Controllers
         public IdentityManager IdentityManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
+
         public HomeController(ApplicationUserManager userManager)
         {
             this.UserManager = userManager;
         }
+
         // GET: Customers/Home
         public ActionResult Index()
         {
@@ -41,22 +48,39 @@ namespace EImece.Areas.Customers.Controllers
             var customer = CustomerService.GetUserId(user.Id);
             return View(customer);
         }
+
         [HttpPost]
         public ActionResult Index(Customer customer)
         {
-            CustomerService.SaveOrEditEntity(customer);
-            return RedirectToAction("Index");
+            if (customer == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (Session[CaptchaCustomerEdit] == null || !Session[CaptchaCustomerEdit].ToString().Equals(customer.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("Captcha", Resources.Resource.ContactUsWrongSumForSecurityQuestion);
+                return View("Index", customer);
+            }
+            else
+            {
+                CustomerService.SaveOrEditEntity(customer);
+                return RedirectToAction("Index");
+            }
         }
+
         public ActionResult SendMessageToSeller()
         {
             return View();
         }
+
         public ActionResult CustomerOrders(string search = "")
         {
             var user = UserManager.FindByName(User.Identity.GetUserName());
             var orders = OrderService.GetOrdersUserId(user.Id, search);
             return View(orders);
         }
+
         public ActionResult OrderDetail(string id)
         {
             var user = UserManager.FindByName(User.Identity.GetUserName());
@@ -102,6 +126,7 @@ namespace EImece.Areas.Customers.Controllers
             AddErrors(result);
             return View(model);
         }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

@@ -1,22 +1,8 @@
-﻿using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Helpers.EmailHelper;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
 using Ninject;
 using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using EImece.Domain;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -77,6 +63,7 @@ namespace EImece.Domain.Services
             }
         }
     }
+
     public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; }

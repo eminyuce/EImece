@@ -27,7 +27,8 @@ namespace EImece.Domain.Services
         {
             get
             {
-                if (_memoryCacheProvider != null) {
+                if (_memoryCacheProvider != null)
+                {
                     _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
                 }
                 return _memoryCacheProvider;
@@ -77,6 +78,7 @@ namespace EImece.Domain.Services
             var result = this.baseRepository.DeleteItem(entity);
             return result == 1;
         }
+
         public virtual bool DeleteById(int id)
         {
             return this.baseRepository.DeleteByWhereCondition(r => r.Id == id);

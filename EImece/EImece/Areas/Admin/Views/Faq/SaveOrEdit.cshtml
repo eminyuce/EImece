@@ -45,7 +45,6 @@
             <div class="panel-body">
                 <div class="tab-content">
                     <div id="tab1default" class="tab-pane fade in active">
-                       
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -80,8 +79,6 @@
                                 @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-                      
                     </div>
                     <div class="tab-pane fade" id="tab2default">
                         <div class="form-group">
@@ -100,5 +97,3 @@
 <div>
     @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
-
- 

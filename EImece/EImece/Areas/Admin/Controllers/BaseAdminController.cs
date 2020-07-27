@@ -7,7 +7,6 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
-using EImece.Models;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -116,7 +115,6 @@ namespace EImece.Areas.Admin.Controllers
                 Session[Constants.SelectedLanguage] = value;
             }
         }
-  
 
         protected EImeceLanguage GetCurrentLanguage
         {
@@ -183,6 +181,7 @@ namespace EImece.Areas.Admin.Controllers
             dt.TableName = fileName;
             return DownloadFileDataTable(dt, fileName);
         }
+
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action)
         {
             if (Request.UrlReferrer == null)
@@ -194,6 +193,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
+
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action, object routeValues)
         {
             if (Request.UrlReferrer == null)
@@ -205,9 +205,10 @@ namespace EImece.Areas.Admin.Controllers
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
+
         protected ActionResult DownloadFileDataTable(DataTable result, string fileName)
         {
-            if(result == null || String.IsNullOrEmpty(fileName))
+            if (result == null || String.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentException("Result or fileName cannot be empty.");
             }
@@ -223,6 +224,7 @@ namespace EImece.Areas.Admin.Controllers
                 return File(data, "text/csv", fileName + ".csv");
             }
         }
+
         protected void RemoveModelState()
         {
             RemoveModelState("Id");

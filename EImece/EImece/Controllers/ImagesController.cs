@@ -2,13 +2,11 @@
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using Microsoft.Ajax.Utilities;
 using Ninject;
 using NLog;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -138,6 +136,7 @@ namespace EImece.Controllers
 
             return img;
         }
+
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public async Task<FileContentResult> Logo()

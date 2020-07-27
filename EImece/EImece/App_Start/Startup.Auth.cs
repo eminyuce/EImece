@@ -1,6 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Services;
-using EImece.Models;
+﻿using EImece.Domain.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;

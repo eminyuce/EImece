@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;

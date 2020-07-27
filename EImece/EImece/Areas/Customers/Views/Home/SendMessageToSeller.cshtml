@@ -22,7 +22,6 @@
 <div class="row">
     <div class="col-md-6">
 
-
         <section class="uvFaq typeset">
             <p style="font-size:x-large">
                 Herhangi bir konu hakkinda soru veya istek için ürünü satan satıcıyla doğrudan iletişime geçin.
@@ -45,14 +44,12 @@
             </ul><div><span class="Apple-style-span" style="line-height: 19px;">See also:</span></div>
             <div>
                 <span class="Apple-style-span" style="line-height: 19px;">
-                    <a href="https://folksy.uservoice.com/knowledgebase/articles/67344-how-do-i-cancel-my-order-return-an-item-or-ask-fo">How do I cancel my order, return an item or ask for a refund?</a>
+                    <a href="https://folksy.uservoice.com/knowledgebase/articles/67344-how-do-i-cancel-my-order-return-an-item-or-ask-fo">Siparişimi nasıl iptal edebilir, bir ürünü iade edebilir veya geri ödeme isteyebilirim?</a>
                 </span>
             </div>
         </section>
-
     </div>
     <div class="col-md-6">
-
 
         @using (Html.BeginForm("SendContactUs", "Home", FormMethod.Post))
         {
@@ -60,82 +57,79 @@
             @Html.HiddenFor(model => model.ContactFormType)
             @Html.HiddenFor(model => model.ItemId)
             @Html.HiddenFor(model => model.ItemType)
-        <div class="form-horizontal">
+            <div class="form-horizontal">
 
-            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Reasons, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Reasons)
-                    @Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.OrderGuid, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.OrderGuid, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.OrderGuid, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Message, new { @rows = "5", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-1">
-                        @Html.LabelFor(model => model.Captcha)
-                    </div>
-                    <div class="col-md-2">
-                        <img rel="nofollow"
-                             src="@Url.Action("GetCaptcha", "Images", new { area="", prefix = "ContactUsLogin" })" alt="Captcha" />
-                        <br />
-                    </div>
-                    <div class="col-md-9">
-                        @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @autocomplete = "false" })
-                        @Html.ValidationMessageFor(model => model.Captcha)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Reasons, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Reasons)
+                        @Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="@SendButtonText" class="btn btn-default" />
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OrderGuid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.OrderGuid, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.OrderGuid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Message, new { @rows = "5", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.Captcha)
+                        </div>
+                        <div class="col-md-2">
+                            <img rel="nofollow"
+                                 src="@Url.Action("GetCaptcha", "Images", new { area="", prefix = "ContactUsLogin" })" alt="Captcha" />
+                            <br />
+                        </div>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @autocomplete = "false" })
+                            @Html.ValidationMessageFor(model => model.Captcha)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="@SendButtonText" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
-        </div>
         }
-
     </div>
 </div>

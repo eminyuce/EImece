@@ -176,11 +176,9 @@ namespace EImece.Domain.Services
                     setting.SettingValue = value.ToStr();
                     SaveOrEditEntity(setting);
                 }
-
-
-             
             }
         }
+
         public EmailAccount GetEmailAccount()
         {
             var emailAccount = new EmailAccount();

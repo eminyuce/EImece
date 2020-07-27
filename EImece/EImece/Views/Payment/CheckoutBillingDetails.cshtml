@@ -13,7 +13,6 @@
     var customer = Model.Customer;
 }
 
-
 <section class="titlebar">
     <div class="container">
         <div class="sixteen columns">
@@ -38,78 +37,71 @@
         <!-- Billing Details Content -->
         <div class="checkout-section active"><span>1</span> Billing Details</div>
 
-
-
         @using (Html.BeginForm("SaveCustomer", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-    <div class="checkout-content">
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+            <div class="checkout-content">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
 
-        <div class="half first">
-            <label>First Name: <abbr>*       </abbr></label>
-            @Html.EditorFor(model => customer.Name)
-            @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
-        </div>
-        <div class="half">
-            <label>Last Name: <abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.Surname)
-            @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
-        </div>
-        <div class="half first">
-            <label>Email Adress: <abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.Email)
-            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
-        </div>
-        <div class="half">
-            <label>Phone: <abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.GsmNumber)
-            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
-        </div>
-        <div class="half first">
-            <label>Street:<abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.Street)
-            @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
-        </div>
-        <div class="half first">
-            <label>District:<abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.District)
-            @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
-        </div>
-        <div class="half first">
-            <label>City:<abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.City)
-            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
-        </div>
-        <div class="half ">
-            <label>Postcode / Zip:<abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.ZipCode)
-            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
-        </div>
-        <div class="half first">
-            <label>Country:<abbr>*</abbr></label>
-            @Html.EditorFor(model => customer.Country)
-            @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
-        </div>
-        <div class="fullwidth">
-            <label>Street Address: <abbr>*</abbr></label>
-            @Html.TextAreaFor(model => customer.Description, 3, 40, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
-        </div>
+                <div class="half first">
+                    <label>First Name: <abbr>*       </abbr></label>
+                    @Html.EditorFor(model => customer.Name)
+                    @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="half">
+                    <label>Last Name: <abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.Surname)
+                    @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
+                </div>
+                <div class="half first">
+                    <label>Email Adress: <abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.Email)
+                    @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="half">
+                    <label>Phone: <abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.GsmNumber)
+                    @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                </div>
+                <div class="half first">
+                    <label>Street:<abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.Street)
+                    @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
+                </div>
+                <div class="half first">
+                    <label>District:<abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.District)
+                    @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+                </div>
+                <div class="half first">
+                    <label>City:<abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.City)
+                    @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="half ">
+                    <label>Postcode / Zip:<abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.ZipCode)
+                    @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="half first">
+                    <label>Country:<abbr>*</abbr></label>
+                    @Html.EditorFor(model => customer.Country)
+                    @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                </div>
+                <div class="fullwidth">
+                    <label>Street Address: <abbr>*</abbr></label>
+                    @Html.TextAreaFor(model => customer.Description, 3, 40, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                </div>
 
+                <div class="clearfix"></div>
 
-        <div class="clearfix"></div>
-
-
-
-        <span class="shippping-checkbox">
-            @Html.CheckBoxFor(model => customer.IsSameAsShippingAddress, new { @class = "input-checkbox" })
-            <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
-        </span>
-        <div class="clearfix"></div>
-
-
-    </div>
+                <span class="shippping-checkbox">
+                    @Html.CheckBoxFor(model => customer.IsSameAsShippingAddress, new { @class = "input-checkbox" })
+                    <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
+                </span>
+                <div class="clearfix"></div>
+            </div>
             <div class="clearfix"></div>
             <input type="submit" name="saveButton" value="Continue" class="continue button color" />
         }
@@ -123,20 +115,16 @@
         @Html.Partial("ShoppingCartTemplates/_ShoppingCartProducts", Model)
     </div>
     <!-- Checkout Cart / End -->
-
-
 </div>
-
 
 @section Scripts{
     <script id="CityHtml" type="text/template">
-       
-            {{ #items}}
-            <option value="{{id}}">
-                {{name}}
-            </option>
-            {{/items}}
-    
+
+        {{ #items}}
+        <option value="{{id}}">
+            {{name}}
+        </option>
+        {{/items}}
     </script>
     <script id="optionHtml" type="text/template">
         <select id="il_select">
@@ -150,10 +138,9 @@
 
     <script>
 
-
         $(document).ready(function () {
 
-          //  GetIller();
+            //  GetIller();
             function GetIller() {
                 var postData = JSON.stringify({});
                 console.log(postData);
@@ -165,7 +152,6 @@
                         });
                     });
 
-                
                     $("#il_select").on('change', function () {
                         GetIlceler(this.value);
                     });

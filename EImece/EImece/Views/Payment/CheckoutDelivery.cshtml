@@ -33,13 +33,11 @@
 
     <div class="eight columns">
 
-
         <!-- Checkout Content -->
         <a href="@Url.Action("CheckoutBillingDetails")"><div class="checkout-section"><span>1</span> Billing Details <strong><i class="fa fa-edit"></i>Edit</strong> </div></a>
         <div class="checkout-content">
             @Html.Partial("ShoppingCartTemplates/_AddressReview", Model)
         </div>
-
 
         <div class="checkout-section active"><span>2</span> Delivery</div>
         <div class="checkout-delivery active">
@@ -61,13 +59,11 @@
                     </form>
                 </li>
             </ul>
-
         </div>
         <div class="clearfix"></div>
         <a href="@Url.Action("CheckoutPaymentOrderReview")" class="continue button color">Continue</a>
 
         <a href="@Url.Action("CheckoutPaymentOrderReview")"><div class="checkout-section"><span>3</span> Payment &amp; Order Review</div></a>
-
     </div>
     <!-- CHeckout Content / End -->
     <!-- Checkout Cart -->
@@ -75,19 +71,14 @@
         @Html.Partial("ShoppingCartTemplates/_ShoppingCartProducts", Model)
     </div>
     <!-- Checkout Cart / End -->
-
-
 </div>
 
-
 @section Scripts{
-    
 
     <script>
 
-
         $(document).ready(function () {
- 
+
         });
     </script>
 }

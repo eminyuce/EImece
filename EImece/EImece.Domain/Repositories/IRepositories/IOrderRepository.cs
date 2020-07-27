@@ -1,14 +1,11 @@
 ﻿using EImece.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IOrderRepository : IBaseEntityRepository<Order>, IDisposable
     {
-
+        List<Order> GetOrdersUserId(string userId, string search);
     }
 }

@@ -11,8 +11,6 @@
 }
 <div class="checkout-section cart">Shopping Cart</div>
 
-
-
 <table class="checkout cart-table responsive-table stacktable large-only">
 
     <tbody>
@@ -31,18 +29,16 @@
                 var product = item.product;
                 double totalPricePerItem = product.Price * item.quantity;
 
-
                 <!-- Item #1 -->
                 <tr>
                     <td class="hide-on-mobile">
                         @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                         {
-                        <a href="@Url.Action("Detail","Products",new { id=product.Id })">
-                            <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
-                        </a>
-                                }
-
-                        </td>
+                            <a href="@Url.Action("Detail","Products",new { id=product.Id })">
+                                <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+                            </a>
+                        }
+                    </td>
                     <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
                     <td>@product.Price.CurrencySign()</td>
                     <td class="qty-checkout">@item.quantity</td>
@@ -51,8 +47,6 @@
 
             }
         }
- 
-
     </tbody>
 </table>
 
@@ -67,6 +61,5 @@
                 </div>
             </th>
         </tr>
-
     </tbody>
 </table>

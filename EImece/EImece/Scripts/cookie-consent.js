@@ -13,7 +13,7 @@
             console.log(currentCookie + " <-- Selected Cookie");
             return;
         }
-        var privacyLink =privacyLink || 'https://www.google.com';
+        var privacyLink = privacyLink || 'https://www.google.com';
         var termsLink = termsLink || 'https://www.google.com';
         message = message || "<div>We use cookies to improve your website experience. By continuing to use our site, you accept our use of cookies, revised  <a style='color:white;' href='" + privacyLink + "'>Privacy Policy</a> and <a  style='color:white;' href='" + termsLink + "'>Terms of Use.</a></div><div><button>Accept</button></div> <div><button>Close</button></div>";
         div.innerHTML = message;

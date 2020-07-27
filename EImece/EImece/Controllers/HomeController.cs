@@ -138,12 +138,14 @@ namespace EImece.Controllers
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
             return PartialView("_Languages", listItems);
         }
+
         [ChildActionOnly]
         public ActionResult Menu()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
             return PartialView("_Navigation", menus);
         }
+
         [ChildActionOnly]
         public ActionResult ProductTree()
         {
@@ -158,11 +160,10 @@ namespace EImece.Controllers
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
             var CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
 
-   
-
             var s = new List<Setting>() { webSiteLogo, CompanyName };
             return PartialView("_WebSiteLogo", s);
         }
+
         [ChildActionOnly]
         public ActionResult Footer()
         {

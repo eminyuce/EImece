@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using Microsoft.AspNet.Identity;
@@ -25,6 +24,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Title = "Gösterge Paneli";
             return View();
         }
+
         [HttpGet]
         public ActionResult SearchContent(String searchContent)
         {
@@ -61,6 +61,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return View(resultList);
         }
+
         [HttpGet]
         public ActionResult ClearCache()
         {
@@ -85,11 +86,13 @@ namespace EImece.Areas.Admin.Controllers
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home", new { @area = "" });
         }
+
         public PartialViewResult Languages()
         {
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Domain.Constants.AdminCultureCookieName);
             return PartialView("pLanguages", listItems);
         }
+
         [HttpGet]
         public ActionResult SetLanguage(string id)
         {
@@ -99,6 +102,7 @@ namespace EImece.Areas.Admin.Controllers
             var returnDefault = RedirectToAction("Index");
             return RequestReturn(returnDefault);
         }
+
         public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);

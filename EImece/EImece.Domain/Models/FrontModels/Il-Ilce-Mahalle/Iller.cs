@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle
 {
@@ -20,8 +16,8 @@ namespace EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle
     public class IlRoot
     {
         public Iller Iller { get; set; }
-
     }
+
     public class TurkiyeAdres
     {
         public IlRoot IlRoot { get; set; }

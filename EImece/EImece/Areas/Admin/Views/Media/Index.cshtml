@@ -29,7 +29,6 @@
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
     filesHelper.InitFilesMediaFolder();
 
-
 }
 <style>
     .myslider {
@@ -187,7 +186,7 @@
 
 @helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
 {
-var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
+    var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
     <div class="row">
         <div class="col-md-6">
             <img src=@fileStorage.GetAdminCroppedImageUrl(150,0)>
@@ -200,7 +199,7 @@ var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
                 @fileStorage.FileName
             </div>
         </div>
-         <div class="col-md-6">
+        <div class="col-md-6">
             <div>
                 @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
                 <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Full Image</a>

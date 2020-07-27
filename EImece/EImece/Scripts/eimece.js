@@ -1,5 +1,4 @@
-﻿
-function GetShoppingCartLinks() {
+﻿function GetShoppingCartLinks() {
     var postData = JSON.stringify({});
     ajaxMethodCall(postData, "/Payment/GetShoppingCartLinks", function (data) {
         $("#ShoppingCartsLink").empty();
@@ -22,7 +21,7 @@ function addShoppingCartsLinkDetailClick() {
 }
 function removeCart(shoppingItemId) {
     console.log(shoppingItemId);
-    var postData = JSON.stringify({ shoppingItemId  });
+    var postData = JSON.stringify({ shoppingItemId });
     ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
         $('[data-shopping-item=' + shoppingItemId + ']').remove();
         console.log(data);
@@ -75,7 +74,6 @@ function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
             $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
         });
         bindCalcuateTotalPrice();
-
     });
 }
 $('[data-shopping-button-price]').each(function () {
@@ -90,7 +88,6 @@ function renderPrice(price, success) {
     var postData = JSON.stringify({ price: price });
     ajaxMethodCall(postData, "/Payment/RenderPrice", success);
 }
-
 
 function bindCalcuateTotalPrice() {
     var grandTotalPrice = 0;
@@ -109,8 +106,6 @@ function bindCalcuateTotalPrice() {
 }
 
 jQuery(function () {
-
-
     $("#btn-search").click(function () {
         console.log("eee");
         $(".error").hide();
@@ -200,7 +195,6 @@ function createUUID() {
     });
 }
 
- 
 function randomString(length, chars) {
     var mask = '';
     if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

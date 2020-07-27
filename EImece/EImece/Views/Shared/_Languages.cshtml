@@ -6,10 +6,10 @@
     var listItems = Model;
 }
 
-   @if(listItems.Count() > 1)
-                    {
-                foreach (var item in listItems)
-                {
-@Html.ActionLink(item.Text, "Language", "Home", new { id = item.Value }, new { @class = item.Selected ? "selectedLang" : "" })
-                        }
-            }
+@if (listItems.Count() > 1)
+{
+    foreach (var item in listItems)
+    {
+        @Html.ActionLink(item.Text, "Language", "Home", new { id = item.Value }, new { @class = item.Selected ? "selectedLang" : "" })
+    }
+}

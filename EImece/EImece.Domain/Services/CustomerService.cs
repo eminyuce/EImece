@@ -4,7 +4,6 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
 using NLog;
-using NPOI.SS.Formula.Functions;
 using System;
 
 namespace EImece.Domain.Services
@@ -23,7 +22,7 @@ namespace EImece.Domain.Services
             AddressService = addressService;
         }
 
-        public void SaveRegisterViewModel(string userId,RegisterViewModel model)
+        public void SaveRegisterViewModel(string userId, RegisterViewModel model)
         {
             var item = new Customer();
 
@@ -51,11 +50,10 @@ namespace EImece.Domain.Services
         public void DeleteByUserId(string userId)
         {
             var customer = CustomerRepository.GetUserId(userId);
-            if(customer != null)
+            if (customer != null)
             {
                 DeleteEntity(customer);
             }
-
         }
 
         public void SaveShippingAddress(string userId)
