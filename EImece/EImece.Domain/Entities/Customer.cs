@@ -65,6 +65,19 @@ namespace EImece.Domain.Entities
                 return String.Format("{0} {1}", Name, Surname);
             }
         }
+        public String Address
+        {
+            get
+            {
+                return string.Format("{0} {5} {1} {5} {2} {5} {3} {5} {4} {5} ",
+                Street,
+                District,
+                City,
+                Country,
+                Description,
+                Environment.NewLine);
+            }
+        }
 
         public bool isValid()
         {

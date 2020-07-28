@@ -23,8 +23,13 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
+    Customer customer = ViewBag.Customer;
 
 }
+
+<h2>@customer.FullName @AdminResource.Order</h2>
+<p class="text-sm-left">@customer.Email</p>
+<p class="text-sm-left">@customer.Address</p>
 <hr class="adminLine" />
 @Html.Partial("pAdminSearchForm", new ViewDataDictionary(ViewData){
                       {"IdValueExists",true}})
@@ -85,10 +90,6 @@
                     <div data-order-product-detail="@o.Id">
 
                     </div>
-                    <p>
-
-                    </p>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>

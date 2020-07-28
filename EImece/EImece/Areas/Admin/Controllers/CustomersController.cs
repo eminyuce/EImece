@@ -67,6 +67,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var orders = OrderService.GetOrdersUserId(user.Id, search);
+            ViewBag.Customer = CustomerService.GetUserId(user.Id);
             return View(orders);
 
         }

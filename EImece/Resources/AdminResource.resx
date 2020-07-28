@@ -798,4 +798,7 @@
   <data name="Order" xml:space="preserve">
     <value>Sipariş</value>
   </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Raporlar</value>
+  </data>
 </root>
