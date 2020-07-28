@@ -795,4 +795,7 @@
   <data name="WomanGender" xml:space="preserve">
     <value>Kadın</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Sipariş</value>
+  </data>
 </root>

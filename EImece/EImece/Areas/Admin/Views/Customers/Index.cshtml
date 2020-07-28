@@ -59,7 +59,7 @@
     .Sanitized(false)
     .SetWidth(30)
     .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-{ "ItemId", d.Id },
+{ "ItemId", d.UserId },
 {"controllerName",controllerName},
 { "DeleteText", gridDeleteText },
 { "ItemDescription", String.Format("{0} {1}", d.Name, d.Surname) } }));

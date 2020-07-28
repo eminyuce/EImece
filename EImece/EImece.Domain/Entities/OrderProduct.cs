@@ -19,6 +19,8 @@ namespace EImece.Domain.Entities
         public int Quantity { get; set; }
         public double TotalPrice { get; set; }
 
+        public Product Product { get; set; }
+
         public OrderProduct()
         {
         }

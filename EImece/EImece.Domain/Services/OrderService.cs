@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,25 @@ namespace EImece.Domain.Services
 
         private IOrderRepository OrderRepository;
 
-        public OrderService(IOrderRepository repository) : base(repository)
+        [Inject]
+        ICustomerService CustomerService;
+
+        public OrderService(IOrderRepository repository, ICustomerService customerService) : base(repository)
         {
             OrderRepository = repository;
+            this.CustomerService = customerService;
         }
 
         public Order GetByOrderGuid(string orderGuid)
         {
             return OrderRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
+
+        public Order GetOrderById(int id)
+        {
+            var item = OrderRepository.GetOrderById(id);
+            item.Customer = CustomerService.GetUserId(item.UserId);
+            return item;
         }
 
         public List<Order> GetOrdersUserId(string userId, string search = "")

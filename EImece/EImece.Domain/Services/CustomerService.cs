@@ -51,7 +51,9 @@ namespace EImece.Domain.Services
 
         public Customer GetUserId(string userId)
         {
-            return CustomerRepository.GetUserId(userId);
+            var item = CustomerRepository.GetUserId(userId);
+            GetUserFields(item);
+            return item;
         }
 
         public void DeleteByUserId(string userId)
@@ -78,10 +80,7 @@ namespace EImece.Domain.Services
             var resultList =  result.ToList();
             foreach (var item in resultList)
             {
-                var user= UsersService.GetUser(item.UserId);
-                item.Email = user.Email;
-                item.Name = user.FirstName;
-                item.Surname = user.LastName;
+                GetUserFields(item);
             }
             if (!String.IsNullOrEmpty(search))
             {
@@ -89,6 +88,14 @@ namespace EImece.Domain.Services
             }
 
             return resultList;
+        }
+
+        public void GetUserFields(Customer item)
+        {
+            var user = UsersService.GetUser(item.UserId);
+            item.Email = user.Email;
+            item.Name = user.FirstName;
+            item.Surname = user.LastName;
         }
     }
 }

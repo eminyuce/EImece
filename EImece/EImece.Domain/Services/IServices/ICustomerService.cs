@@ -14,5 +14,6 @@ namespace EImece.Domain.Services.IServices
 
         void SaveShippingAddress(string userId);
         List<Customer> GetCustomerServices(string search);
+        void GetUserFields(Customer item);
     }
 }

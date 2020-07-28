@@ -5,6 +5,8 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
+using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,10 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
+
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
 
         [HttpGet]
         public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
@@ -446,6 +452,19 @@ namespace EImece.Areas.Admin.Controllers
                 var tempData = new TempDataDictionary();
                 var html = this.RenderPartialToString(
                             @"~/Areas/Admin/Views/Shared/pImagesTag.cshtml",
+                            new ViewDataDictionary(tags), tempData);
+                return Json(html, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetOrderDetail(int orderId)
+        {
+            return await Task.Run(() =>
+            {
+                var tags = OrderService.GetOrderById(orderId);
+                var tempData = new TempDataDictionary();
+                var html = this.RenderPartialToString(
+                            @"~/Areas/Admin/Views/Shared/pOrderDetail.cshtml",
                             new ViewDataDictionary(tags), tempData);
                 return Json(html, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);

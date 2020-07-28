@@ -36,30 +36,26 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-columns.Add()
-               .Encoded(false)
-               .Sanitized(false)
-                .Css("gridButtons")
-               .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+    columns.Add()
+                   .Encoded(false)
+                   .Sanitized(false)
+                    .Css("gridButtons")
+                   .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-     columns.Add(c => c.Id)
+    columns.Add(c => c.OrderNumber)
 .Filterable(true)
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(AdminResource.OrderDetail, "OrderDetail", "Home", new { area = "customers", id = d.OrderGuid }, new { @class = "btn btn-success", @target = "_blank" })
-</b>);
+.RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
+    columns.Add(o => o.OrderGuid);
+    columns.Add(o => o.PaymentStatus);
+    columns.Add(o => o.Price);
+    columns.Add(o => o.IyziCommissionFee);
+    columns.Add(o => o.IyziCommissionRateAmount);
 
-columns.Add(o => o.OrderNumber);
-columns.Add(o => o.PaymentStatus);
-columns.Add(o => o.Price);
-
-
-
-columns.Add(o => o.CreatedDate)
+    columns.Add(o => o.CreatedDate)
 .Titled(AdminResource.CreatedDate)
 .Sortable(true)
 .Css("gridDateClass")
@@ -69,3 +65,57 @@ columns.Add(o => o.CreatedDate)
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
 
+@helper CustomerOrderDetail(Order o, String controllerName)
+{
+    <b>@o.OrderNumber</b>
+    <br />
+    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">@AdminResource.OrderDetail</a>
+
+    <!-- Modal -->
+    <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@AdminResource.Order @o.OrderNumber</h4>
+                </div>
+                <div class="modal-body">
+                    <div data-order-product-detail="@o.Id">
+
+                    </div>
+                    <p>
+
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $('[data-order-Id]').each(function () {
+                $(this).off("click");
+                $(this).on("click", function (e) {
+                    e.preventDefault();
+                    var caller = e.target;
+                    var orderId = $(caller).attr('data-order-Id');
+                    var postData = JSON.stringify({ orderId: orderId });
+                    console.log(postData);
+                    ajaxMethodCall(postData, "/Admin/Ajax/GetOrderDetail", function (data) {
+                        $('[data-order-product-detail=' + orderId + ']').html(data);
+                    });
+                });
+            });
+
+        });
+    </script>
+}

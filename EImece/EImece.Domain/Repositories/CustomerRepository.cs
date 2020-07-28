@@ -17,7 +17,9 @@ namespace EImece.Domain.Repositories
 
         public Customer GetUserId(string userId)
         {
-            return FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            var item = FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            
+            return item;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -44,5 +46,9 @@ namespace EImece.Domain.Entities
 
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }
+        public ICollection<OrderProduct> OrderProducts { get; set; }
+
+        [NotMapped]
+        public Customer Customer { get; set; }
     }
 }

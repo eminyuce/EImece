@@ -1200,6 +1200,7 @@
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartDetails.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartProducts.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FeaturedProductItem.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pOrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
