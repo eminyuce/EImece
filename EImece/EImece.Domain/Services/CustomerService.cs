@@ -1,8 +1,11 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
+using Microsoft.Owin.Security.OAuth;
+using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -17,6 +20,8 @@ namespace EImece.Domain.Services
         private ICustomerRepository CustomerRepository { get; set; }
 
         private IAddressService AddressService { get; set; }
+        [Inject]
+        public UsersService UsersService { get; set; }
 
         public CustomerService(ICustomerRepository repository, IAddressService addressService) : base(repository)
         {
@@ -70,13 +75,20 @@ namespace EImece.Domain.Services
         public List<Customer> GetCustomerServices(string search)
         {
             var result = CustomerRepository.GetAll();
+            var resultList =  result.ToList();
+            foreach (var item in resultList)
+            {
+                var user= UsersService.GetUser(item.UserId);
+                item.Email = user.Email;
+                item.Name = user.FirstName;
+                item.Surname = user.LastName;
+            }
             if (!String.IsNullOrEmpty(search))
             {
-                result = result.Where(r => r.Email.Contains(search) || r.Name.Contains(search) || r.Surname.Contains(search));
+                resultList = resultList.Where(r => r.Email.Contains(search) || r.Name.Contains(search) || r.Surname.Contains(search)).ToList();
             }
 
-            return result.ToList();
-         
+            return resultList;
         }
     }
 }

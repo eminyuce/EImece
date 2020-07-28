@@ -10,6 +10,7 @@ namespace EImece.Domain.Entities
     {
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         //   [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
+        [NotMapped]
         public string Surname { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
@@ -18,6 +19,7 @@ namespace EImece.Domain.Entities
         //     [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsEmailErrorMessage))]
         //     [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         [EmailAddress]
+        [NotMapped]
         public string Email { get; set; }
 
         public string IdentityNumber { get; set; }
