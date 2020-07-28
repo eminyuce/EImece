@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Services;
 using Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -102,6 +103,11 @@ namespace EImece.Models
         [Required]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
+        public DateTime BirthDate { get; set; }
 
         public bool IsPermissionGranted { get; set; }
         //[Required]

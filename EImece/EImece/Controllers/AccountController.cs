@@ -82,6 +82,8 @@ namespace EImece.Controllers
             }
             else
             {
+           
+                //ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -129,7 +131,16 @@ namespace EImece.Controllers
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                     case SignInStatus.Failure:
-                        ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                        var user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email,StringComparison.InvariantCultureIgnoreCase));
+                        bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                        if (!checkPassword)
+                        {
+                            ModelState.AddModelError("", "Invalid login attempt.Password is not correct");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                        }
                         return View(model);
 
                     default:

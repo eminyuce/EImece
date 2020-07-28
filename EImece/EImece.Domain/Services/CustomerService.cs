@@ -35,18 +35,19 @@ namespace EImece.Domain.Services
 
             item.UserId = userId;
             item.Name = model.FirstName;
-            item.Surname = model.LastName;
             item.GsmNumber = model.PhoneNumber;
-            item.Email = model.Email;
             item.IdentityNumber = "";
             item.Ip = GeneralHelper.GetIpAddress();
             item.IsActive = true;
+            item.BirthDate = model.BirthDate;
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
             item.Position = 1;
             item.Lang = 1;
             item.IsPermissionGranted = true;
             CustomerRepository.SaveOrEdit(item);
+
+
         }
 
         public Customer GetUserId(string userId)

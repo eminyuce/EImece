@@ -9,6 +9,7 @@ namespace EImece.Domain.Services.IServices
 
         List<Order> GetOrdersUserId(string userId, string search = "");
 
-        Order GetOrderById(int id);
+        Order GetOrderById(int userId);
+        void DeleteByUserId(string userId);
     }
 }

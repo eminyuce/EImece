@@ -80,6 +80,7 @@ namespace EImece.Areas.Admin.Controllers
             ApplicationDbContext.Users.Remove(user);
             ApplicationDbContext.SaveChanges();
             CustomerService.DeleteByUserId(user.Id);
+            OrderService.DeleteByUserId(user.Id);
             return RedirectToAction("Index");
         }
     }

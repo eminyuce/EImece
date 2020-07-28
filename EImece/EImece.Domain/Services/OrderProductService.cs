@@ -15,5 +15,10 @@ namespace EImece.Domain.Services
         {
             OrderProductRepository = repository;
         }
+
+        public bool DeleteOrderProductsByOrderId(int id)
+        {
+            return OrderProductRepository.DeleteByWhereCondition(r => r.OrderId == id);
+        }
     }
 }

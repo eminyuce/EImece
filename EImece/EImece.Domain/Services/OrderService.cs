@@ -13,15 +13,28 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private IOrderRepository OrderRepository;
+        private readonly IOrderRepository OrderRepository;
+
+        private readonly IOrderProductService OrderProductService;
 
         [Inject]
         ICustomerService CustomerService;
 
-        public OrderService(IOrderRepository repository, ICustomerService customerService) : base(repository)
+        public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService) : base(repository)
         {
             OrderRepository = repository;
+            OrderProductService = orderProductService;
             this.CustomerService = customerService;
+        }
+
+        public void DeleteByUserId(string userId)
+        {
+            var orderObjs = OrderRepository.GetOrdersUserId(userId, "");
+            foreach (var order in orderObjs)
+            {
+                OrderProductService.DeleteOrderProductsByOrderId(order.Id);
+                DeleteEntity(order);
+            }
         }
 
         public Order GetByOrderGuid(string orderGuid)
