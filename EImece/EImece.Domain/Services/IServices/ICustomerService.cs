@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Models;
+using System.Collections.Generic;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -12,5 +13,6 @@ namespace EImece.Domain.Services.IServices
         void DeleteByUserId(string userId);
 
         void SaveShippingAddress(string userId);
+        List<Customer> GetCustomerServices(string search);
     }
 }

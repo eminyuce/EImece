@@ -1060,6 +1060,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Erkek.
+        /// </summary>
+        public static string ManGender {
+            get {
+                return ResourceManager.GetString("ManGender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
         public static string Menu {
@@ -2046,6 +2055,15 @@ namespace Resources {
         public static string WhatsAppCommunicationScript {
             get {
                 return ResourceManager.GetString("WhatsAppCommunicationScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kadın.
+        /// </summary>
+        public static string WomanGender {
+            get {
+                return ResourceManager.GetString("WomanGender", resourceCulture);
             }
         }
         

@@ -5,6 +5,8 @@ using EImece.Domain.Services.IServices;
 using EImece.Models;
 using NLog;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -63,6 +65,18 @@ namespace EImece.Domain.Services
             {
                 SaveOrEditEntity(customer);
             }
+        }
+
+        public List<Customer> GetCustomerServices(string search)
+        {
+            var result = CustomerRepository.GetAll();
+            if (!String.IsNullOrEmpty(search))
+            {
+                result = result.Where(r => r.Email.Contains(search) || r.Name.Contains(search) || r.Surname.Contains(search));
+            }
+
+            return result.ToList();
+         
         }
     }
 }

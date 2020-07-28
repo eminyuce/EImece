@@ -789,4 +789,10 @@
   <data name="BirthDate" xml:space="preserve">
     <value>Doğum günü</value>
   </data>
+  <data name="ManGender" xml:space="preserve">
+    <value>Erkek</value>
+  </data>
+  <data name="WomanGender" xml:space="preserve">
+    <value>Kadın</value>
+  </data>
 </root>
