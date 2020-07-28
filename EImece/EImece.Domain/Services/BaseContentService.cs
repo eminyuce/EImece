@@ -113,7 +113,7 @@ namespace EImece.Domain.Services
 
         public virtual new void DeleteBaseEntity(List<string> values)
         {
-            if (values.IsNullOrEmpty())
+            if (values.IsEmpty())
             {
                 throw new ArgumentException("List cannot be empty");
             }

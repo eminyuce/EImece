@@ -1,9 +1,11 @@
 ﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
-@model List<Menu>
+@using EImece.Domain.Models.FrontModels;
+@model NavigationModel
 @{
-    var menus = Model;
+    var menus = Model.Menus;
+    var productCategories = Model.ProductCategories;
 }
 
 <!-- Navbar Multilevel-->
@@ -86,54 +88,11 @@
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Categories<i data-feather="more-horizontal"></i></a>
                     <div class="dropdown-menu">
                         <div class="dropdown-inner">
-                            <div class="dropdown-column">
-                                <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(img/megamenu/cat_bg02.jpg);">
-                                    <h3 class="h5 text-white text-shadow my-3">Apparel</h3>
-                                </div>
-                                <div class="widget widget-links">
-                                    <ul>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Clothing</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Shoes</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Handbags &amp; Backpacks</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Hats &amp; Caps</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Sunglasses</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Watches</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Accessories</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="dropdown-column">
-                                <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(img/megamenu/cat_bg01.jpg);">
-                                    <h3 class="h5 text-white text-shadow my-3">Electronics</h3>
-                                </div>
-                                <div class="widget widget-links">
-                                    <ul>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Computers &amp; Accessories</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">TV, Video &amp; Audio</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Smartphones &amp; Tablets</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Cameras, Photo &amp; Video</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Headphones</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Wearable Electronics</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Video Games</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="dropdown-column">
-                                <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(img/megamenu/cat_bg03.jpg);">
-                                    <h3 class="h5 text-white text-shadow my-3">Furniture &amp; Decor</h3>
-                                </div>
-                                <div class="widget widget-links">
-                                    <ul>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Lounge Seating</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">File Cabinets</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Tables</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Indoor Lighting</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Office Chairs</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Adjustable Height Desks</span></a></li>
-                                        <li><a href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Storage Units</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                            @for (int i = 0; i < productCategories.Count; i++)
+                            {
+                                @CreateProductTree(productCategories[i])
+                            }
+
                         </div>
                     </div>
                 </li>
@@ -307,3 +266,35 @@
         </div>
     </div>
 </div>
+
+@helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
+{
+    var productCategory = categoryTreeModel.ProductCategory;
+    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 80, 80);
+    var productCategoryLink = productCategory.ProductCategoryLink;
+
+   
+
+<div class="dropdown-column">
+    <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(img/megamenu/cat_bg03.jpg);">
+        <h3 class="h5 text-white text-shadow my-3">@productCategory.Name</h3>
+    </div>
+    @if (categoryTreeModel.Childrens.IsNotEmpty())
+    {
+        <div class="widget widget-links">
+            <ul>
+                @foreach (var childCategory in categoryTreeModel.Childrens)
+                {
+                    var productChildCategory = childCategory.ProductCategory;
+                    var productChildImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 80, 80);
+                    var productChildCategoryLink = productCategory.ProductCategoryLink;
+                    <li><a href="@productChildCategoryLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@productChildCategory.Name</span></a></li>
+                }
+            </ul>
+        </div>
+    }
+
+
+</div>
+
+}

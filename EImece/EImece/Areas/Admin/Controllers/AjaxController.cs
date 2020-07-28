@@ -376,7 +376,7 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 var tags = TagCategoryService.GetTagsByTagType(language);
-                if (tags.IsNullOrEmpty())
+                if (tags.IsEmpty())
                 {
                     return Json("", JsonRequestBehavior.AllowGet);
                 }
@@ -400,7 +400,7 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 var tags = TagCategoryService.GetTagsByTagType(language);
-                if (tags.IsNullOrEmpty())
+                if (tags.IsEmpty())
                 {
                     return Json("", JsonRequestBehavior.AllowGet);
                 }

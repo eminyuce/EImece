@@ -169,7 +169,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate)
         {
-            if (renderedEmailTemplate.Item1.IsNullOrEmpty() && renderedEmailTemplate.Item2.IsNullOrEmpty())
+            if (renderedEmailTemplate.Item1.IsEmpty() && renderedEmailTemplate.Item2.IsEmpty())
             {
                 return;
             }

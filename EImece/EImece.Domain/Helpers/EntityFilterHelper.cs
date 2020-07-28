@@ -70,7 +70,7 @@ namespace EImece.Domain.Helpers
         public static List<TagCategory> FilterTagCategories(List<TagCategory> tagCategories)
         {
             var result = new List<TagCategory>();
-            if (tagCategories.IsNullOrEmpty())
+            if (tagCategories.IsEmpty())
             {
                 return result;
             }

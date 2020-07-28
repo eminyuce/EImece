@@ -991,6 +991,8 @@
     <Content Include="Content\mstore\fonts\Flaticon.eot" />
     <Content Include="Content\mstore\fonts\Flaticon.ttf" />
     <Content Include="Content\mstore\fonts\Flaticon.woff" />
+    <Content Include="Areas\Admin\Views\Shared\_ProductCategoryTreeChildren.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_ProductCategoryTree.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -290,7 +290,7 @@ namespace EImece.Controllers
         public ActionResult PlaceOrder()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
-            if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsNullOrEmpty())
+            if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
                 return Content("ShoppingCartItems is EMPTY");
             }

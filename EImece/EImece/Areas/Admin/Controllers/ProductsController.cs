@@ -21,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index(int id = 0, String search = "")
         {
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
@@ -68,8 +68,7 @@ namespace EImece.Areas.Admin.Controllers
             TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Product>();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
-
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             if (id == 0)
             {
                 content.ProductCategoryId = 0;
@@ -103,10 +102,12 @@ namespace EImece.Areas.Admin.Controllers
                     var isProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
                     if (product.ProductCategoryId == 0)
                     {
-                        ModelState.AddModelError("", AdminResource.ProductCategoryIdErrorMessage);
+                        ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
+                        ModelState.AddModelError("", AdminResource.MandatoryField);
                     }
                     else if (isProductPriceEnable.SettingValue.ToBool(false) && product.Price <= 0)
                     {
+                        ModelState.AddModelError("Price", AdminResource.MandatoryField);
                         ModelState.AddModelError("", AdminResource.MandatoryField);
                     }
                     else
@@ -138,7 +139,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             ViewBag.ProductCategory = ProductCategoryService.GetSingle(product.ProductCategoryId);
             if (product.MainImageId.HasValue)
             {
@@ -227,8 +228,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult MoveProductsInTrees(int id = 0, string productIdList = "", int oldCategoryId = 0)
         {
-            ViewBag.TreeLeft = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
-            ViewBag.TreeRight = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.ProductCategoryTreeLeft = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            ViewBag.ProductCategoryTreeRight = ProductCategoryService.BuildTree(null, CurrentLanguage);
             var products = new System.Collections.Generic.List<Product>();
             if (id > 0)
             {

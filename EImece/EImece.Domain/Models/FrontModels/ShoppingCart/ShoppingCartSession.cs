@@ -81,7 +81,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                if (ShoppingCartItems.IsNullOrEmpty())
+                if (ShoppingCartItems.IsEmpty())
                 {
                     return 0;
                 }
@@ -101,7 +101,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return ShoppingCartItems.IsNullOrEmpty() ? 0 : ShoppingCartItems.Count;
+                return ShoppingCartItems.IsEmpty() ? 0 : ShoppingCartItems.Count;
             }
         }
 

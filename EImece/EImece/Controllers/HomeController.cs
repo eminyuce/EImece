@@ -143,7 +143,8 @@ namespace EImece.Controllers
         public ActionResult Navigation()
         {
             var menus = MenuService.BuildTree(true, CurrentLanguage);
-            return PartialView("_Navigation", menus);
+            var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
+            return PartialView("_Navigation", new NavigationModel(menus, tree));
         }
 
         [ChildActionOnly]
