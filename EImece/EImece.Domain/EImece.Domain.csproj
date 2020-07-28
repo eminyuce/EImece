@@ -513,6 +513,7 @@
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\TemplateService.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Services\UsersService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

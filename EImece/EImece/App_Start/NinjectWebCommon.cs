@@ -141,7 +141,8 @@ namespace EImece.App_Start
 
             kernel.Bind<IHttpContextFactory>().To<HttpContextFactory>();
 
-            kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();
+            kernel.Bind<RazorEngineHelper>().ToSelf().InRequestScope();  
+            kernel.Bind<UsersService>().ToSelf().InRequestScope();
         }
 
         private static void BindServices(IKernel kernel)

@@ -281,6 +281,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomersController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileUploadController.cs" />
@@ -844,7 +845,7 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\pSearchForm.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\pAdminSearchForm.cshtml" />
     <Content Include="Areas\Admin\Views\Products\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\SaveOrEdit.cshtml" />
@@ -962,7 +963,7 @@
     <Content Include="App_Data\il-ilce-mahalle\iller.json" />
     <Content Include="App_Data\il-ilce-mahalle\ilceler.json" />
     <Content Include="Areas\Admin\Views\Products\MoveProductsInTrees.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\Customers.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Index.cshtml" />
     <Content Include="Areas\Customers\Views\web.config" />
     <Content Include="Areas\Customers\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Customers\Views\Shared\_Layout.cshtml" />
@@ -987,6 +988,7 @@
     <Content Include="Areas\Admin\Views\Shared\_ProductCategoryTree.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\_MenuTreeChildren.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\_MenuTree.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\CustomerOrders.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

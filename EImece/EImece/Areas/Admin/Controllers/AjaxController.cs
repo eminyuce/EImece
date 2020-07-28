@@ -1,9 +1,11 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,6 +18,10 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
+
+        [Inject]
+        public ApplicationDbContext ApplicationDbContext { get; set; }
+
         [HttpGet]
         public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
         {

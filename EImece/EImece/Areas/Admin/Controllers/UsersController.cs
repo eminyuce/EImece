@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -19,6 +20,9 @@ namespace EImece.Areas.Admin.Controllers
     public class UsersController : BaseAdminController
     {
         [Inject]
+        public UsersService UsersService { get; set; }
+
+        [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
 
         [Inject]
@@ -28,61 +32,17 @@ namespace EImece.Areas.Admin.Controllers
         public IdentityManager IdentityManager { get; set; }
 
         [Inject]
-        public ICustomerService CustomerService { get; set; }
+        public ApplicationDbContext ApplicationDbContext { get; set; }
 
         public ActionResult Index(String search = "")
         {
-            List<EditUserViewModel> model = GetUsers(search);
+            List<EditUserViewModel> model = UsersService.GetUsers(search);
             model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
             return View(model);
         }
 
-        public ActionResult Customers(String search = "")
-        {
-            List<EditUserViewModel> model = GetUsers(search);
-            model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
-            return View(model);
-        }
 
-        private List<EditUserViewModel> GetUsers(string search)
-        {
-            var users = ApplicationDbContext.Users.AsQueryable();
-
-            var users2 = from u in ApplicationDbContext.Users
-                         from ur in u.Roles
-                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
-                         select new
-                         {
-                             u.Id,
-                             Email = u.UserName,
-                             FirstName = u.FirstName,
-                             LastName = u.LastName,
-                             Role = r.Name,
-                         };
-
-            if (!String.IsNullOrEmpty(search))
-            {
-                search = search.ToLower().Trim();
-                users = users.Where(r => r.Email.ToLower().Contains(search) || r.FirstName.ToLower().Contains(search) || r.LastName.ToLower().Contains(search));
-            }
-
-            //ViewModel will be posted at the end of the answer
-            var model = new List<EditUserViewModel>();
-            foreach (var user in users.ToList())
-            {
-                var u = new EditUserViewModel();
-                u.FirstName = user.FirstName;
-                u.LastName = user.LastName;
-                u.Email = user.Email;
-                u.Id = user.Id;
-                var p = users2.FirstOrDefault(r => r.Id == u.Id);
-                u.Role = p == null ? String.Empty : p.Role.ToStr();
-                model.Add(u);
-            }
-
-            return model;
-        }
-
+     
         //[Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
@@ -99,7 +59,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var user = model.GetUser();
                 user.EmailConfirmed = true;
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UsersService.UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     ///users/userroles/22dc301a-4661-4269-b5ba-88a5420bbcfa/
@@ -121,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Edit(string id, ManageMessageId? Message = null)
         {
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
+            var user = UsersService.GetUser(id);
             var model = new EditUserViewModel();
             model.FirstName = user.FirstName;
             model.LastName = user.LastName;
@@ -187,7 +147,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             return View(model);
         }
-
+      
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
@@ -196,7 +156,6 @@ namespace EImece.Areas.Admin.Controllers
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             ApplicationDbContext.Users.Remove(user);
             ApplicationDbContext.SaveChanges();
-            CustomerService.DeleteByUserId(user.Id);
             return RedirectToAction("Index");
         }
 

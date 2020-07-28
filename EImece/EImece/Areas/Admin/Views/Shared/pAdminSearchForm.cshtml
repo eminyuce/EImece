@@ -6,6 +6,8 @@
     string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
     string search = @Request.QueryString["search"].ToStr();
+    string idValue = ViewContext.RouteData.Values["id"].ToStr();
+    var IdValueExists = ViewData["IdValueExists"].ToBool(false);
     var gridSearchButtonText = AdminResource.GridSearchButtonText;
     var clear = AdminResource.Clear;
 }
@@ -23,7 +25,7 @@
                     <button class="btn btn-primary" id="SearchButton" type="submit">@gridSearchButtonText</button>
                     @if (!String.IsNullOrEmpty(search))
                     {
-                        @Html.ActionLink(clear, action, controller, new { search = "", id = "" }, new {  @class = "btn btn-default" })
+                        @Html.ActionLink(clear, action, controller, new { search = "", id = IdValueExists ? idValue : ""  }, new {  @class = "btn btn-default" })
                     }
                 </div>
             </div><!-- /input-group -->
