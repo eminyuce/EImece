@@ -23,12 +23,12 @@
 
     <figure>
         <div class="portfolio-holder">
-            <a title="@product.Name" href="@product.GetDetailPageUrl("Detail", "Products", categoryName, AppConfig.HttpProtocol)">
+            <a title="@product.Name" href="@product.DetailPageUrl">
                 @Html.Raw(productImageTag)
                 <div class="hover-icon"></div>
             </a>
         </div>
-        <a href="@product.GetDetailPageUrl("Detail", "Products", categoryName, AppConfig.HttpProtocol)">
+        <a href="@product.DetailPageUrl">
             <section class="item-description">
 
                 <span>@product.Name

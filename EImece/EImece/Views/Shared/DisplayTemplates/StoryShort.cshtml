@@ -17,7 +17,7 @@
         @*@Html.Raw(story.GetThumpImageTag())*@
         @Html.Raw(story.GetCroppedImageTag(Width, Height))
 
-        <a href="@story.GetDetailPageUrl("Detail","Stories",story.StoryCategory.Name)">
+        <a href="@story.DetailPageUrl">
             @Html.DisplayFor(model => story.Name)
             @if (isUserAuthenticated)
             {

@@ -35,7 +35,7 @@ namespace EImece.Domain.Entities
         public double? DiscountPercantage { get; set; }
 
         [NotMapped]
-        public String ProductCategoryLink  
+        public string ProductCategoryLink  
         {
             get
              {
@@ -43,7 +43,15 @@ namespace EImece.Domain.Entities
                 return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl()});
              }
         }
-            
+        [NotMapped]
+        public string DetailPageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Category", "productCategories");
+            }
+        }
+
 
         public Template Template { get; set; }
     }

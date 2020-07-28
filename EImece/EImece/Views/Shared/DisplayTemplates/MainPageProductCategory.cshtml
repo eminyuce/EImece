@@ -11,7 +11,7 @@
     var imageTag = productCategory.GetCroppedImageTag(Width, Height);
 }
 <div class="one-third column">
-    <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")" class="img-caption">
+    <a href="@productCategory.DetailPageUrl" class="img-caption">
         <figure>
             @Html.Raw(imageTag)
             <figcaption>

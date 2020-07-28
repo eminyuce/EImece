@@ -1,6 +1,8 @@
-﻿using Resources;
+﻿using EImece.Domain.Helpers.Extensions;
+using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -16,5 +18,14 @@ namespace EImece.Domain.Entities
         public StoryCategory StoryCategory { get; set; }
         public ICollection<StoryTag> StoryTags { get; set; }
         public ICollection<StoryFile> StoryFiles { get; set; }
+
+        [NotMapped]
+        public string DetailPageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Detail", "Stories", StoryCategory.Name);
+            }
+        }
     }
 }

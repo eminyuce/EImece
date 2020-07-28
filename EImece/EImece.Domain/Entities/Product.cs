@@ -1,8 +1,10 @@
-﻿using Resources;
+﻿using EImece.Domain.Helpers.Extensions;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
@@ -47,5 +49,15 @@ namespace EImece.Domain.Entities
         public ICollection<ProductFile> ProductFiles { get; set; }
         public ICollection<ProductTag> ProductTags { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
+
+        [NotMapped]
+        public string DetailPageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name, AppConfig.HttpProtocol);
+            }
+        }
+
     }
 }
