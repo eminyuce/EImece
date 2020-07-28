@@ -10,7 +10,7 @@
     ShoppingCartSession shoppingCart = Model;
 }
 
-@if (shoppingCart != null && !shoppingCart.ShoppingCartItems.IsNullOrEmpty())
+@if (shoppingCart != null && shoppingCart.ShoppingCartItems.IsNotEmpty())
 {
     var products = shoppingCart.ShoppingCartItems;
     var customer = shoppingCart.Customer;

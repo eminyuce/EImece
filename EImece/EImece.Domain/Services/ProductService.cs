@@ -86,7 +86,8 @@ namespace EImece.Domain.Services
         {
             var result = new ProductAdminModel();
             result.Products = this.GetAdminPageList(categoryId, search, lang);
-            result.ProductCategoryTree = ProductCategoryService.CreateProductCategoryTreeViewDataList(lang);
+            result.ProductCategoryTree = ProductCategoryService.BuildTree(null, lang);
+
             if (productId > 0)
             {
                 result.Product = ProductRepository.GetProduct(productId);

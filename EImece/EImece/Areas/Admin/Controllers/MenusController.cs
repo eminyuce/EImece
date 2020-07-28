@@ -27,7 +27,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
             var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
+            ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
             return View(menus);
         }
@@ -38,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SaveOrEdit(int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<Menu>();
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
+            ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
@@ -91,7 +91,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
-            ViewBag.Tree = MenuService.CreateMenuTreeViewDataList(null, CurrentLanguage);
+            ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
             if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
             {

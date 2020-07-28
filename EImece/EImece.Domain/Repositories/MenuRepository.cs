@@ -2,7 +2,6 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
-using SharkDev.Web.Controls.TreeView.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,18 +37,6 @@ namespace EImece.Domain.Repositories
                 GetTreeview(list, i, ref returnList);
             }
             return returnList;
-        }
-
-        public List<Node> CreateMenuTreeViewDataList(bool? isActive, int language)
-        {
-            List<Node> _lstTreeNodes = new List<Node>();
-            List<Menu> menus = GetActiveBaseContents(isActive, language);
-            foreach (var p in menus.OrderBy(r => r.Position))
-            {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = p.Name, ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
-            }
-
-            return _lstTreeNodes;
         }
 
         public Menu GetMenuById(int menuId)

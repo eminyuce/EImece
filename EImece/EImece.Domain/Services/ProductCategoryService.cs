@@ -5,7 +5,6 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
-using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -38,11 +37,6 @@ namespace EImece.Domain.Services
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
-        }
-
-        public List<Node> CreateProductCategoryTreeViewDataList(int language)
-        {
-            return ProductCategoryRepository.CreateProductCategoryTreeViewDataList(language);
         }
 
         public ProductCategory GetProductCategory(int categoryId)

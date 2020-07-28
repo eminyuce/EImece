@@ -4,7 +4,6 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository.EntityFramework.Enums;
-using SharkDev.Web.Controls.TreeView.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,21 +59,6 @@ namespace EImece.Domain.Repositories
                 GetTreeview(list, i, level);
             }
             return returnList;
-        }
-
-        public List<Node> CreateProductCategoryTreeViewDataList(int language)
-        {
-            var pcList = GetAll();
-            pcList = pcList.Where(r => r.Lang == language);
-            List<Node> _lstTreeNodes = new List<Node>();
-            var prod = pcList.OrderBy(r => r.Position).Select(c => new { c.Id, c.ParentId, c.Name, ProductCount = c.Products.Count() });
-
-            foreach (var p in prod.ToList())
-            {
-                _lstTreeNodes.Add(new Node() { Id = p.Id.ToStr(), Term = String.Format("{0} ({1})", p.Name, p.ProductCount), ParentId = p.ParentId > 0 ? p.ParentId.ToStr() : "" });
-            }
-
-            return _lstTreeNodes;
         }
 
         public ProductCategory GetProductCategory(int categoryId)

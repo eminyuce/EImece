@@ -90,7 +90,7 @@
 
 @helper  CreateProductWidget(String title, List<Product> products)
 {
-    if (!products.IsNullOrEmpty())
+    if (products.IsNotEmpty())
     {
         <div class="col-md-4 col-sm-6 mb-2 py-3">
             <div class="widget widget-featured-entries">

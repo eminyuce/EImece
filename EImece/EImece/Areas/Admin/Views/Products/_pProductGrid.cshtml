@@ -1,6 +1,6 @@
 ﻿@model List<Product>
 @using EImece.Domain.Helpers;
-@using SharkDev.MVC
+
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
@@ -139,7 +139,7 @@
                                       .Titled(AdminResource.CreatedDate)
                                   .Sortable(true)
                                   .Css("gridDateClass")
-                                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.Value.ToShortDateString()) : null)
+                                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
                                   .SortInitialDirection(GridSortDirection.Descending);
 
                            columns.Add()

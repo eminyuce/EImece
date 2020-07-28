@@ -1,14 +1,11 @@
 ﻿@model List<Menu>
-@using SharkDev.MVC;
 @using EImece.Domain.Helpers;
-@using SharkDev.MVC
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
-@using SharkDev.Web.Controls.TreeView.Model;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -20,7 +17,6 @@
     var gridName = "MenusGrid";
     List<Menu> contents = Model;
     var baseList = contents.DownCasting<Menu>();
-    var treeNodeList = (List<Node>)ViewBag.Tree;
 
     var menuTreeNodeList = (List<Menu>)ViewBag.MenuLeaves;
     var gridImagesText = AdminResource.GridImagesText;
@@ -28,8 +24,10 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
-
+    List<Menu> MenuTree = ViewBag.MenuTree;
 }
+
+
 
 <h2>@AdminResource.Menu</h2>
 <hr class="adminLine" />
@@ -37,20 +35,9 @@
 
     <div class="col-md-2">
 
-        @Html.SharkDev().TreeView(settings =>
-   {
-       settings.Id = "treeViewContainer";
-       settings.Header.Expanded = true;
-       settings.ClientHandlers.ContentSelect = @"function (e)
-{
-console.log(e);
-window.location='/admin/menus/saveoredit/'+e.id;
-}";
-       //settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
-       settings.Height = 300;
-       settings.Width = 270;
-       settings.DataOnClient = true;
-   }).GetContent(treeNodeList)
+        @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
+                           {"UrlPattern","/admin/menus/saveoredit/"}
+                         ,{"IsExcelButtonEnabled",true}})
 
         <span id="treeClickContainer"></span>
     </div>
@@ -199,3 +186,4 @@ window.location='/admin/menus/saveoredit/'+e.id;
         }
     </div>
 }
+

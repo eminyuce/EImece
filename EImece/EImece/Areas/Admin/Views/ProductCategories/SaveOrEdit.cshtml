@@ -1,8 +1,6 @@
 ﻿@model EImece.Domain.Entities.ProductCategory
 @using EImece.Domain.Entities;
-@using SharkDev.MVC
 @using EImece.Domain.Models.Enums;
-@using SharkDev.Web.Controls.TreeView.Model;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
 
@@ -12,7 +10,6 @@
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentCategory = (ProductCategory)ViewBag.ParentCategory;
-    var productTree = (List<Node>)ViewBag.Tree;
     var templates = (List<SelectListItem>)ViewBag.Templates;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;

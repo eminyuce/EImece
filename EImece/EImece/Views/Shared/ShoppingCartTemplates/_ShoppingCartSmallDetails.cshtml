@@ -14,7 +14,7 @@
 
 }
 
-@if (shoppingCart != null && !shoppingCart.ShoppingCartItems.IsNullOrEmpty())
+@if (shoppingCart != null && shoppingCart.ShoppingCartItems.IsNotEmpty())
 {
     <div data-toggle="modal" id="shoppingCartModal" class="modal fade">
         <div class="modal-header">
