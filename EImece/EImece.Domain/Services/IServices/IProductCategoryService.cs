@@ -9,7 +9,7 @@ namespace EImece.Domain.Services.IServices
     {
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
 
-        List<Node> CreateProductCategoryTreeViewDataList(int language);
+        List<Node> CreateProductCategoryTreeViewDataList(int language); //TODO: Remove
 
         ProductCategory GetProductCategory(int categoryId);
 

@@ -22,7 +22,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index(String search = "")
         {
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             var productCategories = ProductCategoryService.GetAdminProductCategories(search, CurrentLanguage);
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
             var parentCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             if (id == 0)
             {
@@ -100,7 +100,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ViewBag.Tree = ProductCategoryService.CreateProductCategoryTreeViewDataList(CurrentLanguage);
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             RemoveModelState();
             return View(productCategory);

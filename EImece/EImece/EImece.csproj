@@ -163,12 +163,6 @@
       <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharkDev.MVC, Version=1.4.2.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharkTree.1.4.2.3\lib\SharkDev.MVC.dll</HintPath>
-    </Reference>
-    <Reference Include="SharkDev.Web.Controls, Version=1.4.2.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharkTree.1.4.2.3\lib\SharkDev.Web.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -438,7 +432,6 @@
     <Content Include="Content\FileUpload\styles.css" />
     <Content Include="Content\FileUpload\styles.min.css" />
     <Content Include="Content\Gridmvc.css" />
-    <Content Include="Content\Images\SharkDev.TreeView.png" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-noscript.css" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui-noscript.css" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui.css" />
@@ -760,7 +753,6 @@
     <Content Include="Content\mstore\js\prism.min.js" />
     <Content Include="Content\mstore\js\theme.min.js" />
     <Content Include="Content\mstore\js\vendor.min.js" />
-    <Content Include="Content\SharkDev.TreeView.css" />
     <Content Include="Content\sonic\blue-circle-loader-spritesheet.png" />
     <Content Include="Content\sonic\sonic-bluecircle.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -1055,7 +1047,6 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\restangular.min.js" />
-    <Content Include="Scripts\SharkDev.treeView.js" />
     <Content Include="Scripts\trizzy\scripts\custom.js" />
     <Content Include="Scripts\trizzy\scripts\hoverIntent.js" />
     <Content Include="Scripts\trizzy\scripts\jquery-2.1.0.min.js" />

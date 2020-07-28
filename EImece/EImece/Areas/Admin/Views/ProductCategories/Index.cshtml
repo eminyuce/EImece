@@ -8,6 +8,7 @@
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Entities;
+@using EImece.Domain.Models.FrontModels;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -26,6 +27,8 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
 
+    List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
+
 }
 
 <h2>@AdminResource.ProductCategory</h2>
@@ -34,18 +37,10 @@
 <div class="row" style="padding:20px;">
 
     <div class="col-md-2">
-        @Html.SharkDev().TreeView(settings =>
-    {
-        settings.Id = "treeViewContainer";
-        settings.Header.Text = "Tree root - Animal";
-        settings.Header.Visible = false;
-        settings.Header.Expanded = true;
-        settings.ClientHandlers.ContentSelect = "function (e) { window.location='/admin/productcategories/saveoredit/'+e.id; console.log(e); }";
-        settings.AutoCompleteHandler = Url.Content("~/Home/GetBySample");
-        settings.Height = 300;
-        settings.Width = 270;
-        settings.DataOnClient = true;
-    }).GetContent(ViewBag.Tree)
+
+        @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
+                    {"UrlPattern","/admin/productcategories/saveoredit/"}
+                  ,{"IsExcelButtonEnabled",true}})
 
         <span id="treeClickContainer"></span>
     </div>
@@ -77,9 +72,9 @@
                       .Sanitized(false)
                       .SetWidth(30)
                       .RenderValueAs(d =>
-                                            @<b>
-                                                @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
-                                            </b>);
+                                                @<b>
+                                                    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
+                                                </b>);
 
        if (UserRoleHelper.IsDeletedEnableRoles())
        {
@@ -88,9 +83,9 @@
                     .Sanitized(false)
                     .SetWidth(30)
                     .RenderValueAs(d =>
-                    @<b>
-                        @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
-                    </b>
+                        @<b>
+                            @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
+                        </b>
 );
 }
 
