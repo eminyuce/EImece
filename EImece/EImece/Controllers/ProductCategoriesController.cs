@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
+using GenericRepository;
 using NLog;
 using System;
 using System.Net;
@@ -23,7 +24,7 @@ namespace EImece.Controllers
 
         [Route("category/{id}")]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Category(String id)
+        public ActionResult Category(String id, int pageIndex=0)
         {
             try
             {
@@ -31,10 +32,11 @@ namespace EImece.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-
+                 
                 var categoryId = id.GetId();
 
                 ProductCategoryViewModel productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
+                productCategory.PageIndex = pageIndex;
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
                 return View(productCategory);
             }
