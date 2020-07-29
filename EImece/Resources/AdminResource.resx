@@ -816,6 +816,9 @@
   <data name="IdentityNumber" xml:space="preserve">
     <value>Kimlik Numarası</value>
   </data>
+  <data name="PinterestWebSiteLink" xml:space="preserve">
+    <value>Pinterest Link</value>
+  </data>
   <data name="Street" xml:space="preserve">
     <value>Sokak</value>
   </data>

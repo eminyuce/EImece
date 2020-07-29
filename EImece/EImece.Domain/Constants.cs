@@ -31,10 +31,12 @@
         public const string AboutUs = "AboutUs";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
-        public const string InstagramWebSiteLink = "InstagramWebSiteLink";
+        public const string InstagramWebSiteLink = "InstagramWebSiteLink"; 
+        public const string PinterestWebSiteLink = "PinterestWebSiteLink";
         public const string TwitterWebSiteLink = "TwitterWebSiteLink";
         public const string LinkedinWebSiteLink = "LinkedinWebSiteLink";
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
+        public const string YotubeWebSiteLink = "YotubeWebSiteLink";
         public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
         public const string LastVisit = "LastVisit";

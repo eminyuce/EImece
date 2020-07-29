@@ -1,28 +1,44 @@
-﻿@model List<String>
+﻿@using EImece.Domain;
+@model Dictionary<String, String>
+
 @{
-    var InstagramWebSiteLink = Model[0];
-    var TwitterWebSiteLink = Model[1];
-    var LinkedinWebSiteLink = Model[2];
-    var FacebookWebSiteLink = Model[3];
-
+    var dic = Model;
 }
+<!-- social bar  -->
+<div class="d-flex flex-nowrap">
+    @if (ContainsValue(dic, Constants.FacebookWebSiteLink))
+    {
+        <a class="social-btn sb-facebook sb-light sb-sm ml-2" href="@dic[Constants.FacebookWebSiteLink]">
+            <i class="flaticon-facebook"></i><span class="sr-only">Facebook</span>
+        </a>
+    }
+    @if (ContainsValue(dic, Constants.TwitterWebSiteLink))
+    {
+        <a class="social-btn sb-twitter sb-light sb-sm ml-2" href="@dic[Constants.TwitterWebSiteLink]">
+            <i class="flaticon-twitter"></i><span class="sr-only">Twitter</span>
+        </a>
+    }
 
-<ul class="social-icons">
+    @if (ContainsValue(dic, Constants.InstagramWebSiteLink))
+    {
+        <a class="social-btn sb-instagram sb-light sb-sm ml-2" href="@dic[Constants.InstagramWebSiteLink]">
+            <i class="flaticon-instagram">
+            </i><span class="sr-only">Instagram</span>
+        </a>
+    }
+    @if (ContainsValue(dic, Constants.PinterestWebSiteLink))
+    {
 
-    @if (!String.IsNullOrEmpty(FacebookWebSiteLink))
-    {
-        <li><a class="facebook" href="@FacebookWebSiteLink"><i class="icon-facebook"></i></a></li>
+        <a class="social-btn sb-pinterest sb-light sb-sm ml-2" href="@dic[Constants.PinterestWebSiteLink]">
+            <i class="flaticon-pinterest"></i>
+            <span class="sr-only">Pinterest</span>
+        </a>
     }
-    @if (!String.IsNullOrEmpty(InstagramWebSiteLink))
+</div>
+@functions {
+
+    public static bool ContainsValue(Dictionary<String, String> dic, String key)
     {
-        <li><a class="instagram" href="@InstagramWebSiteLink"><i class="icon-instagram"></i></a></li>
+        return dic.ContainsKey(key) && !string.IsNullOrEmpty(dic[key]);
     }
-    @if (!String.IsNullOrEmpty(TwitterWebSiteLink))
-    {
-        <li><a class="twitter" href="@TwitterWebSiteLink"><i class="icon-twitter"></i></a></li>
-    }
-    @if (!String.IsNullOrEmpty(LinkedinWebSiteLink))
-    {
-        <li><a class="linkedin" href="@LinkedinWebSiteLink"><i class="icon-linkedin"></i></a></li>
-    }
-</ul>
+}

@@ -61,6 +61,10 @@ namespace EImece.Domain.Models.AdminModels
         public string InstagramWebSiteLink { get; set; }
 
         [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PinterestWebSiteLink))]
+        public string PinterestWebSiteLink { get; set; }
+
+        [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.YoutubeWebSiteLink))]
         public string YoutubeWebSiteLink { get; set; }
 

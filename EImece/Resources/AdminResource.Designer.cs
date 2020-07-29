@@ -1375,6 +1375,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pinterest Link.
+        /// </summary>
+        public static string PinterestWebSiteLink {
+            get {
+                return ResourceManager.GetString("PinterestWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lütfen Menü Kategorinizi Ağaçtan Seçin.
         /// </summary>
         public static string PleaseSelectYourMenuCategoryFromTree {
