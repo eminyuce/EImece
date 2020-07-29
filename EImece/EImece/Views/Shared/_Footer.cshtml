@@ -10,67 +10,6 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 
 }
-<!-- Container -->
-<div class="container">
-
-    <div class="four columns">
-
-        @Html.Partial("_WebSiteLogo",
-       new List<Setting>() { Model.FooterLogo, Model.CompanyName },
-       new ViewDataDictionary(ViewData){
-            {"isThumb","true"}})
-
-        <p class="margin-top-15">
-
-            @Html.Raw(Model.FooterDescription.SettingValue)
-        </p>
-    </div>
-
-    <div class="four columns">
-
-        <!-- Headline -->
-        <h3 class="headline footer">@Resource.Pages</h3>
-        <span class="line"></span>
-        <div class="clearfix"></div>
-
-        <ul class="footer-links">
-            @foreach (var m in Model.Menus)
-            {
-
-                <li>
-                    @Html.Partial("_NavigationMenuLink", m)
-                </li>
-            }
-        </ul>
-    </div>
-
-    <div class="four columns">
-        <!-- Headline -->
-        <h3 class="headline footer">@Resource.Products</h3>
-        <span class="line"></span>
-        <div class="clearfix"></div>
-        <ul class="footer-links">
-          
-        </ul>
-    </div>
-    <div class="four columns">
-
-        <!-- Headline -->
-        <h3 class="headline footer">@Resource.EmailList</h3>
-        <span class="line"></span>
-        <div class="clearfix"></div>
-        <p>
-
-            @Html.Raw(Model.FooterEmailListDescription.SettingValue)
-        </p>
-        <div>
-            <br />
-            <br />
-           
-        </div>
-    </div>
-</div>
-
 <!-- Footer-->
 <footer class="page-footer bg-dark">
     <!-- first row-->

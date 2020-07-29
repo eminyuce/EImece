@@ -172,41 +172,40 @@
         </div>
     </div>
     @Html.Raw(Html.Action("Navigation", "Home"))
-    @Html.Action("ProductCategoryTree", "Home")
+ 
 
 
-    @*
+@*
 
 
-            @Html.Action("WebSiteAddressInfo", "Home")
-        @Html.Action("Languages", "Home")
-        @Html.Action("SocialMediaLinks", "Home")
-            @Html.Action("WebSiteLogo", "Home")
+        @Html.Action("WebSiteAddressInfo", "Home")
+    @Html.Action("Languages", "Home")
+    @Html.Action("SocialMediaLinks", "Home")
+        @Html.Action("WebSiteLogo", "Home")
 
-        @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
-        <span id="ShoppingCartsDetail"></span>
-        @Html.Partial("_SearchProductForm")
-          @{Html.RenderAction("ProductTree", "Home"); }
-
-
-
-
-    *@
-
-    @RenderBody()
-    @Html.Action("Footer", "Home")
+    @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+    <span id="ShoppingCartsDetail"></span>
+    @Html.Partial("_SearchProductForm")
+      @{Html.RenderAction("ProductTree", "Home"); }
 
 
 
-    @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
 
-    <!-- Java Script
-    ================================================== -->
-    @*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script*@
+*@
+
+@RenderBody()
+@Html.Action("Footer", "Home")
+
+
+
+@Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
+
+< !--Java Script
+================================================== -->
+@*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script*@
 
     <!-- Back To Top Button--><a class="scroll-to-top-btn" href="#"><i class="scroll-to-top-btn-icon" data-feather="chevron-up"></i></a>
     <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
-    <script src="~/Content/mstore/js/vendor.min.js"></script>
     <script src="~/Content/mstore/js/vendor.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
@@ -217,31 +216,31 @@
 
     <script src="~/Scripts/cookie-consent.js?v=1"></script>
     <script>
-                                        CookieConsent();
-            GetShoppingCartLinks();
+        CookieConsent();
+        GetShoppingCartLinks();
 
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                $("#AddToCart").click(function () {
-                    var orderGuid = getCookie("orderGuid");
-                    if (orderGuid != "") {
+            $("#AddToCart").click(function () {
+                var orderGuid = getCookie("orderGuid");
+                if (orderGuid != "") {
 
-                    } else {
-                        orderGuid = createUUID();
-                        setCookie("orderGuid", orderGuid, 365);
-                    }
-                    var postData = JSON.stringify({
-                        productId: $("#productId").val(),
-                        quantity: $("#quantity").val(),
-                        orderGuid: orderGuid
-                    });
-                    console.log(postData);
-                    ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-                        GetShoppingCartLinks();
-                    });
+                } else {
+                    orderGuid = createUUID();
+                    setCookie("orderGuid", orderGuid, 365);
+                }
+                var postData = JSON.stringify({
+                    productId: $("#productId").val(),
+                    quantity: $("#quantity").val(),
+                    orderGuid: orderGuid
                 });
-
+                console.log(postData);
+                ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
+                    GetShoppingCartLinks();
+                });
             });
+
+        });
     </script>
 </body>
 </html>
