@@ -15,71 +15,488 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
-@Html.Partial("_ProductTitleBar", new ViewDataDictionary(ViewData){
-                              {"ProductMenu",Model.ProductMenu}, {"MainPageMenu",Model.MainPageMenu } })
-
-<div class="container">
-    <div class="four columns">
-
-        <div class="widget margin-top-0">
-            <h3 class="headline"> @Resource.Products</h3><span class="line"></span><div class="clearfix">
-            </div>
-
-            @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
-
-            <div class="clearfix"></div>
-        </div>
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="mt-n1 mr-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></li>
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Shop</a>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="page-title">Shop style 2 <span class="lead font-weight-semibold text-muted">(Left sidebar)</span></h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
     </div>
-    <div class="twelve columns products">
+</div>
 
-        <div class="widget margin-top-0">
-            <h3 class="headline">
-                @category.Name
-                @if (isUserAuthenticated)
-                {
-                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { @class = "adminPageLink" })
-                }
-            </h3>
-            <span class="line"></span>
-            <div class="clearfix">
+<div class="container pb-5 mb-4">
+    <div class="row">
+        <div class="col-lg-3">
+            <!-- Shop sidebar-->
+            <div class="offcanvas-sidebar">
+                <div class="offcanvas-sidebar-toggle"><span class="toggle-knob">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                         class="feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline>
+                    <polyline points="6 17 11 12 6 7"></polyline></svg>Sidebar</span>
+                </div>
+                <div class="offcanvas-sidebar-body">
+                    <div class="offcanvas-sidebar-body-inner">
+                        
+                        @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
+                        <!-- Price range-->
+                        <div class="widget mb-4 pb-3">
+                            <h3 class="widget-title">Price range</h3>
+                            <form class="range-slider" data-start-min="250" data-start-max="650" data-min="0" data-max="1000" data-step="1">
+                                <div class="ui-range-slider noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-connects"><div class="noUi-connect" style="transform: translate(25%, 0px) scale(0.4, 1);"></div></div><div class="noUi-origin" style="transform: translate(-75%, 0px); z-index: 5;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="650.0" aria-valuenow="250.0" aria-valuetext="250.00"></div></div><div class="noUi-origin" style="transform: translate(-35%, 0px); z-index: 4;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="250.0" aria-valuemax="1000.0" aria-valuenow="650.0" aria-valuetext="650.00"></div></div></div></div>
+                                <footer class="ui-range-slider-footer">
+                                    <div class="column">
+                                        <button class="btn btn-outline-primary btn-sm" type="submit">Filter</button>
+                                    </div>
+                                    <div class="column">
+                                        <div class="ui-range-values">
+                                            <div class="ui-range-label">Price:</div>
+                                            <div class="ui-range-value-min">
+                                                $<span>250</span>
+                                                <input type="hidden" value="250">
+                                            </div>&nbsp;–&nbsp;
+                                            <div class="ui-range-value-max">
+                                                $<span>650</span>
+                                                <input type="hidden" value="650">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </form>
+                        </div>
+                        <!-- Price filter    -->
+                        <div class="widget mb-4 pb-1">
+                            <h3 class="widget-title">Filter by price</h3>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="price-1">
+                                <label class="custom-control-label" for="price-1">$10 - $50<span class="text-muted ml-1">(208)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="price-2">
+                                <label class="custom-control-label" for="price-2">$50 - $100<span class="text-muted ml-1">(311)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="price-3">
+                                <label class="custom-control-label" for="price-3">$100 - $500<span class="text-muted ml-1">(485)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="price-4">
+                                <label class="custom-control-label" for="price-4">$500 - $1,000<span class="text-muted ml-1">(213)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="xs">
+                                <label class="custom-control-label" for="xs">$1,000 - $5,000<span class="text-muted ml-1">(197)</span></label>
+                            </div>
+                        </div>
+                        <!-- Brand filter    -->
+                        <div class="widget mb-4 pb-1">
+                            <h3 class="widget-title">Filter by brand</h3>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="apple">
+                                <label class="custom-control-label" for="apple">Apple<span class="text-muted ml-1">(254)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="bosh">
+                                <label class="custom-control-label" for="bosh">Bosh<span class="text-muted ml-1">(39)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="canon">
+                                <label class="custom-control-label" for="canon">Canon Inc.<span class="text-muted ml-1">(128)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="dell">
+                                <label class="custom-control-label" for="dell">Dell<span class="text-muted ml-1">(310)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="hp">
+                                <label class="custom-control-label" for="hp">Hewlett-Packard<span class="text-muted ml-1">(46)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="hitachi">
+                                <label class="custom-control-label" for="hitachi">Hitachi<span class="text-muted ml-1">(217)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="lg">
+                                <label class="custom-control-label" for="lg">LG Electronics<span class="text-muted ml-1">(310)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="panasonic">
+                                <label class="custom-control-label" for="panasonic">Panasonic<span class="text-muted ml-1">(74)</span></label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input class="custom-control-input" type="checkbox" id="sony">
+                                <label class="custom-control-label" for="sony">Sony<span class="text-muted ml-1">(235)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        @foreach (var productCategory in Model.ChildrenProductCategories)
-        {
-
-            <div class="four shop columns">
-                <a href="@productCategory.GetDetailPageUrl("Category", "productCategories")">
-                    <figure>
-                        @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
-                        <figcaption>
-                            <h3>
-                                @productCategory.Name
-                            </h3>
-                            <span>@Resource.NewModelsClick</span>
-                        </figcaption>
-                    </figure>
-                </a>
+        <div class="col-lg-9">
+            <!-- Toolbar-->
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                        <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
+                        <select class="form-control custom-select" id="sorting">
+                            <option>Popularity</option>
+                            <option>Low - Hight Price</option>
+                            <option>High - Low Price</option>
+                            <option>Average Rating</option>
+                            <option>A - Z Order</option>
+                            <option>Z - A Order</option>
+                        </select>
+                    </div>
+                    <div class="form-inline flex-nowrap pb-3">
+                        <label class="mr-2 d-none d-sm-block" for="number">Show:</label>
+                        <select class="form-control custom-select mr-sm-2" id="number">
+                            <option>12</option>
+                            <option>24</option>
+                            <option>48</option>
+                            <option>96</option>
+                        </select><small class="form-text text-muted text-nowrap d-none d-sm-block">from 860</small>
+                    </div>
+                </div>
+                <div class="form-inline d-none d-md-flex flex-nowrap pb-3">
+                    <label class="mr-2" for="pager">Page:</label>
+                    <input class="form-control mr-2" type="number" id="pager" value="2" style="width: 4rem;"><span class="form-text">/ 30</span>
+                </div>
             </div>
-
-        }
-
-        <div class="clearfix"></div>
-
-        @if (products.Any())
-        {
-
-            foreach (var p in products)
-            {
-
-                @Html.DisplayFor(modelItem => p, "MainPageProduct")
-            }
-
-        }
-        else
-        {
-
-            <div class="container">Bu kategoriye eklenmiş bir ürün yoktur.</div>
-        }
+            <!-- Products grid-->
+            <div class="row no-gutters">
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/01.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Headphones</a>
+                                <div class="star-rating">
+                                    <span class="sr-label mr-1">4.7</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                            </div>
+                            <h3 class="product-card-title">
+                                <a href="shop-single-electronics.html">Sony WH-CH700N Wireless Noise Canceling Headphones, Black</a>
+                            </h3><span class="text-primary">$198.00</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Digital noise cancelling</li>
+                                <li>AI powered</li>
+                                <li>Hands free calling</li>
+                                <li>Long battery life</li>
+                                <li>Wireless bluetooth</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/02.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Computers</a>
+                                <div class="star-rating"><span class="sr-label mr-1">3.9</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Apple AirPort Extreme Base Station ME918LL (Refurbished)</a></h3><span class="text-primary">$129.00</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Ultrafast 802.11ac Wi-Fi</li>
+                                <li>Easy setup for iOS and OS X</li>
+                                <li>Share your hard drive</li>
+                                <li>Compatibility and security</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/03.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1"><a class="product-meta" href="#">Cameras</a></div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Samsung Gear 360 SM-R210 (2017 Edition) Spherical Cam 360 degree 4K Camera</a></h3><span class="text-primary">$107.95</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>4096x2048@24fps 360 video/ 15MP</li>
+                                <li>360 still image</li>
+                                <li>Dual CMOS 8.4MP, Dual F2.2 </li>
+                                <li>Built-in 1,160mAh</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="badge badge-danger rounded-0">Sale -40%</span><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/04.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Smart home</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.2</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</a></h3><span class="text-primary">
+                                <del class="text-muted mr-1">$49.99</del>$29.99
+                            </span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>4096x2048@24fps 360 video/ 15MP</li>
+                                <li>360 still image</li>
+                                <li>Dual CMOS 8.4MP, Dual F2.2 </li>
+                                <li>Built-in 1,160mAh</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/05.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Wearable electronics</a>
+                                <div class="star-rating"><span class="sr-label mr-1">3.6</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Fitbit Ionic GPS Smart Watch, Charcoal/Smoke Gray, One Size</a></h3><span class="text-primary">$317.40</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Track your all-day activity</li>
+                                <li>Use 15+ exercise modes</li>
+                                <li>Access your favorite apps for sport</li>
+                                <li>Get call, text, calendar notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/06.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Smartphones</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.5</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Apple - iPhone XS 128GB - Space Gray</a></h3><span class="text-primary">$1,049.99</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>5.8-inch Super Retina display </li>
+                                <li>IP68 dust and water resistant</li>
+                                <li>12MP dual cameras</li>
+                                <li>A12 Bionic with next-generation Neural Engine</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="badge badge-success rounded-0">★ Top seller</span><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/07.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Wearable electronics</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.3</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Apple Watch Series 4 (GPS, 44mm) - Silver Aluminium Case</a></h3><span class="text-primary">$399.00</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>GPS</li>
+                                <li>Over 30% larger display</li>
+                                <li>Electrical and optical heart sensors</li>
+                                <li>Digital Crown with haptic feedback</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/08.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1"><a class="product-meta" href="#">Computers</a></div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Acer R11 11.6" Convertible 2-in-1 HD Touchscreen (2019)</a></h3><span class="text-primary">$339.00</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>4GB DD3; 32 GB eMMC</li>
+                                <li>11.6" HD Widescreen LED-backlit Display</li>
+                                <li>Multi-touch screen</li>
+                                <li>Intel Celeron N3150 Quad-Core Processor 1.6GHz</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="badge badge-danger rounded-0">Sale -24%</span><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/09.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">TV, Video &amp; Audio</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.1</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Xiaomi Mi Box S with Google Assistant Remote Official International</a></h3><span class="text-primary">
+                                <del class="text-muted mr-1">$90.43</del>$68.99
+                            </span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Quad Core Cortex-A53 64bit 2.0GH</li>
+                                <li>8GB eMMC5.0 high speed flash memory</li>
+                                <li>Low Power Bluetooth 4.1</li>
+                                <li>Android TV 7.1</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/10.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Printers &amp; Ink</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.8</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">HP Laserjet Pro M281fdw All in One Wireless Color Laser Printer</a></h3><span class="text-primary">$428.60</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Big performance in a small package</li>
+                                <li>Fast print speeds</li>
+                                <li>Print from mobile device</li>
+                                <li>Wireless connectivity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Promo banner--><a class="col-xl-6 col-sm-8 promo-banner border border-collapse bg-size-cover bg-position-center d-none d-sm-block" href="#" style="background-image: url(img/shop/banner02.jpg);"></a>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/11.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1"><a class="product-meta" href="#">TV, Video &amp; Audio</a></div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">SONY Smart TV LED 49" Ultra HD 4K</a></h3><span class="text-muted">Out of stock</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <a class="btn btn-primary btn-sm btn-block" href="shop-single-electronics.html">Pre-order</a><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Beyond high definition: 4K HDTV</li>
+                                <li>X1 Extreme Processor</li>
+                                <li>Voice assistant</li>
+                                <li>Multiple inputs: 4 HDMI, 2 USB2.0, 1 USB3.0</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="badge badge-danger rounded-0">Sale -10%</span><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/12.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Video games</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.5</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">PS4 Controller Charger, Dual Shock USB Charger Charging Docking Station</a></h3><span class="text-primary">
+                                <del class="text-muted mr-1">$16.47</del>$14.97
+                            </span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>Quad Core Cortex-A53 64bit 2.0GH</li>
+                                <li>8GB eMMC5.0 high speed flash memory</li>
+                                <li>Low Power Bluetooth 4.1</li>
+                                <li>Android TV 7.1</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/13.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1"><a class="product-meta" href="#">Computers</a></div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Apple iMac (27-inch Retina 5K display: 3.8GHz quad-core Intel Core i5, 8GB RAM, 2TB)</a></h3><span class="text-primary">$1,949.00</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>27-Inch 5120-by-2880 Retina 5K display</li>
+                                <li>Quad-core Intel Core i5 Processor</li>
+                                <li>Two Thunderbolt 3 (USB-C) ports</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product-->
+                <div class="col-xl-3 col-sm-4 col-6 border border-collapse">
+                    <div class="product-card">
+                        <div class="product-thumb"><a class="product-thumb-link" href="shop-single-electronics.html"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="" data-original-title="Add to wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span><img src="img/shop/electronics/14.jpg" alt="Product"></div>
+                        <div class="product-card-body">
+                            <div class="d-flex flex-wrap justify-content-between pb-1">
+                                <a class="product-meta" href="#">Cameras</a>
+                                <div class="star-rating"><span class="sr-label mr-1">4.2</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star sr-star active"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            </div>
+                            <h3 class="product-card-title"><a href="shop-single-electronics.html">Nikon COOLPIX B500 Digital Camera (Plum)</a></h3><span class="text-primary">$249.00</span>
+                        </div>
+                        <div class="product-card-body body-hidden pt-2">
+                            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat mr-1"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Compare</a>
+                            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                                <li>16MP 1/2.3" BSI CMOS Sensor</li>
+                                <li>22.5-900mm (35mm Equivalent)</li>
+                                <li>3" 921k-Dot Tilting LCD</li>
+                                <li>Bluetooth (BLE), Wi-Fi, NFC Connectivity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pb-4 mb-2"></div>
+            <!-- Pagination-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center justify-content-sm-start mb-0">
+                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                    <li class="page-item d-sm-none"><span class="page-link page-link-static">2 / 5</span></li>
+                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">2<span class="sr-only">(current)</span></span></li>
+                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item d-none d-sm-block">...</li>
+                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">10</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>

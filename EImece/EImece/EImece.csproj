@@ -1155,6 +1155,11 @@
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartProducts.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FeaturedProductItem.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pOrderDetail.cshtml" />
+    <Content Include="Views\Shared\SignInOrSignUp\_SignInOrSignUp.cshtml" />
+    <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartSmall.cshtml" />
+    <Content Include="Views\Shared\SignInOrSignUp\_SignIn.cshtml" />
+    <Content Include="Views\Shared\SignInOrSignUp\_SignUp.cshtml" />
+    <Content Include="Views\ProductCategories\Category - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

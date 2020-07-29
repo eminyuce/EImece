@@ -1,4 +1,4 @@
-﻿ @using EImece.Domain.Entities;
+﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
@@ -7,17 +7,19 @@
 @{
     var productCategories = Model;
     var firstProductCategory = Model.FirstOrDefault();
-    var level = firstProductCategory!= null ?  firstProductCategory.TreeLevel : -1;
+    var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
 }
 
-<ul class="@String.Format("parent-{0} has-sublist",level)">
+
+
+<ul class="collapse show" id="computers" data-parent="#shopCategories">
     @foreach (var p in productCategories)
     {
-
+        var productCategory = p.ProductCategory;
         if (p.Childrens.Any())
         {
             <li class="@String.Format("child-{0} has-sublist",p.TreeLevel)">
-                @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
+                <a href="@productCategory.DetailPageUrl">@badgeProductNumber(p)</a>
                 @Html.Partial("_ProductCategoryTreeChildrenHeadLine", p.Childrens)
             </li>
 
@@ -25,9 +27,20 @@
         else
         {
 
-            <li>
-                @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
-            </li>
+            <li><a href="@productCategory.DetailPageUrl">@badgeProductNumber(p)</a></li>
         }
     }
 </ul>
+
+
+@helper badgeProductNumber(ProductCategoryTreeModel p)
+{
+    if (p.ProductCount > 0)
+    {
+        @p.Text <span class="badge text-muted ml-1">(@p.ProductCount)</span>
+    }
+    else
+    {
+        @p.Text
+    }
+}

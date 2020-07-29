@@ -1,0 +1,85 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductCategoryViewModel
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using Resources;
+@using EImece.Domain;
+@{
+
+    ProductCategory category = Model.ProductCategory;
+    var products = category.Products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+    var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+
+    ViewBag.Title = category.GetSeoTitle();
+    ViewBag.Description = category.GetSeoDescription();
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+}
+
+@Html.Partial("_ProductTitleBar", new ViewDataDictionary(ViewData){
+                              {"ProductMenu",Model.ProductMenu}, {"MainPageMenu",Model.MainPageMenu } })
+
+<div class="container">
+    <div class="four columns">
+
+        <div class="widget margin-top-0">
+            <h3 class="headline"> @Resource.Products</h3><span class="line"></span><div class="clearfix">
+            </div>
+
+            @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="twelve columns products">
+
+        <div class="widget margin-top-0">
+            <h3 class="headline">
+                @category.Name
+                @if (isUserAuthenticated)
+                {
+                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "ProductCategories", new { @id = category.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                }
+            </h3>
+            <span class="line"></span>
+            <div class="clearfix">
+            </div>
+        </div>
+
+        @foreach (var productCategory in Model.ChildrenProductCategories)
+        {
+
+            <div class="four shop columns">
+                <a href="@productCategory.DetailPageUrl">
+                    <figure>
+                        @Html.Raw(productCategory.GetCroppedImageTag(380, 185))
+                        <figcaption>
+                            <h3>
+                                @productCategory.Name
+                            </h3>
+                            <span>@Resource.NewModelsClick</span>
+                        </figcaption>
+                    </figure>
+                </a>
+            </div>
+
+        }
+
+        <div class="clearfix"></div>
+
+        @if (products.Any())
+        {
+
+            foreach (var p in products)
+            {
+
+                @Html.DisplayFor(modelItem => p, "MainPageProduct")
+            }
+
+        }
+        else
+        {
+
+            <div class="container">Bu kategoriye eklenmiş bir ürün yoktur.</div>
+        }
+    </div>
+</div>
