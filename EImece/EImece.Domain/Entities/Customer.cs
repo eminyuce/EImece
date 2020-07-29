@@ -36,7 +36,7 @@ namespace EImece.Domain.Entities
 
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.M.yyyy}")]
         public DateTime BirthDate { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
