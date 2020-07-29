@@ -11,8 +11,10 @@ namespace EImece.Domain.Entities
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         //   [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string Surname { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string GsmNumber { get; set; }
 
@@ -20,39 +22,41 @@ namespace EImece.Domain.Entities
         //     [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         [EmailAddress]
         [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IdentityNumber))]
         public string IdentityNumber { get; set; }
-
-        //    [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        public string Description { get; set; }
-
         public string Ip { get; set; }
-
-        //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        public string City { get; set; }
-
-        //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        public string Country { get; set; }
-
-        //    [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        public string ZipCode { get; set; }
-
         [NotMapped]
         public bool IsSameAsShippingAddress { get; set; }
 
         public String UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy}")]
         public DateTime BirthDate { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
         public int Gender { get; set; }
-
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Street))]
         public string Street { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.District))]
         public string District { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.City))]
+        public string City { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Country))]
+        public string Country { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ZipCode))]
+        public string ZipCode { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CustomerOpenAddress))]
+        public string Description { get; set; }
 
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]

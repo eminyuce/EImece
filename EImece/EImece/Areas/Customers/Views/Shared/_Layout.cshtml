@@ -17,20 +17,15 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-    <link href="~/Content/SharkDev.TreeView.css?v=1" rel="stylesheet" />
-    <script src="~/Scripts/SharkDev.treeView.js"></script>
-    <script src="~/Scripts/adminEimece.js?v=6"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/gridmvc.js"></script>
     <link href="~/Content/Gridmvc.css?v=1" rel="stylesheet" />
     <link href="~/Content/deleteStyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
     @Styles.Render("~/Content/admincss")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     @RenderSection("styles", required: false)
     @Styles.Render("~/Content/themes/base/css")
@@ -42,7 +37,7 @@
     <script src="~/Content/codemirror/addon/hint/xml-hint.js"></script>
     <!-- Be sure this is after jquery reference -->
     <script src="~/MVCGridHandler.axd/script.js"></script>
-
+    <script src="~/Scripts/adminEimece.js?v=6"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="~/Content/checkBoxStyle.css" rel="stylesheet" />
     <link href="~/Content/adminSite.css" rel="stylesheet" />

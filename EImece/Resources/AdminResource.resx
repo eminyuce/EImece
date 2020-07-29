@@ -801,4 +801,25 @@
   <data name="Reports" xml:space="preserve">
     <value>Raporlar</value>
   </data>
+  <data name="CustomerOpenAddress" xml:space="preserve">
+    <value>Açık Adres</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Şehir</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Ülke</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>İlçe</value>
+  </data>
+  <data name="IdentityNumber" xml:space="preserve">
+    <value>Kimlik Numarası</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Sokak</value>
+  </data>
+  <data name="ZipCode" xml:space="preserve">
+    <value>Posta kodu</value>
+  </data>
 </root>

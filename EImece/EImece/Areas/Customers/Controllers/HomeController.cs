@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -6,6 +7,7 @@ using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
+using Resources;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -64,8 +66,12 @@ namespace EImece.Areas.Customers.Controllers
             }
             else
             {
-                CustomerService.SaveOrEditEntity(customer);
-                return RedirectToAction("Index");
+                var user = UserManager.FindByName(User.Identity.GetUserName());
+                customer.UserId = user.Id;
+                customer.Ip = GeneralHelper.GetIpAddress();
+                customer =  CustomerService.SaveOrEditEntity(customer);
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                return View(customer);
             }
         }
 

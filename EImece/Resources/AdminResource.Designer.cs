@@ -286,6 +286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Şehir.
+        /// </summary>
+        public static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temizle.
         /// </summary>
         public static string Clear {
@@ -358,6 +367,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ülke.
+        /// </summary>
+        public static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oluşturma Tarihi.
         /// </summary>
         public static string CreatedDate {
@@ -381,6 +399,15 @@ namespace Resources {
         public static string CurrentPassword {
             get {
                 return ResourceManager.GetString("CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Açık Adres.
+        /// </summary>
+        public static string CustomerOpenAddress {
+            get {
+                return ResourceManager.GetString("CustomerOpenAddress", resourceCulture);
             }
         }
         
@@ -444,6 +471,15 @@ namespace Resources {
         public static string Discount {
             get {
                 return ResourceManager.GetString("Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İlçe.
+        /// </summary>
+        public static string District {
+            get {
+                return ResourceManager.GetString("District", resourceCulture);
             }
         }
         
@@ -786,6 +822,15 @@ namespace Resources {
         public static string Hello {
             get {
                 return ResourceManager.GetString("Hello", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kimlik Numarası.
+        /// </summary>
+        public static string IdentityNumber {
+            get {
+                return ResourceManager.GetString("IdentityNumber", resourceCulture);
             }
         }
         
@@ -1843,6 +1888,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sokak.
+        /// </summary>
+        public static string Street {
+            get {
+                return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kayıt ol.
         /// </summary>
         public static string String1 {
@@ -2100,6 +2154,15 @@ namespace Resources {
         public static string YoutubeWebSiteLink {
             get {
                 return ResourceManager.GetString("YoutubeWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posta kodu.
+        /// </summary>
+        public static string ZipCode {
+            get {
+                return ResourceManager.GetString("ZipCode", resourceCulture);
             }
         }
         

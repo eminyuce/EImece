@@ -93,10 +93,13 @@ namespace EImece.Domain.Services
 
         public void GetUserFields(Customer item)
         {
-            var user = UsersService.GetUser(item.UserId);
-            item.Email = user.Email;
-            item.Name = user.FirstName;
-            item.Surname = user.LastName;
+            if (item != null)
+            {
+                var user = UsersService.GetUser(item.UserId);
+                item.Email = user.Email;
+                item.Name = user.FirstName;
+                item.Surname = user.LastName;
+            }
         }
     }
 }
