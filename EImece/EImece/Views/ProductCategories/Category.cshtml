@@ -10,7 +10,8 @@
 
     ProductCategory category = Model.ProductCategory;
     var productsAll = category.Products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
-    var products = new PaginatedModelList<Product>(productsAll, Model.PageIndex, 1, productsAll.Count);
+    var products = new PaginatedModelList<Product>(productsAll, Model.PageIndex, AppConfig.ProductDefaultRecordPerPage, productsAll.Count);
+    products.RouteId = category.Id;
     var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
 
     ViewBag.Title = category.GetSeoTitle();
@@ -186,65 +187,12 @@
                 }
             </div>
             <div class="pb-4 mb-2"></div>
-            <!-- Pagination-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center justify-content-sm-start mb-0">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item d-sm-none"><span class="page-link page-link-static">2 / 5</span></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">2<span class="sr-only">(current)</span></span></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item d-none d-sm-block">...</li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            @Html.Partial("_PaginatedModelList", products)
 
-            <nav aria-label="Page navigation">
-                @Model.PageIndex
-                <ul class="pagination justify-content-center justify-content-sm-start mb-0">
-                    <li class="page-item @(products.HasPreviousPage ? " " : " disabled" )">
-                        <a href=@Url.Action("Category",new { id=Model.ProductCategory.Id, pageIndex =   1  })
-                           class="page-link" aria-label="Frist">
-                            <span aria-hidden="true">|<</span>
-                            <span class="sr-only">First</span>
-                        </a>
-                    </li>
-                    <li class="page-item @(products.HasPreviousPage ? " " : " disabled" )">
-                        <a href=@Url.Action("Category",new { id=Model.ProductCategory.Id, pageIndex = products.PageIndex - 1  })
-                           class="page-link" aria-label="Next">
-                            <span aria-hidden="true"><</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                    @for (var i = 1; i <= products.TotalCount; i++)
-                    {
-                        <li class="page-item @(i == products.PageIndex ? "active" : "")">
-                            <a href=@Url.Action("Category",new { id=Model.ProductCategory.Id, pageIndex = i  }) class="page-link">@i</a>
-                        </li>
-                    }
-                    <li class="page-item @(products.HasNextPage ? " " : " disabled")">
-                        <a href=@Url.Action("Category",new { id=Model.ProductCategory.Id, pageIndex = products.PageIndex + 1  })
-                           class="page-link" aria-label="Previous">
-                            <span aria-hidden="true">></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item @(products.HasNextPage ? " " : " disabled")">
-                        <a href=@Url.Action("Category",new { id=Model.ProductCategory.Id, pageIndex = products.TotalPageCount  })
-                           class="page-link" aria-label="Last">
-                            <span aria-hidden="true">>|</span>
-                            <span class="sr-only">Last</span>
-                        </a>
-                    </li>
-                </ul>
-
-
-            </nav>
         </div>
     </div>
 </div>
+
 @helper CreateProductItem(Product p)
 {
     var imgTag = p.GetCroppedImageUrl(p.MainImageId, 80, 80);

@@ -354,6 +354,7 @@
     <Compile Include="Models\FrontModels\FooterViewModel.cs" />
     <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Ilceler.cs" />
     <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Iller.cs" />
+    <Compile Include="Models\FrontModels\IPaginatedModelList.cs" />
     <Compile Include="Models\FrontModels\ItemType.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />

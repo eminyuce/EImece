@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public class PaginatedModelList<T> : List<T>, IPaginatedList
+    public class PaginatedModelList<T> : List<T>, IPaginatedModelList
     {
         public int PageIndex { get; private set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
         public int TotalPageCount { get; private set; }
-
+        public int RouteId { set; get; }
         public bool HasPreviousPage
         {
 

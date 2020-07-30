@@ -1160,6 +1160,7 @@
     <Content Include="Views\Shared\SignInOrSignUp\_SignIn.cshtml" />
     <Content Include="Views\Shared\SignInOrSignUp\_SignUp.cshtml" />
     <Content Include="Views\ProductCategories\Category - Copy.cshtml" />
+    <Content Include="Views\Shared\_PaginatedModelList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

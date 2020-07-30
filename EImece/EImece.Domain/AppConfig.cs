@@ -229,5 +229,9 @@ namespace EImece.Domain
                 return GetConfigBool("IsCacheActive", true);
             }
         }
+        public static int ProductDefaultRecordPerPage
+        {
+            get { return 24; }
+        }
     }
 }
