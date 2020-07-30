@@ -6,11 +6,12 @@
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
 @{
 
     ProductCategory category = Model.ProductCategory;
-    var productsAll = category.Products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
-    var products = new PaginatedModelList<Product>(productsAll, Model.PageIndex, AppConfig.ProductDefaultRecordPerPage, productsAll.Count);
+    var productsAll = Model.Products;
+    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.Count);
     products.RouteId = category.Id;
     var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
 
@@ -144,23 +145,11 @@
                 <div class="d-flex flex-wrap">
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
-                        <select class="form-control custom-select" id="sorting">
-                            <option>Popularity</option>
-                            <option>Low - Hight Price</option>
-                            <option>High - Low Price</option>
-                            <option>Average Rating</option>
-                            <option>A - Z Order</option>
-                            <option>Z - A Order</option>
-                        </select>
-                    </div>
-                    <div class="form-inline flex-nowrap pb-3">
-                        <label class="mr-2 d-none d-sm-block" for="number">Show:</label>
-                        <select class="form-control custom-select mr-sm-2" id="number">
-                            <option>12</option>
-                            <option>24</option>
-                            <option>48</option>
-                            <option>96</option>
-                        </select><small class="form-text text-muted text-nowrap d-none d-sm-block">from 860</small>
+                        <div class="button-group tabs">
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest)" rel="nofollow" class="button sorting-label">En yeniler</a>
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice)" rel="nofollow" class="button sorting-label">En düşük fiyat</a>
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice)"  rel="nofollow" class="button sorting-label active">En yüksek fiyat</a>
+                        </div>
                     </div>
                 </div>
                 <div class="form-inline d-none d-md-flex flex-nowrap pb-3">

@@ -13,6 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         public int TotalCount { get; private set; }
         public int TotalPageCount { get; private set; }
         public int RouteId { set; get; }
+        public int Sorting { set; get; }
         public bool HasPreviousPage
         {
 

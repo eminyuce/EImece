@@ -16,5 +16,6 @@ namespace EImece.Domain.Models.FrontModels
         bool HasNextPage { get; }
 
         int RouteId { set; get; }
+        int Sorting { set; get; }
     }
 }

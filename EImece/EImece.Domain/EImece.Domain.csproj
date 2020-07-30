@@ -348,6 +348,7 @@
     <Compile Include="Models\Enums\MediaModType.cs" />
     <Compile Include="Models\Enums\NotificationStatus.cs" />
     <Compile Include="Models\Enums\NotificationType.cs" />
+    <Compile Include="Models\Enums\SortingType.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
     <Compile Include="Models\FrontModels\Filter.cs" />
     <Compile Include="Models\FrontModels\FilterGroup.cs" />
@@ -355,6 +356,7 @@
     <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Ilceler.cs" />
     <Compile Include="Models\FrontModels\Il-Ilce-Mahalle\Iller.cs" />
     <Compile Include="Models\FrontModels\IPaginatedModelList.cs" />
+    <Compile Include="Models\FrontModels\ItemListing.cs" />
     <Compile Include="Models\FrontModels\ItemType.cs" />
     <Compile Include="Models\FrontModels\MainPageViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuPageViewModel.cs" />
