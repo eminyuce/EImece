@@ -1159,7 +1159,6 @@
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartSmall.cshtml" />
     <Content Include="Views\Shared\SignInOrSignUp\_SignIn.cshtml" />
     <Content Include="Views\Shared\SignInOrSignUp\_SignUp.cshtml" />
-    <Content Include="Views\ProductCategories\Category - Copy.cshtml" />
     <Content Include="Views\Shared\_PaginatedModelList.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -31,14 +31,14 @@
             <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3><span class="text-primary">@product.Price.CurrencySign()</span>
         </div>
         <div class="product-card-body body-hidden pt-2">
-            <button class="btn btn-primary btn-sm btn-block" type="button" data-toggle="toast" data-target="#cart-toast">Add to cart</button><a class="quick-view-btn" href="#" data-toggle="toast" data-target="#compare-toast"><i class="mr-1" data-feather="repeat"></i>Compare</a>
-            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
-                <li>Digital noise cancelling</li>
-                <li>AI powered</li>
-                <li>Hands free calling</li>
-                <li>Long battery life</li>
-                <li>Wireless bluetooth</li>
-            </ul>
+            <button class="btn btn-primary btn-sm btn-block" type="button"
+                    data-toggle="toast" data-target="#cart-toast">Add to cart</button>
+            @if (!string.IsNullOrEmpty(product.ShortDescription))
+            {
+                <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                    <li>@product.ShortDescription</li>
+                </ul>
+            }
         </div>
     </div>
 </div>
