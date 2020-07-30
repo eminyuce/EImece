@@ -6,7 +6,8 @@
     var id = products.RouteId;
     var sorting = products.Sorting;
 }
-
+@if (products.TotalPageCount > 1)
+{
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center justify-content-sm-start mb-0">
         <li class="page-item @(products.HasPreviousPage ? " " : "disabled" )">
@@ -45,3 +46,4 @@
         </li>
     </ul>
 </nav>
+}

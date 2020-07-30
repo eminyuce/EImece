@@ -25,9 +25,8 @@
                              class="feather feather-chevron-down widget-categories-indicator">
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
-                        @productCategory.Name<span class="badge text-muted ml-1">(@p.ProductCount)</span>
+                        @badgeProductNumber(p)
                     </a>
-
                     @Html.Partial("_ProductCategoryTreeChildrenHeadLine", p.Childrens)
                 </li>
 
@@ -35,12 +34,28 @@
             else
             {
 
-                <li><a href="@productCategory.DetailPageUrl">@productCategory.Name</a></li>
-            }
+                <li>
+                    <a href="@productCategory.DetailPageUrl">
+                        @badgeProductNumber(p)
+                    </a>
+            </li>
         }
+    }
 
-        
+
     </ul>
 </div>
 
- 
+
+@helper badgeProductNumber(ProductCategoryTreeModel p)
+{
+    if (p.ProductCount > 0)
+    {
+        @p.Text <span class="badge text-muted ml-1">(@p.ProductCount)</span>
+    }
+    else
+    {
+        @p.Text
+    }
+}
+

@@ -231,7 +231,7 @@ namespace EImece.Domain
         }
         public static int ProductDefaultRecordPerPage
         {
-            get { return 24; }
+            get { return 50; }
         }
     }
 }
