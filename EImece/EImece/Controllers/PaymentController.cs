@@ -170,6 +170,11 @@ namespace EImece.Controllers
         public ActionResult ShoppingCart()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
+            var urlReferrer = Request.UrlReferrer;
+            if (urlReferrer != null)
+            {
+                shoppingCart.UrlReferrer = urlReferrer.ToStr();
+            }
             return View(shoppingCart);
         }
 

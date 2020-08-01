@@ -23,12 +23,12 @@
 
     <figure>
         <div class="portfolio-holder">
-            <a title="@product.Name" href="@product.DetailPageUrl">
+            <a title="@product.Name" href="@product.DetailPageRelativeUrl">
                 @Html.Raw(productImageTag)
                 <div class="hover-icon"></div>
             </a>
         </div>
-        <a href="@product.DetailPageUrl">
+        <a href="@product.DetailPageRelativeUrl">
             <section class="item-description">
 
                 <span>@product.Name

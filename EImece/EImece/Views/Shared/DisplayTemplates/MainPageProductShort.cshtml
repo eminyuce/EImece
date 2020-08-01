@@ -11,7 +11,7 @@
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
     var imageTag = product.GetCroppedImageTag(Width, Height);
-    var productLink = product.DetailPageUrl;
+    var productLink = product.DetailPageRelativeUrl;
 }
 
 <div class="media">

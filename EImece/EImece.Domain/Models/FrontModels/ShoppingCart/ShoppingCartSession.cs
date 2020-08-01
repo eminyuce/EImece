@@ -15,7 +15,7 @@ namespace EImece.Domain.Models.FrontModels
         private Address _shippingAddress = new Address();
         private Address _billingAddress = new Address();
         public string OrderGuid { get; set; }
-
+        public string UrlReferrer { get; set; }
         public List<ShoppingCartItem> ShoppingCartItems
         {
             get
