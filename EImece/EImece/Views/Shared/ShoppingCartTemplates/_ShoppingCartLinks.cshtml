@@ -16,24 +16,11 @@
     var userName = User.Identity.GetUserName();
 }
 
-    <ul id="ShoppingCartsLink">
-        <li>
-            <a href="@Url.Action("shoppingcart","payment")"> @Resource.MyBasket </a><span id="ShoppingCartItemCount">@totalNumber</span>
-        </li>
-        @if (Request.IsAuthenticated)
-        {
-            <span class="text-primary">@userName</span>
-            <a href="/customers/home/customerOrders" title="Manage">Siparislerim</a>
-            <a href="/customers/home/index" title="Manage">Hesabim</a>
-            <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
-            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-            {
-                @Html.AntiForgeryToken()
-            }
 
-        }
-        else
-        {
-            <li>@Html.ActionLink(@Resource.CustomerAccount, "Login", "Account")</li>
-        }
-    </ul>
+<a id="ShoppingCartsLink" class="navbar-btn bg-0 my-3" href="@Url.Action("shoppingcart","payment")" data-toggle="offcanvas">
+    <span class="d-block position-relative">
+        <span class="navbar-btn-badge bg-primary text-light" id="ShoppingCartItemCount">@totalNumber</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart mx-auto mb-1"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        @shoppingCart.TotalPrice.CurrencySign()
+    </span>
+</a>

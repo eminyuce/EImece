@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zaten Üyeyim.
+        /// </summary>
+        public static string AlreadyMembered {
+            get {
+                return ResourceManager.GetString("AlreadyMembered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş yapmak için buraya tıklayın.
         /// </summary>
         public static string ClickHereToLogin {

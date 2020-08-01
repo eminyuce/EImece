@@ -102,17 +102,14 @@
                     <i class="mx-auto mb-2" data-feather="menu">
                     </i>Menu
                 </div>
-                <a class="navbar-btn bg-0 my-3" href="#offcanvas-account" data-toggle="offcanvas">
+                <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
                     <i class="mx-auto mb-1" data-feather="log-in"></i>Sign In/Up
                 </a>
-                <a class="navbar-btn bg-0 my-3"
-                   href="#offcanvas-cart" data-toggle="offcanvas">
-                    <span class="d-block position-relative">
-                        <span class="navbar-btn-badge bg-primary text-light">4</span>
-                        <i class="mx-auto mb-1" data-feather="shopping-cart">
-                        </i>$325.00
-                    </span>
-                </a>
+                @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+
+
+
+
             </div>
             <!-- search-box-->
             <div class="flex-grow-1 pb-3 pt-sm-3 my-1 px-sm-2 pr-lg-4 order-sm-2">
@@ -136,7 +133,7 @@
         @Html.Action("SocialMediaLinks", "Home")
             @Html.Action("WebSiteLogo", "Home")
 
-        @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+
         <span id="ShoppingCartsDetail"></span>
         @Html.Partial("_SearchProductForm")
           @{Html.RenderAction("ProductTree", "Home"); }
@@ -157,11 +154,10 @@
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
     <script src="~/Scripts/eimece.js?v=2"></script>
-    <script src="~/Scripts/cookie-consent.js"></script>
+    <script src="~/Scripts/cookie-consent.js?v=1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>
     @RenderSection("scripts", required: false)
 
-    <script src="~/Scripts/cookie-consent.js?v=1"></script>
     <script>
         CookieConsent();
         GetShoppingCartLinks();

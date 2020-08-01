@@ -25,7 +25,7 @@
             <!-- Login -->
             <div class="tab-content">
 
-                @Html.ActionLink("Zaten Uyeyim", "Login", "Account")
+                @Html.ActionLink(Resource.AlreadyMembered, "Login", "Account")
 
                 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {

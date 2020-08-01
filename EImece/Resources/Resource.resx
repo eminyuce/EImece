@@ -348,4 +348,7 @@
   <data name="CustomerRegister" xml:space="preserve">
     <value>Üye ol</value>
   </data>
+  <data name="AlreadyMembered" xml:space="preserve">
+    <value>Zaten Üyeyim</value>
+  </data>
 </root>

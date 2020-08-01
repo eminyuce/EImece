@@ -47,94 +47,76 @@
 
                         @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
                         <!-- Price range-->
-                        <div class="widget mb-4 pb-3">
-                            <h3 class="widget-title">Price range</h3>
-                            <form class="range-slider" data-start-min="250" data-start-max="650" data-min="0" data-max="1000" data-step="1">
-                                <div class="ui-range-slider noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-connects"><div class="noUi-connect" style="transform: translate(25%, 0px) scale(0.4, 1);"></div></div><div class="noUi-origin" style="transform: translate(-75%, 0px); z-index: 5;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="650.0" aria-valuenow="250.0" aria-valuetext="250.00"></div></div><div class="noUi-origin" style="transform: translate(-35%, 0px); z-index: 4;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="250.0" aria-valuemax="1000.0" aria-valuenow="650.0" aria-valuetext="650.00"></div></div></div></div>
-                                <footer class="ui-range-slider-footer">
-                                    <div class="column">
-                                        <button class="btn btn-outline-primary btn-sm" type="submit">Filter</button>
+                            @using (Html.BeginForm("Category", "Products", FormMethod.Get))
+                            {
+                                <div class="column">
+                                    <button class="btn btn-outline-primary btn-sm" type="submit">Filter</button>
+                                </div>
+                                <!-- Price filter    -->
+                                <div class="widget mb-4 pb-1">
+                                    <h3 class="widget-title">Filter by price</h3>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" name="priceRange1" id="price-1">
+                                        <label class="custom-control-label" for="price-1">$10 - $50<span class="text-muted ml-1">(208)</span></label>
                                     </div>
-                                    <div class="column">
-                                        <div class="ui-range-values">
-                                            <div class="ui-range-label">Price:</div>
-                                            <div class="ui-range-value-min">
-                                                $<span>250</span>
-                                                <input type="hidden" value="250">
-                                            </div>&nbsp;–&nbsp;
-                                            <div class="ui-range-value-max">
-                                                $<span>650</span>
-                                                <input type="hidden" value="650">
-                                            </div>
-                                        </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="price-2">
+                                        <label class="custom-control-label" for="price-2">$50 - $100<span class="text-muted ml-1">(311)</span></label>
                                     </div>
-                                </footer>
-                            </form>
-                        </div>
-                        <!-- Price filter    -->
-                        <div class="widget mb-4 pb-1">
-                            <h3 class="widget-title">Filter by price</h3>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="price-1">
-                                <label class="custom-control-label" for="price-1">$10 - $50<span class="text-muted ml-1">(208)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="price-2">
-                                <label class="custom-control-label" for="price-2">$50 - $100<span class="text-muted ml-1">(311)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="price-3">
-                                <label class="custom-control-label" for="price-3">$100 - $500<span class="text-muted ml-1">(485)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="price-4">
-                                <label class="custom-control-label" for="price-4">$500 - $1,000<span class="text-muted ml-1">(213)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="xs">
-                                <label class="custom-control-label" for="xs">$1,000 - $5,000<span class="text-muted ml-1">(197)</span></label>
-                            </div>
-                        </div>
-                        <!-- Brand filter    -->
-                        <div class="widget mb-4 pb-1">
-                            <h3 class="widget-title">Filter by brand</h3>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="apple">
-                                <label class="custom-control-label" for="apple">Apple<span class="text-muted ml-1">(254)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="bosh">
-                                <label class="custom-control-label" for="bosh">Bosh<span class="text-muted ml-1">(39)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="canon">
-                                <label class="custom-control-label" for="canon">Canon Inc.<span class="text-muted ml-1">(128)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="dell">
-                                <label class="custom-control-label" for="dell">Dell<span class="text-muted ml-1">(310)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="hp">
-                                <label class="custom-control-label" for="hp">Hewlett-Packard<span class="text-muted ml-1">(46)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="hitachi">
-                                <label class="custom-control-label" for="hitachi">Hitachi<span class="text-muted ml-1">(217)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="lg">
-                                <label class="custom-control-label" for="lg">LG Electronics<span class="text-muted ml-1">(310)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="panasonic">
-                                <label class="custom-control-label" for="panasonic">Panasonic<span class="text-muted ml-1">(74)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-1">
-                                <input class="custom-control-input" type="checkbox" id="sony">
-                                <label class="custom-control-label" for="sony">Sony<span class="text-muted ml-1">(235)</span></label>
-                            </div>
-                        </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="price-3">
+                                        <label class="custom-control-label" for="price-3">$100 - $500<span class="text-muted ml-1">(485)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="price-4">
+                                        <label class="custom-control-label" for="price-4">$500 - $1,000<span class="text-muted ml-1">(213)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="xs">
+                                        <label class="custom-control-label" for="xs">$1,000 - $5,000<span class="text-muted ml-1">(197)</span></label>
+                                    </div>
+                                </div>
+                                <!-- Brand filter    -->
+                                <div class="widget mb-4 pb-1">
+                                    <h3 class="widget-title">Filter by brand</h3>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="apple">
+                                        <label class="custom-control-label" for="apple">Apple<span class="text-muted ml-1">(254)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="bosh">
+                                        <label class="custom-control-label" for="bosh">Bosh<span class="text-muted ml-1">(39)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="canon">
+                                        <label class="custom-control-label" for="canon">Canon Inc.<span class="text-muted ml-1">(128)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="dell">
+                                        <label class="custom-control-label" for="dell">Dell<span class="text-muted ml-1">(310)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="hp">
+                                        <label class="custom-control-label" for="hp">Hewlett-Packard<span class="text-muted ml-1">(46)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="hitachi">
+                                        <label class="custom-control-label" for="hitachi">Hitachi<span class="text-muted ml-1">(217)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="lg">
+                                        <label class="custom-control-label" for="lg">LG Electronics<span class="text-muted ml-1">(310)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="panasonic">
+                                        <label class="custom-control-label" for="panasonic">Panasonic<span class="text-muted ml-1">(74)</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        <input class="custom-control-input" type="checkbox" id="sony">
+                                        <label class="custom-control-label" for="sony">Sony<span class="text-muted ml-1">(235)</span></label>
+                                    </div>
+                                </div>
+                            }
                     </div>
                 </div>
             </div>

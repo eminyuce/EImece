@@ -12,6 +12,7 @@ namespace EImece.Domain.Models.FrontModels
         public int RouteId { set; get; }
         public int Page { get; set; }
         public int RecordPerPage { get; set; }
+        public string Filter { get; set; }
         public SortingType Sorting { get; set; }
     }
 }
