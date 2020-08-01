@@ -825,4 +825,7 @@
   <data name="ZipCode" xml:space="preserve">
     <value>Posta kodu</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Sil</value>
+  </data>
 </root>

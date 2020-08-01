@@ -163,8 +163,24 @@
         GetShoppingCartLinks();
 
         $(document).ready(function () {
-
-            $("#AddToCart").click(function () {
+            $('[data-add-prodoct-cart]').each(function () {
+                $(this).off("click");
+                $(this).on("click", function (e) {
+                    e.preventDefault();
+                    var caller = e.target;
+                    var productId = $(caller).attr('data-add-prodoct-cart');
+                    var postData = JSON.stringify({
+                        productId: productId,
+                        quantity: 1,
+                        orderGuid: getOrderGuid()
+                    });
+                    console.log(postData);
+                    ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
+                        GetShoppingCartLinks();
+                    });
+                });
+            });
+            function getOrderGuid() {
                 var orderGuid = getCookie("orderGuid");
                 if (orderGuid != "") {
 
@@ -172,10 +188,14 @@
                     orderGuid = createUUID();
                     setCookie("orderGuid", orderGuid, 365);
                 }
+
+                return orderGuid;
+            }
+            $("#AddToCart").click(function () {
                 var postData = JSON.stringify({
                     productId: $("#productId").val(),
                     quantity: $("#quantity").val(),
-                    orderGuid: orderGuid
+                    orderGuid: getOrderGuid() 
                 });
                 console.log(postData);
                 ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {

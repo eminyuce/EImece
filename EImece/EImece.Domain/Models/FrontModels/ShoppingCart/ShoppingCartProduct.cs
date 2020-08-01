@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Models.FrontModels.ShoppingCart
 {
@@ -12,7 +14,21 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }
         public string CroppedImageUrl { get; set; }
-
+        private string _detailPageUrl { get; set; }
+        public string DetailPageUrl 
+        { 
+            get {
+                if (string.IsNullOrEmpty(_detailPageUrl))
+                {
+                          var requestContext = HttpContext.Current.Request.RequestContext;
+                         return new UrlHelper(requestContext).Action("Detail", "Products", new { id = Id});
+                }
+                return _detailPageUrl; 
+            } 
+            set { 
+                _detailPageUrl = value;
+            } 
+        }
         public ShoppingCartProduct()
         {
         }
@@ -24,10 +40,12 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
             this.Price = product.Price;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory.Name;
+            this.DetailPageUrl = product.DetailPageRelativeUrl;
             if (product.MainImageId.HasValue && product.ImageState)
             {
                 this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80);
             }
         }
+
     }
 }

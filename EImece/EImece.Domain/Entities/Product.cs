@@ -51,13 +51,20 @@ namespace EImece.Domain.Entities
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
 
         [NotMapped]
-        public string DetailPageUrl
+        public string DetailPageAbsoluteUrl
         {
             get
             {
                 return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name, AppConfig.HttpProtocol);
             }
         }
-
+        [NotMapped]
+        public string DetailPageRelativeUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name);
+            }
+        }
     }
 }
