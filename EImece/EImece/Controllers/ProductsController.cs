@@ -1,9 +1,14 @@
 ﻿using EImece.Domain;
+using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using System;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -12,6 +17,16 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
+        IProductCommentService ProductCommentService;
+
+        [Inject]
+        public ApplicationDbContext ApplicationDbContext { get; set; }
+
+        public ProductsController(IProductCommentService ProductCommentService)
+        {
+            this.ProductCommentService= ProductCommentService;
+        }
+
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index(int page = 1)
         {
@@ -65,6 +80,26 @@ namespace EImece.Controllers
             int pageSize = 20;
             ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);
             return View(products);
+        }
+
+        [HttpPost]
+        public ActionResult Review(ProductComment productComment)
+        {
+            if (productComment.Name == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var users = ApplicationDbContext.Users.AsQueryable();
+            var user = users.Where(u => u.UserName.Equals(productComment.Email, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+            productComment.UserId = user == null ? "" : user.Id;
+            productComment.CreatedDate = DateTime.Now;
+            productComment.UpdatedDate = DateTime.Now;
+            productComment.IsActive = true;
+            productComment.Position = 1;
+            productComment.Lang = 1;
+            ProductCommentService.SaveOrEditEntity(productComment);
+            return RedirectToAction("Detail", new { id = productComment.ProductId.ToStr() } );
         }
     }
 }

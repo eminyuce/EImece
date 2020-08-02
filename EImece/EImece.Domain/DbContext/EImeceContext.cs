@@ -49,5 +49,6 @@ namespace EImece.Domain.DbContext
         public IDbSet<Order> Orders { get; set; }
         public IDbSet<OrderProduct> OrderProducts { get; set; }
         public IDbSet<Faq> Faqs { get; set; }
+        public IDbSet<ProductComment > ProductComments { get; set; }
     }
 }

@@ -9,7 +9,10 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductDetailViewModel
     {
+
         public Product Product { get; set; }
+
+        public ProductComment ProductComment { get; set; }
 
         public Menu ProductMenu { get; set; }
 
@@ -24,6 +27,11 @@ namespace EImece.Domain.Models.FrontModels
         public List<Product> RelatedProducts { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
+
+        public ProductDetailViewModel()
+        {
+            ProductComment = new ProductComment();
+        }
 
         public List<ProductSpecsModel> ProdSpecs
         {

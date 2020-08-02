@@ -239,6 +239,7 @@
     <Compile Include="Entities\BrowserNotificationFeedBack.cs" />
     <Compile Include="Entities\BrowserSubscriber.cs" />
     <Compile Include="Entities\BrowserSubscription.cs" />
+    <Compile Include="Entities\ProductComment .cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Faq.cs" />
     <Compile Include="Entities\FileStorage.cs" />
@@ -394,7 +395,9 @@
     <Compile Include="Models\UserModels\ManageViewModels.cs" />
     <Compile Include="Models\UserModels\SelectRoleEditorViewModel.cs" />
     <Compile Include="Models\UserModels\SelectUserRolesViewModel.cs" />
+    <Compile Include="Repositories\ProductCommentRepository.cs" />
     <Compile Include="Repositories\FaqRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IProductCommentRepository.cs" />
     <Compile Include="Repositories\IRepositories\IOrderProductRepository.cs" />
     <Compile Include="Repositories\IRepositories\IOrderRepository.cs" />
     <Compile Include="Repositories\IRepositories\IFaqRepository.cs" />
@@ -463,9 +466,11 @@
     <Compile Include="Scheduler\QuartzService.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
+    <Compile Include="Services\ProductCommentService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\FaqService.cs" />
     <Compile Include="Services\IdentityManager.cs" />
+    <Compile Include="Services\IServices\IProductCommentService.cs" />
     <Compile Include="Services\IServices\IFaqService.cs" />
     <Compile Include="Services\IServices\IOrderProductService.cs" />
     <Compile Include="Services\IServices\IOrderService.cs" />

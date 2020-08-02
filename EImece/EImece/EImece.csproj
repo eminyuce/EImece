@@ -1160,12 +1160,12 @@
     <Content Include="Views\Shared\SignInOrSignUp\_SignUp.cshtml" />
     <Content Include="Views\Shared\_PaginatedModelList.cshtml" />
     <Content Include="Views\Products\Detail - Copy.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ProductComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
     <Folder Include="Areas\Customers\Data\" />
     <Folder Include="Scripts\codemirror\addon\" />
-    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -171,6 +171,7 @@ namespace EImece.App_Start
             kernel.Bind<IOrderProductService>().To<OrderProductService>().InRequestScope();
 
             kernel.Bind<IFaqService>().To<FaqService>().InRequestScope();
+            kernel.Bind<IProductCommentService>().To<ProductCommentService>().InRequestScope();
         }
 
         private static void BindRepositories(IKernel kernel)
@@ -204,6 +205,7 @@ namespace EImece.App_Start
             kernel.Bind<IOrderRepository>().To<OrderRepository>().InRequestScope();
             kernel.Bind<IOrderProductRepository>().To<OrderProductRepository>().InRequestScope();
             kernel.Bind<IFaqRepository>().To<FaqRepository>().InRequestScope();
+            kernel.Bind<IProductCommentRepository>().To<ProductCommentRepository>().InRequestScope();
         }
 
         private static void BindByReflection(IKernel kernel, Type typeOfInterface, string typeofText)
