@@ -67,5 +67,22 @@ namespace EImece.Domain.Entities
                 return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name);
             }
         }
+        [NotMapped]
+        public bool HasDiscount
+        {
+            get
+            {
+                if(ProductCategory == null)
+                {
+                    return false;
+                }
+                var hasCategoryDiscount = ProductCategory.DiscountPercantage.HasValue && ProductCategory.DiscountPercantage.Value > 0;
+                if (hasCategoryDiscount || Discount > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }

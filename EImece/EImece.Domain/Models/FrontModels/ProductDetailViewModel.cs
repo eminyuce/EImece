@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
+using NLog.LayoutRenderers.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,28 @@ namespace EImece.Domain.Models.FrontModels
             ProductComment = new ProductComment();
         }
 
+        public Dictionary<int, TotalRating> TotalRating
+        {
+            get
+            {
+                var totalRating = new Dictionary<int, TotalRating>();
+                if (Product.ProductComments.IsEmpty())
+                {
+                    return totalRating;
+                }
+                var grouped = Product.ProductComments.GroupBy(r=>r.Rating)
+                     .OrderByDescending(grp => grp.Key)
+                .Select((grp, i) => new
+                {
+                    Rating = grp.Key,
+                    Count = grp.Count()
+                })
+                .ToList();
+                double total = grouped.Sum(r => r.Count);
+                totalRating =  grouped.ToDictionary(r=>r.Rating,r=> new TotalRating(r.Count, (int)Math.Round(r.Count * 100 /  total)));
+                return totalRating;
+            }
+        }
         public List<ProductSpecsModel> ProdSpecs
         {
             get
@@ -77,6 +101,17 @@ namespace EImece.Domain.Models.FrontModels
                 }
                 return result;
             }
+        }
+    }
+
+    public class TotalRating
+    {
+        public int Count { get; set; }
+        public int Percentage { get; set; }
+        public TotalRating(int count, int percentage)
+        {
+            this.Count = count;
+            this.Percentage = percentage;
         }
     }
 }

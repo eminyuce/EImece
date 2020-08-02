@@ -139,7 +139,15 @@
         <div class="col-lg-5 pt-4 pt-lg-0">
             <div class="pb-4">
                 <h2 class="h1 font-weight-light pt-3 pb-2">
-                    <del class="lead text-muted mr-2">@product.Price.CurrencySign()</del><span class="text-primary">@product.GetProductPrice().CurrencySign()</span>
+
+                    @if (product.HasDiscount)
+                    {
+                        <del class="lead text-muted mr-2">
+                            @product.Price.CurrencySign()
+                        </del>
+                    }
+
+                    <span class="text-primary">@product.GetProductPrice().CurrencySign()</span>
                 </h2>
                 <div class="d-flex align-items-center pt-2">
                     <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
@@ -256,34 +264,21 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
-                        <div class="display-4 mr-2">4.3</div>
+                        <div class="display-4 mr-2">@String.Format("{0:0.00}",  (double)Model.TotalRating.Sum(r => r.Key * r.Value.Count) / Model.TotalRating.Sum(r => r.Value.Count))</div>
                         <div>
-                            <div class="text-muted font-size-xs mb-n1">based on 295 reviews</div>
+                            <div class="text-muted font-size-xs mb-n1">based on @Model.TotalRating.Sum(r=>r.Value.Count) reviews</div>
                             <div class="star-rating">
                                 <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">5 stars - <span class="text-muted">177</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">4 stars - <span class="text-muted">88</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">3 stars - <span class="text-muted">20</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 8%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">2 stars - <span class="text-muted">9</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 3%" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">1 star - <span class="text-muted">0</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    @foreach (var item in Model.TotalRating)
+                    {
+                        <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
+                        <div class="progress mb-3" style="height: 2px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    }
                     <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">Leave a review</a></div>
                 </div>
             </div>

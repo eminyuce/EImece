@@ -142,7 +142,11 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static double GetProductPrice(this Product product)
         {
-            var categoryDiscount = product.ProductCategory.DiscountPercantage.HasValue ? product.ProductCategory.DiscountPercantage.Value : 0;
+            if (product == null)
+                return 0;
+
+            ProductCategory productCategory = product.ProductCategory;
+            var categoryDiscount = productCategory.DiscountPercantage.HasValue ? product.ProductCategory.DiscountPercantage.Value : 0;
             return product.Price - (product.Discount) - (product.Price * (categoryDiscount / 100));
         }
 
