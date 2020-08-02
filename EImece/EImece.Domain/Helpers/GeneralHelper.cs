@@ -1,4 +1,6 @@
-﻿using EImece.Domain.Models.Enums;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.Enums;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -24,7 +26,18 @@ namespace EImece.Domain.Helpers
     public class GeneralHelper
     {
         private static Random random = new Random();
-
+        public static List<T> GetUnique<T>(List<T> clazzes) where T : BaseEntity
+        {
+            var list = new List<T>();
+            foreach (var item in clazzes)
+            {
+                if (!list.Any(r=>r.Id == item.Id))
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
         public static string RandomNumber(int length)
         {
             const string chars = "0123456789";
@@ -949,7 +962,7 @@ namespace EImece.Domain.Helpers
         public static string GetNumberFromStr(string str)
         {
             str = str.Trim();
-            Match m = Regex.Match(str, @"(\d+)");
+            var m = Regex.Match(str, @"(\d+)");
             return (m.Value);
         }
 

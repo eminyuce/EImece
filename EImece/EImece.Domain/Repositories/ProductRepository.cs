@@ -201,8 +201,8 @@ namespace EImece.Domain.Repositories
             && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
-
-            return result.ToList();
+            var result2 = result.ToList();
+            return result2.Distinct().ToList();
         }
 
         public IQueryable<Product> GetActiveProducts(bool? isActive, int? language)

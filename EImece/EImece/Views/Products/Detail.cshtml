@@ -26,7 +26,7 @@
     var productCategory = product.ProductCategory;
     var productSpecs = product.ProductSpecifications;
     var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
-    var relatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
+    var relatedProducts = GeneralHelper.GetUnique(Model.RelatedProducts).OrderBy(x => Guid.NewGuid()).Take(4).ToList();
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
     string[] numbersArr = new string[] { "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
     Model.ProductComment.ProductId = product.Id;
@@ -257,6 +257,7 @@
         </div>
     </div>
 </div>
+
 <!-- Reviews-->
 <div class="container pt-5 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
     <div class="row pt-sm-3">
@@ -264,9 +265,9 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
-                        <div class="display-4 mr-2">@String.Format("{0:0.00}",  (double)Model.TotalRating.Sum(r => r.Key * r.Value.Count) / Model.TotalRating.Sum(r => r.Value.Count))</div>
+                        <div class="display-4 mr-2">@Model.AverageRating</div>
                         <div>
-                            <div class="text-muted font-size-xs mb-n1">based on @Model.TotalRating.Sum(r=>r.Value.Count) reviews</div>
+                            <div class="text-muted font-size-xs mb-n1">based on @Model.TotalRating.Sum(r => r.Value.Count) reviews</div>
                             <div class="star-rating">
                                 <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
                             </div>
@@ -292,25 +293,21 @@
         </div>
     </div>
 </div>
-
-@if (relatedProducts.Any())
+@if (relatedProducts.IsNotEmpty())
 {
 
     <!-- Related products-->
     <div class="container pb-5">
-        <h2 class="h3 pb-4">@Resource.SimilairProducts</h2>
+        <h2 class="h3 pb-4">@Resource.SimilairProducts </h2>
         <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
             @foreach (var product2 in relatedProducts)
             {
                 <div class="product-card">
                     <div class="product-thumb box-shadow-0">
                         <a class="product-thumb-link" href="@product2.DetailPageRelativeUrl">
-                        </a><span class="product-wishlist-btn"
-                                  data-toggle="tooltip"
-                                  data-placement="left"
-                                  title="Add to wishlist">
-                            <i data-feather="heart"></i>
-                        </span><img src="@product2.GetCroppedImageUrl(product2.MainImageId,50,0)" alt="Product">
+
+                        </a>
+                        <img src="@product2.GetCroppedImageUrl(product2.MainImageId,300,0)" alt="Product">
                     </div>
                     <div class="product-card-body box-shadow-0">
                         <div class="d-flex flex-wrap justify-content-between pb-1">

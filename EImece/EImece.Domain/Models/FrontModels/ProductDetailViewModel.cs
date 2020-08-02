@@ -34,7 +34,22 @@ namespace EImece.Domain.Models.FrontModels
         {
             ProductComment = new ProductComment();
         }
-
+        public string AverageRating
+        {
+            get
+            {
+                if(TotalRating.Count > 0)
+                {
+                    double totalRatingCount = (double)TotalRating.Sum(r => r.Key * r.Value.Count);
+                    int totalCount = TotalRating.Sum(r => r.Value.Count);
+                    return string.Format("{0:0.00}", totalRatingCount / totalCount);
+                }
+                else
+                {
+                    return "0";
+                }
+            }
+        }
         public Dictionary<int, TotalRating> TotalRating
         {
             get

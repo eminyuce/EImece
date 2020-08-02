@@ -130,13 +130,13 @@ namespace EImece.Domain.Services
             if (product != null && product.ProductTags.Any())
             {
                 var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
-                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, product.Lang, 0);
+                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
             }
             result.RelatedProducts = new List<Product>();
             if (product != null && product.ProductTags.Any())
             {
                 var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
-                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, product.Lang, id);
+                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 20, product.Lang, id);
             }
 
             return result;
