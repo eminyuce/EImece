@@ -73,8 +73,6 @@
 <div class="container pb-4">
     <div class="row">
         <div class="col-lg-7">
-
-            <div class="col-lg-7">
                 <!-- Product gallery-->
                 <div class="product-gallery">
                     <span class="badge badge-danger">Sale -30%</span>
@@ -105,7 +103,7 @@
                        
                         @if (product.ImageState)
                         {
-                            var imgTag = product.GetCroppedImageUrl(productMainImageId, 603, 667);
+                            var imgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
                                 <a href="@imgTag" data-fancybox="prod-gallery" data-hash="one">
                                     <img src="@imgTag" alt="Product">
                                 </a>
@@ -115,7 +113,7 @@
                         @for (int i = 0; i < productFiles.Count; i++)
                         {
                             var f = productFiles[i];
-                            var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 603, 667);
+                            var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
 
                                 <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",numbersArr[i])">
                                     <img src="@imgTag" alt="Product">
@@ -124,7 +122,6 @@
                         }
 
                     </div>
-                </div>
             </div>
 
  
