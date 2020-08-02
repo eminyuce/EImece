@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +25,11 @@ namespace EImece.Domain.Models.FrontModels
 
         public ContactUsFormViewModel Contact { get; set; }
 
-        public Dictionary<string, string> ProdSpecs
+        public List<ProductSpecsModel> ProdSpecs
         {
             get
             {
-                var result = new Dictionary<string, string>();
+                var result = new List<ProductSpecsModel>();
                 var product = Product;
                 var productSpecs = product.ProductSpecifications.Where(r => !String.IsNullOrEmpty(r.Value)).OrderBy(r => r.Position).ToList();
                 var template = Template;
@@ -50,20 +51,19 @@ namespace EImece.Domain.Models.FrontModels
                             {
                                 continue;
                             }
-                            string attributeName = "";
+                            string specsName = "";
                             if (display != null)
                             {
-                                attributeName = display.Value;
+                                specsName = display.Value;
                             }
                             else
                             {
-                                attributeName = name.Value;
+                                specsName = name.Value;
                             }
-
-                            if (isValueExist)
-                            {
-                                result.Add(attributeName.Trim(), dbValueObj.Value.Trim());
-                            }
+                            result.Add(new ProductSpecsModel(
+                                specsName.ToStr().Trim(),
+                               dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim(),
+                               unit == null ? "" : unit.Value.ToStr(), values == null ? "" : values.Value.ToStr()));
                         }
                     }
                 }

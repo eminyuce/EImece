@@ -366,6 +366,7 @@
     <Compile Include="Models\FrontModels\ProductCategoryViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductIndexViewModel.cs" />
+    <Compile Include="Models\FrontModels\ProductSpecsModel.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchResult.cs" />
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\RecordsStats.cs" />

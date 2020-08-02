@@ -216,7 +216,7 @@
                 <p class="mb-4 pb-2">@Html.Raw(product.Description)</p>
             </div>
 
-            @if (Model.ProdSpecs.Count > 0)
+            @if (Model.ProdSpecs.IsNotEmpty())
             {
 
                 <div class="col-md-6">
@@ -226,9 +226,9 @@
                         @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
                     }
                     <ul class="list-unstyled mb-4 pb-2">
-                        @foreach (KeyValuePair<string, string> entry in Model.ProdSpecs)
+                        @foreach (var specs in Model.ProdSpecs)
                         {
-                            <li class="d-block pb-2 border-bottom"><strong>@entry.Key:</strong> @entry.Value</li>
+                            <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @specs.value @specs.unit </li>
                         }
                     </ul>
                 </div>
