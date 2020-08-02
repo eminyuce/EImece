@@ -1108,7 +1108,6 @@
     <Content Include="Views\Shared\DisplayTemplates\StoryShort.cshtml" />
     <Content Include="Views\Stories\Detail.cshtml" />
     <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
-    <Content Include="Views\Shared\_ProductSpecs.cshtml" />
     <Content Include="Views\Shared\_WebSiteLogo.cshtml" />
     <Content Include="Views\Stories\Categories.cshtml" />
     <Content Include="Views\Shared\_WebSiteAddressInfo.cshtml" />

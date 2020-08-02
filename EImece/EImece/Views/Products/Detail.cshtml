@@ -70,76 +70,68 @@
         <div class="toast-body">Your addresses info updated successfuly.</div>
     </div>
 </div>
+<input type="hidden" name="productId" id="productId" value="@product.Id">
 <div class="container pb-4">
     <div class="row">
         <div class="col-lg-7">
-                <!-- Product gallery-->
-                <div class="product-gallery">
-                    <span class="badge badge-danger">Sale -30%</span>
-                    <ul class="product-thumbnails">
-                        @if (product.ImageState)
-                        {
-                          var imgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
-                           <li class="active">
-                                <a href="#one">
-                                    <img alt="Product thumb" src="@imgTag" />
-                                </a>
-                            </li>
-                        }
+            <!-- Product gallery-->
+            <div class="product-gallery">
+                <span class="badge badge-danger">Sale -30%</span>
+                <ul class="product-thumbnails">
+                    @if (product.ImageState)
+                    {
+                        var imgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+                        <li class="active">
+                            <a href="#one">
+                                <img alt="Product thumb" src="@imgTag" />
+                            </a>
+                        </li>
+                    }
 
-                        @for (int i = 0; i < productFiles.Count; i++)
-                        {
-                            var f = productFiles[i];
-                            var imgTag = product.GetCroppedImageUrl(f.FileStorageId, 95, 105);
-                            <li class="">
-                                <a href="@string.Format("#{0}",numbersArr[i])">
-                                    <img alt="Product thumb" src="@imgTag" />
-                                </a>
-                            </li>
-                        }
- 
-                    </ul>
-                    <div class="product-carousel owl-carousel">
-                       
-                        @if (product.ImageState)
-                        {
-                            var imgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
-                                <a href="@imgTag" data-fancybox="prod-gallery" data-hash="one">
-                                    <img src="@imgTag" alt="Product">
-                                </a>
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = product.GetCroppedImageUrl(f.FileStorageId, 95, 105);
+                        <li class="">
+                            <a href="@string.Format("#{0}",numbersArr[i])">
+                                <img alt="Product thumb" src="@imgTag" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="product-carousel owl-carousel">
 
-                        }
+                    @if (product.ImageState)
+                    {
+                        var imgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
+                        <a href="@imgTag" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@imgTag" alt="Product">
+                        </a>
 
-                        @for (int i = 0; i < productFiles.Count; i++)
-                        {
-                            var f = productFiles[i];
-                            var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                    }
 
-                                <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",numbersArr[i])">
-                                    <img src="@imgTag" alt="Product">
-                                </a>
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
 
-                        }
+                        <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",numbersArr[i])">
+                            <img src="@imgTag" alt="Product">
+                        </a>
 
-                    </div>
+                    }
+                </div>
             </div>
-
- 
         </div>
         <!-- Product details    -->
         <div class="col-lg-5 pt-4 pt-lg-0">
             <div class="pb-4">
-                <a class="d-inline-block scroll-to" href="#reviews">
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
-                    </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">295 reviews</span>
-                </a>
                 <h2 class="h1 font-weight-light pt-3 pb-2">
-                    <del class="lead text-muted mr-2">$175.00</del><span class="text-primary">$123.00</span>
+                    <del class="lead text-muted mr-2">@product.Price.CurrencySign()</del><span class="text-primary">@product.GetProductPrice().CurrencySign()</span>
                 </h2>
                 <div class="d-flex align-items-center pt-2">
-                    <input class="px-2 form-control mr-2" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
-                    <button class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>Add to cart</button>
+                    <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                    <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>Add to cart</button>
                 </div>
                 <div class="d-flex flex-wrap align-items-center pt-3"><a class="btn box-shadow-0 nav-link-inline px-4 border-right" href="#" data-toggle="toast" data-target="#compare-toast"><i class="align-middle mr-1" data-feather="repeat" style="width: 1.1rem; height: 1.1rem;"></i>Compare</a><a class="btn box-shadow-0 nav-link-inline px-4" href="#" data-toggle="toast" data-target="#wishlist-toast"><i class="align-middle mr-1" data-feather="heart" style="width: 1.1rem; height: 1.1rem;"></i>Add to wishlist</a></div>
             </div>
@@ -151,69 +143,67 @@
                     </div>
                     <div class="collapse show" id="productInfo" data-parent="#productPanels">
                         <div class="card-body">
+                            @if (!String.IsNullOrEmpty(product.ProductCode))
+                            {
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
+                            }
+                            @Html.Raw(product.ShortDescription)
                             <ul class="mb-0">
-                                <li>Tell the whole story with the 360° camera that captures every angle in 4K brilliance and share instantly</li>
-                                <li>Capture life as it happens in stunning 4K video and 15MP photos thanks to dual 180° lenses</li>
                                 <li><a class="scroll-to font-weight-semibold" href="#product-details">More info</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>Shipping options<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
-                    </div>
-                    <div class="collapse" id="shippingOptions" data-parent="#productPanels">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between border-bottom pb-2">
-                                <div>
-                                    <div class="font-weight-semibold text-dark">Courier</div>
-                                    <div class="font-size-sm text-muted">2 - 4 days</div>
-                                </div>
-                                <div>$26.50</div>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <div>
-                                    <div class="font-weight-semibold text-dark">Local shipping</div>
-                                    <div class="font-size-sm text-muted">up to one week</div>
-                                </div>
-                                <div>$10.00</div>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <div>
-                                    <div class="font-weight-semibold text-dark">Flat rate</div>
-                                    <div class="font-size-sm text-muted">5 - 7 days</div>
-                                </div>
-                                <div>$33.85</div>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <div>
-                                    <div class="font-weight-semibold text-dark">UPS ground shipping</div>
-                                    <div class="font-size-sm text-muted">4 - 6 days</div>
-                                </div>
-                                <div>$18.00</div>
-                            </div>
-                            <div class="d-flex justify-content-between pt-2">
-                                <div>
-                                    <div class="font-weight-semibold text-dark">Local pickup from store</div>
-                                    <div class="font-size-sm text-muted">&mdash;</div>
-                                </div>
-                                <div>$0.00</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="accordion-heading"><a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i></span>Tag cloud<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        <h3 class="accordion-heading">
+                            <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
+                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                    <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
+                                </span>Tag cloud<span class="accordion-indicator">
+                                    <i data-feather="chevron-up"></i>
+                                </span>
+                            </a>
+                        </h3>
                     </div>
                     <div class="collapse" id="tagCloud" data-parent="#productPanels">
-                        <div class="card-body"><a class="tag-link mr-2 mb-2" href="#">#action camera</a><a class="tag-link mr-2 mb-2" href="#">#360° camera</a><a class="tag-link mr-2 mb-2" href="#">#samsung</a><a class="tag-link mr-2 mb-2" href="#">#4K video</a><a class="tag-link mr-2 mb-2" href="#">#gear 360</a><a class="tag-link mr-2 mb-2" href="#">#VR</a><a class="tag-link mr-2 mb-2" href="#">#electronics</a></div>
+                        <div class="card-body">
+                            @if (productTags.Count > 0)
+                            {
+
+                                foreach (var t in productTags)
+                                {
+                                    <a class="tag-link mr-2 mb-2" href="@Url.Action("Tag", "products", new { id = t.GetSeoUrl() })">@t.Name</a>
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- Share product-->
-            <div class="py-4"><span class="d-inline-block align-middle font-size-sm mr-3 mb-2">Share product:</span><a class="social-btn sb-instagram mr-2 mb-2" href="#"><i class="flaticon-instagram"></i></a><a class="social-btn sb-facebook mr-2 mb-2" href="#"><i class="flaticon-facebook"></i></a><a class="social-btn sb-twitter mr-2 mb-2" href="#"><i class="flaticon-twitter"></i></a><a class="social-btn sb-pinterest mr-2 mb-2" href="#"><i class="flaticon-pinterest"></i></a></div>
+            <div class="py-4">
+                <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">
+                    Share product:
+                </span>
+                <a class="social-btn sb-instagram mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                    <i class="flaticon-instagram"></i>
+                </a>
+                <a class="social-btn sb-facebook mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                    <i class="flaticon-facebook"></i>
+                </a>
+                <a class="social-btn sb-twitter mr-2 mb-2" href="http://twitter.com/share?text=@product.Name&url=@product.DetailPageAbsoluteUrl&hashtags=hashtag1,hashtag2,hashtag3">
+                    <i class="flaticon-twitter"></i>
+                </a>
+                <a class="social-btn sb-pinterest mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                    <i class="flaticon-pinterest"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -223,207 +213,67 @@
         <div class="row">
             <div class="col-md-6">
                 <h3 class="h5 mb-3">Details</h3>
-                <p class="mb-4 pb-2">The Gear 360 has evolved to let you record in 4K or broadcast live, and then make it your own with the Samsung Gear 360 app. And with the Gear 360's smaller size and redesigned, easy-to-grip body, memories aren't the only thing you'll want to hold onto.</p>
-                <h3 class="h5 mb-3">Features</h3>
-                <ul class="ml-n3 mb-4 pb-2">
-                    <li>Tell the whole story with the 360° camera that captures every angle in 4K brilliance and share instantly</li>
-                    <li>Capture life as it happens in stunning 4K video and 15MP photos thanks to dual 180° lenses</li>
-                    <li>Gear 360 is easy to hold and take with you, and has an IP53 water-resistant rating</li>
-                    <li>Preview and edit your videos with an easy-to-use app, or share them straight to social or Samsung VR with your Galaxy S8 or S8+</li>
-                    <li>Upload your photos or videos to Samsung VR to experience your moments in virtual reality</li>
-                </ul>
+                <p class="mb-4 pb-2">@Html.Raw(product.Description)</p>
             </div>
-            <div class="col-md-6">
-                <h3 class="h5 mb-3">Specifications</h3>
-                <ul class="list-unstyled mb-4 pb-2">
-                    <li class="d-block pb-2 border-bottom"><strong>Color:</strong> White</li>
-                    <li class="d-block py-2 border-bottom"><strong>Dimensions:</strong> 100.6 x 46.3 x 45.1mm</li>
-                    <li class="d-block py-2 border-bottom"><strong>Weight:</strong> 130 g</li>
-                    <li class="d-block py-2 border-bottom"><strong>Camera:</strong> CMOS 8.4MP x2 / F2.2 lens (Default output pixel count - 15MP)</li>
-                    <li class="d-block py-2 border-bottom"><strong>Video:</strong> 360˚ Dual Lens: up to 4096 x 2048 (24fps)</li>
-                    <li class="d-block py-2 border-bottom"><strong>Battery:</strong> 1,160mAh</li>
-                    <li class="d-block py-2 border-bottom"><strong>External Memory:</strong> MicroSD card (up to 256GB)</li>
-                    <li class="d-block py-2 border-bottom"><strong>OS Convergence:</strong> Android, iOS - Mobile App / Windows, Mac - PC Software</li>
-                    <li class="d-block py-2 border-bottom"><strong>Connectivity:</strong> Wi-Fi 802.11 (2.4/5GHz), Bluetooth v4.1, USB 2.0 (Type-C)</li>
-                    <li class="d-block py-2 border-bottom"><strong>Sensor:</strong> Gyro, Accelerometer</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Reviews-->
-<div class="container pt-5 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
-    <div class="row pt-sm-3">
-        <div class="col-md-4 pb-5">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
-                        <div class="display-4 mr-2">4.3</div>
-                        <div>
-                            <div class="text-muted font-size-xs mb-n1">based on 295 reviews</div>
-                            <div class="star-rating">
-                                <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">5 stars - <span class="text-muted">177</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">4 stars - <span class="text-muted">88</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">3 stars - <span class="text-muted">20</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 8%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">2 stars - <span class="text-muted">9</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 3%" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="font-size-sm font-weight-semibold mb-2">1 star - <span class="text-muted">0</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">Leave a review</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8 pb-5">
-            <h2 class="h3">Latest reviews</h2>
-            <!-- Review-->
-            <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-                <div class="d-sm-flex align-items-center pb-2">
-                    <h6 class="mb-0">Awesome quality for the price</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i>
-                    </div>
-                </div>
-                <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est...</p>
-                <div class="media align-items-center mb-2">
-                    <img class="mr-3" src="img/testimonials/01.jpg" width="50" alt="Author ava">
-                    <div class="media-body">
-                        <h6 class="font-size-sm mb-0">Jonathan Smith</h6><span class="d-block font-size-sm text-muted">May 30, 2019</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Review-->
-            <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-                <div class="d-sm-flex align-items-center pb-2">
-                    <h6 class="mb-0">My husband love his new toy</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse...</p>
-                <div class="media align-items-center mb-2">
-                    <img class="mr-3" src="img/testimonials/03.jpg" width="50" alt="Author ava">
-                    <div class="media-body">
-                        <h6 class="font-size-sm mb-0">Barbara Palson</h6><span class="d-block font-size-sm text-muted">May 17, 2019</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Review-->
-            <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-                <div class="d-sm-flex align-items-center pb-2">
-                    <h6 class="mb-0">Great quality and fast delivery</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i>
-                    </div>
-                </div>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur...</p>
-                <div class="media align-items-center mb-2">
-                    <img class="mr-3" src="img/testimonials/02.jpg" width="50" alt="Author ava">
-                    <div class="media-body">
-                        <h6 class="font-size-sm mb-0">Deniel Adams</h6><span class="d-block font-size-sm text-muted">April 13, 2019</span>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-2">
-                <!-- Pagination-->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center justify-content-sm-start mb-0">
-                        <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                        <li class="page-item d-sm-none"><span class="page-link page-link-static">2 / 5</span></li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">2<span class="sr-only">(current)</span></span></li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item d-none d-sm-block">...</li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+
+            @if (Model.ProdSpecs.Count > 0)
+            {
+
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3">Specifications</h3>
+                    @if (isUserAuthenticated)
+                    {
+                        @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
+                    }
+                    <ul class="list-unstyled mb-4 pb-2">
+                        @foreach (KeyValuePair<string, string> entry in Model.ProdSpecs)
+                        {
+                            <li class="d-block pb-2 border-bottom"><strong>@entry.Key:</strong> @entry.Value</li>
+                        }
                     </ul>
-                </nav>
-            </div>
+                </div>
+
+            }
         </div>
     </div>
 </div>
-<!-- Related products-->
-<div class="container pb-5">
-    <h2 class="h3 pb-4">You may also like</h2>
-    <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0"><a class="product-thumb-link" href="#"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i data-feather="heart"></i></span><img src="img/shop/electronics/01.jpg" alt="Product"></div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1">
-                    <a class="product-meta" href="#">Headphones</a>
-                    <div class="star-rating"><span class="sr-label mr-1">4.7</span><i class="sr-star active" data-feather="star"></i></div>
+
+@if (relatedProducts.Any())
+{
+ 
+    <!-- Related products-->
+    <div class="container pb-5">
+        <h2 class="h3 pb-4">@Resource.SimilairProducts</h2>
+        <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
+            @foreach (var product2 in relatedProducts)
+            {
+                <div class="product-card">
+                    <div class="product-thumb box-shadow-0">
+                        <a class="product-thumb-link" href="@product2.DetailPageRelativeUrl">
+                        </a><span class="product-wishlist-btn"
+                                  data-toggle="tooltip"
+                                  data-placement="left"
+                                  title="Add to wishlist">
+                            <i data-feather="heart"></i>
+                        </span><img src="@product2.GetCroppedImageUrl(product2.MainImageId,50,0)" alt="Product">
+                    </div>
+                    <div class="product-card-body box-shadow-0">
+                        <div class="d-flex flex-wrap justify-content-between pb-1">
+                            <a class="product-meta" href="@product2.DetailPageRelativeUrl">@product2.Name</a>
+                            <div class="star-rating"><span class="sr-label mr-1">4.7</span><i class="sr-star active" data-feather="star"></i></div>
+                        </div>
+                        <h3 class="product-card-title">
+                            <a href="@product2.DetailPageRelativeUrl">
+                                @product2.ShortDescription
+                            </a>
+                        </h3><span class="text-primary">@product2.GetProductPrice().CurrencySign()</span>
+                    </div>
                 </div>
-                <h3 class="product-card-title"><a href="#">Sony WH-CH700N Wireless Noise Canceling Headphones, Black</a></h3><span class="text-primary">$198.00</span>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0"><a class="product-thumb-link" href="#"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i data-feather="heart"></i></span><img src="img/shop/electronics/02.jpg" alt="Product"></div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1">
-                    <a class="product-meta" href="#">Computers</a>
-                    <div class="star-rating"><span class="sr-label mr-1">3.9</span><i class="sr-star active" data-feather="star"></i></div>
-                </div>
-                <h3 class="product-card-title"><a href="#">Apple AirPort Extreme Base Station ME918LL (Refurbished)</a></h3><span class="text-primary">$129.00</span>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0"><a class="product-thumb-link" href="#"></a><span class="badge badge-danger rounded-0">Sale -40%</span><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i data-feather="heart"></i></span><img src="img/shop/electronics/04.jpg" alt="Product"></div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1">
-                    <a class="product-meta" href="#">Smart home</a>
-                    <div class="star-rating"><span class="sr-label mr-1">4.2</span><i class="sr-star active" data-feather="star"></i></div>
-                </div>
-                <h3 class="product-card-title"><a href="#">All-new Echo Dot (3rd Gen) - Smart speaker with Alexa - Charcoal</a></h3><span class="text-primary">
-                    <del class="text-muted mr-1">$49.99</del>$29.99
-                </span>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0"><a class="product-thumb-link" href="#"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i data-feather="heart"></i></span><img src="img/shop/electronics/05.jpg" alt="Product"></div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1">
-                    <a class="product-meta" href="#">Wearable electronics</a>
-                    <div class="star-rating"><span class="sr-label mr-1">3.6</span><i class="sr-star active" data-feather="star"></i></div>
-                </div>
-                <h3 class="product-card-title"><a href="#">Fitbit Ionic GPS Smart Watch, Charcoal/Smoke Gray, One Size</a></h3><span class="text-primary">$317.40</span>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0"><a class="product-thumb-link" href="#"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i data-feather="heart"></i></span><img src="img/shop/electronics/06.jpg" alt="Product"></div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1">
-                    <a class="product-meta" href="#">Smartphones</a>
-                    <div class="star-rating"><span class="sr-label mr-1">4.5</span><i class="sr-star active" data-feather="star"></i></div>
-                </div>
-                <h3 class="product-card-title"><a href="#">Apple - iPhone XS 128GB - Space Gray</a></h3><span class="text-primary">$1,049.99</span>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0"><a class="product-thumb-link" href="#"></a><span class="product-wishlist-btn" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i data-feather="heart"></i></span><img src="img/shop/electronics/08.jpg" alt="Product"></div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1"><a class="product-meta" href="#">Computers</a></div>
-                <h3 class="product-card-title"><a href="#">Acer R11 11.6" Convertible 2-in-1 HD Touchscreen (2019)</a></h3><span class="text-primary">$339.00</span>
-            </div>
+            }
         </div>
     </div>
-</div>
+
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

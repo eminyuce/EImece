@@ -1,5 +1,8 @@
 ﻿using EImece.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -20,5 +23,52 @@ namespace EImece.Domain.Models.FrontModels
         public List<Product> RelatedProducts { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
+
+        public Dictionary<string, string> ProdSpecs
+        {
+            get
+            {
+                var result = new Dictionary<string, string>();
+                var product = Product;
+                var productSpecs = product.ProductSpecifications.Where(r => !String.IsNullOrEmpty(r.Value)).OrderBy(r => r.Position).ToList();
+                var template = Template;
+                if (productSpecs.Any() && !string.IsNullOrEmpty(template.TemplateXml))
+                {
+                    XDocument xdoc = XDocument.Parse(template.TemplateXml);
+                    var groups = xdoc.Root.Descendants("group");
+                    foreach (var group in groups)
+                    {
+                        foreach (XElement field in group.Elements())
+                        {
+                            var name = field.Attribute("name");
+                            var unit = field.Attribute("unit");
+                            var values = field.Attribute("values");
+                            var display = field.Attribute("display");
+                            var dbValueObj = productSpecs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                            var isValueExist = dbValueObj != null;
+                            if (!isValueExist)
+                            {
+                                continue;
+                            }
+                            string attributeName = "";
+                            if (display != null)
+                            {
+                                attributeName = display.Value;
+                            }
+                            else
+                            {
+                                attributeName = name.Value;
+                            }
+
+                            if (isValueExist)
+                            {
+                                result.Add(attributeName.Trim(), dbValueObj.Value.Trim());
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
+        }
     }
 }
