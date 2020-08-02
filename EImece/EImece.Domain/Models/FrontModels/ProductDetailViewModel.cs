@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public class ProductDetailViewModel
+    public class ProductDetailViewModel : ItemListing
     {
 
         public Product Product { get; set; }

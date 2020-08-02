@@ -17,14 +17,15 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-        IProductCommentService ProductCommentService;
+     
+        private readonly IProductCommentService productCommentService;
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
         public ProductsController(IProductCommentService ProductCommentService)
         {
-            this.ProductCommentService= ProductCommentService;
+            this.productCommentService = ProductCommentService;
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
@@ -95,10 +96,10 @@ namespace EImece.Controllers
             productComment.UserId = user == null ? "" : user.Id;
             productComment.CreatedDate = DateTime.Now;
             productComment.UpdatedDate = DateTime.Now;
-            productComment.IsActive = true;
+            productComment.IsActive = false;
             productComment.Position = 1;
             productComment.Lang = 1;
-            ProductCommentService.SaveOrEditEntity(productComment);
+            productCommentService.SaveOrEditEntity(productComment);
             return RedirectToAction("Detail", new { id = productComment.ProductId.ToStr() } );
         }
     }

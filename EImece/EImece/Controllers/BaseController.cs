@@ -96,7 +96,6 @@ namespace EImece.Controllers
 
         private void setIsCachingActive(bool IsCachingActive)
         {
-            ProductService.IsCachingActive = IsCachingActive;
             ProductCategoryService.IsCachingActive = IsCachingActive;
             MainPageImageService.IsCachingActive = IsCachingActive;
             SettingService.IsCachingActive = IsCachingActive;

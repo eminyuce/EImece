@@ -5,6 +5,14 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
 
 @{
     var product = Model.Product;
@@ -22,6 +30,9 @@
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
     string[] numbersArr = new string[] { "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
     Model.ProductComment.ProductId = product.Id;
+
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+
 }
 
 <!-- Page Title-->
@@ -279,70 +290,10 @@
         </div>
         <div class="col-md-8 pb-5">
             <h2 class="h3">Latest reviews</h2>
-            <!-- Review-->
-            <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-                <div class="d-sm-flex align-items-center pb-2">
-                    <h6 class="mb-0">Awesome quality for the price</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i>
-                    </div>
-                </div>
-                <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est...</p>
-                <div class="media align-items-center mb-2">
-                    <img class="mr-3" src="img/testimonials/01.jpg" width="50" alt="Author ava">
-                    <div class="media-body">
-                        <h6 class="font-size-sm mb-0">Jonathan Smith</h6><span class="d-block font-size-sm text-muted">May 30, 2019</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Review-->
-            <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-                <div class="d-sm-flex align-items-center pb-2">
-                    <h6 class="mb-0">My husband love his new toy</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse...</p>
-                <div class="media align-items-center mb-2">
-                    <img class="mr-3" src="img/testimonials/03.jpg" width="50" alt="Author ava">
-                    <div class="media-body">
-                        <h6 class="font-size-sm mb-0">Barbara Palson</h6><span class="d-block font-size-sm text-muted">May 17, 2019</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Review-->
-            <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-                <div class="d-sm-flex align-items-center pb-2">
-                    <h6 class="mb-0">Great quality and fast delivery</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-                    <div class="star-rating">
-                        <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i>
-                    </div>
-                </div>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur...</p>
-                <div class="media align-items-center mb-2">
-                    <img class="mr-3" src="img/testimonials/02.jpg" width="50" alt="Author ava">
-                    <div class="media-body">
-                        <h6 class="font-size-sm mb-0">Deniel Adams</h6><span class="d-block font-size-sm text-muted">April 13, 2019</span>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-2">
-                <!-- Pagination-->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center justify-content-sm-start mb-0">
-                        <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                        <li class="page-item d-sm-none"><span class="page-link page-link-static">2 / 5</span></li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">2<span class="sr-only">(current)</span></span></li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item d-none d-sm-block">...</li>
-                        <li class="page-item d-none d-sm-block"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
+            @foreach (var productComment in productComments)
+            {
+                @createReviewItem(productComment)
+            }
         </div>
     </div>
 </div>
@@ -385,6 +336,31 @@
 }
 
 @Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = product.Id })
+
+@helper createReviewItem(ProductComment productComment)
+{
+
+    <!-- Review-->
+    <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
+        <div class="d-sm-flex align-items-center pb-2">
+            <h6 class="mb-0">@productComment.Subject</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
+            <div class="star-rating">
+                @for (int i = 0; i < productComment.Rating; i++)
+                {
+                    <i class="sr-star active" data-feather="star"></i>
+                }
+            </div>
+        </div>
+        <p>@productComment.Review</p>
+        <div class="media align-items-center mb-2">
+            <div class="media-body">
+                <h6 class="font-size-sm mb-0">@productComment.Name</h6>
+                <span class="d-block font-size-sm text-muted">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
+            </div>
+        </div>
+    </div>
+
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

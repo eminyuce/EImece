@@ -46,6 +46,7 @@ namespace EImece.Domain.Entities
         public Boolean IsCampaign { get; set; }
 
         public ProductCategory ProductCategory { get; set; }
+        public ICollection<ProductComment> ProductComments { get; set; }
         public ICollection<ProductFile> ProductFiles { get; set; }
         public ICollection<ProductTag> ProductTags { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
