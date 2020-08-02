@@ -75,10 +75,11 @@ namespace EImece.Domain.Repositories
             Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
             Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3 };
             var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
-            search = search.ToStr().ToLower().Trim();
+            search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(r => r.Name.ToLower().Contains(search) || r.ProductCode.ToLower().Contains(search) || r.ProductCategory.Name.ToLower().Contains(search));
+                Expression<Func<Product, bool>> whereLamba = r =>  r.Name.Contains(search) || r.ProductCode.Contains(search) || r.ProductCategory.Name.Contains(search);
+                products = products.Where(whereLamba);
             }
             if (categoryId > 0)
             {

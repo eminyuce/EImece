@@ -4,35 +4,32 @@
 @using EImece.Domain.Helpers;
 @model EImece.Domain.Models.FrontModels.ProductDetailViewModel
 @using Resources;
-    @{
-        var categories = Model.BreadCrumb;
+@{
+    var categories = Model.BreadCrumb;
 
-    }
-<h2>
-    @Model.Product.Name
-</h2>
-    <nav id="breadcrumbs">
-        <ul>
-            @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
-            {
-                <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
-            }
-            @if (Model.ProductMenu != null && Model.ProductMenu.IsActive)
-            {
-                <li>@Html.ActionLink(Model.ProductMenu.Name, "Index", "Products")</li>
-            }
-            @for(int i=categories.Count()-1; i >= 0; i--)
-            {
-                var category = categories[i];
-                <li>
-                    @Html.ActionLink(category.Text,
-                   "Category",
-                   "ProductCategories",
-                   new { id = category.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-link" })
-                </li>
-            }
-            <li>
-                @Model.Product.Name
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+        @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+        {
+            <li class="breadcrumb-item">@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+        }
+        @if (Model.ProductMenu != null && Model.ProductMenu.IsActive)
+        {
+            <li class="breadcrumb-item">@Html.ActionLink(Model.ProductMenu.Name, "Index", "Products")</li>
+        }
+        @for (int i = categories.Count() - 1; i >= 0; i--)
+        {
+            var category = categories[i];
+            <li class="breadcrumb-item">
+                <a href="@category.ProductCategory.DetailPageUrl">@category.ProductCategory.Name</a>
             </li>
-        </ul>
-    </nav>
+        }
+        <li class="breadcrumb-item">
+            @Model.Product.Name
+        </li>
+    </ol>
+</nav>
+
+ 

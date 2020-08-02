@@ -78,6 +78,7 @@ namespace EImece.Controllers
             if (Session[CaptchaAdminLogin] == null || !Session[CaptchaAdminLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("Captcha", AdminResource.WrongSum);
+                ModelState.AddModelError("", AdminResource.WrongSum);
                 return View(model);
             }
             else
