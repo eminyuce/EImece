@@ -38,6 +38,8 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.OrderProducts);
+            includeProperties.Add(r => r.ShippingAddress);
+            includeProperties.Add(r => r.BillingAddress);
 
             var products = GetAllIncluding(includeProperties.ToArray());
             search = search.ToStr().Trim();

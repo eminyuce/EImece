@@ -19,8 +19,6 @@ namespace EImece.Areas.Customers.Controllers
     [AuthorizeRoles(Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
-        private const string CaptchaCustomerEdit = "CaptchaCustomerEdit";
-
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
@@ -58,21 +56,12 @@ namespace EImece.Areas.Customers.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            if (Session[CaptchaCustomerEdit] == null || !Session[CaptchaCustomerEdit].ToString().Equals(customer.Captcha, StringComparison.InvariantCultureIgnoreCase))
-            {
-                ModelState.AddModelError("Captcha", Resources.Resource.ContactUsWrongSumForSecurityQuestion);
-                return View("Index", customer);
-            }
-            else
-            {
-                var user = UserManager.FindByName(User.Identity.GetUserName());
-                customer.UserId = user.Id;
-                customer.Ip = GeneralHelper.GetIpAddress();
-                customer =  CustomerService.SaveOrEditEntity(customer);
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
-            }
+            var user = UserManager.FindByName(User.Identity.GetUserName());
+            customer.UserId = user.Id;
+            customer.Ip = GeneralHelper.GetIpAddress();
+            customer = CustomerService.SaveOrEditEntity(customer);
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(customer);
         }
 
         public ActionResult SendMessageToSeller()
