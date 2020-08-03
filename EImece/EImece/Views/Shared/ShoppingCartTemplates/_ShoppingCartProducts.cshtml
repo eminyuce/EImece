@@ -21,7 +21,7 @@
             <th>@Resource.Quantity</th>
             <th>@Resource.Total</th>
         </tr>
-        @if (!products.IsNullOrEmpty())
+        @if (products.IsNotEmpty())
         {
             foreach (var item in products)
             {

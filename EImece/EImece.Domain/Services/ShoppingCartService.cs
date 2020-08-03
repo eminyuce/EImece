@@ -96,6 +96,7 @@ namespace EImece.Domain.Services
            int billingAddressId)
         {
             var item = new Order();
+            item.OrderComments = shoppingCart.OrderComments;
             item.OrderNumber = GeneralHelper.RandomNumber(12);
             item.UserId = userId;
             item.Name = shoppingCart.Customer.FullName;

@@ -259,7 +259,13 @@ namespace EImece.Controllers
         {
             return Json(new { status = SUCCESS, price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult sendOrderComments(string orderComments, string orderGuid)
+        {
+            ShoppingCartSession shoppingCart = GetShoppingCart();
+            shoppingCart.OrderComments = orderComments;
+            SaveShoppingCart(shoppingCart);
+            return Json(new { status = SUCCESS }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult UpdateQuantity(String shoppingItemId, int quantity)
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
