@@ -592,6 +592,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Siparişini gözden geçir.
+        /// </summary>
+        public static string ReviewYourOrder {
+            get {
+                return ResourceManager.GetString("ReviewYourOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ara.
         /// </summary>
         public static string Search {

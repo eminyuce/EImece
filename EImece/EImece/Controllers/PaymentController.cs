@@ -308,7 +308,8 @@ namespace EImece.Controllers
             if (shoppingCart.Customer.isValid())
             {
                 var checkoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart);
-                return View(checkoutFormInitialize);
+                ViewBag.CheckoutFormInitialize = checkoutFormInitialize;
+                return View(shoppingCart);
             }
             else
             {

@@ -12,28 +12,41 @@
     var products = Model.ShoppingCartItems;
 }
 
-<section class="titlebar">
-    <div class="container">
-        <div class="sixteen columns">
-            <h2>Shopping Cart</h2>
-
-            <nav id="breadcrumbs">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li>Shopping Cart</li>
-                </ul>
-            </nav>
-        </div>
+<!-- Steps (wizard)-->
+<div class="steps">
+    <div class="steps-body">
+        <a class="step step-active" href="@Url.Action("ShoppingCart")">
+            <span class="step-indicator">
+                <i data-feather="check"></i>
+            </span><span class="step-icon">
+                <i data-feather="shopping-cart"></i>
+            </span>1.@Resource.MyBasket
+        </a>
+        <a class="step" href="@Url.Action("checkoutbillingdetails")">
+            <span class="step-icon">
+                <i data-feather="user"></i>
+            </span>2.@AdminResource.OrderDetails
+        </a>
+        <a class="step" href="@Url.Action("checkoutPaymentOrderReview")">
+            <span class="step-icon">
+                <i data-feather="check-circle"></i>
+            </span>3.@Resource.OrderFinalReview
+        </a>
+        <a class="step" href="@Url.Action("PlaceOrder")">
+            <span class="step-icon"><i data-feather="credit-card"></i></span>4.@AdminResource.Payment
+        </a>
     </div>
-</section>
- 
+</div>
+
 
 <div class="container pb-5 mt-n2 mt-md-n3">
     <div class="row">
         <div class="col-xl-9 col-md-8">
             <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
-            <span>Products</span><a class="font-size-sm" href="@Model.UrlReferrer">
-                <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>Continue shopping</a></h2>
+                <span>Products</span><a class="font-size-sm" href="@Model.UrlReferrer">
+                    <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>Continue shopping
+                </a>
+            </h2>
 
             @if (products.IsNotEmpty())
             {
@@ -53,7 +66,8 @@
                       data-shopping-order-guid="@Model.OrderGuid"
                       id="orderComments" rows="5">@Model.OrderComments</textarea>
             <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
-            <i class="mr-2" data-feather="credit-card"></i>@Resource.ProceedToCheckout</a>
+                <i class="mr-2" data-feather="credit-card"></i>@Resource.ProceedToCheckout
+            </a>
         </div>
     </div>
 </div>
@@ -74,17 +88,17 @@
                 </a>
             }
 
-        <div class="media-body pt-3">
-            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                <a href="@product.DetailPageUrl">@product.Name</a>
-            </h3>
-            <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
-            <div class="font-size-sm"><span class="text-muted mr-2">Price:</span>@product.Price.CurrencySign()</div>
-            <div class="font-size-sm"><span class="text-muted mr-2">CategoryName:</span>@product.CategoryName</div>
-        </div>
+            <div class="media-body pt-3">
+                <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                    <a href="@product.DetailPageUrl">@product.Name</a>
+                </h3>
+                <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
+                <div class="font-size-sm"><span class="text-muted mr-2">Price:</span>@product.Price.CurrencySign()</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">CategoryName:</span>@product.CategoryName</div>
+            </div>
         </div>
         <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-          
+
             <div class="form-group mb-2">
                 <label for="quantity2">Quantity</label>
                 <input class="form-control form-control-sm" name=@String.Format("quantity[{0}]", i)
@@ -99,7 +113,7 @@
 @section Scripts{
 
     <script>
-       
+
         $(document).ready(function () {
             $('#ProceedToCheckout').click(function (event) {
                 event.preventDefault();
@@ -109,9 +123,9 @@
                     orderGuid: txtArea.attr("data-shopping-order-guid")
                 });
                 console.log(postData);
-                var hrefUrl=$(this).attr('href');
+                var hrefUrl = $(this).attr('href');
                 ajaxMethodCall(postData, "/Payment/sendOrderComments", function (data) {
-                    window.location.href = hrefUrl; 
+                    window.location.href = hrefUrl;
                 });
             });
 

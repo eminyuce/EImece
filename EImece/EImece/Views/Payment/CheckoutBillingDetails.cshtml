@@ -42,9 +42,10 @@
                 </span>1.@Resource.MyBasket
             </a>
             <a class="step step-active" href="@Url.Action("checkoutbillingdetails")">
-                <span class="step-icon">
-                    <i data-feather="user"></i>
-                </span>2.@AdminResource.OrderDetails
+                <span class="step-indicator"><i data-feather="check"></i></span> 
+                    <span class="step-icon">
+                        <i data-feather="user"></i>
+                    </span>2.@AdminResource.OrderDetails
             </a>
             <a class="step" href="@Url.Action("checkoutPaymentOrderReview")">
                 <span class="step-icon">
@@ -185,33 +186,7 @@
                 </div>
             }
         </div>
-        <!-- Sidebar-->
-        <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
-            <h2 class="h6 px-4 py-3 bg-secondary text-center">Order summary</h2>
-            <div class="font-size-sm border-bottom pt-2 pb-3">
-                <div class="d-flex justify-content-between mb-2"><span>Subtotal:</span><span>$325.00</span></div>
-                <div class="d-flex justify-content-between mb-2"><span>Shipping:</span><span>&mdash;</span></div>
-                <div class="d-flex justify-content-between mb-2"><span>Taxes:</span><span>$7.25</span></div>
-                <div class="d-flex justify-content-between"><span>Discount:</span><span>&mdash;</span></div>
-            </div>
-            <div class="h3 font-weight-semibold text-center py-3">$332.25</div>
-            <form class="needs-validation" novalidate>
-                <div class="form-group">
-                    <input class="form-control" type="text" id="cart-promocode" placeholder="Promo code" required>
-                    <div class="invalid-feedback">Please provide a valid promo code!</div>
-                </div>
-                <button class="btn btn-outline-primary btn-block" type="submit">Apply promo code</button>
-            </form>
-            <!-- Promo banner--><a class="d-block text-decoration-0 mt-4 mx-auto pt-2" href="#" style="max-width: 277px;">
-                <div class="bg-secondary">
-                    <div class="px-3 pt-4 text-center">
-                        <h4 class="font-size-sm font-weight-normal pt-1 mb-2">2019 Spring / Summer</h4>
-                        <h4 class="h5 pb-2">Hoodie Collection</h4>
-                        <div class="btn btn-primary btn-sm">Shop now</div>
-                    </div><img src="img/shop/banner01.jpg" alt="Promo banner">
-                </div>
-            </a>
-        </div>
+         @Html.Partial("_OrderSummary",Model)
     </div>
 </div>
 

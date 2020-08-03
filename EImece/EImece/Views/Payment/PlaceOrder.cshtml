@@ -1,23 +1,84 @@
 ﻿@using Iyzipay;
 @using Iyzipay.Model;
 @using Iyzipay.Request;
-@model  CheckoutFormInitialize
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
 @{
 
     ViewBag.Title = "Index";
-    var checkoutFormInitialize = Model;
+    CheckoutFormInitialize checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
 }
-
-<div id="iyzipay-checkout-form" class="responsive"></div>
 @*
     İyzico Ödeme Ekranı
-
      Html.DisplayFor(model => checkoutFormInitialize)
 *@
+
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Shop</a>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="page-title">Checkout</h1><span class="d-block mt-2 text-muted"></span>
+    </div>
+</div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <!-- Steps (wizard)-->
+    <div class="steps">
+        <div class="steps-body">
+            <a class="step step-completed" href="@Url.Action("ShoppingCart")">
+                <span class="step-indicator"><i data-feather="check"></i></span>
+                <span class="step-icon"><i data-feather="shopping-cart"></i></span>1.@Resource.MyBasket
+            </a>
+            <a class="step step-completed" href="@Url.Action("checkoutbillingdetails")">
+                <span class="step-indicator">
+                    <i data-feather="check"></i>
+                </span><span class="step-icon">
+                    <i data-feather="user"></i>
+                </span>2.@AdminResource.OrderDetails
+            </a>
+            <a class="step step-completed" href="@Url.Action("checkoutPaymentOrderReview")">
+                <span class="step-indicator"><i data-feather="check"></i></span><span class="step-icon">
+                    <i data-feather="credit-card">
+                    </i>
+                </span>3.@Resource.OrderFinalReview
+            </a><a class="step step-active" href="@Url.Action("PlaceOrder")">
+                <span class="step-icon">
+                    <i data-feather="check-circle"></i>
+                </span>4.@AdminResource.Payment
+            </a>
+        </div>
+    </div>
+    <div class="row pt-4 mt-2">
+        @Html.Raw(checkoutFormInitialize.CheckoutFormContent)
+    </div>
+</div>
+
 <br />
-<b>
-    @Html.Raw(checkoutFormInitialize.CheckoutFormContent)
-</b>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 @Html.DisplayFor(model => checkoutFormInitialize)
 <br />
 <br />

@@ -1162,6 +1162,7 @@
     <Content Include="Views\Shared\EditorTemplates\ProductComment.cshtml" />
     <Content Include="Views\Payment\CheckoutBillingDetails - Copy.cshtml" />
     <Content Include="Views\Payment\CheckoutDelivery - Copy.cshtml" />
+    <Content Include="Views\Payment\_OrderSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

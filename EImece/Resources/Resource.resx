@@ -357,4 +357,7 @@
   <data name="OrderFinalReview" xml:space="preserve">
     <value>Sipariş Özeti</value>
   </data>
+  <data name="ReviewYourOrder" xml:space="preserve">
+    <value>Siparişini gözden geçir</value>
+  </data>
 </root>
