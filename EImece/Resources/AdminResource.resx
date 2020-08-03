@@ -844,4 +844,7 @@
     <value>
 Sipariş Detayları</value>
   </data>
+  <data name="DeliveryInfo" xml:space="preserve">
+    <value>İade &amp; Teslimat Bilgileri</value>
+  </data>
 </root>

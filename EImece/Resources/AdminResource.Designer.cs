@@ -466,6 +466,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İade &amp; Teslimat Bilgileri.
+        /// </summary>
+        public static string DeliveryInfo {
+            get {
+                return ResourceManager.GetString("DeliveryInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İçerik açıklaması.
         /// </summary>
         public static string Description {

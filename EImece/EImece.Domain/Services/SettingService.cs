@@ -95,7 +95,7 @@ namespace EImece.Domain.Services
         public Setting GetSettingObjectByKey(string key, int language)
         {
             var allSettings = GetAllSettings();
-            var result = allSettings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            var result = allSettings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase));
             if (result != null)
             {
                 return result;

@@ -8,6 +8,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Ninject;
 using NLog;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -101,24 +102,40 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public ActionResult AboutUs()
+        public ActionResult SettingPage(string id)
         {
-            var setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
-            return View(setting);
-        }
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("No Page is defined.");
+            }
 
-        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public ActionResult TermsAndConditions()
-        {
-            var setting = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
-            return View(setting);
-        }
+            Setting setting = null;
+            if (id.Equals(Constants.AboutUs, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
+                ViewBag.Title = Resource.AboutUs;
+            }
+            else if (id.Equals(Constants.DeliveryInfo, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.DeliveryInfo, CurrentLanguage);
+                ViewBag.Title = AdminResource.DeliveryInfo;
+            }
+            else if (id.Equals(Constants.TermsAndConditions, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
+                ViewBag.Title = Resource.TermsAndConditions;
+            }
+            else if (id.Equals(Constants.PrivacyPolicy, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
+                ViewBag.Title = Resource.PrivacyPolicy;
+            }
+            else
+            {
+                throw new ArgumentException(id);
+            }
 
-        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public ActionResult PrivacyPolicy()
-        {
-            var setting = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
-            return View(setting);
+            return View("SettingPage", setting);
         }
 
         [ChildActionOnly]

@@ -29,6 +29,7 @@
         public const string AdminSetting = "AdminSetting";
         public const string TermsAndConditions = "TermsAndConditions";
         public const string AboutUs = "AboutUs";
+        public const string DeliveryInfo = "DeliveryInfo";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
         public const string InstagramWebSiteLink = "InstagramWebSiteLink"; 

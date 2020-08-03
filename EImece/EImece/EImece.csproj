@@ -892,8 +892,6 @@
     <Content Include="Areas\Admin\Views\Users\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Message.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\WebSiteLogo.cshtml" />
-    <Content Include="Areas\Admin\Views\Settings\PrivacyPolicy.cshtml" />
-    <Content Include="Areas\Admin\Views\Settings\TermsAndConditions.cshtml" />
     <Content Include="Areas\Admin\Views\Users\GenerateNewPassword.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\pPageThemes.cshtml" />
     <Content Include="Areas\Admin\Views\ImportData\ExcelUpload.cshtml" />
@@ -926,8 +924,6 @@
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\SelectUserRolesViewModel.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags - Copy.cshtml" />
-    <Content Include="Areas\Admin\Views\Settings\_pPageSetting.cshtml" />
-    <Content Include="Areas\Admin\Views\Settings\AboutUs.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pLanguages.cshtml" />
     <Content Include="App_Data\il-ilce-mahalle\iller.json" />
     <Content Include="App_Data\il-ilce-mahalle\ilceler.json" />
@@ -946,6 +942,7 @@
     <Content Include="Content\mstore\fonts\Flaticon.woff" />
     <Content Include="Areas\Customers\Views\Home\CustomerOrders - Copy.cshtml" />
     <Content Include="Areas\Customers\Views\Shared\_Layout - Copy %282%29.cshtml" />
+    <Content Include="Areas\Admin\Views\Settings\AdminSettingPage.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -1114,8 +1111,6 @@
     <Content Include="Views\Stories\Categories.cshtml" />
     <Content Include="Views\Shared\_WebSiteAddressInfo.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />
-    <Content Include="Views\Home\PrivacyPolicy.cshtml" />
-    <Content Include="Views\Home\TermsAndConditions.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\LatestStory.cshtml" />
     <Content Include="Views\Shared\_NavigationMenuLink.cshtml" />
     <Content Include="Views\Shared\_ProductBreadCrumb.cshtml" />
@@ -1139,7 +1134,6 @@
     <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Shared\_ProductTitleBar.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
-    <Content Include="Views\Home\AboutUs.cshtml" />
     <Content Include="Views\Shared\_Languages.cshtml" />
     <Content Include="Views\Payment\PlaceOrder.cshtml" />
     <Content Include="Views\Payment\ShoppingCart.cshtml" />
@@ -1165,6 +1159,7 @@
     <Content Include="Views\Payment\CheckoutBillingDetails - Copy.cshtml" />
     <Content Include="Views\Payment\CheckoutDelivery - Copy.cshtml" />
     <Content Include="Views\Payment\_OrderSummary.cshtml" />
+    <Content Include="Views\Home\SettingPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

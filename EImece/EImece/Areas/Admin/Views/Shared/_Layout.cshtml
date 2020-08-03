@@ -157,11 +157,11 @@
 
                             <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
                             <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
-                            @*          <li>@Html.ActionLink(AdminResource.NormalSettings, "Index", "Settings", new { area = "admin" }, null)</li>*@
                             <li>@Html.ActionLink(AdminResource.WebSiteLogo, "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
-                            <li>@Html.ActionLink(AdminResource.AboutUs, "AddAboutUs", "Settings", new { area = "admin" }, null)</li>
-                            <li>@Html.ActionLink(AdminResource.Privacypolicy, "AddPrivacyPolicy", "Settings", new { area = "admin" }, null)</li>
-                            <li>@Html.ActionLink(AdminResource.TermsConditions, "AddTermsAndConditions", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.AboutUs, "AdminSettingPage", "Settings", new { pageName = EImece.Domain.Constants.AboutUs, area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.Privacypolicy, "AdminSettingPage", "Settings", new { pageName = EImece.Domain.Constants.PrivacyPolicy, area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.TermsConditions, "AdminSettingPage", "Settings", new { pageName = EImece.Domain.Constants.TermsAndConditions, area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.DeliveryInfo, "AdminSettingPage", "Settings", new { pageName = EImece.Domain.Constants.DeliveryInfo, area = "admin" }, null)</li>
                         </ul>
                     </li>
                     <li class="dropdown">

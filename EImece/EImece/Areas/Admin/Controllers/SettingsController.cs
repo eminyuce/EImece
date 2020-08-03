@@ -17,108 +17,69 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        //public ActionResult Index(String search = "")
-        //{
-        //    Expression<Func<Setting, bool>> whereLambda = r => (r.SettingKey.ToLower().Contains(search.Trim().ToLower())
-        //    || r.SettingValue.ToLower().Contains(search.Trim().ToLower()));
-
-        //    var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
-
-        //    settings = settings.Where(r => !Constants.WebSiteLogo.Equals(r.SettingKey)).ToList();
-        //    settings = settings.Where(r => !r.SettingValue.Equals(Constants.SpecialPage)).ToList();
-        //    settings = settings.Where(r => !Constants.AdminSetting.Equals(r.Description)).ToList();
-        //    return View(settings);
-        //}
-
-        ////
-        //// GET: /Setting/Create
-
-        //public ActionResult SaveOrEdit(int id = 0)
-        //{
-        //    var content = EntityFactory.GetBaseEntityInstance<Setting>();
-
-        //    if (id == 0)
-        //    {
-        //    }
-        //    else
-        //    {
-        //        content = SettingService.GetSingle(id);
-        //    }
-
-        //    return View(content);
-        //}
-
-        ////
-        //// POST: /Setting/Create
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult SaveOrEdit(Setting Setting)
-        //{
-        //    try
-        //    {
-        //        if (Setting == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        if (ModelState.IsValid)
-        //        {
-        //            Setting.Lang = CurrentLanguage;
-        //            SettingService.SaveOrEditEntity(Setting);
-        //            return RedirectToAction("Index");
-        //        }
-        //        else
-        //        {
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Setting);
-        //        //Log the error (uncomment dex variable name and add a line here to write a log.
-        //        ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
-        //    }
-
-        //    return View(Setting);
-        //}
-
-        public ActionResult AddWebSiteLogo()
+        public ActionResult AdminSettingPage(string pageName)
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            int id = webSiteLogo != null ? webSiteLogo.Id : 0;
-            return RedirectToAction("WebSiteLogo", new { id });
-        }
-
-        public ActionResult AddAboutUs()
-        {
-            var setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
-            int id = setting != null ? setting.Id : 0;
-            return RedirectToAction("AboutUs", new { id });
-        }
-
-        public ActionResult AboutUs(int id = 0)
-        {
-            var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = Constants.AboutUs;
-            content.Name = Constants.AboutUs;
-            content.Position = 1;
-            content.IsActive = true;
-            if (id == 0)
+            if (string.IsNullOrEmpty(pageName))
             {
+                throw new ArgumentException("No pageName is defined.");
+            }
+
+            int settingId = GetSettingPage(pageName);
+            if(settingId == 0)
+            {
+                var content = EntityFactory.GetBaseEntityInstance<Setting>();
+                content.SettingKey = pageName;
+                content.Name = pageName;
+                content.Position = 1;
+                content.IsActive = true;
+                content.Lang = CurrentLanguage;
+                return View(content);
             }
             else
             {
-                content = SettingService.GetSingle(id);
-                if (content.Lang != CurrentLanguage)
-                {
-                    return RedirectToAction("AboutUs");
-                }
+                var content = SettingService.GetSingle(settingId);
+                return View(content);
+            }
+        }
+
+        private int GetSettingPage(string id)
+        {
+            Setting setting = null;
+            int settingId = 0;
+            if (id.Equals(Constants.AboutUs, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
+                settingId = setting != null ? setting.Id : 0;
+                ViewBag.Title = Resource.AboutUs;
+            }
+            else if (id.Equals(Constants.DeliveryInfo, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.DeliveryInfo, CurrentLanguage);
+                settingId = setting != null ? setting.Id : 0;
+                ViewBag.Title = AdminResource.DeliveryInfo;
+            }
+            else if (id.Equals(Constants.TermsAndConditions, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
+                settingId = setting != null ? setting.Id : 0;
+                ViewBag.Title = Resource.TermsAndConditions;
+            }
+            else if (id.Equals(Constants.PrivacyPolicy, StringComparison.InvariantCultureIgnoreCase))
+            {
+                setting = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
+                settingId = setting != null ? setting.Id : 0;
+                ViewBag.Title = Resource.PrivacyPolicy;
+            }
+            else
+            {
+                throw new ArgumentException(id);
             }
 
-            return View(content);
+            return settingId;
         }
 
         [HttpPost]
-        public ActionResult AboutUs(Setting setting)
+        public ActionResult AdminSettingPage(Setting setting)
         {
             try
             {
@@ -127,13 +88,14 @@ namespace EImece.Areas.Admin.Controllers
                     return HttpNotFound();
                 }
 
-                if (ModelState.IsValid)
+              //  if (ModelState.IsValid)
                 {
                     setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                     ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
+             
             }
             catch (Exception ex)
             {
@@ -143,8 +105,18 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             RemoveModelState();
-            return View(setting);
+             GetSettingPage(setting.SettingKey);
+            return View("AdminSettingPage", setting);
         }
+        public ActionResult AddWebSiteLogo()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            int id = webSiteLogo != null ? webSiteLogo.Id : 0;
+            return RedirectToAction("WebSiteLogo", new { id });
+        }
+
+    
+ 
 
         public ActionResult AddTermsAndConditions()
         {
@@ -153,122 +125,20 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("TermsAndConditions", new { id });
         }
 
-        public ActionResult TermsAndConditions(int id = 0)
-        {
-            var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = Constants.TermsAndConditions;
-            content.Name = Constants.TermsAndConditions;
-            content.Position = 1;
-            content.IsActive = true;
-            if (id == 0)
-            {
-            }
-            else
-            {
-                content = SettingService.GetSingle(id);
-                if (content.Lang != CurrentLanguage)
-                {
-                    return RedirectToAction("AddTermsAndConditions");
-                }
-            }
-
-            return View(content);
-        }
-
-        [HttpPost]
-        public ActionResult TermsAndConditions(Setting setting)
-        {
-            try
-            {
-                if (setting == null)
-                {
-                    return HttpNotFound();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    setting.SettingValue = Constants.SpecialPage;
-                    setting.Lang = CurrentLanguage;
-                    SettingService.SaveOrEditEntity(setting);
-                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, setting);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
-            }
-
-            RemoveModelState();
-            return View(setting);
-        }
-
         public ActionResult AddPrivacyPolicy()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("PrivacyPolicy", new { id });
         }
-
-        public ActionResult PrivacyPolicy(int id = 0)
-        {
-            var content = EntityFactory.GetBaseEntityInstance<Setting>();
-            content.SettingKey = Constants.PrivacyPolicy;
-            content.Name = Constants.PrivacyPolicy;
-            content.Position = 1;
-            content.IsActive = true;
-            if (id == 0)
-            {
-            }
-            else
-            {
-                content = SettingService.GetSingle(id);
-                if (content.Lang != CurrentLanguage)
-                {
-                    return RedirectToAction("AddPrivacyPolicy");
-                }
-            }
-
-            return View(content);
-        }
-
-        [HttpPost]
-        public ActionResult PrivacyPolicy(Setting setting)
-        {
-            try
-            {
-                if (setting == null)
-                {
-                    return HttpNotFound();
-                }
-
-                // settings/privacypolicy/31/
-                if (ModelState.IsValid)
-                {
-                    setting.SettingValue = Constants.SpecialPage;
-                    setting.Lang = CurrentLanguage;
-                    SettingService.SaveOrEditEntity(setting);
-                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, setting);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
-            }
-
-            RemoveModelState();
-            return View(setting);
-        }
-
+ 
         public ActionResult WebSiteLogo(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
             if (id == 0)
             {
+
             }
             else
             {
