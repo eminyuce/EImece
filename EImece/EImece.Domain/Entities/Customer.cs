@@ -29,6 +29,7 @@ namespace EImece.Domain.Entities
         public string IdentityNumber { get; set; }
         public string Ip { get; set; }
         [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsSameAsShippingAddress))]
         public bool IsSameAsShippingAddress { get; set; }
 
         public String UserId { get; set; }
@@ -57,6 +58,9 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CustomerOpenAddress))]
         public string Description { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Company))]
+        public string Company { get; set; }
 
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]

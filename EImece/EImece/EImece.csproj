@@ -1161,6 +1161,7 @@
     <Content Include="Views\Shared\_PaginatedModelList.cshtml" />
     <Content Include="Views\Products\Detail - Copy.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProductComment.cshtml" />
+    <Content Include="Views\Payment\CheckoutBillingDetails - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

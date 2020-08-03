@@ -12,109 +12,207 @@
     var products = Model.ShoppingCartItems;
     var customer = Model.Customer;
 }
-
-<section class="titlebar">
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
-        <div class="sixteen columns">
-            <h2>Checkout</h2>
-
-            <nav id="breadcrumbs">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Shop</a></li>
-                    <li><a href="#">Checkout</a></li>
-                    <li>Billing Details</li>
-                </ul>
-            </nav>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Shop</a>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="page-title">Checkout</h1><span class="d-block mt-2 text-muted"></span>
+    </div>
+</div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <!-- Steps (wizard)-->
+    <div class="steps">
+        <div class="steps-body">
+            <a class="step step-completed" href="cart.html">
+                <span class="step-indicator">
+                    <i data-feather="check"></i>
+                </span><span class="step-icon">
+                    <i data-feather="shopping-cart"></i>
+                </span>1. Shopping cart
+            </a>
+            <a class="step step-active" href="checkout-details.html">
+                <span class="step-icon">
+                    <i data-feather="user"></i>
+                </span>2. Your details
+            </a>
+            <a class="step" href="checkout-review.html">
+                <span class="step-icon">
+                    <i data-feather="check-circle"></i>
+                </span>3. Final review
+            </a>
+            <a class="step" href="checkout-payment.html">
+                <span class="step-icon"><i data-feather="credit-card"></i></span>4. Payment
+            </a>
         </div>
     </div>
-</section>
-
-<div class="container">
-
-    <div class="eight columns">
-
-        <!-- Billing Details Content -->
-        <div class="checkout-section active"><span>1</span> Billing Details</div>
-
-        @using (Html.BeginForm("SaveCustomer", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <div class="checkout-content">
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-
-                <div class="half first">
-                    <label>First Name: <abbr>*       </abbr></label>
-                    @Html.EditorFor(model => customer.Name)
-                    @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-xl-9 col-md-8">
+            <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
+                <div class="media">
+                    <img class="img-thumbnail rounded-circle mr-3" src="img/account/customer.jpg" width="95" alt="Daniel Adams">
+                    <div class="media-body align-self-center">
+                        <h6 class="mb-1">@customer.FullName</h6>
+                        <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
+                    </div>
                 </div>
-                <div class="half">
-                    <label>Last Name: <abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.Surname)
-                    @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
-                </div>
-                <div class="half first">
-                    <label>Email Adress: <abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.Email)
-                    @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
-                </div>
-                <div class="half">
-                    <label>Phone: <abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.GsmNumber)
-                    @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
-                </div>
-                <div class="half first">
-                    <label>Street:<abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.Street)
-                    @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
-                </div>
-                <div class="half first">
-                    <label>District:<abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.District)
-                    @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
-                </div>
-                <div class="half first">
-                    <label>City:<abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.City)
-                    @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
-                </div>
-                <div class="half ">
-                    <label>Postcode / Zip:<abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.ZipCode)
-                    @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
-                </div>
-                <div class="half first">
-                    <label>Country:<abbr>*</abbr></label>
-                    @Html.EditorFor(model => customer.Country)
-                    @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
-                </div>
-                <div class="fullwidth">
-                    <label>Street Address: <abbr>*</abbr></label>
-                    @Html.TextAreaFor(model => customer.Description, 3, 40, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="clearfix"></div>
-
-                <span class="shippping-checkbox">
-                    @Html.CheckBoxFor(model => customer.IsSameAsShippingAddress, new { @class = "input-checkbox" })
-                    <label for="shipping-address" class="checkbox">Billing address is same as shipping address</label>
-                </span>
-                <div class="clearfix"></div>
+                <div class="pt-3 pl-sm-2 text-right"><a class="btn btn-light btn-sm" href="account-profile.html"><i class="mr-2" data-feather="edit"></i>Edit profile</a></div>
             </div>
-            <div class="clearfix"></div>
-            <input type="submit" name="saveButton" value="Continue" class="continue button color" />
-        }
+            @using (Html.BeginForm("SaveCustomer", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h6 class="mb-3 pt-2 pb-3 border-bottom">Shipping adress</h6>
+                <div class="row">
 
-        <a href="@Url.Action("CheckoutDelivery")"><div class="checkout-section"><span>2</span> Delivery</div></a>
-        <a href="checkout-payment-order-review.html"><div class="checkout-section"><span>3</span> Payment &amp; Order Review</div></a>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Name)
+                            @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Surname)
+                            @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Email)
+                            @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.GsmNumber)
+                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Company)
+                            @Html.EditorFor(model => customer.Company, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Company, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.ZipCode)
+                            @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.District)
+                            @Html.EditorFor(model => customer.District, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Street)
+                            @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.City)
+                            @Html.EditorFor(model => customer.City, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Country)
+                            @Html.EditorFor(model => customer.Country, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+           
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Description)
+                            @Html.EditorFor(model => customer.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <h6 class="mb-3 pt-4 pb-3 border-bottom">Billing adress</h6>
+                <div class="custom-control custom-checkbox">
+                    @Html.CheckBoxFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-input" })
+                    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
+                </div>
+                <!-- Navigation-->
+                <div class="d-flex pt-4 mt-3">
+                    <div class="w-50 pr-3">
+                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart","payment")">
+                            <i class="mr-1" data-feather="chevron-left"></i>
+                            <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">Back</span>
+                        </a>
+                    </div>
+                    <div class="w-50 pl-2">
+                        <a class="btn btn-primary btn-block" href="checkout-shipping.html">
+                            <span class="d-none d-sm-inline">@AdminResource.ReviewYourOrder</span>
+                            <span class="d-inline d-sm-none">Next</span><i class="ml-1" data-feather="chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- Sidebar-->
+        <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
+            <h2 class="h6 px-4 py-3 bg-secondary text-center">Order summary</h2>
+            <div class="font-size-sm border-bottom pt-2 pb-3">
+                <div class="d-flex justify-content-between mb-2"><span>Subtotal:</span><span>$325.00</span></div>
+                <div class="d-flex justify-content-between mb-2"><span>Shipping:</span><span>&mdash;</span></div>
+                <div class="d-flex justify-content-between mb-2"><span>Taxes:</span><span>$7.25</span></div>
+                <div class="d-flex justify-content-between"><span>Discount:</span><span>&mdash;</span></div>
+            </div>
+            <div class="h3 font-weight-semibold text-center py-3">$332.25</div>
+            <form class="needs-validation" novalidate>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="cart-promocode" placeholder="Promo code" required>
+                    <div class="invalid-feedback">Please provide a valid promo code!</div>
+                </div>
+                <button class="btn btn-outline-primary btn-block" type="submit">Apply promo code</button>
+            </form>
+            <!-- Promo banner--><a class="d-block text-decoration-0 mt-4 mx-auto pt-2" href="#" style="max-width: 277px;">
+                <div class="bg-secondary">
+                    <div class="px-3 pt-4 text-center">
+                        <h4 class="font-size-sm font-weight-normal pt-1 mb-2">2019 Spring / Summer</h4>
+                        <h4 class="h5 pb-2">Hoodie Collection</h4>
+                        <div class="btn btn-primary btn-sm">Shop now</div>
+                    </div><img src="img/shop/banner01.jpg" alt="Promo banner">
+                </div>
+            </a>
+        </div>
     </div>
-    <!-- Billing Details / Enc -->
-    <!-- Checkout Cart -->
-    <div class="eight columns">
-        @Html.Partial("ShoppingCartTemplates/_ShoppingCartProducts", Model)
-    </div>
-    <!-- Checkout Cart / End -->
 </div>
 
 @section Scripts{

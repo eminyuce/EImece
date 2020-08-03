@@ -43,7 +43,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
             this.DetailPageUrl = product.DetailPageRelativeUrl;
             if (product.MainImageId.HasValue && product.ImageState)
             {
-                this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 80, 80);
+                this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 200, 0);
             }
         }
 

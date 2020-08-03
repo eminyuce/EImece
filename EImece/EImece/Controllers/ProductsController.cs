@@ -86,7 +86,7 @@ namespace EImece.Controllers
         [HttpPost]
         public ActionResult Review(ProductComment productComment)
         {
-            if (productComment.Name == null)
+            if (productComment == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -100,7 +100,7 @@ namespace EImece.Controllers
             productComment.Position = 1;
             productComment.Lang = 1;
             productCommentService.SaveOrEditEntity(productComment);
-            return RedirectToAction("Detail", new { id = productComment.ProductId.ToStr() } );
+            return RedirectToAction("Detail", new { id = productComment.SeoUrl } );
         }
     }
 }

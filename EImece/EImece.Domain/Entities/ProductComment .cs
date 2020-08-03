@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,5 +15,8 @@ namespace EImece.Domain.Entities
         public string Email { get; set; }  
         public string Subject { get; set; }
         public int Rating { get; set; }
+
+        [NotMapped]
+        public string SeoUrl { get; set; }
     }
 }

@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Şirket.
+        /// </summary>
+        public static string Company {
+            get {
+                return ResourceManager.GetString("Company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şirket adresi.
         /// </summary>
         public static string CompanyAddress {
@@ -912,6 +921,15 @@ namespace Resources {
         public static string IsProductPriceEnable {
             get {
                 return ResourceManager.GetString("IsProductPriceEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sevkiyat adresleri ile aynı.
+        /// </summary>
+        public static string IsSameAsShippingAddress {
+            get {
+                return ResourceManager.GetString("IsSameAsShippingAddress", resourceCulture);
             }
         }
         
@@ -1641,6 +1659,15 @@ namespace Resources {
         public static string RequestIsNotValid {
             get {
                 return ResourceManager.GetString("RequestIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişini gözden geçir.
+        /// </summary>
+        public static string ReviewYourOrder {
+            get {
+                return ResourceManager.GetString("ReviewYourOrder", resourceCulture);
             }
         }
         

@@ -30,7 +30,7 @@
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
     string[] numbersArr = new string[] { "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
     Model.ProductComment.ProductId = product.Id;
-
+    Model.ProductComment.SeoUrl = product.GetSeoUrl();
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
 
 }

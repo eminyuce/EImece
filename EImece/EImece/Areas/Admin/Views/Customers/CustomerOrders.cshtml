@@ -57,9 +57,11 @@
     columns.Add(o => o.OrderGuid);
     columns.Add(o => o.PaymentStatus);
     columns.Add(o => o.Price);
-    columns.Add(o => o.IyziCommissionFee);
-    columns.Add(o => o.IyziCommissionRateAmount);
-
+      columns.Add(o => o.OrderComments)
+   .Encoded(false).
+        Sanitized(false).
+        SetWidth(10).
+        RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.OrderComments));
     columns.Add(o => o.CreatedDate)
 .Titled(AdminResource.CreatedDate)
 .Sortable(true)

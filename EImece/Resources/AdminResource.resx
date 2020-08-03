@@ -828,4 +828,13 @@
   <data name="Remove" xml:space="preserve">
     <value>Sil</value>
   </data>
+  <data name="ReviewYourOrder" xml:space="preserve">
+    <value>Siparişini gözden geçir</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Şirket</value>
+  </data>
+  <data name="IsSameAsShippingAddress" xml:space="preserve">
+    <value>Sevkiyat adresleri ile aynı</value>
+  </data>
 </root>
