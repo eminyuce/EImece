@@ -166,7 +166,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })<br />
                         Kadin  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString())
                         Erkek  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString())
                         @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
