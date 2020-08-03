@@ -337,7 +337,7 @@
     <value>Toplam</value>
   </data>
   <data name="PlaceOrder" xml:space="preserve">
-    <value>Siparişi Onayla</value>
+    <value>Siparişi Tamamla</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Düzenle</value>
@@ -350,5 +350,11 @@
   </data>
   <data name="AlreadyMembered" xml:space="preserve">
     <value>Zaten Üyeyim</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="OrderFinalReview" xml:space="preserve">
+    <value>Sipariş Özeti</value>
   </data>
 </root>

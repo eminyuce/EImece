@@ -34,25 +34,25 @@
     <!-- Steps (wizard)-->
     <div class="steps">
         <div class="steps-body">
-            <a class="step step-completed" href="cart.html">
+            <a class="step step-completed" href="@Url.Action("ShoppingCart")">
                 <span class="step-indicator">
                     <i data-feather="check"></i>
                 </span><span class="step-icon">
                     <i data-feather="shopping-cart"></i>
-                </span>1. Shopping cart
+                </span>1.@Resource.MyBasket
             </a>
-            <a class="step step-active" href="checkout-details.html">
+            <a class="step step-active" href="@Url.Action("checkoutbillingdetails")">
                 <span class="step-icon">
                     <i data-feather="user"></i>
-                </span>2. Your details
+                </span>2.@AdminResource.OrderDetails
             </a>
-            <a class="step" href="checkout-review.html">
+            <a class="step" href="@Url.Action("checkoutPaymentOrderReview")">
                 <span class="step-icon">
                     <i data-feather="check-circle"></i>
-                </span>3. Final review
+                </span>3.@Resource.OrderFinalReview
             </a>
-            <a class="step" href="checkout-payment.html">
-                <span class="step-icon"><i data-feather="credit-card"></i></span>4. Payment
+            <a class="step" href="@Url.Action("PlaceOrder")">
+                <span class="step-icon"><i data-feather="credit-card"></i></span>4.@AdminResource.Payment
             </a>
         </div>
     </div>
@@ -61,7 +61,6 @@
         <div class="col-xl-9 col-md-8">
             <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
                 <div class="media">
-                    <img class="img-thumbnail rounded-circle mr-3" src="img/account/customer.jpg" width="95" alt="Daniel Adams">
                     <div class="media-body align-self-center">
                         <h6 class="mb-1">@customer.FullName</h6>
                         <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
@@ -71,9 +70,9 @@
             </div>
             @using (Html.BeginForm("SaveCustomer", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <h6 class="mb-3 pt-2 pb-3 border-bottom">Shipping adress</h6>
                 <div class="row">
-
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.Name)
@@ -171,14 +170,15 @@
                 <!-- Navigation-->
                 <div class="d-flex pt-4 mt-3">
                     <div class="w-50 pr-3">
-                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart","payment")">
+                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart")">
                             <i class="mr-1" data-feather="chevron-left"></i>
-                            <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">Back</span>
+                            <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">@Resource.Back</span>
                         </a>
                     </div>
                     <div class="w-50 pl-2">
-                        <a class="btn btn-primary btn-block" href="checkout-shipping.html">
-                            <span class="d-none d-sm-inline">@AdminResource.ReviewYourOrder</span>
+                        <input type="submit" id="ReviewYourOrder" style="display:none;" />
+                        <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
+                            <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
                             <span class="d-inline d-sm-none">Next</span><i class="ml-1" data-feather="chevron-right"></i>
                         </a>
                     </div>

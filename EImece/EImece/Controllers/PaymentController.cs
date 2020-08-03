@@ -214,7 +214,7 @@ namespace EImece.Controllers
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
 
                 SaveShoppingCart(shoppingCart);
-                return RedirectToAction("CheckoutDelivery");
+                return RedirectToAction("CheckoutPaymentOrderReview");
             }
             else
             {

@@ -106,6 +106,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geri.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş yapmak için buraya tıklayın.
         /// </summary>
         public static string ClickHereToLogin {
@@ -394,6 +403,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş Özeti.
+        /// </summary>
+        public static string OrderFinalReview {
+            get {
+                return ResourceManager.GetString("OrderFinalReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sayfalar.
         /// </summary>
         public static string Pages {
@@ -403,7 +421,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Siparişi Onayla.
+        ///   Looks up a localized string similar to Siparişi Tamamla.
         /// </summary>
         public static string PlaceOrder {
             get {

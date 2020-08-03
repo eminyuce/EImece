@@ -837,4 +837,11 @@
   <data name="IsSameAsShippingAddress" xml:space="preserve">
     <value>Sevkiyat adresleri ile aynı</value>
   </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Ödeme</value>
+  </data>
+  <data name="OrderDetails" xml:space="preserve">
+    <value>
+Sipariş Detayları</value>
+  </data>
 </root>

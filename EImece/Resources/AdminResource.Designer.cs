@@ -1330,6 +1330,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///Sipariş Detayları.
+        /// </summary>
+        public static string OrderDetails {
+            get {
+                return ResourceManager.GetString("OrderDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sayfa Teması.
         /// </summary>
         public static string PageTheme {
@@ -1380,6 +1390,15 @@ namespace Resources {
         public static string PasswordStringLength {
             get {
                 return ResourceManager.GetString("PasswordStringLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ödeme.
+        /// </summary>
+        public static string Payment {
+            get {
+                return ResourceManager.GetString("Payment", resourceCulture);
             }
         }
         
