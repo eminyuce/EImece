@@ -279,6 +279,7 @@
     <Compile Include="Helpers\AttributeHelper\DeleteAuthorizeAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\NoCacheAttribute.cs" />
     <Compile Include="Helpers\Base32Custom.cs" />
+    <Compile Include="Helpers\CategoryFilterHelper.cs" />
     <Compile Include="Helpers\Convert.cs" />
     <Compile Include="Helpers\CsvExport.cs" />
     <Compile Include="Helpers\CSVReader.cs" />
