@@ -37,28 +37,45 @@
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
 {
     var productCategory = categoryTreeModel.ProductCategory;
-    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 80, 80);
+    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
     var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
-        <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(img/megamenu/cat_bg03.jpg);">
-            <h3 class="h5 text-white text-shadow my-3">@productCategory.Name</h3>
+        <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(@productImgLink);">
+            <h3 class="h5 text-red text-shadow my-3"><a href="@productCategory.DetailPageUrl">@productCategory.Name</a></h3>
         </div>
-        @if (categoryTreeModel.Childrens.IsNotEmpty())
-        {
-            <div class="widget widget-links">
-                <ul>
-                    @foreach (var childCategory in categoryTreeModel.Childrens)
-                    {
-                        var productChildCategory = childCategory.ProductCategory;
-                        var productChildImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 80, 80);
-                        var productChildCategoryLink = productCategory.ProductCategoryLink;
-                        <li><a href="@productChildCategoryLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@productChildCategory.Name</span></a></li>
-                    }
-                </ul>
-            </div>
-        }
+        @CreateProductChildrenTree(categoryTreeModel)
     </div>
+
+}
+@helper CreateProductChildrenTree(ProductCategoryTreeModel categoryTreeModel)
+{
+ 
+    if (categoryTreeModel.Childrens.IsNotEmpty())
+    {
+        <div class="widget widget-links">
+            <ul>
+                @foreach (var childCategory in categoryTreeModel.Childrens)
+                {
+                    var productChildCategory = childCategory.ProductCategory;
+                    var productChildImgLink = productChildCategory.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
+                    var productChildCategoryLink = productChildCategory.ProductCategoryLink;
+                <li>
+                    <a href="@productChildCategoryLink">
+                        @if (childCategory.Childrens.IsNotEmpty())
+                        {
+                        <i class="widget-categories-indicator" data-feather="chevron-right"></i>
+                        }
+                        <span class="font-size-sm">@productChildCategory.Name</span>
+                    </a>
+                    @CreateProductChildrenTree(childCategory)
+
+                </li>
+             
+                    }
+            </ul>
+        </div>
+    }
 
 }
 @helper CreateMenuTree(NavigationModel navigationMenu)

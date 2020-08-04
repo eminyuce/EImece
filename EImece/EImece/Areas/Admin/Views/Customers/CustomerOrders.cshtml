@@ -76,7 +76,8 @@
 {
     <b>@o.OrderNumber</b>
     <br />
-    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">@AdminResource.OrderDetail</a>
+    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+    @AdminResource.OrderDetails</a>
 
     <!-- Modal -->
     <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">

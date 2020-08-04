@@ -26,7 +26,7 @@ namespace EImece.Controllers
 
         [Route("category/{id}")]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Category(String id, int page=0, int sorting=0, string filter="")
+        public ActionResult Category(String id, int page=0, int sorting=0, string filtreler = "")
         {
             try
             {
@@ -40,9 +40,12 @@ namespace EImece.Controllers
                 var productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
                 productCategory.SeoId = id;
                 productCategory.Page = page;
-                productCategory.Filter = filter;
+                productCategory.Filter = filtreler;
                 productCategory.Sorting = (SortingType)sorting;
                 productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
+
+            
+
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
                 return View(productCategory);
             }

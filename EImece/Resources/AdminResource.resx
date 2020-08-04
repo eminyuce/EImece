@@ -768,9 +768,6 @@
   <data name="Question" xml:space="preserve">
     <value>Soru</value>
   </data>
-  <data name="OrderDetail" xml:space="preserve">
-    <value>Sipariş detayı</value>
-  </data>
   <data name="MyOrder" xml:space="preserve">
     <value>Siparişlerim</value>
   </data>
@@ -841,8 +838,7 @@
     <value>Ödeme</value>
   </data>
   <data name="OrderDetails" xml:space="preserve">
-    <value>
-Sipariş Detayları</value>
+    <value>Teslimat Bilgileri</value>
   </data>
   <data name="DeliveryInfo" xml:space="preserve">
     <value>İade &amp; Teslimat Bilgileri</value>

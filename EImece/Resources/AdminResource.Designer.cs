@@ -1330,17 +1330,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sipariş detayı.
-        /// </summary>
-        public static string OrderDetail {
-            get {
-                return ResourceManager.GetString("OrderDetail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 
-        ///Sipariş Detayları.
+        ///   Looks up a localized string similar to Teslimat Bilgileri.
         /// </summary>
         public static string OrderDetails {
             get {

@@ -6,6 +6,7 @@
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models;
 @using EImece.Domain.Models.Enums;
 @{
 
@@ -47,76 +48,18 @@
 
                         @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
                         <!-- Price range-->
-                            @using (Html.BeginForm("Category", "Products", FormMethod.Get))
-                            {
-                                <div class="column">
-                                    <button class="btn btn-outline-primary btn-sm" type="submit">Filter</button>
-                                </div>
-                                <!-- Price filter    -->
-                                <div class="widget mb-4 pb-1">
-                                    <h3 class="widget-title">Filter by price</h3>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" name="priceRange1" id="price-1">
-                                        <label class="custom-control-label" for="price-1">$10 - $50<span class="text-muted ml-1">(208)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="price-2">
-                                        <label class="custom-control-label" for="price-2">$50 - $100<span class="text-muted ml-1">(311)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="price-3">
-                                        <label class="custom-control-label" for="price-3">$100 - $500<span class="text-muted ml-1">(485)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="price-4">
-                                        <label class="custom-control-label" for="price-4">$500 - $1,000<span class="text-muted ml-1">(213)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="xs">
-                                        <label class="custom-control-label" for="xs">$1,000 - $5,000<span class="text-muted ml-1">(197)</span></label>
-                                    </div>
-                                </div>
-                                <!-- Brand filter    -->
-                                <div class="widget mb-4 pb-1">
-                                    <h3 class="widget-title">Filter by brand</h3>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="apple">
-                                        <label class="custom-control-label" for="apple">Apple<span class="text-muted ml-1">(254)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="bosh">
-                                        <label class="custom-control-label" for="bosh">Bosh<span class="text-muted ml-1">(39)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="canon">
-                                        <label class="custom-control-label" for="canon">Canon Inc.<span class="text-muted ml-1">(128)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="dell">
-                                        <label class="custom-control-label" for="dell">Dell<span class="text-muted ml-1">(310)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="hp">
-                                        <label class="custom-control-label" for="hp">Hewlett-Packard<span class="text-muted ml-1">(46)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="hitachi">
-                                        <label class="custom-control-label" for="hitachi">Hitachi<span class="text-muted ml-1">(217)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="lg">
-                                        <label class="custom-control-label" for="lg">LG Electronics<span class="text-muted ml-1">(310)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="panasonic">
-                                        <label class="custom-control-label" for="panasonic">Panasonic<span class="text-muted ml-1">(74)</span></label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-1">
-                                        <input class="custom-control-input" type="checkbox" id="sony">
-                                        <label class="custom-control-label" for="sony">Sony<span class="text-muted ml-1">(235)</span></label>
-                                    </div>
-                                </div>
-                            }
+                        @using (Html.BeginForm("Category", "ProductCategories", FormMethod.Get))
+                        {
+                            <button style="display:none;" id="FilterButtonPost" type="submit"></button>
+                            <input type="hidden" name="filtreler" id="filtreler" value="@Model.Filter" />
+                        }
+                        <div class="column">
+                            <button class="btn btn-outline-primary btn-sm" id="FilterButton">Filter</button>
+                        </div>
+                        @foreach (var filterType in Model.CategoryFilterTypes)
+                        {
+                            @CreateFilterTypeList(filterType, Model.SelectedFilters);
+                        }
                     </div>
                 </div>
             </div>
@@ -136,7 +79,7 @@
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
                                @String.Format("{0}",Model.Sorting.Equals(SortingType.LowHighPrice)?"active":"")
                                ">En düşük fiyat</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice)" 
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
                                @String.Format("{0}",Model.Sorting.Equals(SortingType.HighLowPrice)?"active":"")">En yüksek fiyat</a>
                         </div>
@@ -167,6 +110,24 @@
         </div>
     </div>
 </div>
+
+@helper CreateFilterTypeList(CategoryFilterType categoryFilter, List<int> selectedFilters)
+{
+    
+    <!-- Price filter    -->
+    <div class="widget mb-4 pb-1">
+        <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+        @foreach (var filter in categoryFilter.CategoryFilters)
+        {
+            var filterId = @String.Format("filter-{0}", filter.value);
+            <div class="custom-control custom-checkbox mb-1">
+                <input class="custom-control-input" type="checkbox" @String.Format("{0}",selectedFilters.Contains(filter.value) ? "checked" :"") value="@filter.value" name="filters" id="@filterId">
+                <label class="custom-control-label" for="@filterId">@filter.name<span class="text-muted ml-1">(@filter.count)</span></label>
+            </div>
+        }
+    </div>
+
+}
 
 @helper CreateProductItem(Product p)
 {
@@ -219,3 +180,30 @@
     </div>
 
 }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            function GetSelectedCheckBoxValuesArray() {
+                var stringArray = new Array();
+                var i = 0;
+                $("input[name=filters]").each(function () {
+                    var m = $(this).is(':checked');
+                    if (m) {
+                        stringArray[i++] = $(this).attr("value");
+                    }
+                });
+                return stringArray;
+            }
+            $("#FilterButton").click(function () {
+                console.log(GetSelectedCheckBoxValuesArray());
+                $("#filtreler").val(encodeURI(GetSelectedCheckBoxValuesArray().join("-")));
+                $("#FilterButtonPost").click();
+            });
+
+        });
+      
+
+    </script>
+}
+

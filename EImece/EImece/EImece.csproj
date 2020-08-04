@@ -835,7 +835,6 @@
     <Content Include="Areas\Admin\Views\TagCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\TagCategories\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Settings\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\SaveOrEdit.cshtml" />
     <Content Include="Content\FileUpload\styles.less" />
     <Content Include="Areas\Admin\Views\Shared\pImagesTag.cshtml" />

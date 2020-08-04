@@ -340,6 +340,7 @@
     <Compile Include="Models\AdminModels\RazorError.cs" />
     <Compile Include="Models\AdminModels\RazorRenderResult.cs" />
     <Compile Include="Models\AdminModels\SettingModel.cs" />
+    <Compile Include="Models\CategoryFilterType.cs" />
     <Compile Include="Models\Enums\GenderType.cs" />
     <Compile Include="Models\Enums\AddressType.cs" />
     <Compile Include="Models\Enums\BrowserType.cs" />
@@ -350,6 +351,7 @@
     <Compile Include="Models\Enums\NotificationStatus.cs" />
     <Compile Include="Models\Enums\NotificationType.cs" />
     <Compile Include="Models\Enums\SortingType.cs" />
+    <Compile Include="Models\FrontModels\CategoryFilter.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
     <Compile Include="Models\FrontModels\Filter.cs" />
     <Compile Include="Models\FrontModels\FilterGroup.cs" />

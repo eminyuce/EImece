@@ -111,10 +111,11 @@ namespace EImece.Domain.Repositories
 
             Expression<Func<ProductCategory, bool>> match = r =>
              r.Lang == language;
+            search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
                 //
-                Expression<Func<ProductCategory, bool>> match2 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+                Expression<Func<ProductCategory, bool>> match2 = r => r.Name.Contains(search);
                 match = match.And(match2);
             }
             var result = FindAllIncluding(match,

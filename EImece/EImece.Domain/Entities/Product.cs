@@ -51,6 +51,9 @@ namespace EImece.Domain.Entities
         public ICollection<ProductTag> ProductTags { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public double Rating { get; set; }
+
         [NotMapped]
         public string DetailPageAbsoluteUrl
         {
