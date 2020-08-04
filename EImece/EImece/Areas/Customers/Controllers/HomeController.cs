@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -9,6 +10,7 @@ using Microsoft.Owin.Security;
 using Ninject;
 using Resources;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -46,6 +48,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             var user = UserManager.FindByName(User.Identity.GetUserName());
             var customer = CustomerService.GetUserId(user.Id);
+            ViewBag.Orders = OrderService.GetOrdersUserId(user.Id, "");
             return View(customer);
         }
 

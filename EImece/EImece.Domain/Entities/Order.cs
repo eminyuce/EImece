@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -51,5 +52,13 @@ namespace EImece.Domain.Entities
 
         [NotMapped]
         public Customer Customer { get; set; }
+        [NotMapped]
+        public decimal PaidPriceDecimal
+        {
+            get
+            {
+                return decimal.Round(PaidPrice.Replace(".", ",").ToDecimal(), 3, MidpointRounding.AwayFromZero);
+            }
+        }
     }
 }

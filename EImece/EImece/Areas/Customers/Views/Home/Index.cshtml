@@ -1,48 +1,28 @@
 ﻿@model EImece.Domain.Entities.Customer
 @using Resources;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
 @{
     Layout = "~/Areas/Customers/Views/Shared/_Layout.cshtml";
+    List<Order> orders = (List<Order>)ViewBag.Orders;
+    if (orders.IsEmpty())
+    {
+        orders = new List<Order>();
+    }
 }
 
 <!-- Page Content-->
 <div class="container pt-lg-3 pb-5 mb-sm-3">
     <!-- Toast notifications-->
     <div class="toast-container toast-bottom-center">
-        <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Added to cart!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="toast-body">This item was added to your cart.</div>
-        </div>
-        <div class="toast mb-3" id="compare-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-info text-white">
-                <i class="mr-2" data-feather="info" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Added to comparison!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="toast-body">This item was added to comparison table.</div>
-        </div>
-        <div class="toast mb-3" id="wishlist-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-info text-white">
-                <i class="mr-2" data-feather="info" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Added to wishlist!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="toast-body">This item was added to your wishlist.</div>
-        </div>
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
                 <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
                 <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">Your profile info updated successfuly.</div>
-        </div>
-        <div class="toast mb-3" id="address-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="toast-body">Your addresses info updated successfuly.</div>
         </div>
     </div>
     <div class="row pt-5">
@@ -51,17 +31,19 @@
             <!-- Customer details-->
             <div class="d-flex flex-wrap justify-content-between pb-4">
                 <div class="pt-3 mr-3">
-                    <h3 class="mb-0">Daniel Adams</h3><span class="font-size-sm text-warning">d.adams@example.com</span>
+                    <h3 class="mb-0">@Model.FullName</h3><span class="font-size-sm text-warning">@Model.Email</span>
                 </div>
                 <div class="pt-3"><a class="btn btn-outline-primary btn-sm" href="account-signin.html"><i class="mr-1" data-feather="log-out"></i>Sign Out</a></div>
             </div>
             <ul class="list-unstyled border p-3 mb-4">
-                <li class="pb-1"><span class="opacity-80">&ndash; Joined:</span><span class="font-weight-semibold ml-1">Jan 13, 2018</span></li>
-                <li class="pb-1"><span class="opacity-80">&ndash; Total orders:</span><span class="font-weight-semibold ml-1">15</span></li>
-                <li class="pb-1"><span class="opacity-80">&ndash; Total spent:</span><span class="font-weight-semibold ml-1">$5,864</span></li>
-                <li><span class="opacity-80">&ndash; Reward points:</span><span class="font-weight-semibold ml-1">586</span></li>
+                <li class="pb-1"><span class="opacity-80">&ndash; Joined:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
+                <li class="pb-1"><span class="opacity-80">&ndash; Total orders:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>
+                <li class="pb-1"><span class="opacity-80">&ndash; Total spent:</span><span class="font-weight-semibold ml-1">
+                    @orders.Sum(r => r.PaidPriceDecimal).CurrencySign() 
+                        
+                        </span></li>
             </ul>
-            <!-- Navigation (visible sm-up)-->
+            <!-- Navigation (visible sm-up)--> 
             <ul class="nav nav-tabs d-none d-sm-flex">
                 <li class="nav-item"><a class="nav-link" href="account-orders.html"><i data-feather="shopping-bag"></i>&nbsp;My orders<span class="badge badge-pill badge-secondary bg-0 border ml-2"><span class="text-primary">1</span></span></a></li>
                 <li class="nav-item"><a class="nav-link" href="account-wishlist.html"><i data-feather="heart"></i>&nbsp;Wishlist<span class="badge badge-pill badge-secondary bg-0 border ml-2"><span class="text-primary">3</span></span></a></li>
@@ -89,11 +71,11 @@
             {
                 @Html.AntiForgeryToken()
 
-        <div class="col-md-12">
-            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-        </div>
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+                </div>
 
-             
+
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.IsActive)
                 @Html.HiddenFor(model => model.CreatedDate)

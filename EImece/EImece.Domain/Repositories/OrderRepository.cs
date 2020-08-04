@@ -2,6 +2,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
+using GenericRepository.EntityFramework.Enums;
 using Microsoft.Owin.Security.OAuth;
 using Ninject;
 using NLog;
@@ -41,19 +42,21 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
 
-            var products = GetAllIncluding(includeProperties.ToArray());
+            Expression<Func<Order, bool>> match = r2 => r2.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase);
+            Expression<Func<Order, int>> keySelector = t => t.Position;
+            var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-                products = products.Where(r =>
+                orders = orders.Where(r =>
                 r.OrderGuid.Equals(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                  r.OrderNumber.Equals(search, StringComparison.InvariantCultureIgnoreCase)
                 );
             }
-            products = products.OrderByDescending(r => r.UpdatedDate);
+            orders = orders.OrderByDescending(r => r.UpdatedDate);
 
-            return products.ToList();
+            return orders.ToList();
         }
     }
 }
