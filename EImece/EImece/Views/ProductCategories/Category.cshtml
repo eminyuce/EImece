@@ -71,15 +71,15 @@
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
                         <div class="button-group tabs">
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest)"
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,Model)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
                                @String.Format("{0}",Model.Sorting.Equals(SortingType.Newest)?"active":"")
                                ">En yeniler</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice)"
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,Model)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
                                @String.Format("{0}",Model.Sorting.Equals(SortingType.LowHighPrice)?"active":"")
                                ">En düşük fiyat</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice)"
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,Model)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
                                @String.Format("{0}",Model.Sorting.Equals(SortingType.HighLowPrice)?"active":"")">En yüksek fiyat</a>
                         </div>

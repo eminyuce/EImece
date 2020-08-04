@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using Microsoft.Owin.Security.Provider;
 using Resources;
 using System;
@@ -53,11 +54,23 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public string ProductCategoryListPageUrl(SortingType sorting)
+        public string ProductCategoryListPageUrl(SortingType sorting, ItemListing itemListing)
         {
             var requestContext = HttpContext.Current.Request.RequestContext;
             var sortingInt = (int)sorting;
-            return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() , sorting= sortingInt });
+            if (string.IsNullOrEmpty(itemListing.Filter))
+            {
+                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl(), sorting = sortingInt });
+            }
+            else
+            {
+                return new UrlHelper(requestContext).Action("Category", "ProductCategories",
+                    new { id = this.GetSeoUrl(), 
+                        sorting = sortingInt,
+                        filtreler = itemListing.Filter
+                    });
+            }
+            
         }
 
         public Template Template { get; set; }
