@@ -14,6 +14,8 @@
     var productsAll = Model.Products;
     var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.Count);
     products.RouteId = category.Id;
+    products.Filter = Model.Filter;
+    products.Sorting = (int)Model.Sorting;
     var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
 
     ViewBag.Title = category.GetSeoTitle();
