@@ -1,5 +1,6 @@
 ﻿using Resources;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -65,6 +66,9 @@ namespace EImece.Domain.Entities
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
         public String Captcha { get; set; }
+
+        [NotMapped]
+        public List<Order> Orders { get; set; }
 
         public String FullName
         {

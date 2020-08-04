@@ -2212,6 +2212,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profil bilgileriniz başarıyla güncellendi..
+        /// </summary>
+        public static string YourProfileUpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("YourProfileUpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Youtube Link.
         /// </summary>
         public static string YoutubeWebSiteLink {

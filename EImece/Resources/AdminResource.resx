@@ -843,4 +843,7 @@
   <data name="DeliveryInfo" xml:space="preserve">
     <value>İade &amp; Teslimat Bilgileri</value>
   </data>
+  <data name="YourProfileUpdatedSuccessfully" xml:space="preserve">
+    <value>Profil bilgileriniz başarıyla güncellendi.</value>
+  </data>
 </root>

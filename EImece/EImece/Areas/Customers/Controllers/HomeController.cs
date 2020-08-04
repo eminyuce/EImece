@@ -12,6 +12,7 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
@@ -46,10 +47,18 @@ namespace EImece.Areas.Customers.Controllers
         // GET: Customers/Home
         public ActionResult Index()
         {
-            var user = UserManager.FindByName(User.Identity.GetUserName());
-            var customer = CustomerService.GetUserId(user.Id);
-            ViewBag.Orders = OrderService.GetOrdersUserId(user.Id, "");
+            Customer customer =  GetCustomer();
+            customer.Orders = OrderService.GetOrdersUserId(customer.UserId, "");
             return View(customer);
+        }
+
+        private Customer GetCustomer()
+        {
+            ApplicationUser user;
+            Customer customer;
+            user = UserManager.FindByName(User.Identity.GetUserName());
+            customer = CustomerService.GetUserId(user.Id);
+            return customer;
         }
 
         [HttpPost]
@@ -98,6 +107,7 @@ namespace EImece.Areas.Customers.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
+            ViewBag.Customer = GetCustomer(); 
             return View();
         }
 
