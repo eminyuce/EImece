@@ -100,17 +100,17 @@
                                 <a class="cart-item-thumb mx-auto mr-sm-4" href="shop-single-apparel.html"><img src="@imgTag" alt="Product"></a>
                                 <div class="media-body pt-3">
                                     <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="shop-single-apparel.html">@product.Name</a></h3>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>8.5</div>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Black</div>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory:</span>@product.ProductCategory.Name</div>
                                 </div>
                             </div>
                             <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">Quantity:</div>
-                                <div class="font-weight-semibold">1</div>
+                                <div class="text-muted mb-sm-2">@AdminResource.Quantity</div>
+                                <div class="font-weight-semibold">@orderProduct.Quantity</div>
                             </div>
                             <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
                                 <div class="text-muted mb-sm-2">Subtotal:</div>
-                                <div class="font-weight-semibold">$125.00</div>
+                                <div class="font-weight-semibold">@orderProduct.TotalPrice.CurrencySign()</div>
                             </div>
                         </div>
                     }
@@ -119,10 +119,10 @@
                 </div>
                 <!-- Footer-->
                 <div class="modal-footer flex-wrap justify-content-between bg-secondary">
-                    <div class="px-2 py-1"><span class="text-muted">Subtotal:&nbsp;</span><span class="font-weight-semibold">$325.00</span></div>
-                    <div class="px-2 py-1"><span class="text-muted">Shipping:&nbsp;</span><span class="font-weight-semibold">$26.50</span></div>
-                    <div class="px-2 py-1"><span class="text-muted">Tax:&nbsp;</span><span class="font-weight-semibold">$7.25</span></div>
-                    <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="text-lg font-weight-semibold">$358.75</span></div>
+                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                    <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
                 </div>
             </div>
         </div>

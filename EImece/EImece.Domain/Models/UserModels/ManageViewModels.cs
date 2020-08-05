@@ -28,7 +28,7 @@ namespace EImece.Models
 
     public class SetPasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NewPassword))]
@@ -36,26 +36,26 @@ namespace EImece.Models
 
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmNewPassword))]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotMatchesPassword))]
         public string ConfirmPassword { get; set; }
     }
 
     public class ChangePasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CurrentPassword))]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
+        [StringLength(100, ErrorMessageResourceName = nameof(AdminResource.NewPasswordMinCharLength), ErrorMessageResourceType = typeof(AdminResource), MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NewPassword))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmNewPassword))]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotMatchesPassword))]
         public string ConfirmPassword { get; set; }
     }
 
@@ -73,7 +73,7 @@ namespace EImece.Models
         [Display(Name = "Code")]
         public string Code { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
         [Phone]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }

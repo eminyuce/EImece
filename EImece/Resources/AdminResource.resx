@@ -852,4 +852,16 @@
   <data name="NotValidEmailAddress" xml:space="preserve">
     <value>E-posta alanı geçerli bir e-posta adresi değil.</value>
   </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Birim fiyat</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="NotMatchesPassword" xml:space="preserve">
+    <value>Yeni şifre ve onay şifresi eşleşmiyor.</value>
+  </data>
+  <data name="NewPasswordMinCharLength" xml:space="preserve">
+    <value>{0} en az {2} karakter uzunluğunda olmalıdır.</value>
+  </data>
 </root>

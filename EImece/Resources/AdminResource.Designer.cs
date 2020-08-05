@@ -1285,6 +1285,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} en az {2} karakter uzunluğunda olmalıdır..
+        /// </summary>
+        public static string NewPasswordMinCharLength {
+            get {
+                return ResourceManager.GetString("NewPasswordMinCharLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yeni Giriş.
         /// </summary>
         public static string NewRecordText {
@@ -1326,6 +1335,15 @@ namespace Resources {
         public static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yeni şifre ve onay şifresi eşleşmiyor..
+        /// </summary>
+        public static string NotMatchesPassword {
+            get {
+                return ResourceManager.GetString("NotMatchesPassword", resourceCulture);
             }
         }
         
@@ -1623,6 +1641,15 @@ namespace Resources {
         public static string ProductSpecTemplateItemList {
             get {
                 return ResourceManager.GetString("ProductSpecTemplateItemList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miktar.
+        /// </summary>
+        public static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
         
@@ -2118,6 +2145,15 @@ namespace Resources {
         public static string TwitterWebSiteLink {
             get {
                 return ResourceManager.GetString("TwitterWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Birim fiyat.
+        /// </summary>
+        public static string UnitPrice {
+            get {
+                return ResourceManager.GetString("UnitPrice", resourceCulture);
             }
         }
         

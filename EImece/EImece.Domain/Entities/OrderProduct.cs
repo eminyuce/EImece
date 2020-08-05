@@ -1,5 +1,6 @@
 ﻿using GenericRepository;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -18,6 +19,15 @@ namespace EImece.Domain.Entities
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public double TotalPrice { get; set; }
+
+        [NotMapped]
+        public double Price
+        {
+            get
+            {
+                return TotalPrice / Quantity;
+            }
+        }
 
         public Product Product { get; set; }
 
