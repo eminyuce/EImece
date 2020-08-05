@@ -520,6 +520,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E-posta alani zorunlu..
+        /// </summary>
+        public static string EmailRequired {
+            get {
+                return ResourceManager.GetString("EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-posta Başlık.
         /// </summary>
         public static string EmailSubject {
@@ -1317,6 +1326,15 @@ namespace Resources {
         public static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-posta alanı geçerli bir e-posta adresi değil..
+        /// </summary>
+        public static string NotValidEmailAddress {
+            get {
+                return ResourceManager.GetString("NotValidEmailAddress", resourceCulture);
             }
         }
         
