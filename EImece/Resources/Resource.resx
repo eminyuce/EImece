@@ -178,7 +178,7 @@
     <value>Ara</value>
   </data>
   <data name="SearchProductTextBoxPlaceHolder" xml:space="preserve">
-    <value>Ürünlerde Ara</value>
+    <value>Ürünler arasında arama yapın</value>
   </data>
   <data name="SendButtonText" xml:space="preserve">
     <value>Gönder</value>

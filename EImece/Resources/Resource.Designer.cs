@@ -628,7 +628,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ürünlerde Ara.
+        ///   Looks up a localized string similar to Ürünler arasında arama yapın.
         /// </summary>
         public static string SearchProductTextBoxPlaceHolder {
             get {

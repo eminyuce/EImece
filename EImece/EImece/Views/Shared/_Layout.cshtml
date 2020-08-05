@@ -123,16 +123,9 @@
 
 
             </div>
-            <!-- search-box-->
-            <div class="flex-grow-1 pb-3 pt-sm-3 my-1 px-sm-2 pr-lg-4 order-sm-2">
-                <div class="input-group flex-nowrap">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text rounded-left" id="search-icon"><i data-feather="search"></i></span>
-                    </div>
-                    <input class="form-control rounded-right" type="text" id="site-search"
-                           placeholder="Search site" aria-label="Search site" aria-describedby="search-icon">
-                </div>
-            </div>
+        
+
+            @Html.Partial("_SearchProductForm")
         </div>
     </header>
 
@@ -147,7 +140,7 @@
 
 
         <span id="ShoppingCartsDetail"></span>
-        @Html.Partial("_SearchProductForm")
+
           @{Html.RenderAction("ProductTree", "Home"); }
 
     *@
