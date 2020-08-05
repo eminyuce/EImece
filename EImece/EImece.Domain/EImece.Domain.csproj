@@ -235,6 +235,7 @@
     <Compile Include="Entities\Addres.cs" />
     <Compile Include="Entities\BaseContent.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Brand.cs" />
     <Compile Include="Entities\BrowserNotification.cs" />
     <Compile Include="Entities\BrowserNotificationFeedBack.cs" />
     <Compile Include="Entities\BrowserSubscriber.cs" />
@@ -399,6 +400,8 @@
     <Compile Include="Models\UserModels\ManageViewModels.cs" />
     <Compile Include="Models\UserModels\SelectRoleEditorViewModel.cs" />
     <Compile Include="Models\UserModels\SelectUserRolesViewModel.cs" />
+    <Compile Include="Repositories\BrandRepository.cs" />
+    <Compile Include="Repositories\IRepositories\IBrandRepository.cs" />
     <Compile Include="Repositories\ProductCommentRepository.cs" />
     <Compile Include="Repositories\FaqRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductCommentRepository.cs" />
@@ -470,6 +473,8 @@
     <Compile Include="Scheduler\QuartzService.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
+    <Compile Include="Services\BrandService.cs" />
+    <Compile Include="Services\IServices\IBrandService.cs" />
     <Compile Include="Services\ProductCommentService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\FaqService.cs" />

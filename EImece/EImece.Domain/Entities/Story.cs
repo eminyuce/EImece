@@ -1,11 +1,13 @@
 ﻿using EImece.Domain.Helpers.Extensions;
 using Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
+    [Serializable]
     public class Story : BaseContent
     {
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.StoryCategoryIdErrorMessage))]

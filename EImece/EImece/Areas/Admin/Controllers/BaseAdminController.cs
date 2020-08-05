@@ -43,6 +43,9 @@ namespace EImece.Areas.Admin.Controllers
         public IStoryService StoryService { get; set; }
 
         [Inject]
+        public IBrandService BrandService { get; set; }
+
+        [Inject]
         public IStoryCategoryService StoryCategoryService { get; set; }
 
         [Inject]

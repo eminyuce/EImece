@@ -250,6 +250,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Markalar.
+        /// </summary>
+        public static string Brands {
+            get {
+                return ResourceManager.GetString("Brands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İptal.
         /// </summary>
         public static string ButtonCancel {

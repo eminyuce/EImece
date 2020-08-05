@@ -20,6 +20,8 @@ namespace EImece.Domain.Entities
         [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
 
+        public int ? BrandId { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
 

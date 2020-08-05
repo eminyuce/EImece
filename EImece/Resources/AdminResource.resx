@@ -870,4 +870,7 @@
   <data name="CustomerLoginPage" xml:space="preserve">
     <value>Giriş Yap Veya Üye Ol</value>
   </data>
+  <data name="Brands" xml:space="preserve">
+    <value>Markalar</value>
+  </data>
 </root>

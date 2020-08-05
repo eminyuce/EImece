@@ -42,5 +42,8 @@ namespace EImece.Domain.Models.Enums
 
         [Display(Name = "WebSiteLogo")]
         WebSiteLogo = 11,
+
+        [Display(Name = "BrandMainImage")]
+        BrandMainImage = 4,
     }
 }
