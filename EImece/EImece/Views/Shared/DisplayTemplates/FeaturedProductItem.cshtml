@@ -28,7 +28,7 @@
                 <a class="product-meta" href="#">@product.ProductCategory.Name</a>
                 <div class="star-rating"><span class="sr-label mr-1">@product.Rating</span><i class="sr-star active" data-feather="star"></i></div>
             </div>
-            <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3><span class="text-primary">@product.Price.CurrencySign()</span>
+            <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3><span class="text-primary">@product.GetProductPrice().CurrencySign()</span>
         </div>
         <div class="product-card-body body-hidden pt-2">
             <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@Model.Id" type="button"
