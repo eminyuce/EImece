@@ -51,13 +51,7 @@ namespace EImece
                       defaults: new { controller = "images", action = "getcaptcha" },
                       namespaces: new[] { "EImece.Controllers" }
                   );
-
-            routes.MapRoute(
-                   name: "SettingPage",
-                   url: "home/info/{id}",
-                   defaults: new { controller = "home", action = "settingpage" },
-                   namespaces: new[] { "EImece.Controllers" }
-               );
+ 
 
             routes.MapRoute(
                  name: "ImageResizing",
@@ -134,8 +128,8 @@ namespace EImece
         {
             routes.MapRoute(
                             name: singlePage,
-                            url: singlePage,
-                            defaults: new { controller = "home", action = singlePage },
+                            url: "info/{id}",
+                            defaults: new { controller = "home", action = "settingpage", id = UrlParameter.Optional },
                             namespaces: new[] { "EImece.Controllers" }
                         );
         }

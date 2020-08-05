@@ -46,6 +46,102 @@ namespace EImece.Controllers
             CustomerService = customerService;
         }
 
+        [AllowAnonymous]
+        public ActionResult AdminLogin(string returnUrl = "")
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
+        {
+            if(model == null)
+            {
+                throw new ArgumentException();
+            }
+            ViewBag.ReturnUrl = returnUrl;
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Model is not correct.");
+                return View(model);
+            }
+
+            //validate the captcha through the session variable stored from GetCaptcha
+            if (Session[CaptchaAdminLogin] == null || !Session[CaptchaAdminLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("Captcha", AdminResource.WrongSum);
+                ModelState.AddModelError("", AdminResource.WrongSum);
+                return View(model);
+            }
+            else
+            {
+                bool isCustomer = this.isUserAsCustomerRole(model);
+                if (isCustomer)
+                {
+                    ModelState.AddModelError("", AdminResource.WrongAccountLoginAttempt);
+                    return View(model);
+                }
+
+                //ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+                Logger.Debug("The account " + model.Email + "   " + result.ToString());
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+                    case SignInStatus.LockedOut:
+                        Logger.Debug("The account  " + model.Email + " LockedOut ");
+                        ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
+                        return View("Lockout");
+
+                    case SignInStatus.RequiresVerification:
+                        Logger.Debug("The account  " + model.Email + " RequiresVerification ");
+                        ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
+                    case SignInStatus.Failure:
+                        var user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                        bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                        if (!checkPassword)
+                        {
+                            ModelState.AddModelError("", "Invalid login attempt.Password is not correct");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                        }
+                        return View(model);
+
+                    default:
+                        Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
+            }
+        }
+
+        private bool isUserAsCustomerRole(LoginViewModel model)
+        {
+            var users = ApplicationDbContext.Users.AsQueryable();
+            var usersRoles = from u in ApplicationDbContext.Users
+                             from ur in u.Roles
+                             join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                             where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
+                             select new
+                             {
+                                 Role = r.Name
+                             };
+
+            bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase));
+            return isCustomer;
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -67,6 +163,10 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
+            if (model == null)
+            {
+                throw new ArgumentException();
+            }
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
@@ -83,8 +183,13 @@ namespace EImece.Controllers
             }
             else
             {
-           
-                //ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
+                bool isCustomer = this.isUserAsCustomerRole(model);
+                if (!isCustomer)
+                {
+                    ModelState.AddModelError("", AdminResource.WrongAccountLoginAttempt);
+                    return View(model);
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -93,34 +198,7 @@ namespace EImece.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
-
-                        var users = ApplicationDbContext.Users.AsQueryable();
-                        var usersRoles = from u in ApplicationDbContext.Users
-                                         from ur in u.Roles
-                                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
-                                         where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
-                                         select new
-                                         {
-                                             Role = r.Name
-                                         };
-
-                        bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase));
-                        if (isCustomer)
-                        {
-                            if (String.IsNullOrEmpty(returnUrl))
-                            {
-                                return RedirectToAction("Index", "Home", new { @area = "customers" });
-                            }
-                            else
-                            {
-                                return RedirectToLocal(returnUrl);
-                            }
-                        }
-                        else
-                        {
-                            return RedirectToLocal(returnUrl);
-                        }
-
+                        return RedirectToAction("Index", "Home", new { @area = "customers" });
                     case SignInStatus.LockedOut:
                         Logger.Debug("The account  " + model.Email + " LockedOut ");
                         ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
@@ -132,7 +210,7 @@ namespace EImece.Controllers
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                     case SignInStatus.Failure:
-                        var user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email,StringComparison.InvariantCultureIgnoreCase));
+                        var user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
                         bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
                         if (!checkPassword)
                         {

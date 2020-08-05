@@ -14,18 +14,25 @@
 }
 
 <!-- Customer details-->
-<div class="d-flex flex-wrap justify-content-between pb-4">
-    <div class="pt-3 mr-3">
-        <h3 class="mb-0">@Model.FullName</h3><span class="font-size-sm text-warning">@Model.Email</span>
-    </div>
-    <div class="pt-3">
-            <a class="btn btn-outline-primary btn-sm" href="javascript:document.getElementById('logoutForm').submit()"><i class="mr-1" data-feather="log-out"></i>  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
+    <div class="d-flex flex-wrap justify-content-between pb-4">
+        <div class="pt-3 mr-3">
+            <h3 class="mb-0">@Model.FullName</h3><span class="font-size-sm text-warning">@Model.Email</span>
+        </div>
+        <div class="pt-3">
+            <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Index","Home",new { area = "" })">
+            <i class="mr-1" data-feather="home"></i>  @AdminResource.MainPage 
+            <span class="glyphicon glyphicon-log-out"></span></a>
+        </div>
+        <div class="pt-3">
+            <a class="btn btn-outline-primary btn-sm" href="javascript:document.getElementById('logoutForm').submit()">
+                <i class="mr-1" data-feather="log-out"></i>  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span>
+            </a>
             @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
             {
                 @Html.AntiForgeryToken()
             }
+        </div>
     </div>
-</div>
 <ul class="list-unstyled border p-3 mb-4">
     <li class="pb-1"><span class="opacity-80">&ndash; Joined:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
     <li class="pb-1"><span class="opacity-80">&ndash; Total orders:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>

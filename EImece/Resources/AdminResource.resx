@@ -864,4 +864,10 @@
   <data name="NewPasswordMinCharLength" xml:space="preserve">
     <value>{0} en az {2} karakter uzunluğunda olmalıdır.</value>
   </data>
+  <data name="WrongAccountLoginAttempt" xml:space="preserve">
+    <value>Giriş denemesi başarısız oldu. </value>
+  </data>
+  <data name="CustomerLoginPage" xml:space="preserve">
+    <value>Giriş Yap Veya Üye Ol</value>
+  </data>
 </root>

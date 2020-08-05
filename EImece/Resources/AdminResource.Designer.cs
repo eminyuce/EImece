@@ -412,6 +412,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giriş Yap Veya Üye Ol.
+        /// </summary>
+        public static string CustomerLoginPage {
+            get {
+                return ResourceManager.GetString("CustomerLoginPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Açık Adres.
         /// </summary>
         public static string CustomerOpenAddress {
@@ -2253,6 +2262,15 @@ namespace Resources {
         public static string WomanGender {
             get {
                 return ResourceManager.GetString("WomanGender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giriş denemesi başarısız oldu. .
+        /// </summary>
+        public static string WrongAccountLoginAttempt {
+            get {
+                return ResourceManager.GetString("WrongAccountLoginAttempt", resourceCulture);
             }
         }
         
