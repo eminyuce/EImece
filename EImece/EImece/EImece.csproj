@@ -940,7 +940,6 @@
     <Content Include="Content\mstore\fonts\Flaticon.ttf" />
     <Content Include="Content\mstore\fonts\Flaticon.woff" />
     <Content Include="Areas\Customers\Views\Home\CustomerOrders - Copy.cshtml" />
-    <Content Include="Areas\Customers\Views\Shared\_Layout - Copy %282%29.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\AdminSettingPage.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_CustomerDetails.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_PaginatedOrderList.cshtml" />

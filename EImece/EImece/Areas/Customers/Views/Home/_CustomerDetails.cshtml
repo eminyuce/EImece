@@ -5,7 +5,6 @@
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    Layout = "~/Areas/Customers/Views/Shared/_Layout.cshtml";
     List<Order> orders = Model.Orders;
     var actionName = ViewContext.RouteData.GetRequiredString("action");
     if (orders.IsEmpty())
