@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -48,7 +49,6 @@ namespace EImece.Areas.Customers.Controllers
         public ActionResult Index()
         {
             Customer customer =  GetCustomer();
-            customer.Orders = OrderService.GetOrdersUserId(customer.UserId, "");
             return View(customer);
         }
 
@@ -58,6 +58,7 @@ namespace EImece.Areas.Customers.Controllers
             Customer customer;
             user = UserManager.FindByName(User.Identity.GetUserName());
             customer = CustomerService.GetUserId(user.Id);
+            customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
             return customer;
         }
 
@@ -78,21 +79,16 @@ namespace EImece.Areas.Customers.Controllers
 
         public ActionResult SendMessageToSeller()
         {
+            ViewBag.Customer = GetCustomer();
             return View();
         }
 
         public ActionResult CustomerOrders(string search = "")
         {
+            var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
             var orders = OrderService.GetOrdersUserId(user.Id, search);
-            return View(orders);
-        }
-
-        public ActionResult OrderDetail(string id)
-        {
-            var user = UserManager.FindByName(User.Identity.GetUserName());
-            var order = OrderService.GetByOrderGuid(id);
-            return View(order);
+            return View(new CustomerOrdersViewModel() { Customer= customer, Orders= orders });
         }
 
         [HttpPost]

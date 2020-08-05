@@ -49,6 +49,11 @@ namespace EImece.Domain.Services
             return item;
         }
 
+        public List<Order> GetOrdersByUserId(string userId)
+        {
+            return OrderRepository.FindAll(r => r.UserId.Equals(userId,StringComparison.InvariantCultureIgnoreCase), r => r.CreatedDate, GenericRepository.EntityFramework.Enums.OrderByType.Descending, null, null);
+        }
+
         public List<Order> GetOrdersUserId(string userId, string search = "")
         {
             return OrderRepository.GetOrdersUserId(userId, search);

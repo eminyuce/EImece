@@ -354,6 +354,7 @@
     <Compile Include="Models\Enums\SortingType.cs" />
     <Compile Include="Models\FrontModels\CategoryFilter.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
+    <Compile Include="Models\FrontModels\CustomerOrdersViewModel.cs" />
     <Compile Include="Models\FrontModels\Filter.cs" />
     <Compile Include="Models\FrontModels\FilterGroup.cs" />
     <Compile Include="Models\FrontModels\FooterViewModel.cs" />

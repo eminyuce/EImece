@@ -943,7 +943,7 @@
     <Content Include="Areas\Customers\Views\Shared\_Layout - Copy %282%29.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\AdminSettingPage.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_CustomerDetails.cshtml" />
-    <Content Include="Areas\Customers\Views\Home\Index - Copy.cshtml" />
+    <Content Include="Areas\Customers\Views\Home\_PaginatedOrderList.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -954,7 +954,6 @@
     <Content Include="Views\Shared\pGridDropDown.cshtml" />
     <Content Include="Views\Shared\pGridCheckbox.cshtml" />
     <Content Include="Views\Shared\pGridImageMainPage.cshtml" />
-    <Content Include="Areas\Customers\Views\Home\OrderDetail.cshtml" />
     <Content Include="Areas\Customers\Views\Home\SendMessageToSeller.cshtml" />
     <Content Include="Areas\Customers\Views\Home\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_ProductCategoryTreeChildren.cshtml" />

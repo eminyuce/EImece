@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public class ProductIndexViewModel
+    public class ProductIndexViewModel : ItemListing
     {
         public PaginatedList<Product> Products { get; set; }
 

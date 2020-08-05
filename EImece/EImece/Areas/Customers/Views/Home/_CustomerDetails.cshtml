@@ -7,6 +7,7 @@
 @{
     Layout = "~/Areas/Customers/Views/Shared/_Layout.cshtml";
     List<Order> orders = Model.Orders;
+    var actionName = ViewContext.RouteData.GetRequiredString("action");
     if (orders.IsEmpty())
     {
         orders = new List<Order>();
@@ -38,24 +39,24 @@
 <!-- Navigation (visible sm-up)-->
 <ul class="nav nav-tabs d-none d-sm-flex">
     <li class="nav-item">
-        <a class="nav-link active" href="@Url.Action("Index")" data-toggle="dropdown">
+        <a class="nav-link @String.Format("{0}",actionName.Equals("index",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("Index","Home")">
             <i data-feather="settings"></i>&nbsp;@AdminResource.MyAccount
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("ChangePassword")">
+        <a class="nav-link  @String.Format("{0}",actionName.Equals("ChangePassword",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("ChangePassword","Home")">
             <i data-feather="lock"></i>&nbsp;@AdminResource.ChangePassword
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("CustomerOrders")">
+        <a class="nav-link @String.Format("{0}",actionName.Equals("CustomerOrders",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("CustomerOrders")">
             <i data-feather="shopping-bag"></i>&nbsp;@AdminResource.MyOrder<span class="badge badge-pill badge-secondary bg-0 border ml-2">
                 <span class="text-primary">@orders.Count</span>
             </span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("SendMessageToSeller")">
+        <a class="nav-link  @String.Format("{0}",actionName.Equals("SendMessageToSeller",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("SendMessageToSeller")">
             <i data-feather="phone"></i>&nbsp;@AdminResource.SendMessageToSeller
         </a>
     </li>

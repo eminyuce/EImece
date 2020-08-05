@@ -333,7 +333,7 @@ namespace EImece.Domain.Helpers.Extensions
                     var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     var imageSize = String.Format("w{0}h{1}", width, height);
                     var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
-                    String imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId });
+                    var imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area ="" });
                     return imagePath;
                 }
                 else

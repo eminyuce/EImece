@@ -11,5 +11,6 @@ namespace EImece.Domain.Services.IServices
 
         Order GetOrderById(int userId);
         void DeleteByUserId(string userId);
+        List<Order> GetOrdersByUserId(string userId);
     }
 }
