@@ -1906,6 +1906,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giriş Yap.
+        /// </summary>
+        public static string SignInOrUp {
+            get {
+                return ResourceManager.GetString("SignInOrUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Site Dizini Meta Açıklama.
         /// </summary>
         public static string SiteIndexMetaDescription {

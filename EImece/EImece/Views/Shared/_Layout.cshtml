@@ -48,8 +48,7 @@
 </head>
 <body>
 
-    @Html.Partial("SignInOrSignUp/_SignInOrSignUp")
-    @Html.Partial("ShoppingCartTemplates/_ShoppingCartSmall")
+
 
     <!-- Navbar Multilevel-->
     <!-- First line: Topbar-->
@@ -116,9 +115,20 @@
                     <i class="mx-auto mb-2" data-feather="menu">
                     </i>Menu
                 </div>
-                <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                    <i class="mx-auto mb-1" data-feather="log-in"></i>Sign In/Up
-                </a>
+                @if (Request.IsAuthenticated)
+                {
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
+                    </a>
+                }
+
+
                 @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
             </div>
 

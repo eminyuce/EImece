@@ -879,4 +879,7 @@
   <data name="SelectCategory" xml:space="preserve">
     <value>Kategori seç</value>
   </data>
+  <data name="SignInOrUp" xml:space="preserve">
+    <value>Giriş Yap</value>
+  </data>
 </root>
