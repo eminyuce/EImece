@@ -1,9 +1,8 @@
 ﻿using EImece.Domain.Entities;
-using System;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
-    public interface IProductCommentRepository : IBaseEntityRepository<ProductComment >
+    public interface IProductCommentRepository : IBaseEntityRepository<ProductComment>
     {
     }
 }

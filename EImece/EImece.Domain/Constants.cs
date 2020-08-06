@@ -32,7 +32,7 @@
         public const string DeliveryInfo = "DeliveryInfo";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
-        public const string InstagramWebSiteLink = "InstagramWebSiteLink"; 
+        public const string InstagramWebSiteLink = "InstagramWebSiteLink";
         public const string PinterestWebSiteLink = "PinterestWebSiteLink";
         public const string TwitterWebSiteLink = "TwitterWebSiteLink";
         public const string LinkedinWebSiteLink = "LinkedinWebSiteLink";

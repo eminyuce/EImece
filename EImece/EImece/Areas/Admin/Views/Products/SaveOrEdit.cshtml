@@ -17,6 +17,7 @@
     var PleaseSelectYourProductCategoryFromTree = AdminResource.PleaseSelectYourProductCategoryFromTree;
     Product product = (Product)Model;
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
+    var brands = (List<SelectListItem>)ViewBag.Brands;
 }
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
@@ -82,6 +83,20 @@
 
                                         @Html.HiddenFor(model => model.ProductCategoryId)
                                         @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.BrandId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @if (brands != null)
+                                        {
+                                            @Html.DropDownListFor(model => model.BrandId,
+                                                   brands,
+                                                   AdminResource.SelectBrand,
+                                                   new { @class = "form-control" })
+                                        }
+                                        @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
@@ -234,7 +249,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        function productTreeClick(e,id,name) {
+        function productTreeClick(e, id, name) {
             e.preventDefault();   // use this to NOT go to href site
             console.log(e);
             $('#OldCategoryName').text(name);

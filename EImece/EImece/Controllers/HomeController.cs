@@ -92,7 +92,7 @@ namespace EImece.Controllers
         public ActionResult SocialMediaLinks()
         {
             var resultList = new Dictionary<String, String>();
-            resultList.Add(Constants.InstagramWebSiteLink,SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
+            resultList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
             resultList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));
             resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
             resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));

@@ -25,13 +25,10 @@ namespace EImece.Areas.Admin.Controllers
 
         private List<SelectListItem> GetCategoriesSelectList()
         {
-            List<TagCategory> tagCategories = TagCategoryService.GetAll().OrderBy(r => r.Position).ToList();
+            List<TagCategory> tagCategories = TagCategoryService.GetAll().Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
             return tagCategories.Select(r => new SelectListItem()
             {
-                Text =
-
-                String.Format("{0}", r.Name.ToStr())
-                ,
+                Text = r.Name.ToStr(),
                 Value = r.Id.ToStr()
             }).ToList();
         }

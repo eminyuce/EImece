@@ -10,8 +10,6 @@
     var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
 }
 
-
-
 <ul class="collapse show" id="computers" data-parent="#shopCategories">
     @foreach (var p in productCategories)
     {
@@ -31,7 +29,6 @@
         }
     }
 </ul>
-
 
 @helper badgeProductNumber(ProductCategoryTreeModel p)
 {

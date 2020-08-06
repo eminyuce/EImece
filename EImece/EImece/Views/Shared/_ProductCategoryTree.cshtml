@@ -23,9 +23,9 @@
                             var productCategoryLink = productCategory.ProductCategoryLink;
                             <li @String.Format("{0}", i == productCategories.Count - 1 ? "" : "class='border-bottom'")>
                                 <a class="d-flex align-items-center nav-link-inline pb-3" href="@productCategoryLink"
-                                   data-toggle="popover" data-placement="right" data-trigger="hover" data-html="true" 
+                                   data-toggle="popover" data-placement="right" data-trigger="hover" data-html="true"
                                    data-content="&lt;img src=&quot;@productImgLink&quot; class=&quot;d-block mt-n2&quot; alt=&quot;Computers &amp; Accessories&quot;&gt;&lt;div class=&quot;text-center font-size-sm font-weight-semibold mt-n2 pb-3&quot;&gt;Starting from $149.80&lt;/div&gt;">
-                                <i class="text-primary opacity-60 mr-2 mt-1" data-feather="hard-drive" 
+                                <i class="text-primary opacity-60 mr-2 mt-1" data-feather="hard-drive"
                                    style="width: 1.25rem; height: 1.25rem;">
                                 </i>
                                 <span> @productCategory.Name <i class="ml-1"

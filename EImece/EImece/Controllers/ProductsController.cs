@@ -17,7 +17,6 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-     
         private readonly IProductCommentService productCommentService;
 
         [Inject]
@@ -100,7 +99,7 @@ namespace EImece.Controllers
             productComment.Position = 1;
             productComment.Lang = 1;
             productCommentService.SaveOrEditEntity(productComment);
-            return RedirectToAction("Detail", new { id = productComment.SeoUrl } );
+            return RedirectToAction("Detail", new { id = productComment.SeoUrl });
         }
     }
 }

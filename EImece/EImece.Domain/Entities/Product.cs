@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
@@ -20,7 +19,8 @@ namespace EImece.Domain.Entities
         [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
 
-        public int ? BrandId { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Brands))]
+        public int? BrandId { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
@@ -64,6 +64,7 @@ namespace EImece.Domain.Entities
                 return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name, AppConfig.HttpProtocol);
             }
         }
+
         [NotMapped]
         public string DetailPageRelativeUrl
         {
@@ -72,12 +73,13 @@ namespace EImece.Domain.Entities
                 return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name);
             }
         }
+
         [NotMapped]
         public bool HasDiscount
         {
             get
             {
-                if(ProductCategory == null)
+                if (ProductCategory == null)
                 {
                     return false;
                 }

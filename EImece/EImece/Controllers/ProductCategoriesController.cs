@@ -3,8 +3,6 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Models.FrontModels;
-using GenericRepository;
 using NLog;
 using System;
 using System.Net;
@@ -17,7 +15,6 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         // GET: ProductCategory
         public ActionResult Index()
         {
@@ -26,7 +23,7 @@ namespace EImece.Controllers
 
         [Route("category/{id}")]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Category(String id, int page=0, int sorting=0, string filtreler = "")
+        public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "")
         {
             try
             {
@@ -34,7 +31,7 @@ namespace EImece.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                 
+
                 var categoryId = id.GetId();
 
                 var productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
@@ -43,8 +40,6 @@ namespace EImece.Controllers
                 productCategory.Filter = filtreler;
                 productCategory.Sorting = (SortingType)sorting;
                 productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
-
-            
 
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
                 return View(productCategory);

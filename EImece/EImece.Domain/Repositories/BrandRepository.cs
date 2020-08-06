@@ -1,8 +1,6 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using GenericRepository;
-using GenericRepository.EntityFramework.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -22,7 +20,7 @@ namespace EImece.Domain.Repositories
         public List<Brand> GetAdminPageList(string search, int lang)
         {
             Expression<Func<Brand, object>> includeProperty3 = r => r.MainImage;
-            Expression<Func<Brand, object>>[] includeProperties = {  includeProperty3 };
+            Expression<Func<Brand, object>>[] includeProperties = { includeProperty3 };
             var brands = GetAllIncluding(includeProperties).Where(r => r.Lang == lang);
             if (!String.IsNullOrEmpty(search))
             {

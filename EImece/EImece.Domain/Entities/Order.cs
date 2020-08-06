@@ -52,6 +52,7 @@ namespace EImece.Domain.Entities
 
         [NotMapped]
         public Customer Customer { get; set; }
+
         [NotMapped]
         public decimal PaidPriceDecimal
         {

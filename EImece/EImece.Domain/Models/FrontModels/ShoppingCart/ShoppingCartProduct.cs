@@ -15,20 +15,24 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         public string CategoryName { get; set; }
         public string CroppedImageUrl { get; set; }
         private string _detailPageUrl { get; set; }
-        public string DetailPageUrl 
-        { 
-            get {
+
+        public string DetailPageUrl
+        {
+            get
+            {
                 if (string.IsNullOrEmpty(_detailPageUrl))
                 {
-                          var requestContext = HttpContext.Current.Request.RequestContext;
-                         return new UrlHelper(requestContext).Action("Detail", "Products", new { id = Id});
+                    var requestContext = HttpContext.Current.Request.RequestContext;
+                    return new UrlHelper(requestContext).Action("Detail", "Products", new { id = Id });
                 }
-                return _detailPageUrl; 
-            } 
-            set { 
+                return _detailPageUrl;
+            }
+            set
+            {
                 _detailPageUrl = value;
-            } 
+            }
         }
+
         public ShoppingCartProduct()
         {
         }
@@ -37,7 +41,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         {
             this.Id = product.Id;
             this.Name = product.Name;
-            this.Price =product.HasDiscount ? product.GetProductPrice() : product.Price;
+            this.Price = product.HasDiscount ? product.GetProductPrice() : product.Price;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory.Name;
             this.DetailPageUrl = product.DetailPageRelativeUrl;
@@ -46,6 +50,5 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
                 this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 200, 0);
             }
         }
-
     }
 }

@@ -1,11 +1,7 @@
 ﻿using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
-using Microsoft.Owin.Security.Provider;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -21,7 +17,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return Filter.Split("-".ToCharArray()).Select(r=>r.ToInt()).ToList();
+                return Filter.Split("-".ToCharArray()).Select(r => r.ToInt()).ToList();
             }
         }
     }

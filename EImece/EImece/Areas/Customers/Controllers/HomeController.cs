@@ -1,7 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -10,10 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
 using Resources;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
@@ -48,7 +44,7 @@ namespace EImece.Areas.Customers.Controllers
         // GET: Customers/Home
         public ActionResult Index()
         {
-            Customer customer =  GetCustomer();
+            Customer customer = GetCustomer();
             return View(customer);
         }
 
@@ -88,7 +84,7 @@ namespace EImece.Areas.Customers.Controllers
             var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
             var orders = OrderService.GetOrdersUserId(user.Id, search);
-            return View(new CustomerOrdersViewModel() { Customer= customer, Orders= orders });
+            return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 
         [HttpPost]
@@ -103,7 +99,7 @@ namespace EImece.Areas.Customers.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
-            ViewBag.Customer = GetCustomer(); 
+            ViewBag.Customer = GetCustomer();
             return View();
         }
 

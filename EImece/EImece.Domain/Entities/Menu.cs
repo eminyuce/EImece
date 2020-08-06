@@ -43,12 +43,11 @@ namespace EImece.Domain.Entities
         {
             get
             {
-
                 var p = MenuLink.Split("_".ToCharArray());
                 var parts = p.First().Split("-".ToCharArray());
                 var action = parts[1];
                 var controller = parts[0];
-                String mid =  p.Last();
+                String mid = p.Last();
                 string resultLink = "";
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 if (LinkIsActive && !String.IsNullOrEmpty(Link))

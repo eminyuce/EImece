@@ -25,7 +25,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             int settingId = GetSettingPage(pageName);
-            if(settingId == 0)
+            if (settingId == 0)
             {
                 var content = EntityFactory.GetBaseEntityInstance<Setting>();
                 content.SettingKey = pageName;
@@ -88,14 +88,13 @@ namespace EImece.Areas.Admin.Controllers
                     return HttpNotFound();
                 }
 
-              //  if (ModelState.IsValid)
+                //  if (ModelState.IsValid)
                 {
                     setting.SettingValue = Constants.SpecialPage;
                     setting.Lang = CurrentLanguage;
                     SettingService.SaveOrEditEntity(setting);
                     ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
-             
             }
             catch (Exception ex)
             {
@@ -105,18 +104,16 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             RemoveModelState();
-             GetSettingPage(setting.SettingKey);
+            GetSettingPage(setting.SettingKey);
             return View("AdminSettingPage", setting);
         }
+
         public ActionResult AddWebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
-
-    
- 
 
         public ActionResult AddTermsAndConditions()
         {
@@ -131,14 +128,13 @@ namespace EImece.Areas.Admin.Controllers
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("PrivacyPolicy", new { id });
         }
- 
+
         public ActionResult WebSiteLogo(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
             if (id == 0)
             {
-
             }
             else
             {

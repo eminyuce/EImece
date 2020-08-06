@@ -30,15 +30,15 @@ namespace EImece.Domain.Repositories
             try
             {
                 Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
-              
+
                 Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
                 Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
                 Expression<Func<Product, object>> includeProperty4 = r => r.ProductTags.Select(t => t.Tag);
-                Expression<Func<Product, object>>[] includeProperties = { 
+                Expression<Func<Product, object>>[] includeProperties = {
                     includeProperty1,
                     includeProperty2,
                     includeProperty4,
-           
+
                     includeProperty3 };
                 Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language;
                 Expression<Func<Product, int>> keySelector = t => t.Position;
@@ -84,7 +84,7 @@ namespace EImece.Domain.Repositories
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-                Expression<Func<Product, bool>> whereLamba = r =>  r.Name.Contains(search) || r.ProductCode.Contains(search) || r.ProductCategory.Name.Contains(search);
+                Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search) || r.ProductCode.Contains(search) || r.ProductCategory.Name.Contains(search);
                 products = products.Where(whereLamba);
             }
             if (categoryId > 0)

@@ -5,7 +5,6 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
@@ -20,13 +19,11 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
-
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
         [Inject]
         public IOrderService OrderService { get; set; }
-
 
         [HttpGet]
         public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
@@ -456,6 +453,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(html, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+
         [HttpPost]
         public async Task<JsonResult> GetOrderDetail(int orderId)
         {

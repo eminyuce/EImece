@@ -1798,6 +1798,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Marka Seçin.
+        /// </summary>
+        public static string SelectBrand {
+            get {
+                return ResourceManager.GetString("SelectBrand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kategori seç.
+        /// </summary>
+        public static string SelectCategory {
+            get {
+                return ResourceManager.GetString("SelectCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seçilen Kategori:.
         /// </summary>
         public static string SelectedCategory {

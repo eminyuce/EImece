@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EImece.Domain.DbContext;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using Microsoft.AspNet.Identity;
 using Ninject;
-using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using EImece.Domain.DbContext;
 
 namespace EImece.Domain.Services
 {
@@ -39,10 +28,12 @@ namespace EImece.Domain.Services
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
+
         public ApplicationUser GetUser(string id)
         {
-           return ApplicationDbContext.Users.First(u => u.Id == id);
+            return ApplicationDbContext.Users.First(u => u.Id == id);
         }
+
         public List<EditUserViewModel> GetUsers(string search)
         {
             var users = ApplicationDbContext.Users.AsQueryable();

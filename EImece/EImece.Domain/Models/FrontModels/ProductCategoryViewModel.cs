@@ -1,13 +1,11 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public class ProductCategoryViewModel: ItemListing
+    public class ProductCategoryViewModel : ItemListing
     {
         public ProductCategory ProductCategory { get; set; }
 
@@ -21,7 +19,6 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                
                 List<Product> result = new List<Product>();
                 ICollection<Product> products = ProductCategory.Products;
                 if (!string.IsNullOrEmpty(Filter))
@@ -36,36 +33,37 @@ namespace EImece.Domain.Models.FrontModels
                     result = products.ToList();
                 }
 
-
                 switch (Sorting)
                 {
                     case Enums.SortingType.Popularity:
                         break;
+
                     case Enums.SortingType.LowHighPrice:
                         result = result.OrderBy(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
                         break;
+
                     case Enums.SortingType.HighLowPrice:
                         result = result.OrderByDescending(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
                         break;
+
                     case Enums.SortingType.AverageRating:
                         break;
+
                     case Enums.SortingType.AzOrder:
                         break;
+
                     case Enums.SortingType.ZaOrder:
                         break;
+
                     default:
                         result = result.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
                         break;
                 }
 
-              
-
                 return result;
-               
             }
         }
 
-      
         public string SeoId { get; set; }
 
         public List<CategoryFilterType> CategoryFilterTypes
@@ -78,7 +76,5 @@ namespace EImece.Domain.Models.FrontModels
                 return categoryFilterTypes;
             }
         }
-
-        
     }
 }

@@ -28,7 +28,9 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IdentityNumber))]
         public string IdentityNumber { get; set; }
+
         public string Ip { get; set; }
+
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsSameAsShippingAddress))]
         public bool IsSameAsShippingAddress { get; set; }
@@ -43,8 +45,10 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
         public int Gender { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Street))]
         public string Street { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.District))]
         public string District { get; set; }
 
@@ -77,6 +81,7 @@ namespace EImece.Domain.Entities
                 return String.Format("{0} {1}", Name, Surname);
             }
         }
+
         public String Address
         {
             get

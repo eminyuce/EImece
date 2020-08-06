@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using GenericRepository;
-using System;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories

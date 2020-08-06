@@ -41,10 +41,12 @@ namespace EImece.Domain.Helpers.Extensions
 
             return Items;
         }
+
         public static bool IsNotEmpty<T>(this IEnumerable<T> enumerable)
         {
             return !IsEmpty(enumerable);
         }
+
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null)

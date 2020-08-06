@@ -25,108 +25,103 @@
 
 }
 
-
 <!-- Page Content-->
-    <div class="container pt-lg-3 pb-5 mb-sm-3">
-        <!-- Toast notifications-->
-        <div class="toast-container toast-bottom-center">
-            <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header bg-success text-white">
-                    <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
-                    <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="toast-body">@AdminResource.YourProfileUpdatedSuccessfully</div>
+<div class="container pt-lg-3 pb-5 mb-sm-3">
+    <!-- Toast notifications-->
+    <div class="toast-container toast-bottom-center">
+        <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
+                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-        </div>
-        <div class="row pt-1">
-            <!-- Main content-->
-            <!-- Main content-->
-            <div class="col-lg-12">
-                @Html.Partial("_CustomerDetails", (Customer)Model.Customer)
-
-                <!-- Orders table-->
-                <div class="table-responsive font-size-sm">
-                    <table class="table table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th>Order #</th>
-                                <th>Date Purchased</th>
-                                <th>Status</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var o in paginatedOrders)
-                            {
-                                <tr>
-                                    <td>
-                                        <a class="nav-link-inline" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@o.OrderNumber</a>
-                                        @createOrderDetailModal(o)
-                                    </td>
-                                    <td>@o.CreatedDate.ToString("dd MMMM ddd, HH:mm")</td>
-                                    <td><span class="badge badge-info m-0">In Progress</span></td>
-                                    <td>@o.PaidPriceDecimal.CurrencySign()</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <hr class="pb-4">
-                @Html.Partial("_PaginatedOrderList", paginatedOrders)
-            </div>
+            <div class="toast-body">@AdminResource.YourProfileUpdatedSuccessfully</div>
         </div>
     </div>
+    <div class="row pt-1">
+        <!-- Main content-->
+        <!-- Main content-->
+        <div class="col-lg-12">
+            @Html.Partial("_CustomerDetails", (Customer)Model.Customer)
+
+            <!-- Orders table-->
+            <div class="table-responsive font-size-sm">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date Purchased</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var o in paginatedOrders)
+                            {
+                        <tr>
+                            <td>
+                                <a class="nav-link-inline" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@o.OrderNumber</a>
+                                @createOrderDetailModal(o)
+                            </td>
+                            <td>@o.CreatedDate.ToString("dd MMMM ddd, HH:mm")</td>
+                            <td><span class="badge badge-info m-0">In Progress</span></td>
+                            <td>@o.PaidPriceDecimal.CurrencySign()</td>
+                        </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+            <hr class="pb-4">
+            @Html.Partial("_PaginatedOrderList", paginatedOrders)
+        </div>
+    </div>
+</div>
 
 @helper createOrderDetailModal(Order order)
 {
 
-   
     <!-- Order Details-->
-    <div class="modal fade" id="@string.Format("order-details-{0}",order.OrderNumber)">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Order No - @order.OrderNumber</h4>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body pb-0">
-                    @foreach (var orderProduct in order.OrderProducts)
+<div class="modal fade" id="@string.Format("order-details-{0}",order.OrderNumber)">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Order No - @order.OrderNumber</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body pb-0">
+                @foreach (var orderProduct in order.OrderProducts)
                     {
                         var product = orderProduct.Product;
                         var imgTag = product.GetCroppedImageUrl(product.MainImageId, 200, 0);
                         <!-- Item-->
-                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                            <div class="media d-block d-sm-flex text-center text-sm-left">
-                                <a class="cart-item-thumb mx-auto mr-sm-4" href="shop-single-apparel.html"><img src="@imgTag" alt="Product"></a>
-                                <div class="media-body pt-3">
-                                    <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="shop-single-apparel.html">@product.Name</a></h3>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory:</span>@product.ProductCategory.Name</div>
-                                </div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@AdminResource.Quantity</div>
-                                <div class="font-weight-semibold">@orderProduct.Quantity</div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">Subtotal:</div>
-                                <div class="font-weight-semibold">@orderProduct.TotalPrice.CurrencySign()</div>
-                            </div>
+                <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
+                    <div class="media d-block d-sm-flex text-center text-sm-left">
+                        <a class="cart-item-thumb mx-auto mr-sm-4" href="shop-single-apparel.html"><img src="@imgTag" alt="Product"></a>
+                        <div class="media-body pt-3">
+                            <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="shop-single-apparel.html">@product.Name</a></h3>
+                            <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
+                            <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory:</span>@product.ProductCategory.Name</div>
                         </div>
+                    </div>
+                    <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-sm-2">@AdminResource.Quantity</div>
+                        <div class="font-weight-semibold">@orderProduct.Quantity</div>
+                    </div>
+                    <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-sm-2">Subtotal:</div>
+                        <div class="font-weight-semibold">@orderProduct.TotalPrice.CurrencySign()</div>
+                    </div>
+                </div>
                     }
-
-
-                </div>
-                <!-- Footer-->
-                <div class="modal-footer flex-wrap justify-content-between bg-secondary">
-                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
-                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
-                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
-                    <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
-                </div>
+            </div>
+            <!-- Footer-->
+            <div class="modal-footer flex-wrap justify-content-between bg-secondary">
+                <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
             </div>
         </div>
     </div>
-
+</div>
 
 }

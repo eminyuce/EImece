@@ -89,7 +89,6 @@ namespace EImece.Domain.Repositories
 
         public virtual int SaveOrEdit(T item)
         {
-
             try
             {
                 item.TrimAllStrings();

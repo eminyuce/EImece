@@ -58,7 +58,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
         {
-            if(model == null)
+            if (model == null)
             {
                 throw new ArgumentException();
             }
@@ -95,6 +95,7 @@ namespace EImece.Controllers
                 {
                     case SignInStatus.Success:
                         return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+
                     case SignInStatus.LockedOut:
                         Logger.Debug("The account  " + model.Email + " LockedOut ");
                         ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
@@ -199,6 +200,7 @@ namespace EImece.Controllers
                 {
                     case SignInStatus.Success:
                         return RedirectToAction("Index", "Home", new { @area = "customers" });
+
                     case SignInStatus.LockedOut:
                         Logger.Debug("The account  " + model.Email + " LockedOut ");
                         ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");

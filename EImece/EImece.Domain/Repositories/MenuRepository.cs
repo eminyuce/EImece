@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;

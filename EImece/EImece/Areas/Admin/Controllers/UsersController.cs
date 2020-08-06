@@ -2,7 +2,6 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
-using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Ninject;
@@ -37,12 +36,10 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             List<EditUserViewModel> model = UsersService.GetUsers(search);
-          //  model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
+            //  model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
             return View(model);
         }
 
-
-     
         //[Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
@@ -147,7 +144,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             return View(model);
         }
-      
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]

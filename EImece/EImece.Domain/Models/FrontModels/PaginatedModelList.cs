@@ -1,6 +1,4 @@
-﻿using GenericRepository;
-using Iyzipay;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,9 +13,9 @@ namespace EImece.Domain.Models.FrontModels
         public int RouteId { set; get; }
         public int Sorting { set; get; }
         public string Filter { set; get; }
+
         public bool HasPreviousPage
         {
-
             get
             {
                 return (PageIndex > 1);
@@ -26,7 +24,6 @@ namespace EImece.Domain.Models.FrontModels
 
         public bool HasNextPage
         {
-
             get
             {
                 return (PageIndex < TotalPageCount);
@@ -35,7 +32,6 @@ namespace EImece.Domain.Models.FrontModels
 
         public PaginatedModelList(IEnumerable<T> source, int pageIndex, int pageSize, int totalCount)
         {
-
             if (source == null)
             {
                 throw new ArgumentNullException("source");
@@ -53,7 +49,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public IEnumerable<T> GetPagingResult()
         {
-            if(PageIndex == 0)
+            if (PageIndex == 0)
             {
                 PageIndex = 1;
             }

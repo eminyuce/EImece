@@ -1,10 +1,8 @@
-﻿using EImece.Domain.DbContext;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using Microsoft.Owin.Security.OAuth;
 using Ninject;
 using NLog;
 using System;
@@ -20,6 +18,7 @@ namespace EImece.Domain.Services
         private ICustomerRepository CustomerRepository { get; set; }
 
         private IAddressService AddressService { get; set; }
+
         [Inject]
         public UsersService UsersService { get; set; }
 
@@ -46,8 +45,6 @@ namespace EImece.Domain.Services
             item.Lang = 1;
             item.IsPermissionGranted = true;
             CustomerRepository.SaveOrEdit(item);
-
-
         }
 
         public Customer GetUserId(string userId)
@@ -78,7 +75,7 @@ namespace EImece.Domain.Services
         public List<Customer> GetCustomerServices(string search)
         {
             var result = CustomerRepository.GetAll();
-            var resultList =  result.ToList();
+            var resultList = result.ToList();
             foreach (var item in resultList)
             {
                 GetUserFields(item);

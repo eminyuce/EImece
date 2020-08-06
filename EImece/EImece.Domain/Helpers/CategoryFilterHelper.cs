@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
-using System.Collections.Generic;
-using System.Linq;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Models;
 using EImece.Domain.Models.FrontModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Helpers
 {
@@ -41,6 +34,7 @@ namespace EImece.Domain.Helpers
                                 filteredProducts.AddRange(products.Where(r => r.Price >= filterProperty.minPrice && r.Price < filterProperty.maxPrice).ToList());
                                 hasPriceFilter = true;
                                 break;
+
                             default:
                                 break;
                         }
@@ -49,6 +43,7 @@ namespace EImece.Domain.Helpers
             }
             return hasPriceFilter ? filteredProducts : products;
         }
+
         public ICollection<Product> FilterProductsByRating(ICollection<Product> products)
         {
             bool hasFilter = false;
@@ -66,6 +61,7 @@ namespace EImece.Domain.Helpers
                                 filteredProducts.AddRange(products.Where(r => r.Rating >= filterProperty.value && r.Rating < filterProperty.value + 1).ToList());
                                 hasFilter = true;
                                 break;
+
                             default:
                                 break;
                         }

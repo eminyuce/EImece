@@ -16,7 +16,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-       @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
@@ -28,7 +28,7 @@
                 {
                     @Html.DropDownListFor(model => model.TagCategoryId,
                            categories,
-                           "Select Categories",
+                           AdminResource.SelectCategory,
                            new { @class = "form-control" })
                 }
                 @Html.ValidationMessageFor(model => model.TagCategoryId, "", new { @class = "text-danger" })

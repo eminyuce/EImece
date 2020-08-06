@@ -18,7 +18,7 @@ namespace EImece.Domain.Services
         private readonly IOrderProductService OrderProductService;
 
         [Inject]
-        ICustomerService CustomerService;
+        private ICustomerService CustomerService;
 
         public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService) : base(repository)
         {
@@ -51,7 +51,7 @@ namespace EImece.Domain.Services
 
         public List<Order> GetOrdersByUserId(string userId)
         {
-            return OrderRepository.FindAll(r => r.UserId.Equals(userId,StringComparison.InvariantCultureIgnoreCase), r => r.CreatedDate, GenericRepository.EntityFramework.Enums.OrderByType.Descending, null, null);
+            return OrderRepository.FindAll(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase), r => r.CreatedDate, GenericRepository.EntityFramework.Enums.OrderByType.Descending, null, null);
         }
 
         public List<Order> GetOrdersUserId(string userId, string search = "")

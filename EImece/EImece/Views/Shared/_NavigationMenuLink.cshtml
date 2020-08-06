@@ -21,31 +21,31 @@
 
     if (m.LinkIsActive && !String.IsNullOrEmpty(m.Link))
     {
-    <a href="@m.Link">@m.Name</a>
+<a href="@m.Link">@m.Name</a>
     }
     else if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
     {
 
-        @Html.ActionLink(m.Name, "detail", controller, new
-   {
-       id = m.GetSeoUrl()
-   }, null)
+@Html.ActionLink(m.Name, "detail", controller, new
+{
+id = m.GetSeoUrl()
+}, null)
 
     }
     else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
                                                 && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
     {
 
-        @Html.ActionLink(m.Name, action, controller, new
-           {
-               id = mid
-           }, null)
+@Html.ActionLink(m.Name, action, controller, new
+   {
+       id = mid
+   }, null)
 
     }
     else
     {
 
-        @Html.ActionLink(m.Name, action, controller)
+@Html.ActionLink(m.Name, action, controller)
 
     }
 

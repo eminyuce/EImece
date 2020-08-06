@@ -6,6 +6,7 @@ using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -66,6 +67,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseContentInstance<Product>();
+            ViewBag.Brands = GetBrandsSelectList();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             if (id == 0)
@@ -150,6 +152,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
+            ViewBag.Brands = GetBrandsSelectList();
             RemoveModelState();
             return View(product);
         }
@@ -251,6 +254,16 @@ namespace EImece.Areas.Admin.Controllers
         {
             ProductService.MoveProductsInTrees(id, productIdList);
             return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
+        }
+
+        private List<SelectListItem> GetBrandsSelectList()
+        {
+            var tagCategories = BrandService.GetAll().Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+            return tagCategories.Select(r => new SelectListItem()
+            {
+                Text = r.Name.ToStr(),
+                Value = r.Id.ToStr()
+            }).ToList();
         }
     }
 }

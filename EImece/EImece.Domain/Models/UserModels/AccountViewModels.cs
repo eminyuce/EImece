@@ -76,7 +76,6 @@ namespace EImece.Models
 
     public class RegisterViewModel
     {
-      
         [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]

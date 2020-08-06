@@ -51,7 +51,6 @@ namespace EImece
                       defaults: new { controller = "images", action = "getcaptcha" },
                       namespaces: new[] { "EImece.Controllers" }
                   );
- 
 
             routes.MapRoute(
                  name: "ImageResizing",

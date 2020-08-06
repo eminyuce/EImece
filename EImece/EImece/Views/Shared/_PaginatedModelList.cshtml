@@ -28,9 +28,9 @@
         </li>
         @for (var i = 1; i <= pagingItems.TotalPageCount; i++)
         {
-            <li class="page-item @(i == pagingItems.PageIndex ? "active" : "")">
-                <a href=@Url.Action(actionName,new { id=id,  page = i,sorting ,filtreler=filter }) class="page-link">@i</a>
-            </li>
+        <li class="page-item @(i == pagingItems.PageIndex ? "active" : "")">
+            <a href=@Url.Action(actionName,new { id=id,  page = i,sorting ,filtreler=filter }) class="page-link">@i</a>
+        </li>
         }
         <li class="page-item @(pagingItems.HasNextPage ? " " : " disabled")">
             <a href=@Url.Action(actionName,new { id=id, page = pagingItems.PageIndex + 1,sorting ,filtreler=filter })

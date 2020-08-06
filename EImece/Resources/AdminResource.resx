@@ -873,4 +873,10 @@
   <data name="Brands" xml:space="preserve">
     <value>Markalar</value>
   </data>
+  <data name="SelectBrand" xml:space="preserve">
+    <value>Marka Seçin</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Kategori seç</value>
+  </data>
 </root>

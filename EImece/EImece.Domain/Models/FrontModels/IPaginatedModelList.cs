@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EImece.Domain.Models.FrontModels
+﻿namespace EImece.Domain.Models.FrontModels
 {
-    public interface IPaginatedModelList { 
-
+    public interface IPaginatedModelList
+    {
         int TotalPageCount { get; }
         int PageIndex { get; }
         int PageSize { get; }

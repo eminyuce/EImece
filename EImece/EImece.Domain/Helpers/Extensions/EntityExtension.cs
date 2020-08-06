@@ -319,11 +319,13 @@ namespace EImece.Domain.Helpers.Extensions
 
             return imageTag;
         }
-        public static String GetCroppedImageUrl(this BaseEntity entity, int ? fileStorageIdOptional, int width = 0, int height = 0)
+
+        public static String GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0)
         {
             var fileStorageId = fileStorageIdOptional.HasValue ? fileStorageIdOptional.Value : 0;
             return GetCroppedImageUrl(entity, fileStorageId, width, height);
         }
+
         public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             if (entity != null)
@@ -333,7 +335,7 @@ namespace EImece.Domain.Helpers.Extensions
                     var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     var imageSize = String.Format("w{0}h{1}", width, height);
                     var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
-                    var imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area ="" });
+                    var imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
                     return imagePath;
                 }
                 else

@@ -3,7 +3,6 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository.EntityFramework.Enums;
-using Microsoft.Owin.Security.OAuth;
 using Ninject;
 using NLog;
 using System;
@@ -20,10 +19,10 @@ namespace EImece.Domain.Repositories
         [Inject]
         public ICustomerRepository CustomerRepository { get; set; }
 
-
         public OrderRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
         public Order GetOrderById(int id)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -35,11 +34,12 @@ namespace EImece.Domain.Repositories
 
             return item;
         }
+
         public List<Order> GetOrdersUserId(string userId, string search)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.OrderProducts);
-            includeProperties.Add(r => r.OrderProducts.Select(r1=>r1.Product.ProductCategory));
+            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
 

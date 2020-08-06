@@ -11,11 +11,10 @@
                             {"UrlPattern",urlPattern}
                           ,{"IsExcelButtonEnabled",true}};
 
-
 }
 
 <ul class="menu" id="responsive">
-  
+
     @foreach (var p in treeNodes)
                 {
                     var productCategory = p;
@@ -47,9 +46,7 @@
     {
         <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
     }
-
 </li>
         }
     }
 </ul>
-

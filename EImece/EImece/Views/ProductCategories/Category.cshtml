@@ -108,14 +108,13 @@
             </div>
             <div class="pb-4 mb-2"></div>
             @Html.Partial("_PaginatedModelList", products)
-
         </div>
     </div>
 </div>
 
 @helper CreateFilterTypeList(CategoryFilterType categoryFilter, List<int> selectedFilters)
 {
-    
+
     <!-- Price filter    -->
     <div class="widget mb-4 pb-1">
         <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
@@ -123,14 +122,14 @@
         {
             var filterId = @String.Format("filter-{0}", filter.value);
             <div class="custom-control custom-checkbox mb-1">
-                <input class="custom-control-input" type="checkbox" @String.Format("{0}",selectedFilters.Contains(filter.value) ? "checked" :"") value="@filter.value" name="filters" id="@filterId">
+                <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.value) ? "checked" : "") value="@filter.value" name="filters" id="@filterId">
                 <label class="custom-control-label" for="@filterId">@filter.name<span class="text-muted ml-1">(@filter.count)</span></label>
             </div>
         }
     </div>
 
 }
- 
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
@@ -153,8 +152,5 @@
             });
 
         });
-      
-
     </script>
 }
-

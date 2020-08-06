@@ -41,7 +41,6 @@ namespace EImece.Domain.Services
             return result;
         }
 
-
         public MenuPageViewModel GetPageById(int menuId)
         {
             var cacheKey = String.Format("GetPageById-{0}", menuId);

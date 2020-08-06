@@ -17,6 +17,7 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
+
         public List<ShoppingCartItem> ShoppingCartItems
         {
             get

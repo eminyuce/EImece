@@ -1,13 +1,11 @@
 ﻿using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
-using Microsoft.Owin.Security.Provider;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Dynamic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,14 +35,15 @@ namespace EImece.Domain.Entities
         public double? DiscountPercantage { get; set; }
 
         [NotMapped]
-        public string ProductCategoryLink  
+        public string ProductCategoryLink
         {
             get
-             {
+            {
                 var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl()});
-             }
+                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
+            }
         }
+
         [NotMapped]
         public string DetailPageUrl
         {
@@ -65,12 +64,13 @@ namespace EImece.Domain.Entities
             else
             {
                 return new UrlHelper(requestContext).Action("Category", "ProductCategories",
-                    new { id = this.GetSeoUrl(), 
+                    new
+                    {
+                        id = this.GetSeoUrl(),
                         sorting = sortingInt,
                         filtreler = itemListing.Filter
                     });
             }
-            
         }
 
         public Template Template { get; set; }

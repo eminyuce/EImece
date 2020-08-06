@@ -71,7 +71,7 @@
                     {
                         for (int i = 0; i < products.Count; i++)
                         {
-                            @CreateShoppingCartItem(products[i], i)
+                    @CreateShoppingCartItem(products[i], i)
                         }
                     }
                 </div>
@@ -90,51 +90,46 @@
                 </div>
             </div>
         </div>
-     
     </div>
 </div>
-
-
-
- 
 
 @helper CreateShoppingCartItem(ShoppingCartItem item, int i)
 {
     var product = item.product;
     double totalPricePerItem = product.Price * item.quantity;
     <!-- Item-->
-    <div data-shopping-item-row="@item.ShoppingCartItemId" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
-        <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
-        <div class="media d-block d-sm-flex text-center text-sm-left">
-            @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
+<div data-shopping-item-row="@item.ShoppingCartItemId" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+    <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
+    <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
+    <div class="media d-block d-sm-flex text-center text-sm-left">
+        @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
-                <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-                    <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
-                </a>
+        <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
+            <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+        </a>
             }
 
-            <div class="media-body pt-3">
-                <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                    <a href="@product.DetailPageUrl">@product.Name</a>
-                </h3>
-                <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
-                <div class="font-size-sm"><span class="text-muted mr-2">Price:</span>@product.Price.CurrencySign()</div>
-                <div class="font-size-sm"><span class="text-muted mr-2">CategoryName:</span>@product.CategoryName</div>
-            </div>
-        </div>
-        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-
-            <div class="form-group mb-2">
-                <label for="quantity2">Quantity</label>
-                <input class="form-control form-control-sm" name=@String.Format("quantity[{0}]", i)
-                       data-shopping-quantity-id="@item.ShoppingCartItemId"
-                       type="number" id="quantity2" value="@item.quantity">
-            </div>
-            <button data-shopping-button-price="@item.ShoppingCartItemId" class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="refresh-cw"></i>@AdminResource.Update</button>
-            <button data-shopping-item-remove="@item.ShoppingCartItemId" class="btn btn-outline-danger btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="trash-2"></i>@AdminResource.Remove</button>
+        <div class="media-body pt-3">
+            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                <a href="@product.DetailPageUrl">@product.Name</a>
+            </h3>
+            <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
+            <div class="font-size-sm"><span class="text-muted mr-2">Price:</span>@product.Price.CurrencySign()</div>
+            <div class="font-size-sm"><span class="text-muted mr-2">CategoryName:</span>@product.CategoryName</div>
         </div>
     </div>
+    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+
+        <div class="form-group mb-2">
+            <label for="quantity2">Quantity</label>
+            <input class="form-control form-control-sm" name=@String.Format("quantity[{0}]", i)
+                   data-shopping-quantity-id="@item.ShoppingCartItemId"
+                   type="number" id="quantity2" value="@item.quantity">
+        </div>
+        <button data-shopping-button-price="@item.ShoppingCartItemId" class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="refresh-cw"></i>@AdminResource.Update</button>
+        <button data-shopping-item-remove="@item.ShoppingCartItemId" class="btn btn-outline-danger btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="trash-2"></i>@AdminResource.Remove</button>
+    </div>
+</div>
 }
 @section Scripts{
 

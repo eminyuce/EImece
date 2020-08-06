@@ -85,7 +85,6 @@ columns.Add(c => c.Email)
 .Titled(AdminResource.Email)
     .Filterable(true);
 
-
 columns.Add(o => o.Name)
 .Encoded(false)
 .Titled(AdminResource.Name)
@@ -94,7 +93,6 @@ columns.Add(o => o.Name)
 columns.Add(c => c.GsmNumber);
 columns.Add(c => c.BirthDate).Titled(AdminResource.BirthDate)
 .Filterable(true);
-
 
 columns.Add(c => c.Gender)
 .Encoded(false)
@@ -110,8 +108,6 @@ columns.Add(o => o.CreatedDate)
    .Css("gridDateClass")
    .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
    .SortInitialDirection(GridSortDirection.Descending);
-
-
 
 }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
