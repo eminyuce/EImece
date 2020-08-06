@@ -50,17 +50,13 @@
 
                         @Html.Partial("_ProductCategoryTreeHeadLine", Model.ProductCategoryTree)
                         <!-- Price range-->
-                        @using (Html.BeginForm("Category", "ProductCategories", FormMethod.Get))
-                        {
-                            <button style="display:none;" id="FilterButtonPost" type="submit"></button>
-                            <input type="hidden" name="filtreler" id="filtreler" value="@Model.Filter" />
-                        }
+
                         <div class="column">
                             <button class="btn btn-outline-primary btn-sm" id="FilterButton">Filter</button>
                         </div>
                         @foreach (var filterType in Model.CategoryFilterTypes)
                         {
-                            @CreateFilterTypeList(filterType, Model.SelectedFilters);
+                            @CreateFilterTypeList(filterType, Model);
                         }
                     </div>
                 </div>
@@ -92,17 +88,14 @@
             <div class="row no-gutters">
                 @if (products.Any())
                 {
-
                     foreach (var p in products.GetPagingResult())
                     {
 
                         @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
                     }
-
                 }
                 else
                 {
-
                     <div class="container">Bu kategoriye eklenmiş bir ürün yoktur.</div>
                 }
             </div>
@@ -112,9 +105,10 @@
     </div>
 </div>
 
-@helper CreateFilterTypeList(CategoryFilterType categoryFilter, List<int> selectedFilters)
+@helper CreateFilterTypeList(CategoryFilterType categoryFilter, ProductCategoryViewModel productCategoryViewModel)
 {
 
+    var selectedFilters = productCategoryViewModel.SelectedFilters;
     <!-- Price filter    -->
     <div class="widget mb-4 pb-1">
         <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
@@ -126,31 +120,72 @@
                 <label class="custom-control-label" for="@filterId">@filter.name<span class="text-muted ml-1">(@filter.count)</span></label>
             </div>
         }
+
+        @if (categoryFilter.FilterTypeName.FilterType == FilterType.Price)
+        {
+            <div class="widget-content" style="">
+                <div class="range-filter">
+                    <div id="amount">
+                        <span style="margin-right: 5px;">Min:</span>
+                        <input type="number" step="1" min="0" maxlength="9" class="number" id="minPriceOrginal" name="MinFiyat" value="@productCategoryViewModel.MinPrice" title="Lütfen bir tam sayı giriniz">
+                        <span class="separate"> - </span>
+                        <span style="margin-right: 5px;">Max:</span>
+                        <input type="number" step="1" min="0" maxlength="9" class="number" id="maxPriceOrginal" name="MaxFiyat" value="@productCategoryViewModel.MaxPrice" title="Lütfen bir tam sayı giriniz">
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
 }
+<input type="hidden" id="urlFilter" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler" })" />
+<input type="hidden" id="urlFilterMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler", minPrice = "js-min", maxPrice = "js-max" })" />
+<input type="hidden" id="urlMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { minPrice = "js-min", maxPrice = "js-max" })" /> 
+       @section Scripts {
+       @Scripts.Render("~/bundles/jqueryval")
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        $(document).ready(function () {
-            function GetSelectedCheckBoxValuesArray() {
-                var stringArray = new Array();
-                var i = 0;
-                $("input[name=filters]").each(function () {
-                    var m = $(this).is(':checked');
-                    if (m) {
-                        stringArray[i++] = $(this).attr("value");
-                    }
-                });
-                return stringArray;
-            }
-            $("#FilterButton").click(function () {
-                console.log(GetSelectedCheckBoxValuesArray());
-                $("#filtreler").val(encodeURI(GetSelectedCheckBoxValuesArray().join("-")));
-                $("#FilterButtonPost").click();
-            });
+                    <script>
 
-        });
-    </script>
-}
+                        $(document).ready(function () {
+
+
+                            function GetSelectedCheckBoxValuesArray() {
+                                var stringArray = new Array();
+                                var i = 0;
+                                $("input[name=filters]").each(function () {
+                                    var m = $(this).is(':checked');
+                                    if (m) {
+                                        stringArray[i++] = $(this).attr("value");
+                                    }
+                                });
+                                return stringArray;
+                            }
+
+                            $("#FilterButton").click(function () {
+
+                                var minPriceOrginal = $("#minPriceOrginal").val();
+                                var maxPriceOrginal = $("#maxPriceOrginal").val();
+                                var hasPrice = (!isEmpty(minPriceOrginal) && parseInt(minPriceOrginal) > 0) || (!isEmpty(maxPriceOrginal) && parseInt(maxPriceOrginal) > 0);
+                                var strArrayFilter = GetSelectedCheckBoxValuesArray();
+                                
+                                var link = "";
+                                if (hasPrice && strArrayFilter.length === 0) {
+                                    link = $("#urlMinMaxPage").val() 
+                                        .replace("js-min", minPriceOrginal)
+                                        .replace("js-max", maxPriceOrginal);
+                                }
+                                else if (hasPrice && strArrayFilter.length > 0) {
+                                    link = $("#urlFilterMinMaxPage").val().replace("js-filtreler", encodeURIComponent(strArrayFilter.join("-")))
+                                        .replace("js-min", minPriceOrginal)
+                                        .replace("js-max", maxPriceOrginal);
+                                }
+                                else {
+                                    link = $("#urlFilter").val().replace("js-filtreler", encodeURIComponent(strArrayFilter.join("-")));
+                                }
+                                console.log(link);
+                                 window.location = link;
+                            });
+
+                        });
+                    </script>
+                }

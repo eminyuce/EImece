@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
@@ -23,7 +24,7 @@ namespace EImece.Controllers
 
         [Route("category/{id}")]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "")
+        public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice=0, int maxPrice=0)
         {
             try
             {
@@ -39,6 +40,8 @@ namespace EImece.Controllers
                 productCategory.Page = page;
                 productCategory.Filter = filtreler;
                 productCategory.Sorting = (SortingType)sorting;
+                productCategory.MinPrice = minPrice;
+                productCategory.MaxPrice = maxPrice;
                 productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
 
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();

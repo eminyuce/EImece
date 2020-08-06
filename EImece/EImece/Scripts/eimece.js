@@ -194,6 +194,11 @@ function createUUID() {
     });
 }
 
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+
+
 function randomString(length, chars) {
     var mask = '';
     if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

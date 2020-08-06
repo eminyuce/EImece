@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +21,22 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 List<Product> result = new List<Product>();
-                ICollection<Product> products = ProductCategory.Products;
+                List<Product> products = ProductCategory.Products.ToList();
+                if(MinPrice > 0 || MaxPrice > 0)
+                {
+                    if (MinPrice > 0 && MaxPrice > 0)
+                    {
+                        products = products.Where(r => r.GetProductPrice() >= MinPrice && r.GetProductPrice() < MaxPrice).ToList();
+                    }
+                    else if (MinPrice > 0)
+                    {
+                        products = products.Where(r => r.GetProductPrice() >= MinPrice).ToList();
+                    }
+                    else if (MaxPrice > 0)
+                    {
+                        products = products.Where(r => r.GetProductPrice() < MaxPrice).ToList();
+                    }
+                }
                 if (!string.IsNullOrEmpty(Filter))
                 {
                     var categoryFilterHelper = new CategoryFilterHelper(CategoryFilterTypes, SelectedFilters);
