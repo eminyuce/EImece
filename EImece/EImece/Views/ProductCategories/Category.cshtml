@@ -120,9 +120,9 @@
         <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
         @foreach (var filter in categoryFilter.CategoryFilters)
         {
-            var filterId = @String.Format("filter-{0}", filter.value);
+            var filterId = @String.Format("filter-{0}", filter.CategoryFilterId);
             <div class="custom-control custom-checkbox mb-1">
-                <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.value) ? "checked" : "") value="@filter.value" name="filters" id="@filterId">
+                <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
                 <label class="custom-control-label" for="@filterId">@filter.name<span class="text-muted ml-1">(@filter.count)</span></label>
             </div>
         }

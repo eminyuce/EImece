@@ -1,4 +1,6 @@
-﻿namespace EImece.Domain
+﻿using System.Collections.Immutable;
+
+namespace EImece.Domain
 {
     public static class Constants
     {
@@ -63,6 +65,7 @@
         public const string AdminCultureCookieName = "_adminCulture";
         public const string CultureCookieName = "_culture";
         public const string ShoppingCartKey = "ShoppingCartKey1";
+        public static ImmutableArray<string> NumbersArr = ImmutableArray.Create(new string[] { "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" });
 
         public static object DeleteButtonHtmlAttribute
         {

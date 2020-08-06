@@ -1,6 +1,8 @@
 ﻿using GenericRepository;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -17,5 +19,6 @@ namespace EImece.Domain.Entities
 
         public Tag Tag { get; set; }
         public Product Product { get; set; }
+
     }
 }

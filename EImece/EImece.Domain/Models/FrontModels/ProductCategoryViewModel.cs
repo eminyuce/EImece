@@ -71,8 +71,9 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var categoryFilterTypes = new List<CategoryFilterType>();
-                CategoryFilterHelper.addPriceFilter(categoryFilterTypes);
-                CategoryFilterHelper.addRatingFilter(categoryFilterTypes);
+                var categoryFilterHelper = new CategoryFilterHelper();
+                categoryFilterHelper.addPriceFilter(categoryFilterTypes);
+                categoryFilterHelper.addRatingFilter(categoryFilterTypes);
                 return categoryFilterTypes;
             }
         }

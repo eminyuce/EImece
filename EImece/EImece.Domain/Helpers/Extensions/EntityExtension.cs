@@ -143,11 +143,18 @@ namespace EImece.Domain.Helpers.Extensions
         public static double GetProductPrice(this Product product)
         {
             if (product == null)
-                return 0;
+                throw new ArgumentException();
 
-            ProductCategory productCategory = product.ProductCategory;
-            var categoryDiscount = productCategory.DiscountPercantage.HasValue ? product.ProductCategory.DiscountPercantage.Value : 0;
-            return product.Price - (product.Discount) - (product.Price * (categoryDiscount / 100));
+            if (product.HasDiscount)
+            {
+                ProductCategory productCategory = product.ProductCategory;
+                var categoryDiscount = productCategory.DiscountPercantage.HasValue ? product.ProductCategory.DiscountPercantage.Value : 0;
+                return product.Price - (product.Discount) - (product.Price * (categoryDiscount / 100));
+            }
+            else
+            {
+                return product.Price;
+            }
         }
 
         public static List<BaseEntity> DownCasting<T>(this List<T> items) where T : BaseEntity

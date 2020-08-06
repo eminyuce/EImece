@@ -13,6 +13,7 @@
 @using EImece.Domain;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
 
 @{
     var product = Model.Product;
@@ -28,10 +29,12 @@
     var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
     var relatedProducts = GeneralHelper.GetUnique(Model.RelatedProducts).OrderBy(x => Guid.NewGuid()).Take(4).ToList();
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
-    string[] numbersArr = new string[] { "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+
     Model.ProductComment.ProductId = product.Id;
     Model.ProductComment.SeoUrl = product.GetSeoUrl();
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var mainImageImgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
+    var mainImageThbImgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
 
 }
 
@@ -90,35 +93,35 @@
             <div class="product-gallery">
                 <span class="badge badge-danger">Sale -30%</span>
                 <ul class="product-thumbnails">
-                    @if (product.ImageState)
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgTag))
                     {
-                        var imgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
-                    <li class="active">
-                        <a href="#one">
-                            <img alt="Product thumb" src="@imgTag" />
-                        </a>
-                    </li>
+
+                        <li class="active">
+                            <a href="#one">
+                                <img alt="Product thumb" src="@mainImageThbImgTag" />
+                            </a>
+                        </li>
                     }
 
                     @for (int i = 0; i < productFiles.Count; i++)
                     {
                         var f = productFiles[i];
                         var imgTag = product.GetCroppedImageUrl(f.FileStorageId, 95, 105);
-                    <li class="">
-                        <a href="@string.Format("#{0}",numbersArr[i])">
-                            <img alt="Product thumb" src="@imgTag" />
-                        </a>
-                    </li>
+                        <li class="">
+                            <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img alt="Product thumb" src="@imgTag" />
+                            </a>
+                        </li>
                     }
                 </ul>
                 <div class="product-carousel owl-carousel">
 
-                    @if (product.ImageState)
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgTag))
                     {
-                        var imgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
-                    <a href="@imgTag" data-fancybox="prod-gallery" data-hash="one">
-                        <img src="@imgTag" alt="Product">
-                    </a>
+
+                        <a href="@mainImageImgTag" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@mainImageImgTag" alt="Product">
+                        </a>
 
                     }
 
@@ -126,11 +129,12 @@
                     {
                         var f = productFiles[i];
                         var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
-
-                    <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",numbersArr[i])">
-                        <img src="@imgTag" alt="Product">
-                    </a>
-
+                        if (!string.IsNullOrEmpty(imgTag))
+                        {
+                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img src="@imgTag" alt="Product">
+                            </a>
+                        }
                     }
                 </div>
             </div>
@@ -142,9 +146,9 @@
 
                     @if (product.HasDiscount)
                     {
-                    <del class="lead text-muted mr-2">
-                        @product.Price.CurrencySign()
-                    </del>
+                        <del class="lead text-muted mr-2">
+                            @product.Price.CurrencySign()
+                        </del>
                     }
 
                     <span class="text-primary">@product.GetProductPrice().CurrencySign()</span>
@@ -165,12 +169,12 @@
                         <div class="card-body">
                             @if (!String.IsNullOrEmpty(product.ProductCode))
                             {
-                            <span class="product-code">
-                                <i>
-                                    @Resource.ProductCodeNo @product.ProductCode
-                                </i>
-                            </span>
-                            <br />
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
                             }
                             @Html.Raw(product.ShortDescription)
                             <ul class="mb-0">
@@ -199,7 +203,7 @@
 
                                 foreach (var t in productTags)
                                 {
-                            <a class="tag-link mr-2 mb-2" href="@Url.Action("Tag", "products", new { id = t.GetSeoUrl() })">@t.Name</a>
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrl">@t.Name</a>
                                 }
                             }
                         </div>
@@ -239,19 +243,19 @@
             @if (Model.ProdSpecs.IsNotEmpty())
             {
 
-            <div class="col-md-6">
-                <h3 class="h5 mb-3">Specifications</h3>
-                @if (isUserAuthenticated)
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3">Specifications</h3>
+                    @if (isUserAuthenticated)
                     {
-                @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
+                        @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
                     }
-                <ul class="list-unstyled mb-4 pb-2">
-                    @foreach (var specs in Model.ProdSpecs)
+                    <ul class="list-unstyled mb-4 pb-2">
+                        @foreach (var specs in Model.ProdSpecs)
                         {
-                    <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @specs.value @specs.unit </li>
+                            <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @specs.value @specs.unit </li>
                         }
-                </ul>
-            </div>
+                    </ul>
+                </div>
 
             }
         </div>
@@ -275,10 +279,10 @@
                     </div>
                     @foreach (var item in Model.TotalRating)
                     {
-                    <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                        <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
+                        <div class="progress mb-3" style="height: 2px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     }
                     <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">Leave a review</a></div>
                 </div>
@@ -288,7 +292,7 @@
             <h2 class="h3">Latest reviews</h2>
             @foreach (var productComment in productComments)
             {
-            @createReviewItem(productComment)
+                @createReviewItem(productComment)
             }
         </div>
     </div>
@@ -297,32 +301,33 @@
 {
 
     <!-- Related products-->
-<div class="container pb-5">
-    <h2 class="h3 pb-4">@Resource.SimilairProducts </h2>
-    <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
-        @foreach (var product2 in relatedProducts)
+    <div class="container pb-5">
+        <h2 class="h3 pb-4">@Resource.SimilairProducts </h2>
+        <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
+            @foreach (var product2 in relatedProducts)
             {
-        <div class="product-card">
-            <div class="product-thumb box-shadow-0">
-                <a class="product-thumb-link" href="@product2.DetailPageRelativeUrl">
-                </a>
-                <img src="@product2.GetCroppedImageUrl(product2.MainImageId,300,0)" alt="Product">
-            </div>
-            <div class="product-card-body box-shadow-0">
-                <div class="d-flex flex-wrap justify-content-between pb-1">
-                    <a class="product-meta" href="@product2.DetailPageRelativeUrl">@product2.Name</a>
-                    <div class="star-rating"><span class="sr-label mr-1">4.7</span><i class="sr-star active" data-feather="star"></i></div>
+                var relatedProductImgTag = product2.GetCroppedImageUrl(product2.MainImageId, 300, 0);
+                <div class="product-card">
+                    <div class="product-thumb box-shadow-0">
+                        <a class="product-thumb-link" href="@product2.DetailPageRelativeUrl">
+                        </a>
+                        <img src="@relatedProductImgTag" alt="Product">
+                    </div>
+                    <div class="product-card-body box-shadow-0">
+                        <div class="d-flex flex-wrap justify-content-between pb-1">
+                            <a class="product-meta" href="@product2.DetailPageRelativeUrl">@product2.Name</a>
+                            <div class="star-rating"><span class="sr-label mr-1">4.7</span><i class="sr-star active" data-feather="star"></i></div>
+                        </div>
+                        <h3 class="product-card-title">
+                            <a href="@product2.DetailPageRelativeUrl">
+                                @product2.ShortDescription
+                            </a>
+                        </h3><span class="text-primary">@product2.GetProductPrice().CurrencySign()</span>
+                    </div>
                 </div>
-                <h3 class="product-card-title">
-                    <a href="@product2.DetailPageRelativeUrl">
-                        @product2.ShortDescription
-                    </a>
-                </h3><span class="text-primary">@product2.GetProductPrice().CurrencySign()</span>
-            </div>
-        </div>
             }
+        </div>
     </div>
-</div>
 
 }
 
@@ -332,24 +337,24 @@
 {
 
     <!-- Review-->
-<div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-    <div class="d-sm-flex align-items-center pb-2">
-        <h6 class="mb-0">@productComment.Subject</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-        <div class="star-rating">
-            @for (int i = 0; i < productComment.Rating; i++)
+    <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
+        <div class="d-sm-flex align-items-center pb-2">
+            <h6 class="mb-0">@productComment.Subject</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
+            <div class="star-rating">
+                @for (int i = 0; i < productComment.Rating; i++)
                 {
-            <i class="sr-star active" data-feather="star"></i>
+                    <i class="sr-star active" data-feather="star"></i>
                 }
+            </div>
+        </div>
+        <p>@productComment.Review</p>
+        <div class="media align-items-center mb-2">
+            <div class="media-body">
+                <h6 class="font-size-sm mb-0">@productComment.Name</h6>
+                <span class="d-block font-size-sm text-muted">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
+            </div>
         </div>
     </div>
-    <p>@productComment.Review</p>
-    <div class="media align-items-center mb-2">
-        <div class="media-body">
-            <h6 class="font-size-sm mb-0">@productComment.Name</h6>
-            <span class="d-block font-size-sm text-muted">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
-        </div>
-    </div>
-</div>
 
 }
 
