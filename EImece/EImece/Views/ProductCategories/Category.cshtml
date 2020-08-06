@@ -16,6 +16,8 @@
     products.RouteId = category.Id;
     products.Filter = Model.Filter;
     products.Sorting = (int)Model.Sorting;
+    products.MinPrice = Model.MinPrice;
+    products.MaxPrice = Model.MaxPrice;
     var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
 
     ViewBag.Title = category.GetSeoTitle();
@@ -69,17 +71,17 @@
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
                         <div class="button-group tabs">
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,Model)"
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
-                               @String.Format("{0}",Model.Sorting.Equals(SortingType.Newest)?"active":"")
+                               @String.Format("{0}",products.Sorting.Equals(SortingType.Newest)?"active":"")
                                ">En yeniler</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,Model)"
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
-                               @String.Format("{0}",Model.Sorting.Equals(SortingType.LowHighPrice)?"active":"")
+                               @String.Format("{0}",products.Sorting.Equals(SortingType.LowHighPrice)?"active":"")
                                ">En düşük fiyat</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,Model)"
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
                                rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
-                               @String.Format("{0}",Model.Sorting.Equals(SortingType.HighLowPrice)?"active":"")">En yüksek fiyat</a>
+                               @String.Format("{0}",products.Sorting.Equals(SortingType.HighLowPrice)?"active":"")">En yüksek fiyat</a>
                         </div>
                     </div>
                 </div>

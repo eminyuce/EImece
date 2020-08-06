@@ -42,7 +42,7 @@ namespace EImece.Controllers
                 productCategory.Sorting = (SortingType)sorting;
                 productCategory.MinPrice = minPrice;
                 productCategory.MaxPrice = maxPrice;
-                productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
+                productCategory.RecordPerPage = 1;
 
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
                 return View(productCategory);

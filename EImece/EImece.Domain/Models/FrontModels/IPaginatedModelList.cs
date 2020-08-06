@@ -11,5 +11,8 @@
         string Filter { set; get; }
         int RouteId { set; get; }
         int Sorting { set; get; }
+        int MinPrice { set; get; }
+        int MaxPrice { set; get; }
+
     }
 }

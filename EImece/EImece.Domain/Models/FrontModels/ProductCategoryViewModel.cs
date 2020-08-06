@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Routing;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -92,6 +93,29 @@ namespace EImece.Domain.Models.FrontModels
                 categoryFilterHelper.addRatingFilter(categoryFilterTypes);
                 return categoryFilterTypes;
             }
+        }
+
+        public static RouteValueDictionary GetRouteObjectsForPaging(IPaginatedModelList pagingItems, int page)
+        {
+            var routeValues = GetRouteValueDictionary(pagingItems);
+            routeValues.Add("page", page);
+            return routeValues;
+        }
+        public static RouteValueDictionary GetRouteValueDictionary(IPaginatedModelList pagingItems)
+        {
+            var routeValues = new RouteValueDictionary();
+            routeValues.Add("id", pagingItems.RouteId);
+            routeValues.Add("sorting", pagingItems.Sorting);
+            routeValues.Add("filtreler", pagingItems.Filter);
+            if (pagingItems.MinPrice > 0)
+            {
+                routeValues.Add("minPrice", pagingItems.MinPrice);
+            }
+            if (pagingItems.MaxPrice > 0)
+            {
+                routeValues.Add("maxPrice", pagingItems.MaxPrice);
+            }
+            return routeValues;
         }
     }
 }

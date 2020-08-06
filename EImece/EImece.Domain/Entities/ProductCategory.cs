@@ -53,24 +53,19 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public string ProductCategoryListPageUrl(SortingType sorting, ItemListing itemListing)
+        public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
+            var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
             var requestContext = HttpContext.Current.Request.RequestContext;
             var sortingInt = (int)sorting;
-            if (string.IsNullOrEmpty(itemListing.Filter))
+            routeValues.Remove("sorting");
+            routeValues.Add("sorting", sortingInt);
+            var urlHelp = new UrlHelper(requestContext);
+            if (string.IsNullOrEmpty(paginatedModelList.Filter))
             {
-                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl(), sorting = sortingInt });
+                routeValues.Remove("filtreler");
             }
-            else
-            {
-                return new UrlHelper(requestContext).Action("Category", "ProductCategories",
-                    new
-                    {
-                        id = this.GetSeoUrl(),
-                        sorting = sortingInt,
-                        filtreler = itemListing.Filter
-                    });
-            }
+            return urlHelp.Action("Category", "ProductCategories", routeValues);
         }
 
         public Template Template { get; set; }

@@ -13,6 +13,8 @@ namespace EImece.Domain.Models.FrontModels
         public int RouteId { set; get; }
         public int Sorting { set; get; }
         public string Filter { set; get; }
+        public int MinPrice { set; get; }
+        public int MaxPrice { set; get; }
 
         public bool HasPreviousPage
         {
