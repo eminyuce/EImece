@@ -36,7 +36,7 @@ namespace EImece.Domain.Helpers
                         switch (categoryFilter.FilterTypeName.FilterType)
                         {
                             case FilterType.Price:
-                                filteredProducts.AddRange(products.Where(r => r.Price >= filterProperty.minPrice && r.Price < filterProperty.maxPrice).ToList());
+                                filteredProducts.AddRange(products.Where(r => r.PriceWithDiscount >= filterProperty.minPrice && r.PriceWithDiscount < filterProperty.maxPrice).ToList());
                                 hasPriceFilter = true;
                                 break;
 

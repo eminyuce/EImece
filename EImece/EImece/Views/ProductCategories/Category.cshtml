@@ -142,52 +142,51 @@
 }
 <input type="hidden" id="urlFilter" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler" })" />
 <input type="hidden" id="urlFilterMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler", minPrice = "js-min", maxPrice = "js-max" })" />
-<input type="hidden" id="urlMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { minPrice = "js-min", maxPrice = "js-max" })" /> 
-       @section Scripts {
-       @Scripts.Render("~/bundles/jqueryval")
+<input type="hidden" id="urlMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { minPrice = "js-min", maxPrice = "js-max" })" />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-                    <script>
+    <script>
 
-                        $(document).ready(function () {
+        $(document).ready(function () {
 
+            function GetSelectedCheckBoxValuesArray() {
+                var stringArray = new Array();
+                var i = 0;
+                $("input[name=filters]").each(function () {
+                    var m = $(this).is(':checked');
+                    if (m) {
+                        stringArray[i++] = $(this).attr("value");
+                    }
+                });
+                return stringArray;
+            }
 
-                            function GetSelectedCheckBoxValuesArray() {
-                                var stringArray = new Array();
-                                var i = 0;
-                                $("input[name=filters]").each(function () {
-                                    var m = $(this).is(':checked');
-                                    if (m) {
-                                        stringArray[i++] = $(this).attr("value");
-                                    }
-                                });
-                                return stringArray;
-                            }
+            $("#FilterButton").click(function () {
 
-                            $("#FilterButton").click(function () {
+                var minPriceOrginal = $("#minPriceOrginal").val();
+                var maxPriceOrginal = $("#maxPriceOrginal").val();
+                var hasPrice = (!isEmpty(minPriceOrginal) && parseInt(minPriceOrginal) > 0) || (!isEmpty(maxPriceOrginal) && parseInt(maxPriceOrginal) > 0);
+                var strArrayFilter = GetSelectedCheckBoxValuesArray();
 
-                                var minPriceOrginal = $("#minPriceOrginal").val();
-                                var maxPriceOrginal = $("#maxPriceOrginal").val();
-                                var hasPrice = (!isEmpty(minPriceOrginal) && parseInt(minPriceOrginal) > 0) || (!isEmpty(maxPriceOrginal) && parseInt(maxPriceOrginal) > 0);
-                                var strArrayFilter = GetSelectedCheckBoxValuesArray();
-                                
-                                var link = "";
-                                if (hasPrice && strArrayFilter.length === 0) {
-                                    link = $("#urlMinMaxPage").val() 
-                                        .replace("js-min", minPriceOrginal)
-                                        .replace("js-max", maxPriceOrginal);
-                                }
-                                else if (hasPrice && strArrayFilter.length > 0) {
-                                    link = $("#urlFilterMinMaxPage").val().replace("js-filtreler", encodeURIComponent(strArrayFilter.join("-")))
-                                        .replace("js-min", minPriceOrginal)
-                                        .replace("js-max", maxPriceOrginal);
-                                }
-                                else {
-                                    link = $("#urlFilter").val().replace("js-filtreler", encodeURIComponent(strArrayFilter.join("-")));
-                                }
-                                console.log(link);
-                                 window.location = link;
-                            });
-
-                        });
-                    </script>
+                var link = "";
+                if (hasPrice && strArrayFilter.length === 0) {
+                    link = $("#urlMinMaxPage").val()
+                        .replace("js-min", minPriceOrginal)
+                        .replace("js-max", maxPriceOrginal);
                 }
+                else if (hasPrice && strArrayFilter.length > 0) {
+                    link = $("#urlFilterMinMaxPage").val().replace("js-filtreler", encodeURIComponent(strArrayFilter.join("-")))
+                        .replace("js-min", minPriceOrginal)
+                        .replace("js-max", maxPriceOrginal);
+                }
+                else {
+                    link = $("#urlFilter").val().replace("js-filtreler", encodeURIComponent(strArrayFilter.join("-")));
+                }
+                console.log(link);
+                window.location = link;
+            });
+
+        });
+    </script>
+}

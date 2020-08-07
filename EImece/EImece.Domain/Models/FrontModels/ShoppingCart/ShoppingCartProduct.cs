@@ -41,7 +41,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         {
             this.Id = product.Id;
             this.Name = product.Name;
-            this.Price = product.HasDiscount ? product.GetProductPrice() : product.Price;
+            this.Price = product.HasDiscount ? product.PriceWithDiscount : product.Price;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory.Name;
             this.DetailPageUrl = product.DetailPageRelativeUrl;

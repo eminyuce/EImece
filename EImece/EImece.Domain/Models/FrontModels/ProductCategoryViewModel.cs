@@ -27,15 +27,15 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     if (MinPrice > 0 && MaxPrice > 0)
                     {
-                        products = products.Where(r => r.GetProductPrice() >= MinPrice && r.GetProductPrice() < MaxPrice).ToList();
+                        products = products.Where(r => r.PriceWithDiscount >= MinPrice && r.PriceWithDiscount < MaxPrice).ToList();
                     }
                     else if (MinPrice > 0)
                     {
-                        products = products.Where(r => r.GetProductPrice() >= MinPrice).ToList();
+                        products = products.Where(r => r.PriceWithDiscount >= MinPrice).ToList();
                     }
                     else if (MaxPrice > 0)
                     {
-                        products = products.Where(r => r.GetProductPrice() < MaxPrice).ToList();
+                        products = products.Where(r => r.PriceWithDiscount < MaxPrice).ToList();
                     }
                 }
                 if (!string.IsNullOrEmpty(Filter))

@@ -107,5 +107,23 @@ namespace EImece.Domain.Entities
         {
             return base.GetHashCode();
         }
+
+        [NotMapped]
+        public double PriceWithDiscount
+        {
+            get
+            {
+                if (HasDiscount)
+                {
+                    ProductCategory productCategory = ProductCategory;
+                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? ProductCategory.DiscountPercantage.Value : 0;
+                    return Price - (Discount) - (Price * (categoryDiscount / 100));
+                }
+                else
+                {
+                    return Price;
+                }
+            }
+        }
     }
 }
