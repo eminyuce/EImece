@@ -1,7 +1,7 @@
 ﻿using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 
-namespace EImece.Domain.Models
+namespace EImece.Domain.Models.FrontModels
 {
     public class CategoryFilterType
     {

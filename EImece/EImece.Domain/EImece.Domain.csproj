@@ -357,7 +357,7 @@
     <Compile Include="Models\AdminModels\RazorError.cs" />
     <Compile Include="Models\AdminModels\RazorRenderResult.cs" />
     <Compile Include="Models\AdminModels\SettingModel.cs" />
-    <Compile Include="Models\CategoryFilterType.cs" />
+    <Compile Include="Models\FrontModels\CategoryFilterType.cs" />
     <Compile Include="Models\Enums\GenderType.cs" />
     <Compile Include="Models\Enums\AddressType.cs" />
     <Compile Include="Models\Enums\BrowserType.cs" />
