@@ -151,7 +151,7 @@
                         </del>
                     }
 
-                    <span class="text-primary">@product.GetProductPrice().CurrencySign()</span>
+                    <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
                 </h2>
                 <div class="d-flex align-items-center pt-2">
                     <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
