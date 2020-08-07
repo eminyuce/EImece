@@ -5,78 +5,60 @@
     ViewBag.Title = "Log in";
 }
 
-<!-- Titlebar
-================================================== -->
-<section class="titlebar">
-    <div class="container">
-        <div class="sixteen columns">
-            <h2>@AdminResource.CustomerLoginPage</h2>
-        </div>
-    </div>
-</section>
+ 
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4">
+    <div class="row pt-5">
+        <div class="col-md-3 pt-sm-3">
+            </div>
+            <div class="col-md-6 pt-sm-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="h4 mb-1">@AdminResource.CustomerLoginPage</h2>
+                        <div class="d-sm-flex align-items-center py-3">
+                            @Html.ActionLink(Resource.CustomerRegister, "Register")
+                        </div>
+                        <hr>
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
 
-<!-- Content
-================================================== -->
-<!-- Container -->
-<div class="container">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend"><span class="input-group-text" id="signin-email-icon"><i data-feather="mail"></i></span></div>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @AdminResource.Email, @aria_label = "Email", @aria_describedby = "signin-email-icon" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "invalid-feedback" })
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend"><span class="input-group-text" id="signin-password-icon"><i data-feather="lock"></i></span></div>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @AdminResource.Password, @aria_label = "Password", @aria_describedby = "signin-password-icon" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+                            </div>
 
-    <div class="six columns centered">
+                            <div class="d-flex flex-wrap justify-content-between">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })     @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label" })
+                                </div>
+                                @Html.ActionLink(@Resource.LostYourPassword, "ForgotPassword", new { @class = "nav-link-inline font-size-sm" })
+                            </div>
 
-        <div class="row">
-            <!-- Login -->
-            <div class="col-lg-4">
+                            <div class="input-group form-group">
+                                @Html.LabelFor(model => model.Captcha)
+                                <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
+                                @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Security Question Answer...", @autocomplete = "false" })
+                                @Html.ValidationMessageFor(model => model.Captcha)
+                            </div>
 
-                <p class="lost_password">
-                    @Html.ActionLink(@Resource.LostYourPassword, "ForgotPassword")
-                </p>
-                <p>
-                    @Html.ActionLink(Resource.CustomerRegister, "Register")
-                </p>
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
-                {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-                <div class="form-group">
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text" id="signin-email-icon"><i data-feather="mail"></i></span></div>
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @AdminResource.Email, @aria_label = "Email", @aria_describedby = "signin-email-icon" })
+                            <hr class="mt-4">
+                            <div class="text-right pt-4">
+                                <input type="submit" value="@AdminResource.Login" class="btn btn-primary" />
+                            </div>
+                        }
                     </div>
                 </div>
-
-                <div class="form-group">
-                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text" id="signin-password-icon"><i data-feather="lock"></i></span></div>
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @AdminResource.Password, @aria_label = "Password", @aria_describedby = "signin-password-icon" })
-                    </div>
-                </div>
-
-                <p class="form-row">
-                    <label for="rememberme" class="rememberme">
-                        @Html.CheckBoxFor(m => m.RememberMe)     @Html.LabelFor(model => model.RememberMe)
-                    </label>
-                </p>
-                <p class="form-row form-row-wide">
-                    @Html.LabelFor(model => model.Captcha)
-                    <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
-                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Security Question Answer...", @autocomplete = "false" })
-                    @Html.ValidationMessageFor(model => model.Captcha)
-                </p>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="@AdminResource.Login" class="btn btn-default" />
-                    </div>
-                </div>
-
-                }
             </div>
         </div>
     </div>
-</div>
-
-<div class="margin-top-50"></div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

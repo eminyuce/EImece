@@ -882,4 +882,7 @@
   <data name="SignInOrUp" xml:space="preserve">
     <value>Giriş Yap</value>
   </data>
+  <data name="ContinueShopping" xml:space="preserve">
+    <value>Alışverişe devam et</value>
+  </data>
 </root>

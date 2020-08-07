@@ -385,6 +385,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alışverişe devam et.
+        /// </summary>
+        public static string ContinueShopping {
+            get {
+                return ResourceManager.GetString("ContinueShopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ülke.
         /// </summary>
         public static string Country {
