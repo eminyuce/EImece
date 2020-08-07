@@ -1,14 +1,5 @@
-﻿using Resources;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
-using System.Web.Mvc;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Models.FrontModels;
+﻿using EImece.Domain.Helpers.Extensions;
 using Resources;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

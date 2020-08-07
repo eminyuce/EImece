@@ -13,6 +13,5 @@
         int Sorting { set; get; }
         int MinPrice { set; get; }
         int MaxPrice { set; get; }
-
     }
 }

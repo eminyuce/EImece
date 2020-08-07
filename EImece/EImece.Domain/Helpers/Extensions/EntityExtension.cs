@@ -140,8 +140,6 @@ namespace EImece.Domain.Helpers.Extensions
             return si;
         }
 
-        
-
         public static List<BaseEntity> DownCasting<T>(this List<T> items) where T : BaseEntity
         {
             var baseList = new List<BaseEntity>();

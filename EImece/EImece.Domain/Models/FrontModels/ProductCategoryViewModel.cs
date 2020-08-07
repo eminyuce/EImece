@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
@@ -23,7 +22,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 List<Product> result = new List<Product>();
                 List<Product> products = ProductCategory.Products.ToList();
-                if(MinPrice > 0 || MaxPrice > 0)
+                if (MinPrice > 0 || MaxPrice > 0)
                 {
                     if (MinPrice > 0 && MaxPrice > 0)
                     {
@@ -101,6 +100,7 @@ namespace EImece.Domain.Models.FrontModels
             routeValues.Add("page", page);
             return routeValues;
         }
+
         public static RouteValueDictionary GetRouteValueDictionary(IPaginatedModelList pagingItems)
         {
             var routeValues = new RouteValueDictionary();

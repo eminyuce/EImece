@@ -1,5 +1,4 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Models;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,6 @@ namespace EImece.Domain.Helpers
 
         public CategoryFilterHelper()
         {
-
         }
 
         public CategoryFilterHelper(List<CategoryFilterType> categoryFilterTypes, List<int> selectedFilters)

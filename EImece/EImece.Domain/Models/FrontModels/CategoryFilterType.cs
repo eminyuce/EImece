@@ -1,5 +1,4 @@
-﻿using EImece.Domain.Models.FrontModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -8,8 +7,8 @@ namespace EImece.Domain.Models.FrontModels
         public List<CategoryFilter> CategoryFilters = new List<CategoryFilter>();
         public FilterTypeName FilterTypeName { get; set; }
 
-        public int ? MinPrice { get; set; }
-        public int ? MaxPrice { get; set; }
+        public int? MinPrice { get; set; }
+        public int? MaxPrice { get; set; }
     }
 
     public class FilterTypeName
