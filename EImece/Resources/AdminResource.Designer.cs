@@ -1465,7 +1465,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cep Telefonu Numaranız.
+        ///   Looks up a localized string similar to Cep Tel.
         /// </summary>
         public static string PhoneNumber {
             get {

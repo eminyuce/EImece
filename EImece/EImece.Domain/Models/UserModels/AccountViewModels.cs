@@ -87,10 +87,10 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }
 
-        //   [DataType(DataType.Password)]
-        //    [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
-        //    [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
-        //  public string ConfirmPassword { get; set; }
+          [DataType(DataType.Password)]
+            [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
+           [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
+         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
@@ -107,8 +107,9 @@ namespace EImece.Models
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
-        public DateTime BirthDate { get; set; }
+        public DateTime ? BirthDate { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsPermissionGrantedDescription))]
         public bool IsPermissionGranted { get; set; }
         //[Required]
         //[Display(Name = "User Name")]

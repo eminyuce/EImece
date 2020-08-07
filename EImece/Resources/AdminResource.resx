@@ -523,7 +523,7 @@
     <value>Emin misiniz?</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
-    <value>Cep Telefonu Numaranız</value>
+    <value>Cep Tel</value>
   </data>
   <data name="TagCategoryName" xml:space="preserve">
     <value>Etiket Kategori İsim</value>

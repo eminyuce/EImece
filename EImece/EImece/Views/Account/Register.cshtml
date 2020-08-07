@@ -3,98 +3,81 @@
 @{
     ViewBag.Title = "Register";
 }
-
-<!-- Titlebar
-================================================== -->
-<section class="titlebar">
-    <div class="container">
-        <div class="sixteen columns">
-            <h2>@Resource.CustomerRegister</h2>
+<div class="container pb-5 mb-sm-4">
+    <div class="row pt-5">
+        <div class="col-md-2 pt-sm-3">
         </div>
-    </div>
-</section>
-
-<!-- Content
-================================================== -->
-<!-- Container -->
-<div class="container">
-
-    <div class="six columns centered">
-
-        <div class="tabs-container">
-            <!-- Login -->
-            <div class="tab-content">
-
-                @Html.ActionLink(Resource.AlreadyMembered, "Login", "Account")
-
+            <div class="col-md-8 pt-5 pt-sm-3">
+                <h2 class="h4 mb-1">@Resource.CustomerRegister</h2>
+                <p class="text-muted mb-4">Kayıt işlemi bir dakikadan az sürer ancak siparişleriniz üzerinde tam kontrol sahibi olmanızı sağlar.</p>
+                <div class="d-sm-flex align-items-center py-3">
+                    @Html.ActionLink(Resource.AlreadyMembered, "Login", "Account")
+                </div>
                 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
 
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FirstName)
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "invalid-feedback" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "invalid-feedback" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "invalid-feedback" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "invalid-feedback" })
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="custom-control custom-checkbox">
+                                @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "custom-control-input" })
+                                @Html.LabelFor(m => m.IsPermissionGranted, new { @class = "custom-control-label" })
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.BirthDate, new { @id = "datepicker", @class = "form-control" })
-                        </div>
-                    </div>
-                    @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "form-control" })
-                    <span>
-                        @AdminResource.IsPermissionGrantedDescription
-                    </span>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" class="btn btn-default" value="@Resource.CustomerRegister" />
-                        </div>
+                    <div class="text-right">
+                        <input type="submit" value="@Resource.CustomerRegister" class="btn btn-primary" />
                     </div>
                 }
             </div>
-        </div>
     </div>
 </div>
-
-<div class="margin-top-50"></div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
-    <script>
-        $(function () {
-            $("#datepicker").datepicker({
-                minDate: -20,
-                maxDate: "+1M +15D",
-                dateFormat: 'dd.mm.yy'
-            });
-        });
-    </script>
+
 }
