@@ -71,17 +71,13 @@
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
                         <div class="button-group tabs">
+                          
                             <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
-                               rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
-                               @String.Format("{0}",products.Sorting.Equals(SortingType.Newest)?"active":"")
-                               ">En yeniler</a>
+                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">En yeniler</a>
                             <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
-                               rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
-                               @String.Format("{0}",products.Sorting.Equals(SortingType.LowHighPrice)?"active":"")
-                               ">En düşük fiyat</a>
+                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">En düşük fiyat</a>
                             <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
-                               rel="nofollow" class="btn btn-pill btn-secondary mb-2 mr-1
-                               @String.Format("{0}",products.Sorting.Equals(SortingType.HighLowPrice)?"active":"")">En yüksek fiyat</a>
+                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">En yüksek fiyat</a>
                         </div>
                     </div>
                 </div>
@@ -106,6 +102,15 @@
         </div>
     </div>
 </div>
+@functions {
+
+    public string activeButtonClass(SortingType selected, IPaginatedModelList products)
+    {
+        return String.Format("{0}", products.Sorting == (int)selected ?  "btn btn-pill btn-secondary mb-2 mr-1"  : "btn btn-pill btn-outline-secondary mb-2 mr-1");
+    }
+}
+
+
 
 @helper CreateFilterTypeList(CategoryFilterType categoryFilter, ProductCategoryViewModel productCategoryViewModel)
 {
