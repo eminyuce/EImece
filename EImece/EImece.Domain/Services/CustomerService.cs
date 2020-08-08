@@ -38,7 +38,14 @@ namespace EImece.Domain.Services
             item.IdentityNumber = "";
             item.Ip = GeneralHelper.GetIpAddress();
             item.IsActive = true;
-            item.BirthDate = model.BirthDate;
+            if (model.BirthDate.HasValue)
+            {
+                item.BirthDate = model.BirthDate;
+            }
+            else
+            {
+                item.BirthDate = (DateTime?)null;
+            }
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
             item.Position = 1;

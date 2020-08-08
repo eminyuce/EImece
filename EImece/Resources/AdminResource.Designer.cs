@@ -1168,7 +1168,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zorunlu Alan. Lütfen Boş bırakmayınız..
+        ///   Looks up a localized string similar to Zorunlu Alan {0}. Lütfen Boş bırakmayınız..
         /// </summary>
         public static string MandatoryField {
             get {
@@ -1438,7 +1438,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to En az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli.
+        ///   Looks up a localized string similar to Şifre en az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli.
         /// </summary>
         public static string PasswordInfoMessage {
             get {

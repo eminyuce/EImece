@@ -40,7 +40,6 @@ namespace EImece.Domain.Entities
         public String UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
         public DateTime? BirthDate { get; set; }

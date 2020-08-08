@@ -730,7 +730,7 @@
     <value>İstek Geçerli Değil</value>
   </data>
   <data name="PasswordInfoMessage" xml:space="preserve">
-    <value>En az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli</value>
+    <value>Şifre en az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli</value>
   </data>
   <data name="AdminPanelWelcome" xml:space="preserve">
     <value>Yönetici Paneline Hoş Geldiniz</value>
@@ -742,7 +742,7 @@
     <value>Ürün Kodu Zorunludur.</value>
   </data>
   <data name="MandatoryField" xml:space="preserve">
-    <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
+    <value>Zorunlu Alan {0}. Lütfen Boş bırakmayınız.</value>
   </data>
   <data name="MoveProductsInTrees" xml:space="preserve">
     <value>Ürünleri Tasi</value>

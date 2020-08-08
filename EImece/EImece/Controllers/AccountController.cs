@@ -316,6 +316,10 @@ namespace EImece.Controllers
                 }
                 AddErrors(result);
             }
+            else
+            {
+                ModelState.AddModelError("", AdminResource.RequestIsNotValid);
+            }
 
             // If we got this far, something failed, redisplay form
             return View(model);
