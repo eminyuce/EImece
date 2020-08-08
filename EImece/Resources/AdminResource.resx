@@ -885,4 +885,7 @@
   <data name="ContinueShopping" xml:space="preserve">
     <value>Alışverişe devam et</value>
   </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Cevap</value>
+  </data>
 </root>
