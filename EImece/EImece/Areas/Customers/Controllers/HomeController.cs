@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -8,17 +9,24 @@ using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
+using NLog;
 using Resources;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Areas.Customers.Controllers
 {
     [AuthorizeRoles(Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
+
+        private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
+
+
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
@@ -32,12 +40,18 @@ namespace EImece.Areas.Customers.Controllers
         public IFaqService FaqService { get; set; }
 
         [Inject]
+        public ISubscriberService SubsciberService { get; set; }
+
+        [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
 
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
+
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
 
         public HomeController(ApplicationUserManager userManager)
         {
@@ -82,6 +96,20 @@ namespace EImece.Areas.Customers.Controllers
             var faqs = FaqService.GetActiveBaseEntities(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs=faqs });
         }
+
+        public ActionResult SendSellerMessage(ContactUsFormViewModel contact)
+        {
+            if (contact == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            // Sending email.
+            contact.ItemType = EImeceItemType.Ticket;
+            RazorEngineHelper.SendMessageToSeller(contact);
+            return RedirectToAction("SendMessageToSeller");
+        }
+
+      
 
         public ActionResult CustomerOrders(string search = "")
         {

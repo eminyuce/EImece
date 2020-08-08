@@ -17,6 +17,14 @@ namespace EImece.Domain.Helpers.EmailHelper
 {
     public class RazorEngineHelper
     {
+        private const string WebSiteCompanyEmailAddress = "WebSiteCompanyEmailAddress";
+        private const string OrderConfirmationEmailMailTemplate = "OrderConfirmationEmail";
+        private const string ConfirmYourAccountMailTemplate = "ConfirmYourAccount";
+        private const string ForgotPasswordMailTemplate = "ForgotPassword";
+        private const string ContactUsAboutProductInfoMailTemplate = "ContactUsAboutProductInfo";
+        private const string SendMessageToSellerMailTemplate = "SendMessageToSeller";
+        private const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
+
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
@@ -34,7 +42,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
         {
-            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ConfirmYourAccount");
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(ConfirmYourAccountMailTemplate);
             if (emailTemplate == null)
             {
                 throw new ArgumentException("ConfirmYourAccount email template does not exists");
@@ -60,7 +68,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl)
         {
-            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ForgotPassword");
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(ForgotPasswordMailTemplate);
             if (emailTemplate == null)
             {
                 return new Tuple<string, string>("", "");
@@ -87,7 +95,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public Tuple<string, string> OrderConfirmationEmail(ShoppingCartSession shoppingCart)
         {
-            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("OrderConfirmationEmail");
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(OrderConfirmationEmailMailTemplate);
             if (emailTemplate == null)
             {
                 return new Tuple<string, string>("", "");
@@ -112,15 +120,40 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
+        public void SendMessageToSeller(ContactUsFormViewModel contact)
+        {
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(SendMessageToSellerMailTemplate);
+            if(emailTemplate == null)
+            {
+                throw new ArgumentException("NO email template is defined for " + SendMessageToSellerMailTemplate);
+            }
+            string groupName = string.Format("{0} | {1} | {2}", "SendMessageToSeller", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+
+            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
+            var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(RazorEngineHelper.WebSiteCompanyEmailAddress);
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
+            string body = Engine.Razor.RunCompile(template, subject+ "" + GeneralHelper.GetHashString(template), null, contact);
+            EmailSender.SendEmail(SettingService.GetEmailAccount(),
+                subject,
+                body,
+                webSiteCompanyEmailAddress,
+                companyname,
+                webSiteCompanyEmailAddress,
+                companyname);
+        }
+
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
-            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName("ContactUsAboutProductInfo");
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(ContactUsAboutProductInfoMailTemplate);
             string groupName = string.Format("{0} | {1} | {2}", "ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
-            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey("WebSiteCompanyPhoneAndLocation");
-            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey("WebSiteCompanyEmailAddress");
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(RazorEngineHelper.WebSiteCompanyEmailAddress);
 
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
