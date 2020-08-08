@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
             var result = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(result);
         }
@@ -51,6 +51,10 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveOrEdit(Faq faq, String saveButton = null)
         {
+            if (faq == null)
+            {
+                throw new ArgumentException("faq cannot be empty");
+            }
             try
             {
                 if (ModelState.IsValid)
@@ -124,7 +128,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
             var Faqs = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
             var result = from r in Faqs
                          select new

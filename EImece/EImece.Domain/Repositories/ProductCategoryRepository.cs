@@ -80,10 +80,7 @@ namespace EImece.Domain.Repositories
 
             foreach (var m in productCategories)
             {
-                if (productCategories.Any(r => r.ParentId == m.Id))
-                {
-                }
-                else
+                if (!productCategories.Any(r => r.ParentId == m.Id))
                 {
                     result.Add(m);
                 }

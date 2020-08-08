@@ -16,7 +16,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<List, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<List, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = ListService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(tags);
         }
@@ -58,6 +58,10 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveOrEdit(List List, string itemText)
         {
+            if(List== null)
+            {
+                throw new ArgumentException("list cannot be empty");
+            }
             try
             {
                 if (ModelState.IsValid)
@@ -66,11 +70,7 @@ namespace EImece.Areas.Admin.Controllers
                     ListService.SaveOrEditEntity(List);
                     ListItemService.SaveListItem(List.Id, List.SetListItems(itemText));
 
-                    int contentId = List.Id;
                     return RedirectToAction("Index");
-                }
-                else
-                {
                 }
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(List);
         }
 

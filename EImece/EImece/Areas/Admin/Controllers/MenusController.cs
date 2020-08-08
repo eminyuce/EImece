@@ -25,7 +25,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
             var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
             ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
@@ -189,7 +189,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<Menu, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
             var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in menus

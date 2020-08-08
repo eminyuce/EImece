@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
             var result = MailTemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(result);
         }
@@ -124,7 +124,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
             var mailTemplates = MailTemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
             var result = from r in mailTemplates
                          select new

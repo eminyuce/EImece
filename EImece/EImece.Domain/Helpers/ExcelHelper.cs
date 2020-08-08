@@ -122,7 +122,8 @@ namespace EImece.Domain.Helpers
                                                                         if (continuar && cell2.CellFormula == "FALSE()") { cellType2[i] = "System.Boolean"; continuar = false; }
                                                                         if (continuar) { cellType2[i] = "System.Double"; continuar = false; }
                                                                     }
-                                                                    catch { }
+                                                                    catch { 
+                                                                    }
                                                                 }
                                                                 break;
                                                         }

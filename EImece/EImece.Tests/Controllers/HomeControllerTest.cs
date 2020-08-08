@@ -225,7 +225,7 @@ namespace EImece.Tests.Controllers
             String search = "";
             var db = new EImeceContext(ConnectionString);
             var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db));
-            Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             foreach (var item in productCategories)
             {

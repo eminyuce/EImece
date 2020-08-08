@@ -19,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/MainPageImages
         public ActionResult Index(String search = "")
         {
-            Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.Contains(search);
             var mainPageImages = MainPageImageService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(mainPageImages);
         }

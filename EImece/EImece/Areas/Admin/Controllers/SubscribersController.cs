@@ -13,7 +13,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/Subscribers
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Subscriber, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower()) || r.Email.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Subscriber, bool>> whereLambda = r => r.Name.Contains(search) || r.Email.Contains(search);
             var subs = SubscriberService.SearchEntities(whereLambda, search, null);
             return View(subs);
         }

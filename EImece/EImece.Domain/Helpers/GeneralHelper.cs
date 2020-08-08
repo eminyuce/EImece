@@ -931,15 +931,11 @@ namespace EImece.Domain.Helpers
         {
             string ret = "";
 
-            try
-            {
+            
                 SHA256 sha256 = new SHA256CryptoServiceProvider();
                 byte[] bHash = sha256.ComputeHash(bytes);
                 ret = BitConverter.ToString(bHash).Replace("-", "");
-            }
-            catch (Exception)
-            {
-            }
+            
             return ret;
         }
 

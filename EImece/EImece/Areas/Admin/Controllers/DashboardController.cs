@@ -44,19 +44,19 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
 
-            Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.Contains(search);
             resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search, CurrentLanguage));
 
             Expression<Func<Product, bool>> whereLambda2 = r => r.Name.Contains(search.Trim());
             resultList.AddRange(ProductService.SearchEntities(whereLambda2, search, CurrentLanguage));
 
-            Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.Contains(search);
             resultList.AddRange(StoryCategoryService.SearchEntities(whereLambda3, search, CurrentLanguage));
 
-            Expression<Func<Story, bool>> whereLambda4 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Story, bool>> whereLambda4 = r => r.Name.Contains(search);
             resultList.AddRange(StoryService.SearchEntities(whereLambda4, search, CurrentLanguage));
 
-            Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.Contains(search);
             resultList.AddRange(MenuService.SearchEntities(whereLamba5, search, CurrentLanguage));
 
             return View(resultList);

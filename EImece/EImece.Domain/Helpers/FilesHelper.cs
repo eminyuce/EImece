@@ -291,9 +291,6 @@ namespace EImece.Domain.Helpers
                 height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(originalImageHeight) * .7) : height;
                 width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(originalImageWidth) * .7) : width;
             }
-            else if (width > 0 && height > 0)
-            {
-            }
 
             return new SavedImage(width, height, originalImageWidth, originalImageHeight);
         }

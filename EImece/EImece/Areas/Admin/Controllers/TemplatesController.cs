@@ -23,7 +23,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/Template
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Template, bool>> whereLambda = r => r.Name.Contains(search);
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(templates);
         }
@@ -120,7 +120,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<Template, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Template, bool>> whereLambda = r => r.Name.Contains(search);
             var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in templates

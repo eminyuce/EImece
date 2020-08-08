@@ -19,7 +19,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(tags);
         }
@@ -50,6 +50,10 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveOrEdit(TagCategory TagCategory)
         {
+            if (TagCategory == null)
+            {
+                throw new ArgumentException("TagCategory cannot be empty");
+            }
             try
             {
                 if (ModelState.IsValid)
@@ -109,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in tags

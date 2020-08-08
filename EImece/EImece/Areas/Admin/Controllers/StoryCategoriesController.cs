@@ -22,7 +22,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(categories);
         }
@@ -132,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in categories

@@ -202,7 +202,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             String search = "";
 
-            Expression<Func<Setting, bool>> whereLambda = r => r.Name.ToLower().Contains(search.Trim().ToLower());
+            Expression<Func<Setting, bool>> whereLambda = r => r.Name.Contains(search);
             var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in settings
