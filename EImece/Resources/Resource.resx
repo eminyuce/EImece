@@ -393,4 +393,16 @@
   <data name="FrequentlyAskedQuestions" xml:space="preserve">
     <value>Sıkça Sorulan Sorular</value>
   </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Sipariş numarası</value>
+  </data>
+  <data name="Reasons" xml:space="preserve">
+    <value>Nedenler</value>
+  </data>
+  <data name="SelectReason" xml:space="preserve">
+    <value>Neden seçin</value>
+  </data>
+  <data name="SelectReasonsLabel" xml:space="preserve">
+    <value>Lütfen bir neden seçin.</value>
+  </data>
 </root>

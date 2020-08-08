@@ -24,14 +24,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Reasons, htmlAttributes: new { @class = "control-label " })
             <div class="col-md-10">
-                <select class="form-control custom-select" name="Reasons" required="" id="help-topic">
-                    <option value="">—</option>
-                    <option value="Managing Account">Managing Account</option>
-                    <option value="Working with Dashboard">Working with Dashboard</option>
-                    <option value="Payment Methods">Payment Methods</option>
-                    <option value="Delivery Information">Delivery Information</option>
-                    <option value="Refund Policy">Refund Policy</option>
-                </select>
+                @Html.DropDownListFor(model => model.Reasons,
+                         GetReasonsSelectList(),
+                         Resource.SelectReason,
+                         new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -82,4 +78,47 @@
             </div>
         </div>
     </div>
+}
+
+@functions {
+    private List<SelectListItem> GetReasonsSelectList()
+    {
+        var reasons = new List<SelectListItem>();
+        reasons.Add(new SelectListItem()
+        {
+            Text = "Hesabımı Yönetme",
+            Value = "Hesabımı Yönetme"
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = "Teslimat Bilgisi",
+            Value = "Teslimat Bilgisi"
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = "Siparişiniz hakkında bilgi alın",
+            Value = "Siparişiniz hakkında bilgi alın"
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = "İptal, iade, geri ödeme veya değiştirme politikası",
+            Value = "İptal, iade, geri ödeme veya değiştirme politikası"
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = "Boyut veya renk tercihi ilgili bir mesaj gönderin",
+            Value = "Boyut veya renk tercihi ilgili bir mesaj gönderin"
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = "Belirli bir ürün veya ürünün mevcut olup olmadığını sorun",
+            Value = "Belirli bir ürün veya ürünün mevcut olup olmadığını sorun"
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = "Diğerleri",
+            Value = "Diğerleri"
+        });
+        return reasons;
+    }
 }

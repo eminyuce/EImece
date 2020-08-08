@@ -36,7 +36,11 @@ namespace EImece.Domain.Models.FrontModels
         public int ItemId { get; set; }
         public EImeceItemType ItemType { get; set; }
 
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.OrderNumber))]
         public String OrderNumber { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SelectReasonsLabel))]
         public String Reasons { get; set; }
 
         public static ContactUsFormViewModel CreateContactUsFormViewModel(string contactFormType, int itemId, EImeceItemType itemType)

@@ -421,6 +421,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş numarası.
+        /// </summary>
+        public static string OrderNumber {
+            get {
+                return ResourceManager.GetString("OrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sayfalar.
         /// </summary>
         public static string Pages {
@@ -533,6 +542,15 @@ namespace Resources {
         public static string ReadMore {
             get {
                 return ResourceManager.GetString("ReadMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedenler.
+        /// </summary>
+        public static string Reasons {
+            get {
+                return ResourceManager.GetString("Reasons", resourceCulture);
             }
         }
         
@@ -691,6 +709,24 @@ namespace Resources {
         public static string SearchValidText {
             get {
                 return ResourceManager.GetString("SearchValidText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neden seçin.
+        /// </summary>
+        public static string SelectReason {
+            get {
+                return ResourceManager.GetString("SelectReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen bir neden seçin..
+        /// </summary>
+        public static string SelectReasonsLabel {
+            get {
+                return ResourceManager.GetString("SelectReasonsLabel", resourceCulture);
             }
         }
         
