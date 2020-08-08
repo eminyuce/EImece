@@ -33,7 +33,7 @@ namespace EImece.Domain.Services.IServices
 
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
 
-        void SaveProductSpecifications(List<ProductSpecification> specifications);
+        void SaveProductSpecifications(List<ProductSpecification> specifications, int productId);
 
         IQueryable<Product> GetActiveProducts(bool? isActive, int? language);
 

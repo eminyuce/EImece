@@ -50,12 +50,8 @@ namespace EImece.Domain.Services
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
             request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
 
-            List<int> enabledInstallments = new List<int>();
-            enabledInstallments.Add(2);
-            enabledInstallments.Add(3);
-            enabledInstallments.Add(6);
-            enabledInstallments.Add(9);
-            request.EnabledInstallments = enabledInstallments;
+           
+            request.EnabledInstallments = AppConfig.IyzicoEnabledInstallments;
 
             Buyer buyer = new Buyer();
             buyer.Id = customer.Id.ToString();

@@ -205,6 +205,7 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 if (customer.IsSameAsShippingAddress)
                 {
+
                 }
 
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);

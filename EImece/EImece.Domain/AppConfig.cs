@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Helpers;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -243,5 +244,18 @@ namespace EImece.Domain
             }
         }
 
+        public static List<int> IyzicoEnabledInstallments
+        {
+            get
+            {
+                var IyzicoEnabledInstallmentsStr = GetConfigString("IyzicoEnabledInstallments", "1,2,4,6,9");
+                List<int> enabledInstallments = new List<int>();
+                foreach (var item in IyzicoEnabledInstallmentsStr.Split(",".ToCharArray()))
+                {
+                    enabledInstallments.Add(item.ToInt());
+                }
+                return enabledInstallments;
+            }
+        }
     }
 }

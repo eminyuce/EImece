@@ -217,17 +217,19 @@ namespace EImece.Domain.Services
             return r;
         }
 
-        public void SaveProductSpecifications(List<ProductSpecification> specifications)
+        public void SaveProductSpecifications(List<ProductSpecification> specifications, int productId)
         {
-            if (specifications.Any())
+            if (specifications.IsNotEmpty())
             {
-                int productId = specifications.First().ProductId;
                 ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == productId);
                 foreach (var item in specifications)
                 {
-                    ProductSpecificationRepository.Add(item);
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+                        ProductSpecificationRepository.Add(item);
+                        ProductSpecificationRepository.Save();
+                    }
                 }
-                ProductSpecificationRepository.Save();
             }
         }
 
@@ -315,7 +317,7 @@ namespace EImece.Domain.Services
                 }
             }
 
-            SaveProductSpecifications(Specifications);
+            SaveProductSpecifications(Specifications, productId);
         }
 
         public void MoveProductsInTrees(int newCategoryId, String products)

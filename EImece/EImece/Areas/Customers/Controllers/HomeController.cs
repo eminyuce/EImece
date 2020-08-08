@@ -83,6 +83,14 @@ namespace EImece.Areas.Customers.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var user = UserManager.FindByName(User.Identity.GetUserName());
+            if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname,StringComparison.InvariantCultureIgnoreCase))
+            {
+                user.FirstName = customer.Name;
+                user.LastName = customer.Surname;
+                UserManager.Update(user);
+            }
+           
+
             customer.UserId = user.Id;
             customer.Ip = GeneralHelper.GetIpAddress();
             customer = CustomerService.SaveOrEditEntity(customer);
