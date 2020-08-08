@@ -123,7 +123,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         public void SendMessageToSeller(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(SendMessageToSellerMailTemplate);
-            if(emailTemplate == null)
+            if (emailTemplate == null)
             {
                 throw new ArgumentException("NO email template is defined for " + SendMessageToSellerMailTemplate);
             }
@@ -136,7 +136,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
-            string body = Engine.Razor.RunCompile(template, subject+ "" + GeneralHelper.GetHashString(template), null, contact);
+            string body = Engine.Razor.RunCompile(template, subject + "" + GeneralHelper.GetHashString(template), null, contact);
             EmailSender.SendEmail(SettingService.GetEmailAccount(),
                 subject,
                 body,

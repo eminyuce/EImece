@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -16,16 +17,13 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
-using EImece.Domain.Models.Enums;
 
 namespace EImece.Areas.Customers.Controllers
 {
     [AuthorizeRoles(Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
-
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
-
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
@@ -83,13 +81,12 @@ namespace EImece.Areas.Customers.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var user = UserManager.FindByName(User.Identity.GetUserName());
-            if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname,StringComparison.InvariantCultureIgnoreCase))
+            if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
             {
                 user.FirstName = customer.Name;
                 user.LastName = customer.Surname;
                 UserManager.Update(user);
             }
-           
 
             customer.UserId = user.Id;
             customer.Ip = GeneralHelper.GetIpAddress();
@@ -102,7 +99,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             var customer = GetCustomer();
             var faqs = FaqService.GetActiveBaseEntities(true, null);
-            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs=faqs });
+            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
         public ActionResult SendSellerMessage(ContactUsFormViewModel contact)
@@ -116,8 +113,6 @@ namespace EImece.Areas.Customers.Controllers
             RazorEngineHelper.SendMessageToSeller(contact);
             return RedirectToAction("SendMessageToSeller");
         }
-
-      
 
         public ActionResult CustomerOrders(string search = "")
         {

@@ -88,7 +88,7 @@ columns.Add(o => o.IsActive)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                     o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+                 o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
 columns.Add(o => o.ImageState)
 .Titled(AdminResource.ImageState)
@@ -96,7 +96,7 @@ columns.Add(o => o.ImageState)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-                     o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState));
+                 o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState));
 
 columns.Add(o => o.MainPage)
 .Titled(AdminResource.MainPage)
@@ -104,7 +104,7 @@ columns.Add(o => o.MainPage)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
-                          o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage));
+                      o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage));
 
 columns.Add(o => o.UpdatedDate)
 .Titled(AdminResource.UpdatedDate)

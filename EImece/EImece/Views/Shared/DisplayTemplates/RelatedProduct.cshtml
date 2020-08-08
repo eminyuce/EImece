@@ -26,16 +26,17 @@
         <a title="@product.Name" href="@product.DetailPageRelativeUrl">
             <section>
 
-                <h5>@product.Name
-                    @if (isUserAuthenticated)
+                <h5>
+                    @product.Name
+                @if (isUserAuthenticated)
                     {
-                        @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
+                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
                     }
-                </h5>
-                <span class="product-code">
-                    @product.ProductCode
-                </span>
-            </section>
-        </a>
-    </figure>
+            </h5>
+            <span class="product-code">
+                @product.ProductCode
+            </span>
+        </section>
+    </a>
+</figure>
 </div>

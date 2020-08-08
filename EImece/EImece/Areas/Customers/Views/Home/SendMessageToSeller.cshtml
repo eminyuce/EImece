@@ -32,30 +32,28 @@
                     @Html.Raw(Resource.QuestionAboutItemForCustomer)
                     @if (Model.Faqs.IsNotEmpty())
                     {
-                        <section class="container pt-4 pb-5 mt-3">
-                            <h3 class="text-center pb-2">@Resource.FrequentlyAskedQuestions</h3>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <ul class="list-unstyled">
-                                        @foreach (Faq faq in Model.Faqs)
+                    <section class="container pt-4 pb-5 mt-3">
+                        <h3 class="text-center pb-2">@Resource.FrequentlyAskedQuestions</h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="list-unstyled">
+                                    @foreach (Faq faq in Model.Faqs)
                                         {
-                                            <li class="d-flex align-items-center border-bottom pb-3 mb-3">
-                                                <i class="text-muted mr-2" data-feather="file-text" style="width: 1.2rem; height: 1.2rem;">
-                                                </i>
-                                                <a href="#" class="nav-link-inline" data-toggle="modal" data-target="@string.Format("#modalScroll{0}",faq.Id)">
-                                                    @faq.Question
-                                                </a>
-                                                @FaqDetailModal(faq)
-                                            </li>
+                                    <li class="d-flex align-items-center border-bottom pb-3 mb-3">
+                                        <i class="text-muted mr-2" data-feather="file-text" style="width: 1.2rem; height: 1.2rem;">
+                                        </i>
+                                        <a href="#" class="nav-link-inline" data-toggle="modal" data-target="@string.Format("#modalScroll{0}",faq.Id)">
+                                            @faq.Question
+                                        </a>
+                                        @FaqDetailModal(faq)
+                                    </li>
 
                                         }
-
-                                    </ul>
-                                </div>
+                                </ul>
                             </div>
-                        </section>
+                        </div>
+                    </section>
                     }
-
                 </div>
                 <div class="col-md-6">
                     @Html.Partial("_SendContactSellerForCustomer", new ContactUsFormViewModel())
@@ -72,23 +70,23 @@
 {
     var modalId = string.Format("modalScroll{0}", faq.Id);
     <!-- Modal markup -->
-    <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="@modalId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">@faq.Question</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @Html.Raw(faq.Answer)
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                </div>
+<div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="@modalId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@faq.Question</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Raw(faq.Answer)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
 }

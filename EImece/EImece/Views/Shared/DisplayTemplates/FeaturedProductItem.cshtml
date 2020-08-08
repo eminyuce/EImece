@@ -32,12 +32,14 @@
         </div>
         <div class="product-card-body body-hidden pt-2">
             <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@Model.Id" type="button"
-                    data-toggle="toast" data-target="#cart-toast">Add to cart</button>
+                    data-toggle="toast" data-target="#cart-toast">
+                Add to cart
+            </button>
             @if (!string.IsNullOrEmpty(product.ShortDescription))
             {
-                <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
-                    <li>@Html.Raw(product.ShortDescription)</li>
-                </ul>
+            <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
+                <li>@Html.Raw(product.ShortDescription)</li>
+            </ul>
             }
         </div>
     </div>

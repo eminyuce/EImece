@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -25,8 +24,6 @@ namespace EImece.Controllers
 {
     public class PaymentController : BaseController
     {
-
-
         private readonly IyzicoService iyzicoService;
 
         [Inject]
@@ -205,7 +202,6 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 if (customer.IsSameAsShippingAddress)
                 {
-
                 }
 
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
@@ -309,7 +305,7 @@ namespace EImece.Controllers
             }
             if (shoppingCart.Customer.isValid() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
-                ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart); 
+                ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart);
                 return View(shoppingCart);
             }
             else
@@ -331,13 +327,12 @@ namespace EImece.Controllers
                     var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(shoppingCart);
                     EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), shoppingCart, emailTemplate);
                 });
-                return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order= order });
+                return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
             }
             else
             {
                 return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm });
             }
-            
         }
 
         private void ClearCart(ShoppingCartSession shoppingCart)

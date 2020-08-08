@@ -20,9 +20,9 @@
 
     <section class="title">
         <h2>
-        @tag.Name
+            @tag.Name
 
-        @if (isUserAuthenticated)
+            @if (isUserAuthenticated)
         {
             @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
         }
@@ -33,16 +33,16 @@
 
     @if (productTags.TotalCount > productTags.PageSize)
     {
-        <div class="pagination-container">
-            <nav class="pagination">
-                <div class="paging">
+    <div class="pagination-container">
+        <nav class="pagination">
+            <div class="paging">
 
-                    @Html.BootstrapPager(productTags.PageIndex,
-    index => Url.Action("Tag", "Products", new { page = index }),
-    productTags.TotalCount, productTags.PageSize, numberOfLinks: 10)
-                </div>
-            </nav>
-        </div>
+                @Html.BootstrapPager(productTags.PageIndex,
+index => Url.Action("Tag", "Products", new { page = index }),
+productTags.TotalCount, productTags.PageSize, numberOfLinks: 10)
+            </div>
+        </nav>
+    </div>
 
     }
 
@@ -50,7 +50,7 @@
 
         @foreach (var item in productTags)
         {
-              @Html.DisplayFor(modelItem => item.Product, "Product")
+        @Html.DisplayFor(modelItem => item.Product, "Product")
         }
     </div>
 </div>

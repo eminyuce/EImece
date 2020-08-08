@@ -12,7 +12,6 @@ namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
-
         [Inject]
         private CustomerService CustomerService;
 
@@ -50,7 +49,6 @@ namespace EImece.Domain.Services
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
             request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
 
-           
             request.EnabledInstallments = AppConfig.IyzicoEnabledInstallments;
 
             Buyer buyer = new Buyer();
