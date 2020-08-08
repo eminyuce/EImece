@@ -1,5 +1,6 @@
 ﻿using Resources;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
@@ -17,5 +18,6 @@ namespace EImece.Domain.Entities
 
         public string AddUserId { get; set; }
         public string UpdateUserId { get; set; }
+ 
     }
 }

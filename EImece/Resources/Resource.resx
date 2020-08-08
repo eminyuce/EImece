@@ -366,4 +366,31 @@
   <data name="ReviewYourOrder" xml:space="preserve">
     <value>Siparişini gözden geçir</value>
   </data>
+  <data name="QuestionAboutItemForCustomer" xml:space="preserve">
+    <value>&lt;section class="uvFaq typeset"&gt;
+                        &lt;p style="font-size:x-large"&gt;
+                            Herhangi bir konu hakkinda soru veya istek için ürünü satan satıcıyla doğrudan iletişime geçin.
+                        &lt;/p&gt;
+                        &lt;h3&gt;Bir konu hakkında soru&lt;/h3&gt;
+                        &lt;p&gt;
+                            &lt;font class="Apple-style-span" color="#2e2f33"&gt;
+                                &lt;span class="Apple-style-span"
+                                      style="line-height: 14px;"&gt;
+                                    &lt;b&gt;Yapmak istediginiz durum için lütfen doğrudan satıcıyla da iletişime geçin:&lt;/b&gt;
+                                &lt;/span&gt;
+                            &lt;/font&gt;
+                        &lt;/p&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;Belirli bir ürün veya ürünün mevcut olup olmadığını sorun&lt;/li&gt;
+                            &lt;li&gt;Siparişiniz hakkında bilgi alın&lt;/li&gt;
+                            &lt;li&gt;Boyut veya renk tercihi gibi siparişinizle ilgili bir mesaj gönderin&lt;/li&gt;
+                            &lt;li&gt;Özel bir ürün istegi isteyin&lt;/li&gt;
+                            &lt;li&gt;İptal, iade, geri ödeme veya değiştirme organize edin&lt;/li&gt;
+                        &lt;/ul&gt; 
+                         
+                    &lt;/section&gt;</value>
+  </data>
+  <data name="FrequentlyAskedQuestions" xml:space="preserve">
+    <value>Sıkça Sorulan Sorular</value>
+  </data>
 </root>

@@ -392,6 +392,7 @@
     <Compile Include="Models\FrontModels\ProductsSearchViewModel.cs" />
     <Compile Include="Models\FrontModels\RecordsStats.cs" />
     <Compile Include="Models\FrontModels\RssParams.cs" />
+    <Compile Include="Models\FrontModels\SendMessageToSellerViewModel.cs" />
     <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartProduct.cs" />
     <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartSession.cs" />
     <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartItem.cs" />

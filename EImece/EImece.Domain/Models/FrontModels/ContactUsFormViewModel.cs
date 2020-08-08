@@ -36,7 +36,7 @@ namespace EImece.Domain.Models.FrontModels
         public int ItemId { get; set; }
         public EImeceItemType ItemType { get; set; }
 
-        public String OrderGuid { get; set; }
+        public String OrderNumber { get; set; }
         public String Reasons { get; set; }
 
         public static ContactUsFormViewModel CreateContactUsFormViewModel(string contactFormType, int itemId, EImeceItemType itemType)

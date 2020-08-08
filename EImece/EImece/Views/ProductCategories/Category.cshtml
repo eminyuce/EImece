@@ -71,7 +71,7 @@
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
                         <div class="button-group tabs">
-                          
+
                             <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
                                rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">En yeniler</a>
                             <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
@@ -106,7 +106,7 @@
 
     public string activeButtonClass(SortingType selected, IPaginatedModelList products)
     {
-        return String.Format("{0}", products.Sorting == (int)selected ?  "btn btn-pill btn-secondary mb-2 mr-1"  : "btn btn-pill btn-outline-secondary mb-2 mr-1");
+        return String.Format("{0}", products.Sorting == (int)selected ? "btn btn-pill btn-secondary mb-2 mr-1" : "btn btn-pill btn-outline-secondary mb-2 mr-1");
     }
 }
 
@@ -127,23 +127,29 @@
                 <label class="custom-control-label" for="@filterId">@filter.name<span class="text-muted ml-1">(@filter.count)</span></label>
             </div>
         }
+    </div>
+    if (categoryFilter.FilterTypeName.FilterType == FilterType.Price)
+    {
 
-        @if (categoryFilter.FilterTypeName.FilterType == FilterType.Price)
-        {
-            <div class="widget-content" style="">
-                <div class="range-filter">
-                    <div id="amount">
-                        <span style="margin-right: 5px;">Min:</span>
-                        <input type="number" step="1" min="0" maxlength="9" class="number" id="minPriceOrginal" name="MinFiyat" value="@productCategoryViewModel.MinPrice" title="Lütfen bir tam sayı giriniz">
-                        <span class="separate"> - </span>
-                        <span style="margin-right: 5px;">Max:</span>
-                        <input type="number" step="1" min="0" maxlength="9" class="number" id="maxPriceOrginal" name="MaxFiyat" value="@productCategoryViewModel.MaxPrice" title="Lütfen bir tam sayı giriniz">
+        <div class="widget mb-4 pb-1">
+            <h3 class="widget-title">Filter by price</h3>
+            <div class="d-flex align-items-center">
+                <div>
+                    <label for="from-price">From</label>
+                    <div class="input-group">
+                        <input class="form-control" type="text" value="@productCategoryViewModel.MinPrice" title="Lütfen bir tam sayı giriniz" id="from-price">
+                    </div>
+                </div>
+                <div class="mx-2 pt-4">&ndash;</div>
+                <div>
+                    <label for="to-price">To</label>
+                    <div class="input-group">
+                        <input class="form-control" type="text" value="@productCategoryViewModel.MaxPrice" title="Lütfen bir tam sayı giriniz" id="to-price">
                     </div>
                 </div>
             </div>
-        }
-    </div>
-
+        </div>
+    }
 }
 <input type="hidden" id="urlFilter" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler" })" />
 <input type="hidden" id="urlFilterMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler", minPrice = "js-min", maxPrice = "js-max" })" />

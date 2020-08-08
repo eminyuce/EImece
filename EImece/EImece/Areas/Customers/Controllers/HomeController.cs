@@ -29,6 +29,9 @@ namespace EImece.Areas.Customers.Controllers
         public IOrderService OrderService { get; set; }
 
         [Inject]
+        public IFaqService FaqService { get; set; }
+
+        [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
 
         [Inject]
@@ -75,8 +78,9 @@ namespace EImece.Areas.Customers.Controllers
 
         public ActionResult SendMessageToSeller()
         {
-            ViewBag.Customer = GetCustomer();
-            return View();
+            var customer = GetCustomer();
+            var faqs = FaqService.GetActiveBaseEntities(true, null);
+            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs=faqs });
         }
 
         public ActionResult CustomerOrders(string search = "")

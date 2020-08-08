@@ -304,6 +304,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sıkça Sorulan Sorular.
+        /// </summary>
+        public static string FrequentlyAskedQuestions {
+            get {
+                return ResourceManager.GetString("FrequentlyAskedQuestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kampanya.
         /// </summary>
         public static string IsCampaign {
@@ -498,6 +507,23 @@ namespace Resources {
         public static string Quantity {
             get {
                 return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;section class=&quot;uvFaq typeset&quot;&gt;
+        ///                        &lt;p style=&quot;font-size:x-large&quot;&gt;
+        ///                            Herhangi bir konu hakkinda soru veya istek için ürünü satan satıcıyla doğrudan iletişime geçin.
+        ///                        &lt;/p&gt;
+        ///                        &lt;h3&gt;Bir konu hakkında soru&lt;/h3&gt;
+        ///                        &lt;p&gt;
+        ///                            &lt;font class=&quot;Apple-style-span&quot; color=&quot;#2e2f33&quot;&gt;
+        ///                                &lt;span class=&quot;Apple-style-span&quot;
+        ///                                      styl [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string QuestionAboutItemForCustomer {
+            get {
+                return ResourceManager.GetString("QuestionAboutItemForCustomer", resourceCulture);
             }
         }
         
