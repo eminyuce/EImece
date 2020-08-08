@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -305,7 +306,7 @@ namespace EImece.Controllers
             {
                 return Content("ShoppingCartItems is EMPTY");
             }
-            if (shoppingCart.Customer.isValid())
+            if (shoppingCart.Customer.isValid() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart); 
                 return View(shoppingCart);

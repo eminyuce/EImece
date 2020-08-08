@@ -22,8 +22,9 @@ namespace EImece.Domain.Entities
 
         //     [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsEmailErrorMessage))]
         //     [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
-        [EmailAddress]
+
         [NotMapped]
+        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 

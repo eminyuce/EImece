@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Models.FrontModels;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
@@ -11,6 +12,7 @@ namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
+
         [Inject]
         private CustomerService CustomerService;
 
@@ -35,7 +37,7 @@ namespace EImece.Domain.Services
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
             var requestContext = HttpContext.Current.Request.RequestContext;
-            string CallbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
+            string callbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
                                                "Payment",
                                                null,
                                                AppConfig.HttpProtocol);
@@ -46,7 +48,7 @@ namespace EImece.Domain.Services
             request.Currency = Currency.TRY.ToString();
             request.BasketId = shoppingCart.OrderGuid;
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
-            request.CallbackUrl = CallbackUrl; /// Geri Dönüş Urlsi
+            request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
 
             List<int> enabledInstallments = new List<int>();
             enabledInstallments.Add(2);
@@ -61,9 +63,9 @@ namespace EImece.Domain.Services
             buyer.Surname = customer.Surname;
             buyer.GsmNumber = customer.GsmNumber;
             buyer.Email = customer.Email;
-            buyer.IdentityNumber = "38108089458";
-            buyer.LastLoginDate = customer.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss");
-            buyer.RegistrationDate = customer.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
+            buyer.IdentityNumber = customer.IdentityNumber.ToStr(AppConfig.BuyerIdentityNumber);
+            buyer.LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat);
+            buyer.RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat);
             buyer.RegistrationAddress = customer.Description;
             buyer.Ip = customer.Ip;
             buyer.City = customer.City;
