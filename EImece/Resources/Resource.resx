@@ -405,4 +405,7 @@
   <data name="SelectReasonsLabel" xml:space="preserve">
     <value>Lütfen bir neden seçin.</value>
   </data>
+  <data name="ContactUsPhoneErrorMessage" xml:space="preserve">
+    <value>Lütfen Tel No Giriniz</value>
+  </data>
 </root>

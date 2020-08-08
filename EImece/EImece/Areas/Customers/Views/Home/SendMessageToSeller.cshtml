@@ -65,9 +65,12 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 @helper FaqDetailModal(Faq faq)
 {
-var modalId = string.Format("modalScroll{0}", faq.Id);
+    var modalId = string.Format("modalScroll{0}", faq.Id);
     <!-- Modal markup -->
     <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="@modalId" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -88,4 +91,4 @@ var modalId = string.Format("modalScroll{0}", faq.Id);
         </div>
     </div>
 
-    }
+}

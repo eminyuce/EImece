@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lütfen Tel No Giriniz.
+        /// </summary>
+        public static string ContactUsPhoneErrorMessage {
+            get {
+                return ResourceManager.GetString("ContactUsPhoneErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yanlış Toplam, Lütfen tekrar deneyin..
         /// </summary>
         public static string ContactUsWrongSumForSecurityQuestion {

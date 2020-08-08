@@ -18,6 +18,7 @@ namespace EImece.Domain.Models.FrontModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsCompanyName))]
         public String CompanyName { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsPhoneErrorMessage))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsPhone))]
         public String Phone { get; set; }
 
