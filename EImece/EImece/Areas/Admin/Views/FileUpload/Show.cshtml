@@ -21,7 +21,7 @@
 
     @if (@Model.Files != null && @Model.Files.Length!=0)
     {
-        foreach (ViewDataUploadFilesResult file in @Model.Files)
+        foreach (var file in @Model.Files)
         {
 
             if (file.type.Equals("video/mp4"))
