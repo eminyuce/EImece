@@ -62,7 +62,7 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
         public string Password { get; set; }

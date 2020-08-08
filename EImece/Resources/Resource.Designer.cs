@@ -529,7 +529,12 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to E-posta adresinizi aşağıya girin. Size şifrenizi sıfırlamak için bir bağlantı içeren bir e-posta göndereceğiz..
+        ///   Looks up a localized string similar to &lt;h2 class=&quot;h3 mb-4&quot;&gt;Parolanızı mı unuttunuz?&lt;/h2&gt;
+        ///                &lt;p&gt;Şifrenizi üç kolay adımda değiştirin.  Bu, yeni şifrenizi güvende tutmanıza yardımcı olur.&lt;/p&gt;
+        ///                &lt;ol class=&quot;list-unstyled&quot;&gt;
+        ///                    &lt;li&gt;&lt;span class=&quot;font-weight-semibold text-primary mr-2&quot;&gt;1.&lt;/span&gt;E-posta adresinizi aşağıya girin.&lt;/li&gt;
+        ///                    &lt;li&gt;&lt;span class=&quot;font-weight-semibold text-primary mr-2&quot;&gt;2.&lt;/span&gt;Size geçici bir kod göndereceğiz.&lt;/li&gt;
+        ///                    &lt;li&gt;&lt;span class=&quot;font-weight-s [rest of string was truncated]&quot;;.
         /// </summary>
         public static string RecoverPasswordText {
             get {

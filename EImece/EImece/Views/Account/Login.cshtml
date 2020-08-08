@@ -22,16 +22,20 @@
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-
+                        @Html.ValidationMessageFor(m => m.Email, "")
+                        @Html.ValidationMessageFor(m => m.Password, "")
+                        @Html.ValidationMessageFor(m => m.Captcha, "")
                         <div class="input-group form-group">
+
                             <div class="input-group-prepend"><span class="input-group-text" id="signin-email-icon"><i data-feather="mail"></i></span></div>
                             @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @AdminResource.Email, @aria_label = "Email", @aria_describedby = "signin-email-icon" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "invalid-feedback" })
+
                         </div>
                         <div class="input-group form-group">
+
                             <div class="input-group-prepend"><span class="input-group-text" id="signin-password-icon"><i data-feather="lock"></i></span></div>
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @AdminResource.Password, @aria_label = "Password", @aria_describedby = "signin-password-icon" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+
                         </div>
 
                         <div class="d-flex flex-wrap justify-content-between">
@@ -42,10 +46,10 @@
                         </div>
 
                         <div class="input-group form-group">
+
                             @Html.LabelFor(model => model.Captcha)
                             <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
                             @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Security Question Answer...", @autocomplete = "false" })
-                            @Html.ValidationMessageFor(model => model.Captcha)
                         </div>
 
                         <hr class="mt-4">

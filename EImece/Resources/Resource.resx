@@ -256,7 +256,13 @@
     <value>Şifre kurtarma</value>
   </data>
   <data name="RecoverPasswordText" xml:space="preserve">
-    <value>E-posta adresinizi aşağıya girin. Size şifrenizi sıfırlamak için bir bağlantı içeren bir e-posta göndereceğiz.</value>
+    <value>&lt;h2 class="h3 mb-4"&gt;Parolanızı mı unuttunuz?&lt;/h2&gt;
+                &lt;p&gt;Şifrenizi üç kolay adımda değiştirin.  Bu, yeni şifrenizi güvende tutmanıza yardımcı olur.&lt;/p&gt;
+                &lt;ol class="list-unstyled"&gt;
+                    &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;1.&lt;/span&gt;E-posta adresinizi aşağıya girin.&lt;/li&gt;
+                    &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;2.&lt;/span&gt;Size geçici bir kod göndereceğiz.&lt;/li&gt;
+                    &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;3.&lt;/span&gt;Güvenli web sitemizdeki şifrenizi değiştirmek için kodu kullanın.&lt;/li&gt;
+                &lt;/ol&gt;</value>
   </data>
   <data name="AdminPanelLoginPage" xml:space="preserve">
     <value>Yönetici Paneli Girişi</value>
