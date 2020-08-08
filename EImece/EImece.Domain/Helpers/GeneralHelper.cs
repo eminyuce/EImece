@@ -360,7 +360,7 @@ namespace EImece.Domain.Helpers
                 // Use reflection to get property names, to create table, Only first time, others will follow
                 if (oProps == null)
                 {
-                    oProps = ((Type)rec.GetType()).GetProperties();
+                    oProps = (rec.GetType()).GetProperties();
                     foreach (PropertyInfo pi in oProps)
                     {
                         Type colType = pi.PropertyType;
@@ -456,8 +456,10 @@ namespace EImece.Domain.Helpers
         {
             for (int i = dt.Rows.Count - 1; i >= 0; i--)
             {
-                if (dt.Rows[i][1] == DBNull.Value)
+                    if (!System.Convert.IsDBNull(dt.Rows[i][1]))
+                    {
                     dt.Rows[i].Delete();
+                }
             }
             dt.AcceptChanges();
         }

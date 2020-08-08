@@ -45,7 +45,6 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             a.MergeAttribute("href", !condition ? action(index) : "javascript:");
             if (condition)
             {
-                //  li.AddCssClass(classToAdd);
                 a.MergeAttribute("class", classToAdd);
             }
 

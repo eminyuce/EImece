@@ -31,7 +31,9 @@ namespace EImece.Domain.Helpers
             {
                 return row.Table.Columns.Contains(column) ? row[column] : defaultValue;
             }
+#pragma warning disable CS0168 // The variable 'ex' is declared but never used
             catch (Exception ex)
+#pragma warning restore CS0168 // The variable 'ex' is declared but never used
             {
                 return defaultValue;
             }
@@ -192,8 +194,12 @@ namespace EImece.Domain.Helpers
 
             for (int i = 0; i < table.Columns.Count; i++)
             {
+#pragma warning disable CS0219 // The variable 'isNumeric' is assigned but its value is never used
                 bool isNumeric = false;
+#pragma warning restore CS0219 // The variable 'isNumeric' is assigned but its value is never used
+#pragma warning disable CS0219 // The variable 'usesColumnDefault' is assigned but its value is never used
                 bool usesColumnDefault = true;
+#pragma warning restore CS0219 // The variable 'usesColumnDefault' is assigned but its value is never used
 
                 sql.AppendFormat("\n\t[{0}]", table.Columns[i].ColumnName);
 

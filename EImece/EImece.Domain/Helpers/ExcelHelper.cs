@@ -282,7 +282,7 @@ namespace EImece.Domain.Helpers
                                 switch (column.DataType.ToString())
                                 {
                                     case "System.Boolean":
-                                        if (cellValue != DBNull.Value)
+                                        if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.Boolean);
 
@@ -294,15 +294,15 @@ namespace EImece.Domain.Helpers
                                         break;
 
                                     case "System.String":
-                                        if (cellValue != DBNull.Value)
-                                        {
+                                         if (!System.Convert.IsDBNull(cellValue))
+                                         {
                                             cell = fila.CreateCell(iCol, CellType.String);
                                             cell.SetCellValue(System.Convert.ToString(cellValue));
                                         }
                                         break;
 
                                     case "System.Int32":
-                                        if (cellValue != DBNull.Value)
+                                        if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.Numeric);
                                             cell.SetCellValue(System.Convert.ToInt32(cellValue));
@@ -311,7 +311,7 @@ namespace EImece.Domain.Helpers
                                         break;
 
                                     case "System.Int64":
-                                        if (cellValue != DBNull.Value)
+                                        if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.Numeric);
                                             cell.SetCellValue(System.Convert.ToInt64(cellValue));
@@ -320,7 +320,7 @@ namespace EImece.Domain.Helpers
                                         break;
 
                                     case "System.Decimal":
-                                        if (cellValue != DBNull.Value)
+                                        if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.Numeric);
                                             cell.SetCellValue(System.Convert.ToDouble(cellValue));
@@ -329,7 +329,7 @@ namespace EImece.Domain.Helpers
                                         break;
 
                                     case "System.Double":
-                                        if (cellValue != DBNull.Value)
+                                        if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.Numeric);
                                             cell.SetCellValue(System.Convert.ToDouble(cellValue));
@@ -338,7 +338,7 @@ namespace EImece.Domain.Helpers
                                         break;
 
                                     case "System.DateTime":
-                                        if (cellValue != DBNull.Value)
+                                        if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.Numeric);
                                             cell.SetCellValue(Convert.ToDateTime(cellValue));

@@ -54,7 +54,6 @@ namespace EImece.Domain.Helpers
                 return String.Empty;
             }
 
-            // string id = "";
             if (string.IsNullOrEmpty(id))
             {
                 try

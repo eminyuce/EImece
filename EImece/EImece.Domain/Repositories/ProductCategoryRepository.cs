@@ -82,7 +82,6 @@ namespace EImece.Domain.Repositories
             {
                 if (productCategories.Any(r => r.ParentId == m.Id))
                 {
-                    continue;
                 }
                 else
                 {
@@ -114,7 +113,6 @@ namespace EImece.Domain.Repositories
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-                //
                 Expression<Func<ProductCategory, bool>> match2 = r => r.Name.Contains(search);
                 match = match.And(match2);
             }

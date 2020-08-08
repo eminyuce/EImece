@@ -48,7 +48,9 @@ namespace EImece.Domain.Helpers
         {
             System.Net.HttpWebRequest request = null;
             System.Net.HttpWebResponse response = null;
+#pragma warning disable CS0219 // The variable 'b' is assigned but its value is never used
             byte[] b = null;
+#pragma warning restore CS0219 // The variable 'b' is assigned but its value is never used
 
             request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
             request.Timeout = 99999;

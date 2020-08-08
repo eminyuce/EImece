@@ -15,7 +15,9 @@ namespace EImece.Domain.Helpers
                 byte[] bHash = sha256.ComputeHash(bytes);
                 ret = BitConverter.ToString(bHash).Replace("-", "");
             }
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
             catch (Exception e)
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
             {
                 // throw;
             }

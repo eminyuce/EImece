@@ -29,8 +29,7 @@ namespace EImece.Domain.Services
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
-            List<ProductCategoryTreeModel> result = null;
-
+            List<ProductCategoryTreeModel> result;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.BuildTree(isActive, language);

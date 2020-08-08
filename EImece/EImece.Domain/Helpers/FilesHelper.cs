@@ -677,13 +677,13 @@ namespace EImece.Domain.Helpers
                 if (startBitmap.Height > startBitmap.Width)
                 {
                     newHeight = LargestSide;
-                    HW_ratio = (double)((double)LargestSide / (double)startBitmap.Height);
-                    newWidth = (int)(HW_ratio * (double)startBitmap.Width);
+                    HW_ratio = ((double)LargestSide / (double)startBitmap.Height);
+                    newWidth = (int)(HW_ratio * startBitmap.Width);
                 }
                 else
                 {
                     newWidth = LargestSide;
-                    HW_ratio = (double)((double)LargestSide / (double)startBitmap.Width);
+                    HW_ratio = ((double)LargestSide / (double)startBitmap.Width);
                     newHeight = (int)(HW_ratio * (double)startBitmap.Height);
                 }
                 newHeight = Height;

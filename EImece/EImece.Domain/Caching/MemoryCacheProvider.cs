@@ -70,7 +70,7 @@ namespace EImece.Domain.Caching
             List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
             foreach (String key in cacheKeys)
             {
-                yield return new KeyValuePair<string, object>(key as string, _cache[key]);
+                yield return new KeyValuePair<string, object>(key, _cache[key]);
             }
         }
 

@@ -197,7 +197,7 @@ namespace EImece.Domain.Services
 
         private List<ProductCategory> GenerateProductCategorySiteMap(List<SitemapItem> sitemapItems, int language)
         {
-            List<ProductCategory> productCategories = new List<ProductCategory>();
+            var productCategories = new List<ProductCategory>();
             try
             {
                 productCategories = ProductCategoryService.GetActiveBaseEntitiesFromCache(true, language);
