@@ -44,15 +44,15 @@
                 }
             </div>
         </div>
-        <ul class="list-unstyled border p-3 mb-4">
-            <li class="pb-1"><span class="opacity-80">&ndash; Joined:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
-            <li class="pb-1"><span class="opacity-80">&ndash; Total orders:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>
-            <li class="pb-1">
-                <span class="opacity-80">&ndash; Total spent:</span><span class="font-weight-semibold ml-1">
-                    @orders.Sum(r => r.PaidPriceDecimal).CurrencySign()
-                </span>
-            </li>
-        </ul>
+    <ul class="list-unstyled border p-3 mb-4">
+        <li class="pb-1"><span class="opacity-80">&ndash; Katılım:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
+        <li class="pb-1"><span class="opacity-80">&ndash; Toplam sipariş:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>
+        <li class="pb-1">
+            <span class="opacity-80">&ndash; Toplam harcama:</span><span class="font-weight-semibold ml-1">
+                @orders.Sum(r => r.PaidPriceDecimal).CurrencySign()
+            </span>
+        </li>
+    </ul>
         <!-- Navigation (visible sm-up)-->
         <ul class="nav nav-tabs d-none d-sm-flex">
             <li class="nav-item">
@@ -85,29 +85,21 @@
             </button>
             <div class="collapse" id="account-menu">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action" href="account-orders.html">
-                        <i class="mr-2" data-feather="shopping-bag" style="width: 1rem; height: 1rem;"></i>My orders
-                        <span class="badge badge-pill badge-secondary bg-0 border ml-2">
-                            <span class="text-primary">
-                                1
-                            </span>
+                    <a class="list-group-item list-group-item-action" href="@Url.Action("Index","Home")">
+                        <i data-feather="settings"></i>&nbsp;@AdminResource.MyAccount
+                    </a>
+                    <a class="list-group-item list-group-item-action" href="@Url.Action("ChangePassword","Home")">
+                        <i data-feather="lock"></i>&nbsp;@AdminResource.ChangePassword
+                    </a>
+                     <a class="list-group-item list-group-item-action"  href="@Url.Action("CustomerOrders")">
+                        <i data-feather="shopping-bag"></i>&nbsp;@AdminResource.MyOrder<span class="badge badge-pill badge-secondary bg-0 border ml-2">
+                            <span class="text-primary">@orders.Count</span>
                         </span>
                     </a>
-                    <a class="list-group-item list-group-item-action" href="account-wishlist.html">
-                        <i class="mr-2" data-feather="heart" style="width: 1rem; height: 1rem;">
-                        </i>Wishlist<span class="badge badge-pill badge-secondary bg-0 border ml-2">
-                            <span class="text-primary">3</span>
-                        </span>
+                    <a class="list-group-item list-group-item-action" href="@Url.Action("SendMessageToSeller")">
+                        <i data-feather="phone"></i>&nbsp;@AdminResource.SendMessageToSeller
                     </a>
-                    <a class="list-group-item list-group-item-action active" href="account-profile.html">
-                        <i class="mr-2" data-feather="user" style="width: 1rem; height: 1rem;"></i>Profile info
-                    </a><a class="list-group-item list-group-item-action" href="account-address.html">
-                        <i class="mr-2" data-feather="map-pin" style="width: 1rem; height: 1rem;"></i>Addresses
-                    </a>
-                    <a class="list-group-item list-group-item-action" href="account-payment.html">
-                        <i class="mr-2" data-feather="credit-card" style="width: 1rem; height: 1rem;">
-                        </i>Payment methods
-                    </a>
+
                 </div>
             </div>
         </div>
