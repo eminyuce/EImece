@@ -24,9 +24,7 @@ namespace EImece.Controllers
 {
     public class PaymentController : BaseController
     {
-        private const string OrderGuidCookieKey = "orderGuid";
-        private const string SUCCESS = "SUCCESS";
-        private const string FAILED = "FAILED";
+
 
         private readonly IyzicoService iyzicoService;
 
@@ -135,7 +133,7 @@ namespace EImece.Controllers
 
         private ShoppingCartSession GetShoppingCartFromDataSource()
         {
-            HttpCookie orderGuid = Request.Cookies[OrderGuidCookieKey];
+            HttpCookie orderGuid = Request.Cookies[Domain.Constants.OrderGuidCookieKey];
             ShoppingCartSession result = null;
             var item = orderGuid != null ? ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid.Value) : null;
             if (item == null)
@@ -257,7 +255,7 @@ namespace EImece.Controllers
 
         public ActionResult RenderPrice(double price)
         {
-            return Json(new { status = SUCCESS, price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
+            return Json(new { status = Domain.Constants.SUCCESS, price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult sendOrderComments(string orderComments, string orderGuid)
@@ -265,7 +263,7 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = GetShoppingCart();
             shoppingCart.OrderComments = orderComments;
             SaveShoppingCart(shoppingCart);
-            return Json(new { status = SUCCESS }, JsonRequestBehavior.AllowGet);
+            return Json(new { status = Domain.Constants.SUCCESS }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UpdateQuantity(String shoppingItemId, int quantity)
@@ -276,11 +274,11 @@ namespace EImece.Controllers
             {
                 item.quantity = quantity;
                 SaveShoppingCart(shoppingCart);
-                return Json(new { status = SUCCESS, shoppingItemId }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { status = FAILED, shoppingItemId }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = Domain.Constants.FAILED, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -292,11 +290,11 @@ namespace EImece.Controllers
             {
                 shoppingCart.ShoppingCartItems.Remove(item);
                 SaveShoppingCart(shoppingCart);
-                return Json(new { status = SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { status = FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = Domain.Constants.FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -309,8 +307,7 @@ namespace EImece.Controllers
             }
             if (shoppingCart.Customer.isValid())
             {
-                var checkoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart);
-                ViewBag.CheckoutFormInitialize = checkoutFormInitialize;
+                ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart); 
                 return View(shoppingCart);
             }
             else
@@ -322,26 +319,31 @@ namespace EImece.Controllers
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model)
         {
             CheckoutForm checkoutForm = iyzicoService.GetCheckoutForm(model);
-            if (checkoutForm.PaymentStatus.Equals(SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
-                ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm);
+                var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm);
                 ClearCart(shoppingCart);
                 Task.Run(() =>
                 {
                     var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(shoppingCart);
                     EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), shoppingCart, emailTemplate);
                 });
+                return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order= order });
             }
-            return View(checkoutForm);
+            else
+            {
+                return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm });
+            }
+            
         }
 
         private void ClearCart(ShoppingCartSession shoppingCart)
         {
             if (Request.Browser.Cookies)
             {
-                Response.Cookies.Remove(OrderGuidCookieKey);
-                var aCookie = new HttpCookie(OrderGuidCookieKey) { Expires = DateTime.Now.AddDays(-1) };
+                Response.Cookies.Remove(Domain.Constants.OrderGuidCookieKey);
+                var aCookie = new HttpCookie(Domain.Constants.OrderGuidCookieKey) { Expires = DateTime.Now.AddDays(-1) };
                 Response.Cookies.Add(aCookie);
             }
             ShoppingCartService.DeleteByOrderGuid(shoppingCart.OrderGuid);

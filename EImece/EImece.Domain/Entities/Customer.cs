@@ -1,4 +1,5 @@
-﻿using Resources;
+﻿using Newtonsoft.Json;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -69,6 +70,7 @@ namespace EImece.Domain.Entities
 
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
+        [JsonIgnore]
         public String Captcha { get; set; }
 
         [NotMapped]

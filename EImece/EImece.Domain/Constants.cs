@@ -4,6 +4,10 @@ namespace EImece.Domain
 {
     public static class Constants
     {
+        public const string OrderGuidCookieKey = "orderGuid";
+        public const string SUCCESS = "SUCCESS";
+        public const string FAILED = "FAILED";
+
         /*********CACHE KEYS*********/
         public const string Cache30Days = "Cache30Days";
         public const string Cache20Minutes = "Cache20Minutes";

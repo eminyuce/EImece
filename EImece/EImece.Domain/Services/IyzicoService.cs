@@ -62,7 +62,7 @@ namespace EImece.Domain.Services
             buyer.GsmNumber = customer.GsmNumber;
             buyer.Email = customer.Email;
             buyer.IdentityNumber = "38108089458";
-            buyer.LastLoginDate = "2015-10-05 12:43:35";
+            buyer.LastLoginDate = customer.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss");
             buyer.RegistrationDate = customer.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
             buyer.RegistrationAddress = customer.Description;
             buyer.Ip = customer.Ip;

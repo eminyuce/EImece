@@ -66,7 +66,7 @@ namespace EImece.Domain.Services
             ShoppingCartRepository.DeleteByWhereCondition(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public void SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
+        public Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
         {
             var userName = HttpContext.Current.User.Identity.GetUserName();
             var user = UserManager.FindByName(userName);
@@ -89,6 +89,8 @@ namespace EImece.Domain.Services
             CustomerService.SaveShippingAddress(user.Id);
             Order savedOrder = SaveOrder(user.Id, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
             SaveOrderProduct(shoppingCart, savedOrder);
+
+            return savedOrder;
         }
 
         private Order SaveOrder(String userId, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
