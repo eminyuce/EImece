@@ -133,6 +133,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to KAMPANYALI ÜRÜNLER.
+        /// </summary>
+        public static string CampaignProducts {
+            get {
+                return ResourceManager.GetString("CampaignProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş yapmak için buraya tıklayın.
         /// </summary>
         public static string ClickHereToLogin {
@@ -453,6 +462,15 @@ namespace Resources {
         public static string NewModelsClick {
             get {
                 return ResourceManager.GetString("NewModelsClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YENİ ÜRÜNLER.
+        /// </summary>
+        public static string NewProducts {
+            get {
+                return ResourceManager.GetString("NewProducts", resourceCulture);
             }
         }
         
@@ -839,6 +857,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VİTRİN ÜRÜNLERİ.
+        /// </summary>
+        public static string ShowcaseProducts {
+            get {
+                return ResourceManager.GetString("ShowcaseProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Benzer Urunler.
         /// </summary>
         public static string SimilairProducts {
@@ -866,11 +893,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Haberdar olun.
+        /// </summary>
+        public static string StayInformed {
+            get {
+                return ResourceManager.GetString("StayInformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abone ol.
+        /// </summary>
+        public static string Subscribe {
+            get {
+                return ResourceManager.GetString("Subscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EKLE.
         /// </summary>
         public static string SubscriberButtonText {
             get {
                 return ResourceManager.GetString("SubscriberButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun..
+        /// </summary>
+        public static string SubscriptionInfo {
+            get {
+                return ResourceManager.GetString("SubscriptionInfo", resourceCulture);
             }
         }
         

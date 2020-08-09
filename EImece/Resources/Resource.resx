@@ -441,4 +441,22 @@
   <data name="Specifications" xml:space="preserve">
     <value>Özellikler</value>
   </data>
+  <data name="CampaignProducts" xml:space="preserve">
+    <value>KAMPANYALI ÜRÜNLER</value>
+  </data>
+  <data name="NewProducts" xml:space="preserve">
+    <value>YENİ ÜRÜNLER</value>
+  </data>
+  <data name="ShowcaseProducts" xml:space="preserve">
+    <value>VİTRİN ÜRÜNLERİ</value>
+  </data>
+  <data name="StayInformed" xml:space="preserve">
+    <value>Haberdar olun</value>
+  </data>
+  <data name="SubscriptionInfo" xml:space="preserve">
+    <value>Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun.</value>
+  </data>
+  <data name="Subscribe" xml:space="preserve">
+    <value>Abone ol</value>
+  </data>
 </root>
