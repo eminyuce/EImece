@@ -107,6 +107,7 @@ namespace EImece.Domain.Entities
         {
             return base.GetHashCode();
         }
+        [NotMapped]
         public int DiscountPercentage
         {
             get
