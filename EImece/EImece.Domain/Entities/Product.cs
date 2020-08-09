@@ -107,8 +107,16 @@ namespace EImece.Domain.Entities
         {
             return base.GetHashCode();
         }
+        public int DiscountPercentage
+        {
+            get
+            {
+                var discountedDiff = Price - PriceWithDiscount;
+                return (int)(discountedDiff * 100/ Price);
 
-        [NotMapped]
+            }
+        }
+      [NotMapped]
         public double PriceWithDiscount
         {
             get

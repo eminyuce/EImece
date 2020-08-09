@@ -408,4 +408,10 @@
   <data name="ContactUsPhoneErrorMessage" xml:space="preserve">
     <value>Lütfen Tel No Giriniz</value>
   </data>
+  <data name="Discount" xml:space="preserve">
+    <value>İndirim</value>
+  </data>
+  <data name="ThisItemAddedYourCart" xml:space="preserve">
+    <value>Bu ürün sepetinize eklendi.</value>
+  </data>
 </root>

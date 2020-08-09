@@ -268,6 +268,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İndirim.
+        /// </summary>
+        public static string Discount {
+            get {
+                return ResourceManager.GetString("Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Düzenle.
         /// </summary>
         public static string Edit {
@@ -844,6 +853,15 @@ namespace Resources {
         public static string ThankYouForContactingUs {
             get {
                 return ResourceManager.GetString("ThankYouForContactingUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu ürün sepetinize eklendi..
+        /// </summary>
+        public static string ThisItemAddedYourCart {
+            get {
+                return ResourceManager.GetString("ThisItemAddedYourCart", resourceCulture);
             }
         }
         
