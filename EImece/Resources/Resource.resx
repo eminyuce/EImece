@@ -459,4 +459,7 @@
   <data name="Subscribe" xml:space="preserve">
     <value>Abone ol</value>
   </data>
+  <data name="FeaturedProducts" xml:space="preserve">
+    <value>Öne çıkan Ürünler</value>
+  </data>
 </root>

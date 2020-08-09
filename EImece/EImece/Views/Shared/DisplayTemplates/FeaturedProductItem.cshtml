@@ -18,8 +18,10 @@
 <div class="col-lg-3 col-sm-4 col-6 border border-collapse">
     <div class="product-card">
         <div class="product-thumb">
-            <a class="product-thumb-link" href="@productLink"></a><span class="product-wishlist-btn"
-                                                                        data-toggle="tooltip" data-placement="left" title="Add to wishlist">
+            <a class="product-thumb-link" href="@productLink"></a>
+            <span class="product-wishlist-btn"
+                                      
+                  data-toggle="tooltip" data-placement="left" title="Add to wishlist">
                 <i data-feather="heart"></i>
             </span>@Html.Raw(imageTag)
         </div>
@@ -33,7 +35,7 @@
         <div class="product-card-body body-hidden pt-2">
             <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@Model.Id" type="button"
                     data-toggle="toast" data-target="#cart-toast">
-                Add to cart
+                @Resource.AddToCart
             </button>
             @if (!string.IsNullOrEmpty(product.ShortDescription))
             {

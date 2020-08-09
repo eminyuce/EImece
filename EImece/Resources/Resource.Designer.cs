@@ -331,6 +331,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Öne çıkan Ürünler.
+        /// </summary>
+        public static string FeaturedProducts {
+            get {
+                return ResourceManager.GetString("FeaturedProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şifremi Unuttum Onayı.
         /// </summary>
         public static string ForgotPasswordConfirmation {

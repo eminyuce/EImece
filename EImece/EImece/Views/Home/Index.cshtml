@@ -84,7 +84,11 @@
 <!-- Featured products grid-->
 <section class="container px-3 pt-4 mt-3">
     <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
-        <h2 class="h3 mb-3">Featured products</h2><a class="btn btn-outline-primary btn-sm border-0 mb-3" href="shop-style2-ls.html">More products<i class="ml-1 mr-n2" data-feather="chevron-right"></i></a>
+        <h2 class="h3 mb-3">@Resource.FeaturedProducts</h2>
+        <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@Url.Action("index","products")">More products
+        <i class="ml-1 mr-n2" data-feather="chevron-right">
+            </i>
+        </a>
     </div>
     <div class="row no-gutters">
         @for (int i = 0; i < mainPageProducts.Count; i++)
