@@ -57,9 +57,9 @@ columns.Add()
                        .Sanitized(false)
                        .SetWidth(30)
                        .RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
-    </b>);
+@<b>
+    @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
+</b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -98,9 +98,9 @@ columns.Add(o => o.IsActive)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                     o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+             o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
-    columns.Add(o => o.UpdatedDate)
+columns.Add(o => o.UpdatedDate)
 .Titled("UpdatedDate")
 .Sortable(true)
 .Css("gridDateClass")

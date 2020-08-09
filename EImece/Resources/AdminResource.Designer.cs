@@ -1627,6 +1627,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Yorumları.
+        /// </summary>
+        public static string ProductComments {
+            get {
+                return ResourceManager.GetString("ProductComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Xml Şablonlar.
         /// </summary>
         public static string ProductDynamicTemplates {
@@ -1699,6 +1708,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Değerlendirme.
+        /// </summary>
+        public static string Rating {
+            get {
+                return ResourceManager.GetString("Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yenile.
         /// </summary>
         public static string Refresh {
@@ -1758,6 +1776,24 @@ namespace Resources {
         public static string RequestIsNotValid {
             get {
                 return ResourceManager.GetString("RequestIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yorum.
+        /// </summary>
+        public static string Review {
+            get {
+                return ResourceManager.GetString("Review", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yorum Başlık.
+        /// </summary>
+        public static string ReviewSubject {
+            get {
+                return ResourceManager.GetString("ReviewSubject", resourceCulture);
             }
         }
         

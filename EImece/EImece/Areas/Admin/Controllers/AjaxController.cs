@@ -128,6 +128,17 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteProductCommentGridItem(List<String> values)
+        {
+            return await Task.Run(() =>
+            {
+                ProductCommentService.DeleteBaseEntity(values);
+                return Json(values, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
+
+        [HttpPost]
+        [DeleteAuthorize()]
         public async Task<JsonResult> DeleteSettingGridItem(List<String> values)
         {
             return await Task.Run(() =>
@@ -275,6 +286,16 @@ namespace EImece.Areas.Admin.Controllers
             return await Task.Run(() =>
             {
                 SubscriberService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+                return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeProductCommentGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            return await Task.Run(() =>
+            {
+                ProductCommentService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
                 return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }

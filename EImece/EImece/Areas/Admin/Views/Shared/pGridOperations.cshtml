@@ -7,7 +7,7 @@
     var orderingButton = ViewData["orderingButton"].ToBool(true);
     var selectAll = ViewData["selectAll"].ToBool(true);
     var deleteAll = ViewData["deleteAll"].ToBool(true) && UserRoleHelper.IsDeletedEnableRoles();
-
+    var IdValueExists = ViewData["IdValueExists"].ToBool(false);
     var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
     var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
     var isNewRecordButtonEnabled = ViewData["IsNewRecordButtonEnabled"].ToBool(true);
@@ -40,14 +40,17 @@
                     </p>
                 </span>
                 <span class="col-md-9">
-                    @Html.Partial("pAdminSearchForm")
+                    @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
+                                        {"IdValueExists",IdValueExists}})
+
                 </span>
             }
             else
             {
-                <span class="col-md-12">
-                    @Html.Partial("pSearchForm")
-                </span>
+        <span class="col-md-12">
+            @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
+                                      {"IdValueExists",IdValueExists}})
+        </span>
             }
         </div>
 

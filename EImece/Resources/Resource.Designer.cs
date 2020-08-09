@@ -70,6 +70,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sepete eklendi!.
+        /// </summary>
+        public static string AddedToCart {
+            get {
+                return ResourceManager.GetString("AddedToCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sepete ekle.
+        /// </summary>
+        public static string AddToCart {
+            get {
+                return ResourceManager.GetString("AddToCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Düzenle.
         /// </summary>
         public static string AdminEdit {
@@ -349,6 +367,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Son Gelen Yorumlar.
+        /// </summary>
+        public static string LatestReviews {
+            get {
+                return ResourceManager.GetString("LatestReviews", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yorum Yaz.
+        /// </summary>
+        public static string LeaveReview {
+            get {
+                return ResourceManager.GetString("LeaveReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oturum aç.
         /// </summary>
         public static string Login {
@@ -381,6 +417,15 @@ namespace Resources {
         public static string MandatoryField {
             get {
                 return ResourceManager.GetString("MandatoryField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daha fazla bilgi.
+        /// </summary>
+        public static string MoreInfo {
+            get {
+                return ResourceManager.GetString("MoreInfo", resourceCulture);
             }
         }
         
@@ -498,6 +543,15 @@ namespace Resources {
         public static string ProductCodeNo {
             get {
                 return ResourceManager.GetString("ProductCodeNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Bilgisi.
+        /// </summary>
+        public static string ProductInformation {
+            get {
+                return ResourceManager.GetString("ProductInformation", resourceCulture);
             }
         }
         
@@ -659,6 +713,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yorumlar.
+        /// </summary>
+        public static string Reviews {
+            get {
+                return ResourceManager.GetString("Reviews", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Siparişini gözden geçir.
         /// </summary>
         public static string ReviewYourOrder {
@@ -767,6 +830,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürünü paylaş.
+        /// </summary>
+        public static string ShareProduct {
+            get {
+                return ResourceManager.GetString("ShareProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Benzer Urunler.
         /// </summary>
         public static string SimilairProducts {
@@ -781,6 +853,15 @@ namespace Resources {
         public static string SocialMedia {
             get {
                 return ResourceManager.GetString("SocialMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Özellikler.
+        /// </summary>
+        public static string Specifications {
+            get {
+                return ResourceManager.GetString("Specifications", resourceCulture);
             }
         }
         

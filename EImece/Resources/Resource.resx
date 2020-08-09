@@ -414,4 +414,31 @@
   <data name="ThisItemAddedYourCart" xml:space="preserve">
     <value>Bu ürün sepetinize eklendi.</value>
   </data>
+  <data name="AddedToCart" xml:space="preserve">
+    <value>Sepete eklendi!</value>
+  </data>
+  <data name="AddToCart" xml:space="preserve">
+    <value>Sepete ekle</value>
+  </data>
+  <data name="LatestReviews" xml:space="preserve">
+    <value>Son Gelen Yorumlar</value>
+  </data>
+  <data name="LeaveReview" xml:space="preserve">
+    <value>Yorum Yaz</value>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>Daha fazla bilgi</value>
+  </data>
+  <data name="ProductInformation" xml:space="preserve">
+    <value>Ürün Bilgisi</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Yorumlar</value>
+  </data>
+  <data name="ShareProduct" xml:space="preserve">
+    <value>Ürünü paylaş</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
 </root>

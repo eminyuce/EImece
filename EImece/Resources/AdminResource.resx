@@ -888,4 +888,16 @@
   <data name="Answer" xml:space="preserve">
     <value>Cevap</value>
   </data>
+  <data name="ProductComments" xml:space="preserve">
+    <value>Ürün Yorumları</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>Yorum</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Değerlendirme</value>
+  </data>
+  <data name="ReviewSubject" xml:space="preserve">
+    <value>Yorum Başlık</value>
+  </data>
 </root>

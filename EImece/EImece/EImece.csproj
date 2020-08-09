@@ -313,6 +313,7 @@
     <Compile Include="Areas\Admin\Controllers\MediaController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductCommentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoriesController.cs" />
@@ -962,6 +963,7 @@
     <Content Include="Areas\Admin\Views\Brands\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Brands\SaveOrEdit.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_SendContactSellerForCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductComments\Index.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />

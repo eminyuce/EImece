@@ -33,6 +33,9 @@ namespace EImece.Areas.Admin.Controllers
         public IProductService ProductService { get; set; }
 
         [Inject]
+        public IProductCommentService ProductCommentService { get; set; }
+
+        [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
         [Inject]

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -101,6 +102,15 @@ namespace EImece.Domain.Helpers
         }
 
         public static ICollection<ProductCategory> FilterProductCategories(ICollection<ProductCategory> items)
+        {
+            if (items == null)
+            {
+                return items;
+            }
+            return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+        }
+
+        public static ICollection<ProductComment> FilterProductComments(ICollection<ProductComment> items)
         {
             if (items == null)
             {

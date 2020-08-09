@@ -51,7 +51,7 @@
 <div class="toast-container toast-bottom-center">
     <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-success text-white">
-            <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Added to cart!</span>
+            <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">@Resource.AddedToCart</span>
             <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="toast-body">@Resource.ThisItemAddedYourCart</div>
@@ -133,7 +133,7 @@
 
 
 
-                        </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count reviews</span>
+                        </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Reviews</span>
                     </a>
                 }
 
@@ -154,14 +154,21 @@
                 </h3>
                 <div class="d-flex align-items-center pt-2">
                     <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
-                    <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>Add to cart</button>
+                    <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart</button>
                 </div>
             </div>
             <!-- Product panels-->
             <div class="accordion" id="productPanels">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="accordion-heading"><a href="#productInfo" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i></span>Product information<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        <h3 class="accordion-heading"><a href="#productInfo" role="button" 
+                                                         data-toggle="collapse" aria-expanded="true"
+                                                         aria-controls="productInfo"><span
+                                            class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                            <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
+                                  </span>@Resource.ProductInformation
+                            <span class="accordion-indicator">
+                            <i data-feather="chevron-up"></i></span></a></h3>
                     </div>
                     <div class="collapse show" id="productInfo" data-parent="#productPanels">
                         <div class="card-body">
@@ -176,7 +183,7 @@
                             }
                             @Html.Raw(product.ShortDescription)
                             <ul class="mb-0">
-                                <li><a class="scroll-to font-weight-semibold" href="#product-details">More info</a></li>
+                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.MoreInfo</a></li>
                             </ul>
                         </div>
                     </div>
@@ -188,7 +195,7 @@
                             <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
                                 <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                     <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
-                                </span>Tag cloud<span class="accordion-indicator">
+                                </span>@AdminResource.Tags<span class="accordion-indicator">
                                     <i data-feather="chevron-up"></i>
                                 </span>
                             </a>
@@ -211,7 +218,7 @@
             <!-- Share product-->
             <div class="py-4">
                 <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">
-                    Share product:
+                    @Resource.ShareProduct:
                 </span>
                 <a class="social-btn sb-instagram mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
                     <i class="flaticon-instagram"></i>
@@ -235,7 +242,7 @@
         <div class="row">
 
             <div class="@string.Format("{0}",productSpecsExists ? "col-md-6":"col-md-12")">
-                <h3 class="h5 mb-3">Details</h3>
+                <h3 class="h5 mb-3">@Resource.Description</h3>
                 <p class="mb-4 pb-2">@Html.Raw(product.Description)</p>
             </div>
 
@@ -243,7 +250,7 @@
             {
 
                 <div class="col-md-6">
-                    <h3 class="h5 mb-3">Specifications</h3>
+                    <h3 class="h5 mb-3">@Resource.Specifications</h3>
                     @if (isUserAuthenticated)
                     {
                         @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
@@ -283,12 +290,12 @@
                             <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     }
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">Leave a review</a></div>
+                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
                 </div>
             </div>
         </div>
         <div class="col-md-8 pb-5">
-            <h2 class="h3">Latest reviews</h2>
+            <h2 class="h3">@Resource.LatestReviews</h2>
             @foreach (var productComment in productComments)
             {
                 @createReviewItem(productComment)
