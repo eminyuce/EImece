@@ -32,6 +32,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IOrderService OrderService { get; set; }
 
+
         public ActionResult Index(String search = "")
         {
             var model = CustomerService.GetCustomerServices(search);
@@ -40,9 +41,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult CustomerOrders(string id, string search = "")
         {
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
-            var orders = OrderService.GetOrdersUserId(user.Id, search);
-            ViewBag.Customer = CustomerService.GetUserId(user.Id);
+            var orders = OrderService.GetOrdersUserId(id, search);
+            ViewBag.Customer = CustomerService.GetUserId(id);
             return View(orders);
         }
 
@@ -51,11 +51,9 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public ActionResult DeleteConfirmed(string id)
         {
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
-            ApplicationDbContext.Users.Remove(user);
-            ApplicationDbContext.SaveChanges();
-            CustomerService.DeleteByUserId(user.Id);
-            OrderService.DeleteByUserId(user.Id);
+            UsersService.DeleteUser(id);
+            CustomerService.DeleteByUserId(id);
+            OrderService.DeleteByUserId(id);
             return RedirectToAction("Index");
         }
     }

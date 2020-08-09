@@ -37,7 +37,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsSameAsShippingAddress))]
         public bool IsSameAsShippingAddress { get; set; }
 
-        public String UserId { get; set; }
+        public string UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]

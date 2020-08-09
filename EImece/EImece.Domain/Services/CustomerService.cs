@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -83,15 +84,18 @@ namespace EImece.Domain.Services
         {
             var result = CustomerRepository.GetAll();
             var resultList = result.ToList();
-            foreach (var item in resultList)
+            if (resultList.IsNotEmpty())
             {
-                GetUserFields(item);
-            }
-            if (!String.IsNullOrEmpty(search))
-            {
-                resultList = resultList.Where(r => r.Email.Contains(search) || r.Name.Contains(search) || r.Surname.Contains(search)).ToList();
-            }
+                foreach (var item in resultList)
+                {
+                    GetUserFields(item);
+                }
 
+                if (!String.IsNullOrEmpty(search))
+                {
+                    resultList = resultList.Where(r => r.Email.Contains(search) || r.Name.Contains(search) || r.Surname.Contains(search)).ToList();
+                }
+            }
             return resultList;
         }
 
@@ -100,6 +104,8 @@ namespace EImece.Domain.Services
             if (item != null)
             {
                 var user = UsersService.GetUser(item.UserId);
+                if (user == null)
+                    return;
                 item.Email = user.Email;
                 item.Name = user.FirstName;
                 item.Surname = user.LastName;

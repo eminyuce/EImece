@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Ninject;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace EImece.Domain.Services
 {
     public class UsersService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -31,7 +34,17 @@ namespace EImece.Domain.Services
 
         public ApplicationUser GetUser(string id)
         {
-            return ApplicationDbContext.Users.First(u => u.Id == id);
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("userId should have value");
+            }
+
+            var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            if (user == null)
+            {
+                Logger.Debug("User is null for userId {0}", id);
+            }
+            return user;
         }
 
         public List<EditUserViewModel> GetUsers(string search)
@@ -65,12 +78,22 @@ namespace EImece.Domain.Services
                 u.LastName = user.LastName;
                 u.Email = user.Email;
                 u.Id = user.Id;
-                var p = users2.FirstOrDefault(r => r.Id == u.Id);
+                var p = users2.FirstOrDefault(r => r.Id.Equals(u.Id, StringComparison.InvariantCultureIgnoreCase));
                 u.Role = p == null ? String.Empty : p.Role.ToStr();
                 model.Add(u);
             }
 
             return model;
+        }
+
+        public void DeleteUser(string id)
+        {
+            var user = GetUser(id);
+            if (user != null)
+            {
+                ApplicationDbContext.Users.Remove(user);
+                ApplicationDbContext.SaveChanges();
+            }
         }
     }
 }
