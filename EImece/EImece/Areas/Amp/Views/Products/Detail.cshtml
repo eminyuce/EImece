@@ -83,15 +83,15 @@
     </div>
     <div class="two columns">
         @if (productTags.Count > 0)
-            {
+        {
 
-        <!-- Tags -->
+            <!-- Tags -->
             <div class="widget margin-top-10">
                 <h3 class="headline">@Resource.Tags</h3><span class="line"></span><div class="clearfix"></div>
 
                 <nav class="tags">
                     @foreach (var t in productTags)
-                {
+                    {
                         @Html.ActionLink(t.Name, "Tag", "products", new { id = t.GetSeoUrl() }, null)
                     }
                 </nav>

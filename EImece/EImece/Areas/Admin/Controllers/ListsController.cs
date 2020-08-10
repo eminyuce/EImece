@@ -58,7 +58,7 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveOrEdit(List List, string itemText)
         {
-            if(List== null)
+            if (List == null)
             {
                 throw new ArgumentException("list cannot be empty");
             }

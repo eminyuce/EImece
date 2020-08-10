@@ -22,9 +22,12 @@
                         <ul>
                             @foreach (var m in Model.ProductCategories)
                             {
-                                <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">
+                            <li>
+                                <a class="nav-link-inline nav-link-light" href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">
                                     <i class="widget-categories-indicator" data-feather="chevron-right">
-                                        </i><span class="font-size-sm">@m.Name</span></a></li>
+                                    </i><span class="font-size-sm">@m.Name</span>
+                                </a>
+                            </li>
                             }
                         </ul>
                     </div>
@@ -93,7 +96,7 @@
             </div>
         </div>
     </div>
- 
+
     <div class="py-3" style="background-color: #1a1a1a;">
         <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>
     </div>

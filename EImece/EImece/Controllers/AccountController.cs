@@ -312,7 +312,7 @@ namespace EImece.Controllers
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                     CustomerService.SaveRegisterViewModel(user.Id, model);
                     var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
-                    return RedirectToAction("Index", "Home",new{ @area="customers" });
+                    return RedirectToAction("Index", "Home", new { @area = "customers" });
                 }
                 AddErrors(result);
             }

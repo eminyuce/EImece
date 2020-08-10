@@ -130,13 +130,9 @@
                                     <i class="sr-star active" data-feather="star"></i>
                                 }
                             }
-
-
-
                         </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Reviews</span>
                     </a>
                 }
-
 
                 <h3 class="h1 font-weight-light pt-3 pb-2">
 
@@ -161,14 +157,18 @@
             <div class="accordion" id="productPanels">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="accordion-heading"><a href="#productInfo" role="button" 
-                                                         data-toggle="collapse" aria-expanded="true"
-                                                         aria-controls="productInfo"><span
-                                            class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                            <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
-                                  </span>@Resource.ProductInformation
-                            <span class="accordion-indicator">
-                            <i data-feather="chevron-up"></i></span></a></h3>
+                        <h3 class="accordion-heading">
+                            <a href="#productInfo" role="button"
+                               data-toggle="collapse" aria-expanded="true"
+                               aria-controls="productInfo">
+                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                    <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
+                                </span>@Resource.ProductInformation
+                                <span class="accordion-indicator">
+                                    <i data-feather="chevron-up"></i>
+                                </span>
+                            </a>
+                        </h3>
                     </div>
                     <div class="collapse show" id="productInfo" data-parent="#productPanels">
                         <div class="card-body">
@@ -207,12 +207,11 @@
                             <div class="card-body">
                                 @foreach (var t in productTags)
                                 {
-                                <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
                                 }
                             </div>
                         </div>
                     }
-
                 </div>
             </div>
             <!-- Share product-->

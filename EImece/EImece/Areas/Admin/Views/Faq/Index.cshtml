@@ -57,9 +57,9 @@ columns.Add()
                        .Sanitized(false)
                        .SetWidth(30)
                        .RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
-</b>);
+    @<b>
+        @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
+    </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {

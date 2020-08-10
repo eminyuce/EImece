@@ -45,7 +45,7 @@
         @for (int i = 0; i < mainPageProductCategories.Count; i++)
         {
             var mainPageProductCategory = mainPageProductCategories[i];
-            @CreateMainPageCategory(mainPageProductCategory, Model.MainPageProductCategories)
+        @CreateMainPageCategory(mainPageProductCategory, Model.MainPageProductCategories)
         }
     </div>
 </div>
@@ -53,31 +53,31 @@
 @if (Model.MainPageMenu != null)
 {
 
-    <div class="parallax-banner fullwidth-element" data-background="#000" data-opacity="0.45" data-height="200" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
-        @Html.Raw(Model.MainPageMenu.GetImageTag())
-        <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
-        <div class="parallax-title" style="top: 68.5px;">@Model.MainPageMenu.Name <span>@Model.MainPageMenu.MetaKeywords</span></div>
-    </div>
+<div class="parallax-banner fullwidth-element" data-background="#000" data-opacity="0.45" data-height="200" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
+    @Html.Raw(Model.MainPageMenu.GetImageTag())
+    <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
+    <div class="parallax-title" style="top: 68.5px;">@Model.MainPageMenu.Name <span>@Model.MainPageMenu.MetaKeywords</span></div>
+</div>
 
 }
 
 @if (latestStories.Count > 0)
 {
     var p = latestStories.OrderBy(r => r.Position).ToList();
-    <div class="container">
-        <!-- Headline -->
-        <div class="sixteen columns">
-            <h3 class="headline">
-                Blog
-            </h3>
-            <span class="line margin-bottom-30"></span>
-        </div>
-        @for (int i = 0; i < p.Count; i++)
+<div class="container">
+    <!-- Headline -->
+    <div class="sixteen columns">
+        <h3 class="headline">
+            Blog
+        </h3>
+        <span class="line margin-bottom-30"></span>
+    </div>
+    @for (int i = 0; i < p.Count; i++)
         {
             var story = p[i];
-            @Html.DisplayFor(model => story, "LatestStory")
+    @Html.DisplayFor(model => story, "LatestStory")
         }
-    </div>
+</div>
 
 }
 
@@ -85,8 +85,9 @@
 <section class="container px-3 pt-4 mt-3">
     <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
         <h2 class="h3 mb-3">@Resource.FeaturedProducts</h2>
-        <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@Url.Action("index","products")">More products
-        <i class="ml-1 mr-n2" data-feather="chevron-right">
+        <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@Url.Action("index","products")">
+            More products
+            <i class="ml-1 mr-n2" data-feather="chevron-right">
             </i>
         </a>
     </div>
@@ -94,7 +95,7 @@
         @for (int i = 0; i < mainPageProducts.Count; i++)
         {
             var p = mainPageProducts[i];
-            @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
+        @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
         }
     </div>
 </section>
@@ -112,17 +113,17 @@
 {
     if (products.IsNotEmpty())
     {
-        <div class="col-md-4 col-sm-6 mb-2 py-3">
-            <div class="widget widget-featured-entries">
-                <h3 class="widget-title font-size-lg">@title</h3>
+<div class="col-md-4 col-sm-6 mb-2 py-3">
+    <div class="widget widget-featured-entries">
+        <h3 class="widget-title font-size-lg">@title</h3>
 
-                @for (int i = 0; i < products.Count; i++)
+        @for (int i = 0; i < products.Count; i++)
                 {
                     var p = products[i];
-                    @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+        @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
                 }
-            </div>
-        </div>
+    </div>
+</div>
     }
 }
 
@@ -133,32 +134,31 @@
     var productCategoryLink = productCategory.ProductCategoryLink;
 
     <!-- Category-->
-    <div class="col-lg-3 col-sm-4 col-6 category-card border border-collapse">
-        <div class="card border-0">
-            @if (!string.IsNullOrEmpty(productImgLink))
+<div class="col-lg-3 col-sm-4 col-6 category-card border border-collapse">
+    <div class="card border-0">
+        @if (!string.IsNullOrEmpty(productImgLink))
             {
-            <a class="d-block" href="@productCategoryLink">
-                <img class="d-block" src="@productImgLink" alt="@productCategory.Name">
-            </a>
+        <a class="d-block" href="@productCategoryLink">
+            <img class="d-block" src="@productImgLink" alt="@productCategory.Name">
+        </a>
             }
-           
 
         <div class="card-body pb-2">
             <h2 class="h6 mb-2"> <a class="d-block" href="@productCategoryLink">@productCategory.Name</a></h2>
             @if (children.IsNotEmpty())
             {
-                <div class="list-group list-group-flush font-size-sm">
-                    @foreach (var childProductCategory in children)
+            <div class="list-group list-group-flush font-size-sm">
+                @foreach (var childProductCategory in children)
                     {
-                        <a class="list-group-item list-group-item-action" href="@childProductCategory.ProductCategoryLink">
-                            @childProductCategory.Name
-                            <i class="ml-1" data-feather="chevron-right" style="width: .875rem; height: .875rem;"></i>
-                        </a>
+                <a class="list-group-item list-group-item-action" href="@childProductCategory.ProductCategoryLink">
+                    @childProductCategory.Name
+                    <i class="ml-1" data-feather="chevron-right" style="width: .875rem; height: .875rem;"></i>
+                </a>
                     }
-                </div>
+            </div>
             }
         </div>
-        </div>
     </div>
+</div>
 
 }

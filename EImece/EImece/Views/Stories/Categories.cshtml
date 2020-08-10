@@ -18,6 +18,6 @@
 }
 @if (isUserAuthenticated)
 {
-    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "storyCategories", new { @id = category.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
+@Html.ActionLink(Resource.AdminEdit, "saveoredit", "storyCategories", new { @id = category.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
 }
 @Html.Partial(selectedPagePath, Model)

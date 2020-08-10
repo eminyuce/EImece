@@ -1,18 +1,7 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
+﻿using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using Resources;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -23,12 +12,13 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(int id,String search = "") 
+        public ActionResult Index(int id, String search = "")
         {
             var productComments = ProductCommentService.GetAdminPageList(id, search, CurrentLanguage);
             ViewBag.Product = ProductService.GetSingle(id);
             return View(productComments);
         }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
@@ -43,7 +33,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var productId = productComment.ProductId;
                 ProductCommentService.DeleteEntity(productComment);
-                return RedirectToAction("Index",new { id= productId });
+                return RedirectToAction("Index", new { id = productId });
             }
             catch (Exception ex)
             {

@@ -120,8 +120,8 @@
 @helper GridDetailLink(Menu d, String controllerName)
 {
 
-    <b>
-        @{
+<b>
+    @{
 
             var p = d.MenuLink.Split("_".ToCharArray());
             var parts = p.First().Split("-".ToCharArray());
@@ -131,56 +131,56 @@
             mid = p.Last();
             if (d.LinkIsActive && !String.IsNullOrEmpty(d.Link))
             {
-                <a class="btn btn-link" target="_blank" href="@d.Link">@d.Name</a>
+        <a class="btn btn-link" target="_blank" href="@d.Link">@d.Name</a>
             }
             else if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
             {
-                @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
+        @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
             }
             else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
                 && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
             {
-                @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
+        @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
             }
             else
             {
-                @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
+        @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
             }
 
-        }
-    </b>
+    }
+</b>
 
 }
 @helper GridToolsColumn(Menu d, List<Menu> menuTreeNodeList, String controllerName)
 {
 
-    <div class="gridToolBox">
+<div class="gridToolBox">
 
-        <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default     glyphicon glyphicon-camera glyphicon-white " })
-        </span>
-        <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-xs btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
-        </span>
+    <span>
+        @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default     glyphicon glyphicon-camera glyphicon-white " })
+    </span>
+    <span>
+        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-xs btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
+    </span>
 
-        @if (UserRoleHelper.IsDeletedEnableRoles())
+    @if (UserRoleHelper.IsDeletedEnableRoles())
         {
 
             if (menuTreeNodeList.Any(r => r.Id == d.Id))
             {
-                <span>
+    <span>
 
-                    @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-                     { "ItemId", d.Id },
-                     {"controllerName",controllerName},
-                     { "DeleteIcon", "gridBtn btn-xs btn btn-danger glyphicon  glyphicon-remove-circle" },
-                     { "ItemDescription", d.Name } })
-                </span>
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+         { "ItemId", d.Id },
+         {"controllerName",controllerName},
+         { "DeleteIcon", "gridBtn btn-xs btn btn-danger glyphicon  glyphicon-remove-circle" },
+         { "ItemDescription", d.Name } })
+    </span>
             }
             else
             {
-                @String.Format("No Delete")
+    @String.Format("No Delete")
             }
         }
-    </div>
+</div>
 }

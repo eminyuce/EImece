@@ -25,14 +25,14 @@
 <h2>@AdminResource.Subscribers</h2>
 <hr class="adminLine" />
 
-    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-            {"controllerName",controllerName}
-            ,{"StateTypes","State"}
-           ,{"orderingButton",false}
-           ,{"selectAll",true}
-           ,{"deleteAll",true}
-            ,{"SetStateOnOrOff",true},
-    { "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+        {"controllerName",controllerName}
+        ,{"StateTypes","State"}
+       ,{"orderingButton",false}
+       ,{"selectAll",true}
+       ,{"deleteAll",true}
+        ,{"SetStateOnOrOff",true},
+{ "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
 <div class="panel panel-primary">
     @Html.Partial("pGridDropDown", baseList)
 

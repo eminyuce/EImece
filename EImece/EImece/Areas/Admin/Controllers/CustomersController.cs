@@ -4,7 +4,6 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -31,7 +30,6 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public IOrderService OrderService { get; set; }
-
 
         public ActionResult Index(String search = "")
         {

@@ -184,7 +184,7 @@ namespace EImece.Controllers
             return PartialView("_Footer", footerViewModel);
         }
 
-        public ActionResult WebSiteAddressInfo(bool isMobilePage=false)
+        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
