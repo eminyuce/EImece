@@ -1,20 +1,40 @@
-﻿@model List<String>
+﻿@model SettingLayoutViewModel
+@using EImece.Domain.Models.FrontModels;
 @{
-    var arraySettings = Model.ToArray();
-    var isPhone = String.IsNullOrEmpty(arraySettings[0]);
-    var isEnvelope = String.IsNullOrEmpty(arraySettings[1]);
+    var isPhone = !String.IsNullOrEmpty(Model.WebSiteCompanyPhoneAndLocation.SettingValue);
+    var isEnvelope = !String.IsNullOrEmpty(Model.WebSiteCompanyEmailAddress.SettingValue);
 
 }
-@if (isPhone  ||  isEnvelope)
+@if (Model.isMobilePage)
 {
-    <ul class="top-bar-menu">
+
+    <a class="dropdown-item" href="tel:@Model.WebSiteCompanyPhoneAndLocation.SettingValue">
+        <i class="mr-2" data-feather="phone" style="width: 13px; height: 13px;">
+        </i>@Model.WebSiteCompanyPhoneAndLocation.SettingValue
+    </a>
+    <a class="dropdown-item" href="mailto:@Model.WebSiteCompanyEmailAddress.SettingValue">
+        <i class="mr-2" data-feather="mail" style="width: 13px; height: 13px;">
+        </i>@Model.WebSiteCompanyEmailAddress.SettingValue
+    </a>
+}
+else if (isPhone || isEnvelope)
+{
+    <!-- contact info-->
+    <ul class="list-inline mb-0 d-none d-lg-inline-block">
         @if (isPhone)
         {
-            <li><i class="fa fa-phone"></i> @Html.Raw(arraySettings[0])</li>
+            <li class="list-inline-item opacity-75 mr-2">
+                <i class="text-light mr-2" data-feather="phone" style="width: 13px; height: 13px;"></i>
+                <a class="text-light font-size-sm py-1 pl-0 pr-2" href="@string.Format("tel:{0}",Model.WebSiteCompanyPhoneAndLocation.SettingValue)">@Html.Raw(Model.WebSiteCompanyPhoneAndLocation.SettingValue)</a>
+            </li>
         }
         @if (isEnvelope)
         {
-            <li><i class="fa fa-envelope"></i><a href="#">@Html.Raw(arraySettings[1])</a></li>
+            <li class="list-inline-item opacity-75 mr-2">
+                <i class="text-light mr-2" data-feather="mail" style="width: 13px; height: 13px;"></i>
+                <a class="text-light font-size-sm py-1 pl-0 pr-2" href="mailto:@Model.WebSiteCompanyEmailAddress.SettingValue">@Html.Raw(Model.WebSiteCompanyEmailAddress.SettingValue)</a>
+            </li>
         }
     </ul>
 }
+

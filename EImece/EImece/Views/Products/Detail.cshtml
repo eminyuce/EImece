@@ -201,18 +201,18 @@
                             </a>
                         </h3>
                     </div>
-                    <div class="collapse" id="tagCloud" data-parent="#productPanels">
-                        <div class="card-body">
-                            @if (productTags.Count > 0)
-                            {
-
-                                foreach (var t in productTags)
+                    @if (productTags.IsNotEmpty())
+                    {
+                        <div class="collapse" id="tagCloud" data-parent="#productPanels">
+                            <div class="card-body">
+                                @foreach (var t in productTags)
                                 {
-                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrl">@t.Name</a>
+                                <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
                                 }
-                            }
+                            </div>
                         </div>
-                    </div>
+                    }
+
                 </div>
             </div>
             <!-- Share product-->

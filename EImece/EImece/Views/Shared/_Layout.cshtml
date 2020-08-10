@@ -15,12 +15,12 @@
     <title>@Html.Raw(ViewBag.Title)</title>
     @if (!string.IsNullOrEmpty(ViewBag.Description))
     {
-    <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+        <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
     }
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {
-    <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
+        <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
     }
     @{
         String seoId = (String)ViewBag.SeoId;
@@ -52,31 +52,17 @@
     <!-- First line: Topbar-->
     <div class="navbar bg-dark py-2 px-0">
         <div class="container px-3">
-            <!-- contact info-->
-            <ul class="list-inline mb-0 d-none d-lg-inline-block">
-                <li class="list-inline-item opacity-75 mr-2">
-                    <i class="text-light mr-2" data-feather="phone" style="width: 13px; height: 13px;"></i>
-                    <a class="text-light font-size-sm py-1 pl-0 pr-2" href="tel:00331697720">00 33 169 7720</a>
-                </li>
-                <li class="list-inline-item opacity-75 mr-2">
-                    <i class="text-light mr-2" data-feather="mail" style="width: 13px; height: 13px;"></i>
-                    <a class="text-light font-size-sm py-1 pl-0 pr-2" href="mailto:info@example.com">info@example.com</a>
-                </li>
-            </ul>
+
+            @Html.Action("WebSiteAddressInfo", "Home",new { isMobilePage= false })
             <!-- links collapsed (moblie)-->
             <div class="dropdown d-inline-block d-lg-none">
                 <a class="dropdown-toggle text-light opacity-75 font-size-sm py-1" href="#" data-toggle="dropdown">Useful links</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="@Url.Action("SettingPage","Home",new { id=Constants.AboutUs })">About us</a>
-                    <a class="dropdown-item" href="#">Help center</a>
-                    <a class="dropdown-item" href="@Url.Action("SettingPage","Home",new { id=Constants.DeliveryInfo })">Delivery info</a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item" href="tel:00331697720">
-                        <i class="mr-2" data-feather="phone" style="width: 13px; height: 13px;">
-                        </i>00 33 169 7720
-                    </a><a class="dropdown-item" href="mailto:info@example.com">
-                        <i class="mr-2" data-feather="mail" style="width: 13px; height: 13px;">
-                        </i>info@example.com
-                    </a>
+                    <a class="dropdown-item" href="@Url.Action("SettingPage","Home",new { id=Constants.AboutUs })">@Resource.AboutUs</a>
+                    <a class="dropdown-item" href="@Url.Action("SettingPage","Home",new { id=Constants.DeliveryInfo })">@Resource.DeliveryInfo</a>
+                    <div class="dropdown-divider">
+                    </div>
+                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
                 </div>
             </div>
             <div class="d-flex">
@@ -84,13 +70,11 @@
                 <ul class="list-inline mb-0 d-none d-lg-block">
                     <li class="list-inline-item mr-2">
                         <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light"
-                           href="@Url.Action("SettingPage","Home",new { id=Constants.AboutUs })">About us</a>
+                           href="@Url.Action("SettingPage","Home",new { id=Constants.AboutUs })">@Resource.AboutUs</a>
                     </li>
                     <li class="list-inline-item mr-2">
-                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light" href="#">Help center</a>
-                    </li>
-                    <li class="list-inline-item mr-2">
-                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2" href="@Url.Action("SettingPage","Home",new { id=Constants.DeliveryInfo })">Delivery info</a>
+                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2"
+                           href="@Url.Action("SettingPage","Home",new { id=Constants.DeliveryInfo })">@Resource.DeliveryInfo</a>
                     </li>
                 </ul>
 
@@ -115,23 +99,23 @@
                 </div>
                 @if (Request.IsAuthenticated)
                 {
-                <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                    <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
-                </a>
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
+                    </a>
 
-                <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
-                    <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout
-                </a>
+                    <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout
+                    </a>
                     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                     {
-                @Html.AntiForgeryToken()
+                        @Html.AntiForgeryToken()
                     }
                 }
                 else
                 {
-                <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                    <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
-                </a>
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
+                    </a>
                 }
 
                 @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
@@ -145,7 +129,6 @@
 
     @*
 
-            @Html.Action("WebSiteAddressInfo", "Home")
         @Html.Action("Languages", "Home")
         @Html.Action("SocialMediaLinks", "Home")
             @Html.Action("WebSiteLogo", "Home")

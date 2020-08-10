@@ -171,11 +171,10 @@ namespace EImece.Controllers
         [ChildActionOnly]
         public ActionResult WebSiteLogo()
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            var CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
-
-            var s = new List<Setting>() { webSiteLogo, CompanyName };
-            return PartialView("_WebSiteLogo", s);
+            var item = new SettingLayoutViewModel();
+            item.WebSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            item.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+            return PartialView("_WebSiteLogo", item);
         }
 
         [ChildActionOnly]
@@ -185,14 +184,13 @@ namespace EImece.Controllers
             return PartialView("_Footer", footerViewModel);
         }
 
-        public ActionResult WebSiteAddressInfo()
+        public ActionResult WebSiteAddressInfo(bool isMobilePage=false)
         {
-            var WebSiteCompanyPhoneAndLocation = SettingService.GetSettingByKey(Constants.WebSiteCompanyPhoneAndLocation);
-            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
-            var resultList = new List<String>();
-            resultList.Add(WebSiteCompanyPhoneAndLocation);
-            resultList.Add(WebSiteCompanyEmailAddress);
-            return PartialView("_WebSiteAddressInfo", resultList);
+            var item = new SettingLayoutViewModel();
+            item.isMobilePage = isMobilePage;
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
+            return PartialView("_WebSiteAddressInfo", item);
         }
 
         //[OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]

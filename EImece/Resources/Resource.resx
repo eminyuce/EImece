@@ -462,4 +462,7 @@
   <data name="FeaturedProducts" xml:space="preserve">
     <value>Öne çıkan Ürünler</value>
   </data>
+  <data name="DeliveryInfo" xml:space="preserve">
+    <value>Teslimat Bilgileri</value>
+  </data>
 </root>

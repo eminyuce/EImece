@@ -286,6 +286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Teslimat Bilgileri.
+        /// </summary>
+        public static string DeliveryInfo {
+            get {
+                return ResourceManager.GetString("DeliveryInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Açıklama.
         /// </summary>
         public static string Description {
