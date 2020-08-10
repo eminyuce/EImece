@@ -900,4 +900,13 @@
   <data name="ReviewSubject" xml:space="preserve">
     <value>Yorum Başlık</value>
   </data>
+  <data name="AuthorName" xml:space="preserve">
+    <value>Yazarın İsmi</value>
+  </data>
+  <data name="StorySubject" xml:space="preserve">
+    <value>Blog Başlık</value>
+  </data>
+  <data name="IsFeaturedStory" xml:space="preserve">
+    <value>Öne Çıkan Blog Yazisi</value>
+  </data>
 </root>

@@ -703,13 +703,21 @@ namespace EImece.Domain.Helpers
 
         public static byte[] GetHash(string inputString)
         {
+            if (string.IsNullOrEmpty(inputString))
+            {
+                return null;
+            }
             HashAlgorithm algorithm = MD5.Create();  // SHA1.Create()
             return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
 
         public static string Capitalize(string value)
         {
-            return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+            return  CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
         }
 
         public static string GetHashString(string inputString)

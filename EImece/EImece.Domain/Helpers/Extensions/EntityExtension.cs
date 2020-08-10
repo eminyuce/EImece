@@ -203,7 +203,12 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetSeoTitle(this BaseEntity entity, int length = 50)
         {
-            return GeneralHelper.Capitalize(GeneralHelper.TruncateAtWord(entity.Name, length));
+            string value = GeneralHelper.TruncateAtWord(entity.Name, length);
+            if (string.IsNullOrEmpty(value))
+            {
+                value = entity.Name;
+            }
+            return GeneralHelper.Capitalize(value);
         }
 
         public static String GetSeoDescription(this BaseContent entity, int length = 150)

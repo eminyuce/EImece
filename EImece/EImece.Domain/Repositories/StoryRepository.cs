@@ -38,6 +38,19 @@ namespace EImece.Domain.Repositories
             return stories.ToList();
         }
 
+        public List<Story> GetFeaturedStories(int take, int language, int excludedStoryId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.StoryTags.Select(r1 => r1.Tag));
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryCategory);
+            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.IsFeaturedStory && r2.Id != excludedStoryId;
+            Expression<Func<Story, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
+
+            return result.ToList();
+        }
+
         public List<Story> GetLatestStories(int language, int take)
         {
             var includeProperties = GetIncludePropertyExpressionList();

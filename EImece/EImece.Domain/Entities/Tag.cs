@@ -21,12 +21,21 @@ namespace EImece.Domain.Entities
         public ICollection<FileStorageTag> FileStorageTags { get; set; }
 
         [NotMapped]
-        public string DetailPageRelativeUrl
+        public string DetailPageRelativeUrlForProducts
         {
             get
             {
                 var requestContext = HttpContext.Current.Request.RequestContext;
                 return new UrlHelper(requestContext).Action("Tag", "products", new { id = this.GetSeoUrl() });
+            }
+        }
+        [NotMapped]
+        public string DetailPageRelativeUrlForStories
+        {
+            get
+            {
+                var requestContext = HttpContext.Current.Request.RequestContext;
+                return new UrlHelper(requestContext).Action("tag", "stories", new { id = this.GetSeoUrl() });
             }
         }
     }

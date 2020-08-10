@@ -92,6 +92,7 @@ namespace EImece.Domain.Services
                 var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
                 result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, language, storyId);
             }
+            result.FeaturedStories = StoryRepository.GetFeaturedStories(10, language, storyId);
             result.RelatedProducts = new List<Product>();
             if (result.Story != null && result.Story.StoryTags.Any())
             {
@@ -102,7 +103,7 @@ namespace EImece.Domain.Services
             string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
             result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             result.Tags = TagService.GetActiveBaseEntities(true, language);
-
+            result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
             return result;
         }
 

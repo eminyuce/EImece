@@ -17,6 +17,12 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public bool MainPage { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AuthorName))]
+        public string AuthorName { get; set; }  
+        
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsFeaturedStory))]
+        public bool IsFeaturedStory { get; set; }
+
         public StoryCategory StoryCategory { get; set; }
         public ICollection<StoryTag> StoryTags { get; set; }
         public ICollection<StoryFile> StoryFiles { get; set; }

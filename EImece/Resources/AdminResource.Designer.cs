@@ -241,6 +241,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yazarın İsmi.
+        /// </summary>
+        public static string AuthorName {
+            get {
+                return ResourceManager.GetString("AuthorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geriye Dönün.
         /// </summary>
         public static string BackToList {
@@ -957,6 +966,15 @@ namespace Resources {
         public static string IsCampaign {
             get {
                 return ResourceManager.GetString("IsCampaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Öne Çıkan Blog Yazisi.
+        /// </summary>
+        public static string IsFeaturedStory {
+            get {
+                return ResourceManager.GetString("IsFeaturedStory", resourceCulture);
             }
         }
         
@@ -2091,6 +2109,15 @@ namespace Resources {
         public static string StoryPageTitle {
             get {
                 return ResourceManager.GetString("StoryPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blog Başlık.
+        /// </summary>
+        public static string StorySubject {
+            get {
+                return ResourceManager.GetString("StorySubject", resourceCulture);
             }
         }
         
