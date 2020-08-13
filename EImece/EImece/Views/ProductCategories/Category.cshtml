@@ -84,17 +84,17 @@
             </div>
             <!-- Products grid-->
             <div class="row no-gutters">
-                @if (products.Any())
+                @if (products.IsNotEmpty())
                 {
                     foreach (var p in products.GetPagingResult())
                     {
 
-                @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
+                        @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
                     }
                 }
                 else
                 {
-                <div class="container">Bu kategoriye eklenmiş bir ürün yoktur.</div>
+                    <div class="container">Bu kategoriye eklenmiş bir ürün yoktur.</div>
                 }
             </div>
             <div class="pb-4 mb-2"></div>
@@ -122,7 +122,13 @@
             var filterId = @String.Format("filter-{0}", filter.CategoryFilterId);
     <div class="custom-control custom-checkbox mb-1">
         <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
-        <label class="custom-control-label" for="@filterId">@filter.name<span class="text-muted ml-1">(@filter.count)</span></label>
+        <label class="custom-control-label" for="@filterId">
+            @filter.name
+                @if (filter.count > 0)
+                {
+                    <span class="text-muted ml-1">(@filter.count)</span>
+                }
+            </label>
     </div>
         }
 </div>

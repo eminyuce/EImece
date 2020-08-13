@@ -17,7 +17,10 @@ namespace EImece.Domain.Services
         protected static readonly Logger ProductCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
-        public IProductService ProductService { get; set; }
+        public IProductService ProductService { get; set; }    
+
+        [Inject]
+        public IBrandService BrandService { get; set; }
 
         private IProductCategoryRepository ProductCategoryRepository { get; set; }
 
@@ -170,11 +173,12 @@ namespace EImece.Domain.Services
             {
                 result = new ProductCategoryViewModel();
                 result.ProductCategory = GetProductCategory(categoryId);
-                var tree = BuildTree(true, result.ProductCategory.Lang);
+                int lang = result.ProductCategory.Lang;
+                var tree = BuildTree(true, lang);
 
-                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.ProductCategory.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, result.ProductCategory.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+                result.Brands = BrandService.GetActiveBaseContentsFromCache(true, lang);
                 result.ProductCategoryTree = tree;
                 result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);

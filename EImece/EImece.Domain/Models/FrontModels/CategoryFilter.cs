@@ -3,6 +3,7 @@
     public class CategoryFilter
     {
         public int CategoryFilterId { get; set; }
+        public int ItemId { get; set; }
         public int count { get; set; }
         public string name { get; set; }
         public int minPrice { get; set; }

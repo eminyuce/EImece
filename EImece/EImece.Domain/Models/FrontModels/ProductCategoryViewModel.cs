@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using NPOI.OpenXmlFormats.Dml;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
@@ -13,9 +14,8 @@ namespace EImece.Domain.Models.FrontModels
         public Menu ProductMenu { get; set; }
         public Menu MainPageMenu { get; set; }
         public List<ProductCategory> ChildrenProductCategories { get; set; }
-
+        public List<Brand> Brands { get; set; }
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
-
         public List<Product> Products
         {
             get
@@ -42,6 +42,7 @@ namespace EImece.Domain.Models.FrontModels
                     var categoryFilterHelper = new CategoryFilterHelper(CategoryFilterTypes, SelectedFilters);
                     ICollection<Product> filteredProducts = categoryFilterHelper.FilterProductsByPrice(products);
                     filteredProducts = categoryFilterHelper.FilterProductsByRating(filteredProducts);
+                    filteredProducts = categoryFilterHelper.FilterProductsByBrand(filteredProducts);
                     result = filteredProducts.ToList();
                 }
                 else
@@ -88,8 +89,14 @@ namespace EImece.Domain.Models.FrontModels
             {
                 var categoryFilterTypes = new List<CategoryFilterType>();
                 var categoryFilterHelper = new CategoryFilterHelper();
-                categoryFilterHelper.addPriceFilter(categoryFilterTypes);
-                categoryFilterHelper.addRatingFilter(categoryFilterTypes);
+                categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
+                categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
+              var brandsWithProducts = 
+                from t1 in ProductCategory.Products.ToList()
+                join t2 in this.Brands on t1.BrandId equals t2.Id
+                orderby t2.Position, t2.UpdatedDate 
+                select t2;
+                categoryFilterHelper.AddBrandFilter(categoryFilterTypes, brandsWithProducts.ToList());
                 return categoryFilterTypes;
             }
         }

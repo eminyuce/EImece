@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,37 +74,62 @@ namespace EImece.Domain.Helpers
             }
             return hasFilter ? filteredProducts : products;
         }
-
-        public void addBrandFilter(List<CategoryFilterType> categoryFilterTypes)
+        public ICollection<Product> FilterProductsByBrand(ICollection<Product> products)
         {
-            var item = new CategoryFilterType();
-            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = "Brand" };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 100, name = "Apple" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 200, name = "Bosh" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 300, name = "Canon Inc." });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 400, name = "Dell" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 500, name = "Hewlett-Packard" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 600, name = "Hitachi" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 700, name = "LG Electronics" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 800, name = "Panasonic" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 900, name = "Sony" });
-            categoryFilterTypes.Add(item);
+            bool hasFilter = false;
+            List<Product> filteredProducts = new List<Product>();
+            foreach (var categoryFilter in categoryFilterTypes)
+            {
+                foreach (var filterId in selectedFilters)
+                {
+                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId == filterId))
+                    {
+                        var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
+                        switch (categoryFilter.FilterTypeName.FilterType)
+                        {
+                            case FilterType.Brand:
+                                filteredProducts.AddRange(products.Where(r => r.BrandId >= filterProperty.ItemId).ToList());
+                                hasFilter = true;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            return hasFilter ? filteredProducts : products;
+        }
+        public void AddBrandFilter(List<CategoryFilterType> categoryFilterTypes, List<Brand> brands)
+        {
+            if (brands.IsNotEmpty())
+            {
+                var item = new CategoryFilterType();
+                item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = "Brand" };
+                int categoryFilterId = 10;
+                for (int i = 0; i < brands.Count; i++)
+                {
+                    var brand = brands[i];
+                    item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = categoryFilterId + i, ItemId=brand.Id, name = brand.Name });
+                }
+                categoryFilterTypes.Add(item);
+            }
         }
 
-        public void addPriceFilter(List<CategoryFilterType> categoryFilterTypes)
+        public void AddPriceFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             CategoryFilterType item = new CategoryFilterType();
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = "Price" };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 1000, minPrice = 10, maxPrice = 50, name = "$10- $20" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 2000, minPrice = 50, maxPrice = 100, name = "$50 - $100" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 3000, minPrice = 100, maxPrice = 500, name = "$100 - $500" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 4000, minPrice = 500, maxPrice = 1000, name = "$500 - $1,000" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 5000, minPrice = 1000, maxPrice = 5000, name = "$1,000 - $5,000" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 6000, minPrice = 5000, maxPrice = 999999, name = "$5000 ve uzerinde" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 100, minPrice = 10, maxPrice = 50, name = "$10- $20" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 101, minPrice = 50, maxPrice = 100, name = "$50 - $100" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 102, minPrice = 100, maxPrice = 500, name = "$100 - $500" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 103, minPrice = 500, maxPrice = 1000, name = "$500 - $1,000" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 104, minPrice = 1000, maxPrice = 5000, name = "$1,000 - $5,000" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 105, minPrice = 5000, maxPrice = 999999, name = "$5000 ve uzerinde" });
             categoryFilterTypes.Add(item);
         }
 
-        public void addRatingFilter(List<CategoryFilterType> categoryFilterTypes)
+        public void AddRatingFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             CategoryFilterType item = new CategoryFilterType();
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Rating, Text = "Rating" };

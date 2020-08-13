@@ -369,6 +369,16 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+        
+        [HttpPost]
+        public async Task<JsonResult> ChangeBrandGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            return await Task.Run(() =>
+            {
+                BrandService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
+                return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
 
         [HttpPost]
         public async Task<JsonResult> ChangeTagGridOrderingOrState(List<OrderingItem> values, String checkbox = "")

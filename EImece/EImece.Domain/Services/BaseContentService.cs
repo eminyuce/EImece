@@ -75,11 +75,14 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = BaseContentRepository.GetActiveBaseContents(isActive, language);
-                if (result != null)
+                if (result.IsNotEmpty())
                 {
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
                 }
-                return new List<T>();
+                else
+                {
+                    return new List<T>();
+                }
             }
             return result;
         }
