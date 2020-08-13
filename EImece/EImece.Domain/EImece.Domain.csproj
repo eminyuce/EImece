@@ -345,6 +345,7 @@
     <Compile Include="Helpers\SqlTableCreator.cs" />
     <Compile Include="Helpers\StringCipher.cs" />
     <Compile Include="Helpers\StringConverter.cs" />
+    <Compile Include="Helpers\StringMethodExtensions.cs" />
     <Compile Include="Helpers\TidyManagedHtmlHelper.cs" />
     <Compile Include="Helpers\UserRoleHelper.cs" />
     <Compile Include="Helpers\WebPushHelper.cs" />
