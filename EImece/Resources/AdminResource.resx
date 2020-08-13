@@ -909,4 +909,7 @@
   <data name="IsFeaturedStory" xml:space="preserve">
     <value>Öne Çıkan Blog Yazisi</value>
   </data>
+  <data name="GoogleMapScript" xml:space="preserve">
+    <value>Google Harita Script</value>
+  </data>
 </root>

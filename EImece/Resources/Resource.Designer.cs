@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bize Yazın.
+        /// </summary>
+        public static string DropUsALine {
+            get {
+                return ResourceManager.GetString("DropUsALine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Düzenle.
         /// </summary>
         public static string Edit {

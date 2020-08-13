@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using Microsoft.Owin.Security.Provider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,5 +40,18 @@ namespace EImece.Domain.Models.FrontModels
 
         public ContactUsFormViewModel Contact { get; set; }
         public List<Setting> ApplicationSettings { get; set; }
+
+        public Setting GoogleMapScript
+        {
+            get
+            {
+                var result =  ApplicationSettings.FirstOrDefault(r => r.SettingKey.Equals(Constants.GoogleMapScript, StringComparison.InvariantCultureIgnoreCase));
+                if(result == null)
+                {
+                    result = new Setting();
+                }
+                return result;
+            }
+        }
     }
 }

@@ -745,6 +745,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Google Harita Script.
+        /// </summary>
+        public static string GoogleMapScript {
+            get {
+                return ResourceManager.GetString("GoogleMapScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GooglePlus Link.
         /// </summary>
         public static string GooglePlusWebSiteLink {

@@ -29,7 +29,8 @@ namespace EImece.Domain
         public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
         public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
-        public const string IsProductPriceEnable = "IsProductPriceEnable";
+        public const string IsProductPriceEnable = "IsProductPriceEnable";   
+        public const string GoogleMapScript = "GoogleMapScript";
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
         public const string SpecialPage = "Special_Page";

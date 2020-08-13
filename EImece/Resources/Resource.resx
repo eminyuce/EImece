@@ -468,4 +468,7 @@
   <data name="Contacts" xml:space="preserve">
     <value>İletişim</value>
   </data>
+  <data name="DropUsALine" xml:space="preserve">
+    <value>Bize Yazın</value>
+  </data>
 </root>
