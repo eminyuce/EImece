@@ -13,10 +13,7 @@ namespace EImece.MyConsole
         private static void Main(string[] args)
 
         {
-            for (int i = 0; i < 1000; i++)
-            {
-                Console.WriteLine(GeneralHelper.RandomNumber(12).ToUpper());
-            }
+            Console.WriteLine("b222".Substring(1));
             Console.ReadLine();
         }
 

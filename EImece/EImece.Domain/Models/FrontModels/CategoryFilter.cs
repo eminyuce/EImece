@@ -9,6 +9,6 @@ namespace EImece.Domain.Models.FrontModels
         public string name { get; set; }
         public int minPrice { get; set; }
         public int maxPrice { get; set; }
-        public int ItemId { get { return CategoryFilterId.Replace("b", "").ToInt(); } }
+        public int ItemId { get { return CategoryFilterId.Substring(1).ToInt(); } }
     }
 }
