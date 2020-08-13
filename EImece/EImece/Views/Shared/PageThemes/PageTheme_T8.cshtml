@@ -9,8 +9,7 @@
 
     var menu = Model.Menu;
     var files = menu.MenuFiles.ToList();
-    ViewBag.Title = menu.GetSeoTitle();
-    ViewBag.Description = menu.GetSeoDescription();
+    ViewBag.Title = Model.Menu.Name;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
     int Width = ViewData["Width"].ToInt(300);
