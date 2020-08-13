@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,13 +10,13 @@ namespace EImece.Domain.Helpers
     public class CategoryFilterHelper
     {
         private List<CategoryFilterType> categoryFilterTypes;
-        private List<int> selectedFilters;
+        private List<string> selectedFilters;
 
         public CategoryFilterHelper()
         {
         }
 
-        public CategoryFilterHelper(List<CategoryFilterType> categoryFilterTypes, List<int> selectedFilters)
+        public CategoryFilterHelper(List<CategoryFilterType> categoryFilterTypes, List<string> selectedFilters)
         {
             this.categoryFilterTypes = categoryFilterTypes;
             this.selectedFilters = selectedFilters;
@@ -29,7 +30,7 @@ namespace EImece.Domain.Helpers
             {
                 foreach (var filterId in selectedFilters)
                 {
-                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId == filterId))
+                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId.Equals(filterId,StringComparison.InvariantCultureIgnoreCase)))
                     {
                         var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
                         switch (categoryFilter.FilterTypeName.FilterType)
@@ -56,13 +57,13 @@ namespace EImece.Domain.Helpers
             {
                 foreach (var filterId in selectedFilters)
                 {
-                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId == filterId))
+                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId.Equals(filterId, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
                         switch (categoryFilter.FilterTypeName.FilterType)
                         {
                             case FilterType.Rating:
-                                filteredProducts.AddRange(products.Where(r => r.Rating >= filterProperty.CategoryFilterId && r.Rating < filterProperty.CategoryFilterId + 1).ToList());
+                                filteredProducts.AddRange(products.Where(r => r.Rating >= filterProperty.ItemId && r.Rating < filterProperty.ItemId + 1).ToList());
                                 hasFilter = true;
                                 break;
 
@@ -82,7 +83,7 @@ namespace EImece.Domain.Helpers
             {
                 foreach (var filterId in selectedFilters)
                 {
-                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId == filterId))
+                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId.Equals(filterId, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
                         switch (categoryFilter.FilterTypeName.FilterType)
@@ -110,7 +111,7 @@ namespace EImece.Domain.Helpers
                 for (int i = 0; i < brands.Count; i++)
                 {
                     var brand = brands[i];
-                    item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = categoryFilterId + i, ItemId=brand.Id, name = brand.Name });
+                    item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("b{0}", brand.Id), name = brand.Name });
                 }
                 categoryFilterTypes.Add(item);
             }
@@ -120,12 +121,12 @@ namespace EImece.Domain.Helpers
         {
             CategoryFilterType item = new CategoryFilterType();
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = "Price" };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 100, minPrice = 10, maxPrice = 50, name = "$10- $20" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 101, minPrice = 50, maxPrice = 100, name = "$50 - $100" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 102, minPrice = 100, maxPrice = 500, name = "$100 - $500" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 103, minPrice = 500, maxPrice = 1000, name = "$500 - $1,000" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 104, minPrice = 1000, maxPrice = 5000, name = "$1,000 - $5,000" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 105, minPrice = 5000, maxPrice = 999999, name = "$5000 ve uzerinde" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 100), minPrice = 10, maxPrice = 50, name = "$10- $20" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 101), minPrice = 50, maxPrice = 100, name = "$50 - $100" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 102), minPrice = 100, maxPrice = 500, name = "$100 - $500" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 103), minPrice = 500, maxPrice = 1000, name = "$500 - $1,000" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 104), minPrice = 1000, maxPrice = 5000, name = "$1,000 - $5,000" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 105), minPrice = 5000, maxPrice = 999999, name = "$5000 ve uzerinde" });
             categoryFilterTypes.Add(item);
         }
 
@@ -133,11 +134,11 @@ namespace EImece.Domain.Helpers
         {
             CategoryFilterType item = new CategoryFilterType();
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Rating, Text = "Rating" };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 1, name = "1 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 2, name = "2 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 3, name = "3 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 4, name = "4 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = 5, name = "5 Yildiz" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 1), name = "1 Yildiz" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 2), name = "2 Yildiz" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 3), name = "3 Yildiz" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 4), name = "4 Yildiz" });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 5), name = "5 Yildiz" });
             categoryFilterTypes.Add(item);
         }
     }

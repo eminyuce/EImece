@@ -15,11 +15,11 @@ namespace EImece.Domain.Models.FrontModels
         public int MaxPrice { get; set; }
         public SortingType Sorting { get; set; }
 
-        public List<int> SelectedFilters
+        public List<string> SelectedFilters
         {
             get
             {
-                return Filter.Split("-".ToCharArray()).Select(r => r.ToInt()).ToList();
+                return Filter.Split("-".ToCharArray()).Select(r => r).ToList();
             }
         }
     }
