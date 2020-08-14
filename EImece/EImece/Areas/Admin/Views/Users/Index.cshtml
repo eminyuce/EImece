@@ -114,6 +114,7 @@ columns.Add()
         .Titled(AdminResource.Name)
         .RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
 
+ 
     columns.Add(o => o.Role)
     .Encoded(false)
     .Titled(AdminResource.Roles)

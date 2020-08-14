@@ -43,14 +43,14 @@ namespace EImece.Areas.Admin.Controllers
         //[Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            var m = new RegisterViewModel();
+            var m = new RegisterViewModelForAdmin();
             return View(m);
         }
 
         [HttpPost]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModelForAdmin model)
         {
             if (ModelState.IsValid)
             {

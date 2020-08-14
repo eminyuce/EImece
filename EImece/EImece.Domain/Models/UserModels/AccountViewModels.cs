@@ -128,6 +128,45 @@ namespace EImece.Models
         }
     }
 
+    public class RegisterViewModelForAdmin
+    {
+        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
+        public string Email { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
+        [StringLength(100, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordStringLength), MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
+        [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
+        public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
+        public string LastName { get; set; }
+   
+        public ApplicationUser GetUser()
+        {
+            var user = new ApplicationUser()
+            {
+                UserName = this.Email,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                Email = this.Email,
+            };
+            return user;
+        }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]

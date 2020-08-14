@@ -26,6 +26,7 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
+
         public virtual String Role { get; set; }
         //you might want to implement jobs too, if you want to display them in your index view
     }
