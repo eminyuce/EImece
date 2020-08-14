@@ -9,6 +9,7 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
@@ -52,6 +53,11 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModelForAdmin model)
         {
+            if (model == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = model.GetUser();
