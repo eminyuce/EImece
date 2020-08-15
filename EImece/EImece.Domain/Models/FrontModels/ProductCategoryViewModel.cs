@@ -22,17 +22,19 @@ namespace EImece.Domain.Models.FrontModels
             {
                 List<Product> result = new List<Product>();
                 List<Product> products = ProductCategory.Products.ToList();
-                if (MinPrice > 0 || MaxPrice > 0)
+                bool hasMinPrice = MinPrice.HasValue && MinPrice > 0;
+                bool hasMaxPrice = MaxPrice.HasValue && MaxPrice > 0;
+                if (hasMinPrice || hasMaxPrice)
                 {
-                    if (MinPrice > 0 && MaxPrice > 0)
+                    if (hasMinPrice && hasMaxPrice)
                     {
                         products = products.Where(r => r.PriceWithDiscount >= MinPrice && r.PriceWithDiscount < MaxPrice).ToList();
                     }
-                    else if (MinPrice > 0)
+                    else if (hasMinPrice)
                     {
                         products = products.Where(r => r.PriceWithDiscount >= MinPrice).ToList();
                     }
-                    else if (MaxPrice > 0)
+                    else if (hasMaxPrice)
                     {
                         products = products.Where(r => r.PriceWithDiscount < MaxPrice).ToList();
                     }

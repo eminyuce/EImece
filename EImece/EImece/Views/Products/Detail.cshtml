@@ -188,21 +188,21 @@
                         </div>
                     </div>
                 </div>
-
+            
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="accordion-heading">
-                            <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
-                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                                    <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
-                                </span>@AdminResource.Tags<span class="accordion-indicator">
-                                    <i data-feather="chevron-up"></i>
-                                </span>
-                            </a>
-                        </h3>
-                    </div>
                     @if (productTags.IsNotEmpty())
                     {
+                        <div class="card-header">
+                            <h3 class="accordion-heading">
+                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
+                                    <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                        <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
+                                    </span>@AdminResource.Tags<span class="accordion-indicator">
+                                        <i data-feather="chevron-up"></i>
+                                    </span>
+                                </a>
+                            </h3>
+                        </div>
                         <div class="collapse" id="tagCloud" data-parent="#productPanels">
                             <div class="card-body">
                                 @foreach (var t in productTags)
@@ -212,8 +212,9 @@
                             </div>
                         </div>
                     }
+                    </div>
                 </div>
-            </div>
+                
             <!-- Share product-->
             <div class="py-4">
                 <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">

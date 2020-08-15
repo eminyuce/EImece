@@ -11,8 +11,8 @@ namespace EImece.Domain.Models.FrontModels
         public int Page { get; set; }
         public int RecordPerPage { get; set; }
         public string Filter { get; set; }
-        public int MinPrice { get; set; }
-        public int MaxPrice { get; set; }
+        public int ? MinPrice { get; set; }
+        public int ? MaxPrice { get; set; }
         public SortingType Sorting { get; set; }
 
         public List<string> SelectedFilters

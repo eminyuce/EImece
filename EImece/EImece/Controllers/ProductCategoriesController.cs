@@ -39,8 +39,14 @@ namespace EImece.Controllers
                 productCategory.Page = page;
                 productCategory.Filter = filtreler;
                 productCategory.Sorting = (SortingType)sorting;
-                productCategory.MinPrice = minPrice;
-                productCategory.MaxPrice = maxPrice;
+                if (minPrice > 0)
+                {
+                    productCategory.MinPrice = minPrice;
+                }
+                if (maxPrice > 0)
+                {
+                    productCategory.MaxPrice = maxPrice;
+                }
                 productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
 
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();

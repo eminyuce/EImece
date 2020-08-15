@@ -139,16 +139,14 @@
     <h3 class="widget-title">Filter by price</h3>
     <div class="d-flex align-items-center">
         <div>
-            <label for="from-price">From</label>
             <div class="input-group">
-                <input class="form-control" type="text" value="@productCategoryViewModel.MinPrice" title="Lütfen bir tam sayı giriniz" id="from-price">
+                <input class="form-control" type="text" id="minPriceOrginal" placeholder="Min TL" value="@Model.MinPrice" title="Lütfen bir tam sayı giriniz" >
             </div>
         </div>
-        <div class="mx-2 pt-4">&ndash;</div>
+        <div class="mx-1 pt-12">&ndash;</div>
         <div>
-            <label for="to-price">To</label>
             <div class="input-group">
-                <input class="form-control" type="text" value="@productCategoryViewModel.MaxPrice" title="Lütfen bir tam sayı giriniz" id="to-price">
+                <input class="form-control" type="text"  id="maxPriceOrginal"  placeholder="Max TL"  value="@Model.MaxPrice" title="Lütfen bir tam sayı giriniz" >
             </div>
         </div>
     </div>
