@@ -124,10 +124,10 @@ namespace EImece.Domain.Helpers
             var item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 100),
-                minPrice = 10,
-                maxPrice = 20
+                minPrice = 0,
+                maxPrice = 50
             };
-            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+            item1.name = string.Format("{0} ve altinda",item1.maxPrice.CurrencySign());
             item.CategoryFilters.Add(item1);
 
             item1 = new CategoryFilter()
@@ -170,9 +170,17 @@ namespace EImece.Domain.Helpers
             {
                 CategoryFilterId = string.Format("p{0}", 104),
                 minPrice = 5000,
-                maxPrice = 99999
+                maxPrice = 10000
             };
-            item1.name = "$5000 ve uzerinde";
+            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+
+            item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 104),
+                minPrice = 10000,
+                maxPrice = 9999999
+            };
+            item1.name = string.Format("{0} ve üzerinde", item1.minPrice.CurrencySign());
             item.CategoryFilters.Add(item1);
 
             categoryFilterTypes.Add(item);

@@ -15,7 +15,7 @@
                 <div class="card-body text-center">
                     <h2 class="h4 mb-1">@AdminResource.CustomerLoginPage</h2>
                     <div class="d-sm-flex align-items-center py-3">
-                        @Html.ActionLink(Resource.CustomerRegister, "Register", "Account", null, new { @class = "btn btn-pill btn-sm btn-outline-secondary mb-2 mr-1" })
+                        @Html.ActionLink(Resource.CustomerRegister, "Register", "Account", null, new { @class = "btn btn-pill btn-sm btn-outline-info mb-2 mr-1" })
                     </div>
                     <hr>
                     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
