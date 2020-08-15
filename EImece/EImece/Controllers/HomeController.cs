@@ -162,6 +162,7 @@ namespace EImece.Controllers
         //    ContactUsFormViewModel contact = new ContactUsFormViewModel();
         //    return PartialView("_ContactUsFormViewModel", contact);
         //}
+        [HttpPost]
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
             if (contact == null)
@@ -171,7 +172,8 @@ namespace EImece.Controllers
 
             if (Session[CaptchaContactUsLogin] == null || !Session[CaptchaContactUsLogin].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
-                ModelState.AddModelError("Captcha", Resources.Resource.ContactUsWrongSumForSecurityQuestion);
+                ModelState.AddModelError("Captcha", Resource.ContactUsWrongSumForSecurityQuestion);
+                ModelState.AddModelError("", Resource.ContactUsWrongSumForSecurityQuestion);
                 if (contact.ItemType == EImeceItemType.Product)
                 {
                     var product = ProductService.GetProductById(contact.ItemId);

@@ -34,7 +34,7 @@
 </div>
 @Html.Raw(HttpUtility.HtmlDecode(desc))
 
- 
+
 <!-- Split section: Map + Contact form-->
 <div class="container-fluid px-0 pt-4 pt-lg-5" id="map" data-offset-top="30">
     <div class="row no-gutters">
@@ -48,5 +48,6 @@
     </div>
 </div>
 
-
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
