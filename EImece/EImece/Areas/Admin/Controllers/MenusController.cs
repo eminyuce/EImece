@@ -155,9 +155,21 @@ namespace EImece.Areas.Admin.Controllers
             {
                 menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });
             }
-            if (!menus.Any(r => r.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase)))
+            if (!menus.Any(r => r.MenuLink.Equals("info-aboutus", StringComparison.InvariantCultureIgnoreCase)))
             {
-                menuLinks.Add(new SelectListItem() { Text = "Urunler Ana Sayfa", Value = "products-index" });
+                menuLinks.Add(new SelectListItem() { Text = "Hakkımızda", Value = "info-aboutus" });
+            }
+            if (!menus.Any(r => r.MenuLink.Equals("info-deliveryinfo", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Teslimat Bilgileri", Value = "info-deliveryinfo" });
+            } 
+            if (!menus.Any(r => r.MenuLink.Equals("info-privacypolicy", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Şartlar ve Koşullar", Value = "info-privacypolicy" });
+            }
+            if (!menus.Any(r => r.MenuLink.Equals("info-termsandconditions", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Gizlilik Politikası", Value = "info-termsandconditions" });
             }
             if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
             {

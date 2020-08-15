@@ -336,6 +336,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
+    <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
@@ -957,13 +958,13 @@
     <Content Include="Content\mstore\fonts\Flaticon.eot" />
     <Content Include="Content\mstore\fonts\Flaticon.ttf" />
     <Content Include="Content\mstore\fonts\Flaticon.woff" />
-    <Content Include="Areas\Admin\Views\Settings\AdminSettingPage.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_CustomerDetails.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Areas\Admin\Views\Brands\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Brands\SaveOrEdit.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_SendContactSellerForCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\ProductComments\Index.cshtml" />
+    <Content Include="App_Data\menuLinks.json" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -1088,7 +1089,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Product.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
@@ -1174,9 +1174,9 @@
     <Content Include="Views\Payment\CheckoutBillingDetails - Copy.cshtml" />
     <Content Include="Views\Payment\CheckoutDelivery - Copy.cshtml" />
     <Content Include="Views\Payment\_OrderSummary.cshtml" />
-    <Content Include="Views\Home\SettingPage.cshtml" />
     <Content Include="Views\Account\AdminLogin.cshtml" />
     <Content Include="Views\Stories\Detail - Copy.cshtml" />
+    <Content Include="Views\Info\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

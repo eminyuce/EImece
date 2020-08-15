@@ -16,49 +16,7 @@
     int Width = ViewData["Width"].ToInt(300);
     int Height = ViewData["Height"].ToInt(214);
 }
-
-<section class="titlebar margin-bottom-20">
-
-    <div class="container">
-        <div class="sixteen columns">
-            <h2>
-                @menu.Name
-            </h2>
-
-            <nav id="breadcrumbs">
-
-                <ul>
-                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
-                    {
-                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
-                    }
-                    <li>@Model.Menu.Name</li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</section>
-
-<div class="container potrfolio-container">
-    <div class="sixteen columns">
-        @if (menuTags.Any())
-        {
-
-            <div id="filters" class="filters-dropdown headline">
-                <span></span>
-                <ul class="option-set" data-option-key="filter">
-                    <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
-                    @foreach (var t in menuTags)
-                {
-                        <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
-                    }
-                </ul>
-            </div>
-
-        }
-    </div>
-    <div class="clearfix"></div>
-</div>
+ 
 <!-- Page Content -->
 <div class="container">
 
@@ -71,6 +29,11 @@
 
     <!-- Title -->
     <div class="row">
+        <div class="col-lg-12">
+            <h2>
+                @menu.Name
+            </h2>
+        </div>
         <div class="col-lg-12">
             <p>
                 @Html.Raw(menu.Description)

@@ -7,11 +7,22 @@
     var menu = Model.Menu;
     ViewBag.Title = string.Format("{0} {1}", Model.CompanyName.SettingValue, menu.GetSeoTitle());
     ViewBag.Description = menu.GetSeoDescription();
-    menu.PageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
-    var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
+    string pageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
+    var selectedPagePath = "PageThemes/PageTheme_" + pageTheme;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
-@Html.Partial(selectedPagePath, Model)
+
+@if (string.IsNullOrEmpty(menu.PageTheme))
+{
+    @Html.Partial(selectedPagePath, Model)
+}
+else
+{
+    <h1>@menu.Name</h1>
+    @Html.Raw(menu.GetCroppedImageTag(300, 0))
+    @Html.Raw(menu.Description)
+}
+
 
 @if (isUserAuthenticated)
 {

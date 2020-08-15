@@ -100,44 +100,7 @@ namespace EImece.Controllers
             resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
             return PartialView("_SocialMediaLinks", resultList);
         }
-
-        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public ActionResult SettingPage(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentException("No Page is defined.");
-            }
-
-            Setting setting = null;
-            if (id.Equals(Constants.AboutUs, StringComparison.InvariantCultureIgnoreCase))
-            {
-                setting = SettingService.GetSettingObjectByKey(Constants.AboutUs, CurrentLanguage);
-                ViewBag.Title = Resource.AboutUs;
-            }
-            else if (id.Equals(Constants.DeliveryInfo, StringComparison.InvariantCultureIgnoreCase))
-            {
-                setting = SettingService.GetSettingObjectByKey(Constants.DeliveryInfo, CurrentLanguage);
-                ViewBag.Title = AdminResource.DeliveryInfo;
-            }
-            else if (id.Equals(Constants.TermsAndConditions, StringComparison.InvariantCultureIgnoreCase))
-            {
-                setting = SettingService.GetSettingObjectByKey(Constants.TermsAndConditions, CurrentLanguage);
-                ViewBag.Title = Resource.TermsAndConditions;
-            }
-            else if (id.Equals(Constants.PrivacyPolicy, StringComparison.InvariantCultureIgnoreCase))
-            {
-                setting = SettingService.GetSettingObjectByKey(Constants.PrivacyPolicy, CurrentLanguage);
-                ViewBag.Title = Resource.PrivacyPolicy;
-            }
-            else
-            {
-                throw new ArgumentException(id);
-            }
-
-            return View("SettingPage", setting);
-        }
-
+ 
         [ChildActionOnly]
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()

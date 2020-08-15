@@ -32,12 +32,12 @@ namespace EImece
                        defaults: new { controller = "SiteMap", action = "Index" },
               namespaces: new[] { "EImece.Controllers" }
             );
-
-            SinglePageRouting(routes, "contactus");
-            SinglePageRouting(routes, "aboutus");
-            SinglePageRouting(routes, "privacypolicy");
-            SinglePageRouting(routes, "termsandconditions");
-
+            routes.MapRoute(
+                   name: "WebSiteGeneralInfoPages",
+                   url: "info/{id}",
+                   defaults: new { controller = "info", action = "index" },
+                   namespaces: new[] { "EImece.Controllers" }
+               );
             routes.MapRoute(
                      name: "Getlogo",
                      url: "images/logo.jpg",
@@ -123,14 +123,6 @@ namespace EImece
             );
         }
 
-        private static void SinglePageRouting(RouteCollection routes, string singlePage)
-        {
-            routes.MapRoute(
-                            name: singlePage,
-                            url: "info/{id}",
-                            defaults: new { controller = "home", action = "settingpage", id = UrlParameter.Optional },
-                            namespaces: new[] { "EImece.Controllers" }
-                        );
-        }
+      
     }
 }

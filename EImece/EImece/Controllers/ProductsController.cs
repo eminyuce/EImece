@@ -26,13 +26,16 @@ namespace EImece.Controllers
         {
             this.productCommentService = ProductCommentService;
         }
-
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Index(int page = 1)
+        public ActionResult Index()
         {
-            var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
-            return View(products);
+            return RedirectToAction("Index", "Home");
         }
+ //       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+ //       public ActionResult Index(int page = 1)
+ //       {
+ //           var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
+ //           return View(products);
+ //       }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
