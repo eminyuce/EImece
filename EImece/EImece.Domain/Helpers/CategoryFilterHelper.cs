@@ -121,12 +121,60 @@ namespace EImece.Domain.Helpers
         {
             CategoryFilterType item = new CategoryFilterType();
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = "Price" };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 100), minPrice = 10, maxPrice = 50, name = "$10- $20" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 101), minPrice = 50, maxPrice = 100, name = "$50 - $100" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 102), minPrice = 100, maxPrice = 500, name = "$100 - $500" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 103), minPrice = 500, maxPrice = 1000, name = "$500 - $1,000" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 104), minPrice = 1000, maxPrice = 5000, name = "$1,000 - $5,000" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("p{0}", 105), minPrice = 5000, maxPrice = 999999, name = "$5000 ve uzerinde" });
+            var item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 100),
+                minPrice = 10,
+                maxPrice = 20
+            };
+            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+            item.CategoryFilters.Add(item1);
+
+            item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 101),
+                minPrice = 50,
+                maxPrice = 100
+            };
+            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+            item.CategoryFilters.Add(item1);
+
+            item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 102),
+                minPrice = 100,
+                maxPrice = 500
+            };
+            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+            item.CategoryFilters.Add(item1);
+
+            item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 103),
+                minPrice = 500,
+                maxPrice = 1000
+            };
+            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+            item.CategoryFilters.Add(item1);
+
+            item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 104),
+                minPrice = 1000,
+                maxPrice = 5000
+            };
+            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
+            item.CategoryFilters.Add(item1);
+
+            item1 = new CategoryFilter()
+            {
+                CategoryFilterId = string.Format("p{0}", 104),
+                minPrice = 5000,
+                maxPrice = 99999
+            };
+            item1.name = "$5000 ve uzerinde";
+            item.CategoryFilters.Add(item1);
+
             categoryFilterTypes.Add(item);
         }
 

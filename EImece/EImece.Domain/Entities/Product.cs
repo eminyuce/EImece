@@ -117,7 +117,7 @@ namespace EImece.Domain.Entities
 
             }
         }
-      [NotMapped]
+         [NotMapped]
         public double PriceWithDiscount
         {
             get

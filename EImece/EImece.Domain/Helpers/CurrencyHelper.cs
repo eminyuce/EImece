@@ -11,5 +11,9 @@
         {
             return price.ToString("C1");
         }
+        public static string CurrencySign(this int price)
+        {
+            return price.ToString("C1");
+        }
     }
 }
