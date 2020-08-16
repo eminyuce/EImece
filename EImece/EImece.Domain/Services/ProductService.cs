@@ -128,16 +128,29 @@ namespace EImece.Domain.Services
             }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
             result.RelatedStories = new List<Story>();
-            if (product != null && product.ProductTags.Any())
+            if (product.ProductTags.Any())
             {
                 var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
                 result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
             }
+            int relatedProductTake = 20;
             result.RelatedProducts = new List<Product>();
-            if (product != null && product.ProductTags.Any())
+            if (product.ProductTags.Any())
             {
                 var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
-                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 20, product.Lang, id);
+                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake, product.Lang, id);
+            }
+
+            if (result.RelatedProducts.Count < 20)
+            {
+                relatedProductTake -= result.RelatedProducts.Count;
+                var categoryProducts = ProductCategoryService.GetProductCategory(product.ProductCategoryId)
+                    .Products;
+                categoryProducts.Remove(product);
+                result.RelatedProducts.AddRange(categoryProducts
+                    .OrderBy(x => Guid.NewGuid())
+                    .Take(relatedProductTake)
+                    .OrderByDescending(r => r.UpdatedDate).ToList());
             }
 
             return result;
