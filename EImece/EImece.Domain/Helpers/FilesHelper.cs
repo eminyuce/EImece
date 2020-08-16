@@ -28,7 +28,6 @@ namespace EImece.Domain.Helpers
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public bool IsCachingActive { get; set; }
         private ICacheProvider _memoryCacheProvider { get; set; }
 
         [Inject]
@@ -36,7 +35,6 @@ namespace EImece.Domain.Helpers
         {
             get
             {
-                _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
                 _memoryCacheProvider.CacheDuration = AppConfig.GetConfigInt("CacheLongSeconds");
                 return _memoryCacheProvider;
             }

@@ -27,6 +27,9 @@ namespace EImece.Controllers
         public IdentityManager IdentityManager { get; set; }
 
         [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
+
+        [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
         public ApplicationSignInManager SignInManager { get; set; }

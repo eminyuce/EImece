@@ -1,12 +1,17 @@
 ﻿using EImece.Controllers;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Amp.Controllers
 {
     public class ProductsController : BaseController
     {
+        [Inject]
+        public IProductService ProductService { get; set; }
+
         public ActionResult Index()
         {
             return View();

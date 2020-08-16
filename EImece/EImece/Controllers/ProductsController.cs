@@ -20,6 +20,9 @@ namespace EImece.Controllers
         private readonly IProductCommentService productCommentService;
 
         [Inject]
+        public IProductService ProductService { get; set; }
+
+        [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
         public ProductsController(IProductCommentService ProductCommentService)

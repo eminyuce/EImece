@@ -107,7 +107,6 @@ namespace EImece.Domain.Helpers
             {
                 var item = new CategoryFilterType();
                 item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = "Brand" };
-                int categoryFilterId = 10;
                 for (int i = 0; i < brands.Count; i++)
                 {
                     var brand = brands[i];

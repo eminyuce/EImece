@@ -3,6 +3,8 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using NLog;
 using System;
 using System.Net;
@@ -14,6 +16,9 @@ namespace EImece.Controllers
     public class ProductCategoriesController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public IProductCategoryService ProductCategoryService { get; set; }
 
         // GET: ProductCategory
         public ActionResult Index()

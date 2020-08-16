@@ -6,6 +6,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using Resources;
@@ -24,6 +25,7 @@ namespace EImece.Controllers
     public class HomeController : BaseController
     {
         private const string CaptchaContactUsLogin = "CaptchaContactUsLogin";
+        private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public ICacheProvider MemoryCacheProvider { get; set; }
@@ -31,7 +33,23 @@ namespace EImece.Controllers
         [Inject]
         public IEmailSender EmailSender { get; set; }
 
-        private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
+        [Inject]
+        public ISubscriberService SubsciberService { get; set; }
+
+        [Inject]
+        public IMainPageImageService MainPageImageService { get; set; }
+
+        [Inject]
+        public IProductCategoryService ProductCategoryService { get; set; }
+
+        [Inject]
+        public IMenuService MenuService { get; set; }
+
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
+
+        [Inject]
+        public IProductService ProductService { get; set; }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()

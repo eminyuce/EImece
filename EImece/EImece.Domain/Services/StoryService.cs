@@ -200,9 +200,12 @@ namespace EImece.Domain.Services
 
         public Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams)
         {
-            var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
-
+            if (items.IsEmpty())
+            {
+                return null;
+            }
+            var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);

@@ -17,9 +17,6 @@ namespace EImece.Domain.Services
     {
         [Inject]
         public IHttpContextFactory HttpContextFactory { get; set; }
-
-        private static readonly Logger BaseServiceLogger = LogManager.GetCurrentClassLogger();
-        public bool IsCachingActive { get; set; }
         private ICacheProvider _memoryCacheProvider { get; set; }
 
         [Inject]
@@ -27,10 +24,6 @@ namespace EImece.Domain.Services
         {
             get
             {
-                if (_memoryCacheProvider != null)
-                {
-                    _memoryCacheProvider.IsCacheProviderActive = IsCachingActive;
-                }
                 return _memoryCacheProvider;
             }
             set

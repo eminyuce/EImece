@@ -30,6 +30,21 @@ namespace EImece.Controllers
                 _memoryCacheProvider = value;
             }
         }
+        private FilesHelper _filesHelper { get; set; }
+
+        [Inject]
+        public FilesHelper FilesHelper
+        {
+            get
+            {
+                _filesHelper.InitFilesMediaFolder();
+                return _filesHelper;
+            }
+            set
+            {
+                _filesHelper = value;
+            }
+        }
 
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]

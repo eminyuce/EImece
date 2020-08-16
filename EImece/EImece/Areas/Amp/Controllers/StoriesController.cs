@@ -1,6 +1,8 @@
 ﻿using EImece.Controllers;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using NLog;
 using System;
 using System.Web.Mvc;
@@ -10,6 +12,9 @@ namespace EImece.Areas.Amp.Controllers
     public class StoriesController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        public IStoryService StoryService { get; set; }
 
         public ActionResult Index()
         {

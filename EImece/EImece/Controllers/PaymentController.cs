@@ -32,6 +32,9 @@ namespace EImece.Controllers
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
+        [Inject]
+        public IProductService ProductService { get; set; }
+
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
@@ -42,6 +45,9 @@ namespace EImece.Controllers
         public IAddressService AddressService { get; set; }
 
         public ICustomerService CustomerService { get; set; }
+
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
 
         public PaymentController(IyzicoService iyzicoService,
             ApplicationUserManager userManager,

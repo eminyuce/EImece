@@ -5,7 +5,6 @@ namespace EImece.Domain.Caching
     public interface ICacheProvider
     {
         int CacheDuration { get; set; }
-        bool IsCacheProviderActive { get; set; }
 
         /// <summary>
         /// Retrieve cached item

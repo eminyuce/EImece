@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EImece.Domain.Services.IServices;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,6 +11,8 @@ namespace EImece.Controllers
 {
     public class InfoController : BaseController
     {
+        [Inject]
+        public IMenuService MenuService { get; set; }
         // GET: Info
         public ActionResult Index(string id)
         {
