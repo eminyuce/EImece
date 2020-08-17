@@ -13,7 +13,7 @@
         }
         public static string CurrencySign(this int price)
         {
-            return price.ToString("C");
+            return price.ToString("c0");
         }
     }
 }

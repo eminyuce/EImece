@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,11 @@ namespace EImece.Domain.Helpers
             {
                 foreach (var filterId in selectedFilters)
                 {
-                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId.Equals(filterId,StringComparison.InvariantCultureIgnoreCase)))
+                    if (categoryFilter.CategoryFilters.Any(t => t.
+                    CategoryFilterId.Equals(filterId,StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
+                        var filterProperty = categoryFilter.CategoryFilters.
+                            FirstOrDefault(t => t.CategoryFilterId == filterId);
                         switch (categoryFilter.FilterTypeName.FilterType)
                         {
                             case FilterType.Price:
@@ -57,9 +60,12 @@ namespace EImece.Domain.Helpers
             {
                 foreach (var filterId in selectedFilters)
                 {
-                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId.Equals(filterId, StringComparison.InvariantCultureIgnoreCase)))
+                    if (categoryFilter.CategoryFilters.Any(t =>
+                    t.CategoryFilterId.Equals(filterId,
+                    StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
+                        var filterProperty = categoryFilter.CategoryFilters.
+                            FirstOrDefault(t => t.CategoryFilterId == filterId);
                         switch (categoryFilter.FilterTypeName.FilterType)
                         {
                             case FilterType.Rating:
@@ -83,7 +89,9 @@ namespace EImece.Domain.Helpers
             {
                 foreach (var filterId in selectedFilters)
                 {
-                    if (categoryFilter.CategoryFilters.Any(t => t.CategoryFilterId.Equals(filterId, StringComparison.InvariantCultureIgnoreCase)))
+                    if (categoryFilter.CategoryFilters.Any(t => t.
+                    CategoryFilterId.Equals(filterId,
+                    StringComparison.InvariantCultureIgnoreCase)))
                     {
                         var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
                         switch (categoryFilter.FilterTypeName.FilterType)
@@ -106,7 +114,7 @@ namespace EImece.Domain.Helpers
             if (brands.IsNotEmpty())
             {
                 var item = new CategoryFilterType();
-                item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = "Brand" };
+                item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = Resource.Brands };
                 for (int i = 0; i < brands.Count; i++)
                 {
                     var brand = brands[i];
@@ -119,14 +127,14 @@ namespace EImece.Domain.Helpers
         public void AddPriceFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             CategoryFilterType item = new CategoryFilterType();
-            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = "Price" };
+            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = Resource.Price };
             var item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 100),
                 minPrice = 0,
                 maxPrice = 50
             };
-            item1.name = string.Format("{0} ve altinda",item1.maxPrice.CurrencySign());
+            item1.name = string.Format("{0} {1}",item1.maxPrice.CurrencySign(), Resource.AndUnderPrice);
             item.CategoryFilters.Add(item1);
 
             item1 = new CategoryFilter()
@@ -179,7 +187,7 @@ namespace EImece.Domain.Helpers
                 minPrice = 10000,
                 maxPrice = 9999999
             };
-            item1.name = string.Format("{0} ve üzerinde", item1.minPrice.CurrencySign());
+            item1.name = string.Format("{0} {1}", item1.minPrice.CurrencySign(), Resource.AndOverPrice);
             item.CategoryFilters.Add(item1);
 
             categoryFilterTypes.Add(item);
@@ -188,12 +196,12 @@ namespace EImece.Domain.Helpers
         public void AddRatingFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             CategoryFilterType item = new CategoryFilterType();
-            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Rating, Text = "Rating" };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 1), name = "1 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 2), name = "2 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 3), name = "3 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 4), name = "4 Yildiz" });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 5), name = "5 Yildiz" });
+            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Rating, Text = Resource.Rating };
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 1), name = string.Format("1 {0}", Resource.Star) });  
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 2), name = string.Format("2 {0}", Resource.Star) });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 3), name = string.Format("3 {0}", Resource.Star) });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 4), name = string.Format("4 {0}", Resource.Star) });
+            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 5), name = string.Format("5 {0}", Resource.Star) });
             categoryFilterTypes.Add(item);
         }
     }

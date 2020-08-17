@@ -11,9 +11,16 @@ namespace EImece.MyConsole
         private static String connectionString = @"";
 
         private static void Main(string[] args)
-
         {
-            Console.WriteLine("b222".Substring(1));
+            int p = 50;
+            Console.WriteLine(p.ToString("C"));
+            Console.WriteLine(p.ToString("c0"));
+            Console.WriteLine(p.ToString("C2"));
+            Console.WriteLine(p.ToString("C3"));
+            Console.WriteLine(p.ToString("C4"));
+            Console.WriteLine(p.ToString("C5"));
+            Console.WriteLine(p.ToString("C6"));
+
             Console.ReadLine();
         }
 

@@ -54,7 +54,7 @@
                         <!-- Price range-->
 
                         <div class="column">
-                            <button class="btn btn-outline-primary btn-sm" id="FilterButton">Filter</button>
+                            <button class="btn btn-info rounded btn-block mb-2 mr-1" id="FilterButton">@Resource.Filter</button>
                         </div>
                         @foreach (var filterType in Model.CategoryFilterTypes)
                         {
@@ -136,7 +136,7 @@
     {
 
 <div class="widget mb-4 pb-1">
-    <h3 class="widget-title">Filter by price</h3>
+    <h3 class="widget-title">@Resource.FilterByPrice</h3>
     <div class="d-flex align-items-center">
         <div>
             <div class="input-group">

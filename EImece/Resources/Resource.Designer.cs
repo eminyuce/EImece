@@ -124,11 +124,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ve üzerinde.
+        /// </summary>
+        public static string AndOverPrice {
+            get {
+                return ResourceManager.GetString("AndOverPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ve altinda.
+        /// </summary>
+        public static string AndUnderPrice {
+            get {
+                return ResourceManager.GetString("AndUnderPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geri.
         /// </summary>
         public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Markalar.
+        /// </summary>
+        public static string Brands {
+            get {
+                return ResourceManager.GetString("Brands", resourceCulture);
             }
         }
         
@@ -363,6 +390,24 @@ namespace Resources {
         public static string FeaturedProducts {
             get {
                 return ResourceManager.GetString("FeaturedProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filtrele.
+        /// </summary>
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fiyat Aralığı.
+        /// </summary>
+        public static string FilterByPrice {
+            get {
+                return ResourceManager.GetString("FilterByPrice", resourceCulture);
             }
         }
         
@@ -663,6 +708,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Puani.
+        /// </summary>
+        public static string Rating {
+            get {
+                return ResourceManager.GetString("Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Devami....
         /// </summary>
         public static string ReadMore {
@@ -925,6 +979,15 @@ namespace Resources {
         public static string Specifications {
             get {
                 return ResourceManager.GetString("Specifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yildiz.
+        /// </summary>
+        public static string Star {
+            get {
+                return ResourceManager.GetString("Star", resourceCulture);
             }
         }
         

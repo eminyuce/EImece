@@ -258,7 +258,7 @@ namespace EImece.Areas.Admin.Controllers
 
         private List<SelectListItem> GetBrandsSelectList()
         {
-            var tagCategories = BrandService.GetAll().Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+            var tagCategories = BrandService.GetAll().Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
             return tagCategories.Select(r => new SelectListItem()
             {
                 Text = r.Name.ToStr(),

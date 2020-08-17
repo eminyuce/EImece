@@ -471,4 +471,25 @@
   <data name="DropUsALine" xml:space="preserve">
     <value>Bize Yazın</value>
   </data>
+  <data name="Brands" xml:space="preserve">
+    <value>Markalar</value>
+  </data>
+  <data name="FilterByPrice" xml:space="preserve">
+    <value>Fiyat Aralığı</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Ürün Puani</value>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>Yildiz</value>
+  </data>
+  <data name="AndOverPrice" xml:space="preserve">
+    <value>ve üzerinde</value>
+  </data>
+  <data name="AndUnderPrice" xml:space="preserve">
+    <value>ve altinda</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtrele</value>
+  </data>
 </root>
