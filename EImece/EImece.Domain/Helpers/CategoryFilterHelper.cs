@@ -175,7 +175,7 @@ namespace EImece.Domain.Helpers
 
             item1 = new CategoryFilter()
             {
-                CategoryFilterId = string.Format("p{0}", 104),
+                CategoryFilterId = string.Format("p{0}", 105),
                 minPrice = 5000,
                 maxPrice = 10000
             };
@@ -183,7 +183,7 @@ namespace EImece.Domain.Helpers
 
             item1 = new CategoryFilter()
             {
-                CategoryFilterId = string.Format("p{0}", 104),
+                CategoryFilterId = string.Format("p{0}", 106),
                 minPrice = 10000,
                 maxPrice = 9999999
             };

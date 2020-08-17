@@ -67,10 +67,23 @@
 
                 for (var i = 1; i <= pagingItems.TotalPageCount; i++)
                 {
-                    <li class="page-item @(i == pagingItems.PageIndex ? "active" : "")">
-                        <a href=@Url.Action(actionName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems,
-                           i)) class="@styleClassBtn">@i</a>
-                    </li>
+                    var activeLink = i == pagingItems.PageIndex;
+                    if (activeLink)
+                    {
+
+                        <li class="page-item active d-none d-sm-block" aria-current="page">
+                            <span class="btn btn-pill btn-dark btn-sm mb-2 mr-1">
+                                @pagingItems.PageIndex<span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a href=@Url.Action(actionName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, i))
+                               class="@styleClassBtn">@i</a>
+                        </li>
+                    }
                 }
             }
 

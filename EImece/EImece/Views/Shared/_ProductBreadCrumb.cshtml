@@ -11,14 +11,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-        @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
-        {
-            <li class="breadcrumb-item">@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
-        }
-        @if (Model.ProductMenu != null && Model.ProductMenu.IsActive)
-        {
-            <li class="breadcrumb-item">@Html.ActionLink(Model.ProductMenu.Name, "Index", "Products")</li>
-        }
         @for (int i = categories.Count() - 1; i >= 0; i--)
         {
             var category = categories[i];
