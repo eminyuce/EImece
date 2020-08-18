@@ -492,4 +492,22 @@
   <data name="Filter" xml:space="preserve">
     <value>Filtrele</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Ana Sayfa</value>
+  </data>
+  <data name="AdditionalComments" xml:space="preserve">
+    <value>Sepetiniz icin Ek Yorumlar</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Not</value>
+  </data>
+  <data name="OrderSummary" xml:space="preserve">
+    <value>Sipariş özeti</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Birim fiyat</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>Ürün Kategorisi</value>
+  </data>
 </root>

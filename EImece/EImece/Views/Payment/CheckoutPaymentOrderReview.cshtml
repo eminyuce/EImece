@@ -19,14 +19,11 @@
             <ol class="breadcrumb">
                 <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
                 <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#">Shop</a>
+                    <a href="/">@Resource.HomePage</a>
                 </li>
             </ol>
         </nav>
-        <h1 class="page-title">Checkout</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@Resource.OrderFinalReview</h1><span class="d-block mt-2 text-muted"></span>
     </div>
 </div>
 <!-- Page Content-->
@@ -48,7 +45,7 @@
             <a class="step step-active" href="@Url.Action("checkoutPaymentOrderReview")">
                 <span class="step-indicator"><i data-feather="check"></i></span><span class="step-icon">
     <i data-feather="check-circle"></i>
-</span>3.@Resource.OrderFinalReview
+        </span>3.@Resource.OrderFinalReview
             </a><a class="step" href="@Url.Action("PlaceOrder")">
                     <span class="step-icon">
                         <i data-feather="credit-card"></i>
@@ -109,15 +106,15 @@
             }
             <div class="media-body pt-3">
                 <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                    <a href="@product.DetailPageUrl">Adidas Performance Hat</a>
+                    <a href="@product.DetailPageUrl">@product.Name</a>
                 </h3>
-                <div class="font-size-sm"><span class="text-muted mr-2">Unit Price:</span>@product.Price.CurrencySign()</div>
-                <div class="font-size-sm"><span class="text-muted mr-2">CategoryName:</span>@product.CategoryName</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
             </div>
         </div>
         <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-            <div class="font-size-sm mb-3"><span class="text-muted mr-2">Quantity:</span><span class="font-weight-semibold">@item.quantity</span></div>
-            <div class="font-size-sm mb-3"><span class="text-muted mr-2">TotalPrice:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
+            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.quantity</span></div>
+            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Total:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
         </div>
     </div>
 

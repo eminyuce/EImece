@@ -93,7 +93,8 @@ namespace EImece.Domain.Models.FrontModels
                 var categoryFilterHelper = new CategoryFilterHelper();
                 categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
                 categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
-              var brandsWithProducts = 
+
+                var brandsWithProducts = 
                 from t1 in ProductCategory.Products.ToList()
                 join t2 in this.Brands on t1.BrandId equals t2.Id
                 orderby t2.Position, t2.UpdatedDate 
