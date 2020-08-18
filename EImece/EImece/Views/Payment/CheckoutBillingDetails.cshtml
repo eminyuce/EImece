@@ -64,7 +64,6 @@
                         <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
                     </div>
                 </div>
-                <div class="pt-3 pl-sm-2 text-right"><a class="btn btn-light btn-sm" href="account-profile.html"><i class="mr-2" data-feather="edit"></i>Edit profile</a></div>
             </div>
             @using (Html.BeginForm("SaveCustomer", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
