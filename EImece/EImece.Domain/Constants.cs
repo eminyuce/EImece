@@ -4,6 +4,7 @@ namespace EImece.Domain
 {
     public static class Constants
     {
+   
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         public const string OrderGuidCookieKey = "orderGuid";
         public const string SUCCESS = "SUCCESS";

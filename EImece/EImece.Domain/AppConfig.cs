@@ -69,7 +69,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigInt("GridPageSizeNumber", 200);
+                return GetConfigInt("GridPageSizeNumber", 50);
             }
         }
 
