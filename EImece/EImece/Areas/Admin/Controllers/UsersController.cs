@@ -291,8 +291,10 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
+        public async Task<ActionResult> ChangePassword()
         {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            ViewBag.CurrentUser = user;
             return View();
         }
 
@@ -317,6 +319,8 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("Message", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
+            var user2 = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            ViewBag.CurrentUser = user2;
             return View(model);
         }
 

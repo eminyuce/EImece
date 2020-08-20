@@ -1006,7 +1006,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sevkiyat adresleri ile aynı.
+        ///   Looks up a localized string similar to Sevkiyat adresleri ile Fatura adresi aynı mi?.
         /// </summary>
         public static string IsSameAsShippingAddress {
             get {

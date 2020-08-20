@@ -160,6 +160,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fatura Adresi.
+        /// </summary>
+        public static string BillingAdress {
+            get {
+                return ResourceManager.GetString("BillingAdress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Markalar.
         /// </summary>
         public static string Brands {

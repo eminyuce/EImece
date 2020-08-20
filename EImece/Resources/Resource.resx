@@ -510,4 +510,7 @@
   <data name="ProductCategory" xml:space="preserve">
     <value>Ürün Kategorisi</value>
   </data>
+  <data name="BillingAdress" xml:space="preserve">
+    <value>Fatura Adresi</value>
+  </data>
 </root>
