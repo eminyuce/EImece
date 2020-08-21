@@ -187,6 +187,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ve üzeri alışverişe KARGO ÜCRETSİZ!.
+        /// </summary>
+        public static string CargoFreeText {
+            get {
+                return ResourceManager.GetString("CargoFreeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş yapmak için buraya tıklayın.
         /// </summary>
         public static string ClickHereToLogin {
