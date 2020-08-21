@@ -67,10 +67,10 @@ function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
     var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
     console.log(postData);
     ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
-        var totalPrice = parseFloat(itemPrice) * quantity;
-        console.log(totalPrice);
-        renderPrice(totalPrice, function (data) {
-            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.price);
+      //  var totalPrice = parseFloat(itemPrice) * quantity;
+      //  console.log(totalPrice);
+        renderShoppingCartPrice(function (data) {
+            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.TotalPrice);
         });
         bindCalcuateTotalPrice();
     });
@@ -83,9 +83,9 @@ $('[data-shopping-button-price]').each(function () {
         triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
     });
 });
-function renderPrice(price, success) {
-    var postData = JSON.stringify({ price: price });
-    ajaxMethodCall(postData, "/Payment/RenderPrice", success);
+function renderShoppingCartPrice(success) {
+    var postData = JSON.stringify({  });
+    ajaxMethodCall(postData, "/Payment/renderShoppingCartPrice", success);
 }
 
 function bindCalcuateTotalPrice() {
@@ -97,9 +97,11 @@ function bindCalcuateTotalPrice() {
         var totalPrice = parseFloat(itemPrice) * quantity;
         grandTotalPrice = grandTotalPrice + totalPrice;
     });
-    var data = { totalPrice: grandTotalPrice };
-    renderPrice(grandTotalPrice, function (data) {
-        $('#TotalPrice').html(data.price);
+
+    renderShoppingCartPrice(function (data) {
+        $('#CargoPrice').html(data.CargoPrice);
+        $('#TotalPrice').html(data.TotalPrice);
+        $('#TotalPriceWithCargoPrice').html(data.TotalPriceWithCargoPrice);
         $('#HomePageTotalPrice').html(data.price);
     });
 }

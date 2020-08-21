@@ -259,6 +259,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sepet Minimum Toplam Fiyat.
+        /// </summary>
+        public static string BasketMinTotalPrice {
+            get {
+                return ResourceManager.GetString("BasketMinTotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Doğum günü.
         /// </summary>
         public static string BirthDate {
@@ -291,6 +300,33 @@ namespace Resources {
         public static string ButtonOk {
             get {
                 return ResourceManager.GetString("ButtonOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo Şirketi.
+        /// </summary>
+        public static string CargoCompany {
+            get {
+                return ResourceManager.GetString("CargoCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo Ücreti.
+        /// </summary>
+        public static string CargoPrice {
+            get {
+                return ResourceManager.GetString("CargoPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo Ayarları.
+        /// </summary>
+        public static string CargoSettings {
+            get {
+                return ResourceManager.GetString("CargoSettings", resourceCulture);
             }
         }
         

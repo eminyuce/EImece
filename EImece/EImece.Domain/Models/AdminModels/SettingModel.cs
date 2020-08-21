@@ -109,5 +109,15 @@ namespace EImece.Domain.Models.AdminModels
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterEmailListDescription))]
         public string FooterEmailListDescription { get; set; }
+
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]
+        public string CargoCompany { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPrice))]
+        public int BasketMinTotalPriceForCargo { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoPrice))]
+        public int CargoPrice { get; set; }
     }
 }

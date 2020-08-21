@@ -149,6 +149,9 @@ namespace EImece.Controllers
             {
                 result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
             }
+            result.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+            result.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+            result.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
             return result;
         }
 
@@ -257,9 +260,21 @@ namespace EImece.Controllers
             return View(shoppingCart);
         }
 
-        public ActionResult RenderPrice(double price)
+        public ActionResult renderShoppingCartPrice()
         {
-            return Json(new { status = Domain.Constants.SUCCESS, price = price.CurrencySign() }, JsonRequestBehavior.AllowGet);
+            ShoppingCartSession shoppingCart = GetShoppingCart();
+            return Json(new
+            {
+                status = Domain.Constants.SUCCESS,
+                CargoPriceInt = shoppingCart.CargoPriceInt,
+                CargoPrice = shoppingCart.CargoPriceInt.CurrencySign(),
+                BasketMinTotalPriceForCargoInt = shoppingCart.BasketMinTotalPriceForCargoInt,
+                BasketMinTotalPriceForCargo = shoppingCart.BasketMinTotalPriceForCargoInt.CurrencySign(),
+                TotalPriceWithCargoPriceDouble = shoppingCart.TotalPriceWithCargoPrice,
+                TotalPriceWithCargoPrice = shoppingCart.TotalPriceWithCargoPrice.CurrencySign(),
+                TotalPriceDouble = shoppingCart.TotalPrice,
+                TotalPrice = shoppingCart.TotalPrice.CurrencySign()
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult sendOrderComments(string orderComments, string orderGuid)

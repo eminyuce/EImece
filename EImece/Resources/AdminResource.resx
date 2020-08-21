@@ -912,4 +912,16 @@
   <data name="GoogleMapScript" xml:space="preserve">
     <value>Google Harita Script</value>
   </data>
+  <data name="CargoSettings" xml:space="preserve">
+    <value>Kargo Ayarları</value>
+  </data>
+  <data name="BasketMinTotalPrice" xml:space="preserve">
+    <value>Sepet Minimum Toplam Fiyat</value>
+  </data>
+  <data name="CargoCompany" xml:space="preserve">
+    <value>Kargo Şirketi</value>
+  </data>
+  <data name="CargoPrice" xml:space="preserve">
+    <value>Kargo Ücreti</value>
+  </data>
 </root>

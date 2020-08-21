@@ -63,6 +63,10 @@ namespace EImece.Domain
         public const int PartialViewOutputCachingDuration = 86400;
         public const string SelectedLanguage = "SelectedLanguage";
 
+        public const string CargoCompany = "CargoCompany";
+        public const string BasketMinTotalPriceForCargo = "BasketMinTotalPriceForCargo";
+        public const string CargoPrice = "CargoPrice";
+
         public const string TempPath = "~/media/tempFiles/";
         public const string ServerMapPath = "~/media/images/";
         public const string UrlBase = "/media/images/";
@@ -97,5 +101,7 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
+
+   
     }
 }

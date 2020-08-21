@@ -1,6 +1,8 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,13 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
+
+        [JsonIgnore]
+        public Setting CargoCompany { get; set; }
+        [JsonIgnore]
+        public Setting BasketMinTotalPriceForCargo { get; set; }
+        [JsonIgnore]
+        public Setting CargoPrice { get; set; }
 
         public List<ShoppingCartItem> ShoppingCartItems
         {
@@ -78,7 +87,34 @@ namespace EImece.Domain.Models.FrontModels
                 ShoppingCartItems.Add(item);
             }
         }
-
+        [JsonIgnore]
+        public int CargoPriceInt
+        {
+            get
+            {
+                if(TotalPrice == 0)
+                    return 0;
+                else  if (TotalPrice < BasketMinTotalPriceForCargoInt)
+                    return CargoPrice.SettingValue.ToInt();
+                else
+                    return 0;
+            }
+        }
+        [JsonIgnore]
+        public int BasketMinTotalPriceForCargoInt
+        {
+            get
+            {
+                return BasketMinTotalPriceForCargo.SettingValue.ToInt();
+            }
+        }
+        public double TotalPriceWithCargoPrice
+        {
+            get
+            {
+                return TotalPrice + CargoPriceInt;
+            }
+        }
         public double TotalPrice
         {
             get
