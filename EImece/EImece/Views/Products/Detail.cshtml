@@ -120,7 +120,7 @@
                         <div class="star-rating">
                             @for (int i = 0; i < 5; i++)
                             {
-                                if (i+1 > product.Rating)
+                                if (i + 1 > product.Rating)
                                 {
                                     <i class="sr-star" data-feather="star"></i>
                                 }
@@ -132,21 +132,21 @@
                         </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
                     </a>
                 }
-
-                <h3 class="h1 font-weight-light pt-3 pb-2">
-
+                <h2 class="h1 font-weight-light pt-3 pb-2">
                     @if (product.HasDiscount)
                     {
                         <del class="lead text-muted mr-2">
                             @product.Price.CurrencySign()
                         </del>
-                        <span class="badge badge-pill badge-warning mr-2 mb-2">
-                            @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
-                        </span>
                     }
-
                     <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
-                </h3>
+                </h2>
+                <h4>
+                    <span class="badge badge-pill badge-warning mr-2 mb-2">
+                        @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
+                    </span>
+                </h4>
+              
                 <div class="d-flex align-items-center pt-2">
                     <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
                     <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart</button>
