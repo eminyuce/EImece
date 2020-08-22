@@ -116,12 +116,11 @@
             <div class="pb-4">
                 @if (product.ProductComments.IsNotEmpty())
                 {
-                    var rating = product.Rating;
                     <a class="d-inline-block scroll-to" href="#reviews">
                         <div class="star-rating">
                             @for (int i = 0; i < 5; i++)
                             {
-                                if (i > rating)
+                                if (i+1 > product.Rating)
                                 {
                                     <i class="sr-star" data-feather="star"></i>
                                 }
