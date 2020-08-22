@@ -340,9 +340,22 @@
         <div class="product-card-body box-shadow-0">
             <div class="d-flex flex-wrap justify-content-between pb-1">
                 <a class="product-meta" href="@product.DetailPageRelativeUrl">@product.Name</a>
-                <div class="star-rating"><span class="sr-label mr-1">4.7</span><i class="sr-star active" data-feather="star"></i></div>
+                @if (product.Rating > 0)
+                {
+                    <div class="star-rating">
+                        <span class="sr-label mr-1">@product.Rating</span>
+                        @for (int i = 0; i < product.Rating; i++)
+                        {
+                            <i class="sr-star active" data-feather="star"></i>
+                        }
+                    </div>
+                }
             </div>
             <h3 class="product-card-title">
+                <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@product.Id" type="button"
+                        data-toggle="toast" data-target="#cart-toast">
+                    @Resource.AddToCart
+                </button>
                 <a href="@product.DetailPageRelativeUrl">
                     @product.ShortDescription
                 </a>
