@@ -28,7 +28,6 @@
                 @if (product.Rating > 0)
                 {
                     <div class="star-rating">
-                        <span class="sr-label mr-1">@product.Rating</span>
                         @for (int i = 0; i < product.Rating; i++)
                         {
                             <i class="sr-star active" data-feather="star"></i>

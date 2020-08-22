@@ -153,7 +153,8 @@ namespace EImece.Domain.Repositories
             }
             else
             {
-                throw new ArgumentException(sorting.ToString());
+                Expression<Func<Product, double>> keySelector = t => t.Position;
+                return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
            
         }

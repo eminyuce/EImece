@@ -525,4 +525,16 @@
   <data name="SearchResultTotalCountText" xml:space="preserve">
     <value>{0} ile ilgili {1} ürün bulduk.</value>
   </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sırala</value>
+  </data>
+  <data name="HighLowPriceItems" xml:space="preserve">
+    <value>En yüksek fiyat</value>
+  </data>
+  <data name="LowHighPriceItems" xml:space="preserve">
+    <value>En düşük fiyat</value>
+  </data>
+  <data name="NewestItems" xml:space="preserve">
+    <value>En yeniler</value>
+  </data>
 </root>

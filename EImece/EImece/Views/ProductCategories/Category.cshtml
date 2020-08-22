@@ -60,15 +60,15 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
                 <div class="d-flex flex-wrap">
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                        <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
+                        <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
                         <div class="button-group tabs">
 
                             <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">En yeniler</a>
+                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
                             <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">En düşük fiyat</a>
+                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
                             <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">En yüksek fiyat</a>
+                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
                         </div>
                     </div>
                 </div>

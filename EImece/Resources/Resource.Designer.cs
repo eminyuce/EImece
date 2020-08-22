@@ -466,6 +466,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to En yüksek fiyat.
+        /// </summary>
+        public static string HighLowPriceItems {
+            get {
+                return ResourceManager.GetString("HighLowPriceItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ana Sayfa.
         /// </summary>
         public static string HomePage {
@@ -529,6 +538,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to En düşük fiyat.
+        /// </summary>
+        public static string LowHighPriceItems {
+            get {
+                return ResourceManager.GetString("LowHighPriceItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ana Sayfa.
         /// </summary>
         public static string MainPage {
@@ -570,6 +588,15 @@ namespace Resources {
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to En yeniler.
+        /// </summary>
+        public static string NewestItems {
+            get {
+                return ResourceManager.GetString("NewestItems", resourceCulture);
             }
         }
         
@@ -1051,6 +1078,15 @@ namespace Resources {
         public static string SocialMedia {
             get {
                 return ResourceManager.GetString("SocialMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sırala.
+        /// </summary>
+        public static string SortBy {
+            get {
+                return ResourceManager.GetString("SortBy", resourceCulture);
             }
         }
         
