@@ -516,4 +516,10 @@
   <data name="CargoFreeText" xml:space="preserve">
     <value>ve üzeri alışverişe KARGO ÜCRETSİZ!</value>
   </data>
+  <data name="Review" xml:space="preserve">
+    <value>Yorum</value>
+  </data>
+  <data name="SubmitReview" xml:space="preserve">
+    <value>Yorumu Gönder</value>
+  </data>
 </root>

@@ -277,9 +277,19 @@
                     <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
                         <div class="display-4 mr-2">@Model.AverageRating</div>
                         <div>
-                            <div class="text-muted font-size-xs mb-n1">based on @Model.TotalRating.Sum(r => r.Value.Count) reviews</div>
+                            <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
                             <div class="star-rating">
-                                <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    if (i < product.Rating)
+                                    {
+                                        <i class="sr-star active" data-feather="star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="sr-star" data-feather="star"></i>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>

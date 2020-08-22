@@ -268,6 +268,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Üye Ol.
+        /// </summary>
+        public static string BecomeMember {
+            get {
+                return ResourceManager.GetString("BecomeMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Doğum günü.
         /// </summary>
         public static string BirthDate {

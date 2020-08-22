@@ -19,8 +19,10 @@
     <div class="media-body">
         <h6 class="featured-entry-title"><a href="@productLink">@product.Name</a></h6>
         <div class="star-rating">
-            <i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star"></i><i class="sr-star active" data-feather="star">
-            </i><i class="sr-star active" data-feather="star"></i><i class="sr-star" data-feather="star"></i>
+            @for (int i = 0; i < product.Rating; i++)
+            {
+                @:<i class="sr-star active" data-feather="star"></i>
+            }
         </div>
         <p class="featured-entry-meta">@product.PriceWithDiscount.CurrencySign()</p>
     </div>

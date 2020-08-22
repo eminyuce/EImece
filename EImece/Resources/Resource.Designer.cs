@@ -884,6 +884,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yorum.
+        /// </summary>
+        public static string Review {
+            get {
+                return ResourceManager.GetString("Review", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yorumlar.
         /// </summary>
         public static string Reviews {
@@ -1060,6 +1069,15 @@ namespace Resources {
         public static string StayInformed {
             get {
                 return ResourceManager.GetString("StayInformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yorumu Gönder.
+        /// </summary>
+        public static string SubmitReview {
+            get {
+                return ResourceManager.GetString("SubmitReview", resourceCulture);
             }
         }
         

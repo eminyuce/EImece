@@ -103,6 +103,7 @@
                 </div>
                 @if (Request.IsAuthenticated)
                 {
+
                     <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
                         <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
                     </a>
@@ -117,11 +118,14 @@
                 }
                 else
                 {
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("register","account")" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.BecomeMember
+                    </a>
                     <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
                         <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
                     </a>
                 }
-               
+
                 @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
             </div>
 

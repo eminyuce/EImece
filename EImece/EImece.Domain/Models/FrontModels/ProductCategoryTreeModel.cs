@@ -12,18 +12,25 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<ProductCategoryTreeModel> Childrens { get; set; }
         public ProductCategoryTreeModel Parent { get; set; }
+        public string ProductCategoryName
+        {
+            get
+            {
+                return string.Format("{0}", ProductCategory.Name);
+            }
+        }
 
-        public String Text
+        public string Text
         {
             get
             {
                 if (ProductCount > 0)
                 {
-                    return String.Format("{0} ({1})", ProductCategory.Name, ProductCount);
+                    return string.Format("{0} ({1})", ProductCategory.Name, ProductCount);
                 }
                 else
                 {
-                    return String.Format("{0}", ProductCategory.Name);
+                    return string.Format("{0}", ProductCategory.Name);
                 }
             }
         }

@@ -924,4 +924,7 @@
   <data name="CargoPrice" xml:space="preserve">
     <value>Kargo Ücreti</value>
   </data>
+  <data name="BecomeMember" xml:space="preserve">
+    <value>Üye Ol</value>
+  </data>
 </root>

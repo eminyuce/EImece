@@ -85,8 +85,16 @@ namespace EImece.Domain.Repositories
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
             {
-                Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search) || r.ProductCode.Contains(search) || r.ProductCategory.Name.Contains(search);
-                products = products.Where(whereLamba);
+                var productId = search.ToInt();
+                if (productId > 0)
+                {
+                    products = products.Where(r => r.Id == productId);
+                }
+                else
+                {
+                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search) || r.ProductCode.Contains(search) || r.ProductCategory.Name.Contains(search);
+                    products = products.Where(whereLamba);
+                }
             }
             if (categoryId > 0)
             {
