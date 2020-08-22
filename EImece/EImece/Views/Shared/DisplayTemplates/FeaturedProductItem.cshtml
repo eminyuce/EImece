@@ -12,6 +12,7 @@
     int Height = ViewData["Height"].ToInt(0);
     var imageTag = product.GetCroppedImageTag(Width, Height);
     var productLink = product.DetailPageAbsoluteUrl;
+    var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
 }
  
 <!-- Product-->
@@ -42,10 +43,10 @@
                     data-toggle="toast" data-target="#cart-toast">
                 @Resource.AddToCart
             </button>
-            @if (!string.IsNullOrEmpty(product.ShortDescription))
+            @if (!string.IsNullOrEmpty(shortDesc))
             {
             <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
-                <li>@Html.Raw(product.ShortDescription)</li>
+                <li>@shortDesc</li>
             </ul>
             }
         </div>
