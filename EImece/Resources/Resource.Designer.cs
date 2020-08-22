@@ -965,6 +965,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ile ilgili {1} ürün bulduk..
+        /// </summary>
+        public static string SearchResultTotalCountText {
+            get {
+                return ResourceManager.GetString("SearchResultTotalCountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lütfen geçerli bir metin girin 2.
         /// </summary>
         public static string SearchValidText {

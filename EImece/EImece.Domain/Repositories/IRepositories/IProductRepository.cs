@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using GenericRepository;
 using System;
@@ -17,7 +18,7 @@ namespace EImece.Domain.Repositories.IRepositories
 
         Product GetProduct(int id);
 
-        PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang);
+        PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
 
         IEnumerable<Product> GetData(out int totalRecords, string globalSearch, String name, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
 

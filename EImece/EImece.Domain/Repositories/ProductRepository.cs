@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
@@ -127,17 +128,34 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
-        public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang)
+        public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.Name.Contains(search.Trim());
-            Expression<Func<Product, int>> keySelector = t => t.Position;
-            var items = this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
-
-            return items;
+   
+            if(sorting == SortingType.LowHighPrice)
+            {
+                Expression<Func<Product, double>> keySelector = t => t.Price;
+                return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                Expression<Func<Product, double>> keySelector = t => t.Price;
+                return this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                Expression<Func<Product, DateTime>> keySelector = t => t.UpdatedDate;
+                return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+            }
+            else
+            {
+                throw new ArgumentException(sorting.ToString());
+            }
+           
         }
 
         public IEnumerable<Product> GetData(out int totalRecords,

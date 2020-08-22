@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace EImece.Domain.Services.IServices
 
         new void DeleteBaseEntity(List<string> values);
 
-        ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang);
+        ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
 
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
 

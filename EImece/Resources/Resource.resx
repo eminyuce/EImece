@@ -522,4 +522,7 @@
   <data name="SubmitReview" xml:space="preserve">
     <value>Yorumu Gönder</value>
   </data>
+  <data name="SearchResultTotalCountText" xml:space="preserve">
+    <value>{0} ile ilgili {1} ürün bulduk.</value>
+  </data>
 </root>

@@ -114,14 +114,27 @@ namespace EImece.Domain.Models.FrontModels
         public static RouteValueDictionary GetRouteValueDictionary(IPaginatedModelList pagingItems)
         {
             var routeValues = new RouteValueDictionary();
-            routeValues.Add("id", pagingItems.RouteId);
-            routeValues.Add("sorting", pagingItems.Sorting);
-            routeValues.Add("filtreler", pagingItems.Filter);
-            if (pagingItems.MinPrice > 0)
+            if (pagingItems.RouteId.HasValue && pagingItems.RouteId.Value  > 0)
+            {
+                routeValues.Add("id", pagingItems.RouteId);
+            }
+            if (pagingItems.Sorting.HasValue && pagingItems.Sorting.Value > 0)
+            {
+                routeValues.Add("sorting", pagingItems.Sorting);
+            }
+            if (!string.IsNullOrEmpty(pagingItems.Filter))
+            {
+                routeValues.Add("filtreler", pagingItems.Filter);
+            }
+            if (!string.IsNullOrEmpty(pagingItems.Search))
+            {
+                routeValues.Add("search", pagingItems.Search);
+            }
+            if (pagingItems.MinPrice.HasValue && pagingItems.MinPrice.Value > 0)
             {
                 routeValues.Add("minPrice", pagingItems.MinPrice);
             }
-            if (pagingItems.MaxPrice > 0)
+            if (pagingItems.MaxPrice.HasValue &&  pagingItems.MaxPrice.Value > 0)
             {
                 routeValues.Add("maxPrice", pagingItems.MaxPrice);
             }

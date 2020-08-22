@@ -7,6 +7,7 @@
     var sorting = pagingItems.Sorting;
     var filter = pagingItems.Filter;
     var actionName = ViewData["actionName"].ToStr("Category");
+    var controllerName = ViewData["controllerName"].ToStr("ProductCategories");
     var styleClassBtn = "btn btn-outline-info rounded btn-sm mb-2 mr-1";
 }
 @if (pagingItems.TotalPageCount > 1)
@@ -16,7 +17,7 @@
             @if (pagingItems.HasPreviousPage)
             {
                 <li class="page-item">
-                    <a href=@Url.Action(actionName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, 1))
+                    <a href=@Url.Action(actionName,controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, 1))
                        class="@styleClassBtn" aria-label="Frist">
                         <span aria-hidden="true">|<</span>
                         <span class="sr-only">First</span>
@@ -26,7 +27,7 @@
 
 
             <li class="page-item @(pagingItems.HasPreviousPage ? " " : " disabled" )">
-                <a href=@Url.Action(actionName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex - 1))
+                <a href=@Url.Action(actionName,controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex - 1))
                    class="@styleClassBtn" aria-label="Next">
                     <span aria-hidden="true"><</span>
                     <span class="sr-only">Next</span>
@@ -55,7 +56,7 @@
                     else
                     {
                         <li class="page-item">
-                            <a href=@Url.Action(actionName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, i))
+                            <a href=@Url.Action(actionName,controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, i))
                                class="@styleClassBtn">@i</a>
                         </li>
                     }
@@ -80,7 +81,7 @@
                     else
                     {
                         <li class="page-item">
-                            <a href=@Url.Action(actionName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, i))
+                            <a href=@Url.Action(actionName,controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, i))
                                class="@styleClassBtn">@i</a>
                         </li>
                     }
@@ -90,7 +91,7 @@
             @if (pagingItems.HasNextPage)
             {
                 <li class="page-item">
-                    <a href=@Url.Action(actionName,ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems,  pagingItems.PageIndex + 1))
+                    <a href=@Url.Action(actionName,controllerName,ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems,  pagingItems.PageIndex + 1))
                        class="@styleClassBtn" aria-label="Next">
                         <span aria-hidden="true">></span>
                         <span class="sr-only">Next</span>
@@ -99,7 +100,7 @@
             }
 
             <li class="page-item @(pagingItems.HasNextPage ? " " : " disabled")">
-                <a href=@Url.Action(actionName,ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.TotalPageCount))
+                <a href=@Url.Action(actionName,controllerName,ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.TotalPageCount))
                    class="@styleClassBtn" aria-label="Last">
                     <span aria-hidden="true">>|</span>
                     <span class="sr-only">Last</span>

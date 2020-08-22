@@ -204,18 +204,19 @@ namespace EImece.Domain.Services
             }
         }
 
-        public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang)
+        public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             var r = new ProductsSearchViewModel();
             r.Search = search;
             if (!String.IsNullOrEmpty(search))
             {
-                r.Products = ProductRepository.SearchProducts(pageIndex, pageSize, search, lang);
+                r.Products = ProductRepository.SearchProducts(pageIndex, pageSize, search, lang, sorting);
             }
             else
             {
                 r.Products = new GenericRepository.PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
             }
+
             r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 

@@ -1,16 +1,22 @@
 ﻿@model EImece.Domain.Models.FrontModels.ProductsSearchViewModel
 @using GenericRepository;
-@using EImece.Domain.Entities;
-@using EImece.Domain.Helpers.HtmlHelpers;
-@using EImece.Domain
+@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
-@using Resources;
 @using EImece.Domain.Helpers;
-
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models;
+@using EImece.Domain.Models.Enums;
 @{
     String search = Model.Search;
     ViewBag.Title = String.Format(Resource.ProductSearchPageTitle, search);
-    PaginatedList<Product> products = Model.Products;
+    var productsAll = Model.Products;
+    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
+    products.Search = search;
+    products.PageIndex = Model.Page;
+    products.Sorting = (int)Model.Sorting;
     ViewBag.Description = String.Join(",", Model.Products.Select(r => r.Name)).ToStr(150);
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Tag> productTags = products.SelectMany(r => r.ProductTags.Select(r1 => r1.Tag)).Distinct().ToList();
@@ -22,61 +28,61 @@
 
 @if (String.IsNullOrEmpty(Model.Search))
 {
-<div class="container potrfolio-container">
-    <div class="sixteen columns">
-        @Resource.NOSearchResult
+    <div class="container potrfolio-container">
+        <div class="sixteen columns">
+            @Resource.NOSearchResult
+        </div>
     </div>
-</div>
 }
 else
 {
 
-<div class="container potrfolio-container">
+    <div class="container potrfolio-container">
+        <section class="title">
+            <h2> @String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount)</h2>
+        </section>
 
-    <section class="title">
-        <h2>@String.Format(Resource.SearchResultText, Model.Search)</h2>
-    </section>
-
-    <div class="sixteen columns">
-        @if (productTags.Any())
-                {
-
-        <div id="filters" class="filters-dropdown headline">
-            <span></span>
-            <ul class="option-set" data-option-key="filter">
-                <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
-                @foreach (var t in productTags)
-                        {
-                <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
-                        }
-            </ul>
-        </div>
-
-            }
-    </div>
-    <div class="clearfix"></div>
-
-    @if (products.TotalCount > products.PageSize)
+        @if (products.IsNotEmpty())
         {
-    <div class="pagination-container">
-        <nav class="pagination">
-            <div class="paging">
+            <!-- Toolbar-->
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                        <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
+                        <div class="button-group tabs">
 
-                @Html.BootstrapPager(products.PageIndex,
-index => Url.Action("searchproducts", "Products", new { page = index }),
-products.TotalCount, products.PageSize, numberOfLinks: 10)
+                            <a href="@Model.ProductsListPageUrl(SortingType.Newest,products)"
+                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">En yeniler</a>
+                            <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,products)"
+                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">En düşük fiyat</a>
+                            <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,products)"
+                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">En yüksek fiyat</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </div>
+            <!-- Products grid-->
+            <div class="row no-gutters">
+                @foreach (var p in products)
+                {
+                    @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
+                }
+            </div>
+            <div class="pb-4 mb-2"></div>
+            @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
+                              {"actionName","searchproducts"}, {"controllerName","products" } })
 
         }
-
-    <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
-
-        @foreach (var item in products)
-                {
-        @Html.DisplayFor(modelItem => item, "SearchProducts")
-            }
+        else
+        {
+            <div class="container">Bu kategoriye eklenmiş bir ürün yoktur.</div>
+        }
     </div>
-</div>
+}
+@functions {
+
+    public string activeButtonClass(SortingType selected, IPaginatedModelList products)
+    {
+        return String.Format("{0}", products.Sorting == (int)selected ? "btn btn-pill btn-secondary mb-2 mr-1" : "btn btn-pill btn-outline-secondary mb-2 mr-1");
+    }
 }

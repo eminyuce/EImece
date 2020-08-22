@@ -4,6 +4,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -76,15 +77,17 @@ namespace EImece.Controllers
             return View(products);
         }
 
-        public ActionResult SearchProducts(String search)
+        public ActionResult SearchProducts(String search, int page = 1, int sorting = 0)
         {
             if (String.IsNullOrEmpty(search))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            int pageIndex = 1;
-            int pageSize = 20;
-            ProductsSearchViewModel products = ProductService.SearchProducts(pageIndex, pageSize, search, CurrentLanguage);
+            int pageSize = AppConfig.ProductDefaultRecordPerPage; 
+            var products = ProductService.SearchProducts(page, pageSize, search, CurrentLanguage, (SortingType)sorting);
+            products.RecordPerPage = pageSize; 
+            products.Page = page;
+            products.Sorting = (SortingType)sorting;
             return View(products);
         }
 
