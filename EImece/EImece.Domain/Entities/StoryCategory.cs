@@ -16,7 +16,6 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PageTheme))]
         public String PageTheme { get; set; }
 
-      
         [NotMapped]
         public string DetailPageAbsoluteUrl
         {
@@ -24,7 +23,6 @@ namespace EImece.Domain.Entities
             {
                 var requestContext = HttpContext.Current.Request.RequestContext;
                 return new UrlHelper(requestContext).Action("categories", "stories", new { id = this.GetSeoUrl() }, AppConfig.HttpProtocol);
-
             }
         }
 
@@ -35,7 +33,6 @@ namespace EImece.Domain.Entities
             {
                 var requestContext = HttpContext.Current.Request.RequestContext;
                 return new UrlHelper(requestContext).Action("categories", "stories", new { id = this.GetSeoUrl() });
-
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿function GetShoppingCartLinks() {
     var postData = JSON.stringify({});
     ajaxMethodCall(postData, "/Payment/GetShoppingCartLinks", function (data) {
-       $("#ShoppingCartsLink").replaceWith(data);
+        $("#ShoppingCartsLink").replaceWith(data);
         addShoppingCartsLinkDetailClick();
     });
 }
@@ -67,8 +67,8 @@ function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
     var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
     console.log(postData);
     ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
-      //  var totalPrice = parseFloat(itemPrice) * quantity;
-      //  console.log(totalPrice);
+        //  var totalPrice = parseFloat(itemPrice) * quantity;
+        //  console.log(totalPrice);
         renderShoppingCartPrice(function (data) {
             $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.TotalPrice);
         });
@@ -84,7 +84,7 @@ $('[data-shopping-button-price]').each(function () {
     });
 });
 function renderShoppingCartPrice(success) {
-    var postData = JSON.stringify({  });
+    var postData = JSON.stringify({});
     ajaxMethodCall(postData, "/Payment/renderShoppingCartPrice", success);
 }
 
@@ -199,7 +199,6 @@ function createUUID() {
 function isEmpty(str) {
     return (!str || 0 === str.length);
 }
-
 
 function randomString(length, chars) {
     var mask = '';

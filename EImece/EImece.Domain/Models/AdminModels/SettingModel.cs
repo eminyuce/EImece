@@ -48,7 +48,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GoogleMapScript))]
         public string GoogleMapScript { get; set; }
 
-
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FacebookWebSiteLink))]
         public string FacebookWebSiteLink { get; set; }
@@ -109,7 +108,6 @@ namespace EImece.Domain.Models.AdminModels
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterEmailListDescription))]
         public string FooterEmailListDescription { get; set; }
-
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]
         public string CargoCompany { get; set; }

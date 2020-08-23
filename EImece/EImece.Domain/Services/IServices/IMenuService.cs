@@ -7,6 +7,7 @@ namespace EImece.Domain.Services.IServices
     public interface IMenuService : IBaseContentService<Menu>
     {
         MenuPageViewModel GetPageByMenuLink(string menuLink, int? language);
+
         List<Menu> BuildTree(bool? isActive, int language);
 
         MenuPageViewModel GetPageById(int menuId);

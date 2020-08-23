@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using NPOI.OpenXmlFormats.Dml;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
@@ -16,6 +15,7 @@ namespace EImece.Domain.Models.FrontModels
         public List<ProductCategory> ChildrenProductCategories { get; set; }
         public List<Brand> Brands { get; set; }
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
+
         public List<Product> Products
         {
             get
@@ -94,10 +94,10 @@ namespace EImece.Domain.Models.FrontModels
                 categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
                 categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
 
-                var brandsWithProducts = 
+                var brandsWithProducts =
                 from t1 in ProductCategory.Products.ToList()
                 join t2 in this.Brands on t1.BrandId equals t2.Id
-                orderby t2.Position, t2.UpdatedDate 
+                orderby t2.Position, t2.UpdatedDate
                 select t2;
                 categoryFilterHelper.AddBrandFilter(categoryFilterTypes, brandsWithProducts.Distinct().ToList());
                 return categoryFilterTypes;
@@ -114,7 +114,7 @@ namespace EImece.Domain.Models.FrontModels
         public static RouteValueDictionary GetRouteValueDictionary(IPaginatedModelList pagingItems)
         {
             var routeValues = new RouteValueDictionary();
-            if (pagingItems.RouteId.HasValue && pagingItems.RouteId.Value  > 0)
+            if (pagingItems.RouteId.HasValue && pagingItems.RouteId.Value > 0)
             {
                 routeValues.Add("id", pagingItems.RouteId);
             }
@@ -134,7 +134,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 routeValues.Add("minPrice", pagingItems.MinPrice);
             }
-            if (pagingItems.MaxPrice.HasValue &&  pagingItems.MaxPrice.Value > 0)
+            if (pagingItems.MaxPrice.HasValue && pagingItems.MaxPrice.Value > 0)
             {
                 routeValues.Add("maxPrice", pagingItems.MaxPrice);
             }

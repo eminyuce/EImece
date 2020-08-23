@@ -22,8 +22,10 @@ namespace EImece.Domain.Models.FrontModels
 
         [JsonIgnore]
         public Setting CargoCompany { get; set; }
+
         [JsonIgnore]
         public Setting BasketMinTotalPriceForCargo { get; set; }
+
         [JsonIgnore]
         public Setting CargoPrice { get; set; }
 
@@ -87,19 +89,21 @@ namespace EImece.Domain.Models.FrontModels
                 ShoppingCartItems.Add(item);
             }
         }
+
         [JsonIgnore]
         public int CargoPriceInt
         {
             get
             {
-                if(TotalPrice == 0)
+                if (TotalPrice == 0)
                     return 0;
-                else  if (TotalPrice < BasketMinTotalPriceForCargoInt)
+                else if (TotalPrice < BasketMinTotalPriceForCargoInt)
                     return CargoPrice.SettingValue.ToInt();
                 else
                     return 0;
             }
         }
+
         [JsonIgnore]
         public int BasketMinTotalPriceForCargoInt
         {
@@ -108,6 +112,7 @@ namespace EImece.Domain.Models.FrontModels
                 return BasketMinTotalPriceForCargo.SettingValue.ToInt();
             }
         }
+
         public double TotalPriceWithCargoPrice
         {
             get
@@ -115,6 +120,7 @@ namespace EImece.Domain.Models.FrontModels
                 return TotalPrice + CargoPriceInt;
             }
         }
+
         public double TotalPrice
         {
             get

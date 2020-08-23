@@ -17,6 +17,7 @@ namespace EImece.Controllers
 
         [Inject]
         public IProductService ProductService { get; set; }
+
         [Inject]
         public IStoryService StoryService { get; set; }
 
@@ -70,16 +71,14 @@ namespace EImece.Controllers
         public ActionResult StoryCategoriesFull(RssParams rssParams)
         {
             var comment = new StringBuilder();
-          
+
             var items = StoryService.GetStoryCategoriesRssFull(rssParams);
-            if(items == null)
+            if (items == null)
             {
                 return Content("No RSS for Stories");
             }
             comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
             return new FeedResult(items, comment);
-
-        
         }
 
         //public void ShoutBox()

@@ -1,7 +1,5 @@
 ﻿using EImece.Domain;
-using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -28,8 +26,6 @@ namespace EImece.Controllers
             cultureCookie.Expires = DateTime.Now.AddDays(1);
             Response.Cookies.Add(cultureCookie);
         }
-
-       
 
         protected int CurrentLanguage
         {

@@ -30,16 +30,18 @@ namespace EImece.Controllers
         {
             this.productCommentService = ProductCommentService;
         }
+
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Home");
         }
- //       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
- //       public ActionResult Index(int page = 1)
- //       {
- //           var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
- //           return View(products);
- //       }
+
+        //       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        //       public ActionResult Index(int page = 1)
+        //       {
+        //           var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
+        //           return View(products);
+        //       }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
@@ -83,9 +85,9 @@ namespace EImece.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            int pageSize = AppConfig.ProductDefaultRecordPerPage; 
+            int pageSize = AppConfig.ProductDefaultRecordPerPage;
             var products = ProductService.SearchProducts(page, pageSize, search, CurrentLanguage, (SortingType)sorting);
-            products.RecordPerPage = pageSize; 
+            products.RecordPerPage = pageSize;
             products.Page = page;
             products.Sorting = (SortingType)sorting;
             return View(products);

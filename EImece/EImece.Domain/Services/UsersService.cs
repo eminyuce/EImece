@@ -42,7 +42,7 @@ namespace EImece.Domain.Services
             var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
             if (user == null)
             {
-                Logger.Debug("User is null for userId "+ id);
+                Logger.Debug("User is null for userId " + id);
             }
             return user;
         }

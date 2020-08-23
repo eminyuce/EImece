@@ -122,7 +122,5 @@ namespace EImece
                 namespaces: new[] { "EImece.Controllers" }
             );
         }
-
-      
     }
 }

@@ -25,7 +25,6 @@
                 </li>
             }
 
-
             <li class="page-item @(pagingItems.HasPreviousPage ? " " : " disabled" )">
                 <a href=@Url.Action(actionName,controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex - 1))
                    class="@styleClassBtn" aria-label="Next">

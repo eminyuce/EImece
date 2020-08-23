@@ -23,7 +23,6 @@ else
     @Html.Raw(menu.Description)
 }
 
-
 @if (isUserAuthenticated)
 {
     @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })

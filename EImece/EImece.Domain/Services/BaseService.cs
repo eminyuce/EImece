@@ -4,7 +4,6 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
 using Ninject;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +16,7 @@ namespace EImece.Domain.Services
     {
         [Inject]
         public IHttpContextFactory HttpContextFactory { get; set; }
+
         private ICacheProvider _memoryCacheProvider { get; set; }
 
         [Inject]

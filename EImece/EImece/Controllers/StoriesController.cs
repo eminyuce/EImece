@@ -14,7 +14,6 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         [Inject]
         public IStoryService StoryService { get; set; }
 

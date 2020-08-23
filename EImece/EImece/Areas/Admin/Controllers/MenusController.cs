@@ -162,7 +162,7 @@ namespace EImece.Areas.Admin.Controllers
             if (!menus.Any(r => r.MenuLink.Equals("info-deliveryinfo", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Teslimat Bilgileri", Value = "info-deliveryinfo" });
-            } 
+            }
             if (!menus.Any(r => r.MenuLink.Equals("info-privacypolicy", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Şartlar ve Koşullar", Value = "info-privacypolicy" });

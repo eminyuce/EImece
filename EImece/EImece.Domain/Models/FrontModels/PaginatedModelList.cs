@@ -6,16 +6,16 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class PaginatedModelList<T> : List<T>, IPaginatedModelList
     {
-        public int PageIndex { get;  set; }
-        public int PageSize { get;  set; }
-        public int TotalCount { get;  set; }
-        public int TotalPageCount { get;  set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int TotalCount { get; set; }
+        public int TotalPageCount { get; set; }
         public string Search { set; get; }
         public string Filter { set; get; }
-        public int ? Sorting { set; get; }
-        public int ? RouteId { set; get; }
-        public int ? MinPrice { set; get; }
-        public int ? MaxPrice { set; get; }
+        public int? Sorting { set; get; }
+        public int? RouteId { set; get; }
+        public int? MinPrice { set; get; }
+        public int? MaxPrice { set; get; }
 
         public bool HasPreviousPage
         {

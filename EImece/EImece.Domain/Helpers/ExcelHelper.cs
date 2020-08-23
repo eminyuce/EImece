@@ -122,7 +122,8 @@ namespace EImece.Domain.Helpers
                                                                         if (continuar && cell2.CellFormula == "FALSE()") { cellType2[i] = "System.Boolean"; continuar = false; }
                                                                         if (continuar) { cellType2[i] = "System.Double"; continuar = false; }
                                                                     }
-                                                                    catch { 
+                                                                    catch
+                                                                    {
                                                                     }
                                                                 }
                                                                 break;
@@ -295,8 +296,8 @@ namespace EImece.Domain.Helpers
                                         break;
 
                                     case "System.String":
-                                         if (!System.Convert.IsDBNull(cellValue))
-                                         {
+                                        if (!System.Convert.IsDBNull(cellValue))
+                                        {
                                             cell = fila.CreateCell(iCol, CellType.String);
                                             cell.SetCellValue(System.Convert.ToString(cellValue));
                                         }

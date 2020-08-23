@@ -17,6 +17,7 @@ namespace EImece.Domain.Repositories.IRepositories
         PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize);
 
         List<Story> GetLatestStories(int language, int take);
+
         List<Story> GetFeaturedStories(int take, int language, int storyId);
     }
 }

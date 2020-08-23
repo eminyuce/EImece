@@ -14,7 +14,7 @@
     var productLink = product.DetailPageAbsoluteUrl;
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
 }
- 
+
 <!-- Product-->
 <div class="col-lg-3 col-sm-4 col-6 border border-collapse">
     <div class="product-card">
@@ -27,12 +27,12 @@
                 <a class="product-meta" href="#">@product.ProductCategory.Name</a>
                 @if (product.Rating > 0)
                 {
-                    <div class="star-rating">
-                        @for (int i = 0; i < product.Rating; i++)
+                <div class="star-rating">
+                    @for (int i = 0; i < product.Rating; i++)
                         {
-                            <i class="sr-star active" data-feather="star"></i>
+                    <i class="sr-star active" data-feather="star"></i>
                         }
-                    </div>
+                </div>
                 }
             </div>
             <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>

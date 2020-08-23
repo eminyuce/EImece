@@ -456,8 +456,8 @@ namespace EImece.Domain.Helpers
         {
             for (int i = dt.Rows.Count - 1; i >= 0; i--)
             {
-                    if (!System.Convert.IsDBNull(dt.Rows[i][1]))
-                    {
+                if (!System.Convert.IsDBNull(dt.Rows[i][1]))
+                {
                     dt.Rows[i].Delete();
                 }
             }
@@ -717,7 +717,7 @@ namespace EImece.Domain.Helpers
             {
                 return value;
             }
-            return  CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
         }
 
         public static string GetHashString(string inputString)
@@ -939,11 +939,10 @@ namespace EImece.Domain.Helpers
         {
             string ret = "";
 
-            
-                SHA256 sha256 = new SHA256CryptoServiceProvider();
-                byte[] bHash = sha256.ComputeHash(bytes);
-                ret = BitConverter.ToString(bHash).Replace("-", "");
-            
+            SHA256 sha256 = new SHA256CryptoServiceProvider();
+            byte[] bHash = sha256.ComputeHash(bytes);
+            ret = BitConverter.ToString(bHash).Replace("-", "");
+
             return ret;
         }
 

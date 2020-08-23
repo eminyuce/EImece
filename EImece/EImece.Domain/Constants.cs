@@ -4,7 +4,6 @@ namespace EImece.Domain
 {
     public static class Constants
     {
-   
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         public const string OrderGuidCookieKey = "orderGuid";
         public const string SUCCESS = "SUCCESS";
@@ -30,7 +29,7 @@ namespace EImece.Domain
         public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
         public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
-        public const string IsProductPriceEnable = "IsProductPriceEnable";   
+        public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string GoogleMapScript = "GoogleMapScript";
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";
@@ -101,7 +100,5 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
-
-   
     }
 }

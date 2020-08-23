@@ -53,6 +53,7 @@ namespace EImece.Domain.Repositories
         }
 
 #pragma warning disable CS0109 // The member 'BaseContentRepository<T>.SearchEntities(Expression<Func<T, bool>>, string, int)' does not hide an accessible member. The new keyword is not required.
+
         public new virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
 #pragma warning restore CS0109 // The member 'BaseContentRepository<T>.SearchEntities(Expression<Func<T, bool>>, string, int)' does not hide an accessible member. The new keyword is not required.
         {

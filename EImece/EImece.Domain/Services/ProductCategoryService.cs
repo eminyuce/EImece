@@ -17,7 +17,7 @@ namespace EImece.Domain.Services
         protected static readonly Logger ProductCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
-        public IProductService ProductService { get; set; }    
+        public IProductService ProductService { get; set; }
 
         [Inject]
         public IBrandService BrandService { get; set; }

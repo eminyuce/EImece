@@ -135,8 +135,8 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.Name.Contains(search.Trim());
-   
-            if(sorting == SortingType.LowHighPrice)
+
+            if (sorting == SortingType.LowHighPrice)
             {
                 Expression<Func<Product, double>> keySelector = t => t.Price;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
@@ -156,7 +156,6 @@ namespace EImece.Domain.Repositories
                 Expression<Func<Product, double>> keySelector = t => t.Position;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
-           
         }
 
         public IEnumerable<Product> GetData(out int totalRecords,

@@ -40,15 +40,17 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
-            var menu = GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals(menuLink,StringComparison.InvariantCultureIgnoreCase));
-            if(menu == null)
+            var menu = GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            if (menu == null)
             {
                 return null;
             }
             return GetPageById(menu.Id);
         }
+
         public MenuPageViewModel GetPageById(int menuId)
         {
             var cacheKey = String.Format("GetPageById-{0}", menuId);
@@ -132,7 +134,5 @@ namespace EImece.Domain.Services
                 }
             }
         }
-
-      
     }
 }

@@ -25,7 +25,7 @@ namespace EImece.Domain.Repositories
             if (!string.IsNullOrEmpty(search))
             {
                 Expression<Func<ProductComment, bool>> whereLamba = r =>
-                r.Name.Contains(search)  || r.Subject.Contains(search) || r.Review.Contains(search);
+                r.Name.Contains(search) || r.Subject.Contains(search) || r.Review.Contains(search);
                 productComments = productComments.Where(whereLamba);
             }
             productComments = productComments.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);

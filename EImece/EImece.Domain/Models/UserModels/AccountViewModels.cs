@@ -153,7 +153,7 @@ namespace EImece.Models
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string LastName { get; set; }
-   
+
         public ApplicationUser GetUser()
         {
             var user = new ApplicationUser()

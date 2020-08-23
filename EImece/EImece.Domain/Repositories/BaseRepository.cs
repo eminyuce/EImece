@@ -111,7 +111,7 @@ namespace EImece.Domain.Repositories
                     foreach (var validationError in errors.ValidationErrors)
                     {
                         // get the error message
-                        errorMessage += validationError.PropertyName + " " + validationError.ErrorMessage+"  ";
+                        errorMessage += validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
                     }
                 }
                 BaseLogger.Error(errorMessage);

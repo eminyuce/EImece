@@ -1,5 +1,4 @@
 ﻿using EImece.Domain.Entities;
-using Microsoft.Owin.Security.Provider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,8 +44,8 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                var result =  ApplicationSettings.FirstOrDefault(r => r.SettingKey.Equals(Constants.GoogleMapScript, StringComparison.InvariantCultureIgnoreCase));
-                if(result == null)
+                var result = ApplicationSettings.FirstOrDefault(r => r.SettingKey.Equals(Constants.GoogleMapScript, StringComparison.InvariantCultureIgnoreCase));
+                if (result == null)
                 {
                     result = new Setting();
                 }

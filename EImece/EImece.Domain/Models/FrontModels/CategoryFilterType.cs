@@ -21,6 +21,6 @@ namespace EImece.Domain.Models.FrontModels
     {
         Brand = 1,
         Price = 2,
-        Rating = 3 
+        Rating = 3
     }
 }

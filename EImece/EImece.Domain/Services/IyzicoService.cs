@@ -15,16 +15,19 @@ namespace EImece.Domain.Services
         [Inject]
 #pragma warning disable CS0169 // The field 'IyzicoService.CustomerService' is never used
         private CustomerService CustomerService;
+
 #pragma warning restore CS0169 // The field 'IyzicoService.CustomerService' is never used
 
         [Inject]
 #pragma warning disable CS0169 // The field 'IyzicoService.ShoppingCartService' is never used
         private ShoppingCartService ShoppingCartService;
+
 #pragma warning restore CS0169 // The field 'IyzicoService.ShoppingCartService' is never used
 
         [Inject]
 #pragma warning disable CS0169 // The field 'IyzicoService.AddressService' is never used
         private AddressService AddressService;
+
 #pragma warning restore CS0169 // The field 'IyzicoService.AddressService' is never used
 
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)

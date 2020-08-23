@@ -22,7 +22,6 @@
     List<Tag> productTags = products.SelectMany(r => r.ProductTags.Select(r1 => r1.Tag)).Distinct().ToList();
 
 }
- 
 
 @if (String.IsNullOrEmpty(Model.Search))
 {

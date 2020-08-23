@@ -29,6 +29,7 @@ namespace EImece.Domain.Entities
                 return new UrlHelper(requestContext).Action("Tag", "products", new { id = this.GetSeoUrl() });
             }
         }
+
         [NotMapped]
         public string DetailPageRelativeUrlForStories
         {

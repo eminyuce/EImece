@@ -118,7 +118,7 @@ namespace EImece.Controllers
             resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
             return PartialView("_SocialMediaLinks", resultList);
         }
- 
+
         [ChildActionOnly]
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()

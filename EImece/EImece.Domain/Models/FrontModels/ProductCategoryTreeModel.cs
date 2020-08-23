@@ -1,5 +1,4 @@
 ﻿using EImece.Domain.Entities;
-using System;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
@@ -12,6 +11,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<ProductCategoryTreeModel> Childrens { get; set; }
         public ProductCategoryTreeModel Parent { get; set; }
+
         public string ProductCategoryName
         {
             get
