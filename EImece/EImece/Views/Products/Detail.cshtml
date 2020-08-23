@@ -141,17 +141,19 @@
                     }
                     <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
                 </h2>
-                <h4>
-                    <span class="badge badge-pill badge-warning mr-2 mb-2">
-                        @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
-                    </span>
-                </h4>
-              
-                <div class="d-flex align-items-center pt-2">
-                    <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
-                    <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart</button>
+                @if (product.HasDiscount)
+                {
+                    <h4>
+                        <span class="badge badge-pill badge-warning mr-2 mb-2">
+                            @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
+                        </span>
+                    </h4>
+                }
+                    <div class="d-flex align-items-center pt-2">
+                        <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                        <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart</button>
+                    </div>
                 </div>
-            </div>
             <!-- Product panels-->
             <div class="accordion" id="productPanels">
                 <div class="card">
