@@ -48,10 +48,10 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Order #</th>
-                            <th>Date Purchased</th>
-                            <th>Status</th>
-                            <th>Total</th>
+                            <th></th>
+                            <th>@Resource.OrderNumber</th>
+                            <th>@Resource.DatePurchased</th>
+                            <th>@Resource.Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,11 +59,13 @@
                             {
                         <tr>
                             <td>
-                                <a class="nav-link-inline" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@o.OrderNumber</a>
+                                <a class="btn btn-pill btn-outline-success mb-2 mr-1" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@Resource.OrderSummary</a>
+                            </td>
+                            <td>
+                                @o.OrderNumber
                                 @createOrderDetailModal(o)
                             </td>
                             <td>@o.CreatedDate.ToString("dd MMMM ddd, HH:mm")</td>
-                            <td><span class="badge badge-info m-0">In Progress</span></td>
                             <td>@o.PaidPriceDecimal.CurrencySign()</td>
                         </tr>
                             }
@@ -84,7 +86,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Order No - @order.OrderNumber</h4>
+                <h4 class="modal-title">@Resource.OrderSummary - @order.OrderNumber</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body pb-0">

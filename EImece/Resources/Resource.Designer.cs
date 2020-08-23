@@ -349,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Satın Alınan Tarih.
+        /// </summary>
+        public static string DatePurchased {
+            get {
+                return ResourceManager.GetString("DatePurchased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teslimat Bilgileri.
         /// </summary>
         public static string DeliveryInfo {

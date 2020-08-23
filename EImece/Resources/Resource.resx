@@ -537,4 +537,7 @@
   <data name="NewestItems" xml:space="preserve">
     <value>En yeniler</value>
   </data>
+  <data name="DatePurchased" xml:space="preserve">
+    <value>Satın Alınan Tarih</value>
+  </data>
 </root>
