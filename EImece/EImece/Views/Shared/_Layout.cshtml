@@ -38,12 +38,8 @@
     <link rel="mask-icon" color="#111" href="~/Content/safari-pinned-tab.svg">
     <meta name="msapplication-TileColor" content="#111">
     <meta name="theme-color" content="#ffffff">
-    <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
-    <link rel="stylesheet" media="screen" href="~/Content/mstore/css/vendor.min.css" />
-    <!-- Main Theme Styles + Bootstrap-->
-    <link rel="stylesheet" media="screen" id="main-styles" href="~/Content/mstore/css/theme.min.css" />
-    <!-- Customizer styles and scripts-->
 
+    @Styles.Render("~/Content/mstore")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body lang="tr">
@@ -52,7 +48,7 @@
     <!-- First line: Topbar-->
     <div class="navbar bg-dark py-2 px-0">
         <div class="container px-3">
-  
+
             @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = false })
             <!-- links collapsed (moblie)-->
             <div class="dropdown d-inline-block d-lg-none">
@@ -93,7 +89,7 @@
             <a class="navbar-brand mr-0 mr-sm-4" style="min-width: 100px;" href="/">
                 <img width="100" src="/images/logo.jpg" alt="MStore" />
             </a>
-        
+
             <!-- navbar buttons-->
             <div class="navbar-btns d-flex position-relative order-sm-3">
                 <div class="navbar-toggler navbar-btn collapsed bg-0 border-left-0 my-3"
@@ -137,7 +133,7 @@
 
     @*
 
-     
+
         @Html.Action("SocialMediaLinks", "Home")
             @Html.Action("WebSiteLogo", "Home")
 
@@ -154,12 +150,11 @@
 
     <a class="scroll-to-top-btn" href="#"><i class="scroll-to-top-btn-icon" data-feather="chevron-up"></i></a>
 
+
+    @Scripts.Render("~/bundles/mstore")
+
     <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
-    <script src="~/Content/mstore/js/vendor.min.js"></script>
-    <script src="~/Content/mstore/js/theme.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script src="~/Scripts/eimece.js?v=2"></script>
     <script src="~/Scripts/cookie-consent.js?v=1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>

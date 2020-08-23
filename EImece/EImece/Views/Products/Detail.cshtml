@@ -63,7 +63,6 @@
         <div class="col-lg-7">
             <!-- Product gallery-->
             <div class="product-gallery">
-                <span class="badge badge-danger">Sale -30%</span>
                 <ul class="product-thumbnails">
                     @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgTag))
                     {
@@ -332,7 +331,8 @@
 
 @helper relatedProductItem(Product product)
 {
-    var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 0);
+var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 0);
+var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
     <div class="product-card">
         <div class="product-thumb box-shadow-0">
             <a class="product-thumb-link" href="@product.DetailPageRelativeUrl">
@@ -359,7 +359,7 @@
                     @Resource.AddToCart
                 </button>
                 <a href="@product.DetailPageRelativeUrl">
-                    @product.ShortDescription
+                    @shortDesc
                 </a>
             </h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
         </div>

@@ -311,7 +311,7 @@ namespace EImece.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
-                    //  await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
+                    await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                     CustomerService.SaveRegisterViewModel(user.Id, model);
                     var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);

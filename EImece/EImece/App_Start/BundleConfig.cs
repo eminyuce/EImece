@@ -32,6 +32,19 @@ namespace EImece
                    "~/Content/site.css"
                       ));
 
+ 
+
+             bundles.Add(new StyleBundle("~/Content/mstore").Include(
+                  "~/Content/mstore/css/vendor.min.css",
+                  "~/Content/mstore/css/theme.min.css",
+                  "~/Content/mstore/css/skins/theme-38b3a2.min.css",
+               "~/Content/mstore/css/skins/theme-38b3a2-rounded.min.css"
+                  ));
+
+            bundles.Add(new ScriptBundle("~/bundles/mstore").Include(
+                    "~/Content/mstore/js/vendor.min.js",
+                    "~/Content/mstore/js/theme.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/adminSite.css"
