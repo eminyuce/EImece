@@ -17,6 +17,12 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public ActionResult AddWebSiteLogo()
+        {
+            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            int id = webSiteLogo != null ? webSiteLogo.Id : 0;
+            return RedirectToAction("WebSiteLogo", new { id });
+        }
         public ActionResult WebSiteLogo(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
@@ -41,7 +47,6 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     webSiteLogoSetting = SettingService.GetSingle(id);
                     FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
-                    id = webSiteLogoSetting.Id;
                 }
 
                 var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
