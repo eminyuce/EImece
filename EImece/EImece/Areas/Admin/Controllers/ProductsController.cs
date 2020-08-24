@@ -37,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var productDetailViewModel = ProductService.GetProductById(id);
+            var productDetailViewModel = ProductService.GetProductDetailViewModelById(id);
             Product content = productDetailViewModel.Product;
             ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
             if (content == null)
@@ -53,7 +53,7 @@ namespace EImece.Areas.Admin.Controllers
             int productId = id;
             ProductService.ParseTemplateAndSaveProductSpecifications(productId, templateId, CurrentLanguage, Request);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            var productDetailViewModel = ProductService.GetProductById(id);
+            var productDetailViewModel = ProductService.GetProductDetailViewModelById(id);
             Product content = productDetailViewModel.Product;
             ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
             RemoveModelState();

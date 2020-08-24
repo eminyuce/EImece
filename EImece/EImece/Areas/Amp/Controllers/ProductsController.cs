@@ -21,7 +21,7 @@ namespace EImece.Areas.Amp.Controllers
         public ActionResult Detail(string id)
         {
             var productId = id.GetId();
-            var product = ProductService.GetProductById(productId);
+            var product = ProductService.GetProductDetailViewModelById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
 
             return View(product);

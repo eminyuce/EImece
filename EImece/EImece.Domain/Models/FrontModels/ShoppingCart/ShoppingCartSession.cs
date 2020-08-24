@@ -79,10 +79,10 @@ namespace EImece.Domain.Models.FrontModels
 
         public void Add(ShoppingCartItem item)
         {
-            if (ShoppingCartItems.Any(r => r.product.Id == item.product.Id))
+            if (ShoppingCartItems.Any(r => r.Product.Id == item.Product.Id))
             {
-                ShoppingCartItem existingItem = ShoppingCartItems.FirstOrDefault(r => r.product.Id == item.product.Id);
-                existingItem.quantity += item.quantity;
+                ShoppingCartItem existingItem = ShoppingCartItems.FirstOrDefault(r => r.Product.Id == item.Product.Id);
+                existingItem.Quantity += item.Quantity;
             }
             else
             {
@@ -129,7 +129,7 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     return 0;
                 }
-                return ShoppingCartItems.Sum(r => r.product.Price * r.quantity);
+                return ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
             }
         }
 

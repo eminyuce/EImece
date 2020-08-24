@@ -111,7 +111,7 @@ namespace EImece.Domain.Services
             double price = 0;
             foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems) //Session'da tutmuş oldugum sepette bulunan ürünler
             {
-                var item = shoppingCartItem.product;
+                var item = shoppingCartItem.Product;
                 BasketItem firstBasketItem = new BasketItem();
                 firstBasketItem.Id = item.ProductCode;
                 firstBasketItem.Name = item.Name;

@@ -116,6 +116,14 @@ namespace EImece
                     "~/Scripts/blueimp-gallery2/js/blueimp-gallery-video.js",
                     "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",
                     "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"));
+
+           
+            bundles.Add(new ScriptBundle("~/bundles/eimeceScripts").Include( 
+                    "~/Scripts/jquery-3.1.1.min.js",
+                    "~/Scripts/eimece.js",
+                    "~/Scripts/cookie-consent.js",
+                    "~/Scripts/mustache.min.js"));
+
         }
     }
 }

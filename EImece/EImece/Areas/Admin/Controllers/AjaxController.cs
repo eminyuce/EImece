@@ -463,7 +463,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             return await Task.Run(() =>
             {
-                var product = ProductService.GetProductById(productId);
+                var product = ProductService.GetProductDetailViewModelById(productId);
                 var html = this.RenderPartialToString(
                             @"~/Areas/Admin/Views/Shared/pProductDetailToolTip.cshtml",
                             new ViewDataDictionary(product), null);

@@ -153,8 +153,8 @@ namespace EImece.Domain.Services
                 OrderProductService.SaveOrEditEntity(new OrderProduct()
                 {
                     OrderId = savedOrder.Id,
-                    ProductId = shoppingCartItem.product.Id,
-                    Quantity = shoppingCartItem.quantity,
+                    ProductId = shoppingCartItem.Product.Id,
+                    Quantity = shoppingCartItem.Quantity,
                     TotalPrice = shoppingCartItem.TotalPrice
                 });
             }

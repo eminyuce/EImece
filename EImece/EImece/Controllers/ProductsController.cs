@@ -58,7 +58,7 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var productId = id.GetId();
-            var product = ProductService.GetProductById(productId);
+            var product = ProductService.GetProductDetailViewModelById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
 
             return View(product);

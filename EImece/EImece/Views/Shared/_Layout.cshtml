@@ -100,26 +100,26 @@
                 @if (Request.IsAuthenticated)
                 {
 
-                <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                    <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
-                </a>
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
+                    </a>
 
-                <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
-                    <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout
-                </a>
+                    <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout
+                    </a>
                     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                     {
-                @Html.AntiForgeryToken()
+                        @Html.AntiForgeryToken()
                     }
                 }
                 else
                 {
-                <a class="navbar-btn bg-0 my-3" href="@Url.Action("register","account")" data-toggle="offcanvas">
-                    <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.BecomeMember
-                </a>
-                <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                    <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
-                </a>
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("register","account")" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.BecomeMember
+                    </a>
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
+                    </a>
                 }
 
                 @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
@@ -131,16 +131,7 @@
 
     @Html.Raw(Html.Action("Navigation", "Home"))
 
-    @*
 
-        @Html.Action("SocialMediaLinks", "Home")
-            @Html.Action("WebSiteLogo", "Home")
-
-        <span id="ShoppingCartsDetail"></span>
-
-          @{Html.RenderAction("ProductTree", "Home"); }
-
-    *@
 
     @RenderBody()
     @Html.Action("Footer", "Home")
@@ -150,61 +141,9 @@
     <a class="scroll-to-top-btn" href="#"><i class="scroll-to-top-btn-icon" data-feather="chevron-up"></i></a>
 
     @Scripts.Render("~/bundles/mstore")
-
-    <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
-    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
-    <script src="~/Scripts/eimece.js?v=2"></script>
-    <script src="~/Scripts/cookie-consent.js?v=1"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>
+    @Scripts.Render("~/bundles/eimeceScripts")
     @RenderSection("scripts", required: false)
 
-    <script>
-        CookieConsent();
-        GetShoppingCartLinks();
-
-        $(document).ready(function () {
-
-            $('[data-add-prodoct-cart]').each(function () {
-                $(this).off("click");
-                $(this).on("click", function (e) {
-                    e.preventDefault();
-                    var caller = e.target;
-                    var productId = $(caller).attr('data-add-prodoct-cart');
-                    var postData = JSON.stringify({
-                        productId: productId,
-                        quantity: 1,
-                        orderGuid: getOrderGuid()
-                    });
-                    console.log(postData);
-                    ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-                        GetShoppingCartLinks();
-                    });
-                });
-            });
-            function getOrderGuid() {
-                var orderGuid = getCookie("orderGuid");
-                if (orderGuid != "") {
-
-                } else {
-                    orderGuid = createUUID();
-                    setCookie("orderGuid", orderGuid, 365);
-                }
-
-                return orderGuid;
-            }
-            $("#AddToCart").click(function () {
-                var postData = JSON.stringify({
-                    productId: $("#productId").val(),
-                    quantity: $("#quantity").val(),
-                    orderGuid: getOrderGuid()
-                });
-                console.log(postData);
-                ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-                    GetShoppingCartLinks();
-                });
-            });
-
-        });
-    </script>
+  
 </body>
 </html>

@@ -107,7 +107,7 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public ProductDetailViewModel GetProductById(int id)
+        public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
             var cacheKey = String.Format("ProductById-{0}", id);
             ProductDetailViewModel result = null;
@@ -348,6 +348,11 @@ namespace EImece.Domain.Services
                 }
                 ProductRepository.Save();
             }
+        }
+
+        public Product GetProductById(int id)
+        {
+            return ProductRepository.GetProduct(id); 
         }
     }
 }

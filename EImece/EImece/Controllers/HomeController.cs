@@ -194,7 +194,7 @@ namespace EImece.Controllers
                 ModelState.AddModelError("", Resource.ContactUsWrongSumForSecurityQuestion);
                 if (contact.ItemType == EImeceItemType.Product)
                 {
-                    var product = ProductService.GetProductById(contact.ItemId);
+                    var product = ProductService.GetProductDetailViewModelById(contact.ItemId);
                     product.Contact = contact;
                     return View("../Products/Detail", product);
                 }

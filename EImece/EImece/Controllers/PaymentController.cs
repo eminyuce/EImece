@@ -78,8 +78,8 @@ namespace EImece.Controllers
             var shoppingCart = GetShoppingCart();
             shoppingCart.OrderGuid = orderGuid;
             var item = new ShoppingCartItem();
-            item.product = new ShoppingCartProduct(product.Product);
-            item.quantity = quantity;
+            item.Product = new ShoppingCartProduct(product);
+            item.Quantity = quantity;
             item.ShoppingCartItemId = Guid.NewGuid().ToString();
             shoppingCart.Add(item);
             SaveShoppingCart(shoppingCart);
@@ -89,7 +89,7 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult GetShoppingCartSmallDetails()
         {
-            ShoppingCartSession shoppingCart = GetShoppingCartFromDataSource();
+            var shoppingCart = GetShoppingCartFromDataSource();
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartSmallDetails.cshtml",
@@ -100,7 +100,7 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult GetShoppingCartLinks()
         {
-            ShoppingCartSession shoppingCart = GetShoppingCartFromDataSource();
+            var shoppingCart = GetShoppingCartFromDataSource();
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks.cshtml",
@@ -112,21 +112,16 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult ShoppingCartLink()
         {
-            ShoppingCartSession shoppingCart = GetShoppingCartFromDataSource();
+            var shoppingCart = GetShoppingCartFromDataSource();
             return PartialView("ShoppingCartTemplates/_ShoppingCartLinks", shoppingCart);
         }
 
         private void SaveShoppingCart(ShoppingCartSession shoppingCart)
         {
-            SaveShoppingCartCookie(shoppingCart);
-        }
-
-        private void SaveShoppingCartCookie(ShoppingCartSession shoppingCart)
-        {
-            var item = new Domain.Entities.ShoppingCart();
+            var item = new ShoppingCart();
             item.CreatedDate = DateTime.Today;
             item.UpdatedDate = DateTime.Today;
-            item.Name = "Name";
+            item.Name = shoppingCart.OrderGuid;
             item.IsActive = false;
             item.Lang = CurrentLanguage;
             item.Position = 0;
@@ -162,7 +157,12 @@ namespace EImece.Controllers
                 var user = UserManager.FindByName(User.Identity.GetUserName());
                 if (user != null)
                 {
-                    result.Customer = CustomerService.GetUserId(user.Id);
+                    var c = CustomerService.GetUserId(user.Id);
+                    if(c == null)
+                    {
+                        c = new Customer();
+                    }
+                    result.Customer = c;
                 }
             }
         }
@@ -188,6 +188,10 @@ namespace EImece.Controllers
             if (Request.IsAuthenticated)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
+                if (shoppingCart.Customer == null)
+                {
+                    shoppingCart.Customer = new Customer();
+                }
                 if (shoppingCart.Customer.IsEmpty())
                 {
                     GetCustomerIfAuthenticated(shoppingCart);
@@ -291,7 +295,7 @@ namespace EImece.Controllers
             var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId, StringComparison.InvariantCultureIgnoreCase));
             if (item != null)
             {
-                item.quantity = quantity;
+                item.Quantity = quantity;
                 SaveShoppingCart(shoppingCart);
                 return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }

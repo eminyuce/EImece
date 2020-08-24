@@ -1,4 +1,46 @@
-﻿function GetShoppingCartLinks() {
+﻿
+
+$('[data-add-prodoct-cart]').each(function () {
+    $(this).off("click");
+    $(this).on("click", function (e) {
+        e.preventDefault();
+        var caller = e.target;
+        var productId = $(caller).attr('data-add-prodoct-cart');
+        var postData = JSON.stringify({
+            productId: productId,
+            quantity: 1,
+            orderGuid: getOrderGuid()
+        });
+        console.log(postData);
+        ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
+            GetShoppingCartLinks();
+        });
+    });
+});
+function getOrderGuid() {
+    var orderGuid = getCookie("orderGuid");
+    if (orderGuid != "") {
+
+    } else {
+        orderGuid = createUUID();
+        setCookie("orderGuid", orderGuid, 365);
+    }
+
+    return orderGuid;
+}
+$("#AddToCart").click(function () {
+    var postData = JSON.stringify({
+        productId: $("#productId").val(),
+        quantity: $("#quantity").val(),
+        orderGuid: getOrderGuid()
+    });
+    console.log(postData);
+    ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
+        GetShoppingCartLinks();
+    });
+});
+
+function GetShoppingCartLinks() {
     var postData = JSON.stringify({});
     ajaxMethodCall(postData, "/Payment/GetShoppingCartLinks", function (data) {
         $("#ShoppingCartsLink").replaceWith(data);

@@ -24,7 +24,8 @@ namespace EImece.Domain.Services.IServices
 
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);
 
-        ProductDetailViewModel GetProductById(int id);
+        ProductDetailViewModel GetProductDetailViewModelById(int id);
+        Product GetProductById(int id);
 
         void DeleteProductById(int id);
 

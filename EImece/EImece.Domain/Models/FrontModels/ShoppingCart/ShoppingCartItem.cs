@@ -7,19 +7,19 @@ namespace EImece.Domain.Models.FrontModels
     public class ShoppingCartItem
     {
         public string ShoppingCartItemId { set; get; }
-        public int quantity { set; get; }
-        public ShoppingCartProduct product { set; get; }
+        public int Quantity { set; get; }
+        public ShoppingCartProduct Product { set; get; }
 
         public override string ToString()
         {
-            return String.Format("quantity:%d product:%d", quantity, product.Id);
+            return String.Format("quantity:%d product:%d", Quantity, Product.Id);
         }
 
         public double UnitPrice
         {
             get
             {
-                return product.Price;
+                return Product.Price;
             }
         }
 
@@ -27,7 +27,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return product.Price * quantity;
+                return Product.Price * Quantity;
             }
         }
 
@@ -35,7 +35,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return product.Name;
+                return Product.Name;
             }
         }
     }
