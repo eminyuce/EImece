@@ -7,6 +7,7 @@ using Resources;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -38,8 +39,8 @@ namespace EImece.Areas.Admin.Controllers
                 item = MailTemplateService.GetSingle(id);
             }
 
-            ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
-            ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject);
+           // ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
+          //  ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject);
             return View(item);
         }
 
@@ -48,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(MailTemplate MailTemplate)
+        public ActionResult SaveOrEdit(MailTemplate MailTemplate, String saveButton = null)
         {
             try
             {
@@ -71,7 +72,10 @@ namespace EImece.Areas.Admin.Controllers
                     MailTemplate.Lang = CurrentLanguage;
                     MailTemplateService.SaveOrEditEntity(MailTemplate);
                     int itemId = MailTemplate.Id;
-                    return RedirectToAction("Index");
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return ReturnTempUrl("Index");
+                    }
                 }
                 else
                 {
@@ -83,7 +87,10 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ViewBag.RazorRenderResult = RazorEngineHelper.GetRenderOutput(MailTemplate.Body);
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
             return View(MailTemplate);
         }
@@ -93,6 +100,10 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             MailTemplate MailTemplate = MailTemplateService.GetSingle(id);
             if (MailTemplate == null)
             {

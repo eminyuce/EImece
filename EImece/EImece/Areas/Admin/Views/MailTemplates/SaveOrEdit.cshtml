@@ -4,8 +4,9 @@
 @{
     ViewBag.Title = "Mail Template";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var RazorRenderResultBody = (RazorRenderResult)ViewBag.RazorRenderResultBody;
-    var RazorRenderResultSubject = (RazorRenderResult)ViewBag.RazorRenderResultSubject;
+    var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
 }
 
 <h2>@AdminResource.MailTemplates</h2>
@@ -14,140 +15,91 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-       @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.UpdatedDate)
-        @Html.HiddenFor(model => model.CreatedDate)
-        @Html.HiddenFor(model => model.TrackWithBitly)
-        @Html.HiddenFor(model => model.TrackWithMlnk)
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.UpdatedDate)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.TrackWithBitly)
+    @Html.HiddenFor(model => model.TrackWithMlnk)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @if (Model.Id > 0)
-                {
-                    <b>
-                        @Model.Name
-                    </b>
-                    @Html.HiddenFor(model => model.Name)
-                }
-                else
-                {
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                }
-
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+    <div class="panel with-nav-tabs panel-default">
+        <div class="panel-heading">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
+                <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
+                <li class="Tools">
+                    <input type="submit" name="saveButton" value="@saveButtonText" style="width:150px;" class="btn btn-success" />
+                </li>
+                <li class="Tools">
+                    <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
+                </li>
+                <li class="Tools"> @Html.ActionLink(AdminResource.BackToList, "Index", null, new { @class = "btn btn-default" })</li>
+            </ul>
         </div>
+        <div class="panel-body">
+            <div class="tab-content">
+                <div id="tab1default" class="tab-pane fade in active">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div style="min-height:800px;" id="reditor"></div>
-                @Html.EditorFor(model => model.Body,
-             new
-                  {
-                      htmlAttributes = new
-                      {
-                          rows = "1",
-                 @style = "visibility:hidden;margin: 0px; width: 100px; height: 50px;"
-                      }
-                  })
-                @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
-                @WriteErrorMessage(RazorRenderResultSubject)
-                @WriteErrorMessage(RazorRenderResultBody)
-            </div>
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @if (Model.Id > 0)
+                            {
+                                <b>
+                                    @Model.Name
+                                </b>
+                                @Html.HiddenFor(model => model.Name)
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsActive)
+                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="tab2default">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Body, new { @data_ckeditor_field = "emailTemplate", @class = "form-control" })
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-block btn-success" />
-            </div>
-        </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
-
-@Html.Raw(RazorRenderResultSubject.Result)
-@Html.Raw(RazorRenderResultBody.Result)
-
-@helper WriteErrorMessage(RazorRenderResult renderResult)
-{
-    <div class="bg-warning">
-        @if (renderResult.RazorErrors.Any())
-        {
-            foreach (RazorError ce in renderResult.RazorErrors)
-            {
-                @Html.DisplayFor(model => ce)
-            }
         }
-        else
-        {
-            if (renderResult.GeneralError != null)
-            {
-                <b>
-                    ErrorMessage: @renderResult.GeneralError.Message
-                </b>
-            }
-        }
-    </div>
-}
 
-<script src="/Areas/Admin/Content/vs/loader.js"></script>
-
-<script>
-    require.config({ paths: { 'vs': '/Areas/Admin/Content/vs' } });
-    require(['vs/editor/editor.main'], function () {
-        window.meditor = monaco.editor.create(document.getElementById("reditor"), {
-            value: $("#Body").val(),
-            language: "razor",
-            automaticLayout: true,
-            wordWrap: 'wordWrapColumn',
-            wordWrapColumn: 300,
-            wrappingIndent: "indent",
-            scrollbar: {
-                vertical: 'auto',
-                horizontal: 'auto'
-            }
-        });
-    });
-    // monaco.editor.setTheme("vs"); // 'hc-black' | 'vs-dark'
-    // meditor.updateOptions({wordWrapColumn: 80, renderLineHighlight: "all"})
-    // https://github.com/Microsoft/monaco-editor/blob/2680c7133d3b833bcf4bba51166b82bd29ffc3b4/monaco.d.ts
-    // monaco-editor/monaco.d.ts
-    // export interface IEditorOptions {
-    $("#editor-form").submit(function (event) {
-        var code = meditor.getValue();
-        $('#Body').val(code);
-    });
-</script>
+        <div>
+            @Html.ActionLink(AdminResource.BackToList, "Index")
+        </div>
