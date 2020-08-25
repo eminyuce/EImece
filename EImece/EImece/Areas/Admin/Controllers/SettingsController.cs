@@ -8,6 +8,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -72,6 +73,10 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Setting Setting = SettingService.GetSingle(id);
             if (Setting == null)
             {
