@@ -58,6 +58,15 @@ namespace EImece.Domain.Repositories
         {
             var list = new List<AppLog>();
             String commandText = @"SELECT * FROM dbo.AppLogs ORDER BY Id DESC";
+            if (string.IsNullOrEmpty(search))
+            {
+                commandText = @"SELECT * FROM dbo.AppLogs ORDER BY Id DESC";
+            }
+            else
+            {
+                commandText = @"SELECT * FROM dbo.AppLogs where EventMessage LIKE '%"+ search.Trim() + "%' ORDER BY Id DESC";
+            }
+
             var parameterList = new List<SqlParameter>();
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
             var commandType = CommandType.Text;
