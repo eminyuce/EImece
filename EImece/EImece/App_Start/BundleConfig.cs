@@ -7,6 +7,8 @@ namespace EImece
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            BundleTable.EnableOptimizations = true;
+            bundles.IgnoreList.Clear();
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -33,10 +35,8 @@ namespace EImece
                       ));
 
             bundles.Add(new StyleBundle("~/Content/eimeceTheme").Include(
-                 "~/Content/mstore/css/vendor.min.css",
-                 "~/Content/mstore/css/theme.min.css",
-                 "~/Content/mstore/css/skins/theme-38b3a2.min.css",
-              "~/Content/mstore/css/skins/theme-38b3a2-rounded.min.css"
+                 "~/Content/mstore/css/vendor.css",
+                 "~/Content/mstore/css/theme.css"
                  ));
 
             bundles.Add(new ScriptBundle("~/bundles/mstore").Include(
