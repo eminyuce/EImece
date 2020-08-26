@@ -930,4 +930,7 @@
   <data name="PriceErrorMessage" xml:space="preserve">
     <value>Fiyat alani Zorunlu</value>
   </data>
+  <data name="AppLogs" xml:space="preserve">
+    <value>Uygulama Loglari</value>
+  </data>
 </root>

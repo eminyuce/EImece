@@ -107,7 +107,7 @@ namespace EImece.App_Start
             kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
-
+            kernel.Bind<AppLogRepository>().ToSelf().InRequestScope();
             //kernel.Bind<StdSchedulerFactory>().ToSelf().InRequestScope();
             //kernel.Bind<QuartzService>().ToSelf().InRequestScope();
 

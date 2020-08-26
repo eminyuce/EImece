@@ -236,6 +236,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
     <Compile Include="AppConfig.cs" />
@@ -419,6 +420,7 @@
     <Compile Include="Models\UserModels\ManageViewModels.cs" />
     <Compile Include="Models\UserModels\SelectRoleEditorViewModel.cs" />
     <Compile Include="Models\UserModels\SelectUserRolesViewModel.cs" />
+    <Compile Include="Repositories\AppLogRepository.cs" />
     <Compile Include="Repositories\BrandRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBrandRepository.cs" />
     <Compile Include="Repositories\ProductCommentRepository.cs" />

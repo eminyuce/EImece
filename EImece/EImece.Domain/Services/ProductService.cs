@@ -28,6 +28,9 @@ namespace EImece.Domain.Services
         public IProductCategoryService ProductCategoryService { get; set; }
 
         [Inject]
+        public IProductCommentRepository ProductCommentRepository { get; set; }
+
+        [Inject]
         public ITagService TagService { get; set; }
 
         [Inject]
@@ -181,6 +184,7 @@ namespace EImece.Domain.Services
             try
             {
                 var product = ProductRepository.GetProduct(id);
+                ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 if (product.MainImageId.HasValue)
@@ -199,7 +203,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception e)
             {
-                ProductServiceLogger.Error(e);
+                ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
             }
         }
 

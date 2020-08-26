@@ -5,6 +5,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
+using EImece.Domain.Repositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
@@ -21,7 +22,11 @@ namespace EImece.Areas.Admin.Controllers
     {
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
-
+        AppLogRepository AppLogRepository { get; set; }
+        public AjaxController(AppLogRepository AppLogRepository)
+        {
+            this.AppLogRepository = AppLogRepository;
+        }
 
         [HttpGet]
         public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
@@ -191,6 +196,16 @@ namespace EImece.Areas.Admin.Controllers
             }).ConfigureAwait(true);
         }
 
+     [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteAppLogGridItem(List<String> values)
+        {
+            return await Task.Run(() =>
+            {
+                AppLogRepository.DeleteAppLogs(values);
+                return Json(values, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteProductGridItem(List<String> values)

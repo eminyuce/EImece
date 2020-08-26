@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uygulama Loglari.
+        /// </summary>
+        public static string AppLogs {
+            get {
+                return ResourceManager.GetString("AppLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emin misiniz?.
         /// </summary>
         public static string AreYouSure {
