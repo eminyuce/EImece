@@ -8,7 +8,6 @@ using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
-    [Serializable]
     public class Product : BaseContent
     {
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NameShort))]

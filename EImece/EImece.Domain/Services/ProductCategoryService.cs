@@ -56,21 +56,21 @@ namespace EImece.Domain.Services
 
         public ProductCategory GetProductCategory(int categoryId)
         {
-            var cacheKey = String.Format("ProductCategory-{0}", categoryId);
+            var cacheKey = String.Format("GetSingleProductCategory-{0}", categoryId);
             ProductCategory result = null;
             if (IsCachingActivated)
             {
                 if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
-                    result = EntityFilterHelper.FilterProductCategory(ProductCategoryRepository.GetProductCategory(categoryId));
+                    result =ProductCategoryRepository.GetProductCategory(categoryId);
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else
             {
-                result = EntityFilterHelper.FilterProductCategory(ProductCategoryRepository.GetProductCategory(categoryId));
+                result =ProductCategoryRepository.GetProductCategory(categoryId);
             }
-            return result;
+            return EntityFilterHelper.FilterProductCategory(result);
         }
 
         public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
@@ -183,25 +183,36 @@ namespace EImece.Domain.Services
             return null;
         }
 
-        public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
+        public ProductCategoryViewModel GetProductCategoryViewModel(int productCategoryId)
         {
-            var cacheKey = String.Format("GetProductCategoryViewModel-{0}", categoryId);
             ProductCategoryViewModel result = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            var cacheKey = String.Format("GetProductCategoryViewModel-{0}", productCategoryId);
+            if (IsCachingActivated)
             {
-                result = new ProductCategoryViewModel();
-                result.ProductCategory = GetProductCategory(categoryId);
-                int lang = result.ProductCategory.Lang;
-                var tree = BuildTree(true, lang);
-
-                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-                result.Brands = BrandService.GetActiveBaseContentsFromCache(true, lang);
-                result.ProductCategoryTree = tree;
-                result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = GetProductCategoryViewModelNoCache(productCategoryId);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
             }
+            else
+            {
+                result = GetProductCategoryViewModelNoCache(productCategoryId);
+            }
+
+            return result;
+        }
+
+        private ProductCategoryViewModel GetProductCategoryViewModelNoCache(int productCategoryId)
+        {
+            var result = new ProductCategoryViewModel();
+            result.ProductCategory = GetProductCategory(productCategoryId);
+            int lang = result.ProductCategory.Lang;
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.Brands = BrandService.GetActiveBaseContentsFromCache(true, lang);
+            result.ProductCategoryTree = BuildTree(true, lang);
+            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
             return result;
         }
     }

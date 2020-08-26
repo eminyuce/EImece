@@ -146,8 +146,7 @@ namespace EImece.Domain.Services
                 relatedProductTake -= result.RelatedProducts.Count;
                 var categoryProducts = ProductCategoryService.GetProductCategory(product.ProductCategoryId)
                     .Products;
-                categoryProducts.Remove(product);
-                result.RelatedProducts.AddRange(categoryProducts
+                result.RelatedProducts.AddRange(categoryProducts.Where(r=>r.Id != product.Id)
                     .OrderBy(x => Guid.NewGuid())
                     .Take(relatedProductTake)
                     .OrderByDescending(r => r.UpdatedDate).ToList());
