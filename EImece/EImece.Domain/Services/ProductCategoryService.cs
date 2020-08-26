@@ -28,12 +28,11 @@ namespace EImece.Domain.Services
         {
             ProductCategoryRepository = repository;
         }
+
         public ProductCategoryService(IProductCategoryRepository repository, bool IsCachingActivated) : base(repository)
         {
             this.IsCachingActivated = IsCachingActivated;
         }
-
-
 
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
@@ -50,7 +49,6 @@ namespace EImece.Domain.Services
             else
             {
                 result = ProductCategoryRepository.BuildTree(isActive, language);
-                ProductCategoryServiceLogger.Info("cacheKey is not working:" + cacheKey);
             }
 
             return result;
@@ -60,11 +58,17 @@ namespace EImece.Domain.Services
         {
             var cacheKey = String.Format("ProductCategory-{0}", categoryId);
             ProductCategory result = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            if (IsCachingActivated)
+            {
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = EntityFilterHelper.FilterProductCategory(ProductCategoryRepository.GetProductCategory(categoryId));
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
+            }
+            else
             {
                 result = EntityFilterHelper.FilterProductCategory(ProductCategoryRepository.GetProductCategory(categoryId));
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }
