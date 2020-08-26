@@ -170,6 +170,15 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetProductDetailViewModelById()
+        {
+            var db = new EImeceContext(ConnectionString);
+            var ProductService = new ProductService(new ProductRepository(db));
+            var product = ProductService.GetProductDetailViewModelById(175363);
+            Assert.IsTrue(product.RelatedProducts.Count > 0);
+        }
+
+        [TestMethod]
         public void GetBreadCrumb()
         {
             var db = new EImeceContext(ConnectionString);
