@@ -19,6 +19,20 @@ namespace EImece.Domain.Services
 
         private ICacheProvider _memoryCacheProvider { get; set; }
 
+        private bool _isCachingActivated = true;
+
+        public bool IsCachingActivated
+        {
+            get
+            {
+                return _isCachingActivated;
+            }
+            set
+            {
+                _isCachingActivated = value;
+            }
+        }
+
         [Inject]
         public ICacheProvider MemoryCacheProvider
         {
@@ -38,7 +52,11 @@ namespace EImece.Domain.Services
         {
             this.baseRepository = baseRepository;
         }
-
+        protected BaseService(IBaseRepository<T> baseRepository, bool IsCachingActivated)
+        {
+            this.baseRepository = baseRepository;
+            this.IsCachingActivated = IsCachingActivated;
+        }
         public virtual List<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
         {
             return baseRepository.FindBy(whereLambda).ToList();

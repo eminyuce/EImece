@@ -11,6 +11,8 @@ namespace EImece.Domain.Services
 
         private IMailTemplateRepository MailTemplateRepository { get; set; }
 
+
+
         public MailTemplateService(IMailTemplateRepository repository) : base(repository)
         {
             MailTemplateRepository = repository;

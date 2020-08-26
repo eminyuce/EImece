@@ -322,7 +322,6 @@
     <Compile Include="Areas\Admin\Controllers\TagCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
-    <Compile Include="Areas\Admin\Controllers\TestController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Amp\AmpAreaRegistration.cs" />
     <Compile Include="Areas\Amp\Controllers\HomeController.cs" />

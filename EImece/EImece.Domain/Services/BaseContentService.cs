@@ -34,7 +34,10 @@ namespace EImece.Domain.Services
         {
             this.BaseContentRepository = baseContentRepository;
         }
-
+        protected BaseContentService(IBaseContentRepository<T> baseContentRepository, bool IsCachingActivated) : base(baseContentRepository)
+        {
+            this.IsCachingActivated = IsCachingActivated;
+        }
         public virtual T GetBaseContent(int id)
         {
             if (id == 0)

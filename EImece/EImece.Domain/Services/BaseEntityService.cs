@@ -18,7 +18,10 @@ namespace EImece.Domain.Services
         {
             this.baseEntityRepository = baseEntityRepository;
         }
-
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, bool IsCachingActivated) : base(baseEntityRepository)
+        {
+            this.IsCachingActivated = IsCachingActivated;
+        }
         public virtual List<T> GetActiveBaseEntities(bool? isActive, int? language)
         {
             return baseEntityRepository.GetActiveBaseEntities(isActive, language);

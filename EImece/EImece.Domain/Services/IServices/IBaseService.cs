@@ -9,7 +9,8 @@ namespace EImece.Domain.Services.IServices
         List<T> LoadEntites(Expression<Func<T, bool>> whereLambda);
 
         //IQueryable<T> LoadEntites(Func<T, bool> whereLambda, int pageIndex, int pageSize, out int totalCount);
-
+        bool IsCachingActivated { get; set; }
+         
         T SaveOrEditEntity(T entity);
 
         T GetSingle(int id);

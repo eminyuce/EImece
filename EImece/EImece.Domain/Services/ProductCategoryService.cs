@@ -28,16 +28,31 @@ namespace EImece.Domain.Services
         {
             ProductCategoryRepository = repository;
         }
+        public ProductCategoryService(IProductCategoryRepository repository, bool IsCachingActivated) : base(repository)
+        {
+            this.IsCachingActivated = IsCachingActivated;
+        }
+
+
 
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
             List<ProductCategoryTreeModel> result;
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            if (IsCachingActivated)
+            {
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = ProductCategoryRepository.BuildTree(isActive, language);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
+            }
+            else
             {
                 result = ProductCategoryRepository.BuildTree(isActive, language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                ProductCategoryServiceLogger.Info("cacheKey is not working:" + cacheKey);
             }
+
             return result;
         }
 
