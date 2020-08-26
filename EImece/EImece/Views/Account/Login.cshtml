@@ -47,12 +47,12 @@
 
                         @Html.LabelFor(model => model.Captcha)
                         <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
-                        @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Security Question Answer...", @autocomplete = "false" })
+                        @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @autocomplete = "false" })
                     </div>
 
                     <hr class="mt-4">
                     <div class="text-right pt-4">
-                        <input type="submit" value="@AdminResource.Login" class="btn btn-primary" />
+                        <input type="submit" value="@AdminResource.Login" class="btn btn-block btn-outline-success" />
                     </div>
                     }
                 </div>

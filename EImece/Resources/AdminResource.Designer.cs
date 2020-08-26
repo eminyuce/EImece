@@ -1600,6 +1600,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fiyat alani Zorunlu.
+        /// </summary>
+        public static string PriceErrorMessage {
+            get {
+                return ResourceManager.GetString("PriceErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gizlilik Politikası.
         /// </summary>
         public static string Privacypolicy {

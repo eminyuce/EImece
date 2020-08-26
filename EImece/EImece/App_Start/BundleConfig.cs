@@ -35,8 +35,8 @@ namespace EImece
                       ));
 
             bundles.Add(new StyleBundle("~/Content/eimeceTheme").Include(
-                 "~/Content/mstore/css/vendor.css",
-                 "~/Content/mstore/css/theme.css"
+                 "~/Content/mstore/css/theme.min.css",
+                  "~/Content/mstore/css/vendor.min.css"
                  ));
 
             bundles.Add(new ScriptBundle("~/bundles/mstore").Include(

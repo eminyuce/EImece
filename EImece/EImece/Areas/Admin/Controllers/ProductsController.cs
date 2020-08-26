@@ -104,12 +104,12 @@ namespace EImece.Areas.Admin.Controllers
                     if (product.ProductCategoryId == 0)
                     {
                         ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
-                        ModelState.AddModelError("", AdminResource.MandatoryField);
+                        ModelState.AddModelError("", AdminResource.ProductCategoryIdErrorMessage);
                     }
                     else if (isProductPriceEnable.SettingValue.ToBool(false) && product.Price <= 0)
                     {
-                        ModelState.AddModelError("Price", AdminResource.MandatoryField);
-                        ModelState.AddModelError("", AdminResource.MandatoryField);
+                        ModelState.AddModelError("Price", AdminResource.PriceErrorMessage);
+                        ModelState.AddModelError("", AdminResource.PriceErrorMessage);
                     }
                     else
                     {

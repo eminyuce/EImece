@@ -927,4 +927,7 @@
   <data name="BecomeMember" xml:space="preserve">
     <value>Üye Ol</value>
   </data>
+  <data name="PriceErrorMessage" xml:space="preserve">
+    <value>Fiyat alani Zorunlu</value>
+  </data>
 </root>
