@@ -5,6 +5,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -80,7 +82,42 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
+        [Inject]
+        public IOrderProductService OrderProductService { get; set; }
+
+        [Inject]
+        public IFaqService FaqService { get; set; }
+
         private FilesHelper _filesHelper { get; set; }
+
+        protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
+        {
+            var IsCachingActivated = false;
+            FileStorageService.IsCachingActivated = IsCachingActivated; 
+            ListItemService.IsCachingActivated = IsCachingActivated;  
+            ListService.IsCachingActivated = IsCachingActivated; 
+            MailTemplateService.IsCachingActivated = IsCachingActivated; 
+            MainPageImageService.IsCachingActivated = IsCachingActivated;  
+            MenuService.IsCachingActivated = IsCachingActivated; 
+            ProductCategoryService.IsCachingActivated = IsCachingActivated; 
+            ProductService.IsCachingActivated = IsCachingActivated;  
+            SettingService.IsCachingActivated = IsCachingActivated;  
+            StoryCategoryService.IsCachingActivated = IsCachingActivated; 
+            StoryService.IsCachingActivated = IsCachingActivated; 
+            SubscriberService.IsCachingActivated = IsCachingActivated; 
+            TagCategoryService.IsCachingActivated = IsCachingActivated;  
+            TagService.IsCachingActivated = IsCachingActivated;  
+            TemplateService.IsCachingActivated = IsCachingActivated; 
+            OrderService.IsCachingActivated = IsCachingActivated;  
+            OrderProductService.IsCachingActivated = IsCachingActivated;  
+            FaqService.IsCachingActivated = IsCachingActivated;  
+            ProductCommentService.IsCachingActivated = IsCachingActivated; 
+            BrandService.IsCachingActivated = IsCachingActivated;  
+            return base.BeginExecute(requestContext, callback, state);
+        }
 
         [Inject]
         public FilesHelper FilesHelper
@@ -176,7 +213,7 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction(name);
             }
         }
-
+        
         protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
         {
             DataTable dt = GeneralHelper.LINQToDataTable(result);

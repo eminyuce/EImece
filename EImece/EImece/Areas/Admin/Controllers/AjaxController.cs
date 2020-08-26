@@ -22,8 +22,6 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        [Inject]
-        public IOrderService OrderService { get; set; }
 
         [HttpGet]
         public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
