@@ -25,11 +25,13 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        [Inject]
         public ICustomerService CustomerService { get; set; }
 
-        [Inject]
-        public IOrderService OrderService { get; set; }
+        public CustomersController(ICustomerService customerService)
+        {
+            this.CustomerService = customerService;
+        }
+
 
         public ActionResult Index(String search = "")
         {
