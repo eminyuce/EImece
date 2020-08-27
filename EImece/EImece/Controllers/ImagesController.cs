@@ -173,7 +173,6 @@ namespace EImece.Controllers
                         ms.Dispose();
                     }
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
-                    Logger.Info("Image Cache is worked.");
                 }
 
                 return result;
