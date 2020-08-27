@@ -45,10 +45,20 @@ namespace EImece
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/Gridmvc.css",
+                      "~/Content/deleteStyle.css",
+                      "~/Content/checkBoxStyle.css",
                       "~/Content/adminSite.css"
                       ));
 
-            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+            bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
+                  "~/Scripts/adminEimece.js",
+                  "~/Scripts/gridmvc.js",
+                  "~/MVCGridHandler.axd/script.js" ));
+            
+
+
+                            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                     "~/Content/themes/base/accordion.css",
                     "~/Content/themes/base/all.css",
                     "~/Content/themes/base/autocomplete.css",

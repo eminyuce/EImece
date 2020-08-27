@@ -28,25 +28,12 @@
     @RenderSection("scripts", required: false)
     @RenderSection("styles", required: false)
     @Styles.Render("~/Content/themes/base/css")
-    <script src="~/Scripts/adminEimece.js?v=6"></script>
-    <script src="~/Scripts/gridmvc.js"></script>
-    <link href="~/Content/Gridmvc.css?v=1" rel="stylesheet" />
-    <link href="~/Content/deleteStyle.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    @Scripts.Render("~/bundles/adminScripts")
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+     
+ 
 
-    <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
-    <script src="~/Scripts/codemirror/codemirror.js"></script>
-    <script src="~/Scripts/codemirror/xml/xml.js"></script>
-    <link href="~/Content/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
-    <script src="~/Content/codemirror/addon/hint/show-hint.js"></script>
-    <script src="~/Content/codemirror/addon/hint/xml-hint.js"></script>
-    <!-- Be sure this is after jquery reference -->
-    <script src="~/MVCGridHandler.axd/script.js"></script>
 
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link href="~/Content/checkBoxStyle.css" rel="stylesheet" />
-    <link href="~/Content/adminSite.css" rel="stylesheet" />
 </head>
 <body class="fullscreen-container">
 
