@@ -970,6 +970,7 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit - Copy.cshtml" />
     <Content Include="Areas\Admin\Views\AppLogs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\AppLog.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />

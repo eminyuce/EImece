@@ -51,5 +51,7 @@ namespace EImece.Domain.DbContext
         public IDbSet<Faq> Faqs { get; set; }
         public IDbSet<ProductComment> ProductComments { get; set; }
         public IDbSet<Brand> Brands { get; set; }
+
+        public System.Data.Entity.DbSet<EImece.Domain.Entities.AppLog> AppLogs { get; set; }
     }
 }

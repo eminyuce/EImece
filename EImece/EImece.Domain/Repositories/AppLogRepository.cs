@@ -54,6 +54,14 @@ namespace EImece.Domain.Repositories
             parameterList.Add(DatabaseUtility.GetSqlParameter("Id", id, SqlDbType.Int));
             DatabaseUtility.ExecuteNonQuery(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
         }
+        public void RemoveAll()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
+            String commandText = @"DELETE FROM dbo.AppLogs";
+            var parameterList = new List<SqlParameter>();
+            var commandType = CommandType.Text;
+            DatabaseUtility.ExecuteNonQuery(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
+        }
         public List<AppLog> GetAppLogsFromDb(string search)
         {
             var list = new List<AppLog>();

@@ -1,0 +1,63 @@
+﻿@model EImece.Domain.Entities.AppLog
+@{ 
+    var styleClass = "height: 83px; background-color: transparent; width: 377px; margin: 0px;";
+}
+<div>
+    <h4>
+        @Model.CreatedDate.ToLongDateString()
+    </h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventMessage)
+        </dt>
+
+        <dd>
+            <textarea readonly="" style="@styleClass">@Model.EventMessage</textarea>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ErrorSource)
+        </dt>
+
+        <dd>
+            <textarea readonly="" style="@styleClass">@Model.ErrorSource</textarea>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ErrorClass)
+        </dt>
+
+        <dd>
+            <textarea readonly="" style="@styleClass">@Model.ErrorClass</textarea>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ErrorMessage)
+        </dt>
+
+        <dd>
+            <textarea readonly="" style="@styleClass">@Model.ErrorMessage</textarea>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InnerErrorMessage)
+        </dt>
+
+        <dd>
+            <textarea readonly="" style="@styleClass">@Model.InnerErrorMessage</textarea>
+        </dd>
+
+  
+     
+    </dl>
+</div>

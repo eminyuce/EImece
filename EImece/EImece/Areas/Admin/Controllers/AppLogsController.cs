@@ -50,6 +50,12 @@ namespace EImece.Areas.Admin.Controllers
         {
                 AppLogRepository.DeleteAppLog(id);
                 return ReturnIndexIfNotUrlReferrer("Index");
+        } 
+        [DeleteAuthorize()]
+        public ActionResult RemoveAll( )
+        {
+           AppLogRepository.RemoveAll();
+           return ReturnIndexIfNotUrlReferrer("Index");
         }
     }
 }

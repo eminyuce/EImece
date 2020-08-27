@@ -638,10 +638,6 @@ namespace EImece.Domain.Helpers
                     b.Dispose();
                     resizeBitmap.Dispose();
                 }
-                else
-                {
-                    Logger.Debug("NO SUCH IMAGE EXISTS " + fileStorage.FileName + " File Storage Id:" + fileStorageId);
-                }
             }
             else
             {

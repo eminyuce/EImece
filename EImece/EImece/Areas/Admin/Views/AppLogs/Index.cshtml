@@ -10,7 +10,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    int pageSizeNumber = 1000;
     pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "AppLogs";
     var title = "AppLogs";
@@ -28,17 +28,19 @@
 
 <h2>@AdminResource.AppLogs</h2>
 <hr class="adminLine" />
+
 <div class="row" style="padding:20px;">
 
     <div class="col-md-12">
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
                {"controllerName",controllerName}
                ,{"StateTypes","NONE"}
-              ,{"orderingButton",false}
+              ,{"orderingButton",false}      
+       ,{"IsNewRecordButtonEnabled",false}
               ,{"selectAll",true}
               ,{"deleteAll",true}
                ,{"SetStateOnOrOff",false},{"IsExcelButtonEnabled",true}})
-
+        @Html.ActionLink("Bütün Loglari Sil", "RemoveAll",null,new { @class="btn btn-default btn-sm" })
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
@@ -48,114 +50,71 @@
                             @GridResultRecordNumber
                         </span>
                     </span>
-                    @*<span class="col-md-3">
-                        <p class="text-right">@GridPagingDropDownText</p>
-                    </span>*@
-                    @*<span class="col-md-3">
-                        <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
-                            <option selected="selected" class="text-info" value="50">50</option>
-                            <option class="text-info" value="500">500</option>
-                            <option class="text-info" value="1000">1000</option>
-                        </select>
-                    </span>*@
                 </div>
             </div>
             @Html.Grid(contents).Named(gridName).Columns(columns =>
-            {
+       {
 
-                columns.Add(o => o.Id, true);
 
-                columns.Add()
-                               .Encoded(false)
-                               .Sanitized(false)
-                                .Css("gridButtons")
-                               .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+
+           columns.Add()
+                          .Encoded(false)
+                          .Sanitized(false)
+                           .Css("gridButtons")
+                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
                  {"ItemId",d.Id}}));
 
+           columns.Add(c => c.Id)
+      .Filterable(true)
+      .Encoded(false)
+      .Sanitized(false)
+      .RenderValueAs(d => CreateAppLogModal(d));
 
-                columns.Add(o => o.EventMessage)
-                 .Encoded(false).
-                     Sanitized(false).
-                     SetWidth(10).
-                     RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.EventMessage));
+           columns.Add(c => c.EventLevel)
+         .Filterable(true);
+
+           columns.Add(o => o.EventMessage)
+            .Encoded(false).
+                Sanitized(false).
+                SetWidth(10).
+                RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", String.Format("{0} {1} {2}", o.EventMessage, o.ErrorSource, o.ErrorMessage)));
 
 
-                columns.Add(o => o.CreatedDate)
-                           .Titled(AdminResource.CreatedDate)
-                       .Sortable(true)
-                       .Css("gridDateClass")
-                       .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
-                       .SortInitialDirection(GridSortDirection.Descending);
 
 
-            }).SetRowCssClasses(item => item.Id % 2 == 0 ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+           columns.Add(o => o.CreatedDate)
+                      .Titled(AdminResource.CreatedDate)
+                  .Sortable(true)
+                  .Css("gridDateClass")
+                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToLongDateString()) : null)
+                  .SortInitialDirection(GridSortDirection.Descending);
+
+
+       }).SetRowCssClasses(item => item.Id % 2 == 0 ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>
     </div>
 </div>
-@helper GridDetailLink(Menu d, String controllerName)
+
+@helper CreateAppLogModal(AppLog o)
 {
+    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+        @AdminResource.GridDetailText
+    </a>
 
-<b>
-    @{
+    <!-- Modal -->
+    <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-            var p = d.MenuLink.Split("_".ToCharArray());
-            var parts = p.First().Split("-".ToCharArray());
-            var action = parts[1];
-            var controller = parts[0];
-            String mid = "";
-            mid = p.Last();
-            if (d.LinkIsActive && !String.IsNullOrEmpty(d.Link))
-            {
-        <a class="btn btn-link" target="_blank" href="@d.Link">@d.Name</a>
-            }
-            else if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-            {
-        @Html.ActionLink(d.Name, "Detail", controller, new { area = "", id = d.GetSeoUrl() }, new { @class = "btn btn-link", @target = "_blank" })
-            }
-            else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
-            {
-        @Html.ActionLink(d.Name, action, controller, new { area = "", id = mid }, new { @class = "btn btn-link", @target = "_blank" })
-            }
-            else
-            {
-        @Html.ActionLink(d.Name, action, controller, new { area = "" }, new { @class = "btn btn-link", @target = "_blank" })
-            }
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                     @Html.DisplayFor(item=>o)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    }
-</b>
-
-}
-@helper GridToolsColumn(Menu d, List<Menu> menuTreeNodeList, String controllerName)
-{
-
-<div class="gridToolBox">
-
-    <span>
-        @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default     glyphicon glyphicon-camera glyphicon-white " })
-    </span>
-    <span>
-        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-xs btn-primary   glyphicon glyphicon-pencil glyphicon-white " })
-    </span>
-
-    @if (UserRoleHelper.IsDeletedEnableRoles())
-        {
-
-            if (menuTreeNodeList.Any(r => r.Id == d.Id))
-            {
-    <span>
-
-        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-         { "ItemId", d.Id },
-         {"controllerName",controllerName},
-         { "DeleteIcon", "gridBtn btn-xs btn btn-danger glyphicon  glyphicon-remove-circle" },
-         { "ItemDescription", d.Name } })
-    </span>
-            }
-            else
-            {
-    @String.Format("No Delete")
-            }
-        }
-</div>
 }

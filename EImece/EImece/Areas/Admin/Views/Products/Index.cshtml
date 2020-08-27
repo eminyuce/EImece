@@ -86,12 +86,13 @@
                       .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
+      
        columns.Add(c => c.Name)
-              .Titled(AdminResource.Name)
-              .Filterable(true)
-               .Encoded(false)
-                .Sanitized(false)
-          .RenderValueAs(d =>
+          .Titled(AdminResource.Name)
+          .Filterable(true)
+           .Encoded(false)
+            .Sanitized(false)
+      .RenderValueAs(d =>
                 @<div>
 
                     @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
