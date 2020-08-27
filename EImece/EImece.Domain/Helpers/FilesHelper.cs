@@ -639,10 +639,7 @@ namespace EImece.Domain.Helpers
                     resizeBitmap.Dispose();
                 }
             }
-            else
-            {
-                Logger.Debug("NO File Storage Id IN Database:" + fileStorageId);
-            }
+            
 
             return result;
         }
