@@ -163,7 +163,7 @@
     <value>Yeni Giriş</value>
   </data>
   <data name="SaveButtonText" xml:space="preserve">
-    <value>Kayıt</value>
+    <value>Kayit Et</value>
   </data>
   <data name="GridNoMainPageImageText" xml:space="preserve">
     <value>Resim Yok</value>
@@ -935,5 +935,20 @@
   </data>
   <data name="WebSiteCompanyEmailAddressRequired" xml:space="preserve">
     <value>Web Sitesi Şirketi E-posta Adresi uygun bir email adresi yaziniz. Zorunlu Alan.</value>
+  </data>
+  <data name="AddImages" xml:space="preserve">
+    <value>Resimler ekle</value>
+  </data>
+  <data name="CancelUpload" xml:space="preserve">
+    <value>Yüklemeyi İptal Et</value>
+  </data>
+  <data name="FileUploadingSection" xml:space="preserve">
+    <value>Dosya Yükleme Bölümü</value>
+  </data>
+  <data name="StartUpload" xml:space="preserve">
+    <value>Yüklemeye Başla</value>
+  </data>
+  <data name="UploadedFilesSection" xml:space="preserve">
+    <value>Yüklenen Dosyalar Bölümü</value>
   </data>
 </root>

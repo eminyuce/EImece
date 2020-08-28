@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resimler ekle.
+        /// </summary>
+        public static string AddImages {
+            get {
+                return ResourceManager.GetString("AddImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seçilenleri silmeyi onayliyor musunuz?.
         /// </summary>
         public static string AdminDeleteConfirmMessage {
@@ -318,6 +327,15 @@ namespace Resources {
         public static string ButtonOk {
             get {
                 return ResourceManager.GetString("ButtonOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yüklemeyi İptal Et.
+        /// </summary>
+        public static string CancelUpload {
+            get {
+                return ResourceManager.GetString("CancelUpload", resourceCulture);
             }
         }
         
@@ -714,6 +732,15 @@ namespace Resources {
         public static string FileUploadingPage {
             get {
                 return ResourceManager.GetString("FileUploadingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dosya Yükleme Bölümü.
+        /// </summary>
+        public static string FileUploadingSection {
+            get {
+                return ResourceManager.GetString("FileUploadingSection", resourceCulture);
             }
         }
         
@@ -1915,7 +1942,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kayıt.
+        ///   Looks up a localized string similar to Kayit Et.
         /// </summary>
         public static string SaveButtonText {
             get {
@@ -2100,6 +2127,15 @@ namespace Resources {
         public static string SocialMediaSetttings {
             get {
                 return ResourceManager.GetString("SocialMediaSetttings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yüklemeye Başla.
+        /// </summary>
+        public static string StartUpload {
+            get {
+                return ResourceManager.GetString("StartUpload", resourceCulture);
             }
         }
         
@@ -2370,6 +2406,15 @@ namespace Resources {
         public static string UpdatedDate {
             get {
                 return ResourceManager.GetString("UpdatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yüklenen Dosyalar Bölümü.
+        /// </summary>
+        public static string UploadedFilesSection {
+            get {
+                return ResourceManager.GetString("UploadedFilesSection", resourceCulture);
             }
         }
         
