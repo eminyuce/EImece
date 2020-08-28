@@ -40,6 +40,12 @@ namespace EImece.Domain
         public const string DeliveryInfo = "DeliveryInfo";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
+        public const string OrderConfirmationEmailMailTemplate = "OrderConfirmationEmail";
+        public const string ConfirmYourAccountMailTemplate = "ConfirmYourAccount";
+        public const string ForgotPasswordMailTemplate = "ForgotPassword";
+        public const string ContactUsAboutProductInfoMailTemplate = "ContactUsAboutProductInfo";
+        public const string SendMessageToSellerMailTemplate = "SendMessageToSeller";
+        public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
         public const string InstagramWebSiteLink = "InstagramWebSiteLink";
         public const string PinterestWebSiteLink = "PinterestWebSiteLink";
         public const string TwitterWebSiteLink = "TwitterWebSiteLink";
@@ -47,7 +53,6 @@ namespace EImece.Domain
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
         public const string YotubeWebSiteLink = "YotubeWebSiteLink";
         public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
-        public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
         public const string LastVisit = "LastVisit";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";

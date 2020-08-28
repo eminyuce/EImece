@@ -188,5 +188,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             var to = new MailAddress(shoppingCart.Customer.Email, shoppingCart.Customer.FullName);
             SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2, from, to);
         }
+
+       
     }
 }

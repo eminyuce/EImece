@@ -933,4 +933,7 @@
   <data name="AppLogs" xml:space="preserve">
     <value>Uygulama Loglari</value>
   </data>
+  <data name="WebSiteCompanyEmailAddressRequired" xml:space="preserve">
+    <value>Web Sitesi Şirketi E-posta Adresi uygun bir email adresi yaziniz. Zorunlu Alan.</value>
+  </data>
 </root>

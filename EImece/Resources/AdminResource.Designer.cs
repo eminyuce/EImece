@@ -2419,6 +2419,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Web Sitesi Şirketi E-posta Adresi uygun bir email adresi yaziniz. Zorunlu Alan..
+        /// </summary>
+        public static string WebSiteCompanyEmailAddressRequired {
+            get {
+                return ResourceManager.GetString("WebSiteCompanyEmailAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şirket Telefon ve Adresi.
         /// </summary>
         public static string WebSiteCompanyPhoneAndLocation {

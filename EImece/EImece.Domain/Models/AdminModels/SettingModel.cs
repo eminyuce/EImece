@@ -83,6 +83,7 @@ namespace EImece.Domain.Models.AdminModels
         public string WebSiteCompanyPhoneAndLocation { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WebSiteCompanyEmailAddress))]
+        [EmailAddress]
         public string WebSiteCompanyEmailAddress { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsProductPriceEnable))]

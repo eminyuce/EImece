@@ -257,5 +257,6 @@ namespace EImece.Domain
                 return enabledInstallments;
             }
         }
+        
     }
 }

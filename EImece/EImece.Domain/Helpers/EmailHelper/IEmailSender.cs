@@ -48,5 +48,6 @@ namespace EImece.Domain.Helpers.EmailHelper
         void SendEmail(string destination, string subject, string body);
 
         void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate);
+ 
     }
 }
