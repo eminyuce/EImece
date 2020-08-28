@@ -1253,6 +1253,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kullanıcı E-postası Onaylama surecini bitirmedi.
+        /// </summary>
+        public static string UserEmailNotConfirmed {
+            get {
+                return ResourceManager.GetString("UserEmailNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bu Ürün Hakkında Bilgi İstiyorum.
         /// </summary>
         public static string WantMoreInfoAboutProduct {

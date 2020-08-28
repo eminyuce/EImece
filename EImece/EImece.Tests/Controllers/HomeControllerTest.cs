@@ -22,6 +22,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -325,14 +326,18 @@ QUITE
         [TestMethod]
         public void GetmenuLink()
         {
-            Console.WriteLine(HttpUtility.UrlEncode("Maritime Reporter"));
-            //            var theDate = new DateTime();
-            //            string m = "20161118";
-            //            DateTime.TryParseExact(m, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture,
-            //System.Globalization.DateTimeStyles.None, out theDate);
-            //            // "Sun, Mar 9, 2008"
-            //            Console.WriteLine(theDate);
-            //            Console.WriteLine(String.Format("{0:MMM d, yyyy}", theDate));
+           
+            var mail = new MailMessage();
+            var SmtpServer = new SmtpClient("srvm09.trwww.com");
+            mail.From = new MailAddress("test@websiteniz.com");
+            mail.To.Add("test@websiteniz.com");
+
+            mail.Subject = "Test Mail";
+            mail.Body = "This is for testing SMTP mail";
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.net", "Ut54F2nn");
+            SmtpServer.EnableSsl = false;
+            SmtpServer.Send(mail);
         }
 
         [TestMethod]

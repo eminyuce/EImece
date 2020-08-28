@@ -361,7 +361,7 @@ namespace EImece.Controllers
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    ModelState.AddModelError("", Resource.NoUserFound);
+                    ModelState.AddModelError("", Resource.UserEmailNotConfirmed);
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPassword");
                 }

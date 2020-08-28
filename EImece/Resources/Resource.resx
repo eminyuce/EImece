@@ -540,4 +540,7 @@
   <data name="DatePurchased" xml:space="preserve">
     <value>Satın Alınan Tarih</value>
   </data>
+  <data name="UserEmailNotConfirmed" xml:space="preserve">
+    <value>Kullanıcı E-postası Onaylama surecini bitirmedi</value>
+  </data>
 </root>
