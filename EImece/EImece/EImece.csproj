@@ -783,6 +783,7 @@
     <Content Include="favicon-16x16.png" />
     <Content Include="favicon-32x32.png" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\Flaticon.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -971,6 +972,9 @@
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit - Copy.cshtml" />
     <Content Include="Areas\Admin\Views\AppLogs\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\AppLog.cshtml" />
+    <Content Include="fonts\Flaticon.eot" />
+    <Content Include="fonts\Flaticon.ttf" />
+    <Content Include="fonts\Flaticon.woff" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />

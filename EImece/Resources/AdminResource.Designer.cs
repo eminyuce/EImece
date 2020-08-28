@@ -340,11 +340,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yüklemeyi iptal et.
+        /// </summary>
+        public static string CancelUploading {
+            get {
+                return ResourceManager.GetString("CancelUploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kargo Şirketi.
         /// </summary>
         public static string CargoCompany {
             get {
                 return ResourceManager.GetString("CargoCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo açıklaması.
+        /// </summary>
+        public static string CargoDescription {
+            get {
+                return ResourceManager.GetString("CargoDescription", resourceCulture);
             }
         }
         
@@ -727,7 +745,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dosya Yükleme Sayfası.
+        ///   Looks up a localized string similar to Resim Yükleme Sayfası.
         /// </summary>
         public static string FileUploadingPage {
             get {
@@ -736,7 +754,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dosya Yükleme Bölümü.
+        ///   Looks up a localized string similar to Resim Yükleme Bölümü.
         /// </summary>
         public static string FileUploadingSection {
             get {
@@ -2068,6 +2086,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kargo Bilgisi.
+        /// </summary>
+        public static string ShippingOptions {
+            get {
+                return ResourceManager.GetString("ShippingOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kısa Açıklama.
         /// </summary>
         public static string ShortDescription {
@@ -2136,6 +2163,15 @@ namespace Resources {
         public static string StartUpload {
             get {
                 return ResourceManager.GetString("StartUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yüklemeye başla ve Kayıt Et.
+        /// </summary>
+        public static string StartUploadingAndSave {
+            get {
+                return ResourceManager.GetString("StartUploadingAndSave", resourceCulture);
             }
         }
         
@@ -2410,7 +2446,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yüklenen Dosyalar Bölümü.
+        ///   Looks up a localized string similar to Yüklenen Resimler Bölümü.
         /// </summary>
         public static string UploadedFilesSection {
             get {

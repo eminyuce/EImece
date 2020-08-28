@@ -28,6 +28,8 @@ namespace EImece.Domain.Models.FrontModels
 
         public ContactUsFormViewModel Contact { get; set; }
 
+        public Setting CargoDescription { get; set; }
+
         public ProductDetailViewModel()
         {
             ProductComment = new ProductComment();

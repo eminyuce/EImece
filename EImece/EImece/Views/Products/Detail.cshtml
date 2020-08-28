@@ -149,7 +149,7 @@
                 </h4>
                 }
                 <div class="d-flex align-items-center pt-2">
-                    <input class="px-2 form-control mr-2" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                    <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
                     <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart</button>
                 </div>
             </div>
@@ -174,12 +174,12 @@
                         <div class="card-body">
                             @if (!String.IsNullOrEmpty(product.ProductCode))
                             {
-                            <span class="product-code">
-                                <i>
-                                    @Resource.ProductCodeNo @product.ProductCode
-                                </i>
-                            </span>
-                            <br />
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
                             }
                             @Html.Raw(product.ShortDescription)
                             <ul class="mb-0">
@@ -188,31 +188,44 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    @if (productTags.IsNotEmpty())
-                    {
-                    <div class="card-header">
-                        <h3 class="accordion-heading">
-                            <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
-                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                                    <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
-                                </span>@AdminResource.Tags<span class="accordion-indicator">
-                                    <i data-feather="chevron-up"></i>
-                                </span>
-                            </a>
-                        </h3>
-                    </div>
-                    <div class="collapse" id="tagCloud" data-parent="#productPanels">
-                        <div class="card-body">
-                            @foreach (var t in productTags)
-                                {
-                            <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
-                                }
+                @if (Model.CargoDescription != null)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@AdminResource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        </div>
+                        <div class="collapse" id="shippingOptions" data-parent="#productPanels">
+                            <div class="card-body">
+                                @Html.Raw(Model.CargoDescription.SettingValue)
+                            </div>
                         </div>
                     </div>
-                    }
-                </div>
+                }
+
+                @if (productTags.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading">
+                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
+                                    <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                        <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
+                                    </span>@AdminResource.Tags<span class="accordion-indicator">
+                                        <i data-feather="chevron-up"></i>
+                                    </span>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="collapse" id="tagCloud" data-parent="#productPanels">
+                            <div class="card-body">
+                                @foreach (var t in productTags)
+                                {
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
 
             <!-- Share product-->

@@ -391,7 +391,7 @@
     <value>Excel</value>
   </data>
   <data name="FileUploadingPage" xml:space="preserve">
-    <value>Dosya Yükleme Sayfası</value>
+    <value>Resim Yükleme Sayfası</value>
   </data>
   <data name="ProductSpecs" xml:space="preserve">
     <value>Ürün Ek Özellikleri</value>
@@ -943,12 +943,24 @@
     <value>Yüklemeyi İptal Et</value>
   </data>
   <data name="FileUploadingSection" xml:space="preserve">
-    <value>Dosya Yükleme Bölümü</value>
+    <value>Resim Yükleme Bölümü</value>
   </data>
   <data name="StartUpload" xml:space="preserve">
     <value>Yüklemeye Başla</value>
   </data>
   <data name="UploadedFilesSection" xml:space="preserve">
-    <value>Yüklenen Dosyalar Bölümü</value>
+    <value>Yüklenen Resimler Bölümü</value>
+  </data>
+  <data name="CancelUploading" xml:space="preserve">
+    <value>Yüklemeyi iptal et</value>
+  </data>
+  <data name="CargoDescription" xml:space="preserve">
+    <value>Kargo açıklaması</value>
+  </data>
+  <data name="StartUploadingAndSave" xml:space="preserve">
+    <value>Yüklemeye başla ve Kayıt Et</value>
+  </data>
+  <data name="ShippingOptions" xml:space="preserve">
+    <value>Kargo Bilgisi</value>
   </data>
 </root>

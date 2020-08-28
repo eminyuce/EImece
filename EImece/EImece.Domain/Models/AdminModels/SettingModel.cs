@@ -113,6 +113,10 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]
         public string CargoCompany { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoDescription))]
+        [AllowHtml]
+        public string CargoDescription { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPrice))]
         public int BasketMinTotalPriceForCargo { get; set; }
 
