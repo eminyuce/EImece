@@ -19,8 +19,6 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IFaqService FaqService { get; set; }
 
         public ActionResult Index(String search = "")
         {
