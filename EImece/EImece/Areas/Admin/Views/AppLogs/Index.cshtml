@@ -35,12 +35,16 @@
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
                {"controllerName",controllerName}
                ,{"StateTypes","NONE"}
-              ,{"orderingButton",false}      
+              ,{"orderingButton",false}
        ,{"IsNewRecordButtonEnabled",false}
               ,{"selectAll",true}
               ,{"deleteAll",true}
                ,{"SetStateOnOrOff",false},{"IsExcelButtonEnabled",true}})
-        @Html.ActionLink("Bütün Loglari Sil", "RemoveAll",null,new { @class="btn btn-default btn-sm" })
+        @Html.ActionLink("Trace Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "trace" }, new { @class = "btn btn-default btn-sm" })
+        @Html.ActionLink("Error Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "error" }, new { @class = "btn btn-danger btn-sm" })
+        @Html.ActionLink("Debug Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "debug" }, new { @class = "btn btn-warning btn-sm" })
+        @Html.ActionLink("Info Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "INFO" }, new { @class = "btn btn-info btn-sm" })
+        @Html.ActionLink("Bütün Loglari Sil", "RemoveAll", null, new { @class = "btn btn-link btn-sm" })
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
@@ -79,6 +83,11 @@
                 SetWidth(10).
                 RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", String.Format("{0} {1} {2}", o.EventMessage, o.ErrorSource, o.ErrorMessage)));
 
+           columns.Add(o => o.InnerErrorMessage)
+          .Encoded(false).
+              Sanitized(false).
+              SetWidth(10).
+              RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.InnerErrorMessage));
 
 
 
@@ -86,7 +95,7 @@
                       .Titled(AdminResource.CreatedDate)
                   .Sortable(true)
                   .Css("gridDateClass")
-                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToLongDateString()) : null)
+                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
                   .SortInitialDirection(GridSortDirection.Descending);
 
 
@@ -97,16 +106,16 @@
 
 @helper CreateAppLogModal(AppLog o)
 {
-    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:1em;" data-target="@String.Format("#myModal_{0}",o.Id)">
         @AdminResource.GridDetailText
     </a>
 
     <!-- Modal -->
     <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog" >
 
             <!-- Modal content-->
-            <div class="modal-content">
+            <div class="modal-content" style="width:980px;">
                 <div class="modal-body">
                      @Html.DisplayFor(item=>o)
                 </div>

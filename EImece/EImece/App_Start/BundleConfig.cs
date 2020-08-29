@@ -44,7 +44,6 @@ namespace EImece
                     "~/Content/mstore/js/theme.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
-                      "~/Content/bootstrap.css",
                       "~/Content/Gridmvc.css",
                       "~/Content/deleteStyle.css",
                       "~/Content/checkBoxStyle.css",

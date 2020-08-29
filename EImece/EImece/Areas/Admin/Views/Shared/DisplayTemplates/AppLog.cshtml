@@ -1,6 +1,6 @@
 ﻿@model EImece.Domain.Entities.AppLog
-@{ 
-    var styleClass = "height: 83px; background-color: transparent; width: 377px; margin: 0px;";
+@{
+    var styleClass = "height: 85px; background-color: transparent; width: 740px; margin: 0px;";
 }
 <div>
     <h4>
@@ -8,56 +8,65 @@
     </h4>
     <hr />
     <dl class="dl-horizontal">
+        @if (!string.IsNullOrEmpty(Model.EventLevel))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.EventLevel)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EventLevel)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EventLevel)
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.EventMessage))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.EventMessage)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EventLevel)
-        </dd>
+            <dd>
+                <textarea readonly="" style="@styleClass">@Model.EventMessage</textarea>
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorSource))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ErrorSource)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EventMessage)
-        </dt>
+            <dd>
+                <textarea readonly="" style="@styleClass">@Model.ErrorSource</textarea>
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorClass))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ErrorClass)
+            </dt>
 
-        <dd>
-            <textarea readonly="" style="@styleClass">@Model.EventMessage</textarea>
-        </dd>
+            <dd>
+                <textarea readonly="" style="@styleClass">@Model.ErrorClass</textarea>
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ErrorMessage)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ErrorSource)
-        </dt>
+            <dd>
+                <textarea readonly="" style="@styleClass">@Model.ErrorMessage</textarea>
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.InnerErrorMessage))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.InnerErrorMessage)
+            </dt>
 
-        <dd>
-            <textarea readonly="" style="@styleClass">@Model.ErrorSource</textarea>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ErrorClass)
-        </dt>
-
-        <dd>
-            <textarea readonly="" style="@styleClass">@Model.ErrorClass</textarea>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ErrorMessage)
-        </dt>
-
-        <dd>
-            <textarea readonly="" style="@styleClass">@Model.ErrorMessage</textarea>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.InnerErrorMessage)
-        </dt>
-
-        <dd>
-            <textarea readonly="" style="@styleClass">@Model.InnerErrorMessage</textarea>
-        </dd>
-
-  
-     
+            <dd>
+                <textarea readonly="" style="@styleClass">@Model.InnerErrorMessage</textarea>
+            </dd>
+        }
     </dl>
 </div>

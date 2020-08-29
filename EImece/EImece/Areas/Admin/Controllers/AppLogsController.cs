@@ -52,9 +52,9 @@ namespace EImece.Areas.Admin.Controllers
                 return ReturnIndexIfNotUrlReferrer("Index");
         } 
         [DeleteAuthorize()]
-        public ActionResult RemoveAll( )
+        public ActionResult RemoveAll(string eventLevel = "" )
         {
-           AppLogRepository.RemoveAll();
+           AppLogRepository.RemoveAll(eventLevel);
            return ReturnIndexIfNotUrlReferrer("Index");
         }
     }

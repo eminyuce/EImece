@@ -498,18 +498,6 @@ namespace EImece.Areas.Admin.Controllers
             }).ConfigureAwait(true);
         }
 
-        [HttpPost]
-        public async Task<JsonResult> GetOrderDetail(int orderId)
-        {
-            return await Task.Run(() =>
-            {
-                var tags = OrderService.GetOrderById(orderId);
-                var tempData = new TempDataDictionary();
-                var html = this.RenderPartialToString(
-                            @"~/Areas/Admin/Views/Shared/pOrderDetail.cshtml",
-                            new ViewDataDictionary(tags), tempData);
-                return Json(html, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
-        }
+     
     }
 }

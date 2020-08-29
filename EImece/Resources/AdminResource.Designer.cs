@@ -1528,11 +1528,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş yorumları.
+        /// </summary>
+        public static string OrderComments {
+            get {
+                return ResourceManager.GetString("OrderComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teslimat Bilgileri.
         /// </summary>
         public static string OrderDetails {
             get {
                 return ResourceManager.GetString("OrderDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş numarası.
+        /// </summary>
+        public static string OrderNumber {
+            get {
+                return ResourceManager.GetString("OrderNumber", resourceCulture);
             }
         }
         
@@ -1596,6 +1614,15 @@ namespace Resources {
         public static string Payment {
             get {
                 return ResourceManager.GetString("Payment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ödeme Durumu.
+        /// </summary>
+        public static string PaymentStatus {
+            get {
+                return ResourceManager.GetString("PaymentStatus", resourceCulture);
             }
         }
         

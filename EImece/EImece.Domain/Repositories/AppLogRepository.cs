@@ -42,7 +42,10 @@ namespace EImece.Domain.Repositories
             String commandText = @"DELETE FROM dbo.AppLogs WHERE Id IN ("+String.Join(",", values)+")";
             var parameterList = new List<SqlParameter>();
             var commandType = CommandType.Text;
-            DatabaseUtility.ExecuteNonQuery(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
+            using (var connection = new SqlConnection(connectionString))
+            {
+                DatabaseUtility.ExecuteNonQuery(connection, commandText, commandType, parameterList.ToArray());
+            }
 
         }
         public void DeleteAppLog(int id)
@@ -52,20 +55,35 @@ namespace EImece.Domain.Repositories
             var parameterList = new List<SqlParameter>();
             var commandType = CommandType.Text;
             parameterList.Add(DatabaseUtility.GetSqlParameter("Id", id, SqlDbType.Int));
-            DatabaseUtility.ExecuteNonQuery(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
+            using(var connection = new SqlConnection(connectionString))
+            {
+                DatabaseUtility.ExecuteNonQuery(connection, commandText, commandType, parameterList.ToArray());
+            }
         }
-        public void RemoveAll()
+        public void RemoveAll(string eventLevel = "")
         {
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
-            String commandText = @"DELETE FROM dbo.AppLogs";
+            String commandText = "";
+            if (string.IsNullOrEmpty(eventLevel))
+            {
+                commandText = @"DELETE FROM dbo.AppLogs";
+            }
+            else
+            {
+                commandText = @"DELETE FROM dbo.AppLogs where EventLevel=@EventLevel";
+            }
             var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel, SqlDbType.NVarChar));
             var commandType = CommandType.Text;
-            DatabaseUtility.ExecuteNonQuery(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
+            using (var connection = new SqlConnection(connectionString))
+            {
+                DatabaseUtility.ExecuteNonQuery(connection, commandText, commandType, parameterList.ToArray());
+            }
         }
         public List<AppLog> GetAppLogsFromDb(string search)
         {
             var list = new List<AppLog>();
-            String commandText = @"SELECT * FROM dbo.AppLogs ORDER BY Id DESC";
+            String commandText ="";
             if (string.IsNullOrEmpty(search))
             {
                 commandText = @"SELECT * FROM dbo.AppLogs ORDER BY Id DESC";
@@ -78,17 +96,21 @@ namespace EImece.Domain.Repositories
             var parameterList = new List<SqlParameter>();
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
             var commandType = CommandType.Text;
-            DataSet dataSet = DatabaseUtility.ExecuteDataSet(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
-            if (dataSet.Tables.Count > 0)
+            using (var connection = new SqlConnection(connectionString))
             {
-                using (DataTable dt = dataSet.Tables[0])
+                DataSet dataSet = DatabaseUtility.ExecuteDataSet(connection, commandText, commandType, parameterList.ToArray());
+                if (dataSet.Tables.Count > 0)
                 {
-                    foreach (DataRow dr in dt.Rows)
+                    using (DataTable dt = dataSet.Tables[0])
                     {
-                        var e = GetAppLogFromDataRow(dr);
-                        list.Add(e);
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            var e = GetAppLogFromDataRow(dr);
+                            list.Add(e);
+                        }
                     }
                 }
+                dataSet.Dispose();
             }
             return list;
         }

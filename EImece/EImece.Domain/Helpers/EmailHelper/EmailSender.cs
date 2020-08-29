@@ -120,9 +120,6 @@ namespace EImece.Domain.Helpers.EmailHelper
                 }
 
                 smtpClient.Send(message);
-
-                Logger.Info("Email Body" + message.Body);
-                Logger.Trace("Email is sent to " + emailAccount.Username);
             }
         }
 

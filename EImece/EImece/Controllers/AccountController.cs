@@ -93,7 +93,6 @@ namespace EImece.Controllers
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
-                Logger.Debug("The account " + model.Email + "   " + result.ToString());
                 switch (result)
                 {
                     case SignInStatus.Success:

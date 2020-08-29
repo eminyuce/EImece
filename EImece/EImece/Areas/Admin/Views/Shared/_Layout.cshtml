@@ -20,18 +20,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@companyNameSetting Admin Panel </title>
-    @Styles.Render("~/Content/admincss")
+
+
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-    @RenderSection("styles", required: false)
-    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/bootstrap")   
     @Scripts.Render("~/bundles/adminScripts")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/admincss")
+    @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/themes/base/css")
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
-     
- 
+
+    <script src="~/MVCGridHandler.axd/script.js"></script>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
 
 
 </head>

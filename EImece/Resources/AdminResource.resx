@@ -963,4 +963,13 @@
   <data name="ShippingOptions" xml:space="preserve">
     <value>Kargo Bilgisi</value>
   </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Sipariş numarası</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Ödeme Durumu</value>
+  </data>
+  <data name="OrderComments" xml:space="preserve">
+    <value>Sipariş yorumları</value>
+  </data>
 </root>
