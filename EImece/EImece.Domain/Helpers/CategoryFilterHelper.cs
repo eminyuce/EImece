@@ -116,6 +116,7 @@ namespace EImece.Domain.Helpers
             if (brands.IsNotEmpty())
             {
                 var item = new CategoryFilterType();
+                item.Position = 0;
                 item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = Resource.Brands };
                 for (int i = 0; i < brands.Count; i++)
                 {
@@ -129,6 +130,7 @@ namespace EImece.Domain.Helpers
         public void AddPriceFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             CategoryFilterType item = new CategoryFilterType();
+            item.Position = 1;
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = Resource.Price };
             var item1 = new CategoryFilter()
             {
@@ -198,6 +200,7 @@ namespace EImece.Domain.Helpers
         public void AddRatingFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             CategoryFilterType item = new CategoryFilterType();
+            item.Position = 5;
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Rating, Text = Resource.Rating };
             item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 5), name = string.Format("5 {0}", Resource.Star), rating = 5 });
             item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 4), name = string.Format("4 {0}", Resource.Star), rating = 4 });

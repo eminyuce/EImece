@@ -47,7 +47,7 @@
                         <div class="column">
                             <button class="btn btn-info rounded btn-block mb-2 mr-1" id="FilterButton">@Resource.Filter</button>
                         </div>
-                        @foreach (var filterType in Model.CategoryFilterTypes)
+                        @foreach (var filterType in Model.CategoryFilterTypes.OrderBy(r=>r.Position))
                         {
                             @CreateFilterTypeList(filterType, Model);
                         }

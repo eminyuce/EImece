@@ -6,7 +6,7 @@ namespace EImece.Domain.Models.FrontModels
     {
         public List<CategoryFilter> CategoryFilters = new List<CategoryFilter>();
         public FilterTypeName FilterTypeName { get; set; }
-
+        public int Position { get; set; }
         public int? MinPrice { get; set; }
         public int? MaxPrice { get; set; }
     }
