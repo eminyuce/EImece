@@ -448,6 +448,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filtrele.
+        /// </summary>
+        public static string Filtrele {
+            get {
+                return ResourceManager.GetString("Filtrele", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şifremi Unuttum Onayı.
         /// </summary>
         public static string ForgotPasswordConfirmation {

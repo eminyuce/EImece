@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using Resources;
 using System;
@@ -43,9 +44,9 @@ namespace EImece.Areas.Admin.Controllers
                   companyname);
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", e.Message);
+                ModelState.AddModelError("", ex.ToFormattedString());
             }
 
             return View("Index",SettingService.GetSettingModel());

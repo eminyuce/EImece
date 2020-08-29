@@ -250,7 +250,8 @@
     <value>Menu Ana Kategori</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Dış Sayfa Link</value>
+    <value>
+Erişim Linki</value>
   </data>
   <data name="LinkIsActive" xml:space="preserve">
     <value>Dış Link Aktif mi?</value>
@@ -971,5 +972,8 @@
   </data>
   <data name="OrderComments" xml:space="preserve">
     <value>Sipariş yorumları</value>
+  </data>
+  <data name="Filtrele" xml:space="preserve">
+    <value>Filtrele</value>
   </data>
 </root>

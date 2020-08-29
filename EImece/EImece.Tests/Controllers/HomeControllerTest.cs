@@ -68,6 +68,24 @@ namespace EImece.Tests.Controllers
             Console.WriteLine("Reflecting Repository Assemblies");
         }
 
+
+        [TestMethod]
+        public void TestEmail()
+        {
+
+            var mail = new MailMessage();
+            var SmtpServer = new SmtpClient("mail.websiteniz.com");
+            mail.From = new MailAddress("srvm09.trww.com");
+            mail.To.Add("prisoner.ever@gmail.com");
+
+            mail.Subject = "Test Mail";
+            mail.Body = "This is for testing SMTP mail";
+            SmtpServer.Port = 465;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "Ut54F2nn");
+            SmtpServer.EnableSsl = true;
+            SmtpServer.Send(mail);
+        }
+
         [TestMethod]
         public void GetEmailAccount()
         {
@@ -323,22 +341,6 @@ QUITE
                                                        CultureInfo.InvariantCulture));
         }
 
-        [TestMethod]
-        public void GetmenuLink()
-        {
-           
-            var mail = new MailMessage();
-            var SmtpServer = new SmtpClient("srvm09.trwww.com");
-            mail.From = new MailAddress("test@websiteniz.com");
-            mail.To.Add("test@websiteniz.com");
-
-            mail.Subject = "Test Mail";
-            mail.Body = "This is for testing SMTP mail";
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.net", "Ut54F2nn");
-            SmtpServer.EnableSsl = false;
-            SmtpServer.Send(mail);
-        }
 
         [TestMethod]
         public void TestParsing()

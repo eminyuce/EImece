@@ -763,6 +763,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filtrele.
+        /// </summary>
+        public static string Filtrele {
+            get {
+                return ResourceManager.GetString("Filtrele", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string FirstName {
@@ -1150,7 +1159,8 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dış Sayfa Link.
+        ///   Looks up a localized string similar to 
+        ///Erişim Linki.
         /// </summary>
         public static string Link {
             get {

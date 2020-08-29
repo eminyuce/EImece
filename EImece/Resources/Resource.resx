@@ -543,4 +543,7 @@
   <data name="UserEmailNotConfirmed" xml:space="preserve">
     <value>Kullanıcı E-postası Onaylama surecini bitirmedi</value>
   </data>
+  <data name="Filtrele" xml:space="preserve">
+    <value>Filtrele</value>
+  </data>
 </root>

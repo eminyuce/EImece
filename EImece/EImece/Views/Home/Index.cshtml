@@ -9,7 +9,7 @@
 
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
-    var mainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
+    var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
 
     var mainPageStories = Model.StoryIndexViewModel.Stories;
     var campaignProducts = Model.CampaignProducts;
@@ -19,74 +19,46 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
-<!-- Page Title-->
-<div class="page-title-wrapper" aria-label="Page title">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                <li class="breadcrumb-item">
-                    <a href="index.html">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#">Shop</a>
-                </li>
-            </ol>
-        </nav>
-        <h1 class="page-title">Categories</h1><span class="d-block mt-2 text-muted"></span>
-        <hr class="mt-4">
+<!-- Hero slider + Promo list-->
+<section class="container px-3">
+    <div class="mt-4 pt-lg-2 mb-4 mb-md-5">
+        <div class="row">
+            <!-- Categories-->
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="border px-4 py-4">
+                    <ul class="list-unstyled mb-0">
+                        @for (int i = 0; i < rootMainPageProductCategories.Count; i++)
+                        {
+                            @CreateMainPageCategory(rootMainPageProductCategories[i], Model.MainPageProductCategories)
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <!-- Hero slider-->
+                <div class="bg-secondary bg-size-cover mb-grid-gutter" style="background-image: url(/Content/img/hero-main-bg.jpg);">
+                    <div class="owl-carousel trigger-carousel" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: false, &quot;loop&quot;: true, &quot;autoHeight&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5500 }">
+                        @for (int i = 0; i < mainPageImages.Count; i++)
+                        {
+                            @CreateMainPageImage(mainPageImages[i])
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<!-- Page Content-->
-<div class="container pb-5 mb-sm-2">
-    <!-- Categories grid-->
-    <div class="row no-gutters">
+    <hr class="mt-4">
+</section>
 
-        @for (int i = 0; i < mainPageProductCategories.Count; i++)
-        {
-            var mainPageProductCategory = mainPageProductCategories[i];
-        @CreateMainPageCategory(mainPageProductCategory, Model.MainPageProductCategories)
-        }
-    </div>
-</div>
 
-@if (Model.MainPageMenu != null)
-{
-
-<div class="parallax-banner fullwidth-element" data-background="#000" data-opacity="0.45" data-height="200" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 1s,  opacity 0.66s ease-in-out 1s;transition: transform 0.66s ease-in-out 1s, opacity 0.66s ease-in-out 1s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;">
-    @Html.Raw(Model.MainPageMenu.GetImageTag())
-    <div class="parallax-overlay" style="background-color: rgb(0, 0, 0); opacity: 0.45;"></div>
-    <div class="parallax-title" style="top: 68.5px;">@Model.MainPageMenu.Name <span>@Model.MainPageMenu.MetaKeywords</span></div>
-</div>
-
-}
-
-@if (latestStories.Count > 0)
-{
-    var p = latestStories.OrderBy(r => r.Position).ToList();
-<div class="container">
-    <!-- Headline -->
-    <div class="sixteen columns">
-        <h3 class="headline">
-            Blog
-        </h3>
-        <span class="line margin-bottom-30"></span>
-    </div>
-    @for (int i = 0; i < p.Count; i++)
-        {
-            var story = p[i];
-    @Html.DisplayFor(model => story, "LatestStory")
-        }
-</div>
-
-}
 
 <!-- Featured products grid-->
 <section class="container px-3 pt-4 mt-3">
     <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
         <h2 class="h3 mb-3">@Resource.FeaturedProducts</h2>
         <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@Url.Action("index","products")">
-            More products
+            @Resource.MoreInfo
             <i class="ml-1 mr-n2" data-feather="chevron-right">
             </i>
         </a>
@@ -95,7 +67,7 @@
         @for (int i = 0; i < mainPageProducts.Count; i++)
         {
             var p = mainPageProducts[i];
-        @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
+            @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
         }
     </div>
 </section>
@@ -109,21 +81,38 @@
     </div>
 </section>
 
+
+@helper  CreateMainPageImage(MainPageImage mainPageImage)
+{
+    var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 0);
+    <div class="row align-items-center py-5">
+        <div class="col-md-5">
+            <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
+                <a class="btn btn-primary" href="@mainPageImage.Link"> <h3 class="mb-1">@mainPageImage.Name</h3></a>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <a class="btn btn-primary" href="@mainPageImage.Link"> <img class="d-block mx-auto" src="@imgLink" alt="@mainPageImage.Name"></a>
+        </div>
+    </div>
+}
+
+
 @helper  CreateProductWidget(String title, List<Product> products)
 {
     if (products.IsNotEmpty())
     {
-<div class="col-md-4 col-sm-6 mb-2 py-3">
-    <div class="widget widget-featured-entries">
-        <h3 class="widget-title font-size-lg">@title</h3>
+        <div class="col-md-4 col-sm-6 mb-2 py-3">
+            <div class="widget widget-featured-entries">
+                <h3 class="widget-title font-size-lg">@title</h3>
 
-        @for (int i = 0; i < products.Count; i++)
+                @for (int i = 0; i < products.Count; i++)
                 {
                     var p = products[i];
-        @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+                    @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
                 }
-    </div>
-</div>
+            </div>
+        </div>
     }
 }
 
@@ -133,32 +122,27 @@
     var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
     var productCategoryLink = productCategory.ProductCategoryLink;
 
-    <!-- Category-->
-<div class="col-lg-3 col-sm-4 col-6 category-card border border-collapse">
-    <div class="card border-0">
-        @if (!string.IsNullOrEmpty(productImgLink))
-            {
-        <a class="d-block" href="@productCategoryLink">
-            <img class="d-block" src="@productImgLink" alt="@productCategory.Name">
+    <li class="border-bottom">
+        <a class="d-flex align-items-center nav-link-inline pb-3" href="@productCategoryLink" data-toggle="popover" data-placement="right" data-trigger="hover"
+           data-html="true" data-content="@Html.Raw(CreateChildDataContent2(productCategory))">
+            <i class="text-primary opacity-60 mr-2 mt-1" data-feather="hard-drive" style="width: 1.25rem; height: 1.25rem;">
+            </i>
+            <span>
+                @productCategory.Name<i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
+                </i>
+            </span>
         </a>
-            }
-
-        <div class="card-body pb-2">
-            <h2 class="h6 mb-2"> <a class="d-block" href="@productCategoryLink">@productCategory.Name</a></h2>
-            @if (children.IsNotEmpty())
-            {
-            <div class="list-group list-group-flush font-size-sm">
-                @foreach (var childProductCategory in children)
-                    {
-                <a class="list-group-item list-group-item-action" href="@childProductCategory.ProductCategoryLink">
-                    @childProductCategory.Name
-                    <i class="ml-1" data-feather="chevron-right" style="width: .875rem; height: .875rem;"></i>
-                </a>
-                    }
-            </div>
-            }
-        </div>
-    </div>
-</div>
-
+    </li>
 }
+
+@functions
+{
+    static string CreateChildDataContent2(ProductCategory productCategory)
+    {
+        var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
+        var productCategoryLink = productCategory.ProductCategoryLink;
+        var result = String.Format("<img src='{0}' class='d-block mt-n2' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n2 pb-3'>{2}</div>", productImgLink, productCategory.Name, productCategory.GetSeoDescription());
+        return HttpUtility.HtmlEncode(result);
+    }
+}
+
