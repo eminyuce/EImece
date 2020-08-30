@@ -103,9 +103,12 @@
                 @if (Request.IsAuthenticated)
                 {
 
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
-                    </a>
+            <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
+                <br />
+                @User.Identity.Name
+            </a>
+                   
 
                     <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
                         <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout

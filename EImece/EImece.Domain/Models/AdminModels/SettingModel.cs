@@ -18,11 +18,7 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailPort))]
         public int AdminEmailPort { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailDisplayName))]
-        public string AdminEmailDisplayName { get; set; }
-
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmail))]
-        public string AdminEmail { get; set; }
+  
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailUseDefaultCredentials))]
         public bool AdminEmailUseDefaultCredentials { get; set; }

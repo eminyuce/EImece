@@ -106,19 +106,10 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             using (var smtpClient = new SmtpClient())
             {
-                smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
                 smtpClient.Host = emailAccount.Host;
                 smtpClient.Port = emailAccount.Port;
                 smtpClient.EnableSsl = emailAccount.EnableSsl;
-                if (emailAccount.UseDefaultCredentials)
-                {
-                    smtpClient.Credentials = CredentialCache.DefaultNetworkCredentials;
-                }
-                else
-                {
-                    smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                }
-
+                smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
                 smtpClient.Send(message);
             }
         }

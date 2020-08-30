@@ -39,7 +39,7 @@ namespace EImece.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        public ICustomerService CustomerService;
+        private ICustomerService CustomerService;
 
         public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ICustomerService customerService)
@@ -313,8 +313,44 @@ namespace EImece.Controllers
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                     CustomerService.SaveRegisterViewModel(user.Id, model);
+                    IdentitySignout();
                     var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
-                    return RedirectToAction("Index", "Home", new { @area = "customers" });
+                    switch (result2)
+                    {
+                        case SignInStatus.Success:
+                            return RedirectToAction("Index", "Home",new { @area="customers" });
+                        case SignInStatus.LockedOut:
+                            Logger.Debug("The account  " + model.Email + " LockedOut ");
+                            ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            Logger.Debug("The account  " + model.Email + " RequiresVerification ");
+                            ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                            return View(model);
+                        case SignInStatus.Failure:
+                            user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                            bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                            if (!checkPassword)
+                            {
+                                ModelState.AddModelError("", "Invalid login attempt.Password is not correct");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                            }
+                            return View(model);
+
+                        default:
+                            Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                    }
+
+
+                }
+                else
+                {
+                    Logger.Error("No Successful Register:" + model);
                 }
                 AddErrors(result);
             }
@@ -325,6 +361,12 @@ namespace EImece.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public void IdentitySignout()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
+            DefaultAuthenticationTypes.ExternalCookie);
         }
 
         //
@@ -358,7 +400,12 @@ namespace EImece.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
+                {
+                    ModelState.AddModelError("", Resource.NoUserFound);
+                    return View("ForgotPassword");
+                }
+                if (!(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     ModelState.AddModelError("", Resource.UserEmailNotConfirmed);
                     // Don't reveal that the user does not exist or is not confirmed

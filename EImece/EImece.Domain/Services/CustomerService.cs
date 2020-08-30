@@ -51,7 +51,7 @@ namespace EImece.Domain.Services
             item.UpdatedDate = DateTime.Now;
             item.Position = 1;
             item.Lang = 1;
-            item.IsPermissionGranted = true;
+            item.IsPermissionGranted = model.IsPermissionGranted;
             CustomerRepository.SaveOrEdit(item);
         }
 

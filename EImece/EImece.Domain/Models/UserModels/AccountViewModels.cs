@@ -126,6 +126,8 @@ namespace EImece.Models
             };
             return user;
         }
+    
+
     }
 
     public class RegisterViewModelForAdmin

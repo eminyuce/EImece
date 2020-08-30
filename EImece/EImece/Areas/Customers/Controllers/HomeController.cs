@@ -20,7 +20,7 @@ using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Customers.Controllers
 {
-    [AuthorizeRoles(Domain.Constants.CustomerRole)]
+    [AuthorizationAttribute(Roles = Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();

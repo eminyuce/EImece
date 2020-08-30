@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
+using NLog;
 using Resources;
 using System;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AdminSettingsController : BaseAdminController
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: Admin/AdminSettings
         public ActionResult Index()
         {
@@ -26,27 +28,31 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SendSampleEmail()
         {
+            String companyName = "Testing company Name";
+            var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
+            if (string.IsNullOrEmpty(webSiteCompanyEmailAddress))
+            {
+                ModelState.AddModelError("", AdminResource.WebSiteCompanyEmailAddressRequired);
+                return View("Index", SettingService.GetSettingModel());
+            }
+            var emailAccount = SettingService.GetEmailAccount();
+            var info = String.Format("From-->{0} {1} To: {2}", webSiteCompanyEmailAddress, companyName, emailAccount.ToString());
             try
             {
-                String companyname = "Testing Email"; 
-                var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
-                if (string.IsNullOrEmpty(webSiteCompanyEmailAddress))
-                {
-                    ModelState.AddModelError("", AdminResource.WebSiteCompanyEmailAddressRequired);
-                    return View("Index", SettingService.GetSettingModel());
-                }
-                EmailSender.SendEmail(SettingService.GetEmailAccount(),
-                  "Test Subject",
-                  "Test Email Body",
-                  webSiteCompanyEmailAddress,
-                  companyname,
-                  webSiteCompanyEmailAddress,
-                  companyname);
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                EmailSender.SendEmail(emailAccount,
+                  subject:"Test Subject",
+                  body:"Test Email Body",
+                  fromAddress: emailAccount.Email,
+                  fromName: emailAccount.Username,
+                  toAddress: webSiteCompanyEmailAddress,
+                  toName: companyName);
+               
+                ModelState.AddModelError("",   AdminResource.SuccessfullySavedCompleted);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.ToFormattedString());
+                Logger.Debug("It could not sent sample Email:" + info);
+                ModelState.AddModelError("",   ex.ToFormattedString());
             }
 
             return View("Index",SettingService.GetSettingModel());
