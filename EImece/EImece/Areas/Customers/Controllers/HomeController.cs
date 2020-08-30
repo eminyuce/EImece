@@ -80,8 +80,12 @@ namespace EImece.Areas.Customers.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
+            if (string.IsNullOrEmpty(customer.Street))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                return View(customer);
+            }
+      
 
 
             var user = UserManager.FindByName(User.Identity.GetUserName());

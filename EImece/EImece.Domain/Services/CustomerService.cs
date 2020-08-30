@@ -52,6 +52,12 @@ namespace EImece.Domain.Services
             item.Position = 1;
             item.Lang = 1;
             item.IsPermissionGranted = model.IsPermissionGranted;
+            item.BirthDate = null;
+            item.Street = "";
+            item.District = "";
+            item.City = "";
+            item.Country = "";
+            item.ZipCode = "";
             CustomerRepository.SaveOrEdit(item);
         }
 

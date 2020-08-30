@@ -31,6 +31,19 @@
             @Html.Partial("_CustomerDetails", Model)
             <!-- Profile info-->
             <h5 class="mb-4 pt-sm-3">Profile info</h5>
+
+            <div class="col-md-12">
+                <div class="alert alert-secondary" role="alert">
+                    Size ulaşabilmemiz için lütfen kişisel bilgilerinizi eksiksiz doldurunuz.
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="alert alert-secondary" role="alert">
+                    Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. <br />
+                    Hatta varsa adresinizin tarif bilgilerini de @AdminResource.CustomerOpenAddress bölümüne yazabilirsiniz. (Örnek: Postanenin yanından girince üçüncü sokak vs.)
+                </div>
+            </div>
+           
             @using (Html.BeginForm("Index", "Home",
             null,
             FormMethod.Post, new { @class = "row" }))
@@ -40,6 +53,7 @@
                 <div class="col-md-12">
                     @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
                 </div>
+
 
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.IsActive)
@@ -160,7 +174,7 @@
                 <div class="pt-2"><a class="btn btn-outline-secondary btn-sm btn-block" href="account-tickets.html"><i class="mr-1" data-feather="tag"></i>My tickets (1)</a><a class="btn btn-success btn-sm btn-block" href="account-tickets.html" data-toggle="modal" data-target="#open-ticket">Submit new ticket</a></div>
             </div>
         </div>
-    </div>
+        </div>
 </div>
 
 @section Scripts {
