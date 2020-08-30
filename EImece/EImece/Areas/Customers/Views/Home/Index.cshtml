@@ -89,7 +89,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @id = "datepicker", @class = "form-control" } })
+                        @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @id = "datepicker", @class = "form-control", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
                     </div>
                 </div>

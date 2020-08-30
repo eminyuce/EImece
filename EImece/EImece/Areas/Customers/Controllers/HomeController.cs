@@ -80,6 +80,10 @@ namespace EImece.Areas.Customers.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+
+
+
             var user = UserManager.FindByName(User.Identity.GetUserName());
             if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
             {

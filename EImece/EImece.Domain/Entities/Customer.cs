@@ -40,25 +40,32 @@ namespace EImece.Domain.Entities
         public string UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
         public DateTime? BirthDate { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
         public int Gender { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Street))]
         public string Street { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.District))]
         public string District { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.City))]
         public string City { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Country))]
         public string Country { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ZipCode))]
         public string ZipCode { get; set; }
 
