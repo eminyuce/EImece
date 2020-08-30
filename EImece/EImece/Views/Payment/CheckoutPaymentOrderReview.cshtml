@@ -90,12 +90,12 @@
 
 @helper CreateShoppingCartItem(ShoppingCartItem item, int i)
 {
-    var product = item.product;
-    double totalPricePerItem = product.Price * item.quantity;
+    var product = item.Product;
+    double totalPricePerItem = product.Price * item.Quantity;
 
     <!-- Item-->
     <div class="d-sm-flex justify-content-between my-4">
-        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@item.product.Id">
+        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
         <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
         <div class="media d-block d-sm-flex text-center text-sm-left">
             @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.quantity</span></div>
+            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.Quantity</span></div>
             <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Total:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
         </div>
     </div>
