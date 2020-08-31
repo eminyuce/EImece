@@ -1,5 +1,6 @@
 ﻿@model EImece.Domain.Entities.Customer
 @using Resources;
+@using EImece.Domain;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
@@ -11,6 +12,9 @@
     {
         orders = new List<Order>();
     }
+
+    var countries = new SelectList(Constants.Countries.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye ");
+
 }
 
 <!-- Page Content-->
@@ -43,7 +47,7 @@
                     Hatta varsa adresinizin tarif bilgilerini de @AdminResource.CustomerOpenAddress bölümüne yazabilirsiniz. (Örnek: Postanenin yanından girince üçüncü sokak vs.)
                 </div>
             </div>
-           
+
             @using (Html.BeginForm("Index", "Home",
             null,
             FormMethod.Post, new { @class = "row" }))
@@ -124,13 +128,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
                         @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
@@ -139,8 +136,15 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.Country, countries,  new { @class = "form-control" } )
                         @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -174,7 +178,7 @@
                 <div class="pt-2"><a class="btn btn-outline-secondary btn-sm btn-block" href="account-tickets.html"><i class="mr-1" data-feather="tag"></i>My tickets (1)</a><a class="btn btn-success btn-sm btn-block" href="account-tickets.html" data-toggle="modal" data-target="#open-ticket">Submit new ticket</a></div>
             </div>
         </div>
-        </div>
+    </div>
 </div>
 
 @section Scripts {
