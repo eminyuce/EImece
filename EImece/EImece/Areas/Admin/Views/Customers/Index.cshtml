@@ -93,7 +93,12 @@ columns.Add()
     columns.Add(c => c.GsmNumber);
 
 
-    columns.Add(c => c.BirthDate).Titled(AdminResource.BirthDate).Filterable(true);
+    columns.Add(o => o.BirthDate)
+        .Titled(AdminResource.BirthDate)
+        .Sortable(true)
+        .Css("gridDateClass")
+        .RenderValueAs(o => o.BirthDate.HasValue ? string.Format("{0:MM.dd.yyyy}", o.BirthDate.Value)  : null)
+        .SortInitialDirection(GridSortDirection.Descending);
 
     columns.Add(c => c.Gender)
     .Encoded(false)
@@ -103,6 +108,7 @@ columns.Add()
     .Filterable(true);
 
     columns.Add(c => c.Description);
+
     columns.Add(o => o.CreatedDate)
     .Titled(AdminResource.CreatedDate)
     .Sortable(true)

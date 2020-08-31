@@ -70,6 +70,11 @@ namespace EImece.Areas.Customers.Controllers
             user = UserManager.FindByName(User.Identity.GetUserName());
             customer = CustomerService.GetUserId(user.Id);
             customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
+            if (customer.BirthDate.HasValue)
+            {
+                customer.BirthDateStr = string.Format("{0:MM.dd.yyyy}", customer.BirthDate.Value);
+            }
+
             return customer;
         }
 
@@ -80,12 +85,6 @@ namespace EImece.Areas.Customers.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            if (string.IsNullOrEmpty(customer.Street))
-            {
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
-            }
-      
 
 
             var user = UserManager.FindByName(User.Identity.GetUserName());
@@ -98,6 +97,10 @@ namespace EImece.Areas.Customers.Controllers
 
             customer.UserId = user.Id;
             customer.Ip = GeneralHelper.GetIpAddress();
+            if (!string.IsNullOrEmpty(customer.BirthDateStr))
+            {
+                customer.BirthDate = customer.BirthDateStr.ToNullableDateTime();
+            }
             customer = CustomerService.SaveOrEditEntity(customer);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(customer);

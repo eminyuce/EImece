@@ -424,11 +424,18 @@ namespace EImece.Domain.Helpers
 
         private static Regex _dateRegex = new Regex(@"^(19|20)(\d\d)[- /.]?(0[1-9]|1[012])[- /.]?(0[1-9]|[12][0-9]|3[01])$", RegexOptions.Compiled);
 
-        public static DateTime? ToNullableDateTime(this object arg)
+        public static DateTime? ToNullableDateTime(this object arg, string format = "MM.dd.yyyy")
         {
             DateTime ret = DateTime.MinValue;
 
-            if (!DateTime.TryParse(arg.ToStr(), out ret))
+            //  if (!DateTime.TryParse(arg.ToStr(), out ret))
+
+           
+            if (!DateTime.TryParseExact(arg.ToStr(),
+                       format,
+                       CultureInfo.InvariantCulture,
+                       DateTimeStyles.None,
+                       out ret))
             {
                 Match md = _dateRegex.Match(arg.ToStr());
 

@@ -2,6 +2,7 @@
 using Resources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -41,11 +42,14 @@ namespace EImece.Domain.Entities
         public bool IsPermissionGranted { get; set; }
 
        // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
         public DateTime? BirthDate { get; set; }
 
-     //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}", ConvertEmptyStringToNull = true)]
+        public string BirthDateStr { get; set; }
+
+        //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
         public int Gender { get; set; }
 
