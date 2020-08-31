@@ -12,9 +12,8 @@
     {
         orders = new List<Order>();
     }
-
-    var countries = new SelectList(Constants.Countries.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye ");
-
+    string[] countriesArray = new string[] { "Türkiye", "Amerika Birleşik Devletleri", "Kanada","Almanya", "Diğerleri" };
+    var countries = new SelectList(countriesArray.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye ");
 }
 
 <!-- Page Content-->
@@ -83,25 +82,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "control-label", @for = "account-email" })
-                        @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-email" } })
-                        @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
                         @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
                         @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone" } })
                         @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })<br />
-                        Kadin  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString())
-                        Erkek  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString())
-                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -114,16 +97,14 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })<br />
+                        Kadin  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString())
+                        Erkek  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString())
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -135,9 +116,16 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.Country, countries,  new { @class = "form-control" } )
-                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -145,6 +133,13 @@
                         @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Country, countries, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-12">
