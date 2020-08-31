@@ -4,6 +4,7 @@ using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
 using Ninject;
+using NLog;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
@@ -12,24 +13,7 @@ namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
-        [Inject]
-#pragma warning disable CS0169 // The field 'IyzicoService.CustomerService' is never used
-        private CustomerService CustomerService;
-
-#pragma warning restore CS0169 // The field 'IyzicoService.CustomerService' is never used
-
-        [Inject]
-#pragma warning disable CS0169 // The field 'IyzicoService.ShoppingCartService' is never used
-        private ShoppingCartService ShoppingCartService;
-
-#pragma warning restore CS0169 // The field 'IyzicoService.ShoppingCartService' is never used
-
-        [Inject]
-#pragma warning disable CS0169 // The field 'IyzicoService.AddressService' is never used
-        private AddressService AddressService;
-
-#pragma warning restore CS0169 // The field 'IyzicoService.AddressService' is never used
-
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
         {
             string data = "";
@@ -57,7 +41,7 @@ namespace EImece.Domain.Services
             request.BasketId = shoppingCart.OrderGuid;
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
             request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
-
+            Logger.Debug("CallBackUrl:" + callbackUrl);
             request.EnabledInstallments = AppConfig.IyzicoEnabledInstallments;
 
             Buyer buyer = new Buyer();
@@ -69,7 +53,7 @@ namespace EImece.Domain.Services
             buyer.IdentityNumber = customer.IdentityNumber.ToStr(AppConfig.BuyerIdentityNumber);
             buyer.LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat);
             buyer.RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat);
-            buyer.RegistrationAddress = customer.Description;
+            buyer.RegistrationAddress = customer.RegistrationAddress;
             buyer.Ip = customer.Ip;
             buyer.City = customer.City;
             buyer.Country = customer.Country;

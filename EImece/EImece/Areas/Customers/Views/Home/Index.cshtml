@@ -116,6 +116,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Town, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })

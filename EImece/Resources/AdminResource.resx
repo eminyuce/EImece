@@ -809,7 +809,7 @@ Erişim Linki</value>
     <value>Ülke</value>
   </data>
   <data name="District" xml:space="preserve">
-    <value>İlçe</value>
+    <value>Mahalle</value>
   </data>
   <data name="IdentityNumber" xml:space="preserve">
     <value>Kimlik Numarası</value>
@@ -975,5 +975,8 @@ Erişim Linki</value>
   </data>
   <data name="Filtrele" xml:space="preserve">
     <value>Filtrele</value>
+  </data>
+  <data name="Town" xml:space="preserve">
+    <value>İlçe</value>
   </data>
 </root>

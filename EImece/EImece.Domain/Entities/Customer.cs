@@ -56,8 +56,9 @@ namespace EImece.Domain.Entities
       //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Street))]
         public string Street { get; set; }
-
-      //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Town))]
+        public string Town { get; set; }
+        //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.District))]
         public string District { get; set; }
 
@@ -86,7 +87,7 @@ namespace EImece.Domain.Entities
 
         [NotMapped]
         public List<Order> Orders { get; set; }
-
+        [NotMapped]
         public String FullName
         {
             get
@@ -94,18 +95,27 @@ namespace EImece.Domain.Entities
                 return String.Format("{0} {1}", Name, Surname);
             }
         }
-
+        [NotMapped]
         public String Address
         {
             get
             {
-                return string.Format("{0} {5} {1} {5} {2} {5} {3} {5} {4} {5} ",
+                return string.Format("{0} {6} {1} {6} {2} {6} {3} {6} {4} {6} {5} {6}",
                 Street,
                 District,
+                Town,
                 City,
                 Country,
                 Description,
                 Environment.NewLine);
+            }
+        }
+        [NotMapped]
+        public String RegistrationAddress
+        {
+            get
+            {
+                return $"{District} {Street} {Town} {ZipCode} {Description} {City} {Country} ";
             }
         }
 
@@ -117,6 +127,7 @@ namespace EImece.Domain.Entities
                             && string.IsNullOrEmpty(Email)
                             && string.IsNullOrEmpty(Description)
                             && string.IsNullOrEmpty(City)
+                            && string.IsNullOrEmpty(Town)
                             && string.IsNullOrEmpty(Country)
                             && string.IsNullOrEmpty(ZipCode));
         }
@@ -130,6 +141,7 @@ namespace EImece.Domain.Entities
                             || string.IsNullOrEmpty(District)
                             || string.IsNullOrEmpty(Description)
                              || string.IsNullOrEmpty(City)
+                             || string.IsNullOrEmpty(Town)
                              || string.IsNullOrEmpty(Street)
                              || string.IsNullOrEmpty(Country)
                              || string.IsNullOrEmpty(ZipCode);

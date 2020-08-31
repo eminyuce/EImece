@@ -63,7 +63,7 @@ namespace EImece
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            //  Redirect301();
+              Redirect301();
         }
 
         private void Redirect301()
@@ -71,15 +71,14 @@ namespace EImece
             var domain = AppConfig.Domain;
 
             if (domain.StartsWith("www") && !Request.Url.Host.StartsWith("www") && !Request.Url.IsLoopback
-                && Request.Url.Host.IndexOf('.') > Request.Url.Host.Length / 2
-                )
+                && Request.Url.Host.IndexOf('.') > Request.Url.Host.Length / 2)
             {
                 UriBuilder builder = new UriBuilder(Request.Url);
-                // builder.Host = "www." + Request.Url.Host;
-                builder.Host = Request.Url.Host;
+                builder.Host = "www." + Request.Url.Host;
+                //builder.Host = Request.Url.Host;
                 Response.StatusCode = 301;
                 builder.Scheme = AppConfig.HttpProtocol;
-                // Response.AddHeader("Location", builder.ToString());
+                Response.AddHeader("Location", builder.ToString());
                 Response.End();
             }
         }
