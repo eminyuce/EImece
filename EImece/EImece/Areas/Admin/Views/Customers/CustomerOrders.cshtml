@@ -56,7 +56,12 @@
 .RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
     columns.Add(o => o.PaymentStatus).Titled(AdminResource.PaymentStatus);
-    columns.Add(o => o.Price).Titled(AdminResource.Price);
+    columns.Add(c => c.Price).
+    Titled(AdminResource.Price).
+    Sanitized(false).
+    Sortable(true).
+    Encoded(false).
+    RenderValueAs(o => DisplayPriceColumn(o));
 
     columns.Add(o => o.OrderComments).Titled(AdminResource.OrderComments)
  .Encoded(false).
@@ -93,7 +98,7 @@
                     <h4 class="modal-title">@AdminResource.Order @o.OrderNumber</h4>
                 </div>
                 <div class="modal-body">
-                    @Html.Partial("pOrderDetail",o)
+                    @Html.Partial("pOrderDetail", o)
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>
@@ -102,4 +107,8 @@
         </div>
     </div>
 }
- 
+@helper DisplayPriceColumn(Order o)
+{
+    <span class="text-primary">@o.Price.ToDouble().CurrencySign()</span>
+
+}

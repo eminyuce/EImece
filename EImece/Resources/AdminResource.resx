@@ -979,4 +979,22 @@ Erişim Linki</value>
   <data name="Town" xml:space="preserve">
     <value>İlçe</value>
   </data>
+  <data name="BillingAddress" xml:space="preserve">
+    <value>Fatura Adresi</value>
+  </data>
+  <data name="CustomerDetail" xml:space="preserve">
+    <value>Müşteri Detayı</value>
+  </data>
+  <data name="ShippingAddress" xml:space="preserve">
+    <value>Teslimat adresi</value>
+  </data>
+  <data name="TotalPrice" xml:space="preserve">
+    <value>Toplam fiyat</value>
+  </data>
+  <data name="CustomerRegistrationDate" xml:space="preserve">
+    <value>Müşteri Kayıt Tarihi</value>
+  </data>
+  <data name="CustomerRegistrationAddress" xml:space="preserve">
+    <value>Müşteri Kayıt Adresi</value>
+  </data>
 </root>

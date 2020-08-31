@@ -39,9 +39,11 @@ namespace EImece.Domain.Entities
         public bool IsSameAsShippingAddress { get; set; }
 
         public string UserId { get; set; }
+ 
         public bool IsPermissionGranted { get; set; }
 
-       // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
         public DateTime? BirthDate { get; set; }
 
         [NotMapped]

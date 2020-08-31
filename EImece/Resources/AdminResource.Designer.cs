@@ -295,6 +295,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fatura Adresi.
+        /// </summary>
+        public static string BillingAddress {
+            get {
+                return ResourceManager.GetString("BillingAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Doğum günü.
         /// </summary>
         public static string BirthDate {
@@ -538,6 +547,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteri Detayı.
+        /// </summary>
+        public static string CustomerDetail {
+            get {
+                return ResourceManager.GetString("CustomerDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş Yap Veya Üye Ol.
         /// </summary>
         public static string CustomerLoginPage {
@@ -552,6 +570,24 @@ namespace Resources {
         public static string CustomerOpenAddress {
             get {
                 return ResourceManager.GetString("CustomerOpenAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteri Kayıt Adresi.
+        /// </summary>
+        public static string CustomerRegistrationAddress {
+            get {
+                return ResourceManager.GetString("CustomerRegistrationAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteri Kayıt Tarihi.
+        /// </summary>
+        public static string CustomerRegistrationDate {
+            get {
+                return ResourceManager.GetString("CustomerRegistrationDate", resourceCulture);
             }
         }
         
@@ -2123,6 +2159,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Teslimat adresi.
+        /// </summary>
+        public static string ShippingAddress {
+            get {
+                return ResourceManager.GetString("ShippingAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kargo Bilgisi.
         /// </summary>
         public static string ShippingOptions {
@@ -2443,6 +2488,15 @@ namespace Resources {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toplam fiyat.
+        /// </summary>
+        public static string TotalPrice {
+            get {
+                return ResourceManager.GetString("TotalPrice", resourceCulture);
             }
         }
         

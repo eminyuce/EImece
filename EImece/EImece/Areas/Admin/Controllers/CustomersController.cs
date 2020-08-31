@@ -4,6 +4,7 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
+using System.Linq.Dynamic;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -42,7 +43,9 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult CustomerOrders(string id, string search = "")
         {
             var orders = OrderService.GetOrdersUserId(id, search);
-            ViewBag.Customer = CustomerService.GetUserId(id);
+            var customer = CustomerService.GetUserId(id);
+            orders.ForEach(r => r.Customer = customer);
+            ViewBag.Customer = customer;
             return View(orders);
         }
 

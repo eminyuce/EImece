@@ -218,7 +218,7 @@ namespace EImece.Domain.Helpers
         {
             int ret = defaultValue;
 
-            if (int.TryParse(arg.ToStr(), out ret))
+            if (int.TryParse(arg.ToStr(), NumberStyles.Integer, CultureInfo.InvariantCulture, out ret))
             {
                 return ret;
             }
@@ -232,7 +232,7 @@ namespace EImece.Domain.Helpers
         {
             long ret = 0;
 
-            long.TryParse(arg.ToStr(), out ret);
+            long.TryParse(arg.ToStr(),  out ret);
 
             return ret;
         }
@@ -241,7 +241,7 @@ namespace EImece.Domain.Helpers
         {
             float ret = 0;
 
-            float.TryParse(arg.ToStr(), out ret);
+            float.TryParse(arg.ToStr(), NumberStyles.Float, CultureInfo.InvariantCulture, out ret);
 
             return ret;
         }
@@ -250,7 +250,7 @@ namespace EImece.Domain.Helpers
         {
             decimal ret = 0;
 
-            decimal.TryParse(arg.ToStr(), out ret);
+            decimal.TryParse(arg.ToStr(), NumberStyles.Float, CultureInfo.InvariantCulture, out ret);
 
             return ret;
         }
@@ -259,7 +259,7 @@ namespace EImece.Domain.Helpers
         {
             double ret = 0;
 
-            double.TryParse(arg.ToStr(), out ret);
+            double.TryParse(arg.ToStr(), NumberStyles.Float, CultureInfo.InvariantCulture, out ret);
 
             return ret;
         }

@@ -976,6 +976,7 @@
     <Content Include="fonts\Flaticon.eot" />
     <Content Include="fonts\Flaticon.ttf" />
     <Content Include="fonts\Flaticon.woff" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\CustomerOrderDetail.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />

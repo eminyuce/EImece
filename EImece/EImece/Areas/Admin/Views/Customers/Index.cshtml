@@ -107,10 +107,17 @@ columns.Add()
     .Titled(AdminResource.Gender)
     .Filterable(true);
 
-    columns.Add(c => c.Description);
+    
+    columns.Add(o => o.RegistrationAddress)
+.Titled(AdminResource.CustomerRegistrationAddress)
+.Encoded(false).
+    Sanitized(false).
+    SetWidth(10).
+    RenderValueAs(o => String.Format("<textarea readonly  style='height: 100px; background-color: transparent; width: 200px; margin: 0px;'>{0}</textarea>", o.RegistrationAddress));
+
 
     columns.Add(o => o.CreatedDate)
-    .Titled(AdminResource.CreatedDate)
+    .Titled(AdminResource.CustomerRegistrationDate)
     .Sortable(true)
     .Css("gridDateClass")
     .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
