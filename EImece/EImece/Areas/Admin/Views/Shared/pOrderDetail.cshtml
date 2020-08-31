@@ -18,7 +18,7 @@
         <thead>
             <tr>
                 <th class="table__product-name product-name">@AdminResource.Product</th>
-                <th class="table__product-name product-name">@AdminResource.Quantity</th>
+                <th class="table__product-name product-Quantity"></th>
                 <th class="table__product-table product-total">@AdminResource.TotalPrice</th>
             </tr>
         </thead>
@@ -31,7 +31,7 @@
                     <a href="@orderProduct.Product.Name">@orderProduct.Product.Name</a>
                 </td>
                 <td class="table__product-name product-name">
-                    <strong class="product-quantity">× @orderProduct.Quantity</strong>
+                    <strong class="product-quantity">@orderProduct.Product.Price × @orderProduct.Quantity</strong>
                 </td>
                 <td class="table__product-total product-total">
                     <span class="Price-amount amount">
@@ -45,7 +45,7 @@
         <tfoot>
 
             <tr>
-                <th scope="row">@AdminResource.TotalPrice</th>
+                <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
                 <td>
                     <span class="Price-amount amount">
                         @order.Price.ToDouble().CurrencySign()
@@ -59,14 +59,20 @@
 
         <h2>@AdminResource.CustomerDetail</h2>
 
-        @Html.DisplayFor(r=>order.Customer, "CustomerOrderDetail")
-        <h3 class="column__title">@AdminResource.BillingAddress</h3>
-        <address>
-            @order.BillingAddress.Description
-        </address>
+        @Html.DisplayFor(r => order.Customer, "CustomerOrderDetail")
+
         <h3 class="column__title">@AdminResource.ShippingAddress</h3>
         <address>
             @order.ShippingAddress.Description
         </address>
+
+
+        <h3 class="column__title">@AdminResource.BillingAddress</h3>
+        <address>
+            @order.BillingAddress.Description
+        </address>
+
+
+
     </section>
 </section>
