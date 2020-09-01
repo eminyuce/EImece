@@ -37,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(String search = "")
         {
             List<EditUserViewModel> model = UsersService.GetUsers(search);
-           // model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
+            model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
             return View(model);
         }
 

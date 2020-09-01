@@ -3,9 +3,11 @@ using EImece.Domain.Models.FrontModels;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
+using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,22 +18,21 @@ namespace EImece.Domain.Services
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
         {
-            string data = "";
             Options options = GetOptions();
-            data = model.Token;
             var request = new RetrieveCheckoutFormRequest();
-            request.Token = data;
+            request.Token = model.Token;
             return CheckoutForm.Retrieve(request, options);
         }
 
-        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart)
+        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId)
         {
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
+   
             var requestContext = HttpContext.Current.Request.RequestContext;
             string callbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
                                                "Payment",
-                                               null,
+                                               new { orderGuid = shoppingCart.OrderGuid, userId = userId },
                                                AppConfig.HttpProtocol);
 
             var request = new CreateCheckoutFormInitializeRequest();
@@ -92,7 +93,7 @@ namespace EImece.Domain.Services
             }
 
             List<BasketItem> basketItems = new List<BasketItem>();
-            double price = 0;
+            double totalPrice = 0;
             foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems) //Session'da tutmuş oldugum sepette bulunan ürünler
             {
                 var item = shoppingCartItem.Product;
@@ -100,17 +101,18 @@ namespace EImece.Domain.Services
                 firstBasketItem.Id = item.ProductCode;
                 firstBasketItem.Name = item.Name;
                 firstBasketItem.Category1 = item.CategoryName;
-                firstBasketItem.Category2 = "Ürün";
+                firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-                firstBasketItem.Price = item.Price.ToString();
-                price += item.Price;
+                
+                firstBasketItem.Price = item.Price.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO));
+                totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);
             }
-
-            request.Price = price.ToString(); // Tutar
-            request.PaidPrice = price.ToString();
+            //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
+            request.Price = totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
             request.BasketItems = basketItems;
-
+            Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
             return CheckoutFormInitialize.Create(request, options);
         }
 

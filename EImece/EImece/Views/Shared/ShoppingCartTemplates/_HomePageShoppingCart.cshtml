@@ -30,7 +30,7 @@
         </div>
         @foreach (var item in products)
             {
-                var product = item.product;
+                var product = item.Product;
         <ul data-shopping-home-page-item="@item.ShoppingCartItemId">
             <li>
 
@@ -42,7 +42,7 @@
                         }
 
                 <a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a>
-                <span>@item.quantity x @product.Price.CurrencySign()</span>
+                <span>@item.Quantity x @product.Price.CurrencySign()</span>
                 <div class="clearfix"></div>
             </li>
         </ul>

@@ -8,7 +8,7 @@ namespace EImece.Domain
         public const string OrderGuidCookieKey = "orderGuid";
         public const string SUCCESS = "SUCCESS";
         public const string FAILED = "FAILED";
-
+        public const string EN_US_CULTURE_INFO = "en-US";
         /*********CACHE KEYS*********/
         public const string Cache30Days = "Cache30Days";
         public const string Cache20Minutes = "Cache20Minutes";

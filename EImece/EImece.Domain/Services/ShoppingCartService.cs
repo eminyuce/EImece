@@ -1,11 +1,14 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Model;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using NLog;
+using Resources;
 using System;
 using System.Web;
 
@@ -66,28 +69,37 @@ namespace EImece.Domain.Services
             ShoppingCartRepository.DeleteByWhereCondition(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm)
+        public Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
         {
-            var userName = HttpContext.Current.User.Identity.GetUserName();
-            var user = UserManager.FindByName(userName);
-            if (user == null)
-            {
-                throw new ArgumentException("User cannot be null " + userName);
-            }
+            Logger.Info("SaveShoppingCart:"+ JsonConvert.SerializeObject(shoppingCart));
             int shippingAddressId = shoppingCart.ShippingAddress.Id;
             int billingAddressId = shoppingCart.BillingAddress.Id;
             if (shippingAddressId == 0)
             {
+                shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
+                shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
+                shoppingCart.ShippingAddress.City = shoppingCart.Customer.City;
+                shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country;
+                shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode;
                 var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
                 shippingAddressId = shippingAddress.Id;
             }
             if (billingAddressId == 0)
             {
+                shoppingCart.BillingAddress.Name = Resource.BillingAdress; 
+                shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
+                shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
+                shoppingCart.BillingAddress.City = shoppingCart.Customer.City;
+                shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country;
+                shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode;
                 var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
                 billingAddressId = billingAddress.Id;
             }
-            CustomerService.SaveShippingAddress(user.Id);
-            Order savedOrder = SaveOrder(user.Id, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
+
+       
+            CustomerService.SaveShippingAddress(userId);
+            Order savedOrder = SaveOrder(userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
             SaveOrderProduct(shoppingCart, savedOrder);
 
             return savedOrder;

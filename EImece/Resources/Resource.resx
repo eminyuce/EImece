@@ -546,4 +546,7 @@
   <data name="Filtrele" xml:space="preserve">
     <value>Filtrele</value>
   </data>
+  <data name="ShippingAddress" xml:space="preserve">
+    <value>Teslimat adresi</value>
+  </data>
 </root>

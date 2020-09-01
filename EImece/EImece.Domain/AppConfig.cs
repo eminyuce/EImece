@@ -257,6 +257,13 @@ namespace EImece.Domain
                 return enabledInstallments;
             }
         }
-        
+
+        public static string ShoppingCartItemCategory2
+        {
+            get
+            {
+                return GetConfigString("ShoppingCartItemCategory2", "ShoppingCartItemCategory2");
+            }
+        }
     }
 }

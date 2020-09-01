@@ -12,7 +12,8 @@ namespace EImece.MyConsole
 
         private static void Main(string[] args)
         {
-            int p = 50;
+            double p = 467.5;
+            Console.WriteLine(p.ToString( ));
             Console.WriteLine(p.ToString("C"));
             Console.WriteLine(p.ToString("c0"));
             Console.WriteLine(p.ToString("C2"));

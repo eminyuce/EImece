@@ -95,7 +95,7 @@
                       .Titled(AdminResource.CreatedDate)
                   .Sortable(true)
                   .Css("gridDateClass")
-                  .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
+                  .RenderValueAs(o =>o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss"))
                   .SortInitialDirection(GridSortDirection.Descending);
 
 
