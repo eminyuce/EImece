@@ -1,7 +1,9 @@
-﻿using EImece.Domain.Models.Enums;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
@@ -30,6 +32,22 @@ namespace EImece.Domain.Entities
 
         public string Street { get; set; }
         public string District { get; set; }
+
+        [NotMapped]
+        public String AddressInfo
+        {
+            get
+            {
+                return string.Format("{0} {1} {2} {3} {4} {5}",
+               District.ToStr(),
+               Street.ToStr(),
+               ZipCode.ToStr(),
+               Description.ToStr(),
+               City.ToStr(),
+               Country.ToStr());
+
+            }
+        }
 
         public Address()
         {

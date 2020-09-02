@@ -12,8 +12,10 @@ using Iyzipay.Model;
 using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Provider;
 using Newtonsoft.Json;
 using Ninject;
+using NLog;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +28,8 @@ namespace EImece.Controllers
     {
         private readonly IyzicoService iyzicoService;
 
+        private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
@@ -34,6 +38,9 @@ namespace EImece.Controllers
 
         [Inject]
         public IProductService ProductService { get; set; }
+
+        [Inject]
+        public IOrderService OrderService { get; set; }
 
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -170,6 +177,7 @@ namespace EImece.Controllers
                         c.UserId = user.Id;
                     }
                     result.Customer = c;
+                    c.IsSameAsShippingAddress = true;
                 }
             }
         }
@@ -251,7 +259,7 @@ namespace EImece.Controllers
             address.City = customer.City;
             address.Country = customer.Country;
             address.ZipCode = customer.ZipCode;
-            address.Description = customer.Description;
+            address.Description = customer.RegistrationAddress;
             address.Name = customer.FullName;
             address.CreatedDate = DateTime.Now;
             address.UpdatedDate = DateTime.Now;
@@ -365,15 +373,24 @@ namespace EImece.Controllers
                     var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(shoppingCart);
                     EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), shoppingCart, emailTemplate);
                 });
-                return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
+                // return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
+                return RedirectToAction("ThankYouForYourOrder",new { orderId = order.Id });
             }
             else
             {
-                return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm });
+                PaymentLogger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
+                return RedirectToAction("NoSuccessForYourOrder");
             }
         }
+        public ActionResult ThankYouForYourOrder(int orderId)
+        {
+            return View(OrderService.GetSingle(orderId));
+        }
+        public ActionResult NoSuccessForYourOrder()
+        {
+            return View();
+        }
 
-          
 
         private void ClearCart(ShoppingCartSession shoppingCart)
         {

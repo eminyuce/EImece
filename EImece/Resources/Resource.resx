@@ -564,4 +564,7 @@
   <data name="Close" xml:space="preserve">
     <value>Kapat</value>
   </data>
+  <data name="FailedOrderInfoMessage" xml:space="preserve">
+    <value>Ödemeniz şu anda işleme koyulamıyor, lütfen birkaç dakika sonra tekrar deneyin</value>
+  </data>
 </root>

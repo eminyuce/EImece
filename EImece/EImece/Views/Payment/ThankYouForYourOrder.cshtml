@@ -1,0 +1,24 @@
+﻿@using Iyzipay.Model;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@using EImece.Domain.Models.FrontModels;
+@model Order
+@{
+    var item = Model;
+    string urlActionLink = Url.Action("index", "home");
+}
+
+    <!-- Page Content-->
+    <div class="container pb-5 mb-sm-4">
+        <div class="pt-5">
+            <div class="card py-3 mt-sm-3">
+                @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.OrderNumber, urlActionLink))
+            </div>
+        </div>
+    </div>
+ 
+

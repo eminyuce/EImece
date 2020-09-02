@@ -1189,6 +1189,8 @@
     <Content Include="Views\Stories\Detail - Copy.cshtml" />
     <Content Include="Views\Info\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SearchProductItem.cshtml" />
+    <Content Include="Views\Payment\ThankYouForYourOrder.cshtml" />
+    <Content Include="Views\Payment\NoSuccessForYourOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

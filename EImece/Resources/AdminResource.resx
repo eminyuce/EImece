@@ -833,7 +833,7 @@ Erişim Linki</value>
     <value>Şirket</value>
   </data>
   <data name="IsSameAsShippingAddress" xml:space="preserve">
-    <value>Sevkiyat adresleri ile Fatura adresi aynı mi?</value>
+    <value>Teslimat adresleri ile Fatura adresi aynı oldugunu bilmenizi isteriz.</value>
   </data>
   <data name="Payment" xml:space="preserve">
     <value>Ödeme</value>

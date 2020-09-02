@@ -430,6 +430,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ödemeniz şu anda işleme koyulamıyor, lütfen birkaç dakika sonra tekrar deneyin.
+        /// </summary>
+        public static string FailedOrderInfoMessage {
+            get {
+                return ResourceManager.GetString("FailedOrderInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Öne çıkan Ürünler.
         /// </summary>
         public static string FeaturedProducts {
