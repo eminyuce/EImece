@@ -39,13 +39,11 @@ namespace EImece.Domain.Services
             item.IdentityNumber = "";
             item.Ip = GeneralHelper.GetIpAddress();
             item.IsActive = true;
-            item.BirthDate = item.BirthDateStr.ToNullableDateTime();
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
             item.Position = 1;
             item.Lang = 1;
             item.IsPermissionGranted = model.IsPermissionGranted;
-            item.BirthDate = null;
             item.Street = "";
             item.District = "";
             item.City = "";
@@ -82,7 +80,7 @@ namespace EImece.Domain.Services
         public List<Customer> GetCustomerServices(string search)
         {
             var result = CustomerRepository.GetAll();
-            var resultList = result.ToList();
+            var resultList = result.OrderByDescending(r => r.CreatedDate).ToList();
             if (resultList.IsNotEmpty())
             {
                 foreach (var item in resultList)

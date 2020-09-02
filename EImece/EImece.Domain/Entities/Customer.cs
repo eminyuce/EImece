@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EImece.Domain.Helpers;
+using Newtonsoft.Json;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -41,15 +42,6 @@ namespace EImece.Domain.Entities
         public string UserId { get; set; }
  
         public bool IsPermissionGranted { get; set; }
-
-        // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
-        public DateTime? BirthDate { get; set; }
-
-        [NotMapped]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}", ConvertEmptyStringToNull = true)]
-        public string BirthDateStr { get; set; }
 
         //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
@@ -94,7 +86,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return String.Format("{0} {1}", Name, Surname);
+                return String.Format("{0} {1}", Name.ToStr(), Surname.ToStr());
             }
         }
         [NotMapped]
@@ -103,12 +95,12 @@ namespace EImece.Domain.Entities
             get
             {
                 return string.Format("{0} {6} {1} {6} {2} {6} {3} {6} {4} {6} {5} {6}",
-                Street,
-                District,
-                Town,
-                City,
-                Country,
-                Description,
+                Street.ToStr(),
+                District.ToStr(),
+                Town.ToStr(),
+                City.ToStr(),
+                Country.ToStr(),
+                Description.ToStr(),
                 Environment.NewLine);
             }
         }
@@ -117,7 +109,15 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return $"{District} {Street} {Town} {ZipCode} {Description} {City} {Country} ";
+                return string.Format("{0} {1} {2} {3} {4} {5} {6}",
+               District.ToStr(),
+               Street.ToStr(),
+               Town.ToStr(),
+               ZipCode.ToStr(),
+               Description.ToStr(),
+               City.ToStr(),
+               Country.ToStr());
+
             }
         }
 

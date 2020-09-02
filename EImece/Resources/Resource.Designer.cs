@@ -205,6 +205,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kapat.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İletişim.
         /// </summary>
         public static string Contacts {
@@ -1300,6 +1309,15 @@ namespace Resources {
         public static string WantMoreInfoAboutProduct {
             get {
                 return ResourceManager.GetString("WantMoreInfoAboutProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fatura kesimi icin TC Kimlik Numarası gerekiyor, Lütfen TC NO Giriniz.
+        /// </summary>
+        public static string WhyNeedIdentityNumber {
+            get {
+                return ResourceManager.GetString("WhyNeedIdentityNumber", resourceCulture);
             }
         }
     }

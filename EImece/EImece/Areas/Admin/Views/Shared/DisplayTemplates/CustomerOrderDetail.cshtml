@@ -37,12 +37,7 @@
             @Html.DisplayFor(model => model.GsmNumber)
         </div>
     }
-    <div class="display-label">
-        @Html.DisplayNameFor(model => model.BirthDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.BirthDate)
-    </div>
+    
 
     if (!String.IsNullOrEmpty(Model.Ip))
     {
@@ -61,12 +56,7 @@
         @Html.DisplayFor(model => model.CreatedDate)
     </div>
 
-
-    <div class="display-field">
-        @Html.DisplayFor(model => model.IsPermissionGranted)
-        @AdminResource.IsPermissionGrantedDescription
-    </div>
-
+ 
     <div class="display-label">
         @Html.DisplayNameFor(model => model.Gender)
     </div>

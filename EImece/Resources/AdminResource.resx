@@ -839,7 +839,7 @@ Erişim Linki</value>
     <value>Ödeme</value>
   </data>
   <data name="OrderDetails" xml:space="preserve">
-    <value>Teslimat Bilgileri</value>
+    <value>Sipariş detayları</value>
   </data>
   <data name="DeliveryInfo" xml:space="preserve">
     <value>İade &amp; Teslimat Bilgileri</value>
@@ -996,5 +996,23 @@ Erişim Linki</value>
   </data>
   <data name="CustomerRegistrationAddress" xml:space="preserve">
     <value>Müşteri Kayıt Adresi</value>
+  </data>
+  <data name="BKM_POS_SELECTED" xml:space="preserve">
+    <value>BKM_POS_SELECTED</value>
+  </data>
+  <data name="CALLBACK_PECCO" xml:space="preserve">
+    <value>CALLBACK_PECCO</value>
+  </data>
+  <data name="CALLBACK_THREEDS" xml:space="preserve">
+    <value>CALLBACK_THREEDS</value>
+  </data>
+  <data name="FAILURE" xml:space="preserve">
+    <value>HATALI Ödeme</value>
+  </data>
+  <data name="INIT_THREEDS" xml:space="preserve">
+    <value>INIT_THREEDS</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>BAŞARILI Ödeme</value>
   </data>
 </root>

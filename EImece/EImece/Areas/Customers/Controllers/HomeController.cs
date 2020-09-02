@@ -70,11 +70,10 @@ namespace EImece.Areas.Customers.Controllers
             user = UserManager.FindByName(User.Identity.GetUserName());
             customer = CustomerService.GetUserId(user.Id);
             customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
-            if (customer.BirthDate.HasValue)
+            if(customer.Gender == 0)
             {
-                customer.BirthDateStr = string.Format("{0:MM.dd.yyyy}", customer.BirthDate.Value);
+                customer.Gender = (int)GenderType.Man;
             }
-
             return customer;
         }
 
@@ -97,10 +96,6 @@ namespace EImece.Areas.Customers.Controllers
 
             customer.UserId = user.Id;
             customer.Ip = GeneralHelper.GetIpAddress();
-            if (!string.IsNullOrEmpty(customer.BirthDateStr))
-            {
-                customer.BirthDate = customer.BirthDateStr.ToNullableDateTime();
-            }
             customer = CustomerService.SaveOrEditEntity(customer);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(customer);

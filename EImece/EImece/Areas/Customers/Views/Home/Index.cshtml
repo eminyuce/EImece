@@ -40,12 +40,7 @@
                     Size ulaşabilmemiz için lütfen kişisel bilgilerinizi eksiksiz doldurunuz.
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="alert alert-secondary" role="alert">
-                    Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. <br />
-                    Hatta varsa adresinizin tarif bilgilerini de @AdminResource.CustomerOpenAddress bölümüne yazabilirsiniz. (Örnek: Postanenin yanından girince üçüncü sokak vs.)
-                </div>
-            </div>
+
 
             @using (Html.BeginForm("Index", "Home",
             null,
@@ -82,18 +77,21 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
+                        @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
                         @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
                         @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone" } })
                         @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.BirthDateStr, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.BirthDateStr, new { htmlAttributes = new { @id = "datepicker", @class = "form-control", @autocomplete = "off" } })
-                        @Html.ValidationMessageFor(model => model.BirthDateStr, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -153,9 +151,16 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="alert alert-secondary" role="alert">
+                            Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. <br />
+                            Hatta varsa adresinizin tarif bilgilerini de @AdminResource.CustomerOpenAddress bölümüne yazabilirsiniz. (Örnek: Postanenin yanından girince üçüncü sokak vs.)
+                        </div>
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
+          
+
                 <div class="col-12">
                     <hr class="mt-2 mb-3">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">

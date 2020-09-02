@@ -20,6 +20,8 @@ namespace EImece.MyConsole
             Console.WriteLine(o);
             Console.WriteLine(EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o)));
 
+            var PaidPrice = "435.5";
+            Console.WriteLine(PaidPrice.ToDecimal());
             Console.ReadLine();
         }
 

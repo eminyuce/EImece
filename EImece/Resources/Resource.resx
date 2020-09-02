@@ -558,4 +558,10 @@
                 &lt;a class="btn btn-secondary mt-3 mr-3" href="{1}"&gt;Alışverişe geri dön&lt;/a&gt;
             &lt;/div&gt;</value>
   </data>
+  <data name="WhyNeedIdentityNumber" xml:space="preserve">
+    <value>Fatura kesimi icin TC Kimlik Numarası gerekiyor, Lütfen TC NO Giriniz</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
 </root>

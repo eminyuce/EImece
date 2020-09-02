@@ -313,6 +313,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BKM_POS_SELECTED.
+        /// </summary>
+        public static string BKM_POS_SELECTED {
+            get {
+                return ResourceManager.GetString("BKM_POS_SELECTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Markalar.
         /// </summary>
         public static string Brands {
@@ -336,6 +345,24 @@ namespace Resources {
         public static string ButtonOk {
             get {
                 return ResourceManager.GetString("ButtonOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CALLBACK_PECCO.
+        /// </summary>
+        public static string CALLBACK_PECCO {
+            get {
+                return ResourceManager.GetString("CALLBACK_PECCO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CALLBACK_THREEDS.
+        /// </summary>
+        public static string CALLBACK_THREEDS {
+            get {
+                return ResourceManager.GetString("CALLBACK_THREEDS", resourceCulture);
             }
         }
         
@@ -772,6 +799,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HATALI Ödeme.
+        /// </summary>
+        public static string FAILURE {
+            get {
+                return ResourceManager.GetString("FAILURE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sıkça Sorulan Sorular.
         /// </summary>
         public static string Faq {
@@ -1092,6 +1128,15 @@ namespace Resources {
         public static string ImageWidth {
             get {
                 return ResourceManager.GetString("ImageWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INIT_THREEDS.
+        /// </summary>
+        public static string INIT_THREEDS {
+            get {
+                return ResourceManager.GetString("INIT_THREEDS", resourceCulture);
             }
         }
         
@@ -1583,7 +1628,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Teslimat Bilgileri.
+        ///   Looks up a localized string similar to Sipariş detayları.
         /// </summary>
         public static string OrderDetails {
             get {
@@ -2371,6 +2416,15 @@ namespace Resources {
         public static string Subscribers {
             get {
                 return ResourceManager.GetString("Subscribers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BAŞARILI Ödeme.
+        /// </summary>
+        public static string SUCCESS {
+            get {
+                return ResourceManager.GetString("SUCCESS", resourceCulture);
             }
         }
         

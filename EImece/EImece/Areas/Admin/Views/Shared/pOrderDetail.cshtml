@@ -9,16 +9,21 @@
 @{
     var order = Model;
     var orderProducts = Model.OrderProducts;
+   
 }
 <section class="order-details">
 
-    <h3 class="order-details__title">@AdminResource.OrderDetails</h3>
-    <table class="table table-striped table-bordered">
+    <h4 class="order-details__title">@AdminResource.OrderDetails</h4>
+    <div class="text-center">
+        <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dd MMMM ddd, HH:mm")</b>
+    </div>
+    <table class='table table-hover table-bordered table-striped'>
 
         <thead>
             <tr>
                 <th class="table__product-name product-name">@AdminResource.Product</th>
-                <th class="table__product-name product-Quantity"></th>
+                <th class="table__product-name product-name"></th>
+                <th class="table__product-name product-Quantity">@AdminResource.Quantity</th>
                 <th class="table__product-table product-total">@AdminResource.TotalPrice</th>
             </tr>
         </thead>
@@ -26,26 +31,29 @@
         <tbody>
             @foreach (var orderProduct in orderProducts)
             {
-            <tr class="table__line-item order_item">
-                <td class="table__product-name product-name">
-                    <a href="@orderProduct.Product.Name">@orderProduct.Product.Name</a>
-                </td>
-                <td class="table__product-name product-name">
-                    <strong class="product-quantity">@orderProduct.Product.Price × @orderProduct.Quantity</strong>
-                </td>
-                <td class="table__product-total product-total">
-                    <span class="Price-amount amount">
-                        @orderProduct.TotalPrice.CurrencySign()
-                    </span>
-                </td>
-            </tr>
+                var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 100, 0);
+                <tr class="table__line-item order_item">
+                    <td class="table__product-name product-name">
+                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
+                    </td>
+                    <td class="table__product-name product-name">
+                        <a href="@orderProduct.Product.Name">@orderProduct.Product.Name</a><br />
+                        <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
+                    </td>
+                    <td class="table__product-name product-name">
+                        <strong class="product-quantity">@orderProduct.Product.Price.CurrencySign() × @orderProduct.Quantity</strong>
+                    </td>
+                    <td class="table__product-total product-total">
+                        <span class="Price-amount amount">
+                            @orderProduct.TotalPrice.CurrencySign()
+                        </span>
+                    </td>
+                </tr>
             }
         </tbody>
-
         <tfoot>
-
             <tr>
-                <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
+                <th colspan="3" scope="row">@AdminResource.TotalPrice</th>
                 <td>
                     <span class="Price-amount amount">
                         @order.Price.ToDouble().CurrencySign()
@@ -56,23 +64,11 @@
     </table>
 
     <section class="customer-details">
-
-        <h2>@AdminResource.CustomerDetail</h2>
-
+        <h5>@AdminResource.CustomerDetail</h5>
         @Html.DisplayFor(r => order.Customer, "CustomerOrderDetail")
-
-        <h3 class="column__title">@AdminResource.ShippingAddress</h3>
+        <h5 class="column__title">@AdminResource.ShippingAddress</h5>
         <address>
             @order.ShippingAddress.Description
         </address>
-
-
-        <h3 class="column__title">@AdminResource.BillingAddress</h3>
-        <address>
-            @order.BillingAddress.Description
-        </address>
-
-
-
     </section>
 </section>

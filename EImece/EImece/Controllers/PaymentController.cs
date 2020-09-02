@@ -279,8 +279,8 @@ namespace EImece.Controllers
             return Json(new
             {
                 status = Domain.Constants.SUCCESS,
-                CargoPriceInt = shoppingCart.CargoPriceInt,
-                CargoPrice = shoppingCart.CargoPriceInt.CurrencySign(),
+                CargoPriceInt = shoppingCart.CargoPriceValue,
+                CargoPrice = shoppingCart.CargoPriceValue.CurrencySign(),
                 BasketMinTotalPriceForCargoInt = shoppingCart.BasketMinTotalPriceForCargoInt,
                 BasketMinTotalPriceForCargo = shoppingCart.BasketMinTotalPriceForCargoInt.CurrencySign(),
                 TotalPriceWithCargoPriceDouble = shoppingCart.TotalPriceWithCargoPrice,

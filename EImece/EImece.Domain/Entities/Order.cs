@@ -10,7 +10,8 @@ namespace EImece.Domain.Entities
         public DateTime DeliveryDate { get; set; }
         public string UserId { get; set; }
         public string OrderComments { get; set; }
-        public string OrderNumber { get; set; }
+        public string OrderNumber { get; set; }    
+        public double CargoPrice { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
         public string OrderGuid { get; set; }
@@ -58,7 +59,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return decimal.Round(PaidPrice.Replace(".", ",").ToDecimal(), 3, MidpointRounding.AwayFromZero);
+                return decimal.Round(PaidPrice.ToDecimal(), 3, MidpointRounding.AwayFromZero);
             }
         }
     }

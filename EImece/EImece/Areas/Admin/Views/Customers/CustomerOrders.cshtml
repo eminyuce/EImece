@@ -6,6 +6,7 @@
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
 
 @{
     ViewBag.Title = "Index";
@@ -55,7 +56,13 @@
 .Sanitized(false)
 .RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
-    columns.Add(o => o.PaymentStatus).Titled(AdminResource.PaymentStatus);
+    columns.Add(o => o.PaymentStatus)
+    .Sanitized(false).
+    Sortable(true).
+    Encoded(false).
+    RenderValueAs(o => DisplayPaymentStatusColumn(o)).Titled(AdminResource.PaymentStatus);
+
+
     columns.Add(c => c.Price).
     Titled(AdminResource.Price).
     Sanitized(false).
@@ -81,6 +88,7 @@
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
+
     <b>@o.OrderNumber</b>
     <br />
     <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
@@ -89,7 +97,7 @@
 
     <!-- Modal -->
     <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -110,5 +118,34 @@
 @helper DisplayPriceColumn(Order o)
 {
     <span class="text-primary">@o.Price.ToDouble().CurrencySign()</span>
+
+}
+@helper DisplayPaymentStatusColumn(Order o)
+{
+
+    IyzicoPaymentStatus iyzicoPaymentStatus = (IyzicoPaymentStatus)Enum.Parse(typeof(IyzicoPaymentStatus), o.PaymentStatus, true);
+    switch (iyzicoPaymentStatus)
+    {
+        case IyzicoPaymentStatus.SUCCESS:
+            <span class="text-primary">@AdminResource.SUCCESS</span>
+            break;
+        case IyzicoPaymentStatus.FAILURE:
+            <span class="text-primary">@AdminResource.FAILURE</span>
+            break;
+        case IyzicoPaymentStatus.INIT_THREEDS:
+            <span class="text-primary">@AdminResource.INIT_THREEDS</span>
+            break;
+        case IyzicoPaymentStatus.CALLBACK_THREEDS:
+            <span class="text-primary">@AdminResource.CALLBACK_THREEDS</span>
+            break;
+        case IyzicoPaymentStatus.BKM_POS_SELECTED:
+            <span class="text-primary">@AdminResource.BKM_POS_SELECTED</span>
+            break;
+        case IyzicoPaymentStatus.CALLBACK_PECCO:
+            <span class="text-primary">@AdminResource.CALLBACK_PECCO</span>
+            break;
+        default:
+            break;
+    }
 
 }

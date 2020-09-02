@@ -104,9 +104,6 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthDate))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM.dd.yyyy}")]
-        public DateTime? BirthDate { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsPermissionGrantedDescription))]
         public bool IsPermissionGranted { get; set; }

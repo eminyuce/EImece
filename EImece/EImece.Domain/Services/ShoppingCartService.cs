@@ -112,6 +112,7 @@ namespace EImece.Domain.Services
             var item = new Order();
             item.OrderComments = shoppingCart.OrderComments;
             item.OrderNumber = GeneralHelper.RandomNumber(12);
+            item.CargoPrice = shoppingCart.CargoPriceValue;
             item.UserId = userId;
             item.Name = shoppingCart.Customer.FullName;
             item.CreatedDate = DateTime.Now;
