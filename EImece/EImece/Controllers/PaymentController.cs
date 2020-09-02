@@ -133,7 +133,8 @@ namespace EImece.Controllers
         private ShoppingCartSession GetShoppingCartFromDataSource()
         {
             HttpCookie orderGuid = Request.Cookies[Domain.Constants.OrderGuidCookieKey];
-            return GetShoppingCartByOrderGuid(orderGuid.Value);
+            string orderGuid2 = orderGuid == null ? null : orderGuid.Value;
+            return GetShoppingCartByOrderGuid(orderGuid2);
         }
 
         private ShoppingCartSession GetShoppingCartByOrderGuid(string orderGuid)
@@ -349,12 +350,14 @@ namespace EImece.Controllers
             }
         }
 
-        public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string orderGuid, string userId)
+        public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
         {
             CheckoutForm checkoutForm = iyzicoService.GetCheckoutForm(model);
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
+                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
+                var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
                 var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm, userId);
                 ClearCart(shoppingCart);
                 Task.Run(() =>
@@ -369,6 +372,8 @@ namespace EImece.Controllers
                 return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm });
             }
         }
+
+          
 
         private void ClearCart(ShoppingCartSession shoppingCart)
         {

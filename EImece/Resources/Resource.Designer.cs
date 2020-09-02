@@ -700,6 +700,21 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;div class=&quot;card-body text-center&quot;&gt;
+        ///                &lt;h3 class=&quot;h4 pb-3&quot;&gt;Siparişiniz için teşekkür ederiz!&lt;/h3&gt;
+        ///                &lt;p class=&quot;mb-2&quot;&gt;Siparişiniz verildi ve mümkün olan en kısa sürede işleme alınacak.&lt;/p&gt;
+        ///                &lt;p class=&quot;mb-2&quot;&gt;Sipariş numaranızı not ettiğinizden emin olun. &lt;strong&gt; {0} &lt;/strong&gt;&lt;/p&gt;
+        ///                &lt;p&gt;Kısa süre içinde siparişinizin onaylandığı bir e-posta alacaksınız.&lt;/p&gt;
+        ///                &lt;a class=&quot;btn btn-secondary mt-3 mr-3&quot; href=&quot;{1}&quot;&gt;Alışverişe geri dön&lt;/a&gt;
+        ///      [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string PaymentResultSuccessHtml {
+            get {
+                return ResourceManager.GetString("PaymentResultSuccessHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Siparişi Tamamla.
         /// </summary>
         public static string PlaceOrder {

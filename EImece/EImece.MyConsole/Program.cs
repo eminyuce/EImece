@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Web;
 
 namespace EImece.MyConsole
 {
@@ -12,15 +13,12 @@ namespace EImece.MyConsole
 
         private static void Main(string[] args)
         {
-            double p = 467.5;
-            Console.WriteLine(p.ToString( ));
-            Console.WriteLine(p.ToString("C"));
-            Console.WriteLine(p.ToString("c0"));
-            Console.WriteLine(p.ToString("C2"));
-            Console.WriteLine(p.ToString("C3"));
-            Console.WriteLine(p.ToString("C4"));
-            Console.WriteLine(p.ToString("C5"));
-            Console.WriteLine(p.ToString("C6"));
+            string orderGuid = "fb348ba3-a29c-4824-94f2-8677be8b40ca";
+            string userId = "3bbd5c72-4e35-44a7-9eff-b5b8ff9b6c86";
+
+            string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(orderGuid));
+            Console.WriteLine(o);
+            Console.WriteLine(EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o)));
 
             Console.ReadLine();
         }

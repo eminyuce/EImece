@@ -549,4 +549,13 @@
   <data name="ShippingAddress" xml:space="preserve">
     <value>Teslimat adresi</value>
   </data>
+  <data name="PaymentResultSuccessHtml" xml:space="preserve">
+    <value>&lt;div class="card-body text-center"&gt;
+                &lt;h3 class="h4 pb-3"&gt;Siparişiniz için teşekkür ederiz!&lt;/h3&gt;
+                &lt;p class="mb-2"&gt;Siparişiniz verildi ve mümkün olan en kısa sürede işleme alınacak.&lt;/p&gt;
+                &lt;p class="mb-2"&gt;Sipariş numaranızı not ettiğinizden emin olun. &lt;strong&gt; {0} &lt;/strong&gt;&lt;/p&gt;
+                &lt;p&gt;Kısa süre içinde siparişinizin onaylandığı bir e-posta alacaksınız.&lt;/p&gt;
+                &lt;a class="btn btn-secondary mt-3 mr-3" href="{1}"&gt;Alışverişe geri dön&lt;/a&gt;
+            &lt;/div&gt;</value>
+  </data>
 </root>

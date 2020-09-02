@@ -238,6 +238,7 @@
   <ItemGroup>
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
+    <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />

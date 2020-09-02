@@ -10,30 +10,29 @@
 @{
     var item = Model;
     var checkoutForm = Model.CheckoutForm;
+    string urlActionLink = Url.Action("index", "home");
 }
 
 @if (checkoutForm.PaymentStatus.Equals(EImece.Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
 {
     <!-- Page Content-->
-<div class="container pb-5 mb-sm-4">
-    <div class="pt-5">
-        <div class="card py-3 mt-sm-3">
-            <div class="card-body text-center">
-                <h3 class="h4 pb-3">Siparişiniz için teşekkür ederiz!</h3>
-                <p class="mb-2">Siparişiniz verildi ve mümkün olan en kısa sürede işleme alınacak.</p>
-                <p class="mb-2">Sipariş numaranızı not ettiğinizden emin olun. <strong> @item.Order.OrderNumber</strong></p>
-                <p>Kısa süre içinde siparişinizin onaylandığı bir e-posta alacaksınız.</p>
-                <a class="btn btn-secondary mt-3 mr-3" href="@Url.Action("category","ProductCategories")">Go back shopping</a>
+    <div class="container pb-5 mb-sm-4">
+        <div class="pt-5">
+            <div class="card py-3 mt-sm-3">
+                @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.Order.OrderNumber, urlActionLink))
             </div>
         </div>
     </div>
-</div>
 }
 else
 {
-<p>NOT SUCCESS</p>
+    <div class="container pb-5 mb-sm-4">
+        <div class="pt-5">
+            <div class="card py-3 mt-sm-3">
+                <p>NOT SUCCESS</p>
+                @checkoutForm.ErrorMessage
+            </div>
+        </div>
+    </div>
 }
 
-<h2>@checkoutForm.ErrorMessage</h2>
-
-@Html.DisplayFor(r => checkoutForm)

@@ -30,9 +30,12 @@ namespace EImece.Domain.Services
             var customer = shoppingCart.Customer;
    
             var requestContext = HttpContext.Current.Request.RequestContext;
+            string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
+            string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
+
             string callbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
                                                "Payment",
-                                               new { orderGuid = shoppingCart.OrderGuid, userId = userId },
+                                               new {  o,  u },
                                                AppConfig.HttpProtocol);
 
             var request = new CreateCheckoutFormInitializeRequest();
