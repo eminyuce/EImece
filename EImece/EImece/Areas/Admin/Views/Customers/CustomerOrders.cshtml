@@ -29,8 +29,8 @@
 }
 
 <h2>@customer.FullName @AdminResource.Order</h2>
-<p class="text-sm-left">@customer.Email</p>
-<p class="text-sm-left">@customer.Address</p>
+@Html.DisplayFor(r => customer, "CustomerOrderDetail")
+
 <hr class="adminLine" />
 @Html.Partial("pAdminSearchForm", new ViewDataDictionary(ViewData){
                       {"IdValueExists",true}})
@@ -98,12 +98,11 @@
     <!-- Modal -->
     <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">@AdminResource.Order @o.OrderNumber</h4>
+                    <h4 class="order-details__title">@AdminResource.OrderDetails  @AdminResource.OrderNumber - @o.OrderNumber</h4>
                 </div>
                 <div class="modal-body">
                     @Html.Partial("pOrderDetail", o)

@@ -13,14 +13,14 @@
 }
 <section class="order-details">
 
-    <h4 class="order-details__title">@AdminResource.OrderDetails</h4>
+
     <div class="text-center">
         <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dd MMMM ddd, HH:mm")</b>
     </div>
     <table class='table table-hover table-bordered table-striped'>
 
         <thead>
-            <tr>
+            <tr class="info">
                 <th class="table__product-name product-name">@AdminResource.Product</th>
                 <th class="table__product-name product-name"></th>
                 <th class="table__product-name product-Quantity">@AdminResource.Quantity</th>
@@ -52,11 +52,16 @@
             }
         </tbody>
         <tfoot>
-            <tr>
-                <th colspan="3" scope="row">@AdminResource.TotalPrice</th>
+            <tr class="success">
+                <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
+                <td>
+                    <span class="Price-Quantity">
+                        @orderProducts.Sum(r => r.Quantity)  @AdminResource.PieceOfProductSold
+                    </span>
+                </td>
                 <td>
                     <span class="Price-amount amount">
-                        @order.Price.ToDouble().CurrencySign()
+                        @order.PaidPrice.ToDouble().CurrencySign()
                     </span>
                 </td>
             </tr>
@@ -64,9 +69,7 @@
     </table>
 
     <section class="customer-details">
-        <h5>@AdminResource.CustomerDetail</h5>
-        @Html.DisplayFor(r => order.Customer, "CustomerOrderDetail")
-        <h5 class="column__title">@AdminResource.ShippingAddress</h5>
+        <h3 class="column__title">@AdminResource.ShippingAddress</h3>
         <address>
             @order.ShippingAddress.Description
         </address>

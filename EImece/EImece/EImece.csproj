@@ -1181,7 +1181,7 @@
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartDetails.cshtml" />
     <Content Include="Views\Shared\ShoppingCartTemplates\_ShoppingCartProducts.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FeaturedProductItem.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\pOrderDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\pOrderDetail.cshtml" />
     <Content Include="Views\Shared\_PaginatedModelList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProductComment.cshtml" />
     <Content Include="Views\Payment\_OrderSummary.cshtml" />

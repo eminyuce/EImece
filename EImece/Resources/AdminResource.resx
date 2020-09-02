@@ -1015,4 +1015,7 @@ Erişim Linki</value>
   <data name="SUCCESS" xml:space="preserve">
     <value>BAŞARILI Ödeme</value>
   </data>
+  <data name="PieceOfProductSold" xml:space="preserve">
+    <value>adet ürün satıldı</value>
+  </data>
 </root>

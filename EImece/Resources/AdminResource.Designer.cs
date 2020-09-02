@@ -1727,6 +1727,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to adet ürün satıldı.
+        /// </summary>
+        public static string PieceOfProductSold {
+            get {
+                return ResourceManager.GetString("PieceOfProductSold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pinterest Link.
         /// </summary>
         public static string PinterestWebSiteLink {
