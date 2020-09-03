@@ -119,7 +119,12 @@ namespace EImece.Areas.Customers.Controllers
             RazorEngineHelper.SendMessageToSeller(contact);
             return RedirectToAction("SendMessageToSeller");
         }
-
+        public ActionResult Faq()
+        {
+            var customer = GetCustomer();
+            var faqs = FaqService.GetActiveBaseEntities(true, null);
+            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
+        }
         public ActionResult CustomerOrders(string search = "")
         {
             var customer = GetCustomer();

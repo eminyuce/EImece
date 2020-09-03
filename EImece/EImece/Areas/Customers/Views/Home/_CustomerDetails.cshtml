@@ -77,6 +77,11 @@
             <i data-feather="phone"></i>&nbsp;@AdminResource.SendMessageToSeller
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link  @String.Format("{0}",actionName.Equals("Faq",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("Faq")">
+            <i data-feather="info"></i>&nbsp;@AdminResource.Faq
+        </a>
+    </li>
 </ul>
 <!-- Navigation (visible sm-down)-->
 <div class="d-sm-none pb-4">

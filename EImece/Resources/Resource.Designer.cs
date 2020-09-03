@@ -1295,6 +1295,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kargo Ücretini Siparişle Birlikte Ödeme Miktari.
+        /// </summary>
+        public static string TotalPriceOfYourOrderWithCargoPrice {
+            get {
+                return ResourceManager.GetString("TotalPriceOfYourOrderWithCargoPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Birim fiyat.
         /// </summary>
         public static string UnitPrice {

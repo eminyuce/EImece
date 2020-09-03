@@ -93,10 +93,19 @@
                     <div class="text-center">
                         <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dd MMMM ddd, HH:mm")</b>
                     </div>
+                    @if (order.ShippingAddress != null)
+                    {
+                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
+                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
+                                <div class="text-muted mb-sm-2">@AdminResource.ShippingAddress</div>
+                                <div class="font-weight-semibold">@order.ShippingAddress.AddressInfo</div>
+                            </div>
+                        </div>
+                    }
                     @foreach (var orderProduct in order.OrderProducts)
                     {
                         var product = orderProduct.Product;
-                        var imgTag = product.GetCroppedImageUrl(product.MainImageId, 200, 0);
+                        var imgTag = product.GetCroppedImageUrl(product.MainImageId, 160, 0);
                         <!-- Item-->
                         <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
                             <div class="media d-block d-sm-flex text-center text-sm-left">
@@ -117,30 +126,26 @@
                             </div>
                         </div>
                     }
-
-                    @if (order.CargoPrice > 0)
-                    {
-                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                            <div class="media d-block d-sm-flex text-center text-sm-left">
-                                <div class="media-body pt-3">
-                                </div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            </div>
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@AdminResource.CargoPrice</div>
-                                <div class="font-weight-semibold">@order.CargoPrice</div>
+                    <!-- Item-->
+                    <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
+                        <div class="media d-block d-sm-flex text-center text-sm-left">
+                            <div class="media-body pt-3">
                             </div>
                         </div>
-                    }
-
+                        <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
+                            <div class="font-weight-semibold">@order.OrderProducts.Sum(r => r.Quantity) @AdminResource.PieceOfProductSold</div>
+                        </div>
+                        <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
+                            <div class="font-weight-semibold">@Resource.Total: @order.OrderProducts.Sum(r => r.Price).CurrencySign()</div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Footer-->
                 <div class="modal-footer flex-wrap justify-content-between bg-secondary">
                     <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
                     <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
-                    <div class="px-2 py-1"><button type="button" class="btn btn-primary btn-block" data-dismiss="modal">@Resource.Close</button></div>
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.Total:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
+                    <div class="px-2 py-1"><span class="text-muted">@AdminResource.CargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.CargoPrice.CurrencySign()</span></div>
+                    <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
                 </div>
             </div>
         </div>

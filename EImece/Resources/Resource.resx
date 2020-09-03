@@ -567,4 +567,7 @@
   <data name="FailedOrderInfoMessage" xml:space="preserve">
     <value>Ödemeniz şu anda işleme koyulamıyor, lütfen birkaç dakika sonra tekrar deneyin</value>
   </data>
+  <data name="TotalPriceOfYourOrderWithCargoPrice" xml:space="preserve">
+    <value>Kargo Ücretini Siparişle Birlikte Ödeme Miktari</value>
+  </data>
 </root>
