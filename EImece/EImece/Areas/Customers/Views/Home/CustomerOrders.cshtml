@@ -91,14 +91,13 @@
                 </div>
                 <div class="modal-body pb-0">
                     <div class="text-center">
-                        <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dd MMMM ddd, HH:mm")</b>
+                        <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</b>
                     </div>
                     @if (order.ShippingAddress != null)
                     {
                         <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
                             <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@AdminResource.ShippingAddress</div>
-                                <div class="font-weight-semibold">@order.ShippingAddress.AddressInfo</div>
+                                <div class="alert alert-primary">@AdminResource.ShippingAddress <br /> @order.ShippingAddress.AddressInfo</div>
                             </div>
                         </div>
                     }

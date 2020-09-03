@@ -1295,7 +1295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kargo Ücretini Siparişle Birlikte Ödeme Miktari.
+        ///   Looks up a localized string similar to Toplam Ödeme Miktarınız (Kargo ücreti ile birlikte).
         /// </summary>
         public static string TotalPriceOfYourOrderWithCargoPrice {
             get {
