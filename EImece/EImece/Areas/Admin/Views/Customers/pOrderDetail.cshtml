@@ -34,23 +34,32 @@
             @foreach (var orderProduct in orderProducts)
             {
                 var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
-                <tr class="table__line-item order_item">
-                    <td class="table__product-name product-name">
-                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
-                    </td>
-                    <td class="table__product-name product-name">
-                        <a href="@orderProduct.Product.Name">@orderProduct.Product.Name</a><br />
-                        <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
-                    </td>
-                    <td class="table__product-name product-name">
-                        <strong class="product-quantity">@orderProduct.Product.Price.CurrencySign() × @orderProduct.Quantity</strong>
-                    </td>
-                    <td class="table__product-total product-total">
-                        <span class="Price-amount amount">
-                            @orderProduct.TotalPrice.CurrencySign()
-                        </span>
-                    </td>
-                </tr>
+            <tr class="table__line-item order_item">
+                <td class="text-center">
+                    <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink(orderProduct.Product.Name,
+                   "Detail",
+                   "Products",
+                   new
+                        {
+                            area = "",
+                            categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
+                       id = orderProduct.Product.GetSeoUrl()
+                        }, new { @class = "btn btn-xl btn-link", @target = "_blank" })
+                    <br />
+                    <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
+                </td>
+                <td class="table__product-name product-name">
+                    <strong class="product-quantity">@orderProduct.Product.Price.CurrencySign() × @orderProduct.Quantity</strong>
+                </td>
+                <td class="text-right">
+                    <span>
+                        @orderProduct.TotalPrice.CurrencySign()
+                    </span>
+                </td>
+            </tr>
             }
 
             @if (!string.IsNullOrEmpty(order.OrderComments))
@@ -67,67 +76,67 @@
                 </tr>
 
             }
-            <tr class="warning">
-                <td colspan="3">
-                    <b class="Price-amount amount">
-                        @AdminResource.CargoPrice
-                    </b>
-                </td>
-                <td>
-                    @order.CargoPrice.CurrencySign()
-                </td>
-            </tr>
-            <tr class="warning">
-                <td colspan="3">
-                    <b class="Price-amount amount">
-                        @AdminResource.Installment
-                    </b>
-                </td>
-                <td>
-                    @order.Installment.ToDouble().CurrencySign()
-                </td>
-            </tr>
-            <tr class="warning">
-                <td colspan="3">
-                    <b class="Price-amount amount">
-                        @AdminResource.MerchantCommissionRateAmount
-                    </b>
-                </td>
-                <td>
-                    @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
-                </td>
-            </tr>
-            <tr class="warning">
-                <td colspan="3">
-                    <b>
-                        @AdminResource.IyziCommissionRateAmount
-                    </b>
-                </td>
-                <td>
-                    @order.IyziCommissionRateAmount.ToDouble().CurrencySign()
-                </td>
-            </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b class="Price-amount amount">
+                    @AdminResource.CargoPrice
+                </b>
+            </td>
+            <td class="text-right">
+                @order.CargoPrice.CurrencySign()
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b class="Price-amount amount">
+                    Installment
+                </b>
+            </td>
+            <td class="text-right">
+                @order.Installment.ToDouble().CurrencySign()
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b class="Price-amount amount">
+                    MerchantCommissionRateAmount
+                </b>
+            </td>
+            <td class="text-right">
+                @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b>
+                    IyziCommissionRateAmount
+                </b>
+            </td>
+            <td class="text-right">
+                @order.IyziCommissionRateAmount.ToDouble().CurrencySign()
+            </td>
+        </tr>
 
-            <tr class="warning">
-                <td colspan="3">
-                    <b>
-                        MerchantCommissionRate
-                    </b>
-                </td>
-                <td>
-                    @order.MerchantCommissionRate
-                </td>
-            </tr>
-            <tr class="warning">
-                <td colspan="3">
-                    <b>
-                        IyziCommissionFee
-                    </b>
-                </td>
-                <td>
-                    @order.IyziCommissionFee
-                </td>
-            </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b>
+                    MerchantCommissionRate
+                </b>
+            </td>
+            <td class="text-right">
+                @order.MerchantCommissionRate
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b>
+                    IyziCommissionFee
+                </b>
+            </td>
+            <td class="text-right">
+                @order.IyziCommissionFee
+            </td>
+        </tr>
 
 
         </tbody>
@@ -139,10 +148,8 @@
                         @orderProducts.Sum(r => r.Quantity)  @AdminResource.PieceOfProductSold
                     </span>
                 </td>
-                <td>
-                    <span class="Price-amount amount">
-                        @order.PaidPrice.ToDouble().CurrencySign()
-                    </span>
+                <td class="text-right">
+                    @order.PaidPrice.ToDouble().CurrencySign()
                 </td>
             </tr>
         </tfoot>

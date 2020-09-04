@@ -10,7 +10,7 @@
 
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         @if (!String.IsNullOrEmpty(Model.FullName))
         {
             <b class="display-label">
@@ -21,18 +21,7 @@
             </div>
         }
     </div>
-    <div class="col-md-3">
-        @if (!String.IsNullOrEmpty(Model.Company))
-        {
-            <b class="display-label">
-                @Html.DisplayNameFor(model => model.Company)
-            </b>
-            <div class="display-field">
-                @Html.DisplayFor(model => model.Company)
-            </div>
-        }
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         @if (!String.IsNullOrEmpty(Model.GsmNumber))
         {
             <b class="display-label">
@@ -43,18 +32,7 @@
             </div>
         }
     </div>
-    <div class="col-md-3">
-        <b class="display-label">
-            @AdminResource.CustomerRegistrationDate
-        </b>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </div>
-    </div>
-</div>
-<br />
-<div class="row">
-    <div class="col-md-3">
+    <div class="col-md-1">
         <b class="display-label">
             @Html.DisplayNameFor(model => model.Gender)
         </b>
@@ -62,7 +40,29 @@
             @GetGenderText(Model.Gender)
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
+        <b class="display-label">
+            @AdminResource.CustomerRegistrationDate
+        </b>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </div>
+    </div>
+    <div class="col-md-2">
+        @if (!String.IsNullOrEmpty(Model.Company))
+        {
+            <b class="display-label">
+                @Html.DisplayNameFor(model => model.Company)
+            </b>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Company)
+            </div>
+        }
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
         @if (!String.IsNullOrEmpty(Model.RegistrationAddress))
         {
             <b class="display-label">
