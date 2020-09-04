@@ -15,15 +15,17 @@
 
 
     <div class="text-center">
-        <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dd MMMM ddd, HH:mm")</b>
+        <b>@AdminResource.OrderDatePurchased - @order.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")</b><br />
+        <b>@AdminResource.PaymentIyzicoNumber - @order.PaymentId</b><br />
+        <b>@AdminResource.PaymentIyzicoMerchantBasketId - @order.BasketId</b><br />
     </div>
+
     <table class='table table-hover table-bordered table-striped'>
 
         <thead>
             <tr class="info">
-                <th class="table__product-name product-name">@AdminResource.Product</th>
-                <th class="table__product-name product-name"></th>
-                <th class="table__product-name product-Quantity">@AdminResource.Quantity</th>
+                <th colspan="2" class="text-center">@AdminResource.Product</th>
+                <th class="table__product-name product-Quantity">@AdminResource.UnitPrice x @AdminResource.Quantity</th>
                 <th class="table__product-table product-total">@AdminResource.TotalPrice</th>
             </tr>
         </thead>
@@ -31,7 +33,7 @@
         <tbody>
             @foreach (var orderProduct in orderProducts)
             {
-                var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 100, 0);
+                var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
                 <tr class="table__line-item order_item">
                     <td class="table__product-name product-name">
                         <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
@@ -50,6 +52,84 @@
                     </td>
                 </tr>
             }
+
+            @if (!string.IsNullOrEmpty(order.OrderComments))
+            {
+                <tr class="primary">
+                    <td>
+                        <b>
+                            @AdminResource.OrderComments
+                        </b>
+                    </td>
+                    <td colspan="3">
+                        @order.OrderComments
+                    </td>
+                </tr>
+
+            }
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.CargoPrice
+                    </b>
+                </td>
+                <td>
+                    @order.CargoPrice.CurrencySign()
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.Installment
+                    </b>
+                </td>
+                <td>
+                    @order.Installment.ToDouble().CurrencySign()
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.MerchantCommissionRateAmount
+                    </b>
+                </td>
+                <td>
+                    @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b>
+                        @AdminResource.IyziCommissionRateAmount
+                    </b>
+                </td>
+                <td>
+                    @order.IyziCommissionRateAmount.ToDouble().CurrencySign()
+                </td>
+            </tr>
+
+            <tr class="warning">
+                <td colspan="3">
+                    <b>
+                        MerchantCommissionRate
+                    </b>
+                </td>
+                <td>
+                    @order.MerchantCommissionRate
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b>
+                        IyziCommissionFee
+                    </b>
+                </td>
+                <td>
+                    @order.IyziCommissionFee
+                </td>
+            </tr>
+
+
         </tbody>
         <tfoot>
             <tr class="success">

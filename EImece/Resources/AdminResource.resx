@@ -1007,15 +1007,39 @@ Erişim Linki</value>
     <value>CALLBACK_THREEDS</value>
   </data>
   <data name="FAILURE" xml:space="preserve">
-    <value>HATALI Ödeme</value>
+    <value>HATALI</value>
   </data>
   <data name="INIT_THREEDS" xml:space="preserve">
     <value>INIT_THREEDS</value>
   </data>
   <data name="SUCCESS" xml:space="preserve">
-    <value>BAŞARILI Ödeme</value>
+    <value>BAŞARILI</value>
   </data>
   <data name="PieceOfProductSold" xml:space="preserve">
     <value>adet ürün satıldı</value>
+  </data>
+  <data name="OrdersBelongCustomer" xml:space="preserve">
+    <value>ait olan siparişler</value>
+  </data>
+  <data name="PaymentIyzicoNumber" xml:space="preserve">
+    <value>Iyzico Ödeme Numarası</value>
+  </data>
+  <data name="PaymentIyzicoMerchantBasketId" xml:space="preserve">
+    <value>İşyeri Sepet Numarası</value>
+  </data>
+  <data name="OrderDatePurchased" xml:space="preserve">
+    <value>Ödeme Tarihi</value>
+  </data>
+  <data name="IyzicoInfo" xml:space="preserve">
+    <value>Iyzico ödeme altyapısı bilgileri</value>
+  </data>
+  <data name="IyziCommissionRateAmount" xml:space="preserve">
+    <value>İyzi Komisyon Oranı Tutarı</value>
+  </data>
+  <data name="MerchantCommissionRateAmount" xml:space="preserve">
+    <value>Satıcı Komisyon Oranları Tutarı</value>
+  </data>
+  <data name="Installment" xml:space="preserve">
+    <value>Taksit</value>
   </data>
 </root>

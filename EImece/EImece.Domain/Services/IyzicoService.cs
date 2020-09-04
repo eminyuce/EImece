@@ -6,6 +6,7 @@ using Iyzipay.Request;
 using Newtonsoft.Json;
 using Ninject;
 using NLog;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web;
@@ -37,10 +38,9 @@ namespace EImece.Domain.Services
                                                "Payment",
                                                new {  o,  u },
                                                AppConfig.HttpProtocol);
-
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
-            request.ConversationId = shoppingCart.OrderGuid;
+            request.ConversationId = 
             request.Currency = Currency.TRY.ToString();
             request.BasketId = shoppingCart.OrderGuid;
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();

@@ -13,9 +13,9 @@
     <div class="col-md-3">
         @if (!String.IsNullOrEmpty(Model.FullName))
         {
-            <div class="display-label">
+            <b class="display-label">
                 @String.Format("{0} {1}", AdminResource.Name, AdminResource.LastName)
-            </div>
+            </b>
             <div class="display-field">
                 @Html.DisplayFor(model => model.FullName)
             </div>
@@ -24,9 +24,9 @@
     <div class="col-md-3">
         @if (!String.IsNullOrEmpty(Model.Company))
         {
-            <div class="display-label">
+            <b class="display-label">
                 @Html.DisplayNameFor(model => model.Company)
-            </div>
+            </b>
             <div class="display-field">
                 @Html.DisplayFor(model => model.Company)
             </div>
@@ -35,18 +35,18 @@
     <div class="col-md-3">
         @if (!String.IsNullOrEmpty(Model.GsmNumber))
         {
-            <div class="display-label">
+            <b class="display-label">
                 @Html.DisplayNameFor(model => model.GsmNumber)
-            </div>
+            </b>
             <div class="display-field">
                 @Html.DisplayFor(model => model.GsmNumber)
             </div>
         }
     </div>
     <div class="col-md-3">
-        <div class="display-label">
+        <b class="display-label">
             @AdminResource.CustomerRegistrationDate
-        </div>
+        </b>
         <div class="display-field">
             @Html.DisplayFor(model => model.CreatedDate)
         </div>
@@ -55,9 +55,9 @@
 <br />
 <div class="row">
     <div class="col-md-3">
-        <div class="display-label">
+        <b class="display-label">
             @Html.DisplayNameFor(model => model.Gender)
-        </div>
+        </b>
         <div class="display-field">
             @GetGenderText(Model.Gender)
         </div>
@@ -65,9 +65,9 @@
     <div class="col-md-3">
         @if (!String.IsNullOrEmpty(Model.RegistrationAddress))
         {
-            <div class="display-label">
+            <b class="display-label">
                 @AdminResource.CustomerRegistrationAddress
-            </div>
+            </b>
             <div class="display-field">
                 @Html.DisplayFor(model => model.RegistrationAddress)
             </div>
@@ -85,11 +85,11 @@
     var genderEnum = (GenderType)gender;
     if (GenderType.Man == genderEnum)
     {
-        <b>@AdminResource.ManGender</b>
+        <div>@AdminResource.ManGender</div>
     }
     else if (GenderType.Woman == genderEnum)
     {
-        <b>@AdminResource.WomanGender</b>
+        <div>@AdminResource.WomanGender</div>
     }
 
 }

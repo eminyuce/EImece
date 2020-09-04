@@ -62,6 +62,12 @@
     Encoded(false).
     RenderValueAs(o => DisplayPaymentStatusColumn(o)).Titled(AdminResource.PaymentStatus);
 
+    columns.Add(o => o.PaymentId)
+   .Sanitized(false).
+   Sortable(true).
+   Encoded(false).
+   RenderValueAs(o => DisplayIyzicoInfo(o)).Titled(AdminResource.PaymentIyzicoNumber);
+
 
     columns.Add(c => c.Price).
     Titled(AdminResource.Price).
@@ -77,14 +83,21 @@
       RenderValueAs(o => String.Format("<textarea readonly  style='height: 78px; background-color: transparent; width: 300px; margin: 0px;'>{0}</textarea>", o.OrderComments));
 
     columns.Add(o => o.CreatedDate)
-.Titled(AdminResource.CreatedDate)
+.Titled(AdminResource.OrderDatePurchased)
 .Sortable(true)
 .Css("gridDateClass")
-.RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
+.RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")) : null)
 .SortInitialDirection(GridSortDirection.Descending);
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
+
+@helper DisplayIyzicoInfo(Order order)
+{
+<div>
+    <b>@order.PaymentId</b>
+</div>
+}
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
@@ -108,7 +121,7 @@
                     @Html.Partial("pOrderDetail", o)
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>
+                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">@AdminResource.Close</button>
                 </div>
             </div>
         </div>

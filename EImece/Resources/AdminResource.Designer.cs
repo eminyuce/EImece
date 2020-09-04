@@ -799,7 +799,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HATALI Ödeme.
+        ///   Looks up a localized string similar to HATALI.
         /// </summary>
         public static string FAILURE {
             get {
@@ -1150,6 +1150,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taksit.
+        /// </summary>
+        public static string Installment {
+            get {
+                return ResourceManager.GetString("Installment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yayında mı.
         /// </summary>
         public static string IsActive {
@@ -1218,6 +1227,24 @@ namespace Resources {
         public static string IsValues {
             get {
                 return ResourceManager.GetString("IsValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iyzico ödeme altyapısı bilgileri.
+        /// </summary>
+        public static string IyzicoInfo {
+            get {
+                return ResourceManager.GetString("IyzicoInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İyzi Komisyon Oranı Tutarı.
+        /// </summary>
+        public static string IyziCommissionRateAmount {
+            get {
+                return ResourceManager.GetString("IyziCommissionRateAmount", resourceCulture);
             }
         }
         
@@ -1457,6 +1484,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Satıcı Komisyon Oranları Tutarı.
+        /// </summary>
+        public static string MerchantCommissionRateAmount {
+            get {
+                return ResourceManager.GetString("MerchantCommissionRateAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SEO anahtar kelimeler.
         /// </summary>
         public static string MetaKeywords {
@@ -1628,6 +1664,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ödeme Tarihi.
+        /// </summary>
+        public static string OrderDatePurchased {
+            get {
+                return ResourceManager.GetString("OrderDatePurchased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sipariş detayları.
         /// </summary>
         public static string OrderDetails {
@@ -1642,6 +1687,15 @@ namespace Resources {
         public static string OrderNumber {
             get {
                 return ResourceManager.GetString("OrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ait olan siparişler.
+        /// </summary>
+        public static string OrdersBelongCustomer {
+            get {
+                return ResourceManager.GetString("OrdersBelongCustomer", resourceCulture);
             }
         }
         
@@ -1705,6 +1759,24 @@ namespace Resources {
         public static string Payment {
             get {
                 return ResourceManager.GetString("Payment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İşyeri Sepet Numarası.
+        /// </summary>
+        public static string PaymentIyzicoMerchantBasketId {
+            get {
+                return ResourceManager.GetString("PaymentIyzicoMerchantBasketId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iyzico Ödeme Numarası.
+        /// </summary>
+        public static string PaymentIyzicoNumber {
+            get {
+                return ResourceManager.GetString("PaymentIyzicoNumber", resourceCulture);
             }
         }
         
@@ -2429,7 +2501,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BAŞARILI Ödeme.
+        ///   Looks up a localized string similar to BAŞARILI.
         /// </summary>
         public static string SUCCESS {
             get {
