@@ -12,9 +12,9 @@
             <!-- Login -->
             <div class="tab-content">
                 <h2> @Resource.ThankYouForContactingUs </h2>
-                <p style="color:black"> Dear @Html.DisplayFor(model => model.Name)  </p>
+                <p style="color:black"> @Resource.DearCustomer @Html.DisplayFor(model => model.Name)  </p>
                 <p style="color:black">
-                    @Resource.ThankYouContactUsForm
+                    @Html.Raw(Resource.ThankYouContactUsForm)
                 </p>
             </div>
         </div>

@@ -376,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Değerli müşterimiz.
+        /// </summary>
+        public static string DearCustomer {
+            get {
+                return ResourceManager.GetString("DearCustomer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teslimat Bilgileri.
         /// </summary>
         public static string DeliveryInfo {
@@ -1304,7 +1313,12 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz. Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek. Günün geri kalanı güzel geçsin!.
+        ///   Looks up a localized string similar to  &lt;div&gt;
+        ///                 &lt;p&gt;Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz.&lt;/p&gt;
+        ///              &lt;p&gt;Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek.&lt;/p&gt;
+        ///             &lt;p&gt; Günün geri kalanı güzel geçsin!&lt;/p&gt;
+        ///            &lt;/div&gt;
+        ///         .
         /// </summary>
         public static string ThankYouContactUsForm {
             get {
