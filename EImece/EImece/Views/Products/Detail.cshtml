@@ -287,43 +287,49 @@
         <div class="col-md-4 pb-5">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
-                        <div class="display-4 mr-2">@Model.AverageRating</div>
-                        <div>
-                            <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
-                            <div class="star-rating">
-                                @for (int i = 0; i < 5; i++)
-                                {
-                                    if (i < product.Rating)
+                    @if (productComments.IsNotEmpty())
+                    {
+                        <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
+                            <div class="display-4 mr-2">@Model.AverageRating</div>
+                            <div>
+                                <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
+                                <div class="star-rating">
+                                    @for (int i = 0; i < 5; i++)
                                     {
-                                <i class="sr-star active" data-feather="star"></i>
+                                        if (i < product.Rating)
+                                        {
+                                            <i class="sr-star active" data-feather="star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="sr-star" data-feather="star"></i>
+                                        }
                                     }
-                                    else
-                                    {
-                                <i class="sr-star" data-feather="star"></i>
-                                    }
-                                }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    @foreach (var item in Model.TotalRating)
-                    {
-                    <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
-                    <div class="progress mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                        foreach (var item in Model.TotalRating)
+                        {
+                            <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
+                            <div class="progress mb-3" style="height: 2px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        }
                     }
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
-                </div>
+                        <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
+                    </div>
             </div>
         </div>
-        <div class="col-md-8 pb-5">
-            <h2 class="h3">@Resource.LatestReviews</h2>
-            @foreach (var productComment in productComments)
-            {
-            @createReviewItem(productComment)
-            }
-        </div>
+        @if (productComments.IsNotEmpty())
+        {
+            <div class="col-md-8 pb-5">
+                <h2 class="h3">@Resource.LatestReviews</h2>
+                @foreach (var productComment in productComments)
+                {
+                    @createReviewItem(productComment)
+                }
+            </div>
+        }
     </div>
 </div>
 
