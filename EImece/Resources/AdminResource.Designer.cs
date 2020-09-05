@@ -1087,7 +1087,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kimlik Numarası.
+        ///   Looks up a localized string similar to TC Kimlik Numarası.
         /// </summary>
         public static string IdentityNumber {
             get {

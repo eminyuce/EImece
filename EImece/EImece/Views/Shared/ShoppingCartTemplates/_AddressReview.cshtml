@@ -14,19 +14,18 @@
 
 <div class="four columns alpha">
     <ul class="address-review">
-        <li><strong>Billing Address</strong></li>
-        <li>@customer.FullName</li>
-        <li>@customer.Email</li>
+        @if (!string.IsNullOrEmpty(customer.Company))
+        {
+            <li>@customer.Company</li>
+        }
         <li>@billingAddress.Description</li>
         <li>@billingAddress.ZipCode</li>
         <li>@billingAddress.City</li>
         <li>@billingAddress.Country</li>
     </ul>
 </div>
-<div class="four columns alpha omega">
-    <ul class="address-review">
-        <li><strong>Shipping Address</strong></li>
-        <li>Same as Billing Address</li>
-    </ul>
+<div class="custom-control custom-checkbox">
+    <input class="custom-control-input" type="checkbox" checked="">
+    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
 </div>
 <div class="clearfix"></div>

@@ -68,12 +68,13 @@
             <!-- Client details-->
             <div class="bg-secondary px-4 pt-4 pb-2">
                 <div class="row">
-                    <div class="col-sm-6">
-                        <h4 class="h6">Shipping to:</h4>
+                    <div class="col-sm-12">
                         <ul class="list-unstyled">
-                            <li><span class="text-muted">Client:&nbsp;</span>@customer.FullName</li>
-                            <li><span class="text-muted">Address:&nbsp;</span>@Html.Partial("ShoppingCartTemplates/_AddressReview", Model)</li>
-                            <li><span class="text-muted">Phone:&nbsp;</span>@customer.GsmNumber</li>
+                            <li><span class="text-muted">@Resource.Client:&nbsp;</span>@customer.FullName</li>
+                            <li><span class="text-muted">@Resource.Email:&nbsp;</span>@customer.Email</li>
+                            <li><span class="text-muted">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
+                            <li><span class="text-muted">@Resource.IdentityNumber:&nbsp;</span>@customer.IdentityNumber</li>
+                            <li><span class="text-muted"><strong>@Resource.ShippingAddress:&nbsp;</strong></span>@Html.Partial("ShoppingCartTemplates/_AddressReview", Model)</li>
                         </ul>
                     </div>
                 </div>

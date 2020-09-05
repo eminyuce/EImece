@@ -36,7 +36,7 @@ namespace EImece.Domain.Entities
         public string Ip { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsSameAsShippingAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSameAsShippingAddress))]
         public bool IsSameAsShippingAddress { get; set; }
 
         public string UserId { get; set; }

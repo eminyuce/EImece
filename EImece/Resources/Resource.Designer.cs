@@ -205,6 +205,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteri.
+        /// </summary>
+        public static string Client {
+            get {
+                return ResourceManager.GetString("Client", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kapat.
         /// </summary>
         public static string Close {
@@ -520,11 +529,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TC Kimlik Numarası.
+        /// </summary>
+        public static string IdentityNumber {
+            get {
+                return ResourceManager.GetString("IdentityNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kampanya.
         /// </summary>
         public static string IsCampaign {
             get {
                 return ResourceManager.GetString("IsCampaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teslimat adresiniz ile Fatura adresinizin aynı oldugunu bilmenizi isteriz..
+        /// </summary>
+        public static string IsSameAsShippingAddress {
+            get {
+                return ResourceManager.GetString("IsSameAsShippingAddress", resourceCulture);
             }
         }
         
@@ -729,6 +756,24 @@ namespace Resources {
         public static string PaymentResultSuccessHtml {
             get {
                 return ResourceManager.GetString("PaymentResultSuccessHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telefon numarası.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ürün satin aldiniz..
+        /// </summary>
+        public static string PieceOfProductPurchased {
+            get {
+                return ResourceManager.GetString("PieceOfProductPurchased", resourceCulture);
             }
         }
         

@@ -812,7 +812,7 @@ Erişim Linki</value>
     <value>Mahalle</value>
   </data>
   <data name="IdentityNumber" xml:space="preserve">
-    <value>Kimlik Numarası</value>
+    <value>TC Kimlik Numarası</value>
   </data>
   <data name="PinterestWebSiteLink" xml:space="preserve">
     <value>Pinterest Link</value>

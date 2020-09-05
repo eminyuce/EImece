@@ -570,4 +570,19 @@
   <data name="TotalPriceOfYourOrderWithCargoPrice" xml:space="preserve">
     <value>Toplam Ödeme Miktarınız (Kargo ücreti ile birlikte)</value>
   </data>
+  <data name="Client" xml:space="preserve">
+    <value>Müşteri</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefon numarası</value>
+  </data>
+  <data name="IdentityNumber" xml:space="preserve">
+    <value>TC Kimlik Numarası</value>
+  </data>
+  <data name="IsSameAsShippingAddress" xml:space="preserve">
+    <value>Teslimat adresiniz ile Fatura adresinizin aynı oldugunu bilmenizi isteriz.</value>
+  </data>
+  <data name="PieceOfProductPurchased" xml:space="preserve">
+    <value>ürün satin aldiniz.</value>
+  </data>
 </root>
