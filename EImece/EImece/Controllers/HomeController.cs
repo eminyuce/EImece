@@ -161,7 +161,7 @@ namespace EImece.Controllers
         [ChildActionOnly]
         public ActionResult Footer()
         {
-            FooterViewModel footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
+            var footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
 
@@ -173,13 +173,7 @@ namespace EImece.Controllers
             item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", item);
         }
-
-        //[OutputCache(Duration = Settings.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        //public ActionResult ContactUs()
-        //{
-        //    ContactUsFormViewModel contact = new ContactUsFormViewModel();
-        //    return PartialView("_ContactUsFormViewModel", contact);
-        //}
+       
         [HttpPost]
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
@@ -231,7 +225,7 @@ namespace EImece.Controllers
                     }
                     else
                     {
-                        EmailSender.SendEmailContactingUs(contact);
+                        RazorEngineHelper.SendContactUsForCommunication(contact);
                     }
                 }
                 catch (Exception ex)

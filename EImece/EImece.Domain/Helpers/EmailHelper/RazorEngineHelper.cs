@@ -6,6 +6,7 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
@@ -17,7 +18,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 {
     public class RazorEngineHelper
     {
-
+        private static readonly Logger RazorEngineLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
@@ -143,6 +144,10 @@ namespace EImece.Domain.Helpers.EmailHelper
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsAboutProductInfoMailTemplate);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException("NO email template is defined for " + Constants.ContactUsAboutProductInfoMailTemplate);
+            }
             string groupName = string.Format("{0} | {1} | {2}", "ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
@@ -168,7 +173,46 @@ namespace EImece.Domain.Helpers.EmailHelper
                 WebSiteCompanyEmailAddress,
                 companyname);
         }
+        public void SendContactUsForCommunication(ContactUsFormViewModel contact)
+        {
+            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsForCommunication);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException("NO email template is defined for " + Constants.ContactUsForCommunication);
+            }
+            string groupName = string.Format("{0} | {1} | {2}", "ContactUsForCommunication", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
+                emailTemplate.Body, 
+                emailTemplate.Name,
+                groupName);
 
+            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
+
+            var Request = HttpContext.Create().Request;
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+
+            dynamic model = contact;
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string body = Engine.Razor.RunCompile(template, templateKey, null, contact);
+            var settingEmailAccount = SettingService.GetEmailAccount();
+
+            RazorEngineLogger.Info("settingEmailAccount:" +
+                settingEmailAccount+ 
+                " body" + body+
+                " subject:" + emailTemplate.Subject + 
+                " WebSiteCompanyEmailAddress" + WebSiteCompanyEmailAddress +
+                " companyname:" + companyname);
+            EmailSender.SendEmail(settingEmailAccount,
+                emailTemplate.Subject,
+                body,
+                WebSiteCompanyEmailAddress,
+                companyname,
+                WebSiteCompanyEmailAddress,
+                companyname);
+        }
         public RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
         {
             var result = new RazorRenderResult();

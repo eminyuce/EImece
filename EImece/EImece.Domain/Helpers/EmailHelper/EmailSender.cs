@@ -114,24 +114,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
         }
 
-        public void SendEmailContactingUs(ContactUsFormViewModel contact)
-        {
-            var emailAccount = SettingService.GetEmailAccount();
-            var fromAddress = emailAccount.Email;
-            if (string.IsNullOrEmpty(fromAddress))
-            {
-                throw new ArgumentException("From Address cannot be null");
-            }
-            var fromAddressDisplayName = emailAccount.DisplayName;
-            if (string.IsNullOrEmpty(fromAddressDisplayName))
-            {
-                throw new ArgumentException("from Address DisplayName cannot be null");
-            }
-            var from = new MailAddress(fromAddress, fromAddressDisplayName);
-            var to = new MailAddress(contact.Email, contact.Name);
-            SendEmail(emailAccount, Resource.ContactUsMessage, contact.Message, from, to);
-        }
-
         public void SendEmail(string destination, string subject, string body)
         {
             var emailAccount = SettingService.GetEmailAccount();

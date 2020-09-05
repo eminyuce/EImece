@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
 using System;
 using System.Threading;
 using System.Web;
@@ -14,7 +15,7 @@ namespace EImece.Controllers
     {
         [Inject]
         public ISettingService SettingService { get; set; }
-
+        private static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
         public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
@@ -41,6 +42,15 @@ namespace EImece.Controllers
                     return AppConfig.MainLanguage;
                 }
             }
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            if (filterContext !=null && filterContext.Exception != null)
+            {
+                BaseLogger.Error("OnException:" + filterContext.Exception.ToFormattedString());
+            }
+            base.OnException(filterContext);
         }
     }
 }

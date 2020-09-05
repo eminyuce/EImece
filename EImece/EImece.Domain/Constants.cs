@@ -44,6 +44,7 @@ namespace EImece.Domain
         public const string ConfirmYourAccountMailTemplate = "ConfirmYourAccount";
         public const string ForgotPasswordMailTemplate = "ForgotPassword";
         public const string ContactUsAboutProductInfoMailTemplate = "ContactUsAboutProductInfo";
+        public const string ContactUsForCommunication = "ContactUsForCommunication";
         public const string SendMessageToSellerMailTemplate = "SendMessageToSeller";
         public const string WebSiteCompanyPhoneAndLocation = "WebSiteCompanyPhoneAndLocation";
         public const string InstagramWebSiteLink = "InstagramWebSiteLink";
