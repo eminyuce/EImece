@@ -108,7 +108,7 @@ namespace EImece.Controllers
             productComment.UpdatedDate = DateTime.Now;
             productComment.IsActive = false;
             productComment.Position = 1;
-            productComment.Lang = 1;
+            productComment.Lang = CurrentLanguage;
             productCommentService.SaveOrEditEntity(productComment);
             return RedirectToAction("Detail", new { id = productComment.SeoUrl });
         }

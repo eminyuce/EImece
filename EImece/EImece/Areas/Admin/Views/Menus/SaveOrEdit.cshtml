@@ -55,7 +55,7 @@
                         <li class="Tools">
                             <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
                         </li>
-                        <li class="Tools"> @Html.ActionLink(AdminResource.BackToList, "Index", null, new { @class = "btn btn-default" })</li>
+                        <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'"  value="@AdminResource.BackToList" style="width:150px;" class="btn btn-primary" /></li>
                     </ul>
                 </div>
                 <div class="panel-body">
