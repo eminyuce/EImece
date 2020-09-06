@@ -85,6 +85,13 @@ namespace EImece.Areas.Customers.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            if (string.IsNullOrEmpty(customer.IdentityNumber))
+            {
+                ModelState.AddModelError("", string.Format(AdminResource.MandatoryField, AdminResource.IdentityNumber)+" "+ Resource.WhyNeedIdentityNumber);
+                ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
+                return View(customer);
+            }
+
 
             var user = UserManager.FindByName(User.Identity.GetUserName());
             if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
