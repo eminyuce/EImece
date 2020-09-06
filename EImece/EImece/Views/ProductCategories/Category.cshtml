@@ -32,6 +32,7 @@
     </div>
 </div>
 
+
 <div class="container pb-5 mb-4">
     <div class="row">
         <div class="col-lg-3">
@@ -60,9 +61,33 @@
             <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
                 <div class="d-flex flex-wrap">
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                        <div class="button-group tabs">
+                            @if (Model.SelectedFilterTypes.IsNotEmpty())
+                            {
+                                foreach (var selectedFilterType in Model.SelectedFilterTypes)
+                                {
+
+                                    <a href="@selectedFilterType.RemoveSelectedFilter(Model.SelectedFilterTypes)"
+                                       rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
+                                        @string.Format("{0}: {1}", selectedFilterType.Parent.FilterTypeName.Text, selectedFilterType.name)
+                                        <span class="badge badge-pill badge-light">X</span>
+                                    </a>
+                                }
+                                <a href="@Url.Action("Category", "ProductCategories", new { filtreler = ""})"
+                                   rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
+                                    @Resource.RemoveAllFilter
+                                </a>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
                         <div class="button-group tabs">
-
                             <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
                                rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
                             <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"

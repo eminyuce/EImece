@@ -16,7 +16,7 @@ namespace EImece.Controllers
         [Inject]
         public ISettingService SettingService { get; set; }
         private static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
-        public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
+        public void CreateLanguageCookie_OLD(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
@@ -27,8 +27,30 @@ namespace EImece.Controllers
             cultureCookie.Expires = DateTime.Now.AddDays(1);
             Response.Cookies.Add(cultureCookie);
         }
-
+        public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
+        {
+            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            Session[Constants.CultureCookieName] = ((int)selectedLanguage) + "";
+        }
         protected int CurrentLanguage
+        {
+            get
+            {
+                var cultureCookie =Session[Constants.CultureCookieName];
+                if (cultureCookie != null)
+                {
+                    return Session[Constants.CultureCookieName].ToInt();
+                }
+                else
+                {
+                    return AppConfig.MainLanguage;
+                }
+            }
+        }
+
+        protected int CurrentLanguage_OLD
         {
             get
             {

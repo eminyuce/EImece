@@ -123,6 +123,7 @@ namespace EImece.Domain.Helpers
                     var brand = brands[i];
                     item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("b{0}", brand.Id), name = brand.Name });
                 }
+                item.CategoryFilters.ForEach(r => r.Parent = item);
                 categoryFilterTypes.Add(item);
             }
         }
@@ -193,7 +194,7 @@ namespace EImece.Domain.Helpers
             };
             item1.name = string.Format("{0} {1}", item1.minPrice.CurrencySign(), Resource.AndOverPrice);
             item.CategoryFilters.Add(item1);
-
+            item.CategoryFilters.ForEach(r => r.Parent = item);
             categoryFilterTypes.Add(item);
         }
 
@@ -207,6 +208,7 @@ namespace EImece.Domain.Helpers
             item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 3), name = string.Format("3 {0}", Resource.Star), rating = 3 });
             item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 2), name = string.Format("2 {0}", Resource.Star), rating = 2 });
             item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 1), name = string.Format("1 {0}", Resource.Star), rating = 1 });
+            item.CategoryFilters.ForEach(r => r.Parent = item);
             categoryFilterTypes.Add(item);
         }
     }

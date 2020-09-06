@@ -266,5 +266,16 @@ namespace EImece.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        public ActionResult Language_OLD(string id)
+        {
+            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
+            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
+            MemoryCacheProvider.ClearAll();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Routing;
 
 namespace EImece.Domain.Models.FrontModels
@@ -15,6 +17,7 @@ namespace EImece.Domain.Models.FrontModels
         public List<ProductCategory> ChildrenProductCategories { get; set; }
         public List<Brand> Brands { get; set; }
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
+        public List<CategoryFilter> SelectedFilterTypes { get; set; }
 
         public List<Product> Products
         {
@@ -52,6 +55,8 @@ namespace EImece.Domain.Models.FrontModels
                     result = products.ToList();
                 }
 
+                SelectedFilterTypes = CreateSelectedFilterList();
+
                 switch (Sorting)
                 {
                     case Enums.SortingType.Popularity:
@@ -81,6 +86,21 @@ namespace EImece.Domain.Models.FrontModels
 
                 return result;
             }
+        }
+
+        private List<CategoryFilter> CreateSelectedFilterList()
+        {
+            var selectedFiltersText = Regex.Split(Filter.ToStr(), @"-").Select(r => r.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList();
+            var selectedFilterTypes = new List<CategoryFilter>();
+            foreach (var selectedFilter in selectedFiltersText)
+            {
+                foreach (var categoryFilterType in CategoryFilterTypes)
+                {
+                    selectedFilterTypes.AddRange(categoryFilterType.CategoryFilters.Where(r => r.CategoryFilterId.Equals(selectedFilter, StringComparison.InvariantCultureIgnoreCase)));
+                }
+            }
+
+            return selectedFilterTypes;
         }
 
         public string SeoId { get; set; }
