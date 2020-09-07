@@ -2222,6 +2222,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bu kategoriye eklenmiş bir ürün yoktur..
+        /// </summary>
+        public static string NoProductsFoundForCategory {
+            get {
+                return ResourceManager.GetString("NoProductsFoundForCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal Ayarlar.
         /// </summary>
         public static string NormalSettings {

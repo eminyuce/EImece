@@ -1518,4 +1518,7 @@ Erişim Linki</value>
   <data name="RemoveAllFilter" xml:space="preserve">
     <value>Filtreleri Temizle</value>
   </data>
+  <data name="NoProductsFoundForCategory" xml:space="preserve">
+    <value>Bu kategoriye eklenmiş bir ürün yoktur.</value>
+  </data>
 </root>
