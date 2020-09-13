@@ -4010,6 +4010,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kullanışlı bağlantılar.
+        /// </summary>
+        public static string UsefulLinks {
+            get {
+                return ResourceManager.GetString("UsefulLinks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kullanıcı E-postası Onaylama surecini bitirmedi.
         /// </summary>
         public static string UserEmailNotConfirmed {

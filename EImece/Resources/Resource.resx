@@ -1521,4 +1521,7 @@ Erişim Linki</value>
   <data name="NoProductsFoundForCategory" xml:space="preserve">
     <value>Bu kategoriye eklenmiş bir ürün yoktur.</value>
   </data>
+  <data name="UsefulLinks" xml:space="preserve">
+    <value>Kullanışlı bağlantılar</value>
+  </data>
 </root>
