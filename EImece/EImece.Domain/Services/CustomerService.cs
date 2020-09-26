@@ -16,6 +16,9 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
         private ICustomerRepository CustomerRepository { get; set; }
 
         private IAddressService AddressService { get; set; }
@@ -80,11 +83,13 @@ namespace EImece.Domain.Services
         public List<Customer> GetCustomerServices(string search)
         {
             var result = CustomerRepository.GetAll();
+            var allOrders = OrderService.GetAll();
             var resultList = result.OrderByDescending(r => r.CreatedDate).ToList();
             if (resultList.IsNotEmpty())
             {
                 foreach (var item in resultList)
                 {
+                    item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId)).ToList();
                     GetUserFields(item);
                 }
 

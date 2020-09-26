@@ -2627,6 +2627,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toplam Sipariş.
+        /// </summary>
+        public static string TotalOrderNumber {
+            get {
+                return ResourceManager.GetString("TotalOrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toplam fiyat.
         /// </summary>
         public static string TotalPrice {

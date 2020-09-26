@@ -85,6 +85,11 @@ columns.Add()
     .Titled(AdminResource.Email)
     .Filterable(true);
 
+
+    columns.Add(c => c.Orders.Count)
+    .Titled(AdminResource.TotalOrderNumber)
+    .Filterable(true);
+
     columns.Add(o => o.Name)
     .Encoded(false)
     .Titled(AdminResource.Name)
@@ -100,7 +105,7 @@ columns.Add()
     .Titled(AdminResource.Gender)
     .Filterable(true);
 
-    
+
     columns.Add(o => o.RegistrationAddress)
 .Titled(AdminResource.CustomerRegistrationAddress)
 .Encoded(false).

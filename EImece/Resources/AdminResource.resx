@@ -1042,4 +1042,7 @@ Erişim Linki</value>
   <data name="Installment" xml:space="preserve">
     <value>Taksit</value>
   </data>
+  <data name="TotalOrderNumber" xml:space="preserve">
+    <value>Toplam Sipariş</value>
+  </data>
 </root>
