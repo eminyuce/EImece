@@ -85,9 +85,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsProductPriceEnable))]
         public bool IsProductPriceEnable { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Languages))]
-        public string Languages { get; set; }
-
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CompanyName))]
         public string CompanyName { get; set; }
 

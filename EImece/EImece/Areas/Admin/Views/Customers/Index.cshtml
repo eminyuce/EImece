@@ -81,19 +81,17 @@ columns.Add()
     @Html.ActionLink(AdminResource.MyOrder, "CustomerOrders", controllerName, new { id = d.UserId }, new { @class = "btn btn-info btn-sm     " })
 </b>);
 
-    columns.Add(c => c.Email)
-    .Titled(AdminResource.Email)
-    .Filterable(true);
+    columns.Add(o => o.Name)
+    .Encoded(false)
+    .Titled(AdminResource.Name)
+    .RenderValueAs(o => String.Format("{0} {1}", o.Name, o.Surname));
 
 
     columns.Add(c => c.Orders.Count)
     .Titled(AdminResource.TotalOrderNumber)
     .Filterable(true);
 
-    columns.Add(o => o.Name)
-    .Encoded(false)
-    .Titled(AdminResource.Name)
-    .RenderValueAs(o => String.Format("{0} {1}", o.Name, o.Surname));
+ 
 
     columns.Add(c => c.GsmNumber);
 
