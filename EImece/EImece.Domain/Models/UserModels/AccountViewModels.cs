@@ -108,6 +108,7 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsPermissionGrantedDescription))]
         public bool IsPermissionGranted { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
         public string Captcha { get; set; }
 
