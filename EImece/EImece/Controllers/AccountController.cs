@@ -22,7 +22,8 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string CaptchaAdminLogin = "CaptchaAdminLogin";
-
+        private const string CaptchaCustomerLogin = "CaptchaCustomerLogin";
+        private const string CaptchaCustomerRegister = "CaptchaCustomerRegister";
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
@@ -178,7 +179,7 @@ namespace EImece.Controllers
             }
 
             //validate the captcha through the session variable stored from GetCaptcha
-            if (Session[CaptchaAdminLogin] == null || !Session[CaptchaAdminLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            if (Session[CaptchaCustomerLogin] == null || !Session[CaptchaCustomerLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
                 ModelState.AddModelError("Captcha", AdminResource.WrongSum);
                 ModelState.AddModelError("", AdminResource.WrongSum);
@@ -298,67 +299,76 @@ namespace EImece.Controllers
         {
             if (ModelState.IsValid)
             {
-                // var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var user = model.GetUser();
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (Session[CaptchaCustomerRegister] == null || !Session[CaptchaCustomerRegister].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
-                    await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
-                    IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
-                    CustomerService.SaveRegisterViewModel(user.Id, model);
-                    IdentitySignout();
-                    var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
-                    switch (result2)
-                    {
-                        case SignInStatus.Success:
-                            return RedirectToAction("Index", "Home",new { @area="customers" });
-                        case SignInStatus.LockedOut:
-                            Logger.Debug("The account  " + model.Email + " LockedOut ");
-                            ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
-                            return View("Lockout");
-                        case SignInStatus.RequiresVerification:
-                            Logger.Debug("The account  " + model.Email + " RequiresVerification ");
-                            ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
-                            return View(model);
-                        case SignInStatus.Failure:
-                            user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
-                            bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
-                            if (!checkPassword)
-                            {
-                                ModelState.AddModelError("", "Invalid login attempt.Password is not correct");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
-                            }
-                            return View(model);
-
-                        default:
-                            Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            return View(model);
-                    }
-
-
+                    ModelState.AddModelError("Captcha", AdminResource.WrongSum);
+                    ModelState.AddModelError("", AdminResource.WrongSum);
+                    return View(model);
                 }
                 else
                 {
-                    Logger.Error("No Successful Register:" + model);
+                    // var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    var user = model.GetUser();
+                    var result = await UserManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
+                        await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
+                        IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
+                        CustomerService.SaveRegisterViewModel(user.Id, model);
+                        IdentitySignout();
+                        var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
+                        switch (result2)
+                        {
+                            case SignInStatus.Success:
+                                return RedirectToAction("Index", "Home", new { @area = "customers" });
+
+                            case SignInStatus.LockedOut:
+                                Logger.Debug("The account  " + model.Email + " LockedOut ");
+                                ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
+                                return View("Lockout");
+
+                            case SignInStatus.RequiresVerification:
+                                Logger.Debug("The account  " + model.Email + " RequiresVerification ");
+                                ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                                return View(model);
+
+                            case SignInStatus.Failure:
+                                user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                                bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                                if (!checkPassword)
+                                {
+                                    ModelState.AddModelError("", "Invalid login attempt.Password is not correct");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
+                                }
+                                return View(model);
+
+                            default:
+                                Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                                ModelState.AddModelError("", "Invalid login attempt.");
+                                return View(model);
+                        }
+                    }
+                    else
+                    {
+                        Logger.Error("No Successful Register:" + model);
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
             }
             else
             {
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }

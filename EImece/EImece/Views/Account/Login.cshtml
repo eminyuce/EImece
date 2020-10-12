@@ -46,7 +46,7 @@
                     <div class="input-group form-group">
 
                         @Html.LabelFor(model => model.Captcha)
-                        <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
+                        <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "CustomerLogin" })" alt="Captcha" />
                         @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @autocomplete = "false" })
                     </div>
 
