@@ -2225,7 +2225,7 @@ namespace Resources {
         ///   Looks up a localized string similar to &lt;h1 class=&quot;h2&quot;&gt; Alışveriş sepetinizde ürün bulunmuyor!&lt;/h1&gt;
         ///                                &lt;p class=&quot;text-muted&quot;&gt;
         ///                                    Beğendiğiniz ürünleri sepetinize ekleyerek sipariş verebilirsiniz. Alışveriş yapmak için
-        ///                                    &lt;a class=&quot;font-weight-semibold&quot; href=&quot;@Url.Action(&quot;Index&quot;,&quot;Home&quot;)&quot;&gt; tıklayın.&lt;/a&gt;&lt;br&gt;
+        ///                                    &lt;a class=&quot;font-weight-semibold&quot; href=&quot;{0}&quot;&gt; tıklayın.&lt;/a&gt;&lt;br&gt;
         ///                                &lt;/p&gt;.
         /// </summary>
         public static string NoProductFoundInShoppingBasket {

@@ -1528,7 +1528,7 @@ Erişim Linki</value>
     <value>&lt;h1 class="h2"&gt; Alışveriş sepetinizde ürün bulunmuyor!&lt;/h1&gt;
                                 &lt;p class="text-muted"&gt;
                                     Beğendiğiniz ürünleri sepetinize ekleyerek sipariş verebilirsiniz. Alışveriş yapmak için
-                                    &lt;a class="font-weight-semibold" href="@Url.Action("Index","Home")"&gt; tıklayın.&lt;/a&gt;&lt;br&gt;
+                                    &lt;a class="font-weight-semibold" href="{0}"&gt; tıklayın.&lt;/a&gt;&lt;br&gt;
                                 &lt;/p&gt;</value>
   </data>
 </root>
