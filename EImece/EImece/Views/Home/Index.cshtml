@@ -53,24 +53,30 @@
 
 
 
-<!-- Featured products grid-->
-<section class="container px-3 pt-4 mt-3">
-    <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
-        <h2 class="h3 mb-3">@Resource.FeaturedProducts</h2>
-        <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@Url.Action("index","products")">
-            @Resource.MoreInfo
-            <i class="ml-1 mr-n2" data-feather="chevron-right">
-            </i>
-        </a>
-    </div>
-    <div class="row no-gutters">
-        @for (int i = 0; i < mainPageProducts.Count; i++)
-        {
-            var p = mainPageProducts[i];
-            @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
-        }
-    </div>
-</section>
+@if (mainPageProducts.IsNotEmpty())
+{
+    var featuredProductItem = mainPageProducts.First();
+    <!-- Featured products grid-->
+    <section class="container px-3 pt-4 mt-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+            <h2 class="h3 mb-3">@Resource.FeaturedProducts</h2>
+            <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@featuredProductItem.ProductCategory.DetailPageUrl">
+                @Resource.MoreInfo
+                <i class="ml-1 mr-n2" data-feather="chevron-right">
+                </i>
+            </a>
+        </div>
+        <div class="row no-gutters">
+            @for (int i = 0; i < mainPageProducts.Count; i++)
+            {
+                var p = mainPageProducts[i];
+                @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
+            }
+        </div>
+
+    </section>
+}
+
 
 <!-- Product widgets-->
 <section class="container px-3 pt-2 pb-4 mb-md-2">
@@ -125,7 +131,7 @@
     <li class="border-bottom">
         <a class="d-flex align-items-center nav-link-inline pb-3" href="@productCategoryLink" data-toggle="popover" data-placement="right" data-trigger="hover"
            data-html="true" data-content="@Html.Raw(CreateChildDataContent2(productCategory))">
-            <i class="text-primary opacity-60"  style="width: 1.25rem; height: 1.25rem;">
+            <i class="text-primary opacity-60" style="width: 1.25rem; height: 1.25rem;">
             </i>
             <span>
                 @productCategory.Name<i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
