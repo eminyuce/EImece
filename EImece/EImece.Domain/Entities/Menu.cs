@@ -55,16 +55,21 @@ namespace EImece.Domain.Entities
                     var ppppp = HttpContext.Current.Request.Url.AbsolutePath.ToString();
                     resultLink = ppppp.ToLower().Contains(MenuLink.Replace("-","/")) ? result : "";
                 }
-                else  if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                else  if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
                 {
                     resultLink = pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase) ? result : "";
                 }
-                else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                                                            && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+                else if (pageController.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                                            && pageAction.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
                 {
                     resultLink = pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
                             && pageController.Equals(controller, StringComparison.InvariantCultureIgnoreCase)
                         ? result : "";
+                }
+                else if (pageController.Equals("Products", StringComparison.InvariantCultureIgnoreCase)
+                                                          && pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    resultLink =  "";
                 }
                 else
                 {

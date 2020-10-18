@@ -936,7 +936,7 @@
     <value>TC Kimlik Numarası</value>
   </data>
   <data name="ImageHeight" xml:space="preserve">
-    <value>Resim Boy (Tavsiye ölçü: 800 Px)</value>
+    <value>Resim Boy</value>
   </data>
   <data name="Images" xml:space="preserve">
     <value>Resimler</value>
@@ -945,7 +945,7 @@
     <value>Resmi Göster</value>
   </data>
   <data name="ImageWidth" xml:space="preserve">
-    <value>Resim En (Tavsiye ölçü: 800 Px)</value>
+    <value>Resim En</value>
   </data>
   <data name="INIT_THREEDS" xml:space="preserve">
     <value>INIT_THREEDS</value>
