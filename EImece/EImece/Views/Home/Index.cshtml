@@ -51,7 +51,7 @@
                         var mainPageProductCategories = rootMainPageProductCategories[i];
 
                         <a class="media align-items-center bg-faded-info text-decoration-0" href="@mainPageProductCategories.DetailPageUrl">
-                            <img class="mr-1" src="@mainPageProductCategories.GetCroppedImageUrl(mainPageProductCategories.MainImageId,125,152)" width="125" alt="Banner">
+                            <img class="mr-1" src="@mainPageProductCategories.GetCroppedImageUrl(mainPageProductCategories.MainImageId,125,125)" width="125" alt="@mainPageProductCategories.Name">
                             <div class="media-body py-2 pr-2">
 
                                 @Html.Raw(mainPageProductCategories.ShortDescription)
