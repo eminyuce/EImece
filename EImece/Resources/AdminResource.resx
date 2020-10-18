@@ -1044,4 +1044,7 @@
   <data name="TotalOrderNumber" xml:space="preserve">
     <value>Toplam Sipariş</value>
   </data>
+  <data name="ProductDiscount" xml:space="preserve">
+    <value>Ürüne özel ek TL indirimi</value>
+  </data>
 </root>

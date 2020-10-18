@@ -32,7 +32,7 @@ namespace EImece.Domain.Entities
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Discount))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductDiscount))]
         public double Discount { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCodeErrorMessage))]
@@ -108,12 +108,13 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public int DiscountPercentage
+        public double DiscountPercentage
         {
             get
             {
-                var discountedDiff = Price - PriceWithDiscount;
-                return (int)(discountedDiff * 100 / Price);
+                double discountedDiff = Price - PriceWithDiscount;
+                var  result = Math.Round(discountedDiff * 100 / Price ,2);
+                return result;
             }
         }
 

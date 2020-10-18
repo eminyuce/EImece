@@ -1969,6 +1969,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürüne özel ek TL indirimi.
+        /// </summary>
+        public static string ProductDiscount {
+            get {
+                return ResourceManager.GetString("ProductDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Xml Şablonlar.
         /// </summary>
         public static string ProductDynamicTemplates {

@@ -4,17 +4,17 @@
     {
         public static string CurrencySign(this decimal price)
         {
-            return price.ToString("C1");
+            return price.ToString("C");
         }
 
         public static string CurrencySign(this double price)
         {
-            return price.ToString("C1");
+            return price.ToString("C");
         }
 
         public static string CurrencySign(this int price)
         {
-            return price.ToString("c0");
+            return price.ToString("C");
         }
     }
 }
