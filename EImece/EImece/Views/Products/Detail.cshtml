@@ -78,11 +78,11 @@
                     {
                         var f = productFiles[i];
                         var imgTag = product.GetCroppedImageUrl(f.FileStorageId, 95, 105);
-                    <li class="">
-                        <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
-                            <img alt="Product thumb" src="@imgTag" />
-                        </a>
-                    </li>
+                        <li class="">
+                            <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img alt="Product thumb" src="@imgTag" />
+                            </a>
+                        </li>
                     }
                 </ul>
                 <div class="product-carousel owl-carousel">
@@ -90,10 +90,14 @@
                     @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgTag))
                     {
 
-                    <a href="@mainImageImgTag" data-fancybox="prod-gallery" data-hash="one">
-                        <img src="@mainImageImgTag" alt="Product">
-                    </a>
+                        <a href="@mainImageImgTag" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@mainImageImgTag" alt="Product">
+                        </a>
 
+                    }
+                    else
+                    {
+                        <img src="/images/defaultImage/w1000h1000/default.jpg">
                     }
 
                     @for (int i = 0; i < productFiles.Count; i++)
@@ -102,9 +106,9 @@
                         var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
                         if (!string.IsNullOrEmpty(imgTag))
                         {
-                    <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
-                        <img src="@imgTag" alt="Product">
-                    </a>
+                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img src="@imgTag" alt="Product">
+                            </a>
                         }
                     }
                 </div>

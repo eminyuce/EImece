@@ -46,12 +46,19 @@ namespace EImece
                  );
 
             routes.MapRoute(
+                  name: "GetDefaultImage",
+                  url: "images/defaultImage/{imageSize}/default.jpg",
+                  defaults: new { controller = "images", action = "defaultImage" },
+                  namespaces: new[] { "EImece.Controllers" }
+              );
+
+            routes.MapRoute(
                       name: "getcaptcha",
                       url: "images/getcaptcha",
                       defaults: new { controller = "images", action = "getcaptcha" },
                       namespaces: new[] { "EImece.Controllers" }
                   );
-
+           
             routes.MapRoute(
                  name: "ImageResizing",
                  url: "images/{imageSize}/{id}",

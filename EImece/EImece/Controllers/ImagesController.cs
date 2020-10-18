@@ -6,6 +6,8 @@ using Ninject;
 using NLog;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -86,6 +88,32 @@ namespace EImece.Controllers
             {
                 return new EmptyResult();
             }
+        }
+        [AcceptVerbs(HttpVerbs.Get)]
+        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
+        public ActionResult DefaultImage(String imageSize)
+        {
+            int height = 0;
+            int width = 0;
+            if (String.IsNullOrEmpty(imageSize))
+            {
+                imageSize = "w150h150";
+            }
+
+            width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
+            height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+            var text = "X";
+            //image stream
+            FileContentResult img = null;
+            try
+            {
+                img = this.File(FilesHelper.GenerateDefaultImg(text, width,height), "image/Jpeg");
+            }
+            catch
+            {
+            }
+
+            return img;
         }
 
         public ActionResult GetModifiedImage(String id, String imageSize)

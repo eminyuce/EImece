@@ -968,11 +968,35 @@ namespace EImece.Domain.Helpers
             // Return thumbnail size.
             return new Size((int)(originalWidth * factor), (int)(originalHeight * factor));
         }
+        public  Byte[] GenerateDefaultImg(string text = "", int width=200, int height = 200)
+        {
+            int emSize = 120;
+            var font = new Font("Tahoma", emSize);
+            using (var mem = new MemoryStream())
+            using (var bmp = new Bitmap(width, height))
+            using (var gfx = Graphics.FromImage((Image)bmp))
+            {
+                gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                gfx.SmoothingMode = SmoothingMode.AntiAlias;
+                gfx.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
+                var sf = new StringFormat();
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+
+                //add question\
+                gfx.DrawString(text, font, Brushes.Black, new Rectangle(0, 0, bmp.Width, bmp.Height), sf);
+                //render as Jpeg
+                bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
+                bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                return  mem.GetBuffer();
+            }
+        }
         public Byte[] GenerateCaptchaImg(string captcha = "", bool includenoise = true)
         {
             using (var mem = new MemoryStream())
-            using (var bmp = new Bitmap(130, 30))
+            using (var bmp = new Bitmap(130, 130))
             using (var gfx = Graphics.FromImage((Image)bmp))
             {
                 gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
