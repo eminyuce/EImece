@@ -985,7 +985,7 @@ namespace EImece.Domain.Helpers
                 sf.LineAlignment = StringAlignment.Center;
 
                 //add question\
-                gfx.DrawString(text, font, Brushes.Black, new Rectangle(0, 0, bmp.Width, bmp.Height), sf);
+                gfx.DrawString(text, font, Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height), sf);
                 //render as Jpeg
                 bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
                 bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -996,7 +996,7 @@ namespace EImece.Domain.Helpers
         public Byte[] GenerateCaptchaImg(string captcha = "", bool includenoise = true)
         {
             using (var mem = new MemoryStream())
-            using (var bmp = new Bitmap(130, 130))
+            using (var bmp = new Bitmap(130, 30))
             using (var gfx = Graphics.FromImage((Image)bmp))
             {
                 gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
