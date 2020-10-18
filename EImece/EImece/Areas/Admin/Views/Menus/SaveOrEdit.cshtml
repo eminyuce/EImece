@@ -108,11 +108,6 @@
                                     @Html.EditorFor(model => model.MainPage)
                                     @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-3">
-                                    @Html.LabelFor(model => model.Static)
-                                    @Html.EditorFor(model => model.Static)
-                                    @Html.ValidationMessageFor(model => model.Static, "", new { @class = "text-danger" })
-                                </div>
                             </div>
 
                             @if (Model.Id == 0)

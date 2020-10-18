@@ -250,14 +250,13 @@
     <value>Menu Ana Kategori</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>
-Erişim Linki</value>
+    <value>Sayfa Linki</value>
   </data>
   <data name="LinkIsActive" xml:space="preserve">
     <value>Dış Link Aktif mi?</value>
   </data>
   <data name="MenuLink" xml:space="preserve">
-    <value>Menu Link</value>
+    <value>Hazir Menu Sayfalari</value>
   </data>
   <data name="PageTheme" xml:space="preserve">
     <value>Sayfa Teması</value>

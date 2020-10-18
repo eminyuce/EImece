@@ -1267,8 +1267,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///Erişim Linki.
+        ///   Looks up a localized string similar to Sayfa Linki.
         /// </summary>
         public static string Link {
             get {
@@ -1439,7 +1438,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menu Link.
+        ///   Looks up a localized string similar to Hazir Menu Sayfalari.
         /// </summary>
         public static string MenuLink {
             get {

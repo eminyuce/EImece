@@ -3433,6 +3433,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Satın al.
+        /// </summary>
+        public static string ShopNow {
+            get {
+                return ResourceManager.GetString("ShopNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kısa Açıklama.
         /// </summary>
         public static string ShortDescription {

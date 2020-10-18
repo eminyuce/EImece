@@ -7,13 +7,17 @@
     var menu = Model.Menu;
     ViewBag.Title = string.Format("{0} {1}", Model.CompanyName.SettingValue, menu.GetSeoTitle());
     ViewBag.Description = menu.GetSeoDescription();
-    string pageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
-    var selectedPagePath = "PageThemes/PageTheme_" + pageTheme;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
-@if (string.IsNullOrEmpty(menu.PageTheme))
+@if (isUserAuthenticated)
 {
+    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
+}
+@if (!string.IsNullOrEmpty(menu.PageTheme))
+{
+    string pageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
+    var selectedPagePath = "PageThemes/PageTheme_" + pageTheme;
     @Html.Partial(selectedPagePath, Model)
 }
 else
@@ -21,9 +25,4 @@ else
     <h1>@menu.Name</h1>
     @Html.Raw(menu.GetCroppedImageTag(300, 0))
     @Html.Raw(menu.Description)
-}
-
-@if (isUserAuthenticated)
-{
-    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
 }

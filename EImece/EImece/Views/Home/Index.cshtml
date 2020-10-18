@@ -42,16 +42,34 @@
                         {
                             @CreateMainPageImage(mainPageImages[i])
                         }
-
                     </div>
+                </div>
+                <!-- Offers carousel-->
+                <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;565&quot;:{&quot;items&quot;:2},&quot;850&quot;:{&quot;items&quot;:3},&quot;992&quot;:{&quot;items&quot;:2},&quot;1200&quot;:{&quot;items&quot;:3}} }">
+                    @for (int i = 0; i < rootMainPageProductCategories.Count; i++)
+                    {
+                        var mainPageProductCategories = rootMainPageProductCategories[i];
+
+                        <a class="media align-items-center bg-faded-info text-decoration-0" href="@mainPageProductCategories.DetailPageUrl">
+                            <img class="mr-1" src="@mainPageProductCategories.GetCroppedImageUrl(mainPageProductCategories.MainImageId,125,152)" width="125" alt="Banner">
+                            <div class="media-body py-2 pr-2">
+                     
+                                @Html.Raw(mainPageProductCategories.ShortDescription)
+
+                                <span class="text-info font-size-sm font-weight-semibold">
+                                    @Resource.ShopNow
+                                    <i data-feather="chevron-right" style="width: 1rem; height: 1rem;"></i>
+                                </span>
+                            </div>
+                        </a>
+
+                    }
                 </div>
             </div>
         </div>
     </div>
     <hr class="mt-4">
 </section>
-
-
 
 @if (mainPageProducts.IsNotEmpty())
 {
@@ -73,10 +91,8 @@
                 @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
             }
         </div>
-
     </section>
 }
-
 
 <!-- Product widgets-->
 <section class="container px-3 pt-2 pb-4 mb-md-2">
@@ -86,7 +102,6 @@
         @CreateProductWidget(Resource.NewProducts, latestProducts)
     </div>
 </section>
-
 
 @helper  CreateMainPageImage(MainPageImage mainPageImage)
 {
@@ -102,7 +117,6 @@
         </div>
     </div>
 }
-
 
 @helper  CreateProductWidget(String title, List<Product> products)
 {
@@ -151,4 +165,3 @@
         return HttpUtility.HtmlEncode(result);
     }
 }
-

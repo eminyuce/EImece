@@ -1531,4 +1531,7 @@ Erişim Linki</value>
                                     &lt;a class="font-weight-semibold" href="{0}"&gt; tıklayın.&lt;/a&gt;&lt;br&gt;
                                 &lt;/p&gt;</value>
   </data>
+  <data name="ShopNow" xml:space="preserve">
+    <value>Satın al</value>
+  </data>
 </root>

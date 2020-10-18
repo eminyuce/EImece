@@ -18,7 +18,9 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
         public Boolean MainPage { get; set; }
-
+        [AllowHtml]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ShortDescription))]
+        public string ShortDescription { get; set; }
         public ICollection<Product> Products { get; set; }
 
         [ForeignKey("Template")]
