@@ -1096,7 +1096,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim Boy (Tavsiye ölçü: 800 Px).
+        ///   Looks up a localized string similar to Resim Boy (Tavsiye: 800 Px).
         /// </summary>
         public static string ImageHeight {
             get {
@@ -1123,7 +1123,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim En (Tavsiye ölçü: 800 Px).
+        ///   Looks up a localized string similar to Resim En (Tavsiye: 800 Px).
         /// </summary>
         public static string ImageWidth {
             get {

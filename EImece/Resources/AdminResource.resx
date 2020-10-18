@@ -541,10 +541,10 @@
     <value>Ana Kategori Yap</value>
   </data>
   <data name="ImageHeight" xml:space="preserve">
-    <value>Resim Boy (Tavsiye ölçü: 800 Px)</value>
+    <value>Resim Boy (Tavsiye: 800 Px)</value>
   </data>
   <data name="ImageWidth" xml:space="preserve">
-    <value>Resim En (Tavsiye ölçü: 800 Px)</value>
+    <value>Resim En (Tavsiye: 800 Px)</value>
   </data>
   <data name="MetaKeywords" xml:space="preserve">
     <value>SEO anahtar kelimeler</value>
