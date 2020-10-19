@@ -18,7 +18,8 @@ namespace EImece.Controllers
             String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
 
             var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
-            var fLink = String.Format("{1}{0}", "/sitemap.xml", builder.Uri);
+            builder.Path += "sitemap.xml";
+            var fLink = builder.Uri;
 
             content += "Sitemap: " + fLink + Environment.NewLine;
 
