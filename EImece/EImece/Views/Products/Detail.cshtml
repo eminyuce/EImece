@@ -354,8 +354,13 @@
 
 @helper RelatedProductItem(Product product)
 {
-var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 0);
+var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
 var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
+if(string.IsNullOrEmpty(relatedProductImgTag))
+{
+    relatedProductImgTag = "/images/defaultImage/w300h300/default.jpg";
+}
+
 <div class="product-card">
     <div class="product-thumb box-shadow-0">
         <a class="product-thumb-link" href="@product.DetailPageRelativeUrl">
@@ -364,7 +369,7 @@ var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 1
     </div>
     <div class="product-card-body box-shadow-0">
         <div class="d-flex flex-wrap justify-content-between pb-1">
-            <a class="product-meta" href="@product.DetailPageRelativeUrl">@product.Name</a>
+            <a class="product-meta" href="@product.DetailPageRelativeUrl">@product.Name </a>
             @if (product.Rating > 0)
                 {
             <div class="star-rating">
