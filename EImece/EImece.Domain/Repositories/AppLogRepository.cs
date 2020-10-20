@@ -30,9 +30,7 @@ namespace EImece.Domain.Repositories
             catch (Exception ex)
             {
                 Logger.Error(ex, ex.Message);
-#if DEBUG
-                throw ex;
-#endif
+                throw;
             }
             return applogResult;
         }

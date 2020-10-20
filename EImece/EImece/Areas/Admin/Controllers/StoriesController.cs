@@ -55,6 +55,11 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
+                if (story == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,

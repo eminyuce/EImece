@@ -71,7 +71,6 @@ namespace EImece.Areas.Admin.Controllers
 
                     MailTemplate.Lang = CurrentLanguage;
                     MailTemplateService.SaveOrEditEntity(MailTemplate);
-                    int itemId = MailTemplate.Id;
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return ReturnTempUrl("Index");

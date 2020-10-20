@@ -31,9 +31,6 @@ namespace EImece.Domain.Repositories
         protected BaseRepository(IEImeceContext dbContext) : base(dbContext)
         {
             DbContext = dbContext;
-            //((EImeceContext)DbContext).Configuration.LazyLoadingEnabled = false;
-            //((EImeceContext)DbContext).Configuration.ProxyCreationEnabled = false;
-            //    EImeceDbContext.Database.Log = s => BaseLogger.Trace(s);
         }
 
         ~BaseRepository()
@@ -77,6 +74,7 @@ namespace EImece.Domain.Repositories
                 {
                     transactionResult.Rollback();
                     BaseLogger.Error(ex, "DeleteEntityByWhere");
+                    throw;
                 }
             }
             return isResult;
@@ -115,7 +113,7 @@ namespace EImece.Domain.Repositories
                     }
                 }
                 BaseLogger.Error(errorMessage);
-                throw new Exception(errorMessage);
+                throw;
             }
         }
 
@@ -138,6 +136,7 @@ namespace EImece.Domain.Repositories
                     transactionResult.Rollback();
                     isResult = false;
                     BaseLogger.Error(ex, "DeleteItem");
+                    throw;
                 }
             }
             return r;
@@ -166,10 +165,12 @@ namespace EImece.Domain.Repositories
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
                 BaseLogger.Error(ex, "DbEntityValidationException:" + message);
+                throw;
             }
             catch (Exception exception)
             {
                 BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                throw;
             }
         }
 

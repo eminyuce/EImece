@@ -14,7 +14,7 @@ namespace EImece.Domain.Repositories
     {
         protected static readonly Logger BaseContentLogger = LogManager.GetCurrentClassLogger();
 
-        public BaseContentRepository(IEImeceContext dbContext) : base(dbContext)
+        protected BaseContentRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
 
@@ -48,14 +48,11 @@ namespace EImece.Domain.Repositories
             catch (Exception exception)
             {
                 BaseContentLogger.Error(exception);
-                return null;
+                throw;
             }
         }
 
-#pragma warning disable CS0109 // The member 'BaseContentRepository<T>.SearchEntities(Expression<Func<T, bool>>, string, int)' does not hide an accessible member. The new keyword is not required.
-
         public new virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
-#pragma warning restore CS0109 // The member 'BaseContentRepository<T>.SearchEntities(Expression<Func<T, bool>>, string, int)' does not hide an accessible member. The new keyword is not required.
         {
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;

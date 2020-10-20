@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (faq == null)
             {
-                throw new ArgumentException("faq cannot be empty");
+                return HttpNotFound();
             }
             try
             {

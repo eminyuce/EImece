@@ -48,19 +48,24 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Brand Brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public ActionResult SaveOrEdit(Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
+                if (brand == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
-                        Brand.ImageHeight,
-                        Brand.ImageWidth,
-                        EImeceImageType.BrandMainImage, Brand);
+                        brand.ImageHeight,
+                        brand.ImageWidth,
+                        EImeceImageType.BrandMainImage, brand);
 
-                    Brand.Lang = CurrentLanguage;
-                    Brand = BrandService.SaveOrEditEntity(Brand);
+                    brand.Lang = CurrentLanguage;
+                    brand = BrandService.SaveOrEditEntity(brand);
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -70,7 +75,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Brand);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, brand);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
@@ -80,7 +85,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             RemoveModelState();
 
-            return View(Brand);
+            return View(brand);
         }
 
         [HttpPost, ActionName("Delete")]
