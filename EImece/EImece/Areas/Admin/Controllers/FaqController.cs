@@ -10,6 +10,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -110,8 +111,7 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, Faq);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-
-            return View(Faq);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

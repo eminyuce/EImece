@@ -8,6 +8,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -82,8 +83,8 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            TagCategory TagCategory = TagCategoryService.GetSingle(id);
-            if (TagCategory == null)
+            TagCategory tagCategory = TagCategoryService.GetSingle(id);
+            if (tagCategory == null)
             {
                 return HttpNotFound();
             }
@@ -94,11 +95,11 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, TagCategory);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tagCategory);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            return View(TagCategory);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

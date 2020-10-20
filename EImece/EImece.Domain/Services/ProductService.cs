@@ -31,6 +31,9 @@ namespace EImece.Domain.Services
         public IProductCommentRepository ProductCommentRepository { get; set; }
 
         [Inject]
+        public IOrderProductRepository OrderProductRepository { get; set; }
+
+        [Inject]
         public ITagService TagService { get; set; }
 
         [Inject]
@@ -187,6 +190,7 @@ namespace EImece.Domain.Services
                 ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                OrderProductRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 if (product.MainImageId.HasValue)
                 {
                     FileStorageService.DeleteFileStorage(product.MainImageId.Value);

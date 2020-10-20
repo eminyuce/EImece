@@ -2,6 +2,7 @@
 using NLog;
 using Resources;
 using System;
+using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -41,7 +42,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            return View(productComment);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
     }
 }

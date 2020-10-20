@@ -7,6 +7,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Xml.Linq;
@@ -105,7 +106,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            return View(template);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

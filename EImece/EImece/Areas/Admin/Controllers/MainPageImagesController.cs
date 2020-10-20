@@ -94,8 +94,18 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            MainPageImageService.DeleteMainPageImage(id);
-            return RedirectToAction("Index");
+            try
+            {
+                MainPageImageService.DeleteMainPageImage(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to delete MainPageImages:" + ex.StackTrace, id);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
     }
 }

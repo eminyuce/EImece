@@ -8,6 +8,7 @@ using Resources;
 using System;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -102,8 +103,8 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Story Story = StoryService.GetBaseContent(id);
-            if (Story == null)
+            Story story = StoryService.GetBaseContent(id);
+            if (story == null)
             {
                 return HttpNotFound();
             }
@@ -114,11 +115,11 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Story);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, story);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            return View(Story);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet]

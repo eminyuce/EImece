@@ -120,6 +120,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
             try
             {
                 ProductCategoryService.DeleteProductCategory(productCategory.Id);
@@ -131,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            return View(productCategory);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet]

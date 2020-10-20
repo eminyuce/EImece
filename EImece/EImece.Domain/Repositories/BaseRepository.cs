@@ -120,7 +120,6 @@ namespace EImece.Domain.Repositories
         public virtual int DeleteItem(T item)
         {
             int r = 0;
-            var isResult = false;
             using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
                 // Re-Initialise Repository
@@ -128,13 +127,11 @@ namespace EImece.Domain.Repositories
                 {
                     this.Delete(item);
                     r = this.Save();
-                    isResult = r == 1;
                     transactionResult.Commit();
                 }
                 catch (Exception ex)
                 {
                     transactionResult.Rollback();
-                    isResult = false;
                     BaseLogger.Error(ex, "DeleteItem");
                     throw;
                 }

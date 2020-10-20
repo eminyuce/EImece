@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -57,29 +58,30 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Tag Tag)
+        public ActionResult SaveOrEdit(Tag tag)
         {
             try
             {
+                if (tag == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
-                    Tag.Lang = CurrentLanguage;
-                    TagService.SaveOrEditEntity(Tag);
-                    int contentId = Tag.Id;
+                    tag.Lang = CurrentLanguage;
+                    TagService.SaveOrEditEntity(tag);
                     return ReturnTempUrl("Index");
-                }
-                else
-                {
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, Tag);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, tag);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             ViewBag.Categories = GetCategoriesSelectList();
-            return View(Tag);
+            return View(tag);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -87,23 +89,23 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tag Tag = TagService.GetSingle(id);
-            if (Tag == null)
+            Tag tag = TagService.GetSingle(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                TagService.DeleteEntity(Tag);
+                TagService.DeleteEntity(tag);
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Tag);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tag);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            return View(Tag);
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

@@ -17,6 +17,7 @@ using EImece.Domain.Helpers;
 
 namespace EImece.Domain.Repositories
 {
+    // AppLog  NLog.config dosyasi uzerinden veritabani kayiti yapilir.
     public class AppLogRepository
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
