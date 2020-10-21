@@ -12,6 +12,14 @@ namespace EImece.Domain
     public static class AppConfig
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public static string GetDefaultImage(int w,int h)
+        {
+            return GetDefaultImage($"w{w}h{h}");
+        }
+        public static string GetDefaultImage(String imageSize)
+        {
+            return $"/images/defaultImage/{imageSize}/default.jpg";
+        }
 
         public static string IyzicoBaseUrl
         {

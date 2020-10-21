@@ -97,7 +97,7 @@
                     }
                     else
                     {
-                        <img src="/images/defaultImage/w1000h1000/default.jpg">
+                        <img src="@EImece.Domain.AppConfig.GetDefaultImage("w1000h1000")">
                     }
 
                     @for (int i = 0; i < productFiles.Count; i++)
@@ -358,7 +358,7 @@ var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 
 var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
 if(string.IsNullOrEmpty(relatedProductImgTag))
 {
-    relatedProductImgTag = "/images/defaultImage/w300h300/default.jpg";
+    relatedProductImgTag = EImece.Domain.AppConfig.GetDefaultImage("w300h300");
 }
 
 <div class="product-card">

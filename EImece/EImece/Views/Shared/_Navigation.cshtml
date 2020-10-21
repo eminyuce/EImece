@@ -5,7 +5,6 @@
 @model NavigationModel
 @{
 
-
     var menus = Model.Menus;
     var productCategories = Model.ProductCategories;
 }
@@ -36,9 +35,13 @@
 
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
 {
-    var productCategory = categoryTreeModel.ProductCategory;
-    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
-    var productCategoryLink = productCategory.ProductCategoryLink;
+var productCategory = categoryTreeModel.ProductCategory;
+var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
+if (string.IsNullOrEmpty(productImgLink))
+{
+    productImgLink = EImece.Domain.AppConfig.GetDefaultImage("w300h300");
+}
+var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
         <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(@productImgLink);">
@@ -62,10 +65,7 @@
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
                     <li>
                         <a href="@productChildCategoryLink">
-                            @if (childCategory.Childrens.IsNotEmpty())
-                            {
-                                <i class="widget-categories-indicator" data-feather="chevron-right"></i>
-                            }
+                            <i class="widget-categories-indicator" data-feather="chevron-right"></i>
                             <span class="font-size-sm">@productChildCategory.Name</span>
                         </a>
                         @CreateProductChildrenTree(childCategory)
@@ -97,7 +97,11 @@
                 @foreach (var menuChildren in menu.Childrens)
                 {
                     var imgTag = menuChildren.GetCroppedImageTag(50, 50);
-                    <li><a class="dropdown-item" href="@menuChildren.DetailPageLink">@menuChildren.Name</a></li>
+                    <li>
+                        <a class="dropdown-item" href="@menuChildren.DetailPageLink">
+                            <i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">   @menuChildren.Name</span>
+                        </a>
+                    </li>
                     <li class="dropdown-divider"></li>
                 }
             </ul>
