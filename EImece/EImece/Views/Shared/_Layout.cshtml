@@ -15,12 +15,12 @@
     <title>@Html.Raw(ViewBag.Title)</title>
     @if (!string.IsNullOrEmpty(ViewBag.Description))
     {
-    <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+        <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
     }
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {
-    <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
+        <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
     }
     @{
         String seoId = (String)ViewBag.SeoId;
@@ -40,7 +40,7 @@
     <meta name="theme-color" content="#ffffff">
 
     @Styles.Render("~/Content/eimeceTheme")
-   
+
     <link href="~/Content/mstore/css/skins/theme-38b3a2.min.css" rel="stylesheet" />
     <link href="~/Content/mstore/css/skins/theme-38b3a2-rounded.min.css" rel="stylesheet" />
 
@@ -104,12 +104,11 @@
                 @if (Request.IsAuthenticated)
                 {
 
-            <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
-                <br />
-                @User.Identity.Name
-            </a>
-                   
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
+                        <br />
+                        @User.Identity.Name
+                    </a>
 
                     <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
                         <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout
@@ -138,8 +137,6 @@
 
     @Html.Raw(Html.Action("Navigation", "Home"))
 
-
-
     @RenderBody()
     @Html.Action("Footer", "Home")
 
@@ -150,7 +147,5 @@
     @Scripts.Render("~/bundles/mstore")
     @Scripts.Render("~/bundles/eimeceScripts")
     @RenderSection("scripts", required: false)
-
-  
 </body>
 </html>
