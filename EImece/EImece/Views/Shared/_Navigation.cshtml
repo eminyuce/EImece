@@ -27,7 +27,10 @@
                         </div>
                     </div>
                 </li>
-                @CreateMenuTree(Model)
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="@Url.Action("Index","Home")">@Resources.Resource.HomePage</a>
+                </li>
+                    @CreateMenuTree(Model)
             </ul>
         </div>
     </div>
@@ -35,9 +38,9 @@
 
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
 {
-var productCategory = categoryTreeModel.ProductCategory;
-var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
-var productCategoryLink = productCategory.ProductCategoryLink;
+    var productCategory = categoryTreeModel.ProductCategory;
+    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
+    var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
         <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(@productImgLink);">
@@ -59,7 +62,7 @@ var productCategoryLink = productCategory.ProductCategoryLink;
                     var productChildCategory = childCategory.ProductCategory;
                     var productChildImgLink = productChildCategory.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
-                     
+
                     <li>
                         <a href="@productChildCategoryLink">
                             <i class="widget-categories-indicator" data-feather="chevron-right"></i>
