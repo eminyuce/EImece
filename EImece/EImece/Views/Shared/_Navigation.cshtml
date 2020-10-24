@@ -37,10 +37,6 @@
 {
 var productCategory = categoryTreeModel.ProductCategory;
 var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
-if (string.IsNullOrEmpty(productImgLink))
-{
-    productImgLink = EImece.Domain.AppConfig.GetDefaultImage("w300h300");
-}
 var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
@@ -63,6 +59,7 @@ var productCategoryLink = productCategory.ProductCategoryLink;
                     var productChildCategory = childCategory.ProductCategory;
                     var productChildImgLink = productChildCategory.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
+                     
                     <li>
                         <a href="@productChildCategoryLink">
                             <i class="widget-categories-indicator" data-feather="chevron-right"></i>

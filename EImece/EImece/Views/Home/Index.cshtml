@@ -49,9 +49,11 @@
                     @for (int i = 0; i < rootMainPageProductCategories.Count; i++)
                     {
                         var mainPageProductCategories = rootMainPageProductCategories[i];
+                        var productImgLink = mainPageProductCategories.GetCroppedImageUrl(mainPageProductCategories.MainImageId, 125, 125);
+                       
 
                         <a class="media align-items-center bg-faded-info text-decoration-0" href="@mainPageProductCategories.DetailPageUrl">
-                            <img class="mr-1" src="@mainPageProductCategories.GetCroppedImageUrl(mainPageProductCategories.MainImageId,125,125)" width="125" alt="@mainPageProductCategories.Name">
+                            <img class="mr-1" src="@productImgLink" width="125" alt="@mainPageProductCategories.Name">
                             <div class="media-body py-2 pr-2">
 
                                 @Html.Raw(mainPageProductCategories.ShortDescription)
@@ -72,7 +74,6 @@
 </section>
 
 @CreateProductSection(@Resource.FeaturedProducts, mainPageProducts)
-
 
 <!-- Product widgets-->
 <section class="container px-3 pt-2 pb-4 mb-md-2">
@@ -96,7 +97,6 @@
         <div class="col-md-7"><img class="d-block mx-auto" src="@imgLink" alt="@mainPageImage.Name"></div>
     </div>
 }
-
 
 @helper  CreateProductSection(String title, List<Product> mainPageProducts)
 {
@@ -124,7 +124,6 @@
     }
 }
 
-
 @helper  CreateProductWidget(String title, List<Product> products)
 {
     if (products.IsNotEmpty())
@@ -148,7 +147,7 @@
     var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
     var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
     var productCategoryLink = productCategory.ProductCategoryLink;
-
+    
     <li class="border-bottom">
         <a class="d-flex align-items-center nav-link-inline pb-3" href="@productCategoryLink" data-toggle="popover" data-placement="right" data-trigger="hover"
            data-html="true" data-content="@Html.Raw(CreateChildDataContent2(productCategory))">

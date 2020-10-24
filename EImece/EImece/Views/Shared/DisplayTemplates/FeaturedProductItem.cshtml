@@ -20,16 +20,9 @@
     <div class="product-card">
         <div class="product-thumb">
             <a class="product-thumb-link" href="@productLink"></a>
-            @if (string.IsNullOrEmpty(imageTag))
-            {
-                <img src="@EImece.Domain.AppConfig.GetDefaultImage(Width,Height)">
-            }
-            else
-            {
-                @Html.Raw(imageTag)
-            }
+           
 
-
+            @Html.Raw(imageTag)
         </div>
         <div class="product-card-body">
             <div class="d-flex flex-wrap justify-content-between pb-1">

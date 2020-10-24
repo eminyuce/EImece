@@ -102,6 +102,10 @@ namespace EImece.Controllers
 
             width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
             height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+            if (height == 0)
+            {
+                height = width;
+            }
             var text = "X";
             //image stream
             FileContentResult img = null;

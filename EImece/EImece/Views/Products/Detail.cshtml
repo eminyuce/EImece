@@ -356,10 +356,6 @@
 {
 var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
 var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
-if(string.IsNullOrEmpty(relatedProductImgTag))
-{
-    relatedProductImgTag = EImece.Domain.AppConfig.GetDefaultImage("w300h300");
-}
 
 <div class="product-card">
     <div class="product-thumb box-shadow-0">
