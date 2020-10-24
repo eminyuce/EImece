@@ -288,12 +288,13 @@ namespace EImece.Domain.Helpers.Extensions
         public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
             String imageTag = "";
-            if (entity != null)
+           if (entity != null &&  entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
             {
-                if (entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
-                {
                     imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
-                }
+            }
+            else
+            {
+                return $"<img src='{AppConfig.GetDefaultImage(width, height)}'    />";
             }
 
             return imageTag;
@@ -310,6 +311,10 @@ namespace EImece.Domain.Helpers.Extensions
                     imageTag = string.Format("<img src='{0}' alt='{1}'   />",
                         imagePath, entity.Name, width, height).ToLower();
                 }
+            }
+            else
+            {
+                return $"<img src='{AppConfig.GetDefaultImage(width, height)}'    />";
             }
 
             return imageTag;
