@@ -165,7 +165,7 @@
     {
         var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
         var productCategoryLink = productCategory.ProductCategoryLink;
-        var result = String.Format("<img src='{0}' class='d-block mt-n2' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n2 pb-3'>{2}</div>", productImgLink, productCategory.Name, productCategory.GetSeoDescription());
+        var result = String.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n1 pb-1'>{2}</div>", productImgLink, productCategory.Name, productCategory.GetSeoDescription());
         return HttpUtility.HtmlEncode(result);
     }
 }
