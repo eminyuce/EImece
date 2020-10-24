@@ -151,8 +151,9 @@
                     <ul class="dropdown-menu">
 
                         <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
                         <li>@Html.ActionLink(AdminResource.WebSiteLogo, "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.SystemSettings, "SystemSettings", "AdminSettings", new { area = "admin" }, null)</li>
                     </ul>
                 </li>
                 <li class="dropdown">

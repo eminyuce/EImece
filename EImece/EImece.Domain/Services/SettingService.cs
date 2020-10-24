@@ -20,21 +20,6 @@ namespace EImece.Domain.Services
             SettingRepository = repository;
         }
 
-        public override List<Setting> GetAll()
-        {
-            return base.GetAll();
-        }
-
-        public override List<Setting> GetActiveBaseEntities(bool? isActive, int? language)
-        {
-            return base.GetActiveBaseEntities(isActive, language);
-        }
-
-        public override Setting GetSingle(int id)
-        {
-            return base.GetSingle(id);
-        }
-
         public List<Setting> GetAllActiveSettings()
         {
             var cacheKey = String.Format("GetAllActiveSettings");
@@ -109,21 +94,18 @@ namespace EImece.Domain.Services
                 return setting;
             }
         }
-
-        public SettingModel GetSettingModel()
+        public SystemSettingModel GetSystemSettingModel()
         {
-            var result = new SettingModel();
+            var result = new SystemSettingModel();
 
-            Type type = typeof(SettingModel);
-            List<Setting> Settings = GetAllSettings().Where(r => Constants.AdminSetting.Equals(r.Description)).ToList();
+            Type type = typeof(SystemSettingModel);
+            List<Setting> Settings = GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description,StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
                 // Get name.
                 string name = propertyInfo.Name;
-
                 // Get value on the target instance.
-
                 var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting != null)
                 {
@@ -145,7 +127,7 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public void SaveSettingModel(SettingModel settingModel)
+        public void SaveSystemSettingModel(SystemSettingModel settingModel)
         {
             List<Setting> Settings = GetAllSettings();
             // Get type.
@@ -159,7 +141,75 @@ namespace EImece.Domain.Services
 
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = Settings.FirstOrDefault(r =>   r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting == null)
+                {
+                    var newSetting = new Setting();
+                    newSetting.Name = name;
+                    newSetting.IsActive = true;
+                    newSetting.SettingKey = name;
+                    newSetting.Description = Constants.SystemSettings;
+                    newSetting.SettingValue = value.ToStr();
+                    SaveOrEditEntity(newSetting);
+                }
+                else
+                {
+                    setting.Description = Constants.SystemSettings;
+                    setting.SettingValue = value.ToStr();
+                    SaveOrEditEntity(setting);
+                }
+            }
+        }
+        public SettingModel GetSettingModel(int language)
+        {
+            var result = new SettingModel();
+
+            Type type = typeof(SettingModel);
+            List<Setting> Settings = GetAllSettings().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+
+                // Get value on the target instance.
+
+                var setting = Settings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting != null)
+                {
+                    if (propertyInfo.PropertyType == typeof(int))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(bool))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public void SaveSettingModel(SettingModel settingModel, int  lang)
+        {
+            List<Setting> Settings = GetAllSettings();
+            // Get type.
+            Type type = typeof(SettingModel);
+
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+
+                // Get value on the target instance.
+                object value = propertyInfo.GetValue(settingModel, null);
+                var setting = Settings.FirstOrDefault(r => r.Lang == lang && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting == null)
                 {
                     var newSetting = new Setting();
@@ -168,12 +218,14 @@ namespace EImece.Domain.Services
                     newSetting.SettingKey = name;
                     newSetting.Description = Constants.AdminSetting;
                     newSetting.SettingValue = value.ToStr();
+                    newSetting.Lang = lang;
                     SaveOrEditEntity(newSetting);
                 }
                 else
                 {
                     setting.Description = Constants.AdminSetting;
                     setting.SettingValue = value.ToStr();
+                    setting.Lang = lang;
                     SaveOrEditEntity(setting);
                 }
             }
@@ -192,5 +244,7 @@ namespace EImece.Domain.Services
             emailAccount.Username = GetSettingByKey(Constants.AdminUserName).ToStr();
             return emailAccount;
         }
+
+      
     }
 }

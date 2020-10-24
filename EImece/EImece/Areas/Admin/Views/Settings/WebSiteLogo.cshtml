@@ -12,7 +12,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     var setting = Model;
-    string fileName = Model.SettingValue;
+    string fileName = Model.SettingValue.ToStr();
     string fullPath = Path.Combine(Constants.ServerMapPath, fileName);
     string thumbPath = "/thb" + fileName + "";
     string partThumb1 = Path.Combine(Constants.ServerMapPath, "thumbs");

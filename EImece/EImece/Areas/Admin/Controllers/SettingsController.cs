@@ -21,6 +21,11 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult AddWebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            if(webSiteLogo == null)
+            {
+                webSiteLogo = new Setting();
+                webSiteLogo.SettingKey = Constants.WebSiteLogo;
+            }
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }

@@ -385,7 +385,7 @@
     <value>Ürün, kategori veya blog ara</value>
   </data>
   <data name="AdminGeneralSettings" xml:space="preserve">
-    <value>Admin Genel Ayarlar</value>
+    <value>Yönetici Genel Ayarları</value>
   </data>
   <data name="Excel" xml:space="preserve">
     <value>Excel</value>
@@ -1046,5 +1046,11 @@
   </data>
   <data name="ProductDiscount" xml:space="preserve">
     <value>Ürüne özel ek TL indirimi</value>
+  </data>
+  <data name="AdminSystemSettings" xml:space="preserve">
+    <value>Uygulama Sistem Ayarları</value>
+  </data>
+  <data name="SystemSettings" xml:space="preserve">
+    <value>Sistem ayarları</value>
   </data>
 </root>

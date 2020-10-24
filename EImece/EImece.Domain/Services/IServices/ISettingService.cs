@@ -13,12 +13,14 @@ namespace EImece.Domain.Services.IServices
 
         Setting GetSettingObjectByKey(string key, int language);
 
-        SettingModel GetSettingModel();
+        SettingModel GetSettingModel(int language);
 
-        void SaveSettingModel(SettingModel settingModel);
+        void SaveSettingModel(SettingModel settingModel, int  lang);
 
         List<Setting> GetAllActiveSettings();
 
         EmailAccount GetEmailAccount();
+        SystemSettingModel GetSystemSettingModel();
+        void SaveSystemSettingModel(SystemSettingModel settingModel);
     }
 }

@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Genel Ayarlar.
+        ///   Looks up a localized string similar to Yönetici Genel Ayarları.
         /// </summary>
         public static string AdminGeneralSettings {
             get {
@@ -201,6 +201,15 @@ namespace Resources {
         public static string AdminSettings {
             get {
                 return ResourceManager.GetString("AdminSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uygulama Sistem Ayarları.
+        /// </summary>
+        public static string AdminSystemSettings {
+            get {
+                return ResourceManager.GetString("AdminSystemSettings", resourceCulture);
             }
         }
         
@@ -2523,6 +2532,15 @@ namespace Resources {
         public static string SuccessfullySavedCompleted {
             get {
                 return ResourceManager.GetString("SuccessfullySavedCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sistem ayarları.
+        /// </summary>
+        public static string SystemSettings {
+            get {
+                return ResourceManager.GetString("SystemSettings", resourceCulture);
             }
         }
         

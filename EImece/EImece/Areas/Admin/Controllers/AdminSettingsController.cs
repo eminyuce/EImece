@@ -14,18 +14,30 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/AdminSettings
         public ActionResult Index()
         {
-            SettingModel r = SettingService.GetSettingModel();
+            SettingModel r = SettingService.GetSettingModel(CurrentLanguage);
             return View(r);
         }
         
         [HttpPost]
         public ActionResult Index(SettingModel settingModel)
         {
-            SettingService.SaveSettingModel(settingModel);
+            SettingService.SaveSettingModel(settingModel,CurrentLanguage);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            return View(SettingService.GetSettingModel());
+            return View(SettingService.GetSettingModel(CurrentLanguage));
+        }
+        public ActionResult SystemSettings()
+        {
+            SystemSettingModel r = SettingService.GetSystemSettingModel();
+            return View(r);
         }
 
+        [HttpPost]
+        public ActionResult SystemSettings(SystemSettingModel settingModel)
+        {
+            SettingService.SaveSystemSettingModel(settingModel);
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(SettingService.GetSystemSettingModel());
+        }
         public ActionResult SendSampleEmail()
         {
             String companyName = "Testing company Name";
@@ -33,10 +45,10 @@ namespace EImece.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(webSiteCompanyEmailAddress))
             {
                 ModelState.AddModelError("", AdminResource.WebSiteCompanyEmailAddressRequired);
-                return View("Index", SettingService.GetSettingModel());
+                return View("Index", SettingService.GetSystemSettingModel());
             }
             var emailAccount = SettingService.GetEmailAccount();
-            var info = String.Format("From-->{0} {1} To: {2}", webSiteCompanyEmailAddress, companyName, emailAccount.ToString());
+            var info = $"From-->{webSiteCompanyEmailAddress} {companyName} To: {emailAccount.ToString()}";
             try
             {
                 EmailSender.SendEmail(emailAccount,
@@ -55,7 +67,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("",   ex.ToFormattedString());
             }
 
-            return View("Index",SettingService.GetSettingModel());
+            return View("Index",SettingService.GetSystemSettingModel());
         }
     }
 }
