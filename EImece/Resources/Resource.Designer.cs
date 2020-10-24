@@ -2069,7 +2069,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Daha fazla bilgi.
+        ///   Looks up a localized string similar to Daha fazla ürün göster.
         /// </summary>
         public static string MoreInfo {
             get {

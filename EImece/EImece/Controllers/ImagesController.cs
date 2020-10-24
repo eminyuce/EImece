@@ -91,7 +91,22 @@ namespace EImece.Controllers
         }
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult DefaultImage(String imageSize)
+        public async Task<FileContentResult> DefaultImage(String imageSize)
+        {
+            return await Task.Run(() =>
+            {
+                var cacheKey = $"DefaultImage-{imageSize}";
+                FileContentResult result = null;
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = GetDefaultImage(imageSize);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
+                }
+
+                return result;
+            }).ConfigureAwait(true);
+        }
+        public FileContentResult GetDefaultImage(String imageSize)
         {
             int height = 0;
             int width = 0;
@@ -109,13 +124,9 @@ namespace EImece.Controllers
             var text = "X";
             //image stream
             FileContentResult img = null;
-            try
-            {
+           
                 img = this.File(FilesHelper.GenerateDefaultImg(text, width,height), "image/Jpeg");
-            }
-            catch
-            {
-            }
+           
 
             return img;
         }
