@@ -971,7 +971,6 @@ namespace EImece.Domain.Helpers
         public  Byte[] GenerateDefaultImg(string text = "", int width=200, int height = 200)
         {
             int emSize = 120;
-            var font = new Font("Tahoma", emSize);
             using (var mem = new MemoryStream())
             using (var bmp = new Bitmap(width, height))
             using (var gfx = Graphics.FromImage((Image)bmp))
@@ -985,11 +984,18 @@ namespace EImece.Domain.Helpers
                 sf.LineAlignment = StringAlignment.Center;
 
                 //add question\
-                gfx.DrawString(text, font, Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height), sf);
+                var font = new Font("Tahoma", emSize);
+                string color = "#F2F3F4";
+                byte R = System.Convert.ToByte(color.Substring(1, 2), 16);
+                byte G = System.Convert.ToByte(color.Substring(3, 2), 16);
+                byte B = System.Convert.ToByte(color.Substring(5, 2), 16);
+                Brush brush = new SolidBrush(Color.FromArgb(R, G, B));
+                gfx.DrawString(text, font, brush, new Rectangle(0, 0, bmp.Width, bmp.Height), sf);
                 //render as Jpeg
-                bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
-                bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
-
+                bmp.Save(mem, ImageFormat.Jpeg);
+                font.Dispose();
+                brush.Dispose();
+                sf.Dispose();
                 return  mem.GetBuffer();
             }
         }
