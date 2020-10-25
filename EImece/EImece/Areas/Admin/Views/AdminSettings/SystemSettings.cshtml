@@ -8,18 +8,18 @@
 <h2>@AdminResource.AdminSystemSettings</h2>
 <hr class="adminLine" />
 
-@using (Html.BeginForm("Index", "SystemSettings"))
+@using (Html.BeginForm("SystemSettings", "AdminSettings"))
 {
     @Html.AntiForgeryToken()
 
-<div class="row">
-    <div class="col-md-9">
-        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    <div class="row">
+        <div class="col-md-9">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
+        </div>
     </div>
-    <div class="col-md-3">
-        <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
-    </div>
-</div>
     <hr />
 
     <div class="container">
@@ -111,8 +111,8 @@
                         </div>
                     </div>
                 </div>
-                 
-                 
+
+
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -172,7 +172,7 @@
                     </div>
                 </div>
 
-                 
+
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -310,7 +310,7 @@
                     <div id="collapse4443451" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="form-group">
-                                 @Html.ActionLink(AdminResource.AppLogs,"Index","AppLogs",null,new { @class="btn btn-block btn-danger" })
+                                @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn btn-block btn-danger" })
                             </div>
                         </div>
                     </div>

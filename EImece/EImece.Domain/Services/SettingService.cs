@@ -35,7 +35,7 @@ namespace EImece.Domain.Services
 
         private List<Setting> GetAllSettings()
         {
-            var cacheKey = String.Format("GetAllSettings");
+            var cacheKey = "GetAllSettings" ;
             List<Setting> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
@@ -98,7 +98,7 @@ namespace EImece.Domain.Services
         {
             var result = new SystemSettingModel();
 
-            Type type = typeof(SystemSettingModel);
+            Type type = result.GetType();
             List<Setting> Settings = GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description,StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
@@ -131,7 +131,7 @@ namespace EImece.Domain.Services
         {
             List<Setting> Settings = GetAllSettings();
             // Get type.
-            Type type = typeof(SettingModel);
+            Type type = settingModel.GetType();
 
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
@@ -164,7 +164,7 @@ namespace EImece.Domain.Services
         {
             var result = new SettingModel();
 
-            Type type = typeof(SettingModel);
+            Type type = result.GetType();
             List<Setting> Settings = GetAllSettings().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
@@ -199,7 +199,7 @@ namespace EImece.Domain.Services
         {
             List<Setting> Settings = GetAllSettings();
             // Get type.
-            Type type = typeof(SettingModel);
+            Type type = settingModel.GetType();
 
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
