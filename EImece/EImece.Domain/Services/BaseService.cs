@@ -19,19 +19,7 @@ namespace EImece.Domain.Services
 
         private ICacheProvider _memoryCacheProvider { get; set; }
 
-        private bool _isCachingActivated = true;
-
-        public bool IsCachingActivated
-        {
-            get
-            {
-                return _isCachingActivated;
-            }
-            set
-            {
-                _isCachingActivated = value;
-            }
-        }
+        public bool IsCachingActivated { get; set; } = true;
 
         [Inject]
         public ICacheProvider MemoryCacheProvider
@@ -64,17 +52,11 @@ namespace EImece.Domain.Services
 
         public virtual List<T> GetAll()
         {
-            // Get call stack
-            StackTrace stackTrace = new StackTrace();
-            // Get calling method name
-            Console.WriteLine("GetAll  " + stackTrace.GetFrame(1).GetMethod().Name);
             return baseRepository.GetAll().ToList();
         }
 
         public virtual T GetSingle(int id)
         {
-            // Get call stack
-            StackTrace stackTrace = new StackTrace();
             return baseRepository.GetSingle(id);
         }
 

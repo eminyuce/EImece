@@ -11,7 +11,7 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductCategoryViewModel : ItemListing
     {
         public ProductCategory ProductCategory { get; set; }
-
+        public List<Product>  CategoryChildrenProducts { get; set; }
         public Menu ProductMenu { get; set; }
         public Menu MainPageMenu { get; set; }
         public List<ProductCategory> ChildrenProductCategories { get; set; }
@@ -19,12 +19,22 @@ namespace EImece.Domain.Models.FrontModels
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
         public List<CategoryFilter> SelectedFilterTypes { get; set; }
 
+        public List<Product> AllProducts
+        {
+            get
+            {
+                List<Product> products = ProductCategory.Products.ToList();
+                products.AddRange(CategoryChildrenProducts);
+                return products;
+            }
+        }
+
         public List<Product> Products
         {
             get
             {
                 List<Product> result = new List<Product>();
-                List<Product> products = ProductCategory.Products.ToList();
+                var products = AllProducts;
                 bool hasMinPrice = MinPrice.HasValue && MinPrice > 0;
                 bool hasMaxPrice = MaxPrice.HasValue && MaxPrice > 0;
                 if (hasMinPrice || hasMaxPrice)

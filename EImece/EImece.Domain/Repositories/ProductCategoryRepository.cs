@@ -3,7 +3,9 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Services.IServices;
 using GenericRepository.EntityFramework.Enums;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,9 @@ namespace EImece.Domain.Repositories
 {
     public class ProductCategoryRepository : BaseContentRepository<ProductCategory>, IProductCategoryRepository
     {
+        [Inject]
+        public IProductService ProductService { get; set; }
+
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
@@ -72,6 +77,8 @@ namespace EImece.Domain.Repositories
             var item = GetSingleIncluding(categoryId, includeProperties.ToArray(), match);
             return item;
         }
+
+       
 
         public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
         {

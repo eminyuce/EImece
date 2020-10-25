@@ -115,7 +115,6 @@ namespace EImece.Domain.Services
 
         public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
-            var cacheKey = String.Format("ProductById-{0}", id);
             ProductDetailViewModel result = null;
 
             result = new ProductDetailViewModel();
@@ -298,7 +297,7 @@ namespace EImece.Domain.Services
             return ProductRepository.GetProductsSearchResult(search, filters, top, skip, language);
         }
 
-        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int language, HttpRequestBase request)
+        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request)
         {
             var template = TemplateService.GetTemplate(templateId);
             XDocument xdoc = XDocument.Parse(template.TemplateXml);
@@ -318,7 +317,7 @@ namespace EImece.Domain.Services
                     p.UpdatedDate = DateTime.Now;
                     p.Position = position++;
                     p.IsActive = true;
-                    p.Lang = language;
+                    p.Lang = currentLanguage;
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
@@ -360,6 +359,30 @@ namespace EImece.Domain.Services
         public Product GetProductById(int id)
         {
             return ProductRepository.GetProduct(id); 
+        }
+
+        public List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories)
+        {
+            if(productCategory == null || ChildrenProductCategories.IsEmpty())
+            {
+                return new List<Product>();
+            }
+            var allCategoriesId = new List<int>();
+            // GetChildren Category Id s
+            int[] childrenCategoryId = ChildrenProductCategories.Select(r => r.Id).ToArray();
+            allCategoriesId.AddRange(childrenCategoryId);
+            var allActiveCategories = ProductCategoryService.GetActiveBaseContents(true, productCategory.Lang);
+            foreach (var category in allActiveCategories)
+            {
+                foreach (var childrenId in childrenCategoryId)
+                {
+                    if (category.ParentId == childrenId)
+                    {
+                        allCategoriesId.Add(category.Id);
+                    }
+                }
+            }
+            return ProductRepository.GetChildrenProducts(allCategoriesId.ToArray());
         }
     }
 }

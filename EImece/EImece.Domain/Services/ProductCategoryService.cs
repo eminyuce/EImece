@@ -62,7 +62,7 @@ namespace EImece.Domain.Services
             {
                 if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
-                    result =ProductCategoryRepository.GetProductCategory(categoryId);
+                    result = ProductCategoryRepository.GetProductCategory(categoryId);
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
@@ -125,9 +125,9 @@ namespace EImece.Domain.Services
             return ProductCategoryRepository.GetMainPageProductCategories(language);
         }
 
-        public List<ProductCategory> GetAdminProductCategories(string search, int language)
+        public List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage)
         {
-            return ProductCategoryRepository.GetAdminProductCategories(search, language);
+            return ProductCategoryRepository.GetAdminProductCategories(search, currentLanguage);
         }
 
         public List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language)
@@ -183,21 +183,21 @@ namespace EImece.Domain.Services
             return null;
         }
 
-        public ProductCategoryViewModel GetProductCategoryViewModel(int productCategoryId)
+        public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
             ProductCategoryViewModel result = null;
-            var cacheKey = String.Format("GetProductCategoryViewModel-{0}", productCategoryId);
+            var cacheKey = String.Format("GetProductCategoryViewModel-{0}", categoryId);
             if (IsCachingActivated)
             {
-                if (!MemoryCacheProvider.Get(cacheKey, out result))
+              //  if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
-                    result = GetProductCategoryViewModelNoCache(productCategoryId);
+                    result = GetProductCategoryViewModelNoCache(categoryId);
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else
             {
-                result = GetProductCategoryViewModelNoCache(productCategoryId);
+                result = GetProductCategoryViewModelNoCache(categoryId);
             }
 
             return result;
@@ -213,6 +213,7 @@ namespace EImece.Domain.Services
             result.Brands = BrandService.GetActiveBaseContentsFromCache(true, lang);
             result.ProductCategoryTree = BuildTree(true, lang);
             result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
+            result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
     }

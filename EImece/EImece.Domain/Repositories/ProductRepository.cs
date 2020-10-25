@@ -7,6 +7,7 @@ using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
 using GenericRepository.EntityFramework.Enums;
 using NLog;
+using Org.BouncyCastle.Math.EC.Multiplier;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -350,6 +351,19 @@ namespace EImece.Domain.Repositories
 
             searchResult.PageSize = top;
             return searchResult;
+        }
+
+        public List<Product> GetChildrenProducts(int[] childrenCategoryId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            Expression<Func<Product, bool>> match = r2 => childrenCategoryId.Contains(r2.ProductCategoryId);
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, 99999, 0, includeProperties.ToArray());
+            var result2 = result.ToList();
+            return result2.Distinct().ToList();
         }
     }
 }
