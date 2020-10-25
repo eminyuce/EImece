@@ -21,7 +21,31 @@ namespace EImece.Domain.Repositories
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+        public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
+        {
+            var pcList = GetAll();
+            bool isActived = isActive != null && isActive.HasValue;
+            if (isActived)
+            {
+                pcList = pcList.Where(r => r.IsActive == isActive);
+            }
+            pcList = pcList.Where(r => r.Lang == language);
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived  ? r.IsActive : true).Count() });
 
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount }).ToList();
+            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
+
+            int level = 1;
+            //find top levels items
+            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
+            topLevels.ForEach(r => r.TreeLevel = level);
+            returnList.AddRange(topLevels);
+            foreach (var i in topLevels)
+            {
+                GetTreeview(list, i, level);
+            }
+            return returnList;
+        }
         //Recursion method for recursively get all child nodes
         private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
         {
@@ -36,35 +60,11 @@ namespace EImece.Domain.Repositories
                 i.ProductCategory.Parent = current.ProductCategory;
                 i.Parent = current;
                 GetTreeview(list, i, level);
+                current.ProductCount += i.ProductCount;
             }
         }
 
-        public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
-        {
-            var pcList = GetAll();
-            bool isActived = isActive != null && isActive.HasValue;
-            if (isActived)
-            {
-                pcList = pcList.Where(r => r.IsActive == isActive);
-            }
-            pcList = pcList.Where(r => r.Lang == language);
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count() });
-
-            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount }).ToList();
-            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
-
-            int level = 1;
-            //find top levels items
-            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
-            topLevels.ForEach(r => r.TreeLevel = level);
-            returnList.AddRange(topLevels);
-
-            foreach (var i in topLevels)
-            {
-                GetTreeview(list, i, level);
-            }
-            return returnList;
-        }
+      
 
         public ProductCategory GetProductCategory(int categoryId)
         {
