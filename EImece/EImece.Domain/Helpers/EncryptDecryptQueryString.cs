@@ -14,14 +14,12 @@ namespace EImece.Domain.Helpers
 {
     public static class EncryptDecryptQueryString
     {
-        private static byte[] key = { };
         private static string sEncryptionKey
 
         {
             get
             {
-                var password = AppConfig.GetConfigString("encrypt-password", "SAUW193BX628TD57");
-                return password;
+                return AppConfig.GetConfigString("encrypt-password", "SAUW193BX628TD57"); ;
             }
         }
         public static string Encrypt(string clearText)

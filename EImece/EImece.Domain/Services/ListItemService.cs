@@ -2,6 +2,7 @@
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
+using System;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Services
@@ -27,9 +28,11 @@ namespace EImece.Domain.Services
             DeleteListItemByListId(listId);
             foreach (var item in listItems)
             {
-                ListItemRepository.Add(item);
+                item.ListId = listId;
+                item.CreatedDate = DateTime.Now;
+                item.UpdatedDate = DateTime.Now;
+                ListItemRepository.SaveOrEdit(item);
             }
-            ListItemRepository.Save();
         }
     }
 }

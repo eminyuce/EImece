@@ -3,15 +3,73 @@ using System;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace EImece.MyConsole
 {
     internal class Program
     {
+        private const string ALGOKEY = "EMINYUCEOM";
+        private const string ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private static String connectionString = @"";
 
         private static void Main(string[] args)
+        {
+            String result = "";
+            int id = 13768;
+            char[] alpha = ALGOKEY.ToCharArray();
+            char[] idCharacters = id.ToString().ToCharArray();
+            foreach (var idCharacter in idCharacters)
+            {
+                result += alpha[idCharacter.ToInt()];
+            }
+            Console.WriteLine(result);
+           
+            string secretKey = "MySecretKey";
+            string salt = id+"";
+            System.Security.Cryptography.SHA1 sha = System.Security.Cryptography.SHA1.Create();
+            byte[] preHash = System.Text.Encoding.UTF32.GetBytes(secretKey + salt);
+            byte[] hash = sha.ComputeHash(preHash);
+            string password =   BitConverter.ToString(hash);
+            Console.WriteLine(password);
+            string encoded = Encode(salt, 16);
+            Console.WriteLine(encoded);
+            Console.WriteLine(Decode(encoded));
+
+            Console.WriteLine("EncryptDecryptQueryString  . . . ");
+            Console.WriteLine(EncryptDecryptQueryString.Encrypt(salt));
+            Console.WriteLine(EncryptDecryptQueryString.Decrypt(EncryptDecryptQueryString.Encrypt(salt)));
+
+            Console.Write("Press any key to continue . . . ");
+            Console.ReadKey(true);
+        }
+
+        static public string Encode(string source, int length)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(source);
+
+            var buffer = new StringBuilder(length);
+            buffer.Append(System.Convert.ToBase64String(bytes));
+            while (buffer.Length < length)
+            {
+                buffer.Append('=');
+            }
+            return buffer.ToString();
+        }
+
+        static public string Decode(string encoded)
+        {
+            int index = encoded.IndexOf('=');
+            if (index > 0)
+            {
+                encoded = encoded.Substring(0, ((index + 3) / 4) * 4);
+            }
+            byte[] bytes = System.Convert.FromBase64String(encoded);
+            return System.Text.Encoding.UTF8.GetString(bytes);
+        }
+
+        private static void NewMethod1()
         {
             string orderGuid = "fb348ba3-a29c-4824-94f2-8677be8b40ca";
             string userId = "3bbd5c72-4e35-44a7-9eff-b5b8ff9b6c86";

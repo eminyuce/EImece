@@ -56,9 +56,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(List List, string itemText)
+        public ActionResult SaveOrEdit(List list, string itemText)
         {
-            if (List == null)
+            if (list == null)
             {
                 throw new ArgumentException("list cannot be empty");
             }
@@ -66,21 +66,22 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    List.Lang = CurrentLanguage;
-                    ListService.SaveOrEditEntity(List);
-                    ListItemService.SaveListItem(List.Id, List.SetListItems(itemText));
+                    list.Lang = CurrentLanguage;
+                    list = ListService.SaveOrEditEntity(list);
+                    var listItems = list.SetListItems(itemText);
+                    ListItemService.SaveListItem(list.Id, listItems);
 
                     return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, List);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, list);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            return View(List);
+            return View(list);
         }
 
         [HttpPost, ActionName("Delete")]

@@ -31,7 +31,6 @@ namespace EImece.Domain.Helpers
             }
 
             var m = id.Split("-".ToCharArray()).Last();
-            //   return GeneralHelper.FromBase64Int(m);
             return m.ToInt();
         }
 
