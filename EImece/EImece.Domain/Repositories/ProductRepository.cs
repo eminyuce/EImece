@@ -359,7 +359,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductTags);
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
-            Expression<Func<Product, bool>> match = r2 => childrenCategoryId.Contains(r2.ProductCategoryId);
+            Expression<Func<Product, bool>> match = r2 => childrenCategoryId.Contains(r2.ProductCategoryId) && r2.IsActive;
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, 99999, 0, includeProperties.ToArray());
             var result2 = result.ToList();

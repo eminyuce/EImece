@@ -11,7 +11,7 @@
 @{
 
     ProductCategory category = Model.ProductCategory;
-    var productsAll = Model.AllProducts;
+    var productsAll = Model.Products;
     var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.Count);
     products.RouteId = category.Id;
     products.Filter = Model.Filter;
