@@ -121,7 +121,10 @@
                 }
                 else
                 {
-                    <div class="container">@Resource.NoProductsFoundForCategory</div>
+                    <div class="alert alert-secondary alert-with-icon" role="alert">
+                        <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
+                        @Html.Raw(@Resource.NoProductsFoundForCategory)
+                    </div>
                 }
             </div>
             <div class="pb-4 mb-2"></div>

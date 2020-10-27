@@ -202,7 +202,7 @@
     <value>Lütfen geçerli bir metin girin 2</value>
   </data>
   <data name="NOSearchResult" xml:space="preserve">
-    <value>Arama Sonucu Bulunamadi.</value>
+    <value>Anahtar kelimelere uyan hiç ürün bulunamadı</value>
   </data>
   <data name="NewModelsClick" xml:space="preserve">
     <value>Yeni modellerimiz için tıklayınız</value>

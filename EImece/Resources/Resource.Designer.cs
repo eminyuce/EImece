@@ -2262,7 +2262,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arama Sonucu Bulunamadi..
+        ///   Looks up a localized string similar to Anahtar kelimelere uyan hiç ürün bulunamadı.
         /// </summary>
         public static string NOSearchResult {
             get {
