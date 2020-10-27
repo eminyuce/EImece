@@ -320,8 +320,9 @@
                             </div>
                         }
                     }
-                        <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
-                    </div>
+
+                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
+                </div>
             </div>
         </div>
         @if (productComments.IsNotEmpty())
@@ -334,6 +335,18 @@
                 }
             </div>
         }
+        else
+        {
+    <div class="col-md-8 pb-5">
+        <div class="alert alert-secondary">
+            <div class="pt-3 pb-2 text-center ">
+                @Resource.NoCommentForProductYet
+            </div>
+        </div>
+    </div>
+           
+        }
+
     </div>
 </div>
 

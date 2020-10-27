@@ -2222,6 +2222,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bu ürüne henüz yorum yazılmadı. İlk yorumu yazmak ister misin?.
+        /// </summary>
+        public static string NoCommentForProductYet {
+            get {
+                return ResourceManager.GetString("NoCommentForProductYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;h1 class=&quot;h2&quot;&gt; Alışveriş sepetinizde ürün bulunmuyor!&lt;/h1&gt;
         ///                                &lt;p class=&quot;text-muted&quot;&gt;
         ///                                    Beğendiğiniz ürünleri sepetinize ekleyerek sipariş verebilirsiniz. Alışveriş yapmak için

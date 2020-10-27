@@ -4,45 +4,65 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace EImece.MyConsole
 {
     internal class Program
     {
+        private const string KEYID = "9182736450";
         private const string ALGOKEY = "EMINYUCEOM";
         private const string ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private static String connectionString = @"";
-
+        public static string ReverseString(string srtVarable)
+        {
+            return new string(srtVarable.Reverse().ToArray());
+        }
         private static void Main(string[] args)
         {
-            String result = "";
-            int id = 13768;
-            char[] alpha = ALGOKEY.ToCharArray();
-            char[] idCharacters = id.ToString().ToCharArray();
-            foreach (var idCharacter in idCharacters)
-            {
-                result += alpha[idCharacter.ToInt()];
-            }
-            Console.WriteLine(result);
-           
-            string secretKey = "MySecretKey";
-            string salt = id+"";
-            System.Security.Cryptography.SHA1 sha = System.Security.Cryptography.SHA1.Create();
-            byte[] preHash = System.Text.Encoding.UTF32.GetBytes(secretKey + salt);
-            byte[] hash = sha.ComputeHash(preHash);
-            string password =   BitConverter.ToString(hash);
-            Console.WriteLine(password);
-            string encoded = Encode(salt, 16);
-            Console.WriteLine(encoded);
-            Console.WriteLine(Decode(encoded));
-
-            Console.WriteLine("EncryptDecryptQueryString  . . . ");
-            Console.WriteLine(EncryptDecryptQueryString.Encrypt(salt));
-            Console.WriteLine(EncryptDecryptQueryString.Decrypt(EncryptDecryptQueryString.Encrypt(salt)));
-
+            int id = 13769;
+            // 0J6G4H2D1B
+            var result = GenerateId(id);
+            var id33=GenerateReserveId(result);
+            Console.WriteLine(id33);
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
+        }
+
+        private static int GenerateReserveId(string result)
+        {
+            string result2 = new String(result.Where(Char.IsDigit).ToArray());
+
+            var result3 = new StringBuilder();
+            char[] result2Ids = result2.ToCharArray();
+            char[] keyIds = KEYID.ToCharArray();
+            for (int i = 0; i < result2Ids.Length; i++)
+            {
+                var nnn = result2Ids[i].ToInt();
+                for (int j = 0; j < keyIds.Length; j++)
+                {
+                    if (nnn == keyIds[j].ToInt())
+                        result3.Append(j);
+                }
+            }
+            return ReverseString(result3.ToString()).ToInt();
+        }
+
+        private static string GenerateId(int id)
+        {
+            string result = "";
+            char[] keyIds = KEYID.ToCharArray();
+            char[] alpha = ALPHABETS.ToCharArray();
+            char[] idCharacters = id.ToString().ToCharArray();
+            for (int i = idCharacters.Length - 1; i >= 0; i--)
+            {
+                var num = idCharacters[i].ToInt();
+                result += keyIds[num] + "" + alpha[num];
+                Console.WriteLine(num);
+            }
+            Console.WriteLine(result);
+            return result.ToLower();
         }
 
         static public string Encode(string source, int length)

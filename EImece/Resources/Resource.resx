@@ -1534,4 +1534,7 @@ Erişim Linki</value>
   <data name="ShopNow" xml:space="preserve">
     <value>Satın al</value>
   </data>
+  <data name="NoCommentForProductYet" xml:space="preserve">
+    <value>Bu ürüne henüz yorum yazılmadı. İlk yorumu yazmak ister misin?</value>
+  </data>
 </root>
