@@ -54,7 +54,8 @@ namespace EImece.Domain
         public const string LinkedinWebSiteLink = "LinkedinWebSiteLink";
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
         public const string YotubeWebSiteLink = "YotubeWebSiteLink";
-        public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
+        public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";       
+        public const string WhatsAppCommunicationScript = "WhatsAppCommunicationScript";
         public const string LastVisit = "LastVisit";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";

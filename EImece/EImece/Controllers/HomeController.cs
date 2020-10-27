@@ -126,6 +126,12 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
+        [ChildActionOnly]
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        public ActionResult WhatsAppCommunicationScript()
+        {
+            return Content(SettingService.GetSettingByKey(Constants.WhatsAppCommunicationScript).ToStr());
+        }
 
         public ActionResult Languages()
         {
