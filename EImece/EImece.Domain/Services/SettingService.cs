@@ -45,11 +45,23 @@ namespace EImece.Domain.Services
             }
             return result;
         }
-
         public string GetSettingByKey(string key)
         {
             var allSettings = GetAllSettings();
             var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            if (result != null)
+            {
+                return result.SettingValue;
+            }
+            else
+            {
+                return String.Empty;
+            }
+        }
+        public string GetSettingByKey(string key, int language)
+        {
+            var allSettings = GetAllSettings();
+            var result = allSettings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
             if (result != null)
             {
                 return result.SettingValue;

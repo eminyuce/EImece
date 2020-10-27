@@ -56,9 +56,9 @@ namespace EImece.Controllers
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle).ToStr();
-            ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords).ToStr();
+            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle,CurrentLanguage).ToStr();
+            ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
+            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords,CurrentLanguage).ToStr();
 
             return View(mainPageModel);
         }

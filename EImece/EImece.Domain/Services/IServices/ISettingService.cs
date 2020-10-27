@@ -8,7 +8,7 @@ namespace EImece.Domain.Services.IServices
     public interface ISettingService : IBaseEntityService<Setting>
     {
         string GetSettingByKey(string key);
-
+        string GetSettingByKey(string key, int language);
         Setting GetSettingObjectByKey(string key);
 
         Setting GetSettingObjectByKey(string key, int language);
