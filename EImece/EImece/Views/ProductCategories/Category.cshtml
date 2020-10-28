@@ -33,6 +33,18 @@
                 <li class="breadcrumb-item">
                     <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
                 </li>
+                @if (category.Parent != null && category.Parent.Parent != null)
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
+                    </li>
+                }
+                @if (category.Parent != null)
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
+                    </li>
+                }
                 <li class="breadcrumb-item">
                     @category.Name
                 </li>

@@ -207,6 +207,14 @@ namespace EImece.Domain.Services
         {
             var result = new ProductCategoryViewModel();
             result.ProductCategory = GetProductCategory(productCategoryId);
+            if(result.ProductCategory.ParentId > 0)
+            {
+                result.ProductCategory.Parent = GetProductCategory(result.ProductCategory.ParentId);
+                if (result.ProductCategory.Parent.ParentId > 0)
+                {
+                    result.ProductCategory.Parent.Parent = GetProductCategory(result.ProductCategory.Parent.ParentId);
+                }
+            }
             int lang = result.ProductCategory.Lang;
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
