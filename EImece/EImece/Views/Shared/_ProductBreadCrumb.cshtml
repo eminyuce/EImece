@@ -11,6 +11,9 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+        </li>
         @for (int i = categories.Count() - 1; i >= 0; i--)
         {
             var category = categories[i];

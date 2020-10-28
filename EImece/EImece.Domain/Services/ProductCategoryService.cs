@@ -186,10 +186,10 @@ namespace EImece.Domain.Services
         public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
             ProductCategoryViewModel result = null;
-            var cacheKey = String.Format("GetProductCategoryViewModel-{0}", categoryId);
+            var cacheKey = string.Format("GetProductCategoryViewModel-{0}", categoryId);
             if (IsCachingActivated)
             {
-              //  if (!MemoryCacheProvider.Get(cacheKey, out result))
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
                     result = GetProductCategoryViewModelNoCache(categoryId);
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
