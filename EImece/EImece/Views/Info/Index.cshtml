@@ -23,7 +23,46 @@
 }
 else
 {
-    <h1>@menu.Name</h1>
-    @Html.Raw(menu.GetCroppedImageTag(300, 0))
-    @Html.Raw(menu.Description)
+    <div class="page-title-wrapper" aria-label="Page title">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        @menu.Name
+                    </li>
+                </ol>
+            </nav>
+            <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
+            <hr class="mt-4">
+        </div>
+    </div>
+
+    <div class="container pb-5 mb-4">
+        <div class="row">
+            <div class="col-lg-3">
+                @Html.Raw(menu.GetCroppedImageTag(300, 0))
+            </div>
+            <div class="col-lg-9">
+                <!-- Toolbar-->
+                <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                    <div class="d-flex flex-wrap">
+                        <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                            <div class="button-group tabs">
+                                @Html.Raw(menu.Description)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
 }
+
+
