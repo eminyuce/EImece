@@ -190,13 +190,16 @@ namespace EImece.Domain.Helpers.Extensions
 
         #endregion trimAllString
 
-        public static String GetSeoUrl(this BaseEntity entity)
+        public static string GetSeoUrl(this BaseEntity entity)
         {
-            return String.Format("{0}-{1}",
+            return string.Format("{0}-{1}",
                GeneralHelper.GetUrlSeoString(entity.Name),
-               entity.Id);
+             GeneralHelper.ModifyId(entity.Id));
         }
-
+        public static string GetImageSeoUrl(this BaseEntity entity, int fileStorageId)
+        {
+            return string.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), GeneralHelper.ModifyId(fileStorageId));
+        }
         public static String GetSeoTitle(this BaseEntity entity, int length = 50)
         {
             string value = GeneralHelper.TruncateAtWord(entity.Name, length);
@@ -296,13 +299,13 @@ namespace EImece.Domain.Helpers.Extensions
             return imageTag;
         }
 
-        public static String GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
+        public static string GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
-            String imageTag = "";
+            string imageTag = "";
             if (entity != null)
             {
-                String imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
-                if (!String.IsNullOrEmpty(imagePath))
+                string imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
+                if (!string.IsNullOrEmpty(imagePath))
                 {
                     imageTag = string.Format("<img src='{0}' alt='{1}'   />",
                         imagePath, entity.Name, width, height).ToLower();
@@ -316,7 +319,7 @@ namespace EImece.Domain.Helpers.Extensions
             return imageTag;
         }
 
-        public static String GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0)
+        public static string GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0)
         {
             var fileStorageId = fileStorageIdOptional.HasValue ? fileStorageIdOptional.Value : 0;
             var result = GetCroppedImageUrl(entity, fileStorageId, width, height);
@@ -324,15 +327,13 @@ namespace EImece.Domain.Helpers.Extensions
             return result;
         }
 
-        public static String GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
+        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             if (entity != null && fileStorageId > 0)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageSize = String.Format("w{0}h{1}", width, height);
-                var imageId = String.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), fileStorageId);
-                var imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
-                return imagePath;
+                return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" }); ;
             }
             return AppConfig.GetDefaultImage(width, height);
         }

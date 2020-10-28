@@ -60,7 +60,7 @@ namespace EImece.Controllers
                 return Content("Id cannot be null");
             }
 
-            var fileStorageId = id.Replace(".jpg", "").GetIdWithoutDecode();
+            var fileStorageId = id.Replace(".jpg", "").GetId();
 
             if (fileStorageId > 0)
             {

@@ -24,8 +24,45 @@ namespace EImece.Domain.Helpers
 {
     public class GeneralHelper
     {
+        private const string KEYID = "9182736450";
+        private const string ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
         private static Random random = new Random();
+        public static string ReverseString(string srtVarable)
+        {
+            return new string(srtVarable.Reverse().ToArray());
+        }
+        public static int RevertId(string result)
+        {
+            string result2 = new String(result.Where(Char.IsDigit).ToArray());
 
+            var result3 = new StringBuilder();
+            char[] result2Ids = result2.ToCharArray();
+            char[] keyIds = KEYID.ToCharArray();
+            for (int i = 0; i < result2Ids.Length; i++)
+            {
+                var nnn = result2Ids[i].ToInt();
+                for (int j = 0; j < keyIds.Length; j++)
+                {
+                    if (nnn == keyIds[j].ToInt())
+                        result3.Append(j);
+                }
+            }
+            return ReverseString(result3.ToString()).ToInt();
+        }
+
+        public static string ModifyId(int id)
+        {
+            StringBuilder result = new StringBuilder();
+            char[] keyIds = KEYID.ToCharArray();
+            char[] alpha = ALPHABETS.ToCharArray();
+            char[] idCharacters = id.ToString(CultureInfo.InvariantCulture).ToCharArray();
+            for (int i = idCharacters.Length - 1; i >= 0; i--)
+            {
+                var num = idCharacters[i].ToInt();
+                result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}", keyIds[num], alpha[num]);
+            }
+            return result.ToString();
+        }
         public static List<T> GetUnique<T>(List<T> clazzes) where T : BaseEntity
         {
             var list = new List<T>();
