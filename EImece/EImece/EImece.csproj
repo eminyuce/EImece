@@ -368,6 +368,8 @@
     <Content Include="Areas\Admin\Content\main\urun-kategorileri.png" />
     <Content Include="Areas\Admin\Content\main\uyeler.png" />
     <Content Include="Areas\Admin\Content\main\yonetici-ayarlari.png" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-07.gif" />
+    <Content Include="Areas\Admin\Content\PageThemes\tema-08.gif" />
     <Content Include="Areas\Admin\Content\vs\base\worker\workerMain.js" />
     <Content Include="Areas\Admin\Content\vs\basic-languages\bat\bat.js" />
     <Content Include="Areas\Admin\Content\vs\basic-languages\coffee\coffee.js" />

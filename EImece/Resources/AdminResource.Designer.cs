@@ -538,6 +538,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İletişim Formu.
+        /// </summary>
+        public static string ContactForm {
+            get {
+                return ResourceManager.GetString("ContactForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alışverişe devam et.
         /// </summary>
         public static string ContinueShopping {
@@ -1101,6 +1110,15 @@ namespace Resources {
         public static string IdentityNumber {
             get {
                 return ResourceManager.GetString("IdentityNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foto Albümü.
+        /// </summary>
+        public static string ImageGallery {
+            get {
+                return ResourceManager.GetString("ImageGallery", resourceCulture);
             }
         }
         

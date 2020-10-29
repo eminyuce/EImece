@@ -87,7 +87,14 @@ namespace EImece.Domain
         public const string CultureCookieName = "_culture";
         public const string ShoppingCartKey = "ShoppingCartKey1";
         public static ImmutableArray<string> NumbersArr = ImmutableArray.Create(new string[] { "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" });
-       
+        public const string PageThemeCommunication = "T8";
+        public const string PageThemeImageGallery = "T7";
+        public const string PageThemeT6 = "T6";
+        public const string PageThemeT5 = "T5";
+        public const string PageThemeT4 = "T4";
+        public const string PageThemeT3 = "T3";
+        public const string PageThemeT2 = "T2";
+        public const string PageThemeT1 = "T1";
 
         public static object DeleteButtonHtmlAttribute
         {

@@ -3496,7 +3496,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giriş Yap.
+        ///   Looks up a localized string similar to Giriş.
         /// </summary>
         public static string SignInOrUp {
             get {
@@ -3717,15 +3717,6 @@ namespace Resources {
         public static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kayıt ol.
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

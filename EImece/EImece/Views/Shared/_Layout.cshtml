@@ -90,8 +90,8 @@
     <header class="navbar navbar-expand-lg navbar-light bg-light px-0">
         <div class="container flex-sm-nowrap px-3">
             <!-- navbar brand-->
-            <a class="navbar-brand mr-0 mr-sm-4" style="min-width: 100px;" href="/">
-                <img width="100" src="/images/logo.jpg" alt="MStore" />
+            <a class="navbar-brand mr-0 mr-sm-4" style="min-width: 100px;" href="@Url.Action("Index","Home")">
+                <img width="100" src="/images/logo.jpg" alt="logo" />
             </a>
 
             <!-- navbar buttons-->
@@ -103,28 +103,14 @@
                 </div>
                 @if (Request.IsAuthenticated)
                 {
-
                     <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.MyAccount
-                        <br />
-                        @User.Identity.Name
+                        <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
                     </a>
-
-                    <a class="navbar-btn bg-0 my-3" href="javascript:document.getElementById('logoutForm').submit()">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.Logout
-                    </a>
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-                        @Html.AntiForgeryToken()
-                    }
                 }
                 else
                 {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("register","account")" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@AdminResource.BecomeMember
-                    </a>
                     <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="log-in"></i>@AdminResource.SignInOrUp
+                        <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
                     </a>
                 }
 

@@ -1342,7 +1342,7 @@ Erişim Linki</value>
     <value>Kısa Açıklama</value>
   </data>
   <data name="SignInOrUp" xml:space="preserve">
-    <value>Giriş Yap</value>
+    <value>Giriş</value>
   </data>
   <data name="SiteIndexMetaDescription" xml:space="preserve">
     <value>Site Dizini Meta Açıklama</value>
@@ -1397,9 +1397,6 @@ Erişim Linki</value>
   </data>
   <data name="Street" xml:space="preserve">
     <value>Sokak</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value>Kayıt ol</value>
   </data>
   <data name="Subscribers" xml:space="preserve">
     <value>Aboneler</value>

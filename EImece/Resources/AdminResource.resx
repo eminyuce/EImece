@@ -1053,4 +1053,10 @@
   <data name="SystemSettings" xml:space="preserve">
     <value>Sistem ayarları</value>
   </data>
+  <data name="ImageGallery" xml:space="preserve">
+    <value>Foto Albümü</value>
+  </data>
+  <data name="ContactForm" xml:space="preserve">
+    <value>İletişim Formu</value>
+  </data>
 </root>

@@ -8,6 +8,8 @@
 @{
     var footerModel = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
+    int communicationId = 0;
 
 }
 <!-- Footer-->
@@ -36,15 +38,20 @@
                     <div class="widget widget-links pb-4">
                         <h3 class="widget-title text-white border-light">@Resource.AboutUs</h3>
                         <ul>
-                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Login", "Account")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.MyAccount</span></a></li>
                             <li><a class="nav-link-inline nav-link-light" href="@Url.Action(Constants.AboutUs,"info")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.AboutUs</span></a></li>
-                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Pages","Detail",new { id="iletisim-bilgileri-9a1b1b" })"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.Contacts</span></a></li>
+                            @if (communicationPageLink != null)
+                            {
+                                communicationId = communicationPageLink.Id;
+                                <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
+                            }
                         </ul>
+
                     </div>
                     <div class="widget widget-links pb-4">
                         <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
                         <ul>
-                            @foreach (var m in Model.Menus)
+                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Login", "Account")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.MyAccount</span></a></li>
+                            @foreach (var m in Model.Menus.Where(r=>r.Id != communicationId))
                             {
                                 <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
                             }
