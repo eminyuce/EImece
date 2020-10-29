@@ -144,7 +144,7 @@ namespace EImece.Domain.Models.FrontModels
         public static RouteValueDictionary GetRouteValueDictionary(IPaginatedModelList pagingItems)
         {
             var routeValues = new RouteValueDictionary();
-            if (pagingItems.RouteId.HasValue && pagingItems.RouteId.Value > 0)
+            if (!string.IsNullOrEmpty(pagingItems.RouteId))
             {
                 routeValues.Add("id", pagingItems.RouteId);
             }

@@ -13,7 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         public string Search { set; get; }
         public string Filter { set; get; }
         public int? Sorting { set; get; }
-        public int? RouteId { set; get; }
+        public string RouteId { set; get; }
         public int? MinPrice { set; get; }
         public int? MaxPrice { set; get; }
 

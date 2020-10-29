@@ -13,7 +13,7 @@
     ProductCategory category = Model.ProductCategory;
     var productsAll = Model.Products;
     var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.Count);
-    products.RouteId = category.Id;
+    products.RouteId = Model.SeoId;
     products.Filter = Model.Filter;
     products.Sorting = (int)Model.Sorting;
     products.MinPrice = Model.MinPrice;
