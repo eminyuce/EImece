@@ -34,20 +34,20 @@
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="widget widget-links pb-4">
-                        <h3 class="widget-title text-white border-light">Account &amp; shipping info</h3>
+                        <h3 class="widget-title text-white border-light">@Resource.AboutUs</h3>
                         <ul>
-                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Login", "Account")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Your account</span></a></li>
-                            <li><a class="nav-link-inline nav-link-light" href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Shipping rates &amp; policies</span></a></li>
+                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Login", "Account")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.MyAccount</span></a></li>
+                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action(Constants.AboutUs,"info")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.AboutUs</span></a></li>
+                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Pages","Detail",new { id="iletisim-bilgileri-9a1b1b" })"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.Contacts</span></a></li>
                         </ul>
                     </div>
                     <div class="widget widget-links pb-4">
-                        <h3 class="widget-title text-white border-light">About us</h3>
+                        <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
                         <ul>
-                            <li><a class="nav-link-inline nav-link-light" href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Careers</span></a></li>
-                            <li><a class="nav-link-inline nav-link-light" href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">About shop</span></a></li>
-                            <li><a class="nav-link-inline nav-link-light" href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Our stores</span></a></li>
-                            <li><a class="nav-link-inline nav-link-light" href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">Services</span></a></li>
-                            <li><a class="nav-link-inline nav-link-light" href="#"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">News</span></a></li>
+                            @foreach (var m in Model.Menus)
+                            {
+                                <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -55,47 +55,13 @@
                     <div class="widget">
                         <!-- Subscription form (MailChimp)-->
                         <h3 class="widget-title text-white border-light">@Resource.StayInformed</h3>
-                        @Html.Partial("_AddSubscriber")
+                        @Html.Partial("_AddSubscriber", Model)
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- shop features-->
-    <div class="pt-5 pb-0 pb-md-5 border-bottom border-light" id="shop-features" style="background-color: #1f1f1f;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-sm-6 border-right border-light">
-                    <div class="icon-box text-center mb-5 mb-md-0">
-                        <div class="icon-box-icon"><i data-feather="truck"></i></div>
-                        <h3 class="icon-box-title font-weight-semibold text-white">Free local delivery</h3>
-                        <p class="icon-box-text">Free delivery for all orders over $100</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 border-right border-light">
-                    <div class="icon-box text-center mb-5 mb-md-0">
-                        <div class="icon-box-icon"><i data-feather="refresh-cw"></i></div>
-                        <h3 class="icon-box-title font-weight-semibold text-white">Money back guarantee</h3>
-                        <p class="icon-box-text">Free delivery for all orders over $100</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 border-right border-light">
-                    <div class="icon-box text-center mb-5 mb-md-0">
-                        <div class="icon-box-icon"><i data-feather="life-buoy"></i></div>
-                        <h3 class="icon-box-title font-weight-semibold text-white">24/7 customer support</h3>
-                        <p class="icon-box-text">Friendly 24/7 customer support</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="icon-box text-center mb-5 mb-md-0">
-                        <div class="icon-box-icon"><i data-feather="credit-card"></i></div>
-                        <h3 class="icon-box-title font-weight-semibold text-white">Secure online payment</h3>
-                        <p class="icon-box-text">We posess SSL / Secure сertificate</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <div class="py-3" style="background-color: #1a1a1a;">
         <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>

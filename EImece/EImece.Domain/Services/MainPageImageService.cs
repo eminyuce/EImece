@@ -73,6 +73,7 @@ namespace EImece.Domain.Services
                 result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language).Where(r => r.ParentId == 0).ToList();
                 result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
                 result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+                result.CompanyAddress = SettingService.GetSettingObjectByKey(Constants.CompanyAddress);
                 result.FooterDescription = SettingService.GetSettingObjectByKey("FooterDescription", language);
                 result.FooterEmailListDescription = SettingService.GetSettingObjectByKey("FooterEmailListDescription", language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);

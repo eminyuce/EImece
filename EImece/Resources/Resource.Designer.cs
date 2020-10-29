@@ -916,6 +916,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteri ilişkileri.
+        /// </summary>
+        public static string CustomerRelationship {
+            get {
+                return ResourceManager.GetString("CustomerRelationship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Müşteriler.
         /// </summary>
         public static string Customers {
