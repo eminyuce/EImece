@@ -13,8 +13,10 @@
     ViewBag.Description = menu.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
+
     int Width = ViewData["Width"].ToInt(300);
     int Height = ViewData["Height"].ToInt(214);
+    var imgTag = menu.GetCroppedImageTag(Width, Height);
 }
 
 <section class="titlebar margin-bottom-20">
@@ -41,7 +43,7 @@
 
 <div class="container potrfolio-container">
     <div class="sixteen columns">
-        @if (menuTags.Any())
+        @if (menuTags.IsNotEmpty())
         {
 
             <div id="filters" class="filters-dropdown headline">
@@ -49,7 +51,7 @@
                 <ul class="option-set" data-option-key="filter">
                     <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
                     @foreach (var t in menuTags)
-                {
+                    {
                         <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
                     }
                 </ul>
@@ -64,7 +66,7 @@
 
     <!-- Jumbotron Header -->
     <header class="jumbotron hero-spacer">
-        @Html.Raw(menu.GetCroppedImageTag(Width, Height))
+        @Html.Raw(imgTag)
     </header>
 
     <hr>
@@ -77,12 +79,16 @@
             </p>
         </div>
     </div>
-    <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+    @if (files.IsNotEmpty())
+    {
+        <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+            @for (int i = 0; i < files.Count; i++)
+            {
+                var f = files[i].FileStorage;
+                @Html.DisplayFor(modelItem => f, "FileStorage")
+            }
+        </div>
+    }
 
-        @for (int i = 0; i < files.Count; i++)
-        {
-            var f = files[i].FileStorage;
-            @Html.DisplayFor(modelItem => f, "FileStorage")
-        }
-    </div>
+
 </div>
