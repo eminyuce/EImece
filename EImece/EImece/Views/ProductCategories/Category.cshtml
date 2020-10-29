@@ -27,31 +27,35 @@
 
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                <li class="breadcrumb-item">
-                    <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
-                </li>
-                @if (category.Parent != null && category.Parent.Parent != null)
-                {
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
                     <li class="breadcrumb-item">
-                        <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
                     </li>
-                }
-                @if (category.Parent != null)
-                {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
+                    @if (category.Parent != null && category.Parent.Parent != null)
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
+                        </li>
+                    }
+                    @if (category.Parent != null)
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
+                        </li>
+                    }
+                    <li class="breadcrumb-item active">
+                        @category.Name
                     </li>
-                }
-                <li class="breadcrumb-item">
-                    @category.Name
-                </li>
-            </ol>
-        </nav>
-        <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
-        <hr class="mt-4">
+                </ol>
+            </nav>
+        </div>
+            <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
+            <hr class="mt-4">
+
+   
     </div>
 </div>
 
@@ -121,8 +125,14 @@
                     </div>
                 </div>
             </div>
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <span class="d-block mt-2">@Html.Raw(string.Format(Resource.ProductFoundInfoForCategory, category.Name, products.Count))</span>
+                </div>
+            </div>
             <!-- Products grid-->
             <div class="row no-gutters">
+              
                 @if (products.IsNotEmpty())
                 {
                     foreach (var p in products.GetPagingResult())
@@ -133,17 +143,17 @@
                 }
                 else
                 {
-                <div class="alert alert-secondary alert-with-icon" role="alert">
-                    <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-                    @if (Model.SelectedFilterTypes.IsNotEmpty())
-                    {
-                        @Html.Raw(@Resource.NoProductsFoundForSelectedFilters)
-                    }
-                    else
-                    {
-                        @Html.Raw(@Resource.NoProductsFoundForCategory)
-                    }
-                </div>
+                    <div class="alert alert-secondary alert-with-icon" role="alert">
+                        <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
+                        @if (Model.SelectedFilterTypes.IsNotEmpty())
+                        {
+                            @Html.Raw(@Resource.NoProductsFoundForSelectedFilters)
+                        }
+                        else
+                        {
+                            @Html.Raw(@Resource.NoProductsFoundForCategory)
+                        }
+                    </div>
                 }
             </div>
             <div class="pb-4 mb-2"></div>

@@ -1543,4 +1543,7 @@ Erişim Linki</value>
   <data name="NoProductsFoundForSelectedFilters" xml:space="preserve">
     <value>Seçili Filtreler İçin Ürün Bulunamadı</value>
   </data>
+  <data name="ProductFoundInfoForCategory" xml:space="preserve">
+    <value>&lt;b&gt;{0}&lt;/b&gt; aramanız ile eşleşen &lt;b&gt;{1}&lt;/b&gt; Sonuç bulundu.</value>
+  </data>
 </root>

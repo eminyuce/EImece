@@ -65,7 +65,7 @@
                                     @o.OrderNumber
                                     @createOrderDetailModal(o)
                                 </td>
-                                <td>@o.CreatedDate.ToString("dd MMMM ddd, HH:mm")</td>
+                                <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
                                 <td>@o.PaidPriceDecimal.CurrencySign()</td>
                             </tr>
                         }

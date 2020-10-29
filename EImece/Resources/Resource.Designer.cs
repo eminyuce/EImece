@@ -2799,6 +2799,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;{0}&lt;/b&gt; aramanız ile eşleşen &lt;b&gt;{1}&lt;/b&gt; Sonuç bulundu..
+        /// </summary>
+        public static string ProductFoundInfoForCategory {
+            get {
+                return ResourceManager.GetString("ProductFoundInfoForCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Bilgisi.
         /// </summary>
         public static string ProductInformation {

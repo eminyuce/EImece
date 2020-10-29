@@ -41,11 +41,13 @@
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
-        @Html.Partial("_ProductBreadCrumb", Model)
-        <h1 class="page-title">@product.Name</h1><span class="d-block mt-2 text-muted"></span>
-        <hr class="mt-4">
+        <div class="alert alert-secondary" role="alert">
+            @Html.Partial("_ProductBreadCrumb", Model)
+        </div>
+            <h1 class="page-title">@product.Name</h1><span class="d-block mt-2 text-muted"></span>
+            <hr class="mt-4">
+        </div>
     </div>
-</div>
 <!-- Page Content-->
 <!-- Toast notifications-->
 <div class="toast-container toast-bottom-center">
