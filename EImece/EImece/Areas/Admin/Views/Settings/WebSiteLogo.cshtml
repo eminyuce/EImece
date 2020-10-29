@@ -14,7 +14,7 @@
     var setting = Model;
     string fileName = Model.SettingValue.ToStr();
     string fullPath = Path.Combine(Constants.ServerMapPath, fileName);
-    string thumbPath = "/thb" + fileName + "";
+    string thumbPath = "\thb" + fileName + "";
     string partThumb1 = Path.Combine(Constants.ServerMapPath, "thumbs");
     string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
 }
@@ -28,7 +28,7 @@
     @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
     <div class="row">
         <div class="col-md-3">
-            <img src="@partThumb2.Replace("~","")" />
+            <img style="max-width: 250px;" src="@partThumb2.Replace("~","")" />
         </div>
         <div class="col-md-9">
 
