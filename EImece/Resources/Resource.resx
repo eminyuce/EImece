@@ -1540,4 +1540,7 @@ Erişim Linki</value>
   <data name="CustomerRelationship" xml:space="preserve">
     <value>Müşteri ilişkileri</value>
   </data>
+  <data name="NoProductsFoundForSelectedFilters" xml:space="preserve">
+    <value>Seçili Filtreler İçin Ürün Bulunamadı</value>
+  </data>
 </root>

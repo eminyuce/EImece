@@ -2262,6 +2262,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seçili Filtreler İçin Ürün Bulunamadı.
+        /// </summary>
+        public static string NoProductsFoundForSelectedFilters {
+            get {
+                return ResourceManager.GetString("NoProductsFoundForSelectedFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal Ayarlar.
         /// </summary>
         public static string NormalSettings {
