@@ -19,15 +19,8 @@ namespace EImece.Domain.Models.FrontModels
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
         public List<CategoryFilter> SelectedFilterTypes { get; set; }
 
-        public List<Product> AllProducts
-        {
-            get
-            {
-                List<Product> products = ProductCategory.Products.ToList();
-                products.AddRange(CategoryChildrenProducts);
-                return products;
-            }
-        }
+        public List<Product> AllProducts { get; set; }
+        
 
         public List<Product> Products
         {
@@ -35,21 +28,21 @@ namespace EImece.Domain.Models.FrontModels
             {
                 List<Product> result = new List<Product>();
                 var products = AllProducts;
-                bool hasMinPrice = MinPrice.HasValue && MinPrice > 0;
-                bool hasMaxPrice = MaxPrice.HasValue && MaxPrice > 0;
+                bool hasMinPrice = MinPrice.HasValue && MinPrice.Value > 0;
+                bool hasMaxPrice = MaxPrice.HasValue && MaxPrice.Value > 0;
                 if (hasMinPrice || hasMaxPrice)
                 {
                     if (hasMinPrice && hasMaxPrice)
                     {
-                        products = products.Where(r => r.PriceWithDiscount >= MinPrice && r.PriceWithDiscount <= MaxPrice).ToList();
+                        products = products.Where(r => r.PriceWithDiscount >= MinPrice.Value && r.PriceWithDiscount <= MaxPrice.Value).ToList();
                     }
                     else if (hasMinPrice)
                     {
-                        products = products.Where(r => r.PriceWithDiscount >= MinPrice).ToList();
+                        products = products.Where(r => r.PriceWithDiscount >= MinPrice.Value).ToList();
                     }
                     else
                     {
-                        products = products.Where(r => r.PriceWithDiscount <= MaxPrice).ToList();
+                        products = products.Where(r => r.PriceWithDiscount <= MaxPrice.Value).ToList();
                     }
                 }
                 if (!string.IsNullOrEmpty(Filter))

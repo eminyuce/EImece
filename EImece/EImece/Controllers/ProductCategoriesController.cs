@@ -9,6 +9,17 @@ using NLog;
 using System;
 using System.Net;
 using System.Web.Mvc;
+using System.Linq;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
+using Resources;
+using EImece.Domain;
+using EImece.Domain.Helpers.HtmlHelpers;
+using EImece.Domain.Models;
+using EImece.Domain.Models.Enums;
+using System.Collections.Generic;
 
 namespace EImece.Controllers
 {
@@ -27,7 +38,7 @@ namespace EImece.Controllers
         }
 
         [Route("category/{id}")]
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        //[CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
             try
@@ -48,13 +59,25 @@ namespace EImece.Controllers
                 {
                     productCategory.MinPrice = minPrice;
                 }
+                else
+                {
+                    productCategory.MinPrice = null;
+                }
                 if (maxPrice > 0)
                 {
                     productCategory.MaxPrice = maxPrice;
                 }
+                else
+                {
+                    productCategory.MaxPrice = null;
+                }
                 productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
 
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
+
+                List<Product> productsList = productCategory.ProductCategory.Products.ToList();
+                productsList.AddRange(productCategory.CategoryChildrenProducts);
+                productCategory.AllProducts = productsList;
                 return View(productCategory);
             }
             catch (Exception ex)
