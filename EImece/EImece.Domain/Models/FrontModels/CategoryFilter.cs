@@ -25,9 +25,7 @@ namespace EImece.Domain.Models.FrontModels
             if (SelectedFilterTypes.IsEmpty())
                 return "";
 
-           // var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             var filters = SelectedFilterTypes.Where(r => !r.CategoryFilterId.Equals(this.CategoryFilterId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-
 
             var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
             var requestContext = HttpContext.Current.Request.RequestContext;
@@ -35,8 +33,6 @@ namespace EImece.Domain.Models.FrontModels
             routeValues.Add("filtreler", string.Join("-", filters.Select(r => r.CategoryFilterId)));
             var urlHelp = new UrlHelper(requestContext);
             return urlHelp.Action("Category", "ProductCategories", routeValues);
-
-            // return urlHelper.Action("Category", "ProductCategories", new { filtreler =  string.Join("-", filters.Select(r => r.CategoryFilterId))});
         }
 
         public override bool Equals(object obj)
