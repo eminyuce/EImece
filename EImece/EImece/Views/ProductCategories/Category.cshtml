@@ -94,7 +94,7 @@
                                 foreach (var selectedFilterType in Model.SelectedFilterTypes)
                                 {
 
-                                    <a href="@selectedFilterType.RemoveSelectedFilter(Model.SelectedFilterTypes)"
+                                    <a href="@selectedFilterType.RemoveSelectedFilter(Model.SelectedFilterTypes,products)"
                                        rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
                                         @string.Format("{0}: {1}", selectedFilterType.Parent.FilterTypeName.Text, selectedFilterType.name)
                                         <span class="badge badge-pill badge-light">X</span>
@@ -242,9 +242,9 @@
 
 }
 <input type="hidden" id="noUrlFilter" value="@Url.Action("Category", "ProductCategories",new { id=Model.SeoId })" />
-<input type="hidden" id="urlFilter" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler" })" />
-<input type="hidden" id="urlFilterMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { filtreler = "js-filtreler", minPrice = "js-min", maxPrice = "js-max" })" />
-<input type="hidden" id="urlMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { minPrice = "js-min", maxPrice = "js-max" })" />
+<input type="hidden" id="urlFilter" value="@Url.Action("Category", "ProductCategories", new { id=Model.SeoId, filtreler = "js-filtreler" })" />
+<input type="hidden" id="urlFilterMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { id=Model.SeoId,filtreler = "js-filtreler", minPrice = "js-min", maxPrice = "js-max" })" />
+<input type="hidden" id="urlMinMaxPage" value="@Url.Action("Category", "ProductCategories", new { id=Model.SeoId, minPrice = "js-min", maxPrice = "js-max" })" />
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
