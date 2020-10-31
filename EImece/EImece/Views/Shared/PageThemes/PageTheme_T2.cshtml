@@ -19,76 +19,60 @@
     var imgTag = menu.GetCroppedImageTag(Width, Height);
 }
 
-<section class="titlebar margin-bottom-20">
-
+<div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
-        <div class="sixteen columns">
-            <h2>
-                @menu.Name
-            </h2>
-
-            <nav id="breadcrumbs">
-
-                <ul>
-                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
-                    {
-                        <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
-                    }
-                    <li>@Model.Menu.Name</li>
-                </ul>
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        @menu.Name
+                    </li>
+                </ol>
             </nav>
         </div>
+        <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
     </div>
-</section>
-
-<div class="container potrfolio-container">
-    <div class="sixteen columns">
-        @if (menuTags.IsNotEmpty())
-        {
-
-            <div id="filters" class="filters-dropdown headline">
-                <span></span>
-                <ul class="option-set" data-option-key="filter">
-                    <li><a href="#filter" class="selected" data-filter="*">@Resource.All</a></li>
-                    @foreach (var t in menuTags)
-                    {
-                        <li><a href="#filter" data-filter=".@GeneralHelper.GetUrlSeoString(t.Name)">@t.Name</a></li>
-                    }
-                </ul>
-            </div>
-
-        }
-    </div>
-    <div class="clearfix"></div>
 </div>
-<!-- Page Content -->
-<div class="container">
 
-    <!-- Jumbotron Header -->
-    <header class="jumbotron hero-spacer">
-        @Html.Raw(imgTag)
-    </header>
-
-    <hr>
-
-    <!-- Title -->
+<div class="container pb-5 mb-4">
     <div class="row">
-        <div class="col-lg-12">
-            <p>
-                @Html.Raw(menu.Description)
-            </p>
+        <div class="col-lg-3">
+            @Html.Raw(menu.GetCroppedImageTag(300, 0))
+        </div>
+        <div class="col-lg-9">
+            <!-- Toolbar-->
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                        <div class="button-group tabs">
+                            @Html.Raw(menu.Description)
+                        </div>
+                    </div>
+                </div>
+                @if (files.IsNotEmpty())
+                {
+                    <div class="d-flex flex-wrap">
+                        <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                            <div class="button-group tabs">
+                                <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+                                    @for (int i = 0; i < files.Count; i++)
+                                    {
+                                        var f = files[i].FileStorage;
+                                        @Html.DisplayFor(modelItem => f, "FileStorage")
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-    @if (files.IsNotEmpty())
-    {
-        <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
-            @for (int i = 0; i < files.Count; i++)
-            {
-                var f = files[i].FileStorage;
-                @Html.DisplayFor(modelItem => f, "FileStorage")
-            }
-        </div>
-    }
-
-
 </div>
+
