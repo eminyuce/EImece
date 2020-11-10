@@ -22,14 +22,16 @@
             @foreach (var p in productCategories)
             {
                 var productCategory = p.ProductCategory;
-                if (p.Childrens.Any())
+                if (p.Childrens.IsNotEmpty())
                 {
                     <li class="@String.Format("has-children")">
-                        <a id="@string.Format("productCategory{0}",productCategory.Id)" href="@productCategory.DetailPageUrl">
+                        <a  data-toggle="collapse" class="collapsed"
+                           id="@string.Format("productCategory{0}",productCategory.Id)"
+                           href="@string.Format("#shopCategories{0}",productCategory.Id)">
                             <i class="widget-categories-indicator" data-feather="chevron-down"></i>
                             @badgeProductNumber(p)
                         </a>
-                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", p.Childrens)
+                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", p)
                     </li>
 
                 }
