@@ -1546,7 +1546,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ürünleri Tasi.
+        ///   Looks up a localized string similar to Ürünleri Bir Kategoriden Başka Kategoriye Taşımak.
         /// </summary>
         public static string MoveProductsInTrees {
             get {
