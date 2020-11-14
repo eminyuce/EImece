@@ -1,6 +1,9 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using NLog;
 using Resources;
 using System;
@@ -26,6 +29,59 @@ namespace EImece.Areas.Admin.Controllers
             var productCategories = ProductCategoryService.GetAdminProductCategories(search, CurrentLanguage);
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
+        }
+        [HttpGet]
+        public ActionResult MoveProductCategory()
+        {
+            ViewBag.ProductCategoryDropDownList= GetProductCategoryTreeDropDownList();
+            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MoveProductCategory(MoveProductCategory moveProductCategory)
+        {
+            if (moveProductCategory == null)
+            {
+                return HttpNotFound();
+            }
+            if (moveProductCategory.FirstCategoryId > 0 && moveProductCategory.SecondCategoryId > 0)
+            {
+                var firstCategoryId = ProductCategoryService.GetBaseContent(moveProductCategory.FirstCategoryId);
+                var secondCategory = ProductCategoryService.GetBaseContent(moveProductCategory.SecondCategoryId);
+                secondCategory.ParentId = firstCategoryId.Id;
+                ProductCategoryService.SaveOrEditEntity(secondCategory);
+            }
+            else if (moveProductCategory.SecondCategoryId > 0)
+            {
+                var secondCategory = ProductCategoryService.GetBaseContent(moveProductCategory.SecondCategoryId);
+                secondCategory.ParentId = 0;
+                ProductCategoryService.SaveOrEditEntity(secondCategory);
+            }
+            return RedirectToAction("MoveProductCategory");
+        }
+        private List<SelectListItem> GetProductCategoryTreeDropDownList()
+        {
+            var resultListItem = new List<SelectListItem>();
+            resultListItem.Add(new SelectListItem() { Text = AdminResource.SelectCategory, Value = "0" });
+            foreach (var item in ProductCategoryService.BuildTree(null, CurrentLanguage))
+            {
+                resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.ProductCategory.Id.ToStr() });
+                GetProductCategoryChildrenTreeDropDownList(resultListItem, item);
+            }
+
+            return resultListItem;
+        }
+        private void GetProductCategoryChildrenTreeDropDownList(List<SelectListItem> resultListItem,  ProductCategoryTreeModel productCategoryTreeModel)
+        {
+            if (productCategoryTreeModel.Childrens.IsNotEmpty())
+            {
+                foreach (var item in productCategoryTreeModel.Childrens)
+                {
+                    resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.ProductCategory.Id.ToStr() });
+                    GetProductCategoryChildrenTreeDropDownList(resultListItem, item);
+                }
+            }
         }
 
         private List<SelectListItem> GetTemplatesDropDown()
@@ -68,7 +124,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase postedImage = null)
+        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -91,7 +147,10 @@ namespace EImece.Areas.Admin.Controllers
                     productCategory.Lang = CurrentLanguage;
                     ProductCategoryService.SaveOrEditEntity(productCategory);
 
-                    return RedirectToAction("Index");
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return ReturnTempUrl("Index");
+                    }
                 }
             }
             catch (Exception ex)
@@ -102,6 +161,10 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
             return View(productCategory);
         }

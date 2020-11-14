@@ -990,6 +990,7 @@
     <Content Include="Areas\Customers\Views\Home\Faq.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\SystemSettings.cshtml" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="Areas\Admin\Views\ProductCategories\MoveProductCategory.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />

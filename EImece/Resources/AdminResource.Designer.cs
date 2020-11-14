@@ -862,6 +862,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ana Urun Kategorisi.
+        /// </summary>
+        public static string FirstCategoryId {
+            get {
+                return ResourceManager.GetString("FirstCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string FirstName {
@@ -1524,6 +1533,15 @@ namespace Resources {
         public static string MetaKeywords {
             get {
                 return ResourceManager.GetString("MetaKeywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Kategorileri Başka Kategoriye Taşımak.
+        /// </summary>
+        public static string MoveProductCategory {
+            get {
+                return ResourceManager.GetString("MoveProductCategory", resourceCulture);
             }
         }
         
@@ -2217,6 +2235,15 @@ namespace Resources {
         public static string SearchResultsText {
             get {
                 return ResourceManager.GetString("SearchResultsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alt Urun Kategorisi.
+        /// </summary>
+        public static string SecondCategoryId {
+            get {
+                return ResourceManager.GetString("SecondCategoryId", resourceCulture);
             }
         }
         

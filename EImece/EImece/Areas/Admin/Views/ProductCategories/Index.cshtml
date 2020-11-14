@@ -32,7 +32,7 @@
 
 <h2>@AdminResource.ProductCategory</h2>
 <hr class="adminLine" />
-
+@Html.ActionLink(AdminResource.MoveProductCategory, "MoveProductCategory")
 <div class="row" style="padding:20px;">
 
     <div class="col-md-2">
@@ -71,9 +71,9 @@
                       .Sanitized(false)
                       .SetWidth(30)
                       .RenderValueAs(d =>
-            @<b>
-                @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
-            </b>);
+                @<b>
+                    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
+                </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -82,9 +82,9 @@ columns.Add()
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d =>
-            @<b>
-                @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
-            </b>
+                @<b>
+                    @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
+                </b>
 );
 }
 
@@ -131,16 +131,16 @@ columns.Add(r => r.ImageState)
 </div>
 @helper GridImageActiveColumn(ProductCategory o, String controllerName)
 {
-<ul>
-    <li>
-        @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
-                                                o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
-    </li>
-    <li>
-        @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
-                                                o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
-    </li>
-</ul>
+    <ul>
+        <li>
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
+                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
+        </li>
+        <li>
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
+                                                    o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
+        </li>
+    </ul>
 
 }
 
@@ -149,25 +149,25 @@ columns.Add(r => r.ImageState)
     Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
     if (IsMainImageExists)
     {
-<ul>
-    <li>
-        @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
-    </li>
-    <li>
-        @Html.Partial("pGridImageMainPage", o)
-    </li>
-</ul>
+        <ul>
+            <li>
+                @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                        o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
+            </li>
+            <li>
+                @Html.Partial("pGridImageMainPage", o)
+            </li>
+        </ul>
     }
     else
     {
-<ul>
-    <li>
-        <b style="font-size:0.8em;">
-            No Image
-        </b>
-    </li>
-</ul>
+        <ul>
+            <li>
+                <b style="font-size:0.8em;">
+                    No Image
+                </b>
+            </li>
+        </ul>
 
     }
 
@@ -177,14 +177,14 @@ columns.Add(r => r.ImageState)
 {
     if (productCategoryLeaves.Any(r => r.Id == d.Id))
     {
-@Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-    { "ItemId", d.Id },
-    {"controllerName",controllerName},
-    { "DeleteIcon", "gridBtn btn-sm btn btn-danger  glyphicon  glyphicon-remove-circle" },
-    { "ItemDescription", d.Name } });
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+            { "ItemId", d.Id },
+            {"controllerName",controllerName},
+            { "DeleteIcon", "gridBtn btn-sm btn btn-danger  glyphicon  glyphicon-remove-circle" },
+            { "ItemDescription", d.Name } });
     }
     else
     {
-@String.Format("No Delete")
+        @String.Format("No Delete")
     }
 }

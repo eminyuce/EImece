@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using System.Collections.Generic;
+using System.Text;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -33,6 +34,34 @@ namespace EImece.Domain.Models.FrontModels
                     return string.Format("{0}", ProductCategory.Name);
                 }
             }
+        }
+        public string TextWithArrow
+        {
+            get
+            {
+                if (ProductCount > 0)
+                {
+                    return string.Format("{2}{0} ({1})", ProductCategory.Name, ProductCount, ProduceArrow());
+                }
+                else
+                {
+                    return string.Format("{1}{0}", ProductCategory.Name, ProduceArrow());
+                }
+            }
+        }
+        public string ProduceArrow()
+        {
+            if(TreeLevel > 0)
+            {
+                var builder = new StringBuilder();
+                for (int i = 0; i < TreeLevel; i++)
+                {
+                    builder.Append("---");
+                }
+                builder.Append("> ");
+                return builder.ToString();
+            }
+            return string.Empty;
         }
     }
 }

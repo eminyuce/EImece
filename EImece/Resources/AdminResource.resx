@@ -1059,4 +1059,13 @@
   <data name="ContactForm" xml:space="preserve">
     <value>İletişim Formu</value>
   </data>
+  <data name="MoveProductCategory" xml:space="preserve">
+    <value>Ürün Kategorileri Başka Kategoriye Taşımak</value>
+  </data>
+  <data name="FirstCategoryId" xml:space="preserve">
+    <value>Ana Urun Kategorisi</value>
+  </data>
+  <data name="SecondCategoryId" xml:space="preserve">
+    <value>Alt Urun Kategorisi</value>
+  </data>
 </root>
