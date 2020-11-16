@@ -74,7 +74,6 @@ namespace EImece.Tests.Controllers
         {
 
             var mail = new MailMessage();
-            var SmtpServer2 = new SmtpClient("mail.websiteniz.com"); 
             var SmtpServer = new SmtpClient("srvm04.turhost.com");
             mail.From = new MailAddress("test@websiteniz.com");
             mail.To.Add("prisoner.ever@gmail.com");
@@ -82,7 +81,7 @@ namespace EImece.Tests.Controllers
             mail.Subject = "Test Mail";
             mail.Body = "This is for testing SMTP mail";
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "F9vjhD6a");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "x2V8KkMx");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
         }

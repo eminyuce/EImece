@@ -45,16 +45,18 @@ namespace EImece.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(webSiteCompanyEmailAddress))
             {
                 ModelState.AddModelError("", AdminResource.WebSiteCompanyEmailAddressRequired);
-                return View("Index", SettingService.GetSystemSettingModel());
+                return View("SystemSettings", SettingService.GetSystemSettingModel());
             }
             var emailAccount = SettingService.GetEmailAccount();
             var info = $"From-->{webSiteCompanyEmailAddress} {companyName} To: {emailAccount.ToString()}";
             try
             {
+                string fromAddress = string.IsNullOrEmpty(emailAccount.Email) ? emailAccount.Username : emailAccount.Email;
+              
                 EmailSender.SendEmail(emailAccount,
                   subject:"Test Subject",
                   body:"Test Email Body",
-                  fromAddress: emailAccount.Email,
+                  fromAddress: fromAddress,
                   fromName: emailAccount.Username,
                   toAddress: webSiteCompanyEmailAddress,
                   toName: companyName);
@@ -67,7 +69,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("",   ex.ToFormattedString());
             }
 
-            return View("Index",SettingService.GetSystemSettingModel());
+            return View("SystemSettings", SettingService.GetSystemSettingModel());
         }
     }
 }

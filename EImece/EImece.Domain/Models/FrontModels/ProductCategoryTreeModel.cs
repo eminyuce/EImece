@@ -51,17 +51,17 @@ namespace EImece.Domain.Models.FrontModels
         }
         public string ProduceArrow()
         {
-            if(TreeLevel > 0)
+            var builder = new StringBuilder();
+            int count = TreeLevel - 1;
+            if (count > 0)
             {
-                var builder = new StringBuilder();
-                for (int i = 0; i < TreeLevel; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    builder.Append("---");
+                    builder.Append(" — ");
                 }
                 builder.Append("> ");
-                return builder.ToString();
-            }
-            return string.Empty;
+            }  
+            return builder.ToString();
         }
     }
 }

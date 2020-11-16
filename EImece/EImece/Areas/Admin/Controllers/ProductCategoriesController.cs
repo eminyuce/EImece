@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
         private List<SelectListItem> GetProductCategoryTreeDropDownList()
         {
             var resultListItem = new List<SelectListItem>();
-            resultListItem.Add(new SelectListItem() { Text = AdminResource.SelectCategory, Value = "0" });
+            resultListItem.Add(new SelectListItem() { Text = AdminResource.MakeItRootCategory, Value = "0" });
             foreach (var item in ProductCategoryService.BuildTree(null, CurrentLanguage))
             {
                 resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.ProductCategory.Id.ToStr() });
