@@ -29,17 +29,15 @@
 
 <h2>@AdminResource.Menu</h2>
 <hr class="adminLine" />
-<div class="row" style="padding:20px;">
-
-    <div class="col-md-2">
-
+<div class="row">
+    <div class="col-md-3">
         @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
                            {"UrlPattern","/admin/menus/saveoredit/"}
                          ,{"IsExcelButtonEnabled",true}})
 
         <span id="treeClickContainer"></span>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
