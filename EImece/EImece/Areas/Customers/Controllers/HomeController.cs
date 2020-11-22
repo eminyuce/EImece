@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -7,8 +8,8 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity;
 using Ninject;
 using NLog;
 using Resources;
@@ -39,7 +40,8 @@ namespace EImece.Areas.Customers.Controllers
 
         [Inject]
         public ISubscriberService SubsciberService { get; set; }
-
+        [Inject]
+        public ISettingService SettingService { get; set; }
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -70,11 +72,20 @@ namespace EImece.Areas.Customers.Controllers
             user = UserManager.FindByName(User.Identity.GetUserName());
             customer = CustomerService.GetUserId(user.Id);
             customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
-            if(customer.Gender == 0)
+            if (customer.Gender == 0)
             {
                 customer.Gender = (int)GenderType.Man;
             }
             return customer;
+        }
+
+        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
+        {
+            var item = new SettingLayoutViewModel();
+            item.isMobilePage = isMobilePage;
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyEmailAddress);
+            return PartialView("_WebSiteAddressInfo", item);
         }
 
         [HttpPost]
@@ -87,11 +98,10 @@ namespace EImece.Areas.Customers.Controllers
 
             if (string.IsNullOrEmpty(customer.IdentityNumber))
             {
-                ModelState.AddModelError("", string.Format(AdminResource.MandatoryField, AdminResource.IdentityNumber)+" "+ Resource.WhyNeedIdentityNumber);
+                ModelState.AddModelError("", string.Format(AdminResource.MandatoryField, AdminResource.IdentityNumber) + " " + Resource.WhyNeedIdentityNumber);
                 ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
                 return View(customer);
             }
-
 
             var user = UserManager.FindByName(User.Identity.GetUserName());
             if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
@@ -126,12 +136,14 @@ namespace EImece.Areas.Customers.Controllers
             RazorEngineHelper.SendMessageToSeller(contact);
             return RedirectToAction("SendMessageToSeller");
         }
+
         public ActionResult Faq()
         {
             var customer = GetCustomer();
             var faqs = FaqService.GetActiveBaseEntities(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
+
         public ActionResult CustomerOrders(string search = "")
         {
             var customer = GetCustomer();

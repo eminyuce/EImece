@@ -579,7 +579,7 @@
     <value>Müşteri</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
-    <value>Telefon numarası</value>
+    <value>Cep Tel</value>
   </data>
   <data name="IdentityNumber" xml:space="preserve">
     <value>TC Kimlik Numarası</value>
@@ -1080,9 +1080,6 @@ Erişim Linki</value>
   <data name="MyOrder" xml:space="preserve">
     <value>Siparişlerim</value>
   </data>
-  <data name="Name1" xml:space="preserve">
-    <value>İsim</value>
-  </data>
   <data name="NamePropertyErrorMessage" xml:space="preserve">
     <value>İsim 500 karakterden uzun olamaz</value>
   </data>
@@ -1110,9 +1107,6 @@ Erişim Linki</value>
   <data name="NoSearchResultsText" xml:space="preserve">
     <value>Sonuç bulunamadı.</value>
   </data>
-  <data name="Note1" xml:space="preserve">
-    <value>Not</value>
-  </data>
   <data name="NotMatchesPassword" xml:space="preserve">
     <value>Yeni şifre ve onay şifresi eşleşmiyor.</value>
   </data>
@@ -1130,9 +1124,6 @@ Erişim Linki</value>
   </data>
   <data name="OrderDetails" xml:space="preserve">
     <value>Sipariş detayları</value>
-  </data>
-  <data name="OrderNumber1" xml:space="preserve">
-    <value>Sipariş numarası</value>
   </data>
   <data name="OrdersBelongCustomer" xml:space="preserve">
     <value>ait olan siparişler</value>
@@ -1167,9 +1158,6 @@ Erişim Linki</value>
   <data name="PaymentStatus" xml:space="preserve">
     <value>Ödeme Durumu</value>
   </data>
-  <data name="PhoneNumber1" xml:space="preserve">
-    <value>Cep Tel</value>
-  </data>
   <data name="PieceOfProductSold" xml:space="preserve">
     <value>adet ürün satıldı</value>
   </data>
@@ -1185,23 +1173,14 @@ Erişim Linki</value>
   <data name="Position" xml:space="preserve">
     <value>Sırası</value>
   </data>
-  <data name="Price1" xml:space="preserve">
-    <value>Fiyat</value>
-  </data>
   <data name="PriceErrorMessage" xml:space="preserve">
     <value>Fiyat alani Zorunlu</value>
-  </data>
-  <data name="Privacypolicy1" xml:space="preserve">
-    <value>Gizlilik Politikası</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Ürün</value>
   </data>
   <data name="ProductCategories" xml:space="preserve">
     <value>Ürün Kategorileri</value>
-  </data>
-  <data name="ProductCategory1" xml:space="preserve">
-    <value>Ürün Kategorisi</value>
   </data>
   <data name="ProductCategoryDiscountPercantage" xml:space="preserve">
     <value>Ürün Kategorisi İndirim Yüzdesi</value>
@@ -1245,20 +1224,11 @@ Erişim Linki</value>
   <data name="ProductSpecTemplateItemList" xml:space="preserve">
     <value>Şablonlarin Deger Listesi</value>
   </data>
-  <data name="Quantity1" xml:space="preserve">
-    <value>Miktar</value>
-  </data>
   <data name="Question" xml:space="preserve">
     <value>Soru</value>
   </data>
-  <data name="Rating1" xml:space="preserve">
-    <value>Değerlendirme</value>
-  </data>
   <data name="Refresh" xml:space="preserve">
     <value>Yenile</value>
-  </data>
-  <data name="Register1" xml:space="preserve">
-    <value>Kayıt ol</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Beni hatırla?</value>
@@ -1274,9 +1244,6 @@ Erişim Linki</value>
   </data>
   <data name="RequestIsNotValid" xml:space="preserve">
     <value>İstek Geçerli Değil</value>
-  </data>
-  <data name="Review1" xml:space="preserve">
-    <value>Yorum</value>
   </data>
   <data name="ReviewSubject" xml:space="preserve">
     <value>Yorum Başlık</value>
@@ -1425,9 +1392,6 @@ Erişim Linki</value>
   <data name="TagName" xml:space="preserve">
     <value>Etiket İsim</value>
   </data>
-  <data name="Tags1" xml:space="preserve">
-    <value>Etiketler</value>
-  </data>
   <data name="TemplateId" xml:space="preserve">
     <value>Şablon adı</value>
   </data>
@@ -1451,9 +1415,6 @@ Erişim Linki</value>
   </data>
   <data name="TwitterWebSiteLink" xml:space="preserve">
     <value>Twitter Link</value>
-  </data>
-  <data name="UnitPrice1" xml:space="preserve">
-    <value>Birim fiyat</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Güncelle</value>

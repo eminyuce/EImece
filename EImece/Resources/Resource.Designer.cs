@@ -2132,15 +2132,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to İsim.
-        /// </summary>
-        public static string Name1 {
-            get {
-                return ResourceManager.GetString("Name1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to İsim 500 karakterden uzun olamaz.
         /// </summary>
         public static string NamePropertyErrorMessage {
@@ -2307,15 +2298,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not.
-        /// </summary>
-        public static string Note1 {
-            get {
-                return ResourceManager.GetString("Note1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Yeni şifre ve onay şifresi eşleşmiyor..
         /// </summary>
         public static string NotMatchesPassword {
@@ -2393,15 +2375,6 @@ namespace Resources {
         public static string OrderNumber {
             get {
                 return ResourceManager.GetString("OrderNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sipariş numarası.
-        /// </summary>
-        public static string OrderNumber1 {
-            get {
-                return ResourceManager.GetString("OrderNumber1", resourceCulture);
             }
         }
         
@@ -2538,20 +2511,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Telefon numarası.
+        ///   Looks up a localized string similar to Cep Tel.
         /// </summary>
         public static string PhoneNumber {
             get {
                 return ResourceManager.GetString("PhoneNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cep Tel.
-        /// </summary>
-        public static string PhoneNumber1 {
-            get {
-                return ResourceManager.GetString("PhoneNumber1", resourceCulture);
             }
         }
         
@@ -2628,15 +2592,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fiyat.
-        /// </summary>
-        public static string Price1 {
-            get {
-                return ResourceManager.GetString("Price1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Fiyat alani Zorunlu.
         /// </summary>
         public static string PriceErrorMessage {
@@ -2651,15 +2606,6 @@ namespace Resources {
         public static string PrivacyPolicy {
             get {
                 return ResourceManager.GetString("PrivacyPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gizlilik Politikası.
-        /// </summary>
-        public static string Privacypolicy1 {
-            get {
-                return ResourceManager.GetString("Privacypolicy1", resourceCulture);
             }
         }
         
@@ -2696,15 +2642,6 @@ namespace Resources {
         public static string ProductCategory {
             get {
                 return ResourceManager.GetString("ProductCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ürün Kategorisi.
-        /// </summary>
-        public static string ProductCategory1 {
-            get {
-                return ResourceManager.GetString("ProductCategory1", resourceCulture);
             }
         }
         
@@ -2898,15 +2835,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Miktar.
-        /// </summary>
-        public static string Quantity1 {
-            get {
-                return ResourceManager.GetString("Quantity1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Soru.
         /// </summary>
         public static string Question {
@@ -2938,15 +2866,6 @@ namespace Resources {
         public static string Rating {
             get {
                 return ResourceManager.GetString("Rating", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Değerlendirme.
-        /// </summary>
-        public static string Rating1 {
-            get {
-                return ResourceManager.GetString("Rating1", resourceCulture);
             }
         }
         
@@ -3015,15 +2934,6 @@ namespace Resources {
         public static string Register {
             get {
                 return ResourceManager.GetString("Register", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kayıt ol.
-        /// </summary>
-        public static string Register1 {
-            get {
-                return ResourceManager.GetString("Register1", resourceCulture);
             }
         }
         
@@ -3132,15 +3042,6 @@ namespace Resources {
         public static string Review {
             get {
                 return ResourceManager.GetString("Review", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yorum.
-        /// </summary>
-        public static string Review1 {
-            get {
-                return ResourceManager.GetString("Review1", resourceCulture);
             }
         }
         
@@ -3856,15 +3757,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Etiketler.
-        /// </summary>
-        public static string Tags1 {
-            get {
-                return ResourceManager.GetString("Tags1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Teknik Resimler.
         /// </summary>
         public static string TechnicalPictures {
@@ -4019,15 +3911,6 @@ namespace Resources {
         public static string UnitPrice {
             get {
                 return ResourceManager.GetString("UnitPrice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Birim fiyat.
-        /// </summary>
-        public static string UnitPrice1 {
-            get {
-                return ResourceManager.GetString("UnitPrice1", resourceCulture);
             }
         }
         

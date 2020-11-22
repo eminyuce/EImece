@@ -753,9 +753,6 @@
   <data name="Update" xml:space="preserve">
     <value>Güncelle</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>Kayıt ol</value>
-  </data>
   <data name="EmailSubject" xml:space="preserve">
     <value>E-posta Başlık</value>
   </data>
@@ -1063,9 +1060,9 @@
     <value>Ürün Kategorileri Başka Kategoriye Taşımak</value>
   </data>
   <data name="FirstCategoryId" xml:space="preserve">
-    <value>Ana Urun Kategorisi</value>
+    <value>Taşımak İstenilen Ürün Kategorisi</value>
   </data>
   <data name="SecondCategoryId" xml:space="preserve">
-    <value>Alt Urun Kategorisi</value>
+    <value>Gideceği Yeni Kategori</value>
   </data>
 </root>

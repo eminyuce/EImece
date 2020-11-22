@@ -862,7 +862,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ana Urun Kategorisi.
+        ///   Looks up a localized string similar to Taşımak İstenilen Ürün Kategorisi.
         /// </summary>
         public static string FirstCategoryId {
             get {
@@ -2239,7 +2239,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alt Urun Kategorisi.
+        ///   Looks up a localized string similar to Gideceği Yeni Kategori.
         /// </summary>
         public static string SecondCategoryId {
             get {
@@ -2541,15 +2541,6 @@ namespace Resources {
         public static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kayıt ol.
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

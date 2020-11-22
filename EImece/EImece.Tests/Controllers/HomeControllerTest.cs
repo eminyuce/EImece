@@ -80,7 +80,7 @@ namespace EImece.Tests.Controllers
 
             mail.Subject = "Test Mail";
             mail.Body = "This is for testing SMTP mail";
-            SmtpServer.Port = 587;
+            SmtpServer.Port = 465;
             SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "x2V8KkMx");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
