@@ -22,9 +22,9 @@
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
 
-<div class="row" style="padding:20px;">
+<div class="row">
 
-    <div class="col-md-2">
+    <div class="col-md-3">
         @if (ProductCategoryTree.IsNotEmpty())
         {
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
@@ -32,7 +32,7 @@
              ,{"IsExcelButtonEnabled",true}})
         }
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
 
         @using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

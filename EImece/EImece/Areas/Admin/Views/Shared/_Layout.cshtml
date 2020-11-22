@@ -25,13 +25,13 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")   
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/adminScripts")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/admincss")
     @RenderSection("scripts", required: false)
     @Styles.Render("~/Content/themes/base/css")
-
+    @RenderSection("Styles", false)
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 

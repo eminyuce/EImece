@@ -18,9 +18,9 @@
 <h2>@AdminResource.ProductCategory</h2>
 <hr class="adminLine" />
 
-<div style="padding:20px;">
+<div class="row">
 
-    <div class="col-md-2">
+    <div class="col-md-3">
         @if (ProductCategoryTree != null)
         {
             @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
@@ -29,7 +29,7 @@
 
         }
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
         <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.ProductSameSelectionErrorMessage" />
         @using (Html.BeginForm("SaveOrEdit", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -55,7 +55,7 @@
                             <li class="Tools">
                                 <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:150px;" class="btn btn-success" />
                             </li>
-                            <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'"  value="@AdminResource.BackToList" style="width:150px;" class="btn btn-primary" /></li>
+                            <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:150px;" class="btn btn-primary" /></li>
                         </ul>
                     </div>
                     <div class="panel-body">

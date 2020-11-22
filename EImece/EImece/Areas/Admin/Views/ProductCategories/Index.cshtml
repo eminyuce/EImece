@@ -29,13 +29,13 @@
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
 
 }
-
+ 
 <h2>@AdminResource.ProductCategory</h2>
 <hr class="adminLine" />
 
-<div class="row" style="padding:20px;">
+<div class="row">
 
-    <div class="col-md-2">
+    <div class="col-md-3">
 
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                     {"UrlPattern","/admin/productcategories/saveoredit/"}
@@ -43,7 +43,7 @@
 
         <span id="treeClickContainer"></span>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -71,9 +71,9 @@
                       .Sanitized(false)
                       .SetWidth(30)
                       .RenderValueAs(d =>
-                    @<b>
-                        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
-                    </b>);
+                        @<b>
+                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm   glyphicon glyphicon-pencil glyphicon-white   " })
+                        </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -82,9 +82,9 @@ columns.Add()
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d =>
-                    @<b>
-                        @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
-                    </b>
+                        @<b>
+                            @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
+                        </b>
 );
 }
 
