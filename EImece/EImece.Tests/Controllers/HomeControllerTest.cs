@@ -22,6 +22,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -74,15 +75,15 @@ namespace EImece.Tests.Controllers
         {
 
             var mail = new MailMessage();
-            var SmtpServer = new SmtpClient("srvm04.turhost.com");
+            var SmtpServer = new SmtpClient("srvm02.turhost.com");
             mail.From = new MailAddress("test@websiteniz.com");
-            mail.To.Add("prisoner.ever@gmail.com");
-
+            mail.To.Add("test@websiteniz.com");
+             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             mail.Subject = "Test Mail";
             mail.Body = "This is for testing SMTP mail";
-            SmtpServer.Port = 465;
+            SmtpServer.Port = 587;
             SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "x2V8KkMx");
-            SmtpServer.EnableSsl = true;
+            SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
         }
 

@@ -250,10 +250,14 @@ namespace EImece.Domain.Services
             emailAccount.Password = GetSettingByKey(Constants.AdminEmailPassword);
             emailAccount.EnableSsl = GetSettingByKey(Constants.AdminEmailEnableSsl).ToBool();
             emailAccount.Port = GetSettingByKey(Constants.AdminEmailPort).ToInt();
-            emailAccount.DisplayName = GetSettingByKey(Constants.AdminEmailDisplayName);
-            emailAccount.Email = GetSettingByKey(Constants.AdminEmail);
             emailAccount.UseDefaultCredentials = GetSettingByKey(Constants.AdminEmailUseDefaultCredentials).ToBool();
+            emailAccount.Email = GetSettingByKey(Constants.AdminEmail);
             emailAccount.Username = GetSettingByKey(Constants.AdminUserName).ToStr();
+            emailAccount.Email = String.IsNullOrEmpty(emailAccount.Email) ? emailAccount.Username : emailAccount.Email;
+
+            emailAccount.DisplayName = GetSettingByKey(Constants.AdminEmailDisplayName);
+            emailAccount.DisplayName = String.IsNullOrEmpty(emailAccount.DisplayName) ? emailAccount.Username : emailAccount.DisplayName;
+         
             return emailAccount;
         }
 

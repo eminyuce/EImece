@@ -88,7 +88,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             message.Subject = subject;
             message.Body = body;
             message.IsBodyHtml = true;
-
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             //create  the file attachment for this e-mail message
             if (!String.IsNullOrEmpty(attachmentFilePath) &&
                 File.Exists(attachmentFilePath))
