@@ -1,20 +1,22 @@
 ﻿@model SettingLayoutViewModel
 @using EImece.Domain.Models.FrontModels;
 @{
-    var isPhone = !String.IsNullOrEmpty(Model.WebSiteCompanyPhoneAndLocation.SettingValue);
-    var isEnvelope = !String.IsNullOrEmpty(Model.WebSiteCompanyEmailAddress.SettingValue);
+    var webSiteCompanyPhoneAndLocation = Model.WebSiteCompanyPhoneAndLocation.SettingValue;
+    var webSiteCompanyEmailAddress = Model.WebSiteCompanyEmailAddress.SettingValue;
+    var isPhone = !String.IsNullOrEmpty(webSiteCompanyPhoneAndLocation);
+    var isEnvelope = !String.IsNullOrEmpty(webSiteCompanyEmailAddress);
 
 }
 @if (Model.isMobilePage)
 {
 
-    <a class="dropdown-item" href="tel:@Model.WebSiteCompanyPhoneAndLocation.SettingValue">
+    <a class="dropdown-item" href="tel:@webSiteCompanyPhoneAndLocation">
         <i class="mr-1" data-feather="phone" style="width: 13px; height: 13px;">
-        </i>@Model.WebSiteCompanyPhoneAndLocation.SettingValue
+        </i>@webSiteCompanyPhoneAndLocation
     </a>
-    <a class="dropdown-item" href="mailto:@Model.WebSiteCompanyEmailAddress.SettingValue">
+    <a class="dropdown-item" href="mailto:@webSiteCompanyEmailAddress">
         <i class="mr-1" data-feather="mail" style="width: 13px; height: 13px;">
-        </i>@Model.WebSiteCompanyEmailAddress.SettingValue
+        </i>@webSiteCompanyEmailAddress
     </a>
 }
 else if (isPhone || isEnvelope)
@@ -24,16 +26,17 @@ else if (isPhone || isEnvelope)
         @if (isPhone)
         {
             <li class="list-inline-item opacity-75 mr-1">
-                <i class="text-light mr-1" data-feather="phone" style="width: 13px; height: 13px;"></i>
-                <a class="text-light font-size-sm py-1 pl-0 pr-2" href="@string.Format("tel:{0}",Model.WebSiteCompanyPhoneAndLocation.SettingValue)">@Html.Raw(Model.WebSiteCompanyPhoneAndLocation.SettingValue)</a>
+                <i class="text-light mr-2" data-feather="phone" style="width: 13px; height: 13px;"></i>
+                <a class="text-light font-size-sm py-1 pl-0 pr-2" href="@string.Format("tel:{0}",webSiteCompanyPhoneAndLocation)">@Html.Raw(webSiteCompanyPhoneAndLocation)</a>
             </li>
         }
         @if (isEnvelope)
         {
             <li class="list-inline-item opacity-75 mr-1">
-                <i class="text-light mr-1" data-feather="mail" style="width: 13px; height: 13px;"></i>
-                <a class="text-light font-size-sm py-1 pl-0 pr-2" href="mailto:@Model.WebSiteCompanyEmailAddress.SettingValue">@Html.Raw(Model.WebSiteCompanyEmailAddress.SettingValue)</a>
+                <i class="text-light mr-2" data-feather="mail" style="width: 13px; height: 13px;"></i>
+                <a class="text-light font-size-sm py-1 pl-0 pr-2" href="mailto:@webSiteCompanyEmailAddress">@Html.Raw(webSiteCompanyEmailAddress)</a>
             </li>
         }
     </ul>
+ 
 }

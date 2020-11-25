@@ -28,7 +28,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SearchContent(String searchContent)
         {
-            String search = searchContent;
+            String search = searchContent.ToStr().Trim();
             var resultList = new List<BaseContent>();
             ViewBag.SearchKey = search;
             if (String.IsNullOrEmpty(search))
@@ -47,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.Contains(search);
             resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search, CurrentLanguage));
 
-            Expression<Func<Product, bool>> whereLambda2 = r => r.Name.Contains(search.Trim());
+            Expression<Func<Product, bool>> whereLambda2 = r => r.Name.Contains(search);
             resultList.AddRange(ProductService.SearchEntities(whereLambda2, search, CurrentLanguage));
 
             Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.Contains(search);
