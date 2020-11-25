@@ -241,9 +241,11 @@
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\HtmlRequestHelper.cs" />
+    <Compile Include="Models\AdminHelperModels\MoveMenuCategory.cs" />
     <Compile Include="Models\AdminHelperModels\MoveProductCategory.cs" />
     <Compile Include="Models\AdminModels\SystemSettingModel.cs" />
     <Compile Include="Models\Enums\IyzicoPaymentStatus.cs" />
+    <Compile Include="Models\FrontModels\MenuTreeModel.cs" />
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
     <Compile Include="AppConfig.cs" />

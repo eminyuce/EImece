@@ -30,7 +30,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="@Url.Action("Index","Home")">@Resources.Resource.HomePage</a>
                 </li>
-                    @CreateMenuTree(Model)
+                @CreateMenuTree(Model)
             </ul>
         </div>
     </div>
@@ -87,18 +87,20 @@
         }
     </ul>
 }
-@helper CreateMenuChildrenTree(Menu menu)
+@helper CreateMenuChildrenTree(MenuTreeModel menuTreeModel)
 {
-    if (menu.Childrens.IsNotEmpty())
+    var menu = menuTreeModel.Menu;
+    if (menuTreeModel.Childrens.IsNotEmpty())
     {
         <li class="dropdown @menu.IsPageActived">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">@menu.Name</a>
             <ul class="dropdown-menu">
-                @foreach (var menuChildren in menu.Childrens)
+                @foreach (var menuChildren in menuTreeModel.Childrens)
                 {
-                    var imgTag = menuChildren.GetCroppedImageTag(50, 50);
+                    var menuChild = menuChildren.Menu;
+                    var imgTag = menuChild.GetCroppedImageTag(50, 50);
                     <li>
-                        <a class="dropdown-item" href="@menuChildren.DetailPageLink">
+                        <a class="dropdown-item" href="@menuChild.DetailPageLink">
                             <i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">   @menuChildren.Name</span>
                         </a>
                     </li>

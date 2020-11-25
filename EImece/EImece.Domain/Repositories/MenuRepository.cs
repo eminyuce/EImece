@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,32 +12,46 @@ namespace EImece.Domain.Repositories
         public MenuRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-
-        private void GetTreeview(List<Menu> list, Menu current, ref List<Menu> returnList)
-        {
-            //get child of current item
-            var childs = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
-            current.Childrens = new List<Menu>();
-            current.Childrens.AddRange(childs);
-            foreach (var i in childs)
-            {
-                GetTreeview(list, i, ref returnList);
-            }
-        }
-
-        public List<Menu> BuildTree(bool? isActive, int language)
+        public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
             List<Menu> list = GetActiveBaseContents(isActive, language);
-            List<Menu> returnList = new List<Menu>();
+            var returnList = new List<MenuTreeModel>();
             //find top levels items
             var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
-            returnList.AddRange(topLevels);
+          
             foreach (var i in topLevels)
             {
-                GetTreeview(list, i, ref returnList);
+                var p = new MenuTreeModel();
+                p.Menu = i;
+                p.TreeLevel = 1;
+                GetTreeview(list, p, p.TreeLevel);
+                returnList.Add(p);
             }
             return returnList;
         }
+        private void GetTreeview(List<Menu> list, MenuTreeModel current,int level)
+        {
+            //get child of current item
+            var childs = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
+            if (childs.Any())
+            {
+                current.Childrens = new List<MenuTreeModel>();
+                level = level + 1;
+                var childs2 = childs.Select(r => new MenuTreeModel(r)).ToList();
+                current.Childrens.AddRange(childs2);
+                foreach (var i in childs)
+                {
+                    var p = new MenuTreeModel();
+                    p.Menu = i;
+                    p.Parent = current;
+                    p.TreeLevel = level;
+                    GetTreeview(list, p, level);
+                }
+            }
+            
+        }
+
+      
 
         public Menu GetMenuById(int menuId)
         {

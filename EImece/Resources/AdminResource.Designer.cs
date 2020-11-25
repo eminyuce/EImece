@@ -871,6 +871,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taşımak İstenilen Menu Kategorisi.
+        /// </summary>
+        public static string FirstMenuCategoryId {
+            get {
+                return ResourceManager.GetString("FirstMenuCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string FirstName {
@@ -1542,6 +1551,15 @@ namespace Resources {
         public static string MoveProductCategory {
             get {
                 return ResourceManager.GetString("MoveProductCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Kategorileri Başka Kategoriye Taşımak.
+        /// </summary>
+        public static string MoveProductMenu {
+            get {
+                return ResourceManager.GetString("MoveProductMenu", resourceCulture);
             }
         }
         
@@ -2244,6 +2262,15 @@ namespace Resources {
         public static string SecondCategoryId {
             get {
                 return ResourceManager.GetString("SecondCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gideceği Yeni Menu Kategori.
+        /// </summary>
+        public static string SecondMenuCategoryId {
+            get {
+                return ResourceManager.GetString("SecondMenuCategoryId", resourceCulture);
             }
         }
         

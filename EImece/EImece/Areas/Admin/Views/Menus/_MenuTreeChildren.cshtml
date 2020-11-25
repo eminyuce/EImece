@@ -2,7 +2,7 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
-@model List<Menu>
+@model List<MenuTreeModel>
 @{
     var productCategories = Model;
     String urlPattern = ViewData["UrlPattern"].ToStr();
@@ -15,33 +15,33 @@
     @foreach (var p in productCategories)
     {
         var productCategory = p;
-        if (p.Childrens.Any())
+        if (p.Childrens.IsNotEmpty())
         {
-    <li class="dropdown">
-        @if (String.IsNullOrEmpty(urlPattern))
-        {
-            <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
-        }
-        else
-        {
-            <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
-        }
+            <li class="dropdown">
+                @if (String.IsNullOrEmpty(urlPattern))
+                {
+                    <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
+                }
+                else
+                {
+                    <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
+                }
 
-        @Html.Partial("_MenuTreeChildren", p.Childrens, viewData)
-    </li>
+                @Html.Partial("_MenuTreeChildren", p.Childrens, viewData)
+            </li>
         }
         else
         {
-<li>
-    @if (String.IsNullOrEmpty(urlPattern))
-    {
-        <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
-    }
-    else
-    {
-        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
-    }
-</li>
+            <li>
+                @if (String.IsNullOrEmpty(urlPattern))
+                {
+                    <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
+                }
+                else
+                {
+                    <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
+                }
+            </li>
         }
 
     }

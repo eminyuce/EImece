@@ -3,7 +3,9 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using NLog;
 using Resources;
 using System;
@@ -32,7 +34,59 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
             return View(menus);
         }
+        [HttpGet]
+        public ActionResult MoveMenuCategory()
+        {
+            ViewBag.MenuCategoryDropDownList = GetMenuTreeDropDownList();
+            ViewBag.MenuCategoryTree = MenuService.BuildTree(null, CurrentLanguage);
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MoveMenuCategory(MoveMenuCategory moveMenuCategory)
+        {
+            if (moveMenuCategory == null)
+            {
+                return HttpNotFound();
+            }
+            if (moveMenuCategory.FirstCategoryId > 0 && moveMenuCategory.SecondCategoryId > 0)
+            {
+                var firstCategoryId = MenuService.GetBaseContent(moveMenuCategory.FirstCategoryId);
+                var secondCategory = MenuService.GetBaseContent(moveMenuCategory.SecondCategoryId);
+                secondCategory.ParentId = firstCategoryId.Id;
+                MenuService.SaveOrEditEntity(secondCategory);
+            }
+            else if (moveMenuCategory.SecondCategoryId > 0)
+            {
+                var secondCategory = MenuService.GetBaseContent(moveMenuCategory.SecondCategoryId);
+                secondCategory.ParentId = 0;
+                MenuService.SaveOrEditEntity(secondCategory);
+            }
+            return RedirectToAction("MoveMenuCategory");
+        }
+        private List<SelectListItem> GetMenuTreeDropDownList()
+        {
+            var resultListItem = new List<SelectListItem>();
+            resultListItem.Add(new SelectListItem() { Text = AdminResource.MakeItRootCategory, Value = "0" });
+            foreach (var item in MenuService.BuildTree(null, CurrentLanguage))
+            {
+                resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.Menu.Id.ToStr() });
+                GetMenuTreeChildrenDropDownList(resultListItem, item);
+            }
 
+            return resultListItem;
+        }
+        private void GetMenuTreeChildrenDropDownList(List<SelectListItem> resultListItem, MenuTreeModel menuTreeModel)
+        {
+            if (menuTreeModel.Childrens.IsNotEmpty())
+            {
+                foreach (var item in menuTreeModel.Childrens)
+                {
+                    resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.Menu.Id.ToStr() });
+                    GetMenuTreeChildrenDropDownList(resultListItem, item);
+                }
+            }
+        }
         //
         // GET: /Menu/Create
 
@@ -136,7 +190,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult GetMenus()
         {
-            List<Menu> treelist = MenuService.BuildTree(null, CurrentLanguage);
+            var treelist = MenuService.BuildTree(null, CurrentLanguage);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 

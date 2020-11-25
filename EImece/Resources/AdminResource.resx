@@ -1065,4 +1065,13 @@
   <data name="SecondCategoryId" xml:space="preserve">
     <value>Gideceği Yeni Kategori</value>
   </data>
+  <data name="MoveProductMenu" xml:space="preserve">
+    <value>Menu Kategorileri Başka Kategoriye Taşımak</value>
+  </data>
+  <data name="FirstMenuCategoryId" xml:space="preserve">
+    <value>Taşımak İstenilen Menu Kategorisi</value>
+  </data>
+  <data name="SecondMenuCategoryId" xml:space="preserve">
+    <value>Gideceği Yeni Menu Kategori</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -24,7 +25,7 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
-    List<Menu> MenuTree = ViewBag.MenuTree;
+    List<MenuTreeModel> MenuTree = ViewBag.MenuTree;
 }
 
 <h2>@AdminResource.Menu</h2>
@@ -46,8 +47,9 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
-
+        @Html.ActionLink(AdminResource.MoveProductMenu, "MoveMenuCategory")
         <div class="panel panel-primary">
+
             @Html.Partial("pGridDropDown", baseList)
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {

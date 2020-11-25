@@ -1,11 +1,12 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IMenuRepository : IBaseContentRepository<Menu>
     {
-        List<Menu> BuildTree(bool? isActive, int language);
+        List<MenuTreeModel> BuildTree(bool? isActive, int language);
 
         Menu GetMenuById(int menuId);
 

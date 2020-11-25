@@ -8,7 +8,7 @@ namespace EImece.Domain.Services.IServices
     {
         MenuPageViewModel GetPageByMenuLink(string menuLink, int? language);
 
-        List<Menu> BuildTree(bool? isActive, int language);
+        List<MenuTreeModel> BuildTree(bool? isActive, int language);
 
         MenuPageViewModel GetPageById(int menuId);
 

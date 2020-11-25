@@ -28,16 +28,23 @@ namespace EImece.Domain.Services
             MenuRepository = repository;
         }
 
-        public List<Menu> BuildTree(bool? isActive, int language)
+        public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
-            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
-            List<Menu> result = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            List<MenuTreeModel> result = null;
+            if (IsCachingActivated)
+            {
+                var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = MenuRepository.BuildTree(isActive, language);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
+            }
+            else
             {
                 result = MenuRepository.BuildTree(isActive, language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
+
             return result;
         }
 
