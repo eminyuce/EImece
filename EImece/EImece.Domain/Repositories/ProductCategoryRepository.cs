@@ -32,7 +32,7 @@ namespace EImece.Domain.Repositories
             pcList = pcList.Where(r => r.Lang == language);
             var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived  ? r.IsActive : true).Count() });
 
-            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount }).ToList();
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
             int level = 1;
@@ -54,6 +54,7 @@ namespace EImece.Domain.Repositories
             current.Childrens = new List<ProductCategoryTreeModel>();
             level = level + 1;
             childs.ForEach(r => r.TreeLevel = level);
+           
             current.Childrens.AddRange(childs);
             foreach (var i in childs)
             {

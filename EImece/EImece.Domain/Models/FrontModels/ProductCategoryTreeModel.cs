@@ -9,7 +9,7 @@ namespace EImece.Domain.Models.FrontModels
         public int TreeLevel { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public int ProductCount { get; set; }
-
+        public int ProductCountAdmin { get; set; }
         public List<ProductCategoryTreeModel> Childrens { get; set; }
         public ProductCategoryTreeModel Parent { get; set; }
 
@@ -20,7 +20,20 @@ namespace EImece.Domain.Models.FrontModels
                 return string.Format("{0}", ProductCategory.Name);
             }
         }
-
+        public string AdminText
+        {
+            get
+            {
+                if (ProductCountAdmin > 0)
+                {
+                    return string.Format("{0} ({1})", ProductCategory.Name, ProductCountAdmin);
+                }
+                else
+                {
+                    return string.Format("{0}", ProductCategory.Name);
+                }
+            }
+        }
         public string Text
         {
             get
