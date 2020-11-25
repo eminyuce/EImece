@@ -167,6 +167,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             var model = new SelectUserRolesViewModel(user);
+            model.SetAdminRoles(user);
             return View(model);
         }
 
