@@ -205,7 +205,8 @@ columns.Add(r => r.ImageState)
         <ul>
             <li>
                 <b style="font-size:0.8em;">
-                    No Image
+                  
+                    @AdminResource.NoImage
                 </b>
             </li>
         </ul>
@@ -238,7 +239,9 @@ columns.Add(r => r.ImageState)
            { "ItemId", d.Id },
            {"controllerName",controllerName},
            { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
-           { "ItemDescription", d.Name } })
+           { "ItemDescription", d.Name }
+           
+           })
             </span>
         }
         @if (d.ProductComments.IsNotEmpty())

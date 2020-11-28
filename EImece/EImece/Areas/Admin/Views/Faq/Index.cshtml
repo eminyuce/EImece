@@ -58,7 +58,7 @@ columns.Add()
                        .SetWidth(30)
                        .RenderValueAs(d =>
     @<b>
-        @Html.ActionLink(gridEditText, "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm     " })
+        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white     " })
     </b>);
 
     if (UserRoleHelper.IsDeletedEnableRoles())
@@ -71,7 +71,7 @@ columns.Add()
 { "ItemId", d.Id },
 {"controllerName",controllerName},
 { "DeleteText", gridDeleteText },
-{ "DeleteIcon", "gridBtn btn btn-danger btn-sm glyphicon  glyphicon-remove-circle" },
+{ "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
 { "ItemDescription", d.Name } }));
 
     }

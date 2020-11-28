@@ -647,3 +647,8 @@ input[name='checkboxGrid'] {
     padding: 0px 0px 0px 0px;
     outline: 0;
 }
+
+.checkbox {
+    margin-top: 1px; 
+    margin-bottom: 1px;
+}
