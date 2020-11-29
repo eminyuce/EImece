@@ -26,8 +26,10 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var content = EntityFactory.GetBaseContentInstance<MainPageImage>();
+         
 
+            var content = EntityFactory.GetBaseContentInstance<MainPageImage>();
+            
             if (id == 0)
             {
             }
@@ -65,7 +67,7 @@ namespace EImece.Areas.Admin.Controllers
                     MainPageImageService.SaveOrEditEntity(mainpageimage);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return ReturnTempUrl("Index");
+                        return RedirectToAction("Index");
                     }
                 }
             }
