@@ -656,3 +656,6 @@ input[name='checkboxGrid'] {
 .checkbox label {
     padding-left: 0px;
 }
+    .checkbox label::before {
+        border: 1px solid #000000;
+    }

@@ -21,6 +21,8 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IBrandService BrandService { get; set; }
+        [Inject]
+        public TemplateService TemplateService { get; set; }
 
         private IProductCategoryRepository ProductCategoryRepository { get; set; }
 
@@ -101,7 +103,7 @@ namespace EImece.Domain.Services
 
         public void DeleteProductCategory(int productCategoryId)
         {
-            var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId);
+            var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId,false);
             var leaves = GetProductCategoryLeaves(null, productCategory.Lang);
             if (leaves.Any(r => r.Id == productCategoryId))
             {
