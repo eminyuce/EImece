@@ -1077,4 +1077,13 @@
   <data name="NoImage" xml:space="preserve">
     <value>Resim Yok</value>
   </data>
+  <data name="ProductNameLong" xml:space="preserve">
+    <value>Ürün Adı (Uzun)</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Ürün Adı</value>
+  </data>
+  <data name="ProductShortDescription" xml:space="preserve">
+    <value>Promosyon Yazısı</value>
+  </data>
 </root>

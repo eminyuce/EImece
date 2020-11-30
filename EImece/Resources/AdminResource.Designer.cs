@@ -2059,6 +2059,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Adı.
+        /// </summary>
+        public static string ProductName {
+            get {
+                return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Adı (Uzun).
+        /// </summary>
+        public static string ProductNameLong {
+            get {
+                return ResourceManager.GetString("ProductNameLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Sayfası.
         /// </summary>
         public static string ProductPageTitle {
@@ -2082,6 +2100,15 @@ namespace Resources {
         public static string ProductSameSelectionErrorMessage {
             get {
                 return ResourceManager.GetString("ProductSameSelectionErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promosyon Yazısı.
+        /// </summary>
+        public static string ProductShortDescription {
+            get {
+                return ResourceManager.GetString("ProductShortDescription", resourceCulture);
             }
         }
         

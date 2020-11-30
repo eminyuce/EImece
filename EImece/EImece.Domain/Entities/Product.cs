@@ -10,8 +10,15 @@ namespace EImece.Domain.Entities
 {
     public class Product : BaseContent
     {
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductName))]
+        public override string Name { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NameShort))]
         public string NameShort { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductNameLong))]
+        public string NameLong { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCategoryIdErrorMessage))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryId))]
@@ -25,7 +32,7 @@ namespace EImece.Domain.Entities
         public Boolean MainPage { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ShortDescription))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductShortDescription))]
         public string ShortDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
@@ -64,14 +71,8 @@ namespace EImece.Domain.Entities
             }
         }
 
-        [NotMapped]
-        public string ProductName
-        {
-            get
-            {
-                return Name;
-            }
-        }
+
+       
 
         [NotMapped]
         public string DetailPageRelativeUrl
