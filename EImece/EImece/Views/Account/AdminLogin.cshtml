@@ -36,6 +36,9 @@
         .panel-footer > div {
             color: black;
         }
+        .mainbox{
+            width:500px;
+        }
 </style>
 <body style="background-color:black;">
     <div class="container">
@@ -70,9 +73,17 @@
                         </div>
 
                         <div class="input-group">
-                            @Html.LabelFor(model => model.Captcha)
-                            <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
-                            @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = AdminResource.AnswerSecurityQuestion, @autocomplete = "false" })
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.Captcha)
+                                </div>
+                                <div class="col-md-3">
+                                    <img width="120" height="35" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Toplamın sonucunu buraya yazınız", @autocomplete = "false" })
+                                </div>
+                            </div>
                             @Html.ValidationMessageFor(model => model.Captcha)
                         </div>
                         <br />

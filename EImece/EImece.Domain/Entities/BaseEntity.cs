@@ -15,7 +15,7 @@ namespace EImece.Domain.Entities
         [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NamePropertyErrorMessage))]
         [Column("Name")]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Name))]
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
@@ -27,5 +27,7 @@ namespace EImece.Domain.Entities
         public int Position { get; set; }
 
         public int Lang { get; set; }
+
+
     }
 }

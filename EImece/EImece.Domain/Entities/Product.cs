@@ -65,6 +65,15 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
+        public string ProductName
+        {
+            get
+            {
+                return Name;
+            }
+        }
+
+        [NotMapped]
         public string DetailPageRelativeUrl
         {
             get
@@ -113,7 +122,7 @@ namespace EImece.Domain.Entities
             get
             {
                 double discountedDiff = Price - PriceWithDiscount;
-                var  result = Math.Round(discountedDiff * 100 / Price ,2);
+                var result = Math.Round(discountedDiff * 100 / Price, 2);
                 return result;
             }
         }
