@@ -988,10 +988,10 @@
     <value>Toplam fiyat</value>
   </data>
   <data name="CustomerRegistrationDate" xml:space="preserve">
-    <value>Müşteri Kayıt Tarihi</value>
+    <value>Kayıt Tarihi</value>
   </data>
   <data name="CustomerRegistrationAddress" xml:space="preserve">
-    <value>Müşteri Kayıt Adresi</value>
+    <value>Müşteri Adresi</value>
   </data>
   <data name="BKM_POS_SELECTED" xml:space="preserve">
     <value>BKM_POS_SELECTED</value>
@@ -1039,7 +1039,7 @@
     <value>Taksit</value>
   </data>
   <data name="TotalOrderNumber" xml:space="preserve">
-    <value>Toplam Sipariş</value>
+    <value>Sipariş #</value>
   </data>
   <data name="ProductDiscount" xml:space="preserve">
     <value>Ürüne özel ek TL indirimi</value>

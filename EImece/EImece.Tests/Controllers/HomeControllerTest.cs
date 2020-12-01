@@ -222,6 +222,18 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
+        public void GenerateSql()
+        {
+            var sql = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\sql.txt");
+            var lines = File.ReadAllLines(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\productNames.txt");
+            foreach (var line in lines)
+            {
+                Console.WriteLine(sql.Replace("[REPLACE_TEXT]", line).Replace("[ProductCodeValue]", GeneralHelper.RandomNumber(6)+""));
+            }
+   
+        }
+
+            [TestMethod]
         public void GetActiveBaseContents()
         {
             var xdoc = XDocument.Parse(File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\ProductTemplate.xml"));

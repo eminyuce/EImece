@@ -619,7 +619,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Müşteri Kayıt Adresi.
+        ///   Looks up a localized string similar to Müşteri Adresi.
         /// </summary>
         public static string CustomerRegistrationAddress {
             get {
@@ -628,7 +628,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Müşteri Kayıt Tarihi.
+        ///   Looks up a localized string similar to Kayıt Tarihi.
         /// </summary>
         public static string CustomerRegistrationDate {
             get {
@@ -2752,7 +2752,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toplam Sipariş.
+        ///   Looks up a localized string similar to Sipariş #.
         /// </summary>
         public static string TotalOrderNumber {
             get {
