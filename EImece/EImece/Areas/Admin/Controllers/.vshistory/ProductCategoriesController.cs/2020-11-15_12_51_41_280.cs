@@ -114,10 +114,6 @@ namespace EImece.Areas.Admin.Controllers
             {
                 content = ProductCategoryService.GetBaseContent(id);
                 parentCategory = ProductCategoryService.GetSingle(content.ParentId);
-                if(content.ParentId > 0 && parentCategory == null)
-                {
-                    throw new ArgumentException("ParentId "+ content.ParentId+" parent cannot be NULL");
-                }
             }
             ViewBag.ParentCategory = parentCategory;
             return View(content);
