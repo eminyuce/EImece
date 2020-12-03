@@ -80,20 +80,19 @@ else
                     @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
                 }
             </div>
-            <div class="offset-md-4 col-md-8 pb-5">
-                @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
-                                  {"actionName","searchproducts"}, {"controllerName","products" } })
-            </div>
+            <div class="pb-4 mb-2"></div>
+            @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
+                              {"actionName","searchproducts"}, {"controllerName","products" } })
 
         }
         else
         {
-
-            <div class="alert alert-secondary alert-with-icon" role="alert">
-                <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-                @Html.Raw(@Resource.NOSearchResult)
-            </div>
-
+            
+                <div class="alert alert-secondary alert-with-icon" role="alert">
+                    <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
+                    @Html.Raw(@Resource.NOSearchResult)
+                </div>
+            
         }
     </div>
 }

@@ -132,7 +132,7 @@
             </div>
             <!-- Products grid-->
             <div class="row no-gutters">
-
+              
                 @if (products.IsNotEmpty())
                 {
                     foreach (var p in products.GetPagingResult())
@@ -156,9 +156,8 @@
                     </div>
                 }
             </div>
-            <div class="offset-md-4 col-md-8 pb-5">
-                @Html.Partial("_PaginatedModelList", products)
-            </div>
+            <div class="pb-4 mb-2"></div>
+            @Html.Partial("_PaginatedModelList", products)
         </div>
     </div>
 </div>

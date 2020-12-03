@@ -80,7 +80,7 @@ else
                     @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
                 }
             </div>
-            <div class="offset-md-4 col-md-8 pb-5">
+            <div class="offset-md-2 col-md-8 pb-5">
                 @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
                                   {"actionName","searchproducts"}, {"controllerName","products" } })
             </div>

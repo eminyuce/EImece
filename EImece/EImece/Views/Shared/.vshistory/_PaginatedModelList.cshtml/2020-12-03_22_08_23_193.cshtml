@@ -8,7 +8,7 @@
     var filter = pagingItems.Filter;
     var actionName = ViewData["actionName"].ToStr("Category");
     var controllerName = ViewData["controllerName"].ToStr("ProductCategories");
-    var styleClassBtn = "page-link";
+    var styleClassBtn = "btn btn-outline-info rounded btn-sm mb-2 mr-1";
 }
 @if (pagingItems.TotalPageCount > 1)
 {
@@ -46,11 +46,11 @@
                     if (activeLink)
                     {
 
-        <li class="page-item active d-none d-sm-block" aria-current="page">
-            <span class="page-link">
-                @pagingItems.PageIndex<span class="sr-only">(current)</span>
-            </span>
-        </li>
+                        <li class="page-item active d-none d-sm-block" aria-current="page">
+                            <span class="btn btn-pill btn-dark btn-sm mb-2 mr-1">
+                                @pagingItems.PageIndex<span class="sr-only">(current)</span>
+                            </span>
+                        </li>
                     }
                     else
                     {
