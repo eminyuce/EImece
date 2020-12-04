@@ -5,7 +5,7 @@ namespace EImece.Domain
     public static class Constants
     {
         /*********ControllerRoutingPrefix*********/
-        public const string ProductsCategoriesControllerRoutingPrefix = "c";
+        public const string ProductsCategoriesControllerRoutingPrefix = "urunkategoriler";
         public const string ProductsControllerRoutingPrefix = "urunler";
 
         public const string INFO_PREFIX = "info-";

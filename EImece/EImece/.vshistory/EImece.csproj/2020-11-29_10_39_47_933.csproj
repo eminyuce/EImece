@@ -1121,6 +1121,8 @@
     <Content Include="Views\Shared\DisplayTemplates\Product.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
+    <Content Include="Views\Shared\_Navigation.cshtml" />
+    <Content Include="Views\Shared\_NavigationChildren.cshtml" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags.cshtml" />
     <Content Include="Views\Pages\Detail.cshtml" />
@@ -1159,6 +1161,7 @@
     <Content Include="Views\Shared\_WebSiteAddressInfo.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\LatestStory.cshtml" />
+    <Content Include="Views\Shared\_NavigationMenuLink.cshtml" />
     <Content Include="Views\Shared\_ProductBreadCrumb.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTreeHeadLine.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTreeChildrenHeadLine.cshtml" />
@@ -1203,7 +1206,6 @@
     <Content Include="Views\Shared\DisplayTemplates\SearchProductItem.cshtml" />
     <Content Include="Views\Payment\ThankYouForYourOrder.cshtml" />
     <Content Include="Views\Payment\NoSuccessForYourOrder.cshtml" />
-    <Content Include="Views\Shared\_Navigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

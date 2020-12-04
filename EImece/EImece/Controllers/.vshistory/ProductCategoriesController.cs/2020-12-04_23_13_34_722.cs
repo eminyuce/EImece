@@ -37,7 +37,7 @@ namespace EImece.Controllers
             return View();
         }
 
-        [Route("urunkategorileri/{id}")]
+        [Route("kategori/{id}")]
         //[CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {

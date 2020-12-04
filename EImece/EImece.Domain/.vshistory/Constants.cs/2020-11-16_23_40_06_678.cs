@@ -4,10 +4,6 @@ namespace EImece.Domain
 {
     public static class Constants
     {
-        /*********ControllerRoutingPrefix*********/
-        public const string ProductsCategoriesControllerRoutingPrefix = "c";
-        public const string ProductsControllerRoutingPrefix = "urunler";
-
         public const string INFO_PREFIX = "info-";
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         public const string OrderGuidCookieKey = "orderGuid";
@@ -31,7 +27,8 @@ namespace EImece.Domain
         public const string WebSiteCompanyEmailAddress = "WebSiteCompanyEmailAddress";
         public const string DefaultImageHeight = "DefaultImageHeight";
         public const string DefaultImageWidth = "DefaultImageWidth";
-     
+        public const string ProductsCategoriesControllerRoutingPrefix = "my_category";
+        public const string ProductsControllerRoutingPrefix = "my_products";
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
         public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string GoogleMapScript = "GoogleMapScript";

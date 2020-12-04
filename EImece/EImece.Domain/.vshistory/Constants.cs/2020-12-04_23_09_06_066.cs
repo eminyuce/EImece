@@ -5,8 +5,8 @@ namespace EImece.Domain
     public static class Constants
     {
         /*********ControllerRoutingPrefix*********/
-        public const string ProductsCategoriesControllerRoutingPrefix = "c";
-        public const string ProductsControllerRoutingPrefix = "urunler";
+        public const string ProductsCategoriesControllerRoutingPrefix = "kategoriler";
+        public const string ProductsControllerRoutingPrefix = "my_products";
 
         public const string INFO_PREFIX = "info-";
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
