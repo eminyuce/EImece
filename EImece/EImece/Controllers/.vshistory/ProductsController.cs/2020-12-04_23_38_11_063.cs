@@ -34,7 +34,7 @@ namespace EImece.Controllers
 
         public ActionResult Index()
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return RedirectToAction("Index", "Home");
         }
 
         //       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
@@ -66,7 +66,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        [Route(Constants.ProductTagPrefix)]
+        [Route()]
         public ActionResult Tag(String id)
         {
             if (String.IsNullOrEmpty(id))

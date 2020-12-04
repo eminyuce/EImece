@@ -7,11 +7,6 @@ namespace EImece.Domain
         /*********ControllerRoutingPrefix*********/
         public const string ProductsCategoriesControllerRoutingPrefix = "c";
         public const string ProductsControllerRoutingPrefix = "urunler";
-        /*********ActionRoutingPrefix*********/
-        public const string SearchProductPrefix = "arama";
-        public const string ProductTagPrefix = "etiket/{id}";
-        public const string CategoryPrefix = "urunkategorileri/{id}";
-       
 
         public const string INFO_PREFIX = "info-";
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";

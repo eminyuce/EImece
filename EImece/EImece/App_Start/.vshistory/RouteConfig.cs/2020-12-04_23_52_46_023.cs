@@ -96,14 +96,14 @@ namespace EImece
 
             routes.MapRoute(
                   name: "ProductTagPage",
-                  url: Constants.ProductsControllerRoutingPrefix + "/"+ Constants.ProductTagPrefix,
+                  url: "products/tag/{id}",
                   defaults: new { controller = "Products", action = "Tag", id = UrlParameter.Optional },
                   namespaces: new[] { "EImece.Controllers" }
               );
 
             routes.MapRoute(
                  name: "SearchProducts",
-                 url: Constants.ProductsControllerRoutingPrefix + "/"+ Constants.SearchProductPrefix,
+                 url: Constants.ProductsControllerRoutingPrefix + "/searchproducts",
                  defaults: new { controller = "Products", action = "searchproducts" },
                  namespaces: new[] { "EImece.Controllers" }
              );

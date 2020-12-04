@@ -10,7 +10,7 @@ namespace EImece.Domain
         /*********ActionRoutingPrefix*********/
         public const string SearchProductPrefix = "arama";
         public const string ProductTagPrefix = "etiket/{id}";
-        public const string CategoryPrefix = "urunkategorileri/{id}";
+        public const string CategoryPrefix = "urunkategorileri/{id}"
        
 
         public const string INFO_PREFIX = "info-";

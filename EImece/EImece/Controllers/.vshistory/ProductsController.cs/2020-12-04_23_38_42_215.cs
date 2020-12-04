@@ -34,7 +34,10 @@ namespace EImece.Controllers
 
         public ActionResult Index()
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (String.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
         }
 
         //       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]

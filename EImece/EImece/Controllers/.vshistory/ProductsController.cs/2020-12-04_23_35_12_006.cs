@@ -18,7 +18,6 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-        
         private readonly IProductCommentService productCommentService;
 
         [Inject]
@@ -34,7 +33,7 @@ namespace EImece.Controllers
 
         public ActionResult Index()
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return RedirectToAction("Index", "Home");
         }
 
         //       [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
@@ -66,7 +65,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        [Route(Constants.ProductTagPrefix)]
+        [Route("etiket/{id}")]
         public ActionResult Tag(String id)
         {
             if (String.IsNullOrEmpty(id))
@@ -80,7 +79,7 @@ namespace EImece.Controllers
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
         }
-        [Route(Constants.SearchProductPrefix)]
+        [Route("arama")]
         public ActionResult SearchProducts(String search, int page = 1, int sorting = 0)
         {
             if (String.IsNullOrEmpty(search))
