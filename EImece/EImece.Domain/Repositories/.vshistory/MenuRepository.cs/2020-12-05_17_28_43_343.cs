@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -37,7 +36,7 @@ namespace EImece.Domain.Repositories
             if (childs.IsNotEmpty())
             {
                 current.Childrens = new List<MenuTreeModel>();
-                var childs2 = childs.Select(r => new MenuTreeModel(r, level + 1)).ToList();
+                var childs2 = childs.Select(r => new MenuTreeModel(r)).ToList();
                 current.Childrens.AddRange(childs2);
                 foreach (var i in childs)
                 {

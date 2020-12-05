@@ -20,11 +20,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             this.Menu = r;
         }
-        public MenuTreeModel(Menu r, int level)
-        {
-            this.Menu = r;
-            this.TreeLevel = level;
-        }
+
 
         public int Id
         {
@@ -49,7 +45,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return string.Format("{1}{0}", Menu.Name, ProduceArrow());
+                return string.Format("{1}{0}", Menu.Name+TreeLevel, ProduceArrow());
             }
         }
         public string ProduceArrow()
