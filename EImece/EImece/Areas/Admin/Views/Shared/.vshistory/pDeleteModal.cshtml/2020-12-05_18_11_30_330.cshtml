@@ -1,0 +1,70 @@
+﻿@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+
+@{
+    string deleteIcon = ViewData["DeleteIcon"].ToStr();
+    string action = ViewData["action"].ToStr("Delete");
+    string controllerName = ViewData["controllerName"].ToStr();
+    string htmlComponent = ViewData["HtmlComponent"].ToStr();
+    string Id = ViewData["ItemId"].ToStr();
+    string gridDeleteText = ViewData["gridDeleteText"].ToStr(AdminResource.Delete);
+    string modalId = String.Format("deleteModal{0}", Id);
+    string ItemDescription = ViewData["ItemDescription"].ToStr();
+
+}
+@if (string.IsNullOrEmpty(htmlComponent))
+{
+    if (htmlComponent.Equals("InputSubmit", StringComparison.InvariantCultureIgnoreCase))
+    {
+
+    }
+}
+else
+{
+    if (!String.IsNullOrEmpty(deleteIcon))
+    {
+        <a href="#@modalId" class="@deleteIcon" data-toggle="modal"></a>
+    }
+    else
+    {
+        <a href="#@modalId" class="btn btn-danger btn-sm" data-toggle="modal">@gridDeleteText</a>
+    }
+}
+
+
+<!-- Modal HTML -->
+<div delete-modal-id='@Id' id="@modalId" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+                <h4 class="modal-title">@AdminResource.AreYouSure</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>@AdminResource.DeletePopupDescription</p>
+                @if (!String.IsNullOrEmpty(ItemDescription))
+                {
+                    <b>@ItemDescription</b>
+                }
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginForm(action, controllerName))
+                {
+                    @Html.AntiForgeryToken()
+                    <input name="Id" type="hidden" value="@Id">
+                    <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">@AdminResource.ButtonCancel</button>
+                    <button type="submit" class="btn btn-danger  btn-sm">@AdminResource.Delete</button>
+                }
+            </div>
+        </div>
+    </div>
+</div> 

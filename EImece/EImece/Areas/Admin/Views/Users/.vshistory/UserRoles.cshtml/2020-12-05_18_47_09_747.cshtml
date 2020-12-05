@@ -1,0 +1,64 @@
+﻿@using EImece.Models;
+@using EImece.Domain;
+@model SelectUserRolesViewModel
+@using Resources;
+@{
+    ViewBag.Title = "User Roles";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@AdminResource.Roles</h2>
+<hr class="adminLine" />
+
+@using (Html.BeginForm("UserRoles", "Users", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-5">
+                @Html.HiddenFor(model => model.UserName)
+            </div>
+            <div class="col-md-5">
+            </div>
+        </div>
+
+        <h4>@AdminResource.SelectRoleAssignments</h4>
+        <hr />
+
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                </th>
+                <th>
+                    @AdminResource.Roles
+                </th>
+            </tr>
+            @Html.EditorFor(model => model.Roles)
+        </table>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink(AdminResource.BackToList, "Index")
+</div>
+
+@Html.DisplayFor(model => model)
+
+@helper GridToolsDeleteColumn(String userName)
+{
+    if (userName.Equals(Constants.AdministratorRole, StringComparison.InvariantCultureIgnoreCase))
+    {
+        <p>@AdminResource.AdminUserRoleDescription</p>
+    }
+    else if (userName.Equals(Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase))
+    {
+        <p>@AdminResource.EditorUserRoleDescription</p>
+    }
+}

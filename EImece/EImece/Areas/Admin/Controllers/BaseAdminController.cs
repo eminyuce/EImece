@@ -223,7 +223,7 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action)
         {
-            if (Request.UrlReferrer == null)
+            if (Request.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLower().Contains("saveoredit"))
             {
                 return RedirectToAction(action);
             }
@@ -235,7 +235,7 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action, object routeValues)
         {
-            if (Request.UrlReferrer == null)
+            if (Request.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLower().Contains("saveoredit"))
             {
                 return RedirectToAction(action, routeValues);
             }

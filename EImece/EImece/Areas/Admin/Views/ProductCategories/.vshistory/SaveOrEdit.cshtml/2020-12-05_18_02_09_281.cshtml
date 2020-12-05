@@ -1,0 +1,222 @@
+﻿@model EImece.Domain.Entities.ProductCategory
+@using EImece.Domain.Entities;
+@using EImece.Domain.Models.Enums;
+@using Resources;
+@using EImece.Domain.Models.FrontModels;
+
+@{
+    var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    ViewBag.Title = "SaveOrEdit";
+    var controllerName = "ProductCategories";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var parentCategory = (ProductCategory)ViewBag.ParentCategory;
+    var templates = (List<SelectListItem>)ViewBag.Templates;
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
+    List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
+}
+
+<h2>@AdminResource.ProductCategory</h2>
+<hr class="adminLine" />
+
+<div class="row">
+
+    <div class="col-md-3">
+        @if (ProductCategoryTree != null)
+        {
+            @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
+                                     {"UrlPattern",""}
+                                   ,{"IsExcelButtonEnabled",true}})
+
+        }
+    </div>
+    <div class="col-md-9">
+        <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.ProductSameSelectionErrorMessage" />
+        @using (Html.BeginForm("SaveOrEdit", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.UpdatedDate)
+
+                @Html.HiddenFor(model => model.Lang)
+
+                <div class="panel with-nav-tabs panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
+                            <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
+                            <li class="Tools">
+                                @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+               { "ItemId", Model.Id },
+               {"controllerName",controllerName},
+               { "DeleteIcon", "gridBtn  btn btn-danger btn-xs   glyphicon  glyphicon-remove-circle" },
+               { "ItemDescription", Model.Name }
+       });
+                            </li>
+                            <li class="Tools">
+                                <input type="submit" name="saveButton" value="@saveButtonText" style="width:110px;" class="btn btn-sm btn-success" />
+                            </li>
+                            <li class="Tools">
+                                <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
+                            </li>
+                            <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+
+
+
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="tab1default" class="tab-pane fade in active">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.HiddenFor(model => model.ParentId)
+
+                                        @if (Model.ParentId > 0 && parentCategory!=null)
+                                        {
+                                            <span style="color:red;font-size:x-large" id="ParentName">
+                                                @parentCategory.Name
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color:red;font-size:x-large" id="ParentName">
+                                            </span>
+                                        }
+                                        <input id="SetParentIdRoot" value="@AdminResource.MakeItRootCategory" type="button">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.ShortDescription, 2, 20, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TemplateId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.TemplateId, templates, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.TemplateId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DiscountPercantage, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.DiscountPercantage, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DiscountPercantage, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.IsActive)
+                                        @Html.EditorFor(model => model.IsActive)
+                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.MainPage)
+                                        @Html.EditorFor(model => model.MainPage)
+                                        @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-3">
+                                        <input type="file" name="postedImage" />
+                                        @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.ImageState)
+                                        @Html.EditorFor(model => model.ImageState)
+                                        @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @if (Model.MainImageId.HasValue)
+                                        {
+                                            <b>@ExistingMainImageText :</b>
+                                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                        }
+                                    </div>
+                                </div>
+                                @Html.Partial("pSliderResizing", (BaseContent)Model)
+                            </div>
+                            <div class="tab-pane fade" id="tab2default">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink(AdminResource.BackToList, "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function productTreeClick(e, id, name) {
+            e.preventDefault();   // use this to NOT go to href site
+            console.log(e);
+
+            if (id != $('#Id').val()) {
+                $('#ParentName').text(name);
+                $('#ParentId').val(id);
+            } else {
+                alert($('#errorMessageForSameSelection').val());
+            }
+
+        }
+        $(document).ready(function () {
+            setPreSelectedTreeNode($("#ParentId"));
+            $("#SetParentIdRoot").click(function () {
+                $("#ParentId").val("0");
+                console.log("111");
+                $("#ParentName").text("");
+            });
+
+        });
+    </script>
+}

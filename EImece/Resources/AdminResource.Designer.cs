@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Her türlü veri ekleme / silme / güncelleme yetkisi vardır..
+        /// </summary>
+        public static string AdminUserRoleDescription {
+            get {
+                return ResourceManager.GetString("AdminUserRoleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tüm Ürünlerin Linki.
         /// </summary>
         public static string AllProductLinkText {
@@ -723,6 +732,15 @@ namespace Resources {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bütün yetkiler olup, sadece silme yetkisi yoktur..
+        /// </summary>
+        public static string EditorUserRoleDescription {
+            get {
+                return ResourceManager.GetString("EditorUserRoleDescription", resourceCulture);
             }
         }
         
@@ -2248,7 +2266,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Roler.
+        ///   Looks up a localized string similar to Kullanıcı Yetkileri.
         /// </summary>
         public static string Roles {
             get {
@@ -2338,7 +2356,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rol Atamalarını Seçin.
+        ///   Looks up a localized string similar to Yönetim Paneli kullanıcı yetkilerini seçin.
         /// </summary>
         public static string SelectRoleAssignments {
             get {
@@ -2608,7 +2626,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aboneler.
+        ///   Looks up a localized string similar to Email Üyeliği.
         /// </summary>
         public static string Subscribers {
             get {

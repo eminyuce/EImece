@@ -175,7 +175,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 ProductService.DeleteProductById(id);
-                return ReturnIndexIfNotUrlReferrer("Index", new { categoryId = product.ProductCategoryId });
+                return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
             }
             catch (Exception ex)
             {

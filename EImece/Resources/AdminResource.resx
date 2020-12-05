@@ -364,7 +364,7 @@
     <value>Ana Sayfa Resimleri</value>
   </data>
   <data name="Subscribers" xml:space="preserve">
-    <value>Aboneler</value>
+    <value>Email Üyeliği</value>
   </data>
   <data name="MailTemplates" xml:space="preserve">
     <value>E-posta Şablonları</value>
@@ -511,7 +511,7 @@
     <value>Şifremi Unuttum</value>
   </data>
   <data name="Roles" xml:space="preserve">
-    <value>Roler</value>
+    <value>Kullanıcı Yetkileri</value>
   </data>
   <data name="NewUserInsert" xml:space="preserve">
     <value>Yeni kullanıcı tanımla</value>
@@ -688,7 +688,7 @@
     <value>Kullanıcı için Yeni Şifre Oluştur</value>
   </data>
   <data name="SelectRoleAssignments" xml:space="preserve">
-    <value>Rol Atamalarını Seçin</value>
+    <value>Yönetim Paneli kullanıcı yetkilerini seçin</value>
   </data>
   <data name="GeneralSaveErrorMessage" xml:space="preserve">
     <value>Değişiklikler kaydedilemedi. Tekrar deneyin ve sorun devam ederse sistem yöneticinize başvurun.</value>
@@ -1085,5 +1085,11 @@
   </data>
   <data name="ProductShortDescription" xml:space="preserve">
     <value>Promosyon Yazısı</value>
+  </data>
+  <data name="AdminUserRoleDescription" xml:space="preserve">
+    <value>Her türlü veri ekleme / silme / güncelleme yetkisi vardır.</value>
+  </data>
+  <data name="EditorUserRoleDescription" xml:space="preserve">
+    <value>Bütün yetkiler olup, sadece silme yetkisi yoktur.</value>
   </data>
 </root>

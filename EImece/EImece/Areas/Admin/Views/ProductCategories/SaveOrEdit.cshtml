@@ -8,11 +8,13 @@
     var saveButtonText = AdminResource.SaveButtonText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.Title = "SaveOrEdit";
+    var controllerName = "ProductCategories";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var parentCategory = (ProductCategory)ViewBag.ParentCategory;
     var templates = (List<SelectListItem>)ViewBag.Templates;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
+    var productCategoryLeaves = (List<ProductCategory>)ViewBag.ProductCategoryLeaves;
 }
 
 <h2>@AdminResource.ProductCategory</h2>
@@ -56,6 +58,7 @@
                                 <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
                             </li>
                             <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -66,7 +69,7 @@
                                     <div class="col-md-10">
                                         @Html.HiddenFor(model => model.ParentId)
 
-                                        @if (Model.ParentId > 0 && parentCategory!=null)
+                                        @if (Model.ParentId > 0 && parentCategory != null)
                                         {
                                             <span style="color:red;font-size:x-large" id="ParentName">
                                                 @parentCategory.Name
@@ -174,12 +177,20 @@
                 </div>
             </div>
         }
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-2">
+            @Html.ActionLink(AdminResource.BackToList, "Index")
+        </div>
+        <div class="col-md-4">
+            @GridToolsDeleteColumn(productCategoryLeaves, Model, controllerName)
+        </div>
+    </div>
     </div>
 </div>
 
-<div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
-</div>
+ 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -207,4 +218,22 @@
 
         });
     </script>
+}
+
+@helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
+{
+    if (productCategoryLeaves.Any(r => r.Id == d.Id))
+    {
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+            { "ItemId", d.Id },
+            {"controllerName",controllerName},  
+             {"gridDeleteText",string.Format("'{0}' ürün kategorisini silmek istiyorum",d.Name)},
+            { "ItemDescription", d.Name }
+
+   });
+    }
+    else
+    {
+        @String.Format("No Delete")
+    }
 }

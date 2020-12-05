@@ -105,6 +105,7 @@ namespace EImece.Areas.Admin.Controllers
             var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
             var parentCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             if (id == 0)
             {
@@ -164,6 +165,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
             if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
             {
