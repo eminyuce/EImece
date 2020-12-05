@@ -262,7 +262,7 @@
 
             <div class="@string.Format("{0}",productSpecsExists ? "col-md-6":"col-md-12")">
                 <h3 class="h5 mb-3">@Resource.Description</h3>
-                <div class="mb-2 pb-2">@Html.Raw(product.Description)</div>
+                <p class="mb-4 pb-2">@Html.Raw(product.Description)</p>
             </div>
 
             @if (productSpecsExists)
@@ -274,7 +274,7 @@
                     {
                 @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
                     }
-                <ul class="list-unstyled mb-2 pb-2">
+                <ul class="list-unstyled mb-4 pb-2">
                     @foreach (var specs in Model.ProdSpecs)
                         {
                     <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @specs.value @specs.unit </li>

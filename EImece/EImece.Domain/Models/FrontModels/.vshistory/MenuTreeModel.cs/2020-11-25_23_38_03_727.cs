@@ -45,7 +45,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return string.Format("{1}{0}", Menu.Name+TreeLevel, ProduceArrow());
+                return string.Format("{1}{0}", Menu.Name, ProduceArrow());
             }
         }
         public string ProduceArrow()

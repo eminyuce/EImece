@@ -69,7 +69,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new FooterViewModel();
-                result.Menus = MenuService.GetActiveBaseContents(true, language).ToList();
+                result.Menus = MenuService.GetActiveBaseContents(true, language).Where(r => r.ParentId == 0).ToList();
                 result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language).Where(r => r.ParentId == 0).ToList();
                 result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
                 result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);

@@ -89,7 +89,7 @@ namespace EImece
 
             routes.MapRoute(
                   name: "PageDetail",
-                  url: Constants.PagesControllerRoutingPrefix + "/{id}",
+                  url: PagesControllerRoutingPrefix + "/{id}",
                   defaults: new { controller = "Pages", action = "Detail", id = UrlParameter.Optional },
                   namespaces: new[] { "EImece.Controllers" }
               );

@@ -10,7 +10,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
-    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r=>r.Position).ToList();
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.Id != communicationId).Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).ToList();
 
 }
 <!-- Footer-->

@@ -10,7 +10,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
-    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r=>r.Position).ToList();
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.Id != communicationId).Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).ToList();
 
 }
 <!-- Footer-->
@@ -55,9 +55,9 @@
                         <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
                         <ul>
                             <li><a class="nav-link-inline nav-link-light" href="@Url.Action("Login", "Account")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.MyAccount</span></a></li>
-                            @if (musteriIliskileriChildren.IsNotEmpty())
+                            @if (musteriIliskileri != null && musteriIliskileri.Childrens.IsNotEmpty())
                             {
-                                foreach (var m in musteriIliskileriChildren)
+                                foreach (var m in musteriIliskileri.Childrens)
                                 {
                                     <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
                                 }

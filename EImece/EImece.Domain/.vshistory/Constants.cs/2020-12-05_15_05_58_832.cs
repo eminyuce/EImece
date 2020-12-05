@@ -6,7 +6,6 @@ namespace EImece.Domain
     {
         /*********ControllerRoutingPrefix*********/
         public const string ProductsCategoriesControllerRoutingPrefix = "c";
-        public const string PagesControllerRoutingPrefix = "p";
         public const string StoriesCategoriesControllerRoutingPrefix = "s";
         public const string ProductsControllerRoutingPrefix = "urunler";
         /*********ActionRoutingPrefix*********/

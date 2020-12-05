@@ -154,7 +154,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigInt("SpecialFooterMenuLinkMenuId", 3142);
+                return GetConfigInt("SpecialFooterMenuLinkMenuId", 10);
             }
         }
 

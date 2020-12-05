@@ -94,11 +94,7 @@ namespace EImece.Domain.Repositories
                 }
                 else
                 {
-                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search) 
-                    || r.ProductCode.Contains(search)
-                          || r.NameLong.Contains(search)
-                           || r.NameShort.Contains(search)
-                    || r.ProductCategory.Name.Contains(search);
+                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search) || r.ProductCode.Contains(search) || r.ProductCategory.Name.Contains(search);
                     products = products.Where(whereLamba);
                 }
             }

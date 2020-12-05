@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    [RoutePrefix(Constants.PagesControllerRoutingPrefix)]
     public class PagesController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
