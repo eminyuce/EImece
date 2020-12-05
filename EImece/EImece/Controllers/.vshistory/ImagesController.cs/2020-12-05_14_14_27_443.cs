@@ -107,7 +107,6 @@ namespace EImece.Controllers
                 return result;
             }).ConfigureAwait(true);
         }
-
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public FileContentResult GetDefaultImage(String imageSize)

@@ -110,7 +110,7 @@ namespace EImece
 
             routes.MapRoute(
                name: "SearchProducts2",
-               url: Constants.ProductsControllerRoutingPrefix + "/advancedsearchproducts",
+               url: "products/advancedsearchproducts",
                defaults: new { controller = "Products", action = "advancedsearchproducts" },
                namespaces: new[] { "EImece.Controllers" }
            );

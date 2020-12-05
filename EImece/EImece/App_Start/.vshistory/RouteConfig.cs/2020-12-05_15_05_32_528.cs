@@ -68,14 +68,14 @@ namespace EImece
 
             routes.MapRoute(
                    name: "StoryTagPage",
-                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/"+Constants.StoryTagPrefix,
+                   url: "stories/tag/{id}",
                    defaults: new { controller = "stories", action = "Tag", id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
 
             routes.MapRoute(
                    name: "Storycategories",
-                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/categories/{id}",
+                   url: "stories/categories/{id}",
                    defaults: new { controller = "stories", action = "categories", id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
@@ -110,7 +110,7 @@ namespace EImece
 
             routes.MapRoute(
                name: "SearchProducts2",
-               url: Constants.ProductsControllerRoutingPrefix + "/advancedsearchproducts",
+               url: "products/advancedsearchproducts",
                defaults: new { controller = "Products", action = "advancedsearchproducts" },
                namespaces: new[] { "EImece.Controllers" }
            );

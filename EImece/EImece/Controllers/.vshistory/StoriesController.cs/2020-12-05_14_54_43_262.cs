@@ -43,7 +43,6 @@ namespace EImece.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-
                 var storyId = id.GetId();
                 var story = StoryService.GetStoryDetailViewModel(storyId);
                 ViewBag.SeoId = story.Story.GetSeoUrl();

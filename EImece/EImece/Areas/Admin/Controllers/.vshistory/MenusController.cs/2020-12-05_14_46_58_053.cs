@@ -210,7 +210,7 @@ namespace EImece.Areas.Admin.Controllers
             var menus = MenuService.GetActiveBaseContents(true, CurrentLanguage);
             var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             var menuLinks = new List<SelectListItem>();
-           
+
             if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });
@@ -236,7 +236,17 @@ namespace EImece.Areas.Admin.Controllers
                 menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
             }
             menuLinks.Add(new SelectListItem() { Text = "Farkli Sayfa Temalari", Value = "pages-index" });
-
+            if (storyCategories.IsNotEmpty())
+            {
+                foreach (var storyCategory in storyCategories)
+                {
+                    string m = "stories-categories_" + storyCategory.GetSeoUrl();
+                    if (!menus.Any(r => r.MenuLink.Equals(m, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        menuLinks.Add(new SelectListItem() { Text = String.Format("Blog Alt Kategori: {0}", storyCategory.Name), Value = m });
+                    }
+                }
+            }
            
 
             return menuLinks;

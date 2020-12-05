@@ -66,11 +66,18 @@
                                     @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
 
-                                        @if (parentMenu != null && Model.ParentId > 0)
+                                        @if (parentMenu != null && model.ParentId > 0)
                                         {
                                             <span style="color:red;font-size:x-large" id="ParentName">
                                                 @parentMenu.Name
                                             </span>
+                                        }
+                                        else
+                                        {
+
+                                    <span style="color:red;font-size:x-large" id="ParentName">
+                                        @AdminResource.PleaseSelectYourProductCategoryFromTree
+                                    </span>
                                         }
                                         
                                         <input id="SetParentIdRoot" value="@AdminResource.MakeItRootCategory" type="button">

@@ -210,7 +210,7 @@ namespace EImece.Areas.Admin.Controllers
             var menus = MenuService.GetActiveBaseContents(true, CurrentLanguage);
             var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             var menuLinks = new List<SelectListItem>();
-           
+
             if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });

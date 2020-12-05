@@ -6,12 +6,10 @@ namespace EImece.Domain
     {
         /*********ControllerRoutingPrefix*********/
         public const string ProductsCategoriesControllerRoutingPrefix = "c";
-        public const string StoriesCategoriesControllerRoutingPrefix = "s";
         public const string ProductsControllerRoutingPrefix = "urunler";
         /*********ActionRoutingPrefix*********/
         public const string SearchProductPrefix = "arama";
         public const string ProductTagPrefix = "etiket/{id}";
-        public const string StoryTagPrefix = "etiket/{id}";
         public const string CategoryPrefix = "urunkategorileri/{id}";
        
 
