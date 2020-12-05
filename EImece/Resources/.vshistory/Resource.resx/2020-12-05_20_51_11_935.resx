@@ -992,6 +992,10 @@
   <data name="LastName" xml:space="preserve">
     <value>Soyisim</value>
   </data>
+  <data name="Link" xml:space="preserve">
+    <value>
+Erişim Linki</value>
+  </data>
   <data name="LinkedinWebSiteLink" xml:space="preserve">
     <value>Linkedin Link</value>
   </data>
@@ -1244,6 +1248,9 @@
   <data name="ReviewSubject" xml:space="preserve">
     <value>Yorum Başlık</value>
   </data>
+  <data name="ReviewYourOrder1" xml:space="preserve">
+    <value>Siparişini gözden geçir</value>
+  </data>
   <data name="Roles" xml:space="preserve">
     <value>Roler</value>
   </data>
@@ -1363,6 +1370,9 @@
   </data>
   <data name="SUCCESS" xml:space="preserve">
     <value>BAŞARILI</value>
+  </data>
+  <data name="SuccessfullySavedCompleted1" xml:space="preserve">
+    <value>İşleminiz başarıyla gerçekleşmiştir.</value>
   </data>
   <data name="Tag" xml:space="preserve">
     <value>Etiket</value>

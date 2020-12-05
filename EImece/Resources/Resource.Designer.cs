@@ -1816,16 +1816,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///Erişim Linki.
-        /// </summary>
-        public static string Link {
-            get {
-                return ResourceManager.GetString("Link", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Linkedin Link.
         /// </summary>
         public static string LinkedinWebSiteLink {
@@ -3091,15 +3081,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Siparişini gözden geçir.
-        /// </summary>
-        public static string ReviewYourOrder1 {
-            get {
-                return ResourceManager.GetString("ReviewYourOrder1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Roler.
         /// </summary>
         public static string Roles {
@@ -3699,15 +3680,6 @@ namespace Resources {
         public static string SuccessfullySavedCompleted {
             get {
                 return ResourceManager.GetString("SuccessfullySavedCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to İşleminiz başarıyla gerçekleşmiştir..
-        /// </summary>
-        public static string SuccessfullySavedCompleted1 {
-            get {
-                return ResourceManager.GetString("SuccessfullySavedCompleted1", resourceCulture);
             }
         }
         

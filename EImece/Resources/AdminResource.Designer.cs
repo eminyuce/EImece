@@ -1816,7 +1816,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Şifre en az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli.
+        ///   Looks up a localized string similar to Şifre en az 6 karakterden oluşmalı, büyük, küçük harf ve sayı içermelidir..
         /// </summary>
         public static string PasswordInfoMessage {
             get {
@@ -1879,7 +1879,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cep Tel.
+        ///   Looks up a localized string similar to Cep Telefonu.
         /// </summary>
         public static string PhoneNumber {
             get {

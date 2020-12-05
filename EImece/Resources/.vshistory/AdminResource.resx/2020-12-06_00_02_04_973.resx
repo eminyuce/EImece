@@ -730,7 +730,7 @@
     <value>İstek Geçerli Değil</value>
   </data>
   <data name="PasswordInfoMessage" xml:space="preserve">
-    <value>Şifre en az 6 karakterden oluşmalı, büyük, küçük harf ve sayı içermelidir.</value>
+    <value>Şifre en az 6 karakterden oluşmalı, büyük, küçük harf ve sayı içermelidir</value>
   </data>
   <data name="AdminPanelWelcome" xml:space="preserve">
     <value>Yönetici Paneline Hoş Geldiniz</value>
