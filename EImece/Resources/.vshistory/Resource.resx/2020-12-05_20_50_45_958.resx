@@ -1514,6 +1514,6 @@ Erişim Linki</value>
     <value>Ödeme Fatura Ayrıntıları</value>
   </data>
   <data name="CheckoutPaymentOrderReview" xml:space="preserve">
-    <value>Sipariş İncelemesi</value>
+    <value>Ödeme Emri İncelemesi</value>
   </data>
 </root>

@@ -1510,10 +1510,4 @@ Erişim Linki</value>
   <data name="Thanks" xml:space="preserve">
     <value>Teşekkürler</value>
   </data>
-  <data name="CheckoutBillingDetails" xml:space="preserve">
-    <value>Ödeme Fatura Ayrıntıları</value>
-  </data>
-  <data name="CheckoutPaymentOrderReview" xml:space="preserve">
-    <value>Sipariş İncelemesi</value>
-  </data>
 </root>

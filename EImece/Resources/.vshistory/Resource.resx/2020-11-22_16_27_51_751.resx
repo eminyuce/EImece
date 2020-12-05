@@ -1504,16 +1504,4 @@ Erişim Linki</value>
   <data name="ProductFoundInfoForCategory" xml:space="preserve">
     <value>&lt;b&gt;{0}&lt;/b&gt; aramanız ile eşleşen &lt;b&gt;{1}&lt;/b&gt; Sonuç bulundu.</value>
   </data>
-  <data name="ThanksForYourOrder" xml:space="preserve">
-    <value>Siparişiniz için teşekkürler</value>
-  </data>
-  <data name="Thanks" xml:space="preserve">
-    <value>Teşekkürler</value>
-  </data>
-  <data name="CheckoutBillingDetails" xml:space="preserve">
-    <value>Ödeme Fatura Ayrıntıları</value>
-  </data>
-  <data name="CheckoutPaymentOrderReview" xml:space="preserve">
-    <value>Sipariş İncelemesi</value>
-  </data>
 </root>

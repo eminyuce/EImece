@@ -8,7 +8,7 @@
 @model  ShoppingCartSession
 
 @{
-    ViewBag.Title = Resources.Resource.MyBasket;
+    ViewBag.Title = Resources.Resource.ShoppingCart;
     var products = Model.ShoppingCartItems;
     string continueShoppingLink = String.IsNullOrEmpty(Model.UrlReferrer) ? Url.Action("category", "ProductCategories") : Model.UrlReferrer;
 }

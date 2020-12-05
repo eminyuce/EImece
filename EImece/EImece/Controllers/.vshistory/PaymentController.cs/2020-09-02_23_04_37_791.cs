@@ -81,7 +81,6 @@ namespace EImece.Controllers
 
         public ActionResult AddToCart(int productId, int quantity, string orderGuid)
         {
-           
             var product = ProductService.GetProductById(productId);
             var shoppingCart = GetShoppingCart();
             shoppingCart.OrderGuid = orderGuid;
