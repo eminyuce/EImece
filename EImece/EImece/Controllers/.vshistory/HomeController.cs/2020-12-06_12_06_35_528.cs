@@ -12,7 +12,6 @@ using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Net;
 using System.Net.Http;
@@ -59,7 +58,7 @@ namespace EImece.Controllers
             mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle,CurrentLanguage).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords, CurrentLanguage).ToStr();
+            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords,CurrentLanguage).ToStr();
 
             return View(mainPageModel);
         }
@@ -67,14 +66,13 @@ namespace EImece.Controllers
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
-            var emailChecker = new EmailAddressAttribute();
-            if (subscriber == null 
-                || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim())
-                || !emailChecker.IsValid(subscriber.Email.ToStr().Trim()))
+            var emailChecker = new System.ComponentModel.DataAnnotations.EmailAddressAttribute();
+            string email = "some@emai l.com";
+            if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            else  
+            else if (emailChecker.IsValid(email))
             {
                 //validate the captcha through the session variable stored from GetCaptcha
                 subscriber.Name = subscriber.Email;
@@ -82,7 +80,10 @@ namespace EImece.Controllers
                 SubsciberService.SaveOrEditEntity(subscriber);
                 return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
             }
-           
+            else
+            {
+
+            }
           
         }
 

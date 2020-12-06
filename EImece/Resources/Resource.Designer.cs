@@ -3832,6 +3832,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abonelik için teşekkürler.
+        /// </summary>
+        public static string ThanksForSubscriptionTitle {
+            get {
+                return ResourceManager.GetString("ThanksForSubscriptionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Siparişiniz için teşekkürler.
         /// </summary>
         public static string ThanksForYourOrder {

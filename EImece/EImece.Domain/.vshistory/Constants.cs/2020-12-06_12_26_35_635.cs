@@ -8,12 +8,12 @@ namespace EImece.Domain
         public const string ProductsCategoriesControllerRoutingPrefix = "c"; // categories
         public const string PagesControllerRoutingPrefix = "i";  // info pages
         public const string StoriesCategoriesControllerRoutingPrefix = "s";  // stories
-        public const string ProductsControllerRoutingPrefix = "p";  //products
+        public const string ProductsControllerRoutingPrefix = "p";  //
         /*********ActionRoutingPrefix*********/
         public const string SearchProductPrefix = "arama";
-        public const string ProductTagPrefix = "t/{id}"; // tags
-        public const string StoryTagPrefix = "t/{id}"; // tags
-        public const string CategoryPrefix = "pc/{id}"; //
+        public const string ProductTagPrefix = "t/{id}";
+        public const string StoryTagPrefix = "t/{id}";
+        public const string CategoryPrefix = "pc/{id}";
        
 
         public const string INFO_PREFIX = "info-";

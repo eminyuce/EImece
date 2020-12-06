@@ -71,39 +71,38 @@
         </div>
     }
 </div>
+<br />
 @if (!String.IsNullOrEmpty(Model.RegistrationAddress))
 {
     <div class="row">
         <div class="col-md-12">
+
             <b class="display-label">
                 @AdminResource.CustomerRegistrationAddress
             </b>
             <div class="display-field">
                 @Html.DisplayFor(model => model.RegistrationAddress)
             </div>
+          
         </div>
     </div>
 }
-
-<div class="row">
-    <div class="col-md-12">
+    <br />
+    <div class="display-field">
         @Html.DisplayFor(model => model.IsPermissionGranted)
         @AdminResource.IsPermissionGrantedDescription
     </div>
-</div>
 
- 
-
-@helper GetGenderText(int gender)
-{
-    var genderEnum = (GenderType)gender;
-    if (GenderType.Man == genderEnum)
+    @helper GetGenderText(int gender)
     {
-        <div>@AdminResource.ManGender</div>
-    }
-    else if (GenderType.Woman == genderEnum)
-    {
-        <div>@AdminResource.WomanGender</div>
-    }
+        var genderEnum = (GenderType)gender;
+        if (GenderType.Man == genderEnum)
+        {
+            <div>@AdminResource.ManGender</div>
+        }
+        else if (GenderType.Woman == genderEnum)
+        {
+            <div>@AdminResource.WomanGender</div>
+        }
 
-}
+    }

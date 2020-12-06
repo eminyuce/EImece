@@ -13,7 +13,7 @@ namespace EImece.Domain
         public const string SearchProductPrefix = "arama";
         public const string ProductTagPrefix = "t/{id}"; // tags
         public const string StoryTagPrefix = "t/{id}"; // tags
-        public const string CategoryPrefix = "pc/{id}"; //
+        public const string CategoryPrefix = "pc/{id}";
        
 
         public const string INFO_PREFIX = "info-";
