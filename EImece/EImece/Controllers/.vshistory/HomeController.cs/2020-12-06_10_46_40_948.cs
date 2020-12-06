@@ -62,11 +62,33 @@ namespace EImece.Controllers
 
             return View(mainPageModel);
         }
- 
+
+        public async Task<ActionResult> About(String id = "2,4")
+        {
+            ViewBag.Message = "Your app description page.";
+
+            var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
+            var request = new HttpRequestMessage { RequestUri = new Uri("http://dev2.marinelink.com/api/podcastapi/get") };
+
+            var m = id.Split(",".ToCharArray());
+            request.Headers.Range = new RangeHeaderValue(m[0].ToInt(), m[1].ToInt());
+
+            var ee = request.Headers.Range.Ranges;
+            var response = await client.SendAsync(request);
+            var h = response.Headers;
+            var cl = response.Content.Headers.ContentLength;
+            var r = response.RequestMessage;
+
+            HttpContent requestContent = response.Content;
+            string jsonContent = requestContent.ReadAsStringAsync().Result;
+
+            return Json(jsonContent, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
-            if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()))
+            if (subscriber == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -79,7 +101,7 @@ namespace EImece.Controllers
 
         public ActionResult ThanksForSubscription(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

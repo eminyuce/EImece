@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = Resource.ThanksForSubscription;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string urlActionLink = Url.Action("index", "home");
 }
 
 <!-- Page Content-->
@@ -12,8 +11,8 @@
         <!-- Content-->
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12">
-                    @Html.Raw(string.Format(Resource.ThanksForSubscription, Model.Email, urlActionLink))
+                <div class="col-xl-9 col-md-8">
+                    @Resource.ThanksForSubscription  @Model.Email
                 </div>
             </div>
         </div>

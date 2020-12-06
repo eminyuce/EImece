@@ -312,11 +312,7 @@
     <value>İşleminiz başarıyla gerçekleşmiştir.</value>
   </data>
   <data name="ThanksForSubscription" xml:space="preserve">
-    <value>&lt;div class="card-body text-center"&gt;
-                        &lt;h3 class="h4 pb-3"&gt;Abonelik için teşekkürler&lt;/h3&gt;
-                        &lt;p class="mb-2"&gt;Mutlu günler dileriz &lt;strong&gt;{0}&lt;/strong&gt;&lt;/p&gt;
-                        &lt;a class="btn btn-secondary mt-3 mr-3" href="{1}"&gt;Alışverişe geri dön&lt;/a&gt;
-                    &lt;/div&gt;</value>
+    <value>Abonelik için teşekkürler</value>
   </data>
   <data name="AboutUs" xml:space="preserve">
     <value>Hakkımızda</value>
@@ -1509,8 +1505,5 @@
   </data>
   <data name="CheckoutPaymentOrderReview" xml:space="preserve">
     <value>Sipariş İncelemesi</value>
-  </data>
-  <data name="ShowMoreProductInfo" xml:space="preserve">
-    <value>Daha fazla ürün bilgisi göster</value>
   </data>
 </root>

@@ -3396,6 +3396,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daha fazla ürün bilgisi göster.
+        /// </summary>
+        public static string ShowMoreProductInfo {
+            get {
+                return ResourceManager.GetString("ShowMoreProductInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş.
         /// </summary>
         public static string SignInOrUp {
@@ -3810,7 +3819,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abonelik için teşekkürler.
+        ///   Looks up a localized string similar to &lt;div class=&quot;card-body text-center&quot;&gt;
+        ///                        &lt;h3 class=&quot;h4 pb-3&quot;&gt;Abonelik için teşekkürler&lt;/h3&gt;
+        ///                        &lt;p class=&quot;mb-2&quot;&gt;Mutlu günler dileriz &lt;strong&gt;{0}&lt;/strong&gt;&lt;/p&gt;
+        ///                        &lt;a class=&quot;btn btn-secondary mt-3 mr-3&quot; href=&quot;{1}&quot;&gt;Alışverişe geri dön&lt;/a&gt;
+        ///                    &lt;/div&gt;.
         /// </summary>
         public static string ThanksForSubscription {
             get {

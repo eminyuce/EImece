@@ -23,9 +23,5 @@ namespace EImece.Domain.Entities
         {
             return this == null || string.IsNullOrEmpty(SettingValue);
         }
-        public bool IsNotEmpty()
-        {
-            return !IsEmpty();
-        }
     }
 }

@@ -1,0 +1,38 @@
+﻿@model EImece.Domain.Entities.Subscriber
+@using Resources
+@{
+    ViewBag.Title = Resource.ThanksForSubscription;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string urlActionLink = Url.Action("index", "home");
+}
+
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4">
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-xl-9 col-md-8">
+   @Model.Email                    @Resource.ThanksForSubscription
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4">
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-xl-9 col-md-8">
+                    @Html.Raw(string.Format(Resource.ThanksForSubscription, item.OrderNumber, Model.Email))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -66,7 +66,7 @@ namespace EImece.Controllers
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
-            if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()))
+            if (subscriber == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

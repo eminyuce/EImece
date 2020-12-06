@@ -10,7 +10,7 @@
     Subscriber subscriber = new Subscriber();
 }
 
-@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "validate pb-4"  }))
+@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "validate pb-4", @name = "mc-embedded-subscribe-form", @id = "mc-embedded-subscribe-form" }))
 {
 
     <div class="input-group mb-2">

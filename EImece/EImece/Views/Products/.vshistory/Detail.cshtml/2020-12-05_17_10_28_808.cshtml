@@ -189,12 +189,12 @@
                             }
                             @Html.Raw(product.ShortDescription)
                             <ul class="mb-0">
-                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
+                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.MoreInfo</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                @if (Model.CargoDescription.IsNotEmpty())
+                @if (Model.CargoDescription != null)
                 {
                     <div class="card">
                         <div class="card-header">

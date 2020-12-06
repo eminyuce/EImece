@@ -1,6 +1,5 @@
 ﻿using Resources;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
@@ -17,15 +16,5 @@ namespace EImece.Domain.Entities
         [AllowHtml]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SettingValue))]
         public string SettingValue { get; set; }
-
-
-        public bool IsEmpty()
-        {
-            return this == null || string.IsNullOrEmpty(SettingValue);
-        }
-        public bool IsNotEmpty()
-        {
-            return !IsEmpty();
-        }
     }
 }

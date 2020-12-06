@@ -1,6 +1,5 @@
 ﻿using Resources;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
@@ -19,13 +18,13 @@ namespace EImece.Domain.Entities
         public string SettingValue { get; set; }
 
 
-        public bool IsEmpty()
+        [NotMapped]
+        public bool HasValue
         {
-            return this == null || string.IsNullOrEmpty(SettingValue);
-        }
-        public bool IsNotEmpty()
-        {
-            return !IsEmpty();
+            get
+            {
+                return this == null || string.IsNullOrEmpty(SettingValue);
+            }
         }
     }
 }

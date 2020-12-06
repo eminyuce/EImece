@@ -19,13 +19,13 @@ namespace EImece.Domain.Entities
         public string SettingValue { get; set; }
 
 
-        public bool IsEmpty()
+        [NotMapped]
+        public bool HasValue
         {
-            return this == null || string.IsNullOrEmpty(SettingValue);
-        }
-        public bool IsNotEmpty()
-        {
-            return !IsEmpty();
+            get
+            {
+                return this == null || string.IsNullOrEmpty(SettingValue);
+            }
         }
     }
 }

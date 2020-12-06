@@ -1,0 +1,17 @@
+﻿@model EImece.Domain.Entities.Subscriber
+@using Resources
+@{
+    ViewBag.Title = Resource.ThanksForSubscription;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4">
+    <div class="pt-5">
+        <div class="card py-3 mt-sm-3">
+            @Resource.ThanksForSubscription @Model.Email
+        </div>
+    </div>
+</div>
+
+
