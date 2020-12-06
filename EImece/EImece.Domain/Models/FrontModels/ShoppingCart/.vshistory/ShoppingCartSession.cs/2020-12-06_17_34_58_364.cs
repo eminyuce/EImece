@@ -29,16 +29,6 @@ namespace EImece.Domain.Models.FrontModels
         [JsonIgnore]
         public Setting CargoPrice { get; set; }
 
-        public string ConversationId
-        {
-            get
-            {
-                return string.Format("c-{0}-p-{1}",
-                _customer.Id.ToString(),
-                string.Join(",", ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
-            }
-        }
-
         public List<ShoppingCartItem> ShoppingCartItems
         {
             get

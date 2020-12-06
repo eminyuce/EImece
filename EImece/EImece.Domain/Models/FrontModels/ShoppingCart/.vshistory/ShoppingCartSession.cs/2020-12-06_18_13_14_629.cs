@@ -35,7 +35,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 return string.Format("c-{0}-p-{1}",
                 _customer.Id.ToString(),
-                string.Join(",", ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
+                string.Join(",", ShoppingCartItems.Select(r => r.Product.Id).ToArray()))
             }
         }
 

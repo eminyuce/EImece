@@ -60,7 +60,9 @@ namespace EImece.Domain.Services
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
             //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
-            request.ConversationId = shoppingCart.ConversationId;
+            request.ConversationId = string.Format("c-{0}-p-{1}",
+                customer.Id.ToString(),
+                string.Join(",", shoppingCart.ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
 
 
             request.Currency = Currency.TRY.ToString();
