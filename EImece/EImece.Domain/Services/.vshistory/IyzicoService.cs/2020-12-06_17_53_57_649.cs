@@ -36,14 +36,11 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("ShoppingCartSession cannot be null");
             }
-            if (shoppingCart.ShoppingCartItems.IsEmpty())
+            if (shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 throw new ArgumentNullException("ShoppingCartSession.ShoppingCartItems cannot be null");
             }
-            if (shoppingCart.Customer == null)
-            {
-                throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
-            }
+
 
             Options options = GetOptions();
             var customer = shoppingCart.Customer;

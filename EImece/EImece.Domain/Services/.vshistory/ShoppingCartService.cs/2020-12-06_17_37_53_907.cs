@@ -73,11 +73,7 @@ namespace EImece.Domain.Services
         {
             if(shoppingCart == null)
             {
-                throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
-            }
-            if (checkoutForm == null)
-            {
-                throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
+                throw new ArgumentNullException("ShoppingCartSession is null");
             }
             int shippingAddressId = shoppingCart.ShippingAddress.Id;
             int billingAddressId = shoppingCart.BillingAddress.Id;

@@ -71,14 +71,7 @@ namespace EImece.Domain.Services
 
         public Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
         {
-            if(shoppingCart == null)
-            {
-                throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
-            }
-            if (checkoutForm == null)
-            {
-                throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
-            }
+            Logger.Info("SaveShoppingCart:"+ JsonConvert.SerializeObject(shoppingCart));
             int shippingAddressId = shoppingCart.ShippingAddress.Id;
             int billingAddressId = shoppingCart.BillingAddress.Id;
             if (shippingAddressId == 0)

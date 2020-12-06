@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
-using System.Linq;
-using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Domain.Services
 {
@@ -36,14 +34,6 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("ShoppingCartSession cannot be null");
             }
-            if (shoppingCart.ShoppingCartItems.IsEmpty())
-            {
-                throw new ArgumentNullException("ShoppingCartSession.ShoppingCartItems cannot be null");
-            }
-            if (shoppingCart.Customer == null)
-            {
-                throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
-            }
 
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
@@ -60,11 +50,7 @@ namespace EImece.Domain.Services
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
             //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
-            request.ConversationId = string.Format("c-{0}-p-{1}",
-                customer.Id.ToString(),
-                string.Join(",", shoppingCart.ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
-
-
+            request.ConversationId =  
             request.Currency = Currency.TRY.ToString();
             request.BasketId = shoppingCart.OrderGuid;
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();

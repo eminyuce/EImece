@@ -1699,7 +1699,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Önemli kampanyalardan eposta ile haberdar olmak istiyorum..
+        ///   Looks up a localized string similar to Önemli kampanyalardan e-posta ile haberdar olmak istiyorum..
         /// </summary>
         public static string IsPermissionGrantedDescription {
             get {

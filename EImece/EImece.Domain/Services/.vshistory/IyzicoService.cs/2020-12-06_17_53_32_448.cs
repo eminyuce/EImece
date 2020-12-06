@@ -36,14 +36,11 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("ShoppingCartSession cannot be null");
             }
-            if (shoppingCart.ShoppingCartItems.IsEmpty())
+            if (shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 throw new ArgumentNullException("ShoppingCartSession.ShoppingCartItems cannot be null");
             }
-            if (shoppingCart.Customer == null)
-            {
-                throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
-            }
+
 
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
@@ -62,7 +59,7 @@ namespace EImece.Domain.Services
             //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
             request.ConversationId = string.Format("c-{0}-p-{1}",
                 customer.Id.ToString(),
-                string.Join(",", shoppingCart.ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
+                string.Join(",", shoppingCart.ShoppingCartItems.Select(r=>r.Product.Id).ToArray()));
 
 
             request.Currency = Currency.TRY.ToString();

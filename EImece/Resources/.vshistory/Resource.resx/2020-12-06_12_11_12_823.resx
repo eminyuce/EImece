@@ -970,7 +970,7 @@
     <value>Öne Çıkan Blog Yazisi</value>
   </data>
   <data name="IsPermissionGrantedDescription" xml:space="preserve">
-    <value>Önemli kampanyalardan e-posta ile haberdar olmak istiyorum.</value>
+    <value>Önemli kampanyalardan eposta ile haberdar olmak istiyorum.</value>
   </data>
   <data name="IsProductPriceEnable" xml:space="preserve">
     <value>Ürün Fiyatı Etkin mi?</value>

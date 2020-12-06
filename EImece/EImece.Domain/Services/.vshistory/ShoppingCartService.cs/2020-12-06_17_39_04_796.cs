@@ -77,7 +77,7 @@ namespace EImece.Domain.Services
             }
             if (checkoutForm == null)
             {
-                throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
+                throw new ArgumentNullException("CheckoutForm is null");
             }
             int shippingAddressId = shoppingCart.ShippingAddress.Id;
             int billingAddressId = shoppingCart.BillingAddress.Id;

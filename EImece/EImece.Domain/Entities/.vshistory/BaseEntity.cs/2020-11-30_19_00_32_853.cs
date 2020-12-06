@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
-    [Serializable]
     public abstract class BaseEntity : IEntity<int>
     {
         [Key]

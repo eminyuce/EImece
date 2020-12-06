@@ -1,12 +1,10 @@
 ﻿using Resources;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
-    [Serializable]
     public class Setting : BaseEntity
     {
         [AllowHtml]
