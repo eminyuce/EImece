@@ -18,11 +18,7 @@
      status-publish has-post-thumbnail hentry
      @filters @tagsText" id="post-@fileStorage.Id" style="position: absolute; left: 320px; top: 0px;">
 
-    <figure>
-        <div class="portfolio-holder">
-                @Html.Raw(fileStorage.GetCroppedImageUrl(fileStorage.Id, Width, Height))
-                <div class="hover-icon"></div>
-        </div>
-    </a>
-</figure>
+
 </div>
+
+<img src="@Html.Raw(fileStorage.GetCroppedImageUrl(fileStorage.Id, Width, Height))" class="img-thumbnail rounded" alt="Rounded image">

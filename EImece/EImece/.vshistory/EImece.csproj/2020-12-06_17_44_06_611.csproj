@@ -1203,7 +1203,6 @@
     <Content Include="Views\Payment\ThankYouForYourOrder.cshtml" />
     <Content Include="Views\Payment\NoSuccessForYourOrder.cshtml" />
     <Content Include="Views\Shared\_Navigation.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\FileStorageThumbnails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

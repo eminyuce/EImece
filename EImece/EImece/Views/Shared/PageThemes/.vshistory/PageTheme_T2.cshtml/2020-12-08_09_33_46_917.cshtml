@@ -39,33 +39,40 @@
     </div>
 </div>
 
+
 <div class="container">
     <!-- Row-->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 px-3 px-md-5">
             <div class="mx-auto py-lg-5">
                 <img src="@Html.Raw(menu.GetCroppedImageUrl(menu.MainImageId,0, 0))" class="img-thumbnail rounded" alt="Rounded image">
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 px-3 px-md-5">
             <div class="mx-auto py-lg-5" style="max-width: 35rem;">
                 <h2 class="h3 pb-3">@menu.Name</h2>
                 @Html.Raw(menu.Description)
             </div>
         </div>
     </div>
-    @if (files.IsNotEmpty())
-    {
 
-        <!-- Row-->
-        <div class="row">
-            @for (int i = 0; i < files.Count; i++)
-            {
-                var f = files[i].FileStorage;
-                <div class="col-md-4 mb-2">
-                    @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
-                </div>
-            }
+</div>
+
+<div class="container">
+    <!-- Row-->
+    <div class="row no-gutters">
+        <div class="col-md-12 px-3 px-md-5">
+            <div class="mx-auto py-lg-5" style="max-width: 35rem;">
+                @if (files.IsNotEmpty())
+                {
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var f = files[i].FileStorage;
+                        @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+
+                    }
+                }
+            </div>
         </div>
-    }
+    </div>
 </div>

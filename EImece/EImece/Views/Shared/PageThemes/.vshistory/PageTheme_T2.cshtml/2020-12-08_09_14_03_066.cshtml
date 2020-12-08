@@ -1,0 +1,100 @@
+﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+@{
+
+    var menu = Model.Menu;
+    var files = menu.MenuFiles.ToList();
+    ViewBag.Title = menu.GetSeoTitle();
+    ViewBag.Description = menu.GetSeoDescription();
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
+
+    int Width = ViewData["Width"].ToInt(300);
+    int Height = ViewData["Height"].ToInt(214);
+    var imgTag = menu.GetCroppedImageTag(Width, Height);
+}
+
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        @menu.Name
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+
+
+<div class="container-fluid px-0">
+    <!-- Row-->
+    <div class="row no-gutters">
+        <div class="col-md-6 bg-position-center bg-size-cover bg-secondary"
+             style="min-height: 15rem; background-image: url( @Html.Raw(menu.GetCroppedImageTag(300, 0)));">
+            <span class="split-section-arrow arrow-left"></span>
+        </div>
+        <div class="col-md-6 px-3 px-md-5 py-5">
+            <div class="mx-auto py-lg-5" style="max-width: 35rem;">
+                <h2 class="h3 pb-3">@menu.Name</h2>
+                @Html.Raw(menu.Description)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container pb-5 mb-4">
+    <div class="row">
+        <div class="col-lg-3">
+           
+        </div>
+        <div class="col-lg-9">
+            <!-- Toolbar-->
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                        <div class="button-group tabs">
+                           
+                        </div>
+                    </div>
+                </div>
+                @if (files.IsNotEmpty())
+                {
+                    <div class="d-flex flex-wrap">
+                        <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                            <div class="button-group tabs">
+                                <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+                                    @for (int i = 0; i < files.Count; i++)
+                                    {
+                                        var f = files[i].FileStorage;
+                                        @Html.DisplayFor(modelItem => f, "FileStorage")
+
+                                        <!-- Rounded thumbnail -->
+                                        <img src="path-to-image" class="img-thumbnail rounded" alt="Rounded image">
+
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

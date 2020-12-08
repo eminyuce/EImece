@@ -10,7 +10,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
-    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r=>r.Position).ToList();
 
 }
 <!-- Footer-->
@@ -49,6 +49,7 @@
                                 <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
                             }
                         </ul>
+
                     </div>
                     <div class="widget widget-links pb-4">
                         <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
@@ -60,6 +61,7 @@
                                     <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
                                 }
                             }
+
                         </ul>
                     </div>
                 </div>
@@ -69,11 +71,11 @@
                         <h3 class="widget-title text-white border-light">@Resource.StayInformed</h3>
                         @Html.Partial("_AddSubscriber", Model)
                     </div>
-                  
                 </div>
             </div>
         </div>
     </div>
+    
 
     <div class="py-3" style="background-color: #1a1a1a;">
         <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>

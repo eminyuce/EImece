@@ -20,9 +20,9 @@
 
     <figure>
         <div class="portfolio-holder">
-                @Html.Raw(fileStorage.GetCroppedImageUrl(fileStorage.Id, Width, Height))
-                <div class="hover-icon"></div>
+            <!-- Rounded thumbnail -->
+            <img src="@Html.Raw(fileStorage.GetCroppedImageUrl(fileStorage.Id, Width, Height))" class="img-thumbnail rounded" alt="Rounded image">
+            <div class="hover-icon"></div>
         </div>
-    </a>
 </figure>
 </div>
