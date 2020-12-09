@@ -44,28 +44,29 @@
     <div class="row">
         <div class="col-md-12">
             <div class="text-center">
-                <img src="@Html.Raw(menu.GetCroppedImageUrl(menu.MainImageId,0, 500))" class="img-thumbnail rounded" alt="Rounded image">
+
             </div>
+            <img src="@Html.Raw(menu.GetCroppedImageUrl(menu.MainImageId,0, 500))" class="img-thumbnail rounded" alt="Rounded image">
         </div>
     </div>
     <!-- Row-->
     <div class="row">
         <div class="col-md-12">
-            @Html.Raw(menu.Description)
+                @Html.Raw(menu.Description)
         </div>
     </div>
     <!-- Row-->
     <div class="row">
-        @if (files.IsNotEmpty())
-        {
-            <!-- Row-->
-            for (int i = 0; i < files.Count; i++)
+            @if (files.IsNotEmpty())
             {
-                var f = files[i].FileStorage;
-                <div class="col-md-3">
-                    @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
-                </div>
+                <!-- Row-->
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var f = files[i].FileStorage;
+                        <div class="col-md-3">
+                            @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+                        </div>
+                    }
             }
-        }
     </div>
 </div>

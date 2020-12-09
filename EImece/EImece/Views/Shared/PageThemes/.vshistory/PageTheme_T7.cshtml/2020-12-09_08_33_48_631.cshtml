@@ -42,20 +42,6 @@
 <div class="container">
     <!-- Row-->
     <div class="row">
-        <div class="col-md-12">
-            <div class="text-center">
-                <img src="@Html.Raw(menu.GetCroppedImageUrl(menu.MainImageId,0, 500))" class="img-thumbnail rounded" alt="Rounded image">
-            </div>
-        </div>
-    </div>
-    <!-- Row-->
-    <div class="row">
-        <div class="col-md-12">
-            @Html.Raw(menu.Description)
-        </div>
-    </div>
-    <!-- Row-->
-    <div class="row">
         @if (files.IsNotEmpty())
         {
             <!-- Row-->
@@ -65,6 +51,20 @@
                 <div class="col-md-3">
                     @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
                 </div>
+
+                <div class="col-sm-6">
+                    <a href="path-to-large-image" class="gallery-item mb-grid-gutter" data-fancybox="gallery1" data-options='{"caption": "Gallery image caption #1"}'>
+                        <img src="path-to-small-image" alt="Gallery image">
+                        <div class="gallery-caption">
+                            <div class="gallery-indicator">
+                                <i class="gallery-indicator-icon" data-feather="zoom-in"></i>
+                            </div>
+                            I'm gallery caption
+                        </div>
+                    </a>
+                </div>
+
+
             }
         }
     </div>

@@ -2,10 +2,9 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
-@using EImece.Domain.Entities;
 @using Resources;
 @{
-    FileStorage fileStorage = Model;
+    EImece.Domain.Entities.FileStorage fileStorage = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var tags = fileStorage.FileStorageTags.Select(r1 => r1.Tag).Distinct().ToList();
     string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));

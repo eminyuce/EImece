@@ -39,33 +39,41 @@
     </div>
 </div>
 
-<div class="container">
-    <!-- Row-->
+<div class="container pb-5 mb-4">
     <div class="row">
-        <div class="col-md-12">
-            <div class="text-center">
-                <img src="@Html.Raw(menu.GetCroppedImageUrl(menu.MainImageId,0, 500))" class="img-thumbnail rounded" alt="Rounded image">
-            </div>
+        <div class="col-lg-3">
+            @Html.Raw(menu.GetCroppedImageTag(300, 0))
         </div>
-    </div>
-    <!-- Row-->
-    <div class="row">
-        <div class="col-md-12">
-            @Html.Raw(menu.Description)
-        </div>
-    </div>
-    <!-- Row-->
-    <div class="row">
-        @if (files.IsNotEmpty())
-        {
-            <!-- Row-->
-            for (int i = 0; i < files.Count; i++)
-            {
-                var f = files[i].FileStorage;
-                <div class="col-md-3">
-                    @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+        <div class="col-lg-9">
+            <!-- Toolbar-->
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+                <div class="d-flex flex-wrap">
+                    <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                        <div class="button-group tabs">
+                            @Html.Raw(menu.Description)
+                        </div>
+                    </div>
                 </div>
-            }
-        }
+                @if (files.IsNotEmpty())
+                {
+                    <div class="d-flex flex-wrap">
+                        <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
+                            <div class="button-group tabs">
+                                <div id="portfolio-wrapper" class="pf-col3" style="position: relative; height: 972.843px;">
+                                    @for (int i = 0; i < files.Count; i++)
+                                    {
+                                        var f = files[i].FileStorage;
+                                        @Html.DisplayFor(modelItem => f, "FileStorage")
+                                    }
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+        </div>
     </div>
 </div>
+
+ 
