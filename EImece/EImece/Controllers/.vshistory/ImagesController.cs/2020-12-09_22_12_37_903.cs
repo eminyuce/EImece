@@ -17,7 +17,7 @@ namespace EImece.Controllers
 {
     public class ImagesController : BaseController
     {
-       
+        private const string DefaultImageText = "X";
         private ICacheProvider _memoryCacheProvider { get; set; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -124,7 +124,7 @@ namespace EImece.Controllers
 
             if (width == 0 && height > 0)
             {
-                width = height;
+                width = width;
             }
          
             if (height == 0)
@@ -132,7 +132,10 @@ namespace EImece.Controllers
                 height = width;
             }
        
-            return this.File(FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height), "image/Jpeg");
+            //image stream
+            FileContentResult img = null;
+
+            return this.File(FilesHelper.GenerateDefaultImg(DefaultImageText, width, height), "image/Jpeg");
         }
 
         public ActionResult GetModifiedImage(String id, String imageSize)

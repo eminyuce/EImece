@@ -95,7 +95,7 @@
       .RenderValueAs(d =>
                                     @<div>
 
-                                        @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
+                                        @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
                                         @if (!string.IsNullOrEmpty(d.NameLong))
                                              {
                                             <div>

@@ -106,7 +106,7 @@ namespace EImece.Domain
         public const string PageThemeT3 = "T3";
         public const string PageThemeT2 = "T2";
         public const string PageThemeT1 = "T1";
-        public const string DefaultImageText = "X";
+
         public static object DeleteButtonHtmlAttribute
         {
             get

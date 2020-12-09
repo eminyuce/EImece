@@ -132,6 +132,9 @@ namespace EImece.Controllers
                 height = width;
             }
        
+            //image stream
+            FileContentResult img = null;
+
             return this.File(FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height), "image/Jpeg");
         }
 
