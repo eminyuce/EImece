@@ -1,0 +1,217 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Models.AdminModels;
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@model MediaAdminIndexModel
+
+@{
+    ViewBag.Title = "Index";
+    var baseContent = Model.BaseContent;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "Media";
+    var title = "Medias";
+    var gridName = "MediaGrid";
+    var contents = Model.FileStorages;
+    var baseList = contents.DownCasting<FileStorage>();
+
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+
+    var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
+    filesHelper.InitFilesMediaFolder();
+
+}
+<style>
+    .myslider {
+        width: 3em;
+        height: 1.6em;
+        top: 50%;
+        margin-top: -.8em;
+        text-align: center;
+        line-height: 1.6em;
+    }
+</style>
+
+<div class="form-horizontal">
+
+    @Html.Partial("_pBackButtonLink", Model)
+</div>
+
+@Html.HiddenFor(r => Model.Id)
+@Html.HiddenFor(r => Model.ImageType)
+@Html.HiddenFor(r => Model.MediaMod)
+@Html.HiddenFor(r => Model.Lang)
+<!-- Warning Alert -->
+<div class="alert alert-info">
+    <strong>Dikkat!</strong>  5 den fazla resim tasarımınızı kötüleştirebilir.
+</div>
+<!-- blueimp File Upload & Gallery styles -->
+@Styles.Render("~/Content/jQuery-File-Upload")
+
+<script>
+    var $form = null;
+
+    $('#fileupload').addClass('fileupload-processing');
+    $(function () {
+
+        $form = $('#fileupload').fileupload({
+            dataType: 'json'
+        });
+        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+
+            console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
+            data.formData = {
+                contentId: $("#Id").val(),
+                imageType: $("#ImageType").val(),
+                mod: $("#MediaMod").val(),
+                imageHeight: $("#sliderHeight").slider("option", "value"),
+                imageWidth: $("#sliderWidth").slider("option", "value"),
+                selectedTags: GetSelectedTag()
+            }
+        });
+
+        $("#target").click(function () {
+            console.log(GetSelectedTag());
+        });
+        function GetSelectedTag() {
+            var arr = [];
+            $('[data-image-tag]').each(function () {
+                var m = $(this).is(':checked');
+                if (m) {
+                    arr.push($(this).val());
+                }
+            });
+
+            return arr;
+        }
+        CreateTags();
+        function CreateTags() {
+            var postData = JSON.stringify({ "language": $("#Lang").val() });
+            console.log(postData);
+            ajaxMethodCall(postData, "/admin/Ajax/GetTags", function (data) {
+                $("#imageTagsHtml").html(data);
+            });
+        }
+
+    });
+</script>
+
+<div class="panel with-nav-tabs panel-default">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.FileUploadingSection</a></li>
+            <li><a href="#tab2default" data-toggle="tab">@AdminResource.UploadedFilesSection</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="tab1default">
+
+                <div class="row">
+                    <div style="border:2px black" class="col-md-2">
+                        <div id="imageTagsHtml">
+                        </div>
+                    </div>
+                    <div style="border:2px black" class="col-md-9">
+                        <div class="form-horizontal">
+                            @Html.Partial("pSliderResizing", baseContent)
+                        </div>
+                        @Html.Partial("_Files")
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab2default">
+
+                @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+            {"controllerName",controllerName}
+           ,{"StateTypes","State"}
+           ,{"IsNewRecordButtonEnabled",false}
+           ,{"orderingButton",true}
+           ,{"selectAll",true}
+           ,{"deleteAll",false}
+            ,{"SetStateOnOrOff",true}})
+
+                <div class="panel panel-primary">
+                    @Html.Partial("pGridDropDown", baseList)
+                    @Html.Grid(contents).Named(gridName).Columns(columns =>
+               {
+
+                   columns.Add().Encoded(false).
+                           Sanitized(false)
+                                          .RenderValueAs(d => Html.Partial("pGridCheckbox", 
+                                          new ViewDataDictionary(ViewData){
+            {"ItemId",String.Format("{0}", d.Id)}}));
+
+                   columns.Add(o => o.Id, true);
+
+                   columns.Add()
+                     .Encoded(false)
+                     .Sanitized(false)
+                     .RenderValueAs(d => ImageLinkColumn(d, filesHelper));
+
+                    columns.Add(o => o.Position).Titled(AdminResource.Position)
+                      .Encoded(false).
+                           Sanitized(false).
+                           SetWidth(10).
+                           RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+
+                   columns.Add(o => o.IsActive)
+                              .Titled(AdminResource.IsActive)
+                          .Sortable(true)
+                          .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+                           Sanitized(false)
+                          .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+                                                            o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+
+                   columns.Add(o => o.UpdatedDate)
+                              .Titled(AdminResource.UpdatedDate)
+                          .Sortable(true)
+                          .Css("gridDateClass")
+                          .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
+                          .SortInitialDirection(GridSortDirection.Descending);
+
+               }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jQuery-File-Upload")
+
+@helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
+{
+    var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
+    <div class="row">
+        <div class="col-md-6">
+            <img src=@fileStorage.GetAdminCroppedImageUrl(150,0)>
+            <a href=@String.Format("/media/images/{0}", fileStorage.FileName)
+               title="@fileStorage.FileName"
+               download="@fileStorage.FileName"
+               data-gallery="">
+            </a>
+            <div>
+                @fileStorage.FileName
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
+                <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Full Image</a>
+            </div>
+            <div>
+                @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
+                <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Thumps Image</a>
+            </div>
+        </div>
+    </div>
+}

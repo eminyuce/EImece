@@ -4,9 +4,11 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using NLog;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -15,6 +17,18 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private FilesHelper filesHelper;
+
+        private Dictionary<string,string> CurrentSelectedModul
+        {
+            get
+            {
+                return (Dictionary<string, string>)Session["CurrentSelectedModul"];
+            }
+            set
+            {
+                Session["CurrentSelectedModul"] = value;
+            }
+        }
 
         public MediaController(FilesHelper filesHelper)
         {
@@ -25,6 +39,12 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/Media
         public ActionResult Index(int contentId, String mod, String imageType)
         {
+            var currentSelectedModul = new Dictionary<string, string>();
+            currentSelectedModul.Add("contentId", contentId+"");
+            currentSelectedModul.Add("mod", mod);
+            currentSelectedModul.Add("imageType", imageType);
+            CurrentSelectedModul = currentSelectedModul;
+
             int id = contentId;
             var returnModel = new MediaAdminIndexModel();
             MediaModType? enumMod = EnumHelper.Parse<MediaModType>(mod);
@@ -122,6 +142,40 @@ namespace EImece.Areas.Admin.Controllers
             filesHelper.DeleteFile(file, CurrentContext);
 
             return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [DeleteAuthorize()]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var fileStorage = FileStorageService.GetSingle(id);
+            if (fileStorage == null)
+            {
+                return HttpNotFound();
+            }
+            try
+            {
+                FileStorageService.DeleteFileStorage(id);
+                return RedirectToAction("Index",
+                    new { 
+                    contentId=CurrentSelectedModul["contentId"],
+                    mod = CurrentSelectedModul["mod"],  
+                    imageType = CurrentSelectedModul["imageType"] }
+                );
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to delete fileStorage:" + ex.StackTrace, fileStorage);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
     }
 }

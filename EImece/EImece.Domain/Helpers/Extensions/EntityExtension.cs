@@ -210,10 +210,10 @@ namespace EImece.Domain.Helpers.Extensions
             return GeneralHelper.Capitalize(value);
         }
 
-        public static String GetSeoDescription(this BaseContent entity, int length = 150)
+        public static string GetSeoDescription(this BaseContent entity, int length = 150)
         {
             var result = string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
-            if (String.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
             {
                 var SettingService = DependencyResolver.Current.GetService<ISettingService>();
                 result = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
@@ -221,10 +221,10 @@ namespace EImece.Domain.Helpers.Extensions
             return result;
         }
 
-        public static String GetSeoKeywords(this BaseContent entity, int length = 150)
+        public static string GetSeoKeywords(this BaseContent entity, int length = 150)
         {
             var result = string.Format("{0}", entity.MetaKeywords.ToStr(255));
-            if (String.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
             {
                 //TODO: Missing keywords.
                 var SettingService = DependencyResolver.Current.GetService<ISettingService>();
@@ -233,44 +233,44 @@ namespace EImece.Domain.Helpers.Extensions
             return result;
         }
 
-        public static String GetImageTag(this BaseContent entity)
+        public static string GetImageTag(this BaseContent entity)
         {
-            String imageTag = "";
+            string imageTag = "";
             if (entity != null && entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
 
             {
-                String imagePath = GetFullPathImageUrlFromFileSystem(entity, false);
-                imageTag = String.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
+                string imagePath = GetFullPathImageUrlFromFileSystem(entity, false);
+                imageTag = string.Format("<img src='{0}' alt='{1}'/>", imagePath, entity.Name).ToLower();
             }
 
             return imageTag;
         }
 
-        public static String GetThumpImageTag(this BaseContent entity)
+        public static string GetThumpImageTag(this BaseContent entity)
         {
-            String imageTag = "";
+            string imageTag = "";
 
             if (entity != null && entity.MainImageId.HasValue && entity.MainImage != null && entity.MainImageId.Value != 0 && entity.ImageState)
             {
-                String partThumb2 = GetFullPathImageUrlFromFileSystem(entity, true);
-                imageTag = String.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
+                string partThumb2 = GetFullPathImageUrlFromFileSystem(entity, true);
+                imageTag = string.Format("<img src='{0}' alt='{1}'/>", partThumb2, entity.Name).ToLower();
             }
 
             return imageTag;
         }
 
-        public static String GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
+        public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
             try
             {
                 if (entity != null && entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
                 {
-                    String imagePath = Constants.UrlBase + entity.MainImage.FileName;
+                    string imagePath = Constants.UrlBase + entity.MainImage.FileName;
                     if (isThump)
                     {
-                        String fileName = entity.MainImage.FileName;
-                        String partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                        String partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                        string fileName = entity.MainImage.FileName;
+                        string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                        string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
                         imagePath = partThumb2;
                     }
                     return imagePath;
@@ -284,9 +284,9 @@ namespace EImece.Domain.Helpers.Extensions
             return String.Empty;
         }
 
-        public static String GetCroppedImageTag(this BaseContent entity, int width, int height)
+        public static string GetCroppedImageTag(this BaseContent entity, int width, int height)
         {
-            String imageTag = "";
+            string imageTag = "";
            if (entity != null &&  entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
             {
                     imageTag = GetCroppedImageTag(entity, entity.MainImageId.Value, width, height);
@@ -332,7 +332,7 @@ namespace EImece.Domain.Helpers.Extensions
             if (entity != null && fileStorageId > 0)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                var imageSize = String.Format("w{0}h{1}", width, height);
+                var imageSize = string.Format("w{0}h{1}", width, height);
                 return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" }); ;
             }
             return AppConfig.GetDefaultImage(width, height);
@@ -361,7 +361,7 @@ namespace EImece.Domain.Helpers.Extensions
             if (fileStorage != null)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                var imageId = String.Format("{0}.jpg", fileStorage.Id);
+                var imageId = string.Format("{0}.jpg", fileStorage.Id);
                 String imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
                 return imagePath;
             }

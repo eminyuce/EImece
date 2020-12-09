@@ -16,8 +16,7 @@
 
     int Width = ViewData["Width"].ToInt(300);
     int Height = ViewData["Height"].ToInt(214);
-    var imgTag = menu.GetCroppedImageTag(Width, Height);
-    var imgMenuUrl = menu.GetCroppedImageUrl(menu.MainImageId, 0, 0);
+    var imgMenuUrl = menu.ImageState ?  menu.GetCroppedImageUrl(menu.MainImageId, 0, 0) : "";
 }
 
 <div class="page-title-wrapper" aria-label="Page title">
@@ -43,7 +42,7 @@
 <div class="container">
     <!-- Row-->
     <div class="row">
-        @if (string.IsNullOrEmpty(imgMenuUrl))
+        @if (!string.IsNullOrEmpty(imgMenuUrl))
         {
             <div class="col-md-4">
                 <div>

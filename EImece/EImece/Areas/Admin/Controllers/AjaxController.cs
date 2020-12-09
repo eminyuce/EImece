@@ -128,7 +128,6 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteProductCommentGridItem(List<String> values)
@@ -139,6 +138,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+       
 
         [HttpPost]
         [DeleteAuthorize()]

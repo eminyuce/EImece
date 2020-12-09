@@ -87,48 +87,46 @@
                       .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-
        columns.Add(c => c.Name)
           .Titled(AdminResource.Name)
           .Filterable(true)
            .Encoded(false)
             .Sanitized(false)
       .RenderValueAs(d =>
-                            @<div>
+                                    @<div>
 
-    @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
-    @if (!string.IsNullOrEmpty(d.NameLong))
-         {
-        <div>
-            @string.Format("{0}", d.NameLong)
-        </div>
-         }
-    <div>
-        @GridToolsColumnAlt(d, controllerName)
-    </div>
-</div>
+                                        @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
+                                        @if (!string.IsNullOrEmpty(d.NameLong))
+                                             {
+                                            <div>
+                                                @string.Format("{0}", d.NameLong)
+                                            </div>
+                                             }
+                                        <div>
+                                            @GridToolsColumnAlt(d, controllerName)
+                                        </div>
+                                    </div>
 
-);
+                        );
 
-if (isProductPriceEnable.SettingValue.ToBool(true))
-{
-columns.Add(c => c.Price).
-Titled(AdminResource.Price).
-Sanitized(false).
-Sortable(true).
-Encoded(false).
-RenderValueAs(o => DisplayPriceColumn(o));
+                        if (isProductPriceEnable.SettingValue.ToBool(true))
+                        {
+                        columns.Add(c => c.Price).
+                        Titled(AdminResource.Price).
+                        Sanitized(false).
+                        Sortable(true).
+                        Encoded(false).
+                        RenderValueAs(o => DisplayPriceColumn(o));
 
-}
+                        }
 
-columns.Add(c => c.ProductCode)
-.Titled(AdminResource.ProductCode);
+                        columns.Add(c => c.ProductCode)
+                        .Titled(AdminResource.ProductCode);
 
-columns.Add(o => o.Position).Titled(AdminResource.Position)
-.Encoded(false).
-Sanitized(false).
-Css("smallGridColumn").
-        @*SetWidth(10). *@
+                        columns.Add(o => o.Position).Titled(AdminResource.Position)
+                        .Encoded(false).
+                        Sanitized(false).
+                        Css("smallGridColumn").
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
@@ -210,7 +208,7 @@ columns.Add(r => r.ImageState)
         <ul>
             <li>
                 <b style="font-size:0.8em;">
-                  
+
                     @AdminResource.NoImage
                 </b>
             </li>
@@ -245,7 +243,7 @@ columns.Add(r => r.ImageState)
            {"controllerName",controllerName},
            { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
            { "ItemDescription", d.Name }
-           
+
            })
             </span>
         }

@@ -90,8 +90,11 @@ $(document).ready(function () {
     function GetSelectedStateValues(checkboxName, state) {
         var itemArray = new Array();
         var i = 0;
-        $('span[name=' + checkboxName + ']').each(function () {
+        var checkboxId = 'span[name=' + checkboxName + ']';
+ 
+        $(checkboxId).each(function () {
             var id = $(this).attr("gridkey-id");
+            console.log(id);
             var m = $('input[name="checkboxGrid"]').filter('[gridkey-id="' + id + '"]').is(':checked');
             if (m) {
                 var item = new OrderingItem();
@@ -123,7 +126,7 @@ $(document).ready(function () {
     });
 
     $("#SetStateOffAll").click(function () {
-        //  console.log("SetStateOffAll is clicked.");
+        console.log("SetStateOffAll is clicked.");
         changeState(false);
     });
     $("#SetStateOnAll").click(function () {
