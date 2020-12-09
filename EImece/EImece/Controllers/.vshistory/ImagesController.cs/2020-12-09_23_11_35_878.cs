@@ -198,7 +198,7 @@ namespace EImece.Controllers
 
             try
             {
-                img = this.File(FilesHelper.GenerateCaptchaImg(captcha, true), ContentType);
+                img = this.File(FilesHelper.GenerateCaptchaImg(captcha, true), "image/Jpeg");
             }
             catch
             {
