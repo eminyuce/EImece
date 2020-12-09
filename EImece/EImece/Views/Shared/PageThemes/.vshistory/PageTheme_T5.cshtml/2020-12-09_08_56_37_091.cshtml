@@ -41,17 +41,19 @@
 </div>
 
 <div class="container">
+
     @if (string.IsNullOrEmpty(imgMenuUrl))
     {
         <!-- Row-->
         <div class="row">
             <div class="col-md-12">
                 <div class="text-center">
-                    <img src="@imgMenuUrl" class="img-thumbnail rounded">
+                    <img src="@imgMenuUrl" class="img-thumbnail rounded" alt="Rounded image">
                 </div>
             </div>
         </div>
     }
+
 
     <!-- Row-->
     <div class="row">
