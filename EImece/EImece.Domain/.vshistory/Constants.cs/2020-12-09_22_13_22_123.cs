@@ -39,11 +39,7 @@ namespace EImece.Domain
         public const string WebSiteCompanyEmailAddress = "WebSiteCompanyEmailAddress";
         public const string DefaultImageHeight = "DefaultImageHeight";
         public const string DefaultImageWidth = "DefaultImageWidth";
-
-        public const string FooterEmailListDescription = "FooterEmailListDescription";
-        public const string FooterHtmlDescription = "FooterHtmlDescription";
-        public const string FooterDescription = "FooterDescription";
-
+     
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
         public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string GoogleMapScript = "GoogleMapScript";
@@ -134,7 +130,5 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
-
-      
     }
 }

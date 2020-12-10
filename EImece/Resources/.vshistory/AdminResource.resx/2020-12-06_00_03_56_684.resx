@@ -1092,7 +1092,4 @@
   <data name="EditorUserRoleDescription" xml:space="preserve">
     <value>Bütün yetkiler olup, sadece silme yetkisi yoktur.</value>
   </data>
-  <data name="FooterHtmlDescription" xml:space="preserve">
-    <value>Footer Html İçerik</value>
-  </data>
 </root>

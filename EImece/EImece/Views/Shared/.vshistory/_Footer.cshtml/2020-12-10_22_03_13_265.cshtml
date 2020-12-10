@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
+    @if (footerModel.FooterHtmlDescription != null)
     {
         <div class="py-3" style="background-color: #1a1a1a;">
             @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)

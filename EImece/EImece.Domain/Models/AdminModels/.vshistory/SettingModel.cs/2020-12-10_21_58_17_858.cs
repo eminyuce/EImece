@@ -22,7 +22,6 @@ namespace EImece.Domain.Models.AdminModels
         public string FooterEmailListDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterHtmlDescription))]
-        [AllowHtml]
         public string FooterHtmlDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]

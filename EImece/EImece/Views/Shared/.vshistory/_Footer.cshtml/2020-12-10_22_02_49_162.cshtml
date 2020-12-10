@@ -74,12 +74,14 @@
             </div>
         </div>
     </div>
-    @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
+    @if (footerModel.FooterHtmlDescription != null)
     {
-        <div class="py-3" style="background-color: #1a1a1a;">
-            @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
-        </div>
+<div class="py-3" style="background-color: #1a1a1a;">
+
+</div>
     }
+    
+
     <div class="py-3" style="background-color: #1a1a1a;">
         <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>
     </div>

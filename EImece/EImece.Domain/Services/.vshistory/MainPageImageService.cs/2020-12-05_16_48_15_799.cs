@@ -74,9 +74,8 @@ namespace EImece.Domain.Services
                 result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
                 result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
                 result.CompanyAddress = SettingService.GetSettingObjectByKey(Constants.CompanyAddress);
-                result.FooterDescription = SettingService.GetSettingObjectByKey(Constants.FooterDescription, language);
-                result.FooterEmailListDescription = SettingService.GetSettingObjectByKey(Constants.FooterEmailListDescription, language);
-                result.FooterHtmlDescription = SettingService.GetSettingObjectByKey(Constants.FooterHtmlDescription, language);
+                result.FooterDescription = SettingService.GetSettingObjectByKey("FooterDescription", language);
+                result.FooterEmailListDescription = SettingService.GetSettingObjectByKey("FooterEmailListDescription", language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;

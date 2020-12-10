@@ -11,8 +11,6 @@ namespace EImece.Domain.Models.FrontModels
         public Setting CompanyName { get; set; }      
         public Setting CompanyAddress { get; set; }
         public Setting FooterDescription { get; set; }
-        public Setting FooterHtmlDescription { get; set; }
-        
         public Setting FooterEmailListDescription { get; set; }
     }
 }

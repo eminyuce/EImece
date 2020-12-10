@@ -925,6 +925,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Footer Html İçerik.
+        /// </summary>
+        public static string FooterHtmlDescription {
+            get {
+                return ResourceManager.GetString("FooterHtmlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Footer Ayarlar.
         /// </summary>
         public static string FooterSettings {
