@@ -18,7 +18,7 @@
 @{
     var product = Model.Product;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    ViewBag.Title = product.GetProductSeoTitle();
+    ViewBag.Title = product.GetSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
     ViewBag.Keywords = product.GetSeoKeywords();
     Layout = "~/Views/Shared/_Layout.cshtml";

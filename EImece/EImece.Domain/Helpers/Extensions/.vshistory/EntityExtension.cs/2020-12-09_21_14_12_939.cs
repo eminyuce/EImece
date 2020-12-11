@@ -209,16 +209,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
             return GeneralHelper.Capitalize(value);
         }
-        public static String GetProductSeoTitle(this Product entity, int length = 50)
-        {
-            string name = string.IsNullOrEmpty(entity.NameLong) ? entity.Name : entity.NameLong;
-            string value = GeneralHelper.TruncateAtWord(name, length);
-            if (string.IsNullOrEmpty(value))
-            {
-                value = name;
-            }
-            return GeneralHelper.Capitalize(value);
-        }
+
         public static string GetSeoDescription(this BaseContent entity, int length = 150)
         {
             var result = string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));

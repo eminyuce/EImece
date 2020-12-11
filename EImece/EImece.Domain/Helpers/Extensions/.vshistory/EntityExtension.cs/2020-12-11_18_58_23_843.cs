@@ -211,11 +211,10 @@ namespace EImece.Domain.Helpers.Extensions
         }
         public static String GetProductSeoTitle(this Product entity, int length = 50)
         {
-            string name = string.IsNullOrEmpty(entity.NameLong) ? entity.Name : entity.NameLong;
-            string value = GeneralHelper.TruncateAtWord(name, length);
+            string value = GeneralHelper.TruncateAtWord(entity.Name, length);
             if (string.IsNullOrEmpty(value))
             {
-                value = name;
+                value = entity.Name;
             }
             return GeneralHelper.Capitalize(value);
         }
