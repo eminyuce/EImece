@@ -131,7 +131,13 @@
                                     </div>
                                 </div>
 
-
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -161,41 +167,34 @@
                                     @Html.HiddenFor(model => model.Price)
                                     @Html.HiddenFor(model => model.Discount)
                                 }
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                    </div>
-                                    <div class="col-md-3">
-                                        @Html.LabelFor(model => model.IsActive)
-                                        @Html.EditorFor(model => model.IsActive)
-                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="col-md-3">
-                                        @Html.LabelFor(model => model.MainPage)
-                                        @Html.EditorFor(model => model.MainPage)
-                                        @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="col-md-3">
-                                        @Html.LabelFor(model => model.IsCampaign)
-                                        @Html.EditorFor(model => model.IsCampaign)
-                                        @Html.ValidationMessageFor(model => model.IsCampaign, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+                            <div class="form-group">
 
-                                <div class="form-group">
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.IsActive)
+                                    @Html.EditorFor(model => model.IsActive)
+                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.MainPage)
+                                    @Html.EditorFor(model => model.MainPage)
+                                    @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.LabelFor(model => model.IsCampaign)
+                                    @Html.EditorFor(model => model.IsCampaign)
+                                    @Html.ValidationMessageFor(model => model.IsCampaign, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
                                     @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+                            </div>
+
+                                
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -279,14 +278,10 @@
 
 @helper GridToolsDeleteColumn(Product d, String controllerName)
 {
-    if (d.Id > 0)
-    {
-        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-                   { "ItemId", d.Id },
-                   {"controllerName",controllerName},
-                    {"gridDeleteText",string.Format("'{0}' ürünü silmek istiyorum",d.Name)},
-                   { "ItemDescription", d.Name }
-             });
-    }
-
+    @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+            { "ItemId", d.Id },
+            {"controllerName",controllerName},
+             {"gridDeleteText",string.Format("'{0}' ürünü silmek istiyorum",d.Name)},
+            { "ItemDescription", d.Name }
+      });
 }

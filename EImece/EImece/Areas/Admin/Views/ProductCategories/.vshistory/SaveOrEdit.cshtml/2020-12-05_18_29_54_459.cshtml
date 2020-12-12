@@ -177,20 +177,20 @@
                 </div>
             </div>
         }
-        <div class="row">
-            <div class="col-md-6">
-            </div>
-            <div class="col-md-2">
-                @Html.ActionLink(AdminResource.BackToList, "Index")
-            </div>
-            <div class="col-md-4">
-                @GridToolsDeleteColumn(productCategoryLeaves, Model, controllerName)
-            </div>
+    <div class="row">
+        <div class="col-md-6">
         </div>
+        <div class="col-md-2">
+            @Html.ActionLink(AdminResource.BackToList, "Index")
+        </div>
+        <div class="col-md-4">
+            @GridToolsDeleteColumn(productCategoryLeaves, Model, controllerName)
+        </div>
+    </div>
     </div>
 </div>
 
-
+ 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -222,21 +222,18 @@
 
 @helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
 {
-    if (d.Id > 0)
+    if (productCategoryLeaves.Any(r => r.Id == d.Id))
     {
-        if (productCategoryLeaves.Any(r => r.Id == d.Id))
-        {
-            @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-                { "ItemId", d.Id },
-                {"controllerName",controllerName},
-                 {"gridDeleteText",string.Format("'{0}' ürün kategorisini silmek istiyorum",d.Name)},
-                { "ItemDescription", d.Name }
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+            { "ItemId", d.Id },
+            {"controllerName",controllerName},  
+             {"gridDeleteText",string.Format("'{0}' ürün kategorisini silmek istiyorum",d.Name)},
+            { "ItemDescription", d.Name }
 
-       });
-        }
-        else
-        {
-            @String.Format("No Delete")
-        }
+   });
+    }
+    else
+    {
+        @String.Format("No Delete")
     }
 }
