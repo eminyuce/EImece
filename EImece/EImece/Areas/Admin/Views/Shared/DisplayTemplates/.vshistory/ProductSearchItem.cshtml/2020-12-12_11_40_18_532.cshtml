@@ -1,0 +1,25 @@
+﻿@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+
+@model  Product
+
+@{
+    var baseContent = Model;
+    int Width = ViewData["Width"].ToInt(150);
+    int Height = ViewData["Height"].ToInt(0);
+}
+
+
+
+<span class="searchItemTitle">
+    @Html.DisplayFor(model => baseContent.Name)
+</span>
+<span class="searchItemTitle">
+    @Html.DisplayFor(model => baseContent.NameLong)
+</span>
+<span class="searchItemTitle">
+    @Html.DisplayFor(model => baseContent.NameLong)
+</span>

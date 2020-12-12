@@ -7,16 +7,11 @@
     ViewBag.Title = AdminResource.Templates;
     var XmlEditorConfiguration = ViewBag.XmlEditorConfiguration;
 }
-@section Styles {
-    <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
-    <link href="~/Content/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
 
-}
 @section Scripts {
-    <script src="~/Scripts/codemirror/codemirror.js"></script>
-    <script src="~/Scripts/codemirror/xml/xml.js"></script>
-    <script src="~/Content/codemirror/addon/hint/show-hint.js"></script>
-    <script src="~/Content/codemirror/addon/hint/xml-hint.js"></script>
+    <script type="text/javascript">
+        alert("I'm a view.");
+    </script>
 }
 <h2>@AdminResource.Templates</h2>
 <hr class="adminLine" />

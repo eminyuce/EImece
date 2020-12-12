@@ -13,10 +13,6 @@
     var actionNameEdit = "SaveOrEdit";
     var controllerName = "";
     string itemTypeName = "";
-    var baseContent = Model;
-    int Width = ViewData["Width"].ToInt(150);
-    int Height = ViewData["Height"].ToInt(0);
-
     if (Model is Product)
     {
         Product product = (Product)Model;
@@ -47,10 +43,15 @@
         controllerName = "ProductCategories";
         itemTypeName = AdminResource.ProductCategory;
     }
+
+    int Width = ViewData["Width"].ToInt(150);
+    int Height = ViewData["Height"].ToInt(0);
+    var baseContent = Model;
+
 }
 
 <article class="search-result row">
-    <div class="col-xs-12 col-sm-12 col-md-2">
+    <div class="col-xs-12 col-sm-12 col-md-3">
 
         @if (baseContent.MainImageId > 0)
         {
@@ -66,36 +67,32 @@
         <ul class="meta-search">
             <li><i class="glyphicon glyphicon-calendar"></i> <span>@baseContent.UpdatedDate.ToShortDateString()</span></li>
             <li><i class="glyphicon glyphicon-tags"></i> <span>@itemTypeName</span></li>
-            <li>
-                <i class="glyphicon glyphicon-edit"></i>   @Html.ActionLink(gridEditText, actionNameEdit, controllerName,
-new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
-            </li>
         </ul>
     </div>
-    <div class="col-sm-12 col-md-8 excerpet">
-        <span class="searchItemTitle">
-            @if (baseContent is Product)
-            {
-                var p = (Product)baseContent;
-                @Html.Partial("BaseContentSearchItem/ProductSearchItem", p)
-            }
-            else
-            {
+    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+        <h3>
+            <span class="searchItemTitle">
                 @Html.DisplayFor(model => baseContent.Name)
-            }
-        </span>
-        <dl>
-            @if (!string.IsNullOrEmpty(baseContent.Description))
-            {
-                <dt>
-                    @Html.DisplayNameFor(model => baseContent.Description)
-                </dt>
-                <dd>
-                    @GeneralHelper.GetDescription(baseContent.Description, 300)
-                </dd>
-            }
-        </dl>
+            </span>
 
+            @Html.ActionLink(gridEditText, actionNameEdit, controllerName, new { id = baseContent.Id }, new { @class = "btn btn-link    ", @target = "_blank" })
+
+            @if (UserRoleHelper.IsDeletedEnableRoles())
+            {
+                <span>
+                    @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+               { "ItemId", baseContent.Id },
+               {"controllerName",controllerName},
+                {"actionName",actionNameDelete},
+               { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
+               { "ItemDescription", baseContent.Name } })
+                </span>
+
+            }
+        </h3>
+        <p>
+            @GeneralHelper.GetDescription(baseContent.Description, 200)
+        </p>
     </div>
     <span class="clearfix borda"></span>
 </article>

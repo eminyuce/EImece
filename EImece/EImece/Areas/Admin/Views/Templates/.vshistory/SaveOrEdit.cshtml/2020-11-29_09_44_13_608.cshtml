@@ -7,17 +7,6 @@
     ViewBag.Title = AdminResource.Templates;
     var XmlEditorConfiguration = ViewBag.XmlEditorConfiguration;
 }
-@section Styles {
-    <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
-    <link href="~/Content/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
-
-}
-@section Scripts {
-    <script src="~/Scripts/codemirror/codemirror.js"></script>
-    <script src="~/Scripts/codemirror/xml/xml.js"></script>
-    <script src="~/Content/codemirror/addon/hint/show-hint.js"></script>
-    <script src="~/Content/codemirror/addon/hint/xml-hint.js"></script>
-}
 <h2>@AdminResource.Templates</h2>
 <hr class="adminLine" />
 
@@ -27,7 +16,7 @@
 
     <div class="form-horizontal">
 
-        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+       @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
@@ -61,12 +50,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TemplateXml, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.TemplateXml, new
-                {
+                @Html.TextAreaFor(model => model.TemplateXml, new {
                @id = "code",
                @class = "form-control",
                @cols = "20",
-               @rows = "10"
+               @rows="10"
            })
             </div>
         </div>

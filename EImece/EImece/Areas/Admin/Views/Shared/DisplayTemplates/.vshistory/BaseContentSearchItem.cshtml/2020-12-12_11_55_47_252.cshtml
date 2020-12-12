@@ -50,7 +50,7 @@
 }
 
 <article class="search-result row">
-    <div class="col-xs-12 col-sm-12 col-md-2">
+    <div class="col-xs-12 col-sm-12 col-md-3">
 
         @if (baseContent.MainImageId > 0)
         {
@@ -66,13 +66,10 @@
         <ul class="meta-search">
             <li><i class="glyphicon glyphicon-calendar"></i> <span>@baseContent.UpdatedDate.ToShortDateString()</span></li>
             <li><i class="glyphicon glyphicon-tags"></i> <span>@itemTypeName</span></li>
-            <li>
-                <i class="glyphicon glyphicon-edit"></i>   @Html.ActionLink(gridEditText, actionNameEdit, controllerName,
-new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
-            </li>
         </ul>
     </div>
-    <div class="col-sm-12 col-md-8 excerpet">
+    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+           
         <span class="searchItemTitle">
             @if (baseContent is Product)
             {
@@ -83,8 +80,9 @@ new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
             {
                 @Html.DisplayFor(model => baseContent.Name)
             }
+            <br>
         </span>
-        <dl>
+        <p>
             @if (!string.IsNullOrEmpty(baseContent.Description))
             {
                 <dt>
@@ -94,8 +92,11 @@ new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
                     @GeneralHelper.GetDescription(baseContent.Description, 300)
                 </dd>
             }
-        </dl>
-
+        </p>
+        <p> 
+            @Html.ActionLink(gridEditText, actionNameEdit, controllerName,
+           new { id = baseContent.Id }, new { @class = "btn btn-default    ", @target = "_blank" })
+        </p>
     </div>
     <span class="clearfix borda"></span>
 </article>

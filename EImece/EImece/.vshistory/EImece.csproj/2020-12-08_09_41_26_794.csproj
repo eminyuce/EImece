@@ -992,7 +992,6 @@
     <Content Include="Areas\Admin\Views\ProductCategories\MoveProductCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\MoveMenuCategory.cshtml" />
     <Content Include="Areas\Amp\Views\Shared\_ProductSpecs.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\BaseContentSearchItem\ProductSearchItem.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />

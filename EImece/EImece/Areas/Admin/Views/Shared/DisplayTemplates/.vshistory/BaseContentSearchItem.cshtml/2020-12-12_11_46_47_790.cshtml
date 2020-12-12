@@ -1,0 +1,52 @@
+﻿@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+
+@model  BaseContent
+
+@{
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var actionNameDelete = "Delete";
+    var actionNameEdit = "SaveOrEdit";
+    var controllerName = "";
+    string itemTypeName = "";
+    var baseContent = Model;
+    int Width = ViewData["Width"].ToInt(150);
+    int Height = ViewData["Height"].ToInt(0);
+
+    if (Model is Product)
+    {
+        Product product = (Product)Model;
+        controllerName = "Products";
+        itemTypeName = AdminResource.Product;
+    }
+    else if (Model is Story)
+    {
+        Story item = (Story)Model;
+        controllerName = "Stories";
+        itemTypeName = AdminResource.Story;
+    }
+    else if (Model is Menu)
+    {
+        Menu item = (Menu)Model;
+        controllerName = "Menus";
+        itemTypeName = AdminResource.Menu;
+    }
+    else if (Model is StoryCategory)
+    {
+        StoryCategory item = (StoryCategory)Model;
+        controllerName = "StoryCategories";
+        itemTypeName = AdminResource.StoryCategory;
+    }
+    else if (Model is ProductCategory)
+    {
+        ProductCategory item = (ProductCategory)Model;
+        controllerName = "ProductCategories";
+        itemTypeName = AdminResource.ProductCategory;
+    }
+}
+
+ 

@@ -50,7 +50,7 @@
 }
 
 <article class="search-result row">
-    <div class="col-xs-12 col-sm-12 col-md-2">
+    <div class="col-xs-12 col-sm-12 col-md-3">
 
         @if (baseContent.MainImageId > 0)
         {
@@ -72,7 +72,8 @@ new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
             </li>
         </ul>
     </div>
-    <div class="col-sm-12 col-md-8 excerpet">
+    <div class="col-sm-12 col-md-7 excerpet">
+      
         <span class="searchItemTitle">
             @if (baseContent is Product)
             {
