@@ -1095,4 +1095,10 @@
   <data name="FooterHtmlDescription" xml:space="preserve">
     <value>Footer Html İçerik</value>
   </data>
+  <data name="ProductColorOptions" xml:space="preserve">
+    <value>Ürün Renk Seçenekleri</value>
+  </data>
+  <data name="ProductSizeOptions" xml:space="preserve">
+    <value>Ürün Ölçü Seçenekleri</value>
+  </data>
 </root>

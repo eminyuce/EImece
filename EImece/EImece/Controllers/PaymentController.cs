@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -79,18 +80,25 @@ namespace EImece.Controllers
             return PartialView("ShoppingCartTemplates/_HomePageShoppingCart", GetShoppingCart());
         }
 
-        public ActionResult AddToCart(int productId, int quantity, string orderGuid)
+        public ActionResult AddToCart(int productId, int quantity, string orderGuid, string productSpecItems)
         {
            
             var product = ProductService.GetProductById(productId);
             var shoppingCart = GetShoppingCart();
             shoppingCart.OrderGuid = orderGuid;
             var item = new ShoppingCartItem();
-            item.Product = new ShoppingCartProduct(product);
+            var selectedTotalSpecs = new List<ProductSpecItem>();
+            if (!string.IsNullOrEmpty(productSpecItems))
+            {
+                var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>(productSpecItems);
+                selectedTotalSpecs = ooo.selectedTotalSpecs;
+            }
+            item.Product = new ShoppingCartProduct(product, selectedTotalSpecs);
             item.Quantity = quantity;
             item.ShoppingCartItemId = Guid.NewGuid().ToString();
             shoppingCart.Add(item);
             SaveShoppingCart(shoppingCart);
+            PaymentLogger.Info(JsonConvert.SerializeObject(shoppingCart));
             return Json("", JsonRequestBehavior.AllowGet);
         }
 

@@ -1,0 +1,25 @@
+﻿@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@model  ShoppingCartSession
+@{
+    ShoppingCartSession shoppingCart = Model;
+    string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount + "") : "";
+    var userName = User.Identity.GetUserName();
+}
+
+<a id="ShoppingCartsLink" class="navbar-btn bg-0 my-3" href="@Url.Action("shoppingcart","payment")" data-toggle="offcanvas">
+    <span class="d-block position-relative">
+        <span class="navbar-btn-badge bg-primary text-light" id="ShoppingCartItemCount">@totalNumber</span>
+        <i class="mx-auto mb-1" data-feather="shopping-cart"></i>
+            @shoppingCart.TotalPrice.CurrencySign()
+</span>
+</a>

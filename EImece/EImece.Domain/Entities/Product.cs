@@ -52,7 +52,10 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsCampaign))]
         public Boolean IsCampaign { get; set; }
-
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductColorOptions))]
+        public String ProductColorOptions { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductSizeOptions))]
+        public String ProductSizeOptions { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public ICollection<ProductComment> ProductComments { get; set; }
         public ICollection<ProductFile> ProductFiles { get; set; }

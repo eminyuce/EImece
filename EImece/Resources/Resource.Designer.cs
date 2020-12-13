@@ -2726,6 +2726,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Rengi.
+        /// </summary>
+        public static string ProductColor {
+            get {
+                return ResourceManager.GetString("ProductColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Yorumları.
         /// </summary>
         public static string ProductComments {
@@ -2812,6 +2821,15 @@ namespace Resources {
         public static string ProductsInfo {
             get {
                 return ResourceManager.GetString("ProductsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boyutu.
+        /// </summary>
+        public static string ProductSize {
+            get {
+                return ResourceManager.GetString("ProductSize", resourceCulture);
             }
         }
         

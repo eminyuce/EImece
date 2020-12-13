@@ -1516,4 +1516,10 @@
   <data name="ThanksForSubscriptionTitle" xml:space="preserve">
     <value>Abonelik için teşekkürler</value>
   </data>
+  <data name="ProductColor" xml:space="preserve">
+    <value>Ürün Rengi</value>
+  </data>
+  <data name="ProductSize" xml:space="preserve">
+    <value>Boyutu</value>
+  </data>
 </root>

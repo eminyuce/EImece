@@ -176,7 +176,8 @@ namespace EImece.Domain.Services
                     OrderId = savedOrder.Id,
                     ProductId = shoppingCartItem.Product.Id,
                     Quantity = shoppingCartItem.Quantity,
-                    TotalPrice = shoppingCartItem.TotalPrice
+                    TotalPrice = shoppingCartItem.TotalPrice,
+                    ProductSpecItems = JsonConvert.SerializeObject(shoppingCartItem.Product.ProductSpecItems)
                 });
             }
         }

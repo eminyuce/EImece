@@ -4,8 +4,9 @@
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
+@using Newtonsoft.Json;
+@using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Models.FrontModels
 @model CustomerOrdersViewModel
 
 @{
@@ -103,6 +104,7 @@
                     }
                     @foreach (var orderProduct in order.OrderProducts)
                     {
+                        var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
                         var product = orderProduct.Product;
                         var imgTag = product.GetCroppedImageUrl(product.MainImageId, 160, 0);
                         <!-- Item-->
@@ -123,6 +125,18 @@
                                 <div class="text-muted mb-sm-2">Subtotal:</div>
                                 <div class="font-weight-semibold">@orderProduct.TotalPrice.CurrencySign()</div>
                             </div>
+                            @if (ProductSpecItems.IsNotEmpty())
+                            {
+                                <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
+                                    @foreach (var psi in ProductSpecItems)
+                                    {
+                                        <div class="text-muted mb-sm-2">@psi.SpecsName:</div>
+                                        <div class="font-weight-semibold">
+                                            @psi.SpecsValue  @psi.Quantity
+                                        </div>
+                                        }
+                                </div>
+                            }
                         </div>
                     }
                     <!-- Item-->
@@ -146,7 +160,7 @@
                     <div class="px-2 py-1"><span class="text-muted">@AdminResource.CargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.CargoPrice.CurrencySign()</span></div>
                     <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
                 </div>
-            </div>
+                </div>
         </div>
     </div>
 

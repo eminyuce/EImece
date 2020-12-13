@@ -28,11 +28,28 @@ function getOrderGuid() {
 
     return orderGuid;
 }
+ 
+
 $("#AddToCart").click(function () {
+    var nProductId = $("#productId").val();
+   
+    var selectedTotalSpecs = new Array();
+    $('[data-product-selected-specs=' + nProductId + ']').each(function () {
+        var obj = {
+            SpecsName: $(this).attr('name'),
+            SpecsValue: $(this).val(),
+            Quantity: $("#quantity").val()
+        };
+        selectedTotalSpecs.push(obj);
+    });
+   
     var postData = JSON.stringify({
-        productId: $("#productId").val(),
+        productId: nProductId,
         quantity: $("#quantity").val(),
-        orderGuid: getOrderGuid()
+        orderGuid: getOrderGuid(),
+        productSpecItems: JSON.stringify({
+            selectedTotalSpecs
+        })
     });
     console.log(postData);
     ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {

@@ -2059,6 +2059,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Renk Seçenekleri.
+        /// </summary>
+        public static string ProductColorOptions {
+            get {
+                return ResourceManager.GetString("ProductColorOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Yorumları.
         /// </summary>
         public static string ProductComments {
@@ -2136,6 +2145,15 @@ namespace Resources {
         public static string ProductShortDescription {
             get {
                 return ResourceManager.GetString("ProductShortDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Ölçü Seçenekleri.
+        /// </summary>
+        public static string ProductSizeOptions {
+            get {
+                return ResourceManager.GetString("ProductSizeOptions", resourceCulture);
             }
         }
         

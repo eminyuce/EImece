@@ -1,0 +1,438 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
+
+@{
+    var product = Model.Product;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    ViewBag.Title = product.GetProductSeoTitle();
+    ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var productFiles = product.ProductFiles.ToList();
+    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
+    var productCategory = product.ProductCategory;
+    var productSpecs = product.ProductSpecifications;
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
+    var relatedProducts = Model.RelatedProducts.ToList();
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
+
+    Model.ProductComment.ProductId = product.Id;
+    Model.ProductComment.SeoUrl = product.GetSeoUrl();
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var mainImageImgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
+    var mainImageThbImgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
+}
+
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            @Html.Partial("_ProductBreadCrumb", Model)
+        </div>
+            <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
+            <hr class="mt-4">
+        </div>
+    </div>
+<!-- Page Content-->
+<!-- Toast notifications-->
+<div class="toast-container toast-bottom-center">
+    <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">@Resource.AddedToCart</span>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">@Resource.ThisItemAddedYourCart</div>
+    </div>
+</div>
+<input type="hidden" name="productId" id="productId" value="@product.Id">
+<div class="container pb-4">
+    <div class="row">
+        <div class="col-lg-7">
+            <!-- Product gallery-->
+            <div class="product-gallery">
+                <ul class="product-thumbnails">
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgTag))
+                    {
+
+                    <li class="active">
+                        <a href="#one">
+                            <img alt="Product thumb" src="@mainImageThbImgTag" />
+                        </a>
+                    </li>
+                    }
+
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = product.GetCroppedImageUrl(f.FileStorageId, 95, 105);
+                        <li class="">
+                            <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img alt="Product thumb" src="@imgTag" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="product-carousel owl-carousel">
+
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgTag))
+                    {
+
+                        <a href="@mainImageImgTag" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@mainImageImgTag" alt="Product">
+                        </a>
+
+                    }
+                    else
+                    {
+                        <img src="@EImece.Domain.AppConfig.GetDefaultImage("w1000h1000")">
+                    }
+
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                        if (!string.IsNullOrEmpty(imgTag))
+                        {
+                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img src="@imgTag" alt="Product">
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Product details    -->
+        <div class="col-lg-5 pt-4 pt-lg-0">
+            <div class="pb-4">
+                @if (product.ProductComments.IsNotEmpty())
+                {
+                <a class="d-inline-block scroll-to" href="#reviews">
+                    <div class="star-rating">
+                        @for (int i = 0; i < 5; i++)
+                            {
+                                if (i + 1 > product.Rating)
+                                {
+                        <i class="sr-star" data-feather="star"></i>
+                                }
+                                else
+                                {
+                        <i class="sr-star active" data-feather="star"></i>
+                                }
+                            }
+                    </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
+                </a>
+                }
+                <h2 class="h1 font-weight-light pt-3 pb-2">
+                    @if (product.HasDiscount)
+                    {
+                    <del class="lead text-muted mr-2">
+                        @product.Price.CurrencySign()
+                    </del>
+                    }
+                    <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                </h2>
+                @if (product.HasDiscount)
+                {
+                <h4>
+                    <span class="badge badge-pill badge-warning mr-2 mb-2">
+                        @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
+                    </span>
+                </h4>
+                }
+                <div class="d-flex align-items-center pt-2">
+                    <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                    <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast"><i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart</button>
+                </div>
+            </div>
+            <!-- Product panels-->
+            <div class="accordion" id="productPanels">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="accordion-heading">
+                            <a href="#productInfo" role="button"
+                               data-toggle="collapse" aria-expanded="true"
+                               aria-controls="productInfo">
+                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                    <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
+                                </span>@Resource.ProductInformation
+                                <span class="accordion-indicator">
+                                    <i data-feather="chevron-up"></i>
+                                </span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="card-body">
+                            @if (!String.IsNullOrEmpty(product.ProductCode))
+                            {
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
+                            }
+                            @Html.Raw(product.ShortDescription)
+                            <ul class="mb-0">
+                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.CargoDescription.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@AdminResource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        </div>
+                        <div class="collapse" id="shippingOptions" data-parent="#productPanels">
+                            <div class="card-body">
+                                @Html.Raw(Model.CargoDescription.SettingValue)
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (productTags.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading">
+                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
+                                    <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                        <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
+                                    </span>@AdminResource.Tags<span class="accordion-indicator">
+                                        <i data-feather="chevron-up"></i>
+                                    </span>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="collapse" id="tagCloud" data-parent="#productPanels">
+                            <div class="card-body">
+                                @foreach (var t in productTags)
+                                {
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Share product-->
+            <div class="py-4">
+                <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">
+                    @Resource.ShareProduct:
+                </span>
+                <a class="social-btn sb-instagram mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                    <i class="flaticon-instagram"></i>
+                </a>
+                <a class="social-btn sb-facebook mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                    <i class="flaticon-facebook"></i>
+                </a>
+                <a class="social-btn sb-twitter mr-2 mb-2" href="http://twitter.com/share?text=@product.Name&url=@product.DetailPageAbsoluteUrl&hashtags=hashtag1,hashtag2,hashtag3">
+                    <i class="flaticon-twitter"></i>
+                </a>
+                <a class="social-btn sb-pinterest mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                    <i class="flaticon-pinterest"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product info-->
+<div class="bg-secondary pt-1 pb-1" id="product-details" data-offset-top="-5">
+    <div class="container pt-sm-3 pb-sm-3">
+        <div class="row">
+
+            <div class="@string.Format("{0}",productSpecsExists ? "col-md-6":"col-md-12")">
+                <h3 class="h5 mb-3">@Resource.Description</h3>
+                <div class="mb-2 pb-2">@Html.Raw(product.Description)</div>
+            </div>
+
+            @if (productSpecsExists)
+            {
+
+            <div class="col-md-6">
+                <h3 class="h5 mb-3">@Resource.Specifications</h3>
+                @if (isUserAuthenticated)
+                    {
+                @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
+                    }
+                <ul class="list-unstyled mb-2 pb-2">
+                    @foreach (var specs in Model.ProdSpecs)
+                        {
+                    <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @specs.value @specs.unit </li>
+                        }
+                </ul>
+            </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Reviews-->
+<div class="container pt-1 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
+    <div class="row pt-sm-3">
+        <div class="col-md-4 pb-5">
+            <div class="card">
+                <div class="card-body">
+                    @if (productComments.IsNotEmpty())
+                    {
+                        <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
+                            <div class="display-4 mr-2">@Model.AverageRating</div>
+                            <div>
+                                <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
+                                <div class="star-rating">
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        if (i < product.Rating)
+                                        {
+                                            <i class="sr-star active" data-feather="star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="sr-star" data-feather="star"></i>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        foreach (var item in Model.TotalRating)
+                        {
+                            <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
+                            <div class="progress mb-3" style="height: 2px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        }
+                    }
+
+                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
+                </div>
+            </div>
+        </div>
+        @if (productComments.IsNotEmpty())
+        {
+            <div class="col-md-8 pb-5">
+                <h2 class="h3">@Resource.LatestReviews</h2>
+                @foreach (var productComment in productComments)
+                {
+                    @createReviewItem(productComment)
+                }
+            </div>
+        }
+        else
+        {
+    <div class="col-md-8 pb-5">
+        <div class="alert alert-secondary">
+            <div class="pt-3 pb-2 text-center ">
+                @Resource.NoCommentForProductYet
+            </div>
+        </div>
+    </div>
+           
+        }
+
+    </div>
+</div>
+
+@if (relatedProducts.IsNotEmpty())
+{
+
+    <!-- Related products-->
+<div class="container pb-1">
+    <h2 class="h3 pb-1">@Resource.SimilairProducts </h2>
+    <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
+        @foreach (var product2 in relatedProducts)
+        {
+            @RelatedProductItem(product2)
+        }
+    </div>
+</div>
+}
+
+@helper RelatedProductItem(Product product)
+{
+var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
+var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
+
+<div class="product-card">
+    <div class="product-thumb box-shadow-0">
+        <a class="product-thumb-link" href="@product.DetailPageRelativeUrl">
+        </a>
+        <img src="@relatedProductImgTag" alt="Product">
+    </div>
+    <div class="product-card-body box-shadow-0">
+        <div class="d-flex flex-wrap justify-content-between pb-1">
+            <a class="product-meta" href="@product.DetailPageRelativeUrl">@product.Name </a>
+            @if (product.Rating > 0)
+                {
+            <div class="star-rating">
+                <span class="sr-label mr-1">@product.Rating</span>
+                @for (int i = 0; i < product.Rating; i++)
+                        {
+                <i class="sr-star active" data-feather="star"></i>
+                        }
+            </div>
+                }
+        </div>
+        <h3 class="product-card-title">
+            <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@product.Id" type="button"
+                    data-toggle="toast" data-target="#cart-toast">
+                @Resource.AddToCart
+            </button>
+            <a href="@product.DetailPageRelativeUrl">
+                @shortDesc
+            </a>
+        </h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+    </div>
+</div>
+
+}
+
+@Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = product.Id })
+
+@helper createReviewItem(ProductComment productComment)
+{
+
+    <!-- Review-->
+<div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
+    <div class="d-sm-flex align-items-center pb-2">
+        <h6 class="mb-0">@productComment.Subject</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
+        <div class="star-rating">
+            @for (int i = 0; i < productComment.Rating; i++)
+                {
+            <i class="sr-star active" data-feather="star"></i>
+                }
+        </div>
+    </div>
+    <p>@productComment.Review</p>
+    <div class="media align-items-center mb-2">
+        <div class="media-body">
+            <h6 class="font-size-sm mb-0">@productComment.Name</h6>
+            <span class="d-block font-size-sm text-muted">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
+        </div>
+    </div>
+</div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

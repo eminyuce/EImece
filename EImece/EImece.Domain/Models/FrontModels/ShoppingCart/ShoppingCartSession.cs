@@ -93,6 +93,21 @@ namespace EImece.Domain.Models.FrontModels
             {
                 ShoppingCartItem existingItem = ShoppingCartItems.FirstOrDefault(r => r.Product.Id == item.Product.Id);
                 existingItem.Quantity += item.Quantity;
+                if (item.Product.ProductSpecItems.IsNotEmpty())
+                {
+                    foreach (var ProductSpecItem in item.Product.ProductSpecItems)
+                    {
+                        if (existingItem.Product.ProductSpecItems.Any(r => r.Equals(ProductSpecItem)))
+                        {
+                            var existingItemSpecs = existingItem.Product.ProductSpecItems.FirstOrDefault(r => r.Equals(ProductSpecItem));
+                            existingItemSpecs.Quantity += ProductSpecItem.Quantity;
+                        }
+                        else
+                        {
+                            existingItem.Product.ProductSpecItems.Add(ProductSpecItem);
+                        }
+                    }
+                }
             }
             else
             {

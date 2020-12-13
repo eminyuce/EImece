@@ -1,0 +1,178 @@
+﻿@model Order
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using Newtonsoft.Json;
+@using EImece.Domain.Models.FrontModels; 
+@using EImece.Domain.Helpers.Extensions;
+@{
+    var order = Model;
+    var orderProducts = Model.OrderProducts;
+   
+}
+<section class="order-details">
+
+
+    <div class="text-center">
+        <b>@AdminResource.OrderDatePurchased - @order.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")</b><br />
+        <b>@AdminResource.PaymentIyzicoNumber - @order.PaymentId</b><br />
+        <b>@AdminResource.PaymentIyzicoMerchantBasketId - @order.BasketId</b><br />
+    </div>
+
+    <table class='table table-hover table-bordered table-striped'>
+
+        <thead>
+            <tr class="info">
+                <th colspan="2" class="text-center">@AdminResource.Product</th>
+                <th class="table__product-name product-Quantity">@AdminResource.UnitPrice x @AdminResource.Quantity</th>
+                <th class="table__product-table product-total">@AdminResource.TotalPrice</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var orderProduct in orderProducts)
+            {
+                var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
+                var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
+            <tr class="table__line-item order_item">
+                <td class="text-center">
+                    <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink(orderProduct.Product.Name,
+                   "Detail",
+                   "Products",
+                   new
+                        {
+                            area = "",
+                            categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
+                       id = orderProduct.Product.GetSeoUrl()
+                        }, new { @class = "btn btn-xl btn-link", @target = "_blank" })
+                    <br />
+                    <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
+                </td>
+                <td class="table__product-name product-name">
+                    <strong class="product-quantity">@orderProduct.Price.CurrencySign() × @orderProduct.Quantity</strong>
+                </td>
+                @if (ProductSpecItems.IsNotEmpty())
+                {
+                <td>
+                    @foreach (var psi in ProductSpecItems)
+                    {
+                        <strong class="product-quantity">@psi.SpecsName @psi.SpecsValue  @psi.Quantity</strong>
+                    }
+                </td>
+                }
+
+
+                <td class="text-right">
+                    <span>
+                        @orderProduct.TotalPrice.CurrencySign()
+                    </span>
+                </td>
+            </tr>
+            }
+
+            @if (!string.IsNullOrEmpty(order.OrderComments))
+            {
+                <tr class="primary">
+                    <td>
+                        <b>
+                            @AdminResource.OrderComments
+                        </b>
+                    </td>
+                    <td colspan="3">
+                        @order.OrderComments
+                    </td>
+                </tr>
+
+            }
+        <tr class="warning">
+            <td colspan="3">
+                <b class="Price-amount amount">
+                    @AdminResource.CargoPrice
+                </b>
+            </td>
+            <td class="text-right">
+                @order.CargoPrice.CurrencySign()
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b class="Price-amount amount">
+                    Installment
+                </b>
+            </td>
+            <td class="text-right">
+                @order.Installment.ToDouble().CurrencySign()
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b class="Price-amount amount">
+                    MerchantCommissionRateAmount
+                </b>
+            </td>
+            <td class="text-right">
+                @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b>
+                    IyziCommissionRateAmount
+                </b>
+            </td>
+            <td class="text-right">
+                @order.IyziCommissionRateAmount.ToDouble().CurrencySign()
+            </td>
+        </tr>
+
+        <tr class="warning">
+            <td colspan="3">
+                <b>
+                    MerchantCommissionRate
+                </b>
+            </td>
+            <td class="text-right">
+                @order.MerchantCommissionRate
+            </td>
+        </tr>
+        <tr class="warning">
+            <td colspan="3">
+                <b>
+                    IyziCommissionFee
+                </b>
+            </td>
+            <td class="text-right">
+                @order.IyziCommissionFee
+            </td>
+        </tr>
+
+
+        </tbody>
+        <tfoot>
+            <tr class="success">
+                <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
+                <td>
+                    <span class="Price-Quantity">
+                        @orderProducts.Sum(r => r.Quantity)  @AdminResource.PieceOfProductSold
+                    </span>
+                </td>
+                <td class="text-right">
+                    @order.PaidPrice.ToDouble().CurrencySign()
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <section class="customer-details">
+        <h3 class="column__title">@AdminResource.ShippingAddress</h3>
+        <address>
+            @order.ShippingAddress.Description
+        </address>
+    </section>
+</section>

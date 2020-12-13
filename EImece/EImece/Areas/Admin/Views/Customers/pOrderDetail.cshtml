@@ -5,6 +5,8 @@
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
+@using Newtonsoft.Json;
+@using EImece.Domain.Models.FrontModels; 
 @using EImece.Domain.Helpers.Extensions;
 @{
     var order = Model;
@@ -33,6 +35,7 @@
         <tbody>
             @foreach (var orderProduct in orderProducts)
             {
+                var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
                 var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
             <tr class="table__line-item order_item">
                 <td class="text-center">
@@ -54,6 +57,18 @@
                 <td class="table__product-name product-name">
                     <strong class="product-quantity">@orderProduct.Price.CurrencySign() × @orderProduct.Quantity</strong>
                 </td>
+
+                @if (ProductSpecItems.IsNotEmpty())
+                {
+                    <td>
+                        @foreach (var psi in ProductSpecItems)
+                        {
+                          <strong class="product-quantity">@psi.SpecsName @psi.SpecsValue  @psi.Quantity</strong>
+                        }
+                    </td>
+                }
+
+
                 <td class="text-right">
                     <span>
                         @orderProduct.TotalPrice.CurrencySign()

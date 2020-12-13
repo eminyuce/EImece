@@ -246,6 +246,7 @@
     <Compile Include="Models\AdminModels\SystemSettingModel.cs" />
     <Compile Include="Models\Enums\IyzicoPaymentStatus.cs" />
     <Compile Include="Models\FrontModels\MenuTreeModel.cs" />
+    <Compile Include="Models\FrontModels\ProductSpecItem.cs" />
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
     <Compile Include="AppConfig.cs" />

@@ -1,0 +1,25 @@
+﻿@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@model  ShoppingCartSession
+@{
+    ShoppingCartSession shoppingCart = Model;
+    string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount + "") : "";
+    var userName = User.Identity.GetUserName();
+}
+
+<a id="ShoppingCartsLink" class="navbar-btn bg-0 my-3" href="@Url.Action("shoppingcart","payment")" data-toggle="offcanvas">
+    <span class="d-block position-relative">
+        <span class="navbar-btn-badge bg-primary text-light" id="ShoppingCartItemCount">@totalNumber</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart mx-auto mb-1"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        @shoppingCart.TotalPrice.CurrencySign()
+    </span>
+</a>

@@ -5,6 +5,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
@@ -14,6 +15,7 @@ using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -103,11 +105,10 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetProductService()
+        public void GetDeserializeObjectProductSpecItem()
         {
-            ProductService productService = kernel.Get<ProductService>();
-            var products = productService.GetAll();
-            Console.WriteLine(products.Count);
+            var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>("{\"selectedTotalSpecs\":[{\"SpecsName\":\"color\",\"SpecsValue\":\"Kirmizi\"}]}");
+            var  selectedTotalSpecs = ooo.selectedTotalSpecs;
         }
 
         private String ConnectionString { get { return Constants.DbConnectionKey; } }

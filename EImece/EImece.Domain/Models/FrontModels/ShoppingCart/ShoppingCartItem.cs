@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Models.FrontModels.ShoppingCart;
 using System;
+using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -9,6 +10,7 @@ namespace EImece.Domain.Models.FrontModels
         public string ShoppingCartItemId { set; get; }
         public int Quantity { set; get; }
         public ShoppingCartProduct Product { set; get; }
+       
 
         public override string ToString()
         {

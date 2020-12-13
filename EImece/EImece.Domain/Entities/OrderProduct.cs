@@ -19,6 +19,7 @@ namespace EImece.Domain.Entities
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public double TotalPrice { get; set; }
+        public string ProductSpecItems { set; get; }
 
         [NotMapped]
         public double Price
