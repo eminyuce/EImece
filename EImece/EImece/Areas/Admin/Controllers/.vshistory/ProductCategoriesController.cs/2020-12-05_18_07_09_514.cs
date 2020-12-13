@@ -154,11 +154,7 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
-                    }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                        return ReturnTempUrl("Index");
                     }
                 }
             }
@@ -171,7 +167,10 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
-            
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
             return View(productCategory);
         }

@@ -93,11 +93,6 @@ namespace EImece.Areas.Admin.Controllers
 
         private FilesHelper _filesHelper { get; set; }
 
-        public BaseAdminController()
-        {
-            TempData[Constants.TempDataReturnUrlReferrer] = "";
-        }
-
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
             var IsCachingActivated = false;
@@ -206,7 +201,7 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        protected ActionResult ReturnTempUrl_OLD(String name)
+        protected ActionResult ReturnTempUrl(String name)
         {
             if (!String.IsNullOrEmpty(TempData[Constants.TempDataReturnUrlReferrer].ToStr()))
             {

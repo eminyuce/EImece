@@ -62,7 +62,8 @@ namespace EImece.Areas.Admin.Controllers
                     TagCategory.Lang = CurrentLanguage;
                     TagCategoryService.SaveOrEditEntity(TagCategory);
                     int contentId = TagCategory.Id;
-                    return ReturnTempUrl("Index");
+                    return RedirectToAction("Index");
+
                 }
                 else
                 {

@@ -141,11 +141,7 @@ namespace EImece.Areas.Admin.Controllers
                     MenuService.SaveOrEditEntity(menu);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
-                    }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                        return ReturnTempUrl("Index");
                     }
                 }
             }
@@ -157,7 +153,10 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
-          
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
             return View(menu);
         }

@@ -76,9 +76,14 @@ namespace EImece.Areas.Admin.Controllers
                         StoryService.SaveStoryTags(story.Id, tags);
                     }
 
+
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return ReturnTempUrl("Index");
+                        return RedirectToAction("Index");
+                    }
+                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
                 }
             }
@@ -89,10 +94,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
-            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-            {
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            }
+             
             RemoveModelState();
 
             return View(story);

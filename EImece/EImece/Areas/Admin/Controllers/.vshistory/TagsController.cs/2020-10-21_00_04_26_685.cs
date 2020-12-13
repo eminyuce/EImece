@@ -71,8 +71,7 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     tag.Lang = CurrentLanguage;
                     TagService.SaveOrEditEntity(tag);
-                    return RedirectToAction("Index");
-
+                    return ReturnTempUrl("Index");
                 }
             }
             catch (Exception ex)

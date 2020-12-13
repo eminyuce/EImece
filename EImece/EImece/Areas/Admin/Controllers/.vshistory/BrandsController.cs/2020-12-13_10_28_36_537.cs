@@ -1,77 +1,74 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services.IServices;
-using Microsoft.AspNet.Identity;
-using Ninject;
+using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
 using System;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class FaqController : BaseAdminController
+    public class BrandsController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var result = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
-            return View(result);
+            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
+            return View(brands);
         }
 
         //
-        // GET: /Faq/Create
+        // GET: /Brand/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var item = EntityFactory.GetBaseEntityInstance<Faq>();
+            TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            var content = EntityFactory.GetBaseContentInstance<Brand>();
 
             if (id == 0)
             {
             }
             else
             {
-                item = FaqService.GetSingle(id);
+                content = BrandService.GetBaseContent(id);
             }
 
-            return View(item);
+            return View(content);
         }
+
+        //
+        // POST: /Brand/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Faq faq, String saveButton = null)
+        public ActionResult SaveOrEdit(Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
-            if (faq == null)
-            {
-                return HttpNotFound();
-            }
             try
             {
+                if (brand == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
-                    if (faq.Id == 0)
-                    {
-                        faq.AddUserId = User.Identity.GetUserName();
-                        faq.UpdateUserId = User.Identity.GetUserName();
-                    }
-                    else
-                    {
-                        faq.UpdateUserId = User.Identity.GetUserName();
-                    }
+                    FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
+                        brand.ImageHeight,
+                        brand.ImageWidth,
+                        EImeceImageType.BrandMainImage, brand);
 
-                    faq.Lang = CurrentLanguage;
-                    FaqService.SaveOrEditEntity(faq);
+                    brand.Lang = CurrentLanguage;
+                    brand = BrandService.SaveOrEditEntity(brand);
 
-                   
+
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -80,18 +77,21 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
-
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, faq);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, brand);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
-            
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
-            return View(faq);
+
+            return View(brand);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -99,21 +99,22 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Faq Faq = FaqService.GetSingle(id);
-            if (Faq == null)
+            Brand Brand = BrandService.GetBaseContent(id);
+            if (Brand == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                FaqService.DeleteEntity(Faq);
-                return RedirectToAction("Index");
+                BrandService.DeleteBrandById(id);
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, Faq);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Brand);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
+
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
@@ -129,22 +130,21 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var Faqs = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
-            var result = from r in Faqs
+            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
+
+            var result = from r in brands
                          select new
                          {
                              Id = r.Id.ToStr(250),
                              Name = r.Name.ToStr(250),
-                             Question = r.Question.ToStr(400),
-                             Answer = r.Answer.ToStr(30000),
+                             Description = r.Description,
                              CreatedDate = r.CreatedDate.ToStr(250),
                              UpdatedDate = r.UpdatedDate.ToStr(250),
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
 
-            return DownloadFile(result, String.Format("Faqs-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("brands-{0}", GetCurrentLanguage));
         }
     }
 }

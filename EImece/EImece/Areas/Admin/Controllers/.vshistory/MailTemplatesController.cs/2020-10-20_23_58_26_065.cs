@@ -1,13 +1,10 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
-using Ninject;
 using NLog;
 using Resources;
 using System;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -16,82 +13,85 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class FaqController : BaseAdminController
+    public class MailTemplatesController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var result = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
+            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
+            var result = MailTemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(result);
         }
 
         //
-        // GET: /Faq/Create
+        // GET: /MailTemplate/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var item = EntityFactory.GetBaseEntityInstance<Faq>();
+            var item = EntityFactory.GetBaseEntityInstance<MailTemplate>();
 
             if (id == 0)
             {
             }
             else
             {
-                item = FaqService.GetSingle(id);
+                item = MailTemplateService.GetSingle(id);
             }
 
+           // ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
+          //  ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject);
             return View(item);
         }
 
+        //
+        // POST: /MailTemplate/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Faq faq, String saveButton = null)
+        public ActionResult SaveOrEdit(MailTemplate MailTemplate, String saveButton = null)
         {
-            if (faq == null)
-            {
-                return HttpNotFound();
-            }
             try
             {
+                if (MailTemplate == null)
+                {
+                    return HttpNotFound();
+                }
                 if (ModelState.IsValid)
                 {
-                    if (faq.Id == 0)
+                    if (MailTemplate.Id == 0)
                     {
-                        faq.AddUserId = User.Identity.GetUserName();
-                        faq.UpdateUserId = User.Identity.GetUserName();
+                        MailTemplate.AddUserId = User.Identity.GetUserName();
+                        MailTemplate.UpdateUserId = User.Identity.GetUserName();
                     }
                     else
                     {
-                        faq.UpdateUserId = User.Identity.GetUserName();
+                        MailTemplate.UpdateUserId = User.Identity.GetUserName();
                     }
 
-                    faq.Lang = CurrentLanguage;
-                    FaqService.SaveOrEditEntity(faq);
-
-                   
+                    MailTemplate.Lang = CurrentLanguage;
+                    MailTemplateService.SaveOrEditEntity(MailTemplate);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
+                        return ReturnTempUrl("Index");
                     }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                    }
-
+                }
+                else
+                {
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, faq);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, MailTemplate);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
-            return View(faq);
+            return View(MailTemplate);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -99,21 +99,26 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Faq Faq = FaqService.GetSingle(id);
-            if (Faq == null)
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MailTemplate MailTemplate = MailTemplateService.GetSingle(id);
+            if (MailTemplate == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                FaqService.DeleteEntity(Faq);
+                MailTemplateService.DeleteEntity(MailTemplate);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, Faq);
+                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
+
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
@@ -129,22 +134,22 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var Faqs = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
-            var result = from r in Faqs
+            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
+            var mailTemplates = MailTemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var result = from r in mailTemplates
                          select new
                          {
                              Id = r.Id.ToStr(250),
                              Name = r.Name.ToStr(250),
-                             Question = r.Question.ToStr(400),
-                             Answer = r.Answer.ToStr(30000),
+                             Subject = r.Subject.ToStr(400),
+                             Body = r.Body.ToStr(30000),
                              CreatedDate = r.CreatedDate.ToStr(250),
                              UpdatedDate = r.UpdatedDate.ToStr(250),
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
 
-            return DownloadFile(result, String.Format("Faqs-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("MailTemplates-{0}", GetCurrentLanguage));
         }
     }
 }

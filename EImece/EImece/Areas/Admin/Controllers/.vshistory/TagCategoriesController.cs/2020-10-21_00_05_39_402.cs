@@ -5,84 +5,77 @@ using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using Resources;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class TagsController : BaseAdminController
+    public class TagCategoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index(String search = "")
         {
-            var result = TagService.GetAdminPageList(search, CurrentLanguage);
-            return View(result);
-        }
-
-        private List<SelectListItem> GetCategoriesSelectList()
-        {
-            List<TagCategory> tagCategories = TagCategoryService.GetAll().Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
-            return tagCategories.Select(r => new SelectListItem()
-            {
-                Text = r.Name.ToStr(),
-                Value = r.Id.ToStr()
-            }).ToList();
+            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
+            var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
+            return View(tags);
         }
 
         //
-        // GET: /Tag/Create
+        // GET: /TagCategory/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var content = EntityFactory.GetBaseEntityInstance<Tag>();
-            ViewBag.Categories = GetCategoriesSelectList();
             TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
+            var content = EntityFactory.GetBaseEntityInstance<TagCategory>();
+
             if (id == 0)
             {
             }
             else
             {
-                content = TagService.GetSingle(id);
+                content = TagCategoryService.GetSingle(id);
             }
 
             return View(content);
         }
 
         //
-        // POST: /Tag/Create
+        // POST: /TagCategory/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Tag tag)
+        public ActionResult SaveOrEdit(TagCategory TagCategory)
         {
+            if (TagCategory == null)
+            {
+                throw new ArgumentException("TagCategory cannot be empty");
+            }
             try
             {
-                if (tag == null)
-                {
-                    return HttpNotFound();
-                }
-
                 if (ModelState.IsValid)
                 {
-                    tag.Lang = CurrentLanguage;
-                    TagService.SaveOrEditEntity(tag);
-                    return RedirectToAction("Index");
-
+                    TagCategory.Lang = CurrentLanguage;
+                    TagCategoryService.SaveOrEditEntity(TagCategory);
+                    int contentId = TagCategory.Id;
+                    return ReturnTempUrl("Index");
+                }
+                else
+                {
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, tag);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, TagCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ViewBag.Categories = GetCategoriesSelectList();
-            return View(tag);
+
+            return View(TagCategory);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -90,19 +83,19 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tag tag = TagService.GetSingle(id);
-            if (tag == null)
+            TagCategory tagCategory = TagCategoryService.GetSingle(id);
+            if (tagCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                TagService.DeleteEntity(tag);
-                return ReturnIndexIfNotUrlReferrer("Index");
+                TagCategoryService.DeleteTagCategoryById(id);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tag);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tagCategory);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
@@ -121,21 +114,21 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            var tags = TagService.GetAdminPageList(search, CurrentLanguage);
+            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
+            var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
 
             var result = from r in tags
                          select new
                          {
                              Id = r.Id.ToStr(250),
                              Name = r.Name.ToStr(250),
-                             TagCategory = r.TagCategory.Name.ToStr(250),
                              CreatedDate = r.CreatedDate.ToStr(250),
                              UpdatedDate = r.UpdatedDate.ToStr(250),
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
 
-            return DownloadFile(result, String.Format("Tags-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("TagCategories-{0}", GetCurrentLanguage));
         }
     }
 }

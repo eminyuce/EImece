@@ -95,7 +95,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public BaseAdminController()
         {
-            TempData[Constants.TempDataReturnUrlReferrer] = "";
+
         }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
@@ -206,7 +206,7 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        protected ActionResult ReturnTempUrl_OLD(String name)
+        protected ActionResult ReturnTempUrl(String name)
         {
             if (!String.IsNullOrEmpty(TempData[Constants.TempDataReturnUrlReferrer].ToStr()))
             {

@@ -71,9 +71,14 @@ namespace EImece.Areas.Admin.Controllers
                     int contentId = storyCategory.Id;
 
                     MenuService.UpdateStoryCategoryMenuLink(contentId, CurrentLanguage);
+
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return ReturnTempUrl("Index");
+                        return RedirectToAction("Index");
+                    }
+                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
                 }
             }
@@ -82,10 +87,6 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, storyCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
-            }
-            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-            {
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
             RemoveModelState();
             return View(storyCategory);

@@ -154,9 +154,8 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
-                    }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+                        return ReturnTempUrl("Index");
+                    }else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }

@@ -206,7 +206,7 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        protected ActionResult ReturnTempUrl_OLD(String name)
+        protected ActionResult ReturnTempUrl(String name)
         {
             if (!String.IsNullOrEmpty(TempData[Constants.TempDataReturnUrlReferrer].ToStr()))
             {

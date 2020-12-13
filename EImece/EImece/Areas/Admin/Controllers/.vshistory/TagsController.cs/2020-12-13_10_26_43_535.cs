@@ -1,77 +1,76 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services.IServices;
-using Microsoft.AspNet.Identity;
-using Ninject;
 using NLog;
 using Resources;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class FaqController : BaseAdminController
+    public class TagsController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var result = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var result = TagService.GetAdminPageList(search, CurrentLanguage);
             return View(result);
         }
 
+        private List<SelectListItem> GetCategoriesSelectList()
+        {
+            List<TagCategory> tagCategories = TagCategoryService.GetAll().Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+            return tagCategories.Select(r => new SelectListItem()
+            {
+                Text = r.Name.ToStr(),
+                Value = r.Id.ToStr()
+            }).ToList();
+        }
+
         //
-        // GET: /Faq/Create
+        // GET: /Tag/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var item = EntityFactory.GetBaseEntityInstance<Faq>();
-
+            var content = EntityFactory.GetBaseEntityInstance<Tag>();
+            ViewBag.Categories = GetCategoriesSelectList();
+            TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             if (id == 0)
             {
             }
             else
             {
-                item = FaqService.GetSingle(id);
+                content = TagService.GetSingle(id);
             }
 
-            return View(item);
+            return View(content);
         }
+
+        //
+        // POST: /Tag/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Faq faq, String saveButton = null)
+        public ActionResult SaveOrEdit(Tag tag)
         {
-            if (faq == null)
-            {
-                return HttpNotFound();
-            }
             try
             {
+                if (tag == null)
+                {
+                    return HttpNotFound();
+                }
+
                 if (ModelState.IsValid)
                 {
-                    if (faq.Id == 0)
-                    {
-                        faq.AddUserId = User.Identity.GetUserName();
-                        faq.UpdateUserId = User.Identity.GetUserName();
-                    }
-                    else
-                    {
-                        faq.UpdateUserId = User.Identity.GetUserName();
-                    }
-
-                    faq.Lang = CurrentLanguage;
-                    FaqService.SaveOrEditEntity(faq);
-
-                   
+                    tag.Lang = CurrentLanguage;
+                    TagService.SaveOrEditEntity(tag);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -80,18 +79,16 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
-
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, faq);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, tag);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-            
-            RemoveModelState();
-            return View(faq);
+            ViewBag.Categories = GetCategoriesSelectList();
+            return View(tag);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -99,21 +96,22 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Faq Faq = FaqService.GetSingle(id);
-            if (Faq == null)
+            Tag tag = TagService.GetSingle(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                FaqService.DeleteEntity(Faq);
-                return RedirectToAction("Index");
+                TagService.DeleteEntity(tag);
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, Faq);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tag);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
+
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
@@ -129,22 +127,21 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var Faqs = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
-            var result = from r in Faqs
+            var tags = TagService.GetAdminPageList(search, CurrentLanguage);
+
+            var result = from r in tags
                          select new
                          {
                              Id = r.Id.ToStr(250),
                              Name = r.Name.ToStr(250),
-                             Question = r.Question.ToStr(400),
-                             Answer = r.Answer.ToStr(30000),
+                             TagCategory = r.TagCategory.Name.ToStr(250),
                              CreatedDate = r.CreatedDate.ToStr(250),
                              UpdatedDate = r.UpdatedDate.ToStr(250),
                              IsActive = r.IsActive.ToStr(250),
                              Position = r.Position.ToStr(250),
                          };
 
-            return DownloadFile(result, String.Format("Faqs-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Tags-{0}", GetCurrentLanguage));
         }
     }
 }

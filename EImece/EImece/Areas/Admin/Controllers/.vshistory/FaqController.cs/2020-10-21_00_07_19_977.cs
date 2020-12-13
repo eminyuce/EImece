@@ -71,16 +71,10 @@ namespace EImece.Areas.Admin.Controllers
                     faq.Lang = CurrentLanguage;
                     FaqService.SaveOrEditEntity(faq);
 
-                   
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
+                        return ReturnTempUrl("Index");
                     }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                    }
-
                 }
             }
             catch (Exception ex)
@@ -89,7 +83,10 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
-            
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
             return View(faq);
         }

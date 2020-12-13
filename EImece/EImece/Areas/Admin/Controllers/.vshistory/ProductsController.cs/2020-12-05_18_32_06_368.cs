@@ -128,11 +128,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return RedirectToAction("Index");
-                        }
-                        else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                            return ReturnTempUrl("Index");
                         }
                     }
                 }
@@ -152,7 +148,10 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
-        
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             ViewBag.Brands = GetBrandsSelectList();
             RemoveModelState();
             return View(product);

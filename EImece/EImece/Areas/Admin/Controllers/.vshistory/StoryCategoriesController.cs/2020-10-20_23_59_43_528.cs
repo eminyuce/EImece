@@ -8,6 +8,7 @@ using Resources;
 using System;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,80 +16,79 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class BrandsController : BaseAdminController
+    public class StoryCategoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index(String search = "")
         {
-            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
-            return View(brands);
+            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
+            var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
+            return View(categories);
         }
 
         //
-        // GET: /Brand/Create
+        // GET: /StoryCategory/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
             TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
-            var content = EntityFactory.GetBaseContentInstance<Brand>();
+            var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();
 
             if (id == 0)
             {
             }
             else
             {
-                content = BrandService.GetBaseContent(id);
+                content = StoryCategoryService.GetBaseContent(id);
             }
 
             return View(content);
         }
 
         //
-        // POST: /Brand/Create
+        // POST: /StoryCategory/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public ActionResult SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
-                if (brand == null)
+                if (storyCategory == null)
                 {
                     return HttpNotFound();
                 }
-
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
-                        brand.ImageHeight,
-                        brand.ImageWidth,
-                        EImeceImageType.BrandMainImage, brand);
+                       storyCategory.ImageHeight,
+                       storyCategory.ImageWidth,
+                       EImeceImageType.StoryCategoryMainImage,
+                       storyCategory);
+                    storyCategory.Lang = CurrentLanguage;
+                    StoryCategoryService.SaveOrEditEntity(storyCategory);
+                    int contentId = storyCategory.Id;
 
-                    brand.Lang = CurrentLanguage;
-                    brand = BrandService.SaveOrEditEntity(brand);
-
-
+                    MenuService.UpdateStoryCategoryMenuLink(contentId, CurrentLanguage);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
-                    }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                        return ReturnTempUrl("Index");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, brand);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, storyCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-           
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
-
-            return View(brand);
+            return View(storyCategory);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -96,19 +96,24 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Brand Brand = BrandService.GetBaseContent(id);
-            if (Brand == null)
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            StoryCategory StoryCategory = StoryCategoryService.GetSingle(id);
+            if (StoryCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                BrandService.DeleteBrandById(id);
+                StoryCategoryService.DeleteStoryCategoryById(id);
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Brand);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, StoryCategory);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
@@ -127,9 +132,10 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
+            Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
+            var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
 
-            var result = from r in brands
+            var result = from r in categories
                          select new
                          {
                              Id = r.Id.ToStr(250),
@@ -141,7 +147,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-            return DownloadFile(result, String.Format("brands-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("StoryCategories-{0}", GetCurrentLanguage));
         }
     }
 }

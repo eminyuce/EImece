@@ -71,9 +71,14 @@ namespace EImece.Areas.Admin.Controllers
 
                     MailTemplate.Lang = CurrentLanguage;
                     MailTemplateService.SaveOrEditEntity(MailTemplate);
+
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return ReturnTempUrl("Index");
+                        return RedirectToAction("Index");
+                    }
+                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
                 }
                 else
@@ -86,10 +91,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-            {
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            }
+   
             RemoveModelState();
             return View(MailTemplate);
         }

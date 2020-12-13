@@ -72,6 +72,7 @@ namespace EImece.Areas.Admin.Controllers
                     FaqService.SaveOrEditEntity(faq);
 
                    
+
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");

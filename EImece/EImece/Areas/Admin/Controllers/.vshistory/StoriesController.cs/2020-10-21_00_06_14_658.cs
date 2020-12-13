@@ -15,45 +15,48 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    public class BrandsController : BaseAdminController
+    public class StoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public ActionResult Index(int id = 0, String search = "")
         {
-            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
-            return View(brands);
+            int categoryId = id;
+
+            var stories = StoryService.GetAdminPageList(categoryId, search, CurrentLanguage);
+            return View(stories);
         }
 
         //
-        // GET: /Brand/Create
+        // GET: /Story/Create
 
         public ActionResult SaveOrEdit(int id = 0)
         {
             TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
-            var content = EntityFactory.GetBaseContentInstance<Brand>();
+            var content = EntityFactory.GetBaseContentInstance<Story>();
+            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
 
             if (id == 0)
             {
             }
             else
             {
-                content = BrandService.GetBaseContent(id);
+                content = StoryService.GetBaseContent(id);
             }
 
             return View(content);
         }
 
         //
-        // POST: /Brand/Create
+        // POST: /Story/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public ActionResult SaveOrEdit(Story story, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
-                if (brand == null)
+                if (story == null)
                 {
                     return HttpNotFound();
                 }
@@ -61,34 +64,38 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
-                        brand.ImageHeight,
-                        brand.ImageWidth,
-                        EImeceImageType.BrandMainImage, brand);
+                        story.ImageHeight,
+                        story.ImageWidth,
+                        EImeceImageType.StoryMainImage, story);
 
-                    brand.Lang = CurrentLanguage;
-                    brand = BrandService.SaveOrEditEntity(brand);
+                    story.Lang = CurrentLanguage;
+                    story = StoryService.SaveOrEditEntity(story);
 
+                    if (tags != null)
+                    {
+                        StoryService.SaveStoryTags(story.Id, tags);
+                    }
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
-                    }
-                    else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                        return ReturnTempUrl("Index");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, brand);
+                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, story);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
-           
+            ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
+            if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
             RemoveModelState();
 
-            return View(brand);
+            return View(story);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -96,23 +103,29 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public ActionResult DeleteConfirmed(int id)
         {
-            Brand Brand = BrandService.GetBaseContent(id);
-            if (Brand == null)
+            Story story = StoryService.GetBaseContent(id);
+            if (story == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                BrandService.DeleteBrandById(id);
+                StoryService.DeleteStoryById(id);
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Brand);
+                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, story);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+        }
+
+        [HttpGet]
+        public ActionResult Media(int id)
+        {
+            return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
         }
 
         [HttpGet, ActionName("ExportExcel")]
@@ -127,13 +140,14 @@ namespace EImece.Areas.Admin.Controllers
         private ActionResult DownloadFile()
         {
             String search = "";
-            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
+            var stories = StoryService.GetAdminPageList(0, search, CurrentLanguage);
 
-            var result = from r in brands
+            var result = from r in stories
                          select new
                          {
                              Id = r.Id.ToStr(250),
                              Name = r.Name.ToStr(250),
+                             StoryCategory = r.StoryCategory.ToStr(250),
                              Description = r.Description,
                              CreatedDate = r.CreatedDate.ToStr(250),
                              UpdatedDate = r.UpdatedDate.ToStr(250),
@@ -141,7 +155,7 @@ namespace EImece.Areas.Admin.Controllers
                              Position = r.Position.ToStr(250),
                          };
 
-            return DownloadFile(result, String.Format("brands-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Stories-{0}", GetCurrentLanguage));
         }
     }
 }
