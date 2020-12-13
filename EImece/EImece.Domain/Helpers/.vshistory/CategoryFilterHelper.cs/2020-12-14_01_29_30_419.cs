@@ -130,14 +130,18 @@ namespace EImece.Domain.Helpers
 
         public void AddPriceFilter(List<CategoryFilterType> categoryFilterTypes)
         {
-            CategoryFilterType item = new CategoryFilterType();
+            if (categoryFilterTypes.IsEmpty())
+            {
+                return;
+            }
+            var item = new CategoryFilterType();
             item.Position = 1;
             item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = Resource.Price };
             var item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 100),
                 minPrice = 0,
-                maxPrice = 50
+                maxPrice = 49
             };
             item1.name = string.Format("{0} {1}", item1.maxPrice.CurrencySign(), Resource.AndUnderPrice);
             item.CategoryFilters.Add(item1);
@@ -177,12 +181,11 @@ namespace EImece.Domain.Helpers
             };
             item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
             item.CategoryFilters.Add(item1);
-
           
             item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 106),
-                minPrice = 5000,
+                minPrice = 4999,
                 maxPrice = 9999999
             };
             item1.name = string.Format("{0} {1}", item1.minPrice.CurrencySign(), Resource.AndOverPrice);

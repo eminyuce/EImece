@@ -3513,7 +3513,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yildiz.
+        ///   Looks up a localized string similar to Yıldız.
         /// </summary>
         public static string Star {
             get {
