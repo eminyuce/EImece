@@ -1,0 +1,90 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using Resources;
+@model Product
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var template = (Template)ViewBag.Template;
+    var specs = Model.ProductSpecifications;
+    var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
+}
+
+<h2>@AdminResource.ProductSpecs </h2>
+<div class="row">
+    <div class="col-md-8">
+        <h3>
+           @AdminResource.ProductName  @Html.DisplayFor(model => model, "ProductSearchItem")
+        </h3>
+        <h4>
+            @AdminResource.TemplateXml   @template.Name
+
+        </h4>
+    </div>
+    <div class="col-md-8">
+        @Html.ActionLink(AdminResource.BackToList, "Index", "Products", new { @search = Model.Name }, new { @class = "btn btn-link" })
+    </div>
+</div>
+<hr class="adminLine" />
+
+@using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    @Html.HiddenFor(model => model.Id)
+
+    @if (!String.IsNullOrEmpty(template.TemplateXml))
+    {
+        XDocument xdoc = XDocument.Parse(template.TemplateXml);
+        var groups = xdoc.Root.Descendants("group");
+
+        if (groups.Any())
+        {
+            <input id="templateId" name="templateId" type="hidden" value="@template.Id">
+
+            foreach (var group in groups)
+            {
+                if (group.FirstAttribute != null)
+                {
+
+                    <h3>
+                        @group.FirstAttribute.Value
+                    </h3>
+                    <hr>
+                }
+
+                foreach (XElement field in group.Elements())
+                {
+
+                    var name = field.Attribute("name");
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+                    var display = field.Attribute("display");
+                    var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (dbValueObj == null)
+                    {
+                        dbValueObj = new ProductSpecification();
+                    }
+
+                    dbValueObj.FieldFormat = field;
+
+                    @Html.EditorFor(model => dbValueObj, field.Name.LocalName)
+                }
+            }
+
+        }
+    }
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@saveButtonText" class="btn btn-success btn-block" />
+        </div>
+    </div>
+</div>
+}

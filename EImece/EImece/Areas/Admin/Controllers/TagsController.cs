@@ -41,7 +41,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             var content = EntityFactory.GetBaseEntityInstance<Tag>();
             ViewBag.Categories = GetCategoriesSelectList();
-            TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             if (id == 0)
             {
             }

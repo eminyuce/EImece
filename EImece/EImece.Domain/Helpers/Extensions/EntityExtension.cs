@@ -311,7 +311,7 @@ namespace EImece.Domain.Helpers.Extensions
         public static string GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
             string imageTag = "";
-            if (entity != null)
+            if (entity != null && fileStorageId>0)
             {
                 string imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
                 if (!string.IsNullOrEmpty(imagePath))

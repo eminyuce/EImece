@@ -95,7 +95,6 @@ namespace EImece.Areas.Admin.Controllers
 
         public BaseAdminController()
         {
-            TempData[Constants.TempDataReturnUrlReferrer] = "";
         }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
@@ -206,18 +205,7 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        protected ActionResult ReturnTempUrl_OLD(String name)
-        {
-            if (!String.IsNullOrEmpty(TempData[Constants.TempDataReturnUrlReferrer].ToStr()))
-            {
-                MemoryCacheProvider.ClearAll();
-                return Redirect(TempData[Constants.TempDataReturnUrlReferrer].ToStr());
-            }
-            else
-            {
-                return RedirectToAction(name);
-            }
-        }
+      
         
         protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
         {

@@ -1,0 +1,50 @@
+﻿@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+@model  Product
+
+@{
+    var baseContent = Model;
+    int Width = ViewData["Width"].ToInt(150);
+    int Height = ViewData["Height"].ToInt(0);
+}
+<dl>
+    @if (!string.IsNullOrEmpty(baseContent.Name))
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => baseContent.Name)
+        </dd>
+    }
+    @if (!string.IsNullOrEmpty(baseContent.ProductCategory.Name))
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCategory.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => baseContent.ProductCategory.Name)
+        </dd>
+    }
+    @if (!string.IsNullOrEmpty(baseContent.NameLong))
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.NameLong)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => baseContent.NameLong)
+        </dd>
+    }
+    @if (!string.IsNullOrEmpty(baseContent.ProductCode))
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => baseContent.ProductCode)
+        </dd>
+    }
+</dl>

@@ -77,8 +77,6 @@ namespace EImece.Domain
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";
 
-        public const string TempDataReturnUrlReferrer = "TempDataReturnUrlReferrer";
-
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";

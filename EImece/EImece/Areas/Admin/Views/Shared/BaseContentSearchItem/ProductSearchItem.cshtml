@@ -20,6 +20,15 @@
             @Html.DisplayFor(model => baseContent.Name)
         </dd>
     }
+    @if (baseContent.ProductCategory!=null && !string.IsNullOrEmpty(baseContent.ProductCategory.Name))
+    {
+        <dt>
+            @AdminResource.ProductCategory
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => baseContent.ProductCategory.Name)
+        </dd>
+    }
     @if (!string.IsNullOrEmpty(baseContent.NameLong))
     {
         <dt>
@@ -38,4 +47,4 @@
             @Html.DisplayFor(model => baseContent.ProductCode)
         </dd>
     }
-  </dl>
+</dl>

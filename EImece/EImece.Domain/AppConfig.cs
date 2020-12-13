@@ -18,7 +18,7 @@ namespace EImece.Domain
         }
         public static string GetDefaultImage(String imageSize)
         {
-            return $"/images/defaultImage/{imageSize}/default.jpg";
+            return $"/images/defaultimage/{imageSize}/default.jpg";
         }
 
         public static string IyzicoBaseUrl

@@ -32,7 +32,6 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            TempData[Constants.TempDataReturnUrlReferrer] = Request.UrlReferrer.ToStr();
             var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();
 
             if (id == 0)

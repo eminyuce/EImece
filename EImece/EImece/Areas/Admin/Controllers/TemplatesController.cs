@@ -19,6 +19,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public XmlEditorHelper XmlEditorHelper { get; set; }
 
+        private const string ProductSpescUrl = "ProductSpescUrl";
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: Admin/Template
@@ -31,6 +32,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
+            TempData[ProductSpescUrl] = Request.UrlReferrer.ToStr();
             var template = EntityFactory.GetBaseEntityInstance<Template>();
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor(id);
             if (id == 0)
@@ -70,7 +72,15 @@ namespace EImece.Areas.Admin.Controllers
                     template.Lang = CurrentLanguage;
                     TemplateService.SaveOrEditEntity(template);
                     int contentId = template.Id;
-                    return RedirectToAction("Index");
+                    if (string.IsNullOrEmpty(TempData[ProductSpescUrl].ToStr()))
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return Redirect(TempData[ProductSpescUrl].ToStr());
+                    }
+                  
                 }
                 else
                 {
