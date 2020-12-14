@@ -110,20 +110,13 @@
                     <img src="@product.CroppedImageUrl" alt="Product">
                 </a>
             }
-        <div class="media-body pt-3">
-            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                <a href="@product.DetailPageUrl">@product.Name</a>
-            </h3>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
-            @if (product.ProductSpecItems.IsNotEmpty())
-            {
-                foreach (var productSpecs in product.ProductSpecItems)
-                {
-                    <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
-                }
-            }
-        </div>
+            <div class="media-body pt-3">
+                <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                    <a href="@product.DetailPageUrl">@product.Name</a>
+                </h3>
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
+            </div>
         </div>
         <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
             <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.Quantity</span></div>

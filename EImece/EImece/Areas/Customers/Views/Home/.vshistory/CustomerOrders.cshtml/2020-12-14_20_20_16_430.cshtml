@@ -117,10 +117,11 @@
                             <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory:</span>@product.ProductCategory.Name</div>
                             @if (ProductSpecItems.IsNotEmpty())
                             {
-                                foreach (var psi in ProductSpecItems)
-                                {
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@psi.SpecsName:</span>@psi.SpecsValue</div>
-                                }
+                            foreach (var psi in ProductSpecItems)
+                            {
+                        <div class="font-size-sm"><span class="text-muted mr-2">@psi.SpecsName:</span>@psi.SpecsValue</div>
+
+                            }
                             }
                         </div>
                     </div>
