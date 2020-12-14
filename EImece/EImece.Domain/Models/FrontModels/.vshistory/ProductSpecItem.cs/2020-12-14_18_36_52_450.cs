@@ -11,6 +11,8 @@ namespace EImece.Domain.Models.FrontModels
     {
         public string SpecsName { get; set; }
         public string SpecsValue { get; set; }
+        public int Quantity { set; get; }
+
         
 
         public override bool Equals(object obj)

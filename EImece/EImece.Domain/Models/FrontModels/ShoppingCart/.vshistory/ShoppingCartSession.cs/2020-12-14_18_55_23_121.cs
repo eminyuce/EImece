@@ -103,7 +103,7 @@ namespace EImece.Domain.Models.FrontModels
                         if (existingItem.Product.ProductSpecItems.Contains(ProductSpecItem))
                         {
                             var existingItemSpecs = existingItem.Product.ProductSpecItems.FirstOrDefault(r => r.Equals(ProductSpecItem));
-                            existingItem.Quantity += item.Quantity;
+                            existingItem.Quantity += ProductSpecItem.Quantity;
                         }
                     }
                 }

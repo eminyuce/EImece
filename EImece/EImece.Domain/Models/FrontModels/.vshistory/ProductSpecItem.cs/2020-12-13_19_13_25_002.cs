@@ -11,14 +11,14 @@ namespace EImece.Domain.Models.FrontModels
     {
         public string SpecsName { get; set; }
         public string SpecsValue { get; set; }
-        
+        public int Quantity { set; get; }
 
         public override bool Equals(object obj)
         {
             ProductSpecItem p = (ProductSpecItem)obj;
             if (p == null)
                 return false;
-            return SpecsValue.Equals(p.SpecsValue, StringComparison.InvariantCultureIgnoreCase) && SpecsName.Equals(p.SpecsName, StringComparison.InvariantCultureIgnoreCase);
+            return SpecsValue.Equals(p.SpecsValue, StringComparison.InvariantCultureIgnoreCase);
         }
     }
     [Serializable]

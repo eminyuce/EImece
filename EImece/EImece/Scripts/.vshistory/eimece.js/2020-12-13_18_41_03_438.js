@@ -37,7 +37,8 @@ $("#AddToCart").click(function () {
     $('[data-product-selected-specs=' + nProductId + ']').each(function () {
         var obj = {
             SpecsName: $(this).attr('name'),
-            SpecsValue: $(this).val() 
+            SpecsValue: $(this).val(),
+            Quantity: $("#quantity").val()
         };
         selectedTotalSpecs.push(obj);
     });

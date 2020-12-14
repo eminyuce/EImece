@@ -47,17 +47,13 @@ namespace EImece.Domain.Models.FrontModels
         {
             if(item == null)
             {
-                return false;
+                return true;
             }
             if(Product.Id == item.Product.Id)
             {
                 if(Product.ProductSpecItems.IsNotEmpty() && item.Product.ProductSpecItems.IsNotEmpty())
                 {
                     return Product.ProductSpecItems.FirstOrDefault().Equals(item.Product.ProductSpecItems.FirstOrDefault());
-                }
-                else
-                {
-                    return true;
                 }
             }
             else

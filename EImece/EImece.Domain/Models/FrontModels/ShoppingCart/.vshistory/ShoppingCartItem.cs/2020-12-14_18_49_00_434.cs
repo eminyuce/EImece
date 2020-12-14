@@ -45,24 +45,12 @@ namespace EImece.Domain.Models.FrontModels
 
         public bool IsSameProduct(ShoppingCartItem item)
         {
-            if(item == null)
-            {
-                return false;
-            }
             if(Product.Id == item.Product.Id)
             {
                 if(Product.ProductSpecItems.IsNotEmpty() && item.Product.ProductSpecItems.IsNotEmpty())
                 {
-                    return Product.ProductSpecItems.FirstOrDefault().Equals(item.Product.ProductSpecItems.FirstOrDefault());
+                    Product.ProductSpecItems.FirstDe
                 }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
             }
         }
     }

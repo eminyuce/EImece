@@ -1,8 +1,6 @@
-﻿using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.FrontModels.ShoppingCart;
+﻿using EImece.Domain.Models.FrontModels.ShoppingCart;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -45,25 +43,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public bool IsSameProduct(ShoppingCartItem item)
         {
-            if(item == null)
-            {
-                return false;
-            }
-            if(Product.Id == item.Product.Id)
-            {
-                if(Product.ProductSpecItems.IsNotEmpty() && item.Product.ProductSpecItems.IsNotEmpty())
-                {
-                    return Product.ProductSpecItems.FirstOrDefault().Equals(item.Product.ProductSpecItems.FirstOrDefault());
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            throw new NotImplementedException();
         }
     }
 }

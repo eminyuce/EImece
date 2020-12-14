@@ -151,7 +151,7 @@
             {
                 foreach (var productSpecs in product.ProductSpecItems)
                 {
-        <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+        <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue     @Resource.Quantity: @productSpecs.Quantity</div>
                 }
             }
 

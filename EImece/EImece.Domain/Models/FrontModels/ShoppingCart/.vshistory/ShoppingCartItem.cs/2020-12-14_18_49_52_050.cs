@@ -55,10 +55,6 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     return Product.ProductSpecItems.FirstOrDefault().Equals(item.Product.ProductSpecItems.FirstOrDefault());
                 }
-                else
-                {
-                    return true;
-                }
             }
             else
             {

@@ -91,21 +91,23 @@ namespace EImece.Domain.Models.FrontModels
         {
             if (ShoppingCartItems.Any(r => r.Product.Id == item.Product.Id))
             {
-                var existingItem = ShoppingCartItems.FirstOrDefault(r => r.IsSameProduct(item));
-                if(existingItem == null)
+                ShoppingCartItem existingItem = ShoppingCartItems.FirstOrDefault(r => r.Product.Id == item.Product.Id);
+                if (item.Product.ProductSpecItems.IsNotEmpty())
                 {
-                    ShoppingCartItems.Add(item);
+                    bool isNewShoppingCartItemForSameProduct = false;
+                    foreach (var ProductSpecItem in item.Product.ProductSpecItems)
+                    {
+                        if (existingItem.Product.ProductSpecItems.Any(r => r.Equals(ProductSpecItem)))
+                        {
+                            var existingItemSpecs = existingItem.Product.ProductSpecItems.FirstOrDefault(r => r.Equals(ProductSpecItem));
+                            existingItemSpecs.Quantity += ProductSpecItem.Quantity;
+                            isNewShoppingCartItemForSameProduct = true;
+                        }
+                    }
                 }
                 else
                 {
-                    foreach (var ProductSpecItem in item.Product.ProductSpecItems)
-                    {
-                        if (existingItem.Product.ProductSpecItems.Contains(ProductSpecItem))
-                        {
-                            var existingItemSpecs = existingItem.Product.ProductSpecItems.FirstOrDefault(r => r.Equals(ProductSpecItem));
-                            existingItem.Quantity += item.Quantity;
-                        }
-                    }
+                    existingItem.Quantity += item.Quantity;
                 }
             }
             else
