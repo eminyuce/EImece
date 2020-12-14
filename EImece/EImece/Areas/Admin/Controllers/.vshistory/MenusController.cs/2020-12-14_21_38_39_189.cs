@@ -211,7 +211,6 @@ namespace EImece.Areas.Admin.Controllers
             var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             var menuLinks = new List<SelectListItem>();
             menuLinks.Add(new SelectListItem() { Text = "Seçim Yapın", Value = "-1" });
-
             if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });

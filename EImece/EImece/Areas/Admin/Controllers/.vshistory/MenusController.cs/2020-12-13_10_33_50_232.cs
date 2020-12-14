@@ -210,8 +210,7 @@ namespace EImece.Areas.Admin.Controllers
             var menus = MenuService.GetActiveBaseContents(true, CurrentLanguage);
             var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             var menuLinks = new List<SelectListItem>();
-            menuLinks.Add(new SelectListItem() { Text = "Seçim Yapın", Value = "-1" });
-
+           
             if (!menus.Any(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase)))
             {
                 menuLinks.Add(new SelectListItem() { Text = "Ana Sayfa", Value = "home-index" });
@@ -232,10 +231,10 @@ namespace EImece.Areas.Admin.Controllers
             {
                 menuLinks.Add(new SelectListItem() { Text = "Gizlilik Politikası", Value = "info-termsandconditions" });
             }
-            //if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
-            // {
-            //     menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
-            // }
+            if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
+            }
             menuLinks.Add(new SelectListItem() { Text = "Farkli Sayfa Temalari", Value = "pages-index" });
 
            
