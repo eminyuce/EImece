@@ -137,7 +137,7 @@ namespace EImece.Domain.Helpers
             {
                 CategoryFilterId = string.Format("p{0}", 100),
                 minPrice = 0,
-                maxPrice = 49
+                maxPrice = 50
             };
             item1.name = string.Format("{0} {1}", item1.maxPrice.CurrencySign(), Resource.AndUnderPrice);
             item.CategoryFilters.Add(item1);

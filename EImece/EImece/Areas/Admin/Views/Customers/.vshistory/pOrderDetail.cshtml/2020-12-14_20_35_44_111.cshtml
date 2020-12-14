@@ -20,12 +20,7 @@
         <b>@AdminResource.PaymentIyzicoNumber - @order.PaymentId</b><br />
         <b>@AdminResource.PaymentIyzicoMerchantBasketId - @order.BasketId</b><br />
     </div>
-    <section class="customer-details">
-        <h4 class="column__title">@AdminResource.ShippingAddress</h4>
-        <address>
-            @order.ShippingAddress.Description
-        </address>
-    </section>
+
     <table class='table table-hover table-bordered table-striped'>
 
         <thead>
@@ -121,6 +116,18 @@
                     @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
                 </td>
             </tr>
+          
+ 
+            <tr class="warning">
+                <td colspan="3">
+                    <b>
+                        IyziCommissionFee
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.IyziCommissionFee
+                </td>
+            </tr>
         </tbody>
         <tfoot>
             <tr class="success">
@@ -137,5 +144,10 @@
         </tfoot>
     </table>
 
-
+    <section class="customer-details">
+        <h3 class="column__title">@AdminResource.ShippingAddress</h3>
+        <address>
+            @order.ShippingAddress.Description
+        </address>
+    </section>
 </section>
