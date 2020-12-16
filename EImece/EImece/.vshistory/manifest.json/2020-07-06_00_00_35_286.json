@@ -1,7 +1,7 @@
 {
-  "name": "Angel Silk Ltd.",
-  "short_name": "Angel Silk",
-  "theme_color": "#1789F9",
+  "name": "Web Site Name",
+  "short_name": "Short Name",
+  "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "start_url": "/",
   "display": "standalone",
