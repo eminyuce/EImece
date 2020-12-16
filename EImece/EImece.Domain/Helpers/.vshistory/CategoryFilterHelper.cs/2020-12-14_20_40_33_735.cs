@@ -154,7 +154,7 @@ namespace EImece.Domain.Helpers
             item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 102),
-                minPrice = 99,
+                minPrice = 100,
                 maxPrice = 499
             };
             item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
@@ -163,7 +163,7 @@ namespace EImece.Domain.Helpers
             item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 103),
-                minPrice = 499,
+                minPrice = 500,
                 maxPrice = 999
             };
             item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
@@ -172,7 +172,7 @@ namespace EImece.Domain.Helpers
             item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 104),
-                minPrice = 999,
+                minPrice = 1000,
                 maxPrice = 4999
             };
             item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
@@ -182,7 +182,7 @@ namespace EImece.Domain.Helpers
             item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 106),
-                minPrice = 4999,
+                minPrice = 5000,
                 maxPrice = 9999999
             };
             item1.name = string.Format("{0} {1}", item1.minPrice.CurrencySign(), Resource.AndOverPrice);

@@ -131,7 +131,10 @@ namespace EImece.Controllers
         }   
         public ActionResult GetHtmlLangCode()
         {
-            switch ((EImeceLanguage)CurrentLanguage)
+            List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
+
+            EImeceLanguage currenLang = (EImeceLanguage) CurrentLanguage;
+            switch (currenLang)
             {
                 case EImeceLanguage.Turkish:
                     return Content("tr");

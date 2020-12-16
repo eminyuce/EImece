@@ -11,9 +11,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.UI;
 
 namespace EImece.Controllers
 {
@@ -81,7 +79,6 @@ namespace EImece.Controllers
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
-                    Response.Cache.SetCacheability(HttpCacheability.Public);
                     return File(imageByte.ImageBytes, imageByte.ContentType);
                 }
                 else

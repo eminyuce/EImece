@@ -38,7 +38,7 @@
 @Html.Raw(HttpUtility.HtmlDecode(desc))
 
 <!-- Split section: Map + Contact form-->
-<div class="container-fluid" id="map" data-offset-top="30">
+<div class="container-fluid px-0 pt-4 pt-lg-5" id="map" data-offset-top="30">
     <div class="row no-gutters">
         <div class="col-lg-6 iframe-full-height-wrap">
             @Html.Raw(Model.GoogleMapScript.SettingValue)

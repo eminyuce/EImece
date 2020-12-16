@@ -128,21 +128,6 @@ namespace EImece.Controllers
         {
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
             return PartialView("_Languages", listItems);
-        }   
-        public ActionResult GetHtmlLangCode()
-        {
-            switch ((EImeceLanguage)CurrentLanguage)
-            {
-                case EImeceLanguage.Turkish:
-                    return Content("tr");
-                case EImeceLanguage.English:
-                    return Content("en");
-                case EImeceLanguage.Russian:
-                    return Content("ru");
-                case EImeceLanguage.German:
-                    return Content("de");
-            }
-            return Content("tr");
         }
 
         [ChildActionOnly]
