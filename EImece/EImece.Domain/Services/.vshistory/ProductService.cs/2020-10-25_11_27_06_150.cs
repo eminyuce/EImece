@@ -119,10 +119,6 @@ namespace EImece.Domain.Services
 
             result = new ProductDetailViewModel();
             var product = ProductRepository.GetProduct(id);
-            if(product == null)
-            {
-                throw new ArgumentNullException("Product is null for id:" + id);
-            }
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);

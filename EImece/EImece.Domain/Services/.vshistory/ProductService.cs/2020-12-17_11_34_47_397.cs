@@ -121,7 +121,7 @@ namespace EImece.Domain.Services
             var product = ProductRepository.GetProduct(id);
             if(product == null)
             {
-                throw new ArgumentNullException("Product is null for id:" + id);
+                ]throw new ArgumentNullException("Product is null for id:" + id);
             }
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
