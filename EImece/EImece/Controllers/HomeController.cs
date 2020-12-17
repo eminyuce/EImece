@@ -46,6 +46,10 @@ namespace EImece.Controllers
         [Inject]
         public IMenuService MenuService { get; set; }
 
+  
+        [Inject]
+        public IMailTemplateService MailTemplateService { get; set; }
+
         [Inject]
         public RazorEngineHelper RazorEngineHelper { get; set; }
 
@@ -289,5 +293,13 @@ namespace EImece.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult OrderConfirmationEmail(int orderId=1)
+        {
+            OrderConfirmationEmailRazorTemplate pp = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
+            return View(pp);
+        }
+
+    
     }
 }

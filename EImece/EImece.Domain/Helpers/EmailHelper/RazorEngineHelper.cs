@@ -88,30 +88,18 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
-        public Tuple<string, string> OrderConfirmationEmail(ShoppingCartSession shoppingCart)
+        public Tuple<string, string> OrderConfirmationEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.OrderConfirmationEmailMailTemplate);
             if (emailTemplate == null)
             {
                 return new Tuple<string, string>("", "");
             }
-            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
-            var Request = HttpContext.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
-
-            var model = new
-            {
-                Customer = shoppingCart.Customer,
-                BillingAddress = shoppingCart.BillingAddress,
-                ShippingAddress = shoppingCart.ShippingAddress,
-                TotalPrice = shoppingCart.TotalPrice
-            };
-
+            var model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
-
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
@@ -224,8 +212,11 @@ namespace EImece.Domain.Helpers.EmailHelper
             try
             {
                 result.Source = razorTemplate;
+
                 var configuration = new TemplateServiceConfiguration { Debug = true };
                 configuration.Namespaces.Add("EImece.Domain.Helpers");
+                configuration.Namespaces.Add("EImece.Domain.Entities");
+                configuration.Namespaces.Add("EImece.Domain.Models.FrontModels");
                 configuration.Namespaces.Add("EImece.Domain.Helpers.RazorCustomRssTemplate");
                 configuration.Namespaces.Add("System.Xml");
                 configuration.Namespaces.Add("System.Web.Mvc");
@@ -233,6 +224,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 configuration.Namespaces.Add("System.Web.Mvc.Html");
                 configuration.Namespaces.Add("System.Xml.Linq");
                 configuration.Namespaces.Add("System.Linq");
+                configuration.Namespaces.Add("Resources");
                 configuration.Namespaces.Add("System.ServiceModel.Syndication");
                 configuration.BaseTemplateType = typeof(VBCustomTemplateBase<>);
 

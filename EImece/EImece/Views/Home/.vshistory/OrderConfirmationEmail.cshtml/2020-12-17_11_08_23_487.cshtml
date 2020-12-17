@@ -1,0 +1,156 @@
+﻿@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@model  OrderConfirmationEmailRazorTemplate
+@{
+    Layout = null;
+}
+
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0"   style="background-color: #d5d5d5;">
+    <tbody>
+        <tr>
+            <td>
+                <table width="600" align="center" cellpadding="15" cellspacing="0" border="0" class="devicewidth" style="background-color: #ffffff;">
+                    <tbody>
+                        <!-- Start header Section -->
+                        <tr>
+                            <td style="padding-top: 30px;">
+                                <table width="560" align="center" cellpadding="0" cellspacing="0" border="0" class="devicewidthinner" style="border-bottom: 1px solid #eeeeee; text-align: center;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 10px;">
+                                                <a href="@Model.CompanyWebSiteUrl"><img src="@Model.ImgLogoSrc" alt="PapaChina"></a>
+                                            </td>
+                                        </tr>
+                                        <tr colspan="2">
+                                            <td style="font-size: 14px; line-height: 18px; color: #666666;">
+                                                @Model.CompanyAddress
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: 14px; line-height: 18px; color: #666666;">
+                                                Telefon: @Model.CompanyPhoneNumber | Email: @Model.CompanyEmailAddress
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-size: 14px; line-height: 18px; color: #666666; padding-bottom: 25px;">
+                                                <strong>Order Number:</strong> @Model.FinishedOrder.OrderNumber | <strong>Order Date:</strong> @Model.FinishedOrder.CreatedDate.ToLongDateString()
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- End header Section -->
+                        <!-- Start address Section -->
+                        <tr>
+                            <td style="padding-top: 0;">
+                                <table width="560" align="center" cellpadding="0" cellspacing="0" border="0" class="devicewidthinner" style="border-bottom: 1px solid #bbbbbb;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                @Model.FinishedOrder.Customer.Address
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- End address Section -->
+                        <!-- Start product Section -->
+                        @foreach (var orderProduct in Model.FinishedOrder.OrderProducts)
+                        {
+                            @GenerateOrderItem(orderProduct);
+                        }
+
+
+
+
+                        <!-- End product Section -->
+                        <!-- Start calculation Section -->
+                        <tr>
+                            <td style="padding-top: 0;">
+                                <table width="560" align="center" cellpadding="0" cellspacing="0" border="0" class="devicewidthinner" style="border-bottom: 1px solid #bbbbbb; margin-top: -5px;">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" style="font-size: 14px; font-weight: bold; line-height: 18px; color: #666666; padding-top: 10px;">
+                                                Total Items
+                                            </td>
+                                            <td colspan="2" style="font-size: 14px; font-weight: bold; line-height: 18px; color: #666666; padding-top: 10px; text-align: right;">
+                                                @Model.FinishedOrder.OrderProducts.Sum(r => r.Quantity)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-size: 14px; font-weight: bold; line-height: 18px; color: #666666; padding-top: 10px;">
+                                                Order Total
+                                            </td>
+                                            <td colspan="2" style="font-size: 14px; font-weight: bold; line-height: 18px; color: #666666; padding-top: 10px; text-align: right;">
+                                                @Model.FinishedOrder.PaidPrice.ToDouble().CurrencySign()
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@helper GenerateOrderItem(OrderProduct item)
+{
+
+    <tr>
+        <td style="padding-top: 0;">
+            <table width="560" align="center" cellpadding="0" cellspacing="0" border="0" class="devicewidthinner" style="border-bottom: 1px solid #eeeeee;">
+                <tbody>
+                    <tr>
+                        <td rowspan="4" style="padding-right: 10px; padding-bottom: 10px;">
+                            <img style="height: 80px;" src="@item.Product.ImageFullPath(200,200)" alt="@item.Product.NameLong">
+                        </td>
+                        <td colspan="2" style="font-size: 14px; font-weight: bold; color: #666666; padding-bottom: 5px;">
+                           @item.Product.Name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; line-height: 18px; color: #757575; width: 440px;">
+                            Quantity: @item.Quantity
+                        </td>
+                        <td style="font-size: 14px; line-height: 18px; color: #757575; text-align: right;">
+                            @item.Price.CurrencySign() Per Unit
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; line-height: 18px; color: #757575;">
+                            
+                        </td>
+                      
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; line-height: 18px; color: #757575; padding-bottom: 10px;">
+                             
+                        </td>
+                        <td style="font-size: 14px; line-height: 18px; color: #757575; text-align: right; padding-bottom: 10px;">
+                            <b style="color: #666666;"> @item.TotalPrice.CurrencySign()</b> Total
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+
+}

@@ -73,9 +73,12 @@ namespace EImece.Domain.Entities
                 return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name, AppConfig.HttpProtocol);
             }
         }
+        public string ImageFullPath(int width,int height)
+        {
+           return this.GetCroppedImageUrl(this.MainImageId, width, height, true);
+        }
 
 
-       
 
         [NotMapped]
         public string DetailPageRelativeUrl

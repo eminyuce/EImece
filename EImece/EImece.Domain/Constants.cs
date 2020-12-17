@@ -14,7 +14,8 @@ namespace EImece.Domain
         public const string ProductTagPrefix = "t/{id}"; // tags
         public const string StoryTagPrefix = "t/{id}"; // tags
         public const string CategoryPrefix = "pc/{id}"; //
-       
+
+        public const string LogoImagePath = "/images/logo.jpg";
 
         public const string INFO_PREFIX = "info-";
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";

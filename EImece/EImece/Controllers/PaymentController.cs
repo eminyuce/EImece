@@ -43,6 +43,9 @@ namespace EImece.Controllers
         [Inject]
         public IOrderService OrderService { get; set; }
 
+        [Inject]
+        public IMailTemplateService MailTemplateService { get; set; }
+
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
@@ -135,8 +138,8 @@ namespace EImece.Controllers
         private void SaveShoppingCart(ShoppingCartSession shoppingCart)
         {
             var item = new ShoppingCart();
-            item.CreatedDate = DateTime.Today;
-            item.UpdatedDate = DateTime.Today;
+            item.CreatedDate = DateTime.Now;
+            item.UpdatedDate = DateTime.Now;
             item.Name = shoppingCart.OrderGuid;
             item.IsActive = false;
             item.Lang = CurrentLanguage;
@@ -379,7 +382,7 @@ namespace EImece.Controllers
                 ClearCart(shoppingCart);
                 Task.Run(() =>
                 {
-                    var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(shoppingCart);
+                    var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
                     EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), shoppingCart, emailTemplate);
                 });
                 // return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
@@ -393,6 +396,7 @@ namespace EImece.Controllers
         }
         public ActionResult ThankYouForYourOrder(int orderId)
         {
+            OrderConfirmationEmailRazorTemplate pp = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             return View(OrderService.GetSingle(orderId));
         }
         public ActionResult NoSuccessForYourOrder()

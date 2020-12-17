@@ -1,0 +1,18 @@
+﻿@model SettingLayoutViewModel
+@using EImece.Domain.Models.FrontModels;
+
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@{
+    bool isThumb = ViewData["isThumb"].ToBool(false);
+}
+@{
+        var webSiteLogo = Model.WebSiteLogo;
+        var companyName = Model.CompanyName;
+        string companyNametxt = companyName.SettingValue;
+
+        <a href="/">
+            <img alt="@companyNametxt" src="/images/logo.jpg" />
+        </a>
+}

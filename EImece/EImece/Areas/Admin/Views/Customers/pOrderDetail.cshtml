@@ -39,7 +39,7 @@
         <tbody>
             @foreach (var orderProduct in orderProducts)
             {
-                var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
+                var ProductSpecItems = orderProduct.ProductSpecObjItems;
                 var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
                 <tr class="table__line-item order_item">
                     <td class="text-center">

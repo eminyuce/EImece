@@ -1,6 +1,11 @@
-﻿using GenericRepository;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Models.FrontModels;
+using GenericRepository;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace EImece.Domain.Entities
 {
@@ -29,6 +34,26 @@ namespace EImece.Domain.Entities
                 return TotalPrice / Quantity;
             }
         }
+
+        [NotMapped]
+        public List<ProductSpecItem> ProductSpecObjItems
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<List<ProductSpecItem>>(ProductSpecItems.ToStr());
+            }
+        }
+        [NotMapped]
+        public ProductSpecItem ProductSpecColorItem
+        {
+            get
+            {
+                return ProductSpecObjItems.FirstOrDefault();
+            }
+        }
+
+
+
 
         public Product Product { get; set; }
 

@@ -328,21 +328,29 @@ namespace EImece.Domain.Helpers.Extensions
             return imageTag;
         }
 
-        public static string GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0)
+        public static string GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0, bool isFullPathImageUrl = false)
         {
             var fileStorageId = fileStorageIdOptional.HasValue ? fileStorageIdOptional.Value : 0;
-            var result = GetCroppedImageUrl(entity, fileStorageId, width, height);
+            var result = GetCroppedImageUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
 
             return result;
         }
-
-        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
+       
+        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl=false)
         {
             if (entity != null && fileStorageId > 0)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageSize = string.Format("w{0}h{1}", width, height);
-                return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" }); ;
+                if (isFullPathImageUrl)
+                {
+                    return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" }, HttpContext.Current.Request.Url.Scheme);
+                }
+                else
+                {
+                    return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" });
+                }
+               
             }
             return AppConfig.GetDefaultImage(width, height);
         }

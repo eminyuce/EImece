@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Ninject;
 using NLog;
+using RazorEngine;
+using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -197,6 +199,29 @@ namespace EImece.Tests.Controllers
             var ProductService = new ProductService(new ProductRepository(db));
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
+        }
+
+        [TestMethod]
+        public void GetEmailTemplateById()
+        {
+            var db = new EImeceContext(ConnectionString);
+            var service = new MailTemplateService(new MailTemplateRepository(db));
+            var orderConfirmationEmailTemplate = service.GetMailTemplateByName("OrderConfirmationEmail");
+            Assert.IsNotNull(orderConfirmationEmailTemplate);
+            String orderConfirmationEmailTemplateHtml = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\emailTemplates\OrderConfirmationEmail.html");
+            var aservice = new AddressService(new AddressRepository(db));
+            var cservice = new CustomerService(new CustomerRepository(db), aservice);
+            var opservice = new OrderProductService(new OrderProductRepository(db));
+            var oservice = new OrderService(new OrderRepository(db), cservice, opservice);
+            var cOrder = oservice.GetOrderById(1);
+            Customer customer = cservice.GetUserId("44a72377-7a04-49ec-b8bb-40b9140deddc");
+            var pp = new OrderConfirmationEmailRazorTemplate();
+            pp.CompanyAddress = "3828 Mall Road  Los Angeles, California, 90017";
+            pp.CompanyEmailAddress = "info@gmail.com";
+            pp.CompanyPhoneNumber = "05456687854";
+            pp.FinishedOrder = cOrder;
+            string result = Engine.Razor.RunCompile(orderConfirmationEmailTemplateHtml, "Test", null, pp);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
