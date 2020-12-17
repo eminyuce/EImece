@@ -1,0 +1,68 @@
+﻿@using EImece.Domain.Models.AdminModels
+@model RazorError
+@{
+    var re = Model;
+}
+
+@if (!String.IsNullOrEmpty(re.ErrorLine))
+{
+    <div class="display-label">
+        @Html.DisplayNameFor(model => re.ErrorLine)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => re.ErrorLine)
+    </div>
+}
+
+
+@if (re.LineAdjusted > 0)
+{
+    <div class="display-label">
+        @Html.DisplayNameFor(model => re.LineAdjusted)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => re.LineAdjusted)
+    </div>
+}
+
+@if (re.Line > 0)
+{
+    <div class="display-label">
+        @Html.DisplayNameFor(model => re.Line)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => re.Line)
+    </div>
+}
+
+
+@if (!String.IsNullOrEmpty(re.ErrorText))
+{
+    <div class="display-label">
+        @Html.DisplayNameFor(model => re.ErrorText)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => re.ErrorText)
+    </div>
+}
+
+
+@if (!String.IsNullOrEmpty(re.ErrorNumber))
+{
+    <div class="display-label">
+        @Html.DisplayNameFor(model => re.ErrorNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => re.ErrorNumber)
+    </div>
+}
+
+@if (!String.IsNullOrEmpty(re.FileName))
+{
+    <div class="display-label">
+        @Html.DisplayNameFor(model => re.FileName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => re.FileName)
+    </div>
+} 

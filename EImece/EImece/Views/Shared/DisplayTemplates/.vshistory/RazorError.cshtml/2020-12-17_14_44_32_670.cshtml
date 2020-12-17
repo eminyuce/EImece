@@ -1,0 +1,15 @@
+﻿@using EImece.Domain.Models.AdminModels
+@model RazorError
+@{ 
+    var re = Model;
+}
+
+@if (!String.IsNullOrEmpty(re.ErrorLine))
+{
+<div class="display-label">
+    @Html.DisplayNameFor(model => re.ErrorLine)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => re.ErrorLine)
+</div>
+} 

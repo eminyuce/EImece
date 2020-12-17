@@ -1,0 +1,149 @@
+﻿@model EImece.Domain.Models.AdminModels.SettingModel
+@using Resources;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@AdminResource.AdminGeneralSettings</h2>
+<hr class="adminLine" />
+
+@using (Html.BeginForm("Index", "AdminSettings"))
+{
+    @Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-md-9">
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    </div>
+    <div class="col-md-3">
+        <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
+    </div>
+</div>
+    <hr />
+
+    <div class="container">
+        <div class="form-horizontal">
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse221144" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.CargoSettings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse221144" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CargoCompany, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                    
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CargoPrice, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.CargoDescription, 3, 50, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse111" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.SeoSettings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse111" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SiteIndexMetaTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.SiteIndexMetaTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SiteIndexMetaTitle, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SiteIndexMetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.SiteIndexMetaKeywords, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SiteIndexMetaKeywords, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SiteIndexMetaDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.SiteIndexMetaDescription, 2, 50, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SiteIndexMetaDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse2211" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.FooterSettings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse2211" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FooterDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FooterDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FooterDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FooterEmailListDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FooterEmailListDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FooterEmailListDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FooterHtmlDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.FooterHtmlDescription, 10, 50, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script>
+    $(function () {
+        $(".expand").on("click", function () {
+            // $(this).next().slideToggle(200);
+            $expand = $(this).find(">:first-child");
+
+            if ($expand.text() == "+") {
+                $expand.text("-");
+            } else {
+                $expand.text("+");
+            }
+        });
+    });
+</script>

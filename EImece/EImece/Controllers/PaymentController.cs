@@ -383,8 +383,8 @@ namespace EImece.Controllers
                 Task.Run(() =>
                 {
                     var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                    EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), shoppingCart, emailTemplate);
-                });
+                    EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(),  emailTemplate);
+                }).Start();
                 // return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
                 return RedirectToAction("ThankYouForYourOrder",new { orderId = order.Id });
             }

@@ -296,8 +296,9 @@ namespace EImece.Controllers
 
         public ActionResult OrderConfirmationEmail(int orderId=1)
         {
-            OrderConfirmationEmailRazorTemplate pp = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
-            return View(pp);
+            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
+            EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
+            return View(emailTemplate.Item2);
         }
 
     

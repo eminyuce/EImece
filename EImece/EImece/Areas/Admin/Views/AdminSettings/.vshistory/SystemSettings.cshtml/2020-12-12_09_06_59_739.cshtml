@@ -1,0 +1,345 @@
+﻿@model EImece.Domain.Models.AdminModels.SystemSettingModel
+@using Resources;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@AdminResource.AdminSystemSettings</h2>
+<hr class="adminLine" />
+
+@using (Html.BeginForm("SystemSettings", "AdminSettings"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-9">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
+        </div>
+    </div>
+    <hr />
+
+    <div class="container">
+        <div class="form-horizontal">
+
+            <div class="panel-group" id="accordion">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse22" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.AdminGeneralSettings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse22" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DefaultImageHeight, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DefaultImageHeight, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DefaultImageHeight, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DefaultImageWidth, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DefaultImageWidth, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DefaultImageWidth, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IsProductPriceEnable, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.IsProductPriceEnable, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse51" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.CompanyAdminSettings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse51" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CompanyAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.WebSiteCompanyPhoneAndLocation, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.WebSiteCompanyPhoneAndLocation, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.WebSiteCompanyPhoneAndLocation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.WebSiteCompanyEmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.WebSiteCompanyEmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.WebSiteCompanyEmailAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse13" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.SmtpEmailSettings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse13" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmailHost, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.AdminEmailHost, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AdminEmailHost, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmailPort, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.AdminEmailPort, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AdminEmailPort, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmailDisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.AdminEmailDisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AdminEmailDisplayName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminUserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.AdminUserName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AdminUserName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmailPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.AdminEmailPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AdminEmailPassword, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmailEnableSsl, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.AdminEmailEnableSsl, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AdminEmailEnableSsl, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    @Html.ActionLink("E-Posta Denemesi Yap", "SendSampleEmail", null, new { @class = "btn btn-block btn-default" })
+                                    <span class="label label-info text-uppercase">
+                                        Web Sitesi Şirketi E-posta Adresinize Test Emaili Atilacaktir
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse52" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.SocialMediaSetttings</a>
+                        </h4>
+                    </div>
+                    <div id="collapse52" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FacebookWebSiteLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FacebookWebSiteLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FacebookWebSiteLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LinkedinWebSiteLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.LinkedinWebSiteLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.LinkedinWebSiteLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TwitterWebSiteLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.TwitterWebSiteLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TwitterWebSiteLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.InstagramWebSiteLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.InstagramWebSiteLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.InstagramWebSiteLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PinterestWebSiteLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PinterestWebSiteLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PinterestWebSiteLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.YoutubeWebSiteLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.YoutubeWebSiteLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.YoutubeWebSiteLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Zopim, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Zopim, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Zopim, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.GoogleAnalyticsTrackingScript</a>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.GoogleAnalyticsTrackingScript, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.GoogleAnalyticsTrackingScript, 10, 50, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.GoogleAnalyticsTrackingScript, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse41" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.WhatsAppCommunicationScript</a>
+                        </h4>
+                    </div>
+                    <div id="collapse41" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.WhatsAppCommunicationScript, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.WhatsAppCommunicationScript, 10, 50, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.WhatsAppCommunicationScript, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse444" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.GoogleMapScript</a>
+                        </h4>
+                    </div>
+                    <div id="collapse444" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.GoogleMapScript, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.GoogleMapScript, 10, 50, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.GoogleMapScript, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse4443451" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.AppLogs</a>
+                        </h4>
+                    </div>
+                    <div id="collapse4443451" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn btn-block btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+}
+
+<script>
+    $(function () {
+        $(".expand").on("click", function () {
+            // $(this).next().slideToggle(200);
+            $expand = $(this).find(">:first-child");
+
+            if ($expand.text() == "+") {
+                $expand.text("-");
+            } else {
+                $expand.text("+");
+            }
+        });
+    });
+</script>

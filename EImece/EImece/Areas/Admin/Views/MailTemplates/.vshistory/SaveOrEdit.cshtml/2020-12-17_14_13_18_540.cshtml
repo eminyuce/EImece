@@ -1,0 +1,105 @@
+﻿@model EImece.Domain.Entities.MailTemplate
+@using EImece.Domain.Models.AdminModels
+@using Resources;
+@{
+    ViewBag.Title = "Mail Template";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
+}
+
+<h2>@AdminResource.MailTemplates</h2>
+<hr class="adminLine" />
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editor-form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.UpdatedDate)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.TrackWithBitly)
+    @Html.HiddenFor(model => model.TrackWithMlnk)
+
+    <div class="panel with-nav-tabs panel-default">
+        <div class="panel-heading">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
+                <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
+                <li class="Tools">
+                    <input type="submit" name="saveButton" value="@saveButtonText" style="width:110px;" class="btn btn-sm btn-success" />
+                </li>
+                <li class="Tools">
+                    <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
+                </li>
+                <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'"  value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+            </ul>
+        </div>
+        <div class="panel-body">
+            <div class="tab-content">
+                <div id="tab1default" class="tab-pane fade in active">
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @if (Model.Id > 0)
+                            {
+                                <b>
+                                    @Model.Name
+                                </b>
+                                @Html.HiddenFor(model => model.Name)
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsActive)
+                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="tab2default">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Body, 10, 50, new {  @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        }
+
+        <div>
+            @Html.ActionLink(AdminResource.BackToList, "Index")
+        </div>

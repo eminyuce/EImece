@@ -25,31 +25,37 @@ namespace EImece.Domain.Models.AdminModels
                 {
                     foreach (var item in templateCompilationException.CompilerErrors)
                     {
-                        var fileLines = File.ReadAllLines(item.FileName);
-                        int lineOff = 0;
-                        foreach (var line in fileLines)
-                        {
-                            lineOff++;
-                            if (line.IndexOf("public override void Execute()", StringComparison.InvariantCultureIgnoreCase) > 0)
-                            {
-                                break;
-                            }
-                        }
-                        var i = new RazorError();
-
-                        i.Column = item.Column;
-                        i.ErrorNumber = item.ErrorNumber;
-                        i.Line = item.Line;
-                        i.LineAdjusted = item.Line - lineOff;
-                        i.ErrorLine = fileLines[item.Line - 1];
-                        i.IsWarning = item.IsWarning;
-                        i.ErrorText = item.ErrorText;
-                        resultErrors.Add(i);
+                        resultErrors.Add(CreateRazorError(item));
                     }
                 }
 
                 return resultErrors;
             }
+        }
+
+        private static RazorError CreateRazorError(RazorEngineCompilerError item)
+        {
+            var fileLines = File.ReadAllLines(item.FileName);
+            int lineOff = 0;
+            foreach (var line in fileLines)
+            {
+                lineOff++;
+                if (line.IndexOf("public override void Execute()", StringComparison.InvariantCultureIgnoreCase) > 0)
+                {
+                    break;
+                }
+            }
+            var i = new RazorError();
+
+            i.Column = item.Column;
+            i.ErrorNumber = item.ErrorNumber;
+            i.Line = item.Line;
+            i.LineAdjusted = item.Line - lineOff;
+            i.ErrorLine = fileLines[item.Line - 1];
+            i.IsWarning = item.IsWarning;
+            i.ErrorText = item.ErrorText;
+
+            return i;
         }
     }
 }

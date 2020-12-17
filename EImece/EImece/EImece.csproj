@@ -797,28 +797,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="media\images\1_1931644889.jpg" />
-    <Content Include="media\images\877528320190202091912880_1179341632.jpg" />
-    <Content Include="media\images\877528320190202091912880_139365376.jpg" />
-    <Content Include="media\images\877528320190202091912880_1543597850.jpg" />
-    <Content Include="media\images\877528320190202091912880_1894359873.jpg" />
-    <Content Include="media\images\bomber_1010340947.jpg" />
-    <Content Include="media\images\bomber_1876641751.jpg" />
-    <Content Include="media\images\bomber_822329988.jpg" />
-    <Content Include="media\images\IMG_9166_1202935861.jpg" />
-    <Content Include="media\images\offer.jpg" />
-    <Content Include="media\images\tapu_1607652111.jpeg" />
-    <Content Include="media\images\tapu_1843926720.jpeg" />
-    <Content Include="media\images\tapu_1990286641.jpeg" />
-    <Content Include="media\images\thumbs\thb1_1931644889.jpg" />
-    <Content Include="media\images\thumbs\thb877528320190202091912880_1179341632.jpg" />
-    <Content Include="media\images\thumbs\thb877528320190202091912880_139365376.jpg" />
-    <Content Include="media\images\thumbs\thb877528320190202091912880_1543597850.jpg" />
-    <Content Include="media\images\thumbs\thb877528320190202091912880_1894359873.jpg" />
-    <Content Include="media\images\thumbs\thbbomber_1010340947.jpg" />
-    <Content Include="media\images\thumbs\thbbomber_1876641751.jpg" />
-    <Content Include="media\images\thumbs\thbbomber_822329988.jpg" />
-    <Content Include="media\images\thumbs\thbIMG_9166_1202935861.jpg" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.js" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.min.js" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.js" />
@@ -1204,11 +1182,14 @@
     <Content Include="Views\Payment\NoSuccessForYourOrder.cshtml" />
     <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FileStorageThumbnails.cshtml" />
+    <Content Include="Views\Home\OrderConfirmationEmail2.cshtml" />
     <Content Include="Views\Home\OrderConfirmationEmail.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RazorError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
     <Folder Include="Areas\Customers\Data\" />
+    <Folder Include="media\" />
     <Folder Include="Scripts\codemirror\addon\" />
   </ItemGroup>
   <ItemGroup>

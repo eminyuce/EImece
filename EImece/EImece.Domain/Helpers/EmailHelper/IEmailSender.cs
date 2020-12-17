@@ -1,4 +1,6 @@
-﻿using EImece.Domain.Models.FrontModels;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -46,7 +48,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         void SendEmail(string destination, string subject, string body);
 
-        void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate);
+        void SendOrderConfirmationEmail(EmailAccount emailAccount,   Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
  
     }
 }

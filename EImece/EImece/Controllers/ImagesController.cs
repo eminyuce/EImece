@@ -86,7 +86,7 @@ namespace EImece.Controllers
                 }
                 else
                 {
-                    return new EmptyResult();
+                    return this.GetDefaultFileContentResult((string)imageSize);
                 }
             }
             else
@@ -98,18 +98,23 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public async Task<FileContentResult> DefaultImage(String imageSize)
         {
-            return await Task.Run(() =>
+            return await Task.Run((Func<FileContentResult>)(() =>
             {
-                var cacheKey = $"DefaultImage-{imageSize}";
-                FileContentResult result = null;
-                if (!MemoryCacheProvider.Get(cacheKey, out result))
-                {
-                    result = GetDefaultImage(imageSize);
-                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
-                }
+                return this.GetDefaultFileContentResult((string)imageSize);
+            })).ConfigureAwait(true);
+        }
 
-                return result;
-            }).ConfigureAwait(true);
+        private FileContentResult GetDefaultFileContentResult(string imageSize)
+        {
+            var cacheKey = $"DefaultImage-{imageSize}";
+            FileContentResult result = null;
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            {
+                result = GetDefaultImage(imageSize);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
+            }
+
+            return result;
         }
 
         [AcceptVerbs(HttpVerbs.Get)]

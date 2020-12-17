@@ -1,0 +1,13 @@
+﻿@using EImece.Domain.Models.AdminModels
+@model RazorError
+
+
+if (!String.IsNullOrEmpty(Model.ProductVersion))
+{
+<div class="display-label">
+    @Html.DisplayNameFor(model => model.ProductVersion)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ProductVersion)
+</div>
+} 

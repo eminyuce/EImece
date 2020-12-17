@@ -220,6 +220,7 @@ namespace EImece.Tests.Controllers
             pp.CompanyEmailAddress = "info@gmail.com";
             pp.CompanyPhoneNumber = "05456687854";
             pp.FinishedOrder = cOrder;
+            pp.OrderProducts = cOrder.OrderProducts.ToList();
             string result = Engine.Razor.RunCompile(orderConfirmationEmailTemplateHtml, "Test", null, pp);
             Assert.IsNotNull(result);
         }

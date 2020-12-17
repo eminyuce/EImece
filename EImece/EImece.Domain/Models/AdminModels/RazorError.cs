@@ -1,4 +1,5 @@
-﻿namespace EImece.Domain.Models.AdminModels
+﻿
+namespace EImece.Domain.Models.AdminModels
 {
     public class RazorError
     {

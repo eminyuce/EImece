@@ -1,0 +1,58 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using Resources;
+@using EImece.Domain.Models.AdminModels;
+@model  RazorRenderResult
+@{
+    var razorResult = Model;
+    var razorErrors = razorResult.RazorErrors;
+}
+<dl>
+    @if (!string.IsNullOrEmpty(razorResult.Result))
+    {
+        <dt>
+            razorResult.Result
+        </dt>
+        <dd>
+            @Html.Raw(razorResult.Result)
+        </dd>
+        <hr class="adminLine" />
+    }
+
+    @if (!string.IsNullOrEmpty(razorResult.Source))
+    {
+        <dt>
+            razorResult.Source
+        </dt>
+        <dd>
+            @Html.Raw(razorResult.Source)
+        </dd>
+        <hr class="adminLine" />
+    }
+    @if (!string.IsNullOrEmpty(razorResult.Source))
+    {
+        <dt>
+            razorResult.Source
+        </dt>
+        <dd>
+            @Html.Raw(razorResult.Source)
+        </dd>
+        <hr class="adminLine" />
+    }
+    @if (razorErrors.Any())
+    {
+        <dt>
+            razorResult.Source
+        </dt>
+        <dd>
+            @foreach (var er in razorErrors)
+            {
+                @Html.DisplayFor(t => er)
+            }
+        </dd>
+        <hr class="adminLine" />
+    }
+</dl>
+
+

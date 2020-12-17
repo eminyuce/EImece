@@ -1,4 +1,6 @@
-﻿using EImece.Domain.Helpers.Extensions;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -137,11 +139,29 @@ namespace EImece.Domain.Helpers.EmailHelper
             SendEmail(emailAccount, subject, body, from, to);
         }
 
-        public void SendOrderConfirmationEmail(EmailAccount emailAccount, ShoppingCartSession shoppingCart, Tuple<string, string> renderedEmailTemplate)
+        public void SendOrderConfirmationEmail(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-            if (renderedEmailTemplate.Item1.IsEmpty() && renderedEmailTemplate.Item2.IsEmpty())
+            Customer customer = renderedEmailTemplate.Item3;
+            if (emailAccount == null)
             {
+                Logger.Error("OrderConfirmationEmail for emailAccount cannot be empty");
                 return;
+            }
+            if (customer == null)
+            {
+                Logger.Error("OrderConfirmationEmail for customer cannot be empty");
+                return;
+            }
+
+            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1)  && renderedEmailTemplate.Item2 != null)
+            {
+                Logger.Error("OrderConfirmationEmail cannot be empty");
+                return;
+            }
+            if (renderedEmailTemplate.Item2.GeneralError != null)
+            {
+                Logger.Error("OrderConfirmationEmail cannot be empty");
+                throw renderedEmailTemplate.Item2.GeneralError;
             }
 
             var fromAddress = emailAccount.Email;
@@ -155,8 +175,10 @@ namespace EImece.Domain.Helpers.EmailHelper
                 throw new ArgumentException("from Address DisplayName cannot be null");
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
-            var to = new MailAddress(shoppingCart.Customer.Email, shoppingCart.Customer.FullName);
-            SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2, from, to);
+            var to = new MailAddress(customer.Email, customer.FullName);
+
+            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + to +" renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
+            SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2.Result, from, to);
         }
 
        

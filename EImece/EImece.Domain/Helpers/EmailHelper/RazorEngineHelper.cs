@@ -88,19 +88,19 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
-        public Tuple<string, string> OrderConfirmationEmail(int orderId)
+        public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.OrderConfirmationEmailMailTemplate);
             if (emailTemplate == null)
             {
-                return new Tuple<string, string>("", "");
+                return new Tuple<string, RazorRenderResult, Customer>("", null,null);
             }
 
             var model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
-            string result = Engine.Razor.RunCompile(template, templateKey, null, model);
-            return new Tuple<string, string>(emailTemplate.Subject, result);
+            var result = GetRenderOutput2(template,  model);
+            return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
 
         public void SendMessageToSeller(ContactUsFormViewModel contact)
@@ -200,6 +200,53 @@ namespace EImece.Domain.Helpers.EmailHelper
                 companyname,
                 WebSiteCompanyEmailAddress,
                 companyname);
+        }
+        public RazorRenderResult GetRenderOutput2(String razorTemplate, OrderConfirmationEmailRazorTemplate razorEngineModel = null)
+        {
+            var result = new RazorRenderResult();
+
+            if (String.IsNullOrEmpty(razorTemplate))
+            {
+                return result;
+            }
+            try
+            {
+                result.Source = razorTemplate;
+
+                var configuration = new TemplateServiceConfiguration { Debug = true };
+                configuration.Namespaces.Add("EImece.Domain.Helpers");
+                configuration.Namespaces.Add("EImece.Domain.Entities");
+                configuration.Namespaces.Add("EImece.Domain.Models.FrontModels");
+                configuration.Namespaces.Add("EImece.Domain.Helpers.RazorCustomRssTemplate");
+                configuration.Namespaces.Add("System.Xml");
+                configuration.Namespaces.Add("System.Web.Mvc");
+                configuration.Namespaces.Add("System.Text");
+                configuration.Namespaces.Add("System.Web.Mvc.Html");
+                configuration.Namespaces.Add("System.Xml.Linq");
+                configuration.Namespaces.Add("System.Linq");
+                configuration.Namespaces.Add("Resources");
+                configuration.Namespaces.Add("System.ServiceModel.Syndication");
+                configuration.BaseTemplateType = typeof(VBCustomTemplateBase<>);
+
+                using (var service = RazorEngineService.Create(configuration))
+                {
+                    using (var writer = new StringWriter())
+                    {
+                        var runner = service.CompileRunner<OrderConfirmationEmailRazorTemplate>(result.Source);
+                        runner.Run(razorEngineModel, writer);
+                        result.Result = writer.ToString();
+                    }
+                }
+            }
+            catch (TemplateCompilationException ex)
+            {
+                result.templateCompilationException = ex;
+            }
+            catch (Exception ex)
+            {
+                result.GeneralError = ex;
+            }
+            return result;
         }
         public RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
         {
