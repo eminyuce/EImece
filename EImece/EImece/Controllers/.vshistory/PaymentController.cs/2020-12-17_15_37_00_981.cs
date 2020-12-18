@@ -380,7 +380,7 @@ namespace EImece.Controllers
                 var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
                 var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm, userId);
                 ClearCart(shoppingCart);
-                SendOrderConfirmationEmail(order);
+                NewMethod(order);
                 // return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
@@ -391,10 +391,13 @@ namespace EImece.Controllers
             }
         }
 
-        private void SendOrderConfirmationEmail(Order order)
+        private void NewMethod(Order order)
         {
-            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-            EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
+            Task.Run(() =>
+            {
+                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+                EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
+            });
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)

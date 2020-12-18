@@ -11,7 +11,6 @@
     var mainPageProducts = Model.MainPageProducts;
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
     var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-    var bannerLink = randomRootMainPageProductCategory == null ? "" :  randomRootMainPageProductCategory.DetailPageUrl;
     var mainPageStories = Model.StoryIndexViewModel.Stories;
     var campaignProducts = Model.CampaignProducts;
     var latestProducts = Model.LatestProducts;
@@ -63,7 +62,7 @@
                     <h3 class="font-family-body font-weight-light mb-2">İstenilen Başlık</h3>
                     <h2 class="mb-2 pb-1">2021 Yeni Ürünlerimiz</h2>
                     <h5 class="font-family-body font-weight-light mb-3">Bu alanda istenilen mini cümle<br>gerekiyorsa bu alanda alt cümle</h5>
-                    <a class="btn btn-primary" href="@bannerLink">Ürünleri İncele<i class="ml-2" data-feather="arrow-right"></i></a>
+                    <a class="btn btn-primary" href="link-verilecek.html">Ürünleri İncele<i class="ml-2" data-feather="arrow-right"></i></a>
                 </div>
             </div>
             <div class="col-md-7"><img class="mx-auto" src="~/media/images/offer.jpg" alt="Promo banner"></div>

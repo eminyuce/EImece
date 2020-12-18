@@ -393,8 +393,11 @@ namespace EImece.Controllers
 
         private void SendOrderConfirmationEmail(Order order)
         {
-            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-            EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
+            Task.Run(() =>
+            {
+                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+                EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
+            });
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)
