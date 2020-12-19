@@ -104,14 +104,19 @@ namespace EImece.Controllers
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
+
+
+            var siteMetaDesc = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription);
+            string text = "";
+            string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", Url.Encode(SettingService.GetSettingByKey(Constants.TwitterWebSiteLink)),Url.Encode(text));
+
             var resultList = new Dictionary<String, String>();
             resultList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
             resultList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));
-            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
             resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
+            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
             resultList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
             resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
-             
             return PartialView("_SocialMediaLinks", resultList);
         }
 

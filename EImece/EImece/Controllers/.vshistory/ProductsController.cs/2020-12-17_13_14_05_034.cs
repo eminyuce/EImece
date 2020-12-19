@@ -9,7 +9,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -65,7 +64,6 @@ namespace EImece.Controllers
 
             return View(product);
         }
-    
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         [Route(Constants.ProductTagPrefix)]

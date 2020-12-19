@@ -6,12 +6,6 @@
 }
 <!-- social bar  -->
 <div class="d-flex flex-nowrap">
-    @if (ContainsValue(dic, Constants.LinkedinWebSiteLink))
-    {
-        <a class="social-btn sb-linkedin sb-light sb-sm ml-2" href="@dic[Constants.LinkedinWebSiteLink]">
-            <i class="flaticon-linkedin"></i><span class="sr-only">Linkedin</span>
-        </a>
-    }
     @if (ContainsValue(dic, Constants.FacebookWebSiteLink))
     {
         <a class="social-btn sb-facebook sb-light sb-sm ml-2" href="@dic[Constants.FacebookWebSiteLink]">

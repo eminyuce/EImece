@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Hosting;
 
 namespace EImece.Domain
@@ -60,9 +59,9 @@ namespace EImece.Domain
         {
             get
             {
-                //var useSll = GetConfigBool("UseSSL", false);
-               // return string.Format("http{0}", useSll ? "s" : "");
-                return HttpContext.Current.Request.Url.Scheme;
+                var useSll = GetConfigBool("UseSSL", false);
+                return string.Format("http{0}", useSll ? "s" : "");
+                //return HttpContext.Current.Request.Url.Scheme;
             }
         }
 

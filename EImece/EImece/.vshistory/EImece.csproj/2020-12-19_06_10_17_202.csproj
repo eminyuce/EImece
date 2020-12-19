@@ -1155,6 +1155,7 @@
     <Content Include="Views\Shared\PageThemes\PageTheme_T3.cshtml" />
     <Content Include="Views\Products\AdvancedSearchProducts.cshtml" />
     <Content Include="Views\Shared\PageThemes\PageTheme_T8.cshtml" />
+    <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
     <Content Include="Views\Shared\_Languages.cshtml" />
     <Content Include="Views\Payment\PlaceOrder.cshtml" />

@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Net;
 using System.ServiceModel.Syndication;
 using System.Web;
 using System.Web.Mvc;
@@ -113,7 +112,17 @@ namespace EImece.Domain.Services
 
             return result;
         }
-     
+        private Dictionary<string, string> SocialMediaLinks(string text)
+        {
+            var resultList = new Dictionary<String, String>();
+            resultList.Add(Constants.LinkedinWebSiteLink, string.Format("http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}", HttpServerUtility.UrlEncode(SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink)), HttpServerUtility.UrlEncode(text)));
+            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
+            resultList.Add(Constants.FacebookWebSiteLink, string.Format("https://www.facebook.com/sharer/sharer.php?u={0}", HttpServerUtility.UrlEncode(SettingService.GetSettingByKey(Constants.FacebookWebSiteLink))));
+            resultList.Add(Constants.TwitterWebSiteLink, string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", HttpServerUtility.UrlEncode(SettingService.GetSettingByKey(Constants.TwitterWebSiteLink)), HttpServerUtility.UrlEncode(text)));
+            resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media=&description={1}", HttpServerUtility.UrlEncode(SettingService.GetSettingByKey(Constants.PinterestWebSiteLink)), HttpServerUtility.UrlEncode(text)));
+            return resultList;
+
+        }
         public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
             ProductDetailViewModel result = null;
@@ -129,7 +138,7 @@ namespace EImece.Domain.Services
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-            result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong);
+
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
             if (product.ProductCategory.TemplateId.HasValue)

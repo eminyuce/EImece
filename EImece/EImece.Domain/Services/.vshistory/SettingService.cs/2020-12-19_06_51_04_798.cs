@@ -7,7 +7,6 @@ using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 
 namespace EImece.Domain.Services
@@ -142,10 +141,6 @@ namespace EImece.Domain.Services
 
         public void SaveSystemSettingModel(SystemSettingModel settingModel)
         {
-            if(settingModel == null)
-            {
-                throw new ArgumentException("SystemSettingModel cannot be null");
-            }
             List<Setting> Settings = GetAllSettings();
             // Get type.
             Type type = settingModel.GetType();
@@ -214,10 +209,6 @@ namespace EImece.Domain.Services
 
         public void SaveSettingModel(SettingModel settingModel, int  lang)
         {
-            if (settingModel == null)
-            {
-                throw new ArgumentException("SettingModel cannot be null");
-            }
             List<Setting> Settings = GetAllSettings();
             // Get type.
             Type type = settingModel.GetType();
@@ -252,13 +243,14 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Dictionary<string, string> CreateShareableSocialMediaLinks(string link,string text)
+        private Dictionary<string, string> SocialMediaLinks(string text)
         {
             var resultList = new Dictionary<String, String>();
-            resultList.Add(Constants.LinkedinWebSiteLink, string.Format("http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
-            resultList.Add(Constants.FacebookWebSiteLink, string.Format("https://www.facebook.com/sharer/sharer.php?u={0}", WebUtility.UrlEncode(link)));
-            resultList.Add(Constants.TwitterWebSiteLink, string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
-            resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media=&description={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
+            resultList.Add(Constants.LinkedinWebSiteLink, string.Format("http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}", WebUtility.UrlEncode(SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink)), WebUtility.UrlEncode(text)));
+            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
+            resultList.Add(Constants.FacebookWebSiteLink, string.Format("https://www.facebook.com/sharer/sharer.php?u={0}", WebUtility.UrlEncode(SettingService.GetSettingByKey(Constants.FacebookWebSiteLink))));
+            resultList.Add(Constants.TwitterWebSiteLink, string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", WebUtility.UrlEncode(SettingService.GetSettingByKey(Constants.TwitterWebSiteLink)), WebUtility.UrlEncode(text)));
+            resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media=&description={1}", WebUtility.UrlEncode(SettingService.GetSettingByKey(Constants.PinterestWebSiteLink)), WebUtility.UrlEncode(text)));
             return resultList;
 
         }

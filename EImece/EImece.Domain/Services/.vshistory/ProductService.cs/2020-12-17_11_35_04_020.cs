@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Net;
 using System.ServiceModel.Syndication;
 using System.Web;
 using System.Web.Mvc;
@@ -113,7 +112,7 @@ namespace EImece.Domain.Services
 
             return result;
         }
-     
+
         public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
             ProductDetailViewModel result = null;
@@ -129,7 +128,7 @@ namespace EImece.Domain.Services
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-            result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong);
+
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
             if (product.ProductCategory.TemplateId.HasValue)

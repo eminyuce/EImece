@@ -34,7 +34,6 @@ namespace EImece.Domain.Models.FrontModels
         {
             ProductComment = new ProductComment();
         }
-        public Dictionary<string, string> SocialMediaLinks { get; set; }
 
         public string AverageRating
         {
@@ -122,7 +121,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
     }
-  
+
     public class TotalRating
     {
         public int Count { get; set; }

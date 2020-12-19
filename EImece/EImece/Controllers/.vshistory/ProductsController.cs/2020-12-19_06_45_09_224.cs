@@ -9,7 +9,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -65,7 +64,28 @@ namespace EImece.Controllers
 
             return View(product);
         }
-    
+        public Dictionary<string, string> SocialMediaLinks()
+        {
+
+
+            var siteMetaDesc = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription);
+            var siteTitle = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle);
+            var companyName = SettingService.GetSettingByKey(Constants.CompanyName);
+            string text = string.IsNullOrEmpty(siteMetaDesc) ? siteTitle : siteMetaDesc;
+            text = string.IsNullOrEmpty(text) ? companyName : text;
+            text = string.IsNullOrEmpty(text) ? "Social Media" : text;
+            var resultList = new Dictionary<String, String>();
+            resultList.Add(Constants.LinkedinWebSiteLink, string.Format("http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}", Url.Encode(SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink)), Url.Encode(text)));
+            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
+            resultList.Add(Constants.FacebookWebSiteLink, string.Format("https://www.facebook.com/sharer/sharer.php?u={0}", Url.Encode(SettingService.GetSettingByKey(Constants.FacebookWebSiteLink))));
+            resultList.Add(Constants.TwitterWebSiteLink, string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", Url.Encode(SettingService.GetSettingByKey(Constants.TwitterWebSiteLink)), Url.Encode(text)));
+            resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media=&description={1}", Url.Encode(SettingService.GetSettingByKey(Constants.PinterestWebSiteLink)), Url.Encode(text)));
+
+
+
+            return resultList;
+
+        }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         [Route(Constants.ProductTagPrefix)]

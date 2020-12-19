@@ -104,6 +104,8 @@ namespace EImece.Controllers
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
+           
+
             var resultList = new Dictionary<String, String>();
             resultList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
             resultList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));

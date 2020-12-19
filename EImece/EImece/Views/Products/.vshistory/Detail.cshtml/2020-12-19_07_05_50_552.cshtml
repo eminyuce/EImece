@@ -267,8 +267,41 @@
 
             @if (Model.SocialMediaLinks.IsNotEmpty())
             {
-                @CreateSocialMediaLinks(Model.SocialMediaLinks)
+                <!-- Share product-->
+        <div class="py-4">
+            <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">
+                @Resource.ShareProduct:
+            </span>
+            @if (ContainsValue(sharedSocialLinks, Constants.InstagramWebSiteLink))
+            {
+                <a class="social-btn sb-instagram mr-2 mb-2" href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
+                    <i class="flaticon-instagram"></i>
+                </a>
             }
+            @if (ContainsValue(sharedSocialLinks, Constants.FacebookWebSiteLink))
+            {
+                <a class="social-btn sb-facebook mr-2 mb-2" href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
+                    <i class="flaticon-facebook"></i>
+                </a>
+            }
+            @if (ContainsValue(sharedSocialLinks, Constants.TwitterWebSiteLink))
+            {
+                <a class="social-btn sb-twitter mr-2 mb-2" href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
+                    <i class="flaticon-twitter"></i>
+                </a>
+            }
+
+            <a class="social-btn sb-twitter mr-2 mb-2" href="http://twitter.com/share?text=@product.Name&url=@product.DetailPageAbsoluteUrl&hashtags=hashtag1,hashtag2,hashtag3">
+                <i class="flaticon-twitter"></i>
+            </a>
+            <a class="social-btn sb-pinterest mr-2 mb-2" href="@product.DetailPageAbsoluteUrl">
+                <i class="flaticon-pinterest"></i>
+            </a>
+
+        </div>
+            }
+
+
         </div>
     </div>
 </div>
@@ -365,6 +398,7 @@
             </div>
 
         }
+
     </div>
 </div>
 
@@ -388,41 +422,6 @@
     {
         return dic.ContainsKey(key) && !string.IsNullOrEmpty(dic[key]);
     }
-}
-@helper CreateSocialMediaLinks(Dictionary<string, string> sharedSocialLinks)
-{
-
-    <!-- Share product-->
-    <div class="py-4">
-        <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">
-            @Resource.ShareProduct:
-        </span>
-        @if (ContainsValue(sharedSocialLinks, Constants.InstagramWebSiteLink))
-        {
-            <a class="social-btn sb-instagram mr-2 mb-2" href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
-                <i class="flaticon-instagram"></i>
-            </a>
-        }
-        @if (ContainsValue(sharedSocialLinks, Constants.FacebookWebSiteLink))
-        {
-            <a class="social-btn sb-facebook mr-2 mb-2" href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
-                <i class="flaticon-facebook"></i>
-            </a>
-        }
-        @if (ContainsValue(sharedSocialLinks, Constants.TwitterWebSiteLink))
-        {
-            <a class="social-btn sb-twitter mr-2 mb-2" href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
-                <i class="flaticon-twitter"></i>
-            </a>
-        }
-        @if (ContainsValue(sharedSocialLinks, Constants.PinterestWebSiteLink))
-        {
-            <a class="social-btn sb-pinterest mr-2 mb-2" href="@sharedSocialLinks[Constants.PinterestWebSiteLink]">
-                <i class="flaticon-pinterest"></i>
-            </a>
-        }
-    </div>
-
 }
 @helper RelatedProductItem(Product product)
 {
