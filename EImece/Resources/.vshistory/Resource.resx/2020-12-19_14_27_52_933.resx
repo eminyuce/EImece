@@ -256,7 +256,7 @@
     <value>Şifre kurtarma</value>
   </data>
   <data name="RecoverPasswordText" xml:space="preserve">
-    <value>&lt;h2 class="h3 mb-4"&gt;Şifrenizi mi unuttunuz?&lt;/h2&gt;
+    <value>&lt;h2 class="h3 mb-4"&gt;Parolanızı mı unuttunuz?&lt;/h2&gt;
                 &lt;p&gt;Şifrenizi üç kolay adımda değiştirin.  Bu, yeni şifrenizi güvende tutmanıza yardımcı olur.&lt;/p&gt;
                 &lt;ol class="list-unstyled"&gt;
                     &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;1.&lt;/span&gt;E-posta adresinizi aşağıya girin.&lt;/li&gt;
@@ -286,7 +286,7 @@
     <value>Şifreyi yenile</value>
   </data>
   <data name="ResetPasswordConfirmation" xml:space="preserve">
-    <value>Şifre sıfırlamayı onayla</value>
+    <value>Parola sıfırlamayı onayla</value>
   </data>
   <data name="ResetPasswordConfirmationText" xml:space="preserve">
     <value>Şifreniz sıfırlandı. Giriş yapmak için lütfen aşağıdaki bağlantıyı tıklayın.</value>

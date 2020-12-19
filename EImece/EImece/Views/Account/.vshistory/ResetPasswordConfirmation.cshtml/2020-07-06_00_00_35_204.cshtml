@@ -1,0 +1,18 @@
+﻿@using Resources;
+@{
+    ViewBag.Title = "Reset password confirmation";
+}
+
+<div class="container">
+    <div class="sixteen columns">
+        <h2>
+          @ViewBag.Title
+        </h2>
+    </div>
+    <div class="sixteen columns">
+        <p>
+           @Resource.ResetPasswordConfirmationText  <br />
+           @Html.ActionLink(Resource.ClickHereToLogin, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        </p>
+    </div>
+</div>

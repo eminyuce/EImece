@@ -2932,12 +2932,12 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;h2 class=&quot;h3 mb-4&quot;&gt;Parolanızı mı unuttunuz?&lt;/h2&gt;
+        ///   Looks up a localized string similar to &lt;h2 class=&quot;h3 mb-4&quot;&gt;Şifrenizi mi unuttunuz?&lt;/h2&gt;
         ///                &lt;p&gt;Şifrenizi üç kolay adımda değiştirin.  Bu, yeni şifrenizi güvende tutmanıza yardımcı olur.&lt;/p&gt;
         ///                &lt;ol class=&quot;list-unstyled&quot;&gt;
         ///                    &lt;li&gt;&lt;span class=&quot;font-weight-semibold text-primary mr-2&quot;&gt;1.&lt;/span&gt;E-posta adresinizi aşağıya girin.&lt;/li&gt;
         ///                    &lt;li&gt;&lt;span class=&quot;font-weight-semibold text-primary mr-2&quot;&gt;2.&lt;/span&gt;Size geçici bir kod göndereceğiz.&lt;/li&gt;
-        ///                    &lt;li&gt;&lt;span class=&quot;font-weight-s [rest of string was truncated]&quot;;.
+        ///                    &lt;li&gt;&lt;span class=&quot;font-weight-se [rest of string was truncated]&quot;;.
         /// </summary>
         public static string RecoverPasswordText {
             get {
@@ -3045,7 +3045,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parola sıfırlamayı onayla.
+        ///   Looks up a localized string similar to Şifre sıfırlamayı onayla.
         /// </summary>
         public static string ResetPasswordConfirmation {
             get {
@@ -3059,6 +3059,16 @@ namespace Resources {
         public static string ResetPasswordConfirmationText {
             get {
                 return ResourceManager.GetString("ResetPasswordConfirmationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen yeni bir şifre oluşturunuz.&lt;br /&gt;
+        ///&lt;strong&gt;{0}&lt;/strong&gt; adresine bağlı hesabınızın şifresi güncellenecektir..
+        /// </summary>
+        public static string ResetPasswordTextInfo {
+            get {
+                return ResourceManager.GetString("ResetPasswordTextInfo", resourceCulture);
             }
         }
         

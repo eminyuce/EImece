@@ -11,7 +11,6 @@ using NLog;
 using Resources;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -451,17 +450,11 @@ namespace EImece.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public async Task<ActionResult> ResetPassword(string userId, string code)
+        public ActionResult ResetPassword(string userId, string code)
         {
-            if(code == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var user = await UserManager.FindByIdAsync(userId);
-            ResetPasswordViewModel model = new ResetPasswordViewModel();
-            model.Email = user.Email;
-            model.Code = code;
-            return  View(model);
+            Logger.Info("UserId:" + userId);
+            Logger.Info("Code:" + code);
+            return code == null ? View("Error") : View();
         }
 
         //

@@ -12,9 +12,7 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="h4 mb-1">@Resource.ResetPassword</h2>
-                    <p class="text-muted mb-2">
-                        @Html.Raw(string.Format(Resource.ResetPasswordTextInfo, Model.Email))
-                    </p>
+                    <p class="text-muted mb-2">Kayıt işlemi bir dakikadan az sürer ancak siparişleriniz üzerinde tam kontrol sahibi olmanızı sağlar.</p>
                     @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
                     <p class="text-danger  mb-2">  @AdminResource.PasswordInfoMessage</p>
                     @using (Html.BeginForm("ResetPassword", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -22,8 +20,14 @@
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary("", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.Code)
-                        @Html.HiddenFor(model => model.Email)
-                      
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email)
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Password, new { @class = "control-label" })

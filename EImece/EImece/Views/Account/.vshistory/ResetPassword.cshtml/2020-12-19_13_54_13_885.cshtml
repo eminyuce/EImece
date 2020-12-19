@@ -1,0 +1,65 @@
+﻿@model EImece.Models.ResetPasswordViewModel
+@using Resources;
+@{
+    ViewBag.Title = "ResetPassword";
+}
+
+<!-- Titlebar
+================================================== -->
+<section class="titlebar">
+    <div class="container">
+        <div class="sixteen columns">
+            <h2>@Resource.ResetPassword</h2>
+        </div>
+    </div>
+</section>
+
+
+<div class="container pb-5 mb-sm-4">
+    <div class="row justify-content-center pt-5">
+        <div class="col-md-2 pt-sm-3">
+        </div>
+        <div class="col-lg-6 col-md-10 mt-sm-3">
+            <div class="card py-2 mt-4">
+                @using (Html.BeginForm("ResetPassword", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Code)
+
+                    <p class="form-row form-row-wide">
+                        @Html.LabelFor(model => model.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </p>
+                    <p class="form-row form-row-wide">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </p>
+                    <p class="form-row form-row-wide">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    </p>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="@Resource.Recover" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

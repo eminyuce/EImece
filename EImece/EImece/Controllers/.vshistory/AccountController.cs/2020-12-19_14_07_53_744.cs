@@ -459,7 +459,7 @@ namespace EImece.Controllers
             }
             var user = await UserManager.FindByIdAsync(userId);
             ResetPasswordViewModel model = new ResetPasswordViewModel();
-            model.Email = user.Email;
+            model.Email = user;
             model.Code = code;
             return  View(model);
         }

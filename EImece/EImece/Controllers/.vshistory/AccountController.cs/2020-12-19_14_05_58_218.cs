@@ -451,16 +451,13 @@ namespace EImece.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public async Task<ActionResult> ResetPassword(string userId, string code)
+        public ActionResult ResetPassword(string userId, string code)
         {
             if(code == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await UserManager.FindByIdAsync(userId);
             ResetPasswordViewModel model = new ResetPasswordViewModel();
-            model.Email = user.Email;
-            model.Code = code;
             return  View(model);
         }
 

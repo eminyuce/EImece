@@ -1,6 +1,6 @@
 ﻿@using Resources;
 @{
-    ViewBag.Title = @Resource.ResetPasswordConfirmation;
+    ViewBag.Title = Resource.ForgotPasswordConfirmation;
 }
 
 <div class="container pb-5 mb-sm-4">
@@ -8,14 +8,12 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h2>@Resource.ResetPasswordConfirmation</h2>
+                    <h2>@ViewBag.Title</h2>
                     <!-- Login -->
                     <p style="color:black">
-                        @Resource.ResetPasswordConfirmationText  <br />
-                        @Html.ActionLink(Resource.ClickHereToLogin, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                        @Resource.ForgotPasswordConfirmationText
                     </p>
                 </div>
-            </div>
         </div>
     </div>
 </div>
@@ -26,3 +24,7 @@
 <br />
 <br />
 <br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
