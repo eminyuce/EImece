@@ -282,13 +282,5 @@ namespace EImece.Domain
                 return GetConfigString("ShoppingCartItemCategory2", "ShoppingCartItemCategory2");
             }
         }
-
-        public static bool IsSiteUnderConstruction
-        {
-            get
-            {
-                return GetConfigBool("IsSiteUnderConstruction", false);
-            }
-        }
     }
 }

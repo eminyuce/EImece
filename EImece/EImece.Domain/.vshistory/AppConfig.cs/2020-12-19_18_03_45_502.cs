@@ -287,7 +287,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigBool("IsSiteUnderConstruction", false);
+                return GetConfigBool("IsSiteUnderConstruction", true);
             }
         }
     }

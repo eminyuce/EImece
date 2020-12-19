@@ -27,11 +27,11 @@ namespace EImece
                );
 
             routes.MapRoute(
-               name: "UnderConstruction",
-               url: "UnderConstruction",
-                       defaults: new { controller = "UnderConstruction", action = "Index" },
-              namespaces: new[] { "EImece.Controllers" }
-            );
+           name: "UnderConstruction",
+           url: "UnderConstruction",
+                   defaults: new { controller = "Home", action = "UnderConstruction" },
+          namespaces: new[] { "EImece.Controllers" }
+        );
 
             routes.MapRoute(
                name: "SitemapsIndex",

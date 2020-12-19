@@ -1077,7 +1077,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\UnderConstruction\Index.cshtml" />
+    <Content Include="Views\Home\UnderConstruction.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -1193,6 +1193,7 @@
     <Folder Include="Areas\Customers\Data\" />
     <Folder Include="media\" />
     <Folder Include="Scripts\codemirror\addon\" />
+    <Folder Include="Views\UnderConstruction\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

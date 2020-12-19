@@ -1,6 +1,5 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -12,7 +11,6 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    [UnderConst]
     public abstract class BaseController : Controller
     {
         [Inject]

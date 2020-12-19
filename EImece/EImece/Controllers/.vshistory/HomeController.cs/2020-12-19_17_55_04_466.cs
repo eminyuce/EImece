@@ -56,8 +56,13 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
+        public ActionResult UnderConstruction()
+        {
+            return View();
+        }
+
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Index()
+        public ActionResult Index2()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;

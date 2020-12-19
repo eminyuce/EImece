@@ -181,12 +181,7 @@ namespace EImece.Controllers
             var footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
-        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public ActionResult GetCompanyName()
-        {
-            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
-            return Content(companyName);
-        }
+
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();

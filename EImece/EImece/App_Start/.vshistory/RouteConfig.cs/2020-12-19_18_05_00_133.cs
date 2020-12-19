@@ -29,7 +29,7 @@ namespace EImece
             routes.MapRoute(
                name: "UnderConstruction",
                url: "UnderConstruction",
-                       defaults: new { controller = "UnderConstruction", action = "Index" },
+                       defaults: new { controller = "Home", action = "UnderConstruction" },
               namespaces: new[] { "EImece.Controllers" }
             );
 

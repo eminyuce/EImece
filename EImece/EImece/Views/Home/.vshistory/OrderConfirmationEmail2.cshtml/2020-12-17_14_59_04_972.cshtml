@@ -61,7 +61,7 @@
                         </tr>
                         <!-- End address Section -->
                         <!-- Start product Section -->
-                        @foreach (var orderProduct in Model.OrderProducts)
+                        @foreach (var orderProduct in Model..OrderProducts)
                         {
                             @GenerateOrderItem(orderProduct);
                         }

@@ -238,7 +238,6 @@
   <ItemGroup>
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
-    <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\HtmlRequestHelper.cs" />

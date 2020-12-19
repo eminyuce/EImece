@@ -283,12 +283,6 @@ namespace EImece.Domain
             }
         }
 
-        public static bool IsSiteUnderConstruction
-        {
-            get
-            {
-                return GetConfigBool("IsSiteUnderConstruction", false);
-            }
-        }
+        public static bool IsSiteUnderConstruction { get; internal set; }
     }
 }
