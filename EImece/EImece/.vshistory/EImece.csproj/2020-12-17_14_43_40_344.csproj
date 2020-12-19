@@ -354,7 +354,6 @@
   <ItemGroup>
     <Content Include="android-chrome-192x192.png" />
     <Content Include="android-chrome-384x384.png" />
-    <Content Include="android-chrome-512x512.png" />
     <Content Include="apple-touch-icon.png" />
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
@@ -957,6 +956,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit - Copy.cshtml" />
     <Content Include="Areas\Admin\Views\AppLogs\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\AppLog.cshtml" />
     <Content Include="fonts\Flaticon.eot" />
