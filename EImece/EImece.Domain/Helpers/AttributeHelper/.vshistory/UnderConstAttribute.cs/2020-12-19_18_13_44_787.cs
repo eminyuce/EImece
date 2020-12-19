@@ -17,17 +17,8 @@ namespace EImece.Domain.Helpers.AttributeHelper
         {
             if (AppConfig.IsSiteUnderConstruction)
             {
-                var ipAddress = HttpContext.Current.Request.UserHostAddress;
-                var offlineHelper = new OfflineHelper(ipAddress, filterContext.HttpContext.Server.MapPath);
-                if (offlineHelper.ThisUserShouldBeOffline)
-                {
-
-                    filterContext.HttpContext.Response.Redirect("/underconstruction");
-                    return;
-                }
+                filterContext.HttpContext.Response.Redirect("/underconstruction");
             }
-            //otherwise we let this through as normal
-            base.OnActionExecuting(filterContext);
         }
     }
 }

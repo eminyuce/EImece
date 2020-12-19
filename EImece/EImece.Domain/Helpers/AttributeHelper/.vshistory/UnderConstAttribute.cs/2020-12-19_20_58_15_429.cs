@@ -22,7 +22,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 if (offlineHelper.ThisUserShouldBeOffline)
                 {
 
-                    filterContext.HttpContext.Response.Redirect("/underconstruction");
+                    filterContext.HttpContext.Response.Redirect("/underconstruction"+ ipAddress);
                     return;
                 }
             }

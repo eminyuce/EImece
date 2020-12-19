@@ -26,8 +26,6 @@ namespace EImece.Domain.Helpers.AttributeHelper
                     return;
                 }
             }
-            //otherwise we let this through as normal
-            base.OnActionExecuting(filterContext);
         }
     }
 }
