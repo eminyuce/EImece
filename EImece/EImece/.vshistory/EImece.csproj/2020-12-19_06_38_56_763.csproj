@@ -356,7 +356,6 @@
     <Content Include="android-chrome-384x384.png" />
     <Content Include="android-chrome-512x512.png" />
     <Content Include="apple-touch-icon.png" />
-    <Content Include="App_Data\eimece_sql_data.sql" />
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
     <Content Include="Areas\Admin\Content\main\1.gif" />
