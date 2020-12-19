@@ -1,0 +1,27 @@
+﻿@using Resources;
+@{
+    ViewBag.Title = Resource.ForgotPasswordConfirmation;
+}
+
+ 
+<!-- Content
+================================================== -->
+<!-- Container -->
+<div class="container pb-5 mb-sm-4">
+    <div class="row justify-content-center pt-5">
+        <div class="tabs-container">
+            <!-- Login -->
+            <div class="tab-content">
+                <p style="color:black">
+                    @Resource.ForgotPasswordConfirmationText
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="margin-top-50"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -252,13 +252,13 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Dictionary<string, string> CreateShareableSocialMediaLinks(string link,string text, string imagefullPath)
+        public Dictionary<string, string> CreateShareableSocialMediaLinks(string link,string text)
         {
             var resultList = new Dictionary<String, String>();
             resultList.Add(Constants.LinkedinWebSiteLink, string.Format("http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
             resultList.Add(Constants.FacebookWebSiteLink, string.Format("https://www.facebook.com/sharer/sharer.php?u={0}", WebUtility.UrlEncode(link)));
             resultList.Add(Constants.TwitterWebSiteLink, string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
-            resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media={2}&description={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text), WebUtility.UrlEncode(imagefullPath)));
+            resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media=&description={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
             return resultList;
 
         }

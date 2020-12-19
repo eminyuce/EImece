@@ -22,6 +22,6 @@ namespace EImece.Domain.Services.IServices
         EmailAccount GetEmailAccount();
         SystemSettingModel GetSystemSettingModel();
         void SaveSystemSettingModel(SystemSettingModel settingModel);
-        Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath);
+        Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text);
     }
 }
