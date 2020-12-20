@@ -1,6 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Repositories.IRepositories;
+﻿using EImece.Domain.Repositories.IRepositories;
 using Ninject;
 using NLog;
 using System;

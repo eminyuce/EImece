@@ -10,7 +10,6 @@ using System.Web.Http;
 
 namespace EImece.Controllers
 {
-    [AuthorizeRoles(Constants.AdministratorRole)]  // NOT ALLOWED TO GET THAT PAGES
     public class UrlController : ApiController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

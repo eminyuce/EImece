@@ -232,7 +232,7 @@ namespace EImece.Controllers
                     if (isFullFileExits)
                     {
                         var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
-                        result = File(ms.ToArray(), ContentType);
+                        result = File(ms.ToArray(), "image/Jpeg");
                         ms.Dispose();
                     }
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);

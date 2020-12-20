@@ -1,6 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Repositories.IRepositories;
+﻿using EImece.Domain.Repositories.IRepositories;
 using Ninject;
 using NLog;
 using System;
@@ -10,7 +8,6 @@ using System.Web.Http;
 
 namespace EImece.Controllers
 {
-    [AuthorizeRoles(Constants.AdministratorRole)]  // NOT ALLOWED TO GET THAT PAGES
     public class UrlController : ApiController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
