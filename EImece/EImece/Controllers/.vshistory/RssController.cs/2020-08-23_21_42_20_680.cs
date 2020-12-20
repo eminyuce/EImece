@@ -25,7 +25,6 @@ namespace EImece.Controllers
         public IStoryCategoryService StoryCategoryService { get; set; }
 
         // GET: Rss
-        ///
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Products(RssParams rssParams)
         {
@@ -37,7 +36,7 @@ namespace EImece.Controllers
                 {
                     return Content("No RSS for Stories");
                 }
-                comment.AppendLine("rss/products?take=100&language=1&Description=50&Width=50&Height=50&utm_source=test&utm_medium=test1&utm_campaign=test2");
+                comment.AppendLine("/rss/products?take=10&language=1&description=250");
                 return new FeedResult(items, comment);
             }
             catch (Exception ex)
