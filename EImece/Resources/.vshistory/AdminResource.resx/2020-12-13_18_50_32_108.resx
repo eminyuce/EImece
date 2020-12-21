@@ -316,7 +316,7 @@
     <value>Tüm Ürünlerin Linki</value>
   </data>
   <data name="IsCampaign" xml:space="preserve">
-    <value>Kampanyalı</value>
+    <value>Kampanya Ürünü</value>
   </data>
   <data name="ButtonCancel" xml:space="preserve">
     <value>İptal</value>

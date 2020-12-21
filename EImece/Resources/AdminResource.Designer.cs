@@ -1240,7 +1240,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kampanya Ürünü.
+        ///   Looks up a localized string similar to Kampanyalı.
         /// </summary>
         public static string IsCampaign {
             get {
