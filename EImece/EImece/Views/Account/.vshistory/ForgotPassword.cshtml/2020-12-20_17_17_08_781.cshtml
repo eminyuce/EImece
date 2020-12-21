@@ -12,6 +12,7 @@
                 @using (Html.BeginForm("ForgotPassword", "Account", FormMethod.Post, new { @class = "card-body needs-validation", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
                 <p class="form-row form-row-wide">
                     @Html.LabelFor(model => model.Email)
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
