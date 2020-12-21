@@ -70,7 +70,7 @@ namespace EImece.Controllers
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("",AdminResource.RequestIsNotValid);
+                ModelState.AddModelError("", "Model is not correct.");
                 return View(model);
             }
 
