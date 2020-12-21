@@ -353,15 +353,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="android-chrome-144x144.png" />
     <Content Include="android-chrome-192x192.png" />
-    <Content Include="android-chrome-256x256.png" />
-    <Content Include="android-chrome-36x36.png" />
     <Content Include="android-chrome-384x384.png" />
-    <Content Include="android-chrome-48x48.png" />
     <Content Include="android-chrome-512x512.png" />
-    <Content Include="android-chrome-72x72.png" />
-    <Content Include="android-chrome-96x96.png" />
     <Content Include="apple-touch-icon.png" />
     <Content Include="App_Data\eimece_sql_data.sql" />
     <Content Include="App_Data\notOffLineIpAddresses.txt" />
