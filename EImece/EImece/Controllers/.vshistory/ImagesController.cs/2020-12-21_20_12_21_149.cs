@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -235,14 +234,12 @@ namespace EImece.Controllers
                         var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
                         result = File(ms.ToArray(), ContentType);
                         ms.Dispose();
-                        MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                     }
                     else
                     {
-                        var response = HttpContext.Response;
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
-                        response.TrySkipIisCustomErrors = true;
+
                     }
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                 }
 
                 return result;

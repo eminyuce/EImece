@@ -235,7 +235,6 @@ namespace EImece.Controllers
                         var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
                         result = File(ms.ToArray(), ContentType);
                         ms.Dispose();
-                        MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                     }
                     else
                     {
@@ -243,6 +242,7 @@ namespace EImece.Controllers
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         response.TrySkipIisCustomErrors = true;
                     }
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                 }
 
                 return result;
