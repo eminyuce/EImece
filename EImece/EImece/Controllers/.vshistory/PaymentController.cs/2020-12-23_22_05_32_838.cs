@@ -379,8 +379,9 @@ namespace EImece.Controllers
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
                 var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
                 var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm, userId);
-                SendOrderConfirmationEmail(order);
                 ClearCart(shoppingCart);
+                SendOrderConfirmationEmail(order);
+                // return View(new PaymentResultViewModel() { CheckoutForm = checkoutForm, Order = order });
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
             else

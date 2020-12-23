@@ -373,7 +373,7 @@ namespace EImece.Controllers
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
         {
             CheckoutForm checkoutForm = iyzicoService.GetCheckoutForm(model);
-            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            if (checkoutForm.PaymentStatus.Equals(Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
