@@ -11,10 +11,7 @@
     Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
     var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
-    var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 2114).OrderBy(r => r.Position).ToList();
-
-    var productCategories = Model.ProductCategories;
-    var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
+    var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
 }
 <!-- Footer-->
 <footer class="page-footer bg-dark">
@@ -26,9 +23,9 @@
                     <div class="widget widget-links pb-4">
                         <h3 class="widget-title text-white border-light">@Resource.ProductCategories</h3>
                         <ul>
-                            @if (productRootCategories.IsNotEmpty())
+                            @if (Model.ProductCategories.IsNotEmpty())
                             {
-                                foreach (var m in productRootCategories)
+                                foreach (var m in Model.ProductCategories)
                                 {
                                     <li>
                                         <a class="nav-link-inline nav-link-light" href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">
@@ -50,13 +47,6 @@
                             {
                                 communicationId = communicationPageLink.Id;
                                 <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
-                            }
-                            @if (aboutUsChildrenLinks.IsNotEmpty())
-                            {
-                                foreach (var m in aboutUsChildrenLinks)
-                                {
-                                    <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
-                                }
                             }
                         </ul>
                     </div>

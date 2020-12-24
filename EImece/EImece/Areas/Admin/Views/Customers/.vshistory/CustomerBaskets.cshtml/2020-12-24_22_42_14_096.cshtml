@@ -12,7 +12,7 @@
 @using EImece.Domain;
 @using Resources;
 
-@Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "customers")
+@Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions")
 <br />
 @foreach (var item in Model)
 {
@@ -25,11 +25,11 @@
 {
 
     <div id="shoppingCartModal">
-        <div>
+        <div class="modal-header">
             <button type="button" class="close" data-dismiss="shoppingCartModal">×</button>
             <span>@shoppingCart.ShoppingCartItems.Count Urun var</span>
         </div>
-        <div>
+        <div class="modal-body">
             <table class="table table-responsive table-striped">
                 @foreach (var c in shoppingCart.ShoppingCartItems)
                 {
@@ -52,7 +52,6 @@
                         </td>
                     </tr>
                 }
-
                 @if (@shoppingCart.Customer != null)
                 {
                     <tr>
@@ -64,6 +63,8 @@
                         </td>
                     </tr>
                 }
+
+
                 <tr>
                     <td colspan="3">
                         @shoppingCart.TotalPrice.CurrencySign()

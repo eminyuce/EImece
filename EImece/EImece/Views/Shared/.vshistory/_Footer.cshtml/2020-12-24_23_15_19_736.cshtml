@@ -13,8 +13,7 @@
     var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
     var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 2114).OrderBy(r => r.Position).ToList();
 
-    var productCategories = Model.ProductCategories;
-    var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
+    var productRootCategories = Model.ProductCategories.Where(r => r.ParentId == 0).ToList();
 }
 <!-- Footer-->
 <footer class="page-footer bg-dark">

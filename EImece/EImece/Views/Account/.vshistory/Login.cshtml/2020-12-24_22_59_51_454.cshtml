@@ -52,7 +52,6 @@
                             @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @autocomplete = "false" })
                         </div>
                         @Html.ValidationMessageFor(m => m.Captcha, "")
-
                         <hr class="mt-4">
                         <div class="text-right pt-4">
                             <input type="submit" value="@AdminResource.Login" class="btn btn-block btn-outline-success" />

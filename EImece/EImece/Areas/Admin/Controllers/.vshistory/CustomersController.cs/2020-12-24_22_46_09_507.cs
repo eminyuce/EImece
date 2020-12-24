@@ -75,7 +75,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ShoppingCartService.DeleteById(item.Id);
             }
-            return RedirectToAction("CustomerBaskets");
+            return Redirect("CustomerBaskets");
         }
     }
 }

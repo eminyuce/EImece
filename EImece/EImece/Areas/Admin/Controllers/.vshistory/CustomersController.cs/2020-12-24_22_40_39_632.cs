@@ -68,6 +68,9 @@ namespace EImece.Areas.Admin.Controllers
             var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
             return View(baskets);
         }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public ActionResult DeleteAllShoppingCartSessions()
         {
             var baskets = ShoppingCartService.GetAll();
@@ -75,7 +78,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ShoppingCartService.DeleteById(item.Id);
             }
-            return RedirectToAction("CustomerBaskets");
+            return Redirect("CustomerBaskets");
         }
     }
 }

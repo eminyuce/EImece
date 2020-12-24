@@ -12,8 +12,7 @@
 @using EImece.Domain;
 @using Resources;
 
-@Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "customers")
-<br />
+@Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "Users", new { id = d.UserId }, new { @class = "btn btn-info btn-sm     " })
 @foreach (var item in Model)
 {
     var p = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
@@ -25,11 +24,11 @@
 {
 
     <div id="shoppingCartModal">
-        <div>
+        <div class="modal-header">
             <button type="button" class="close" data-dismiss="shoppingCartModal">×</button>
             <span>@shoppingCart.ShoppingCartItems.Count Urun var</span>
         </div>
-        <div>
+        <div class="modal-body">
             <table class="table table-responsive table-striped">
                 @foreach (var c in shoppingCart.ShoppingCartItems)
                 {
@@ -49,18 +48,6 @@
                         <td class="text-right amount">@String.Format("{0:c}", c.TotalPrice) </td>
                         <td class="text-center button">
                             <button type="button" onclick="removeCart('@c.ShoppingCartItemId')" title="Kaldır" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
-                        </td>
-                    </tr>
-                }
-
-                @if (@shoppingCart.Customer != null)
-                {
-                    <tr>
-                        <td colspan="1">
-                            @shoppingCart.Customer.FullName
-                        </td>
-                        <td colspan="2">
-                            @shoppingCart.Customer.Address
                         </td>
                     </tr>
                 }
