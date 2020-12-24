@@ -204,9 +204,9 @@ namespace EImece.Tests.Controllers
         public void GetShoppingSession()
         {
             String sessionJson = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\shoppingSession.txt");
-            var shoppingCart = JsonConvert.DeserializeObject<ShoppingCartSession>(sessionJson);
+            var p = JsonConvert.DeserializeObject<ShoppingCartSession>(sessionJson);
             Console.WriteLine(shoppingCart.ShoppingCartItems.Count);
-            Assert.IsNotNull(shoppingCart.ShoppingCartItems);
+            Assert.IsNotNull(p.ShoppingCartItems);
         }
         [TestMethod]
         public void GetEmailTemplateById()

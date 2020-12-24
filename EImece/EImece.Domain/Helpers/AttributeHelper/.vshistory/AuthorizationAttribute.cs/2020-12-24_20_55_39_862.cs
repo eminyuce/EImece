@@ -30,7 +30,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
         private bool CheckRoles(ClaimsPrincipal principal)
         {
             string[] roles = RolesSplit;
-            Logger.Info("Roles=" + string.Join(",", roles));
+            Logger.Info("Roles+" + string.Join(",", roles));
             if (roles.Length == 0) return true;
             return roles.Any(principal.IsInRole);
         }

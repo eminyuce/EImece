@@ -979,7 +979,6 @@
     <Content Include="Areas\Admin\Views\Menus\MoveMenuCategory.cshtml" />
     <Content Include="Areas\Amp\Views\Shared\_ProductSpecs.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\BaseContentSearchItem\ProductSearchItem.cshtml" />
-    <Content Include="Areas\Admin\Views\Customers\CustomerBaskets.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

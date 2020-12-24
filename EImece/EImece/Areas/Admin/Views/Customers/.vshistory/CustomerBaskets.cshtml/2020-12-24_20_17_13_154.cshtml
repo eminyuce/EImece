@@ -1,0 +1,20 @@
+﻿@model IEnumerable<EImece.Domain.Entities.ShoppingCart>
+@using Newtonsoft.Json
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+
+
+    @foreach (var item in Model)
+    {
+        var p = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
+        
+    }
+
+</table>

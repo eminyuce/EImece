@@ -1,0 +1,72 @@
+﻿@model IEnumerable<EImece.Domain.Entities.ShoppingCart>
+@using Newtonsoft.Json
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderGuid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShoppingCartJson)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lang)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var p = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderGuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShoppingCartJson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lang)
+            </td>
+        </tr>
+    }
+
+</table>

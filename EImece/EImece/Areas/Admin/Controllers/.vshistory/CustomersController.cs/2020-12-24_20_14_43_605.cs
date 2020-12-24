@@ -6,7 +6,6 @@ using Ninject;
 using System;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
-using System.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -65,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult CustomerBaskets()
         {
-            var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
+            var baskets = ShoppingCartService.GetAll();
             return View(baskets);
         }
     }

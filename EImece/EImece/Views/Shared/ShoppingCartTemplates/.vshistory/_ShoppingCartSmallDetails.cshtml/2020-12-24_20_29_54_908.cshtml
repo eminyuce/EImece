@@ -1,0 +1,63 @@
+﻿@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+@{
+    ShoppingCartSession shoppingCart = Model;
+    string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? String.Format("({0})", shoppingCart.TotalItemCount + "") : "";
+
+}
+
+@if (shoppingCart != null && shoppingCart.ShoppingCartItems.IsNotEmpty())
+{
+<div data-toggle="modal" id="shoppingCartModal" class="modal fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="shoppingCartModal">×</button>
+        <span>@shoppingCart.ShoppingCartItems.Count Urun var</span>
+    </div>
+    <div class="modal-body">
+        <table class="table table-responsive table-striped">
+            @foreach (var c in shoppingCart.ShoppingCartItems)
+                {
+            <tr data-shopping-item="@c.ShoppingCartItemId">
+
+                <td class="text-center image">
+
+                    @if (!String.IsNullOrEmpty(c.Product.CroppedImageUrl))
+                            {
+                    <a href="@Url.Action("Detail","Products",new { id=c.Product.Id })">
+                        <img src="@c.product.CroppedImageUrl" alt="" />
+                    </a>
+                            }
+                </td>
+                <td class="text-left name"><a href="@Url.Action("Detail","Products",new { id=c.product.Id })">@c.product.Name</a></td>
+                <td class="text-right">x @c.quantity</td>
+                <td class="text-right amount">@String.Format("{0:c}", c.TotalPrice) </td>
+                <td class="text-center button">
+                    <button type="button" onclick="removeCart('@c.ShoppingCartItemId')" title="Kaldır" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
+                </td>
+            </tr>
+                }
+            <tr>
+                <td colspan="3">
+                    @Model.TotalPrice.CurrencySign()
+                </td>
+            </tr>
+        </table>
+        <div class="cart-buttons button">
+            <a href="@Url.Action("ShoppingCart","Payment")" class="view-cart">
+                <span data-hover="View Cart"><span>@Resource.MyBasket</span></span>
+            </a>
+            <a href="@Url.Action("CheckoutBillingDetails", "Payment")" class="checkout">
+                <span data-hover="Checkout">@Resource.ProceedToCheckout</span>
+            </a>
+        </div>
+    </div>
+</div>
+}

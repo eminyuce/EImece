@@ -65,7 +65,9 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult CustomerBaskets()
         {
-            var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
+            var baskets = ShoppingCartService.GetAll();
+
+            baskets = baskets.OrderByDescending(r => r.CreatedDate).ToList();
             return View(baskets);
         }
     }

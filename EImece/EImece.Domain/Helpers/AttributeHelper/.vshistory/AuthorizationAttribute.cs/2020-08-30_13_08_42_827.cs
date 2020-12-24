@@ -1,5 +1,4 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -13,7 +12,6 @@ namespace EImece.Domain.Helpers.AttributeHelper
 {
     public class AuthorizationAttribute : AuthorizeAttribute
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected override bool AuthorizeCore(HttpContextBase actionContext)
         {
             ClaimsPrincipal currentPrincipal = HttpContext.Current.User as ClaimsPrincipal;
@@ -30,7 +28,6 @@ namespace EImece.Domain.Helpers.AttributeHelper
         private bool CheckRoles(ClaimsPrincipal principal)
         {
             string[] roles = RolesSplit;
-            Logger.Info("Roles=" + string.Join(",", roles));
             if (roles.Length == 0) return true;
             return roles.Any(principal.IsInRole);
         }

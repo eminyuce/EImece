@@ -200,13 +200,10 @@ namespace EImece.Tests.Controllers
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
         }
-        [TestMethod]
+
         public void GetShoppingSession()
         {
             String sessionJson = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\shoppingSession.txt");
-            var shoppingCart = JsonConvert.DeserializeObject<ShoppingCartSession>(sessionJson);
-            Console.WriteLine(shoppingCart.ShoppingCartItems.Count);
-            Assert.IsNotNull(shoppingCart.ShoppingCartItems);
         }
         [TestMethod]
         public void GetEmailTemplateById()

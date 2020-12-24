@@ -6,7 +6,6 @@ using Ninject;
 using System;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
-using System.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -28,9 +27,6 @@ namespace EImece.Areas.Admin.Controllers
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
         public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public IShoppingCartService ShoppingCartService { get; set; }
 
         public CustomersController(ICustomerService customerService)
         {
@@ -62,11 +58,6 @@ namespace EImece.Areas.Admin.Controllers
             CustomerService.DeleteByUserId(id);
             OrderService.DeleteByUserId(id);
             return RedirectToAction("Index");
-        }
-        public ActionResult CustomerBaskets()
-        {
-            var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
-            return View(baskets);
         }
     }
 }

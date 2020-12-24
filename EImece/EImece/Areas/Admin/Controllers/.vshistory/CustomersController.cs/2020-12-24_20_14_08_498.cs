@@ -6,7 +6,6 @@ using Ninject;
 using System;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
-using System.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -63,10 +62,13 @@ namespace EImece.Areas.Admin.Controllers
             OrderService.DeleteByUserId(id);
             return RedirectToAction("Index");
         }
-        public ActionResult CustomerBaskets()
+        public ActionResult CustomerBaskets(string search = "")
         {
-            var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
-            return View(baskets);
+            var orders = OrderService.GetOrdersUserId(id, search);
+            var customer = CustomerService.GetUserId(id);
+            orders.ForEach(r => r.Customer = customer);
+            ViewBag.Customer = customer;
+            return View(orders);
         }
     }
 }
