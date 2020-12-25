@@ -9,7 +9,7 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class OfflineFileData
     {
-        public const string OfflineFilePath = "~/App_Data/notOffLineIpAddresses.txt";
+        internal const string OfflineFilePath = "~/App_Data/notOffLineIpAddresses.txt";
         /// This contains the IP address of the authprised person to let through
         /// </summary>
         public List<String> IpAddressToLetThrough { get; private set; }

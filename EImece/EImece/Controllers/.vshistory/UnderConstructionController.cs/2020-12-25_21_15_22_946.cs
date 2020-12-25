@@ -18,7 +18,7 @@ namespace EImece.Controllers
 
         public ActionResult RefreshIpAddress()
         {
-            OfflineHelper.OfflineData = new OfflineFileData(Server.MapPath(OfflineFileData.OfflineFilePath));
+            OfflineHelper.OfflineData = new OfflineFileData(OfflineFileData.OfflineFilePath);
             return RedirectToAction("Index", "Home");
         }
     }

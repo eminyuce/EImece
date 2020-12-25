@@ -10,7 +10,7 @@ namespace EImece.Domain.Helpers
 {
     public class OfflineHelper
     {
-        public static OfflineFileData OfflineData { get; set; }
+        public static OfflineFileData OfflineData { get; private set; }
 
         /// <summary>
         /// This is true if we should redirect the user to the Offline View

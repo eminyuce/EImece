@@ -1,6 +1,4 @@
-﻿using EImece.Domain.Helpers;
-using EImece.Domain.Models.FrontModels;
-using System.Net;
+﻿using System.Net;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -18,7 +16,7 @@ namespace EImece.Controllers
 
         public ActionResult RefreshIpAddress()
         {
-            OfflineHelper.OfflineData = new OfflineFileData(Server.MapPath(OfflineFileData.OfflineFilePath));
+            OfflineHelper.OfflineData = new OfflineFileData(offlineFilePath);
             return RedirectToAction("Index", "Home");
         }
     }
