@@ -1,0 +1,83 @@
+﻿@model IEnumerable<EImece.Domain.Entities.ShoppingCart>
+@using Newtonsoft.Json
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+
+@Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "customers")
+<br />
+@foreach (var item in Model)
+{
+    var p = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
+    @item.CreatedDate
+    @displayShoppingCartSession(p)
+}
+
+@helper displayShoppingCartSession(ShoppingCartSession shoppingCart)
+{
+    if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
+    {
+        return;
+    }
+   
+    <div id="shoppingCartModal">
+        <div>
+            <button type="button" class="close" data-dismiss="shoppingCartModal">×</button>
+            <span>@shoppingCart.ShoppingCartItems.Count Urun var</span>
+        </div>
+        <div>
+            <table class="table table-responsive table-striped">
+                @foreach (var c in shoppingCart.ShoppingCartItems)
+                {
+                    <tr data-shopping-item="@c.ShoppingCartItemId">
+
+                        <td class="text-center image">
+
+                            @if (!String.IsNullOrEmpty(c.Product.CroppedImageUrl))
+                            {
+                                <a href="@Url.Action("Detail","Products",new { id=c.Product.Id })">
+                                    <img src="@c.Product.CroppedImageUrl.Replace("w200h0","w100h0")" alt="" />
+                                </a>
+                            }
+                        </td>
+                        <td class="text-left name"><a href="@Url.Action("Detail","Products",new { id=c.Product.Id })">@c.Product.Name</a></td>
+                        <td class="text-right">x @c.Quantity</td>
+                        <td class="text-right amount">@String.Format("{0:c}", c.TotalPrice) </td>
+                    </tr>
+                }
+            <tr>
+                @if (@shoppingCart.Customer != null)
+                {
+
+                    <td colspan="1">
+                        @shoppingCart.Customer.FullName
+                    </td>
+                    <td colspan="2">
+                        @shoppingCart.Customer.Address
+                    </td>
+                    <td colspan="1">
+                        @shoppingCart.TotalPrice.CurrencySign()
+                    </td>
+
+                }
+                else
+                {
+                    <td colspan="4">
+                        @shoppingCart.TotalPrice.CurrencySign()
+                    </td>
+                }
+
+            </tr>
+                </table>
+        </div>
+    </div>
+
+}

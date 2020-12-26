@@ -14,27 +14,25 @@
 
 @Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "customers")
 <br />
-
-<h2>Sonuclanmamis Sepetler Listesi</h2>
-<hr class="adminLine" />
-
 @foreach (var item in Model)
 {
-    @displayShoppingCartSession(item)
+    var p = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
+    @item.CreatedDate
+    @displayShoppingCartSession(p)
 }
 
-@helper displayShoppingCartSession(ShoppingCart item)
+@helper displayShoppingCartSession(ShoppingCartSession shoppingCart)
 {
-    ShoppingCartSession shoppingCart = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
-
-
     if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
     {
         return;
     }
-
-    <div style="border:1px black solid;margin: 10px; " id="shoppingCartModal">
-        <h4 class="text-center">  @item.CreatedDate yaratilan sepette @shoppingCart.ShoppingCartItems.Count Urun var</h4>
+   
+    <div id="shoppingCartModal">
+        <div>
+            <button type="button" class="close" data-dismiss="shoppingCartModal">×</button>
+            <span>@shoppingCart.ShoppingCartItems.Count Urun var</span>
+        </div>
         <div>
             <table class="table table-responsive table-striped">
                 @foreach (var c in shoppingCart.ShoppingCartItems)
@@ -50,43 +48,30 @@
                                 </a>
                             }
                         </td>
-                        <td class="text-left name"><a href="@c.Product.DetailPageUrl">@c.Product.Name</a></td>
+                        <td class="text-left name"><a href="@Url.Action("Detail","Products",new { id=c.Product.Id })">@c.Product.Name</a></td>
                         <td class="text-right">x @c.Quantity</td>
                         <td class="text-right amount">@String.Format("{0:c}", c.TotalPrice) </td>
+                        <td class="text-center button">
+                            <button type="button" onclick="removeCart('@c.ShoppingCartItemId')" title="Kaldır" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
+                        </td>
+                    </tr>
+                }
+
+                @if (@shoppingCart.Customer != null)
+                {
+                    <tr>
+                        <td colspan="1">
+                            @shoppingCart.Customer.FullName
+                        </td>
+                        <td colspan="2">
+                            @shoppingCart.Customer.Address
+                        </td>
                     </tr>
                 }
                 <tr>
-                    @if (@shoppingCart.Customer != null)
-                    {
-
-                        <td>
-                            @shoppingCart.Customer.FullName
-                        </td>
-                        <td>
-                            @shoppingCart.Customer.Address
-                        </td>
-                        <td class="text-right">
-                            @shoppingCart.TotalItemCount
-                        </td>
-                        <td class="text-right amount">
-                            @shoppingCart.TotalPrice.CurrencySign()
-                        </td>
-
-                    }
-                    else
-                    {
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td class="text-right">
-                            @shoppingCart.TotalItemCount
-                        </td>
-                        <td class="text-right amount">
-                            @shoppingCart.TotalPrice.CurrencySign()
-                        </td>
-                    }
-
+                    <td colspan="5">
+                        @shoppingCart.TotalPrice.CurrencySign()
+                    </td>
                 </tr>
             </table>
         </div>

@@ -14,10 +14,6 @@
 
 @Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "customers")
 <br />
-
-<h2>Sonuclanmamis Sepetler Listesi</h2>
-<hr class="adminLine" />
-
 @foreach (var item in Model)
 {
     @displayShoppingCartSession(item)
@@ -26,14 +22,14 @@
 @helper displayShoppingCartSession(ShoppingCart item)
 {
     ShoppingCartSession shoppingCart = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
-
+  
 
     if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
     {
         return;
     }
 
-    <div style="border:1px black solid;margin: 10px; " id="shoppingCartModal">
+    <div id="shoppingCartModal">
         <h4 class="text-center">  @item.CreatedDate yaratilan sepette @shoppingCart.ShoppingCartItems.Count Urun var</h4>
         <div>
             <table class="table table-responsive table-striped">
@@ -50,7 +46,7 @@
                                 </a>
                             }
                         </td>
-                        <td class="text-left name"><a href="@c.Product.DetailPageUrl">@c.Product.Name</a></td>
+                        <td class="text-left name"><a href="@Url.Action("Detail","Products",new { id=c.Product.Id })">@c.Product.Name</a></td>
                         <td class="text-right">x @c.Quantity</td>
                         <td class="text-right amount">@String.Format("{0:c}", c.TotalPrice) </td>
                     </tr>

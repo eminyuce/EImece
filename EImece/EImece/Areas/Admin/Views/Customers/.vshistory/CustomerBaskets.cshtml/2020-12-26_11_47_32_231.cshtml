@@ -15,7 +15,7 @@
 @Html.ActionLink("Delete All ShoppingCart Sessions", "DeleteAllShoppingCartSessions", "customers")
 <br />
 
-<h2>Sonuclanmamis Sepetler Listesi</h2>
+<h2>Su an bitmemis sepetlerin listesi</h2>
 <hr class="adminLine" />
 
 @foreach (var item in Model)
@@ -33,7 +33,7 @@
         return;
     }
 
-    <div style="border:1px black solid;margin: 10px; " id="shoppingCartModal">
+    <div style="border:1px black solid;margin: 5px; " id="shoppingCartModal">
         <h4 class="text-center">  @item.CreatedDate yaratilan sepette @shoppingCart.ShoppingCartItems.Count Urun var</h4>
         <div>
             <table class="table table-responsive table-striped">
