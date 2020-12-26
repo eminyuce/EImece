@@ -3892,6 +3892,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E-postanızı onayladığınız için teşekkür ederiz.
+        /// </summary>
+        public static string ThankYouForConfirmingEmail {
+            get {
+                return ResourceManager.GetString("ThankYouForConfirmingEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bizimle iletişime geçtiğiniz için teşekkürler.
         /// </summary>
         public static string ThankYouForContactingUs {
