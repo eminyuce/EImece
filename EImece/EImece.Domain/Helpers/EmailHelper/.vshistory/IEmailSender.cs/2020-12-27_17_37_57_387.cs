@@ -48,7 +48,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         void SendEmail(string destination, string subject, string body);
 
-        void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount,   Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
-        void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
+        void SendRenderedEmailTemplate(EmailAccount emailAccount,   Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
+ 
     }
 }

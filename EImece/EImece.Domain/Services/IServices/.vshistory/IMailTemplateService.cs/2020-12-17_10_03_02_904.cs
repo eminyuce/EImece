@@ -7,6 +7,5 @@ namespace EImece.Domain.Services.IServices
     {
         MailTemplate GetMailTemplateByName(string templatename);
         OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId);
-        CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId);
     }
 }

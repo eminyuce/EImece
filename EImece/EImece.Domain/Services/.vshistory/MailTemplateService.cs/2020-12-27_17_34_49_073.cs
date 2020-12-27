@@ -34,10 +34,10 @@ namespace EImece.Domain.Services
         {
             return MailTemplateRepository.GetMailTemplateByName(templatename);
         }
-         public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
+     public CompanyGotNewOrderEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId)
         {
             var cOrder = OrderService.GetOrderById(orderId);
-            var pp = new CompanyGotNewOrderEmailRazorTemplate();
+            var pp = new OrderConfirmationEmailRazorTemplate();
 
             pp.CompanyAddress = SettingService.GetSettingObjectByKey(Constants.CompanyAddress).SettingValue.Trim();
             pp.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName).SettingValue.Trim();

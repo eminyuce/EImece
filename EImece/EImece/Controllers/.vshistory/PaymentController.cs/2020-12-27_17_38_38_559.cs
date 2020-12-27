@@ -408,29 +408,15 @@ namespace EImece.Controllers
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }
-      
+        private void SendCompanyGotNewOrderEmail(Order order)
+        {
+            var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
+            EmailSender.SendRenderedEmailTemplate(SettingService.GetEmailAccount(), emailTemplate);
+        }
         private void SendEmails(Order order)
         {
-            try
-            {
-                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
-            }
-            catch (Exception e)
-            {
-                PaymentLogger.Error(e, "OrderConfirmationEmail exception");
-            }
-
-            try
-            {
-                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
-            }
-            catch (Exception e)
-            {
-                PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
-            }
-
+            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+            EmailSender.SendRenderedEmailTemplate(SettingService.GetEmailAccount(), emailTemplate);
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)

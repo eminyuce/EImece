@@ -94,19 +94,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             {
                 return new Tuple<string, RazorRenderResult, Customer>("", null, null);
             }
-         
+
             var model = MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplate(orderId);
-
-            var modelSubject = new
-            {
-                OrderNumber =  model.FinishedOrder.OrderNumber
-            };
-
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template, model);
-            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, modelSubject);
-            return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
+            return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
         public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
@@ -116,7 +109,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 return new Tuple<string, RazorRenderResult, Customer>("", null,null);
             }
 
-            var model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
+            var model = MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template,  model);

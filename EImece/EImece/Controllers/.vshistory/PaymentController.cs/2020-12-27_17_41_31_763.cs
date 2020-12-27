@@ -424,7 +424,7 @@ namespace EImece.Controllers
             try
             {
                 var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
+                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
             }
             catch (Exception e)
             {

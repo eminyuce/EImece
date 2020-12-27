@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public class OrderConfirmationEmailRazorTemplate: RazorTemplateModel
+    public class OrderConfirmationEmailRazorTemplate
     {
         public string EmailSubject { get; set; }
         public string CompanyAddress { get; set; }

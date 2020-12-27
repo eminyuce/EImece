@@ -414,7 +414,7 @@ namespace EImece.Controllers
             try
             {
                 var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
+                EmailSender.SendRenderedEmailTemplate(SettingService.GetEmailAccount(), emailTemplate);
             }
             catch (Exception e)
             {
@@ -424,12 +424,13 @@ namespace EImece.Controllers
             try
             {
                 var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
+                EmailSender.SendRenderedEmailTemplate(SettingService.GetEmailAccount(), emailTemplate);
             }
             catch (Exception e)
             {
                 PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
             }
+          
 
         }
 

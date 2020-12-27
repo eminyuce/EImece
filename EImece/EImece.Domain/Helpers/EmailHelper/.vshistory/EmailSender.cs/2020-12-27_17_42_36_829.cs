@@ -141,13 +141,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-
-            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
-            {
-                Logger.Error("renderedEmailTemplate cannot be empty");
-                return;
-            }
-
             Customer customer = renderedEmailTemplate.Item3;
             if (emailAccount == null)
             {
@@ -160,6 +153,11 @@ namespace EImece.Domain.Helpers.EmailHelper
                 return;
             }
 
+            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1)  && renderedEmailTemplate.Item2 != null)
+            {
+                Logger.Error("renderedEmailTemplate cannot be empty");
+                return;
+            }
             if (renderedEmailTemplate.Item2.GeneralError != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");

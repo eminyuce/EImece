@@ -141,13 +141,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-
-            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
-            {
-                Logger.Error("renderedEmailTemplate cannot be empty");
-                return;
-            }
-
             Customer customer = renderedEmailTemplate.Item3;
             if (emailAccount == null)
             {
@@ -160,6 +153,11 @@ namespace EImece.Domain.Helpers.EmailHelper
                 return;
             }
 
+            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1)  && renderedEmailTemplate.Item2 != null)
+            {
+                Logger.Error("renderedEmailTemplate cannot be empty");
+                return;
+            }
             if (renderedEmailTemplate.Item2.GeneralError != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");
@@ -184,13 +182,6 @@ namespace EImece.Domain.Helpers.EmailHelper
         }
         public void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-
-            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
-            {
-                Logger.Error("renderedEmailTemplate cannot be empty");
-                return;
-            }
-
             Customer customer = renderedEmailTemplate.Item3;
             if (emailAccount == null)
             {
@@ -203,6 +194,11 @@ namespace EImece.Domain.Helpers.EmailHelper
                 return;
             }
 
+            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
+            {
+                Logger.Error("renderedEmailTemplate cannot be empty");
+                return;
+            }
             if (renderedEmailTemplate.Item2.GeneralError != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");
@@ -220,9 +216,10 @@ namespace EImece.Domain.Helpers.EmailHelper
                 throw new ArgumentException("from Address DisplayName cannot be null");
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
+            var to = new MailAddress(customer.Email, customer.FullName);
 
-            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + from + " renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
-            SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2.Result, from, from);
+            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + to + " renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
+            SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2.Result, from, to);
         }
 
     }

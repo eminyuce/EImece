@@ -398,7 +398,7 @@ namespace EImece.Controllers
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
                 var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
                 var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm, userId);
-                SendEmails(order);
+                SendOrderConfirmationEmail(order);
                 ClearCart(shoppingCart);
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
@@ -408,29 +408,15 @@ namespace EImece.Controllers
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }
-      
-        private void SendEmails(Order order)
+        private void SendCompanyGotNewOrderEmail(Order order)
         {
-            try
-            {
-                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
-            }
-            catch (Exception e)
-            {
-                PaymentLogger.Error(e, "OrderConfirmationEmail exception");
-            }
-
-            try
-            {
-                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
-            }
-            catch (Exception e)
-            {
-                PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
-            }
-
+            var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
+            EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
+        }
+        private void SendOrderConfirmationEmail(Order order)
+        {
+            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+            EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)

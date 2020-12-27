@@ -59,7 +59,6 @@ namespace EImece.Domain
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";  
         public const string CompanyAddress = "CompanyAddress";
-        public const string CompanyGotNewOrderEmailMailTemplate = "CompanyGotNewOrderEmail";
         public const string OrderConfirmationEmailMailTemplate = "OrderConfirmationEmail";
         public const string ConfirmYourAccountMailTemplate = "ConfirmYourAccount";
         public const string ForgotPasswordMailTemplate = "ForgotPassword";

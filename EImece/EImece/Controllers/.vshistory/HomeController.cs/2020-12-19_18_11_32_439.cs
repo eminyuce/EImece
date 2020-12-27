@@ -303,7 +303,7 @@ namespace EImece.Controllers
         public ActionResult OrderConfirmationEmail(int orderId=1)
         {
             var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
-            EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
+            EmailSender.SendOrderConfirmationEmail(SettingService.GetEmailAccount(), emailTemplate);
             return View(emailTemplate.Item2);
         }
 

@@ -7,7 +7,6 @@ namespace EImece.Domain.Entities
 {
     public class MailTemplate : BaseEntity
     {
-        [AllowHtml]
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailSubjectPropertyRequiredErrorMessage))]
         [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailSubjectPropertyErrorMessage))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MailSubject))]
