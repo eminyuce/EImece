@@ -7,5 +7,6 @@ namespace EImece.Domain.Entities
     {
         public string OrderGuid { get; set; }
         public string ShoppingCartJson { get; set; }
+        public string UserId { get; set; }
     }
 }

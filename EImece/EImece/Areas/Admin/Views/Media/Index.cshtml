@@ -231,8 +231,8 @@
         <span>
             @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
              { "ItemId", d.Id },
-             {"controllerName",controllerName},
-             { "DeleteIcon", "gridBtn btn-xs btn btn-danger glyphicon  glyphicon-remove-circle" },
+             {"controllerName",controllerName},     
+            {"gridDeleteText","Fotoğrafı Sil"},
              { "ItemDescription", d.Name } })
         </span>
         }

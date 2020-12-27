@@ -3,6 +3,26 @@
 }
 
 $(document).ready(function () {
+
+    bindChangeOrderStatus();
+    function bindChangeOrderStatus() {
+        $('[data-change-order-status]').each(function () {
+            $(this).off("change");
+            $(this).on("change", handleChangedOrderStatus);
+        });
+    }
+    function handleChangedOrderStatus(e) {
+        var caller = e.target;
+        var orderStatus = $(caller).val();
+        var orderId = $(caller).attr('data-change-order-status');
+        $('[data-changed-order-result="' + orderId + '"]').text("");
+        var postData = JSON.stringify({ "orderId": orderId, "orderStatus": orderStatus });
+        ajaxMethodCall(postData, "/admin/Ajax/ChangedOrderStatus", function (data) {
+            console.log(data);
+            $('[data-changed-order-result="' + orderId + '"]').text(data);
+        });
+
+    }
     bindProductDetailToolTip();
     bindCKEDITOR();
     searchAutoComplete();

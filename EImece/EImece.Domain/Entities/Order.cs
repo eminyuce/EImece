@@ -9,6 +9,7 @@ namespace EImece.Domain.Entities
     {
         public DateTime DeliveryDate { get; set; }
         public string UserId { get; set; }
+        public int OrderStatus { get; set; }
         public string OrderComments { get; set; }
         public string OrderNumber { get; set; }    
         public double CargoPrice { get; set; }

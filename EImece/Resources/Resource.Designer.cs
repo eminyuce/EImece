@@ -2396,6 +2396,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş durumu.
+        /// </summary>
+        public static string OrderStatus {
+            get {
+                return ResourceManager.GetString("OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sipariş özeti.
         /// </summary>
         public static string OrderSummary {

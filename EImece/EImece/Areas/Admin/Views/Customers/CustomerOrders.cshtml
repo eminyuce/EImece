@@ -56,17 +56,23 @@
 .Sanitized(false)
 .RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
-    columns.Add(o => o.PaymentStatus)
-    .Sanitized(false).
-    Sortable(true).
-    Encoded(false).
-    RenderValueAs(o => DisplayPaymentStatusColumn(o)).Titled(AdminResource.PaymentStatus);
+    columns.Add(c => c.OrderStatus).
+Titled(AdminResource.OrderStatus).
+Sanitized(false).
+Sortable(true).
+Encoded(false).
+RenderValueAs(o => ChangeOrderStatus(o));
+
+
 
     columns.Add(o => o.PaymentId)
    .Sanitized(false).
    Sortable(true).
    Encoded(false).
    RenderValueAs(o => DisplayIyzicoInfo(o)).Titled(AdminResource.PaymentIyzicoNumber);
+
+
+
 
 
     columns.Add(c => c.Price).
@@ -94,17 +100,28 @@
 
 @helper DisplayIyzicoInfo(Order order)
 {
-<div>
-    <b>@order.PaymentId</b>
-</div>
+    <div>
+        <b>@order.PaymentId</b>
+    </div>
 }
+
+@helper ChangeOrderStatus(Order order)
+{
+    var os = (EImeceOrderStatus)order.OrderStatus;
+    var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
+    @Html.DropDownList("orderStatusSelectList",
+    new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
+    new { @class = "form-control", @data_change_order_status = order.Id })
+    <span data-changed-order-result="@order.Id"></span>
+}
+
+
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
-
-    <b>@o.OrderNumber</b>
+    <b>@o.OrderNumber </b>
     <br />
-    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+    <a data-toggle="modal" class="btn btn-outline @createOrderStatusBtn(o) btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
         @AdminResource.OrderDetails
     </a>
 
@@ -115,7 +132,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="order-details__title"> @AdminResource.OrderNumber - @o.OrderNumber</h4>
+                    <h4 class="order-details__title"> @AdminResource.OrderNumber - @o.OrderNumber - @createOrderStatus(o)</h4>
                 </div>
                 <div class="modal-body">
                     @Html.Partial("pOrderDetail", o)
@@ -127,6 +144,59 @@
         </div>
     </div>
 }
+@helper createOrderStatus(Order o)
+{
+
+    var os = (EImeceOrderStatus)o.OrderStatus;
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+    switch (os)
+    {
+        case EImeceOrderStatus.NewlyOrder:
+            <span class="text-primary">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.InProgress:
+            <span class="text-info">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Cancelled:
+            <span class="text-danger">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Returned:
+            <span class="text-warning">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Delivered:
+            <span class="text-success">@orderStatusText</span>
+            break;
+        default:
+            break;
+    }
+
+}
+@functions{
+    public string createOrderStatusBtn(Order o)
+    {
+        var os = (EImeceOrderStatus)o.OrderStatus;
+        var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+        switch (os)
+        {
+            case EImeceOrderStatus.NewlyOrder:
+                return "btn-primary";
+            case EImeceOrderStatus.InProgress:
+                return "btn-info";
+            case EImeceOrderStatus.Cancelled:
+                return "btn-danger";
+            case EImeceOrderStatus.Returned:
+                return "btn-warning";
+            case EImeceOrderStatus.Delivered:
+                return "btn-success";
+            default:
+                return "btn-info";
+                break;
+        }
+    }
+}
+
+
+
 @helper DisplayPriceColumn(Order o)
 {
     <span class="text-primary">@o.Price.ToDouble().CurrencySign()</span>

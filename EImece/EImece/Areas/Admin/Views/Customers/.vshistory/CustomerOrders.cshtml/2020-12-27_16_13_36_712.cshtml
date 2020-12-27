@@ -1,0 +1,249 @@
+﻿@model List<Order>
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "Home";
+    var gridName = "OrderGrid";
+    var contents = Model;
+    var baseList = contents.DownCasting<Order>();
+
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+    var gridMainPageImageText = AdminResource.GridMainPageImageText;
+    Customer customer = ViewBag.Customer;
+
+}
+
+<h2>@customer.FullName @AdminResource.OrdersBelongCustomer</h2>
+<hr class="adminLine" />
+@Html.DisplayFor(r => customer, "CustomerOrderDetail")
+<hr class="adminLine" />
+@Html.Partial("pAdminSearchForm", new ViewDataDictionary(ViewData){
+                      {"IdValueExists",true}})
+<br />
+<br />
+
+<div class="panel panel-primary">
+    @Html.Partial("pGridDropDown", baseList)
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+
+    columns.Add()
+                   .Encoded(false)
+                   .Sanitized(false)
+                    .Css("gridButtons")
+                   .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
+
+    columns.Add(c => c.OrderNumber)
+    .Titled(AdminResource.OrderNumber)
+.Filterable(true)
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(d => CustomerOrderDetail(d, controllerName));
+
+    columns.Add(c => c.OrderStatus).
+Titled(Resource.OrderStatus).
+Sanitized(false).
+Sortable(true).
+Encoded(false).
+RenderValueAs(o => ChangeOrderStatus(o));
+
+ 
+
+    columns.Add(o => o.PaymentId)
+   .Sanitized(false).
+   Sortable(true).
+   Encoded(false).
+   RenderValueAs(o => DisplayIyzicoInfo(o)).Titled(AdminResource.PaymentIyzicoNumber);
+
+
+
+
+
+    columns.Add(c => c.Price).
+    Titled(AdminResource.Price).
+    Sanitized(false).
+    Sortable(true).
+    Encoded(false).
+    RenderValueAs(o => DisplayPriceColumn(o));
+
+    columns.Add(o => o.OrderComments).Titled(AdminResource.OrderComments)
+ .Encoded(false).
+      Sanitized(false).
+      SetWidth(10).
+      RenderValueAs(o => String.Format("<textarea readonly  style='height: 47px; background-color: transparent; width: 303px; margin: 0px;'>{0}</textarea>", o.OrderComments));
+
+    columns.Add(o => o.CreatedDate)
+.Titled(AdminResource.OrderDatePurchased)
+.Sortable(true)
+.Css("gridDateClass")
+.RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")) : null)
+.SortInitialDirection(GridSortDirection.Descending);
+
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+</div>
+
+@helper DisplayIyzicoInfo(Order order)
+{
+    <div>
+        <b>@order.PaymentId</b>
+    </div>
+}
+
+@helper ChangeOrderStatus(Order order)
+{
+    var os = (EImeceOrderStatus)order.OrderStatus;
+    var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
+    @Html.DropDownList("orderStatusSelectList", 
+    new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
+    new { @class = "form-control",@data_change_order_status=order.Id })
+}
+
+
+
+@helper CustomerOrderDetail(Order o, String controllerName)
+{
+    <b>@o.OrderNumber </b>
+    <br />
+    <a data-toggle="modal" class="btn btn-outline @createOrderStatusBtn(o) btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+        @AdminResource.OrderDetails
+    </a>
+
+    <!-- Modal -->
+    <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="order-details__title"> @AdminResource.OrderNumber - @o.OrderNumber - @createOrderStatus(o)</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("pOrderDetail", o)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">@AdminResource.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@helper createOrderStatus(Order o)
+{
+
+    var os = (EImeceOrderStatus)o.OrderStatus;
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+    switch (os)
+    {
+        case EImeceOrderStatus.NewlyOrder:
+            <span class="text-primary">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.InProgress:
+            <span class="text-info">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Cancelled:
+            <span class="text-danger">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Returned:
+            <span class="text-warning">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Delivered:
+            <span class="text-success">@orderStatusText</span>
+            break;
+        default:
+            break;
+    }
+
+}
+@functions{
+    public string createOrderStatusBtn(Order o)
+    {
+        var os = (EImeceOrderStatus)o.OrderStatus;
+        var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+        switch (os)
+        {
+            case EImeceOrderStatus.NewlyOrder:
+                return "btn-primary";
+            case EImeceOrderStatus.InProgress:
+                return "btn-info";
+            case EImeceOrderStatus.Cancelled:
+                return "btn-danger";
+            case EImeceOrderStatus.Returned:
+                return "btn-warning";
+            case EImeceOrderStatus.Delivered:
+                return "btn-success";
+            default:
+                return "btn-info";
+                break;
+        }
+    }
+}
+
+
+
+@helper DisplayPriceColumn(Order o)
+{
+    <span class="text-primary">@o.Price.ToDouble().CurrencySign()</span>
+
+}
+@helper DisplayPaymentStatusColumn(Order o)
+{
+
+    IyzicoPaymentStatus iyzicoPaymentStatus = (IyzicoPaymentStatus)Enum.Parse(typeof(IyzicoPaymentStatus), o.PaymentStatus, true);
+    switch (iyzicoPaymentStatus)
+    {
+        case IyzicoPaymentStatus.SUCCESS:
+            <span class="text-primary">@AdminResource.SUCCESS</span>
+            break;
+        case IyzicoPaymentStatus.FAILURE:
+            <span class="text-primary">@AdminResource.FAILURE</span>
+            break;
+        case IyzicoPaymentStatus.INIT_THREEDS:
+            <span class="text-primary">@AdminResource.INIT_THREEDS</span>
+            break;
+        case IyzicoPaymentStatus.CALLBACK_THREEDS:
+            <span class="text-primary">@AdminResource.CALLBACK_THREEDS</span>
+            break;
+        case IyzicoPaymentStatus.BKM_POS_SELECTED:
+            <span class="text-primary">@AdminResource.BKM_POS_SELECTED</span>
+            break;
+        case IyzicoPaymentStatus.CALLBACK_PECCO:
+            <span class="text-primary">@AdminResource.CALLBACK_PECCO</span>
+            break;
+        default:
+            break;
+    }
+
+}
+
+<script language="javascript">
+    function bindCarouselImage() {
+        $('[data-change-order-status]').each(function () {
+            $(this).off("change");
+            $(this).on("change", handleChangedOrderStatus);
+        });
+    }
+    function handleChangedOrderStatus(e) {
+        var caller = e.target;
+        var orderStatus = $(caller).val();
+        var orderId = $(caller).attr('data-change-order-status');
+       
+        var postData = JSON.stringify({ "orderId": orderId, "orderStatus": orderStatus });
+        ajaxMethodCall(postData, "/Ajax/ChangeIsCarouselState", changeCarouselStateSuccess);
+    }
+</script>

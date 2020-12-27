@@ -89,6 +89,7 @@ namespace EImece.Controllers
             var product = ProductService.GetProductById(productId);
             var shoppingCart = GetShoppingCart();
             shoppingCart.OrderGuid = orderGuid;
+ 
             var item = new ShoppingCartItem();
             var selectedTotalSpecs = new List<ProductSpecItem>();
             if (!string.IsNullOrEmpty(productSpecItems))
@@ -146,7 +147,22 @@ namespace EImece.Controllers
             item.Position = 0;
             item.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCart);
             item.OrderGuid = shoppingCart.OrderGuid;
+            string userId = shoppingCart.Customer != null ? shoppingCart.Customer.UserId : "";
+            item.UserId = string.IsNullOrEmpty(userId) ? getUserId() : userId;
             ShoppingCartService.SaveOrEditShoppingCart(item);
+        }
+
+        private string getUserId()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var user = UserManager.FindByName(User.Identity.GetUserName());
+                if (user != null)
+                {
+                   return user.Id;
+                }
+            }
+            return string.Empty;
         }
 
         private ShoppingCartSession GetShoppingCartFromDataSource()
@@ -168,7 +184,10 @@ namespace EImece.Controllers
             else
             {
                 result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
+                string userId = result.Customer != null ? result.Customer.UserId : "";
+                item.UserId = string.IsNullOrEmpty(userId) ? getUserId() : userId;
             }
+        
             result.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
             result.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
             result.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);

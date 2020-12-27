@@ -1529,4 +1529,7 @@
   <data name="ThankYouForConfirmingEmail" xml:space="preserve">
     <value>E-postanızı onayladığınız için teşekkür ederiz</value>
   </data>
+  <data name="OrderStatus" xml:space="preserve">
+    <value>Sipariş durumu</value>
+  </data>
 </root>

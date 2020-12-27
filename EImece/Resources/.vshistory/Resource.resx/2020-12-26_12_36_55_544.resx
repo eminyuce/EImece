@@ -1,0 +1,1532 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ContactUsAddress" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="ContactUsCaptcha" xml:space="preserve">
+    <value>Guvenlik Sorusunu:</value>
+  </data>
+  <data name="ContactUsCaptchaErrorMessage" xml:space="preserve">
+    <value>Lütfen Guvenlik Sorunu Cevaplayiniz.</value>
+  </data>
+  <data name="ContactUsCompanyName" xml:space="preserve">
+    <value>Sirketiniz ismi</value>
+  </data>
+  <data name="ContactUsEmail" xml:space="preserve">
+    <value>E-Posta</value>
+  </data>
+  <data name="ContactUsEmailErrorMessage" xml:space="preserve">
+    <value>Lütfen E-Postanizi girin</value>
+  </data>
+  <data name="ContactUsMessage" xml:space="preserve">
+    <value>Mesajiniz</value>
+  </data>
+  <data name="ContactUsMessageErrorMessage" xml:space="preserve">
+    <value>Lütfen Mesajinizi Giriniz</value>
+  </data>
+  <data name="ContactUsName" xml:space="preserve">
+    <value>Ad / Soyad</value>
+  </data>
+  <data name="ContactUsNameErrorMessage" xml:space="preserve">
+    <value>Lütfen Ad / Soyadınızı Girin</value>
+  </data>
+  <data name="ContactUsPhone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-Posta</value>
+  </data>
+  <data name="EmailList" xml:space="preserve">
+    <value>E-POSTA LİSTESİ</value>
+  </data>
+  <data name="MainPage" xml:space="preserve">
+    <value>Ana Sayfa</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Isim</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Sayfalar</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Gizlilik Politikası</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Ürünler</value>
+  </data>
+  <data name="ProductSearchPageTitle" xml:space="preserve">
+    <value>{0} için Ürün Arama Sonucu</value>
+  </data>
+  <data name="SearchProductButtonText" xml:space="preserve">
+    <value>Ara</value>
+  </data>
+  <data name="SearchProductTextBoxPlaceHolder" xml:space="preserve">
+    <value>Ürünler arasında arama yapın</value>
+  </data>
+  <data name="SendButtonText" xml:space="preserve">
+    <value>Gönder</value>
+  </data>
+  <data name="SubscriberButtonText" xml:space="preserve">
+    <value>EKLE</value>
+  </data>
+  <data name="TermsAndConditions" xml:space="preserve">
+    <value>Şartlar ve Koşullar</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Ara</value>
+  </data>
+  <data name="SearchErrorMessage" xml:space="preserve">
+    <value>Arama Yapmak için lütfen birşeyler yazınız</value>
+  </data>
+  <data name="SearchRequiredErrorMessage" xml:space="preserve">
+    <value>Lütfen bir arama terimi girin 2</value>
+  </data>
+  <data name="SearchValidText" xml:space="preserve">
+    <value>Lütfen geçerli bir metin girin 2</value>
+  </data>
+  <data name="NOSearchResult" xml:space="preserve">
+    <value>Anahtar kelimelere uyan hiç ürün bulunamadı</value>
+  </data>
+  <data name="NewModelsClick" xml:space="preserve">
+    <value>Yeni modellerimiz için tıklayınız</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Hepsi</value>
+  </data>
+  <data name="IsCampaign" xml:space="preserve">
+    <value>Kampanya</value>
+  </data>
+  <data name="AdminEdit" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="ProductCodeNo" xml:space="preserve">
+    <value>Ürün No :</value>
+  </data>
+  <data name="SearchResultText" xml:space="preserve">
+    <value>{0} için Arama Sonucu</value>
+  </data>
+  <data name="ContactUsWrongSumForSecurityQuestion" xml:space="preserve">
+    <value>Yanlış Toplam, Lütfen tekrar deneyin.</value>
+  </data>
+  <data name="ProductsInfo" xml:space="preserve">
+    <value>Ürün Bilgisi</value>
+  </data>
+  <data name="RelatedBlogsForProducts" xml:space="preserve">
+    <value>İlgili Bloglar</value>
+  </data>
+  <data name="SimilairProducts" xml:space="preserve">
+    <value>Benzer Ürünler</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Etiketler</value>
+  </data>
+  <data name="TechnicalPictures" xml:space="preserve">
+    <value>Teknik Resimler</value>
+  </data>
+  <data name="WantMoreInfoAboutProduct" xml:space="preserve">
+    <value>Bu Ürün Hakkında Bilgi İstiyorum</value>
+  </data>
+  <data name="SocialMedia" xml:space="preserve">
+    <value>Sosyal medya</value>
+  </data>
+  <data name="RelatedProductsForBlog" xml:space="preserve">
+    <value>İlgili Ürünler</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Devami...</value>
+  </data>
+  <data name="RecoverPassword" xml:space="preserve">
+    <value>Şifre kurtarma</value>
+  </data>
+  <data name="RecoverPasswordText" xml:space="preserve">
+    <value>&lt;h2 class="h3 mb-4"&gt;Şifrenizi mi unuttunuz?&lt;/h2&gt;
+                &lt;p&gt;Şifrenizi üç kolay adımda değiştirin.  Bu, yeni şifrenizi güvende tutmanıza yardımcı olur.&lt;/p&gt;
+                &lt;ol class="list-unstyled"&gt;
+                    &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;1.&lt;/span&gt;E-posta adresinizi aşağıya girin.&lt;/li&gt;
+                    &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;2.&lt;/span&gt;Size geçici bir kod göndereceğiz.&lt;/li&gt;
+                    &lt;li&gt;&lt;span class="font-weight-semibold text-primary mr-2"&gt;3.&lt;/span&gt;Güvenli web sitemizdeki şifrenizi değiştirmek için kodu kullanın.&lt;/li&gt;
+                &lt;/ol&gt;</value>
+  </data>
+  <data name="AdminPanelLoginPage" xml:space="preserve">
+    <value>Yönetici Paneli Girişi</value>
+  </data>
+  <data name="ClickHereToLogin" xml:space="preserve">
+    <value>Giriş yapmak için buraya tıklayın</value>
+  </data>
+  <data name="ForgotPasswordConfirmation" xml:space="preserve">
+    <value>Şifremi Unuttum Onayı</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Oturum aç</value>
+  </data>
+  <data name="LostYourPassword" xml:space="preserve">
+    <value>Şifreni mi unuttun?</value>
+  </data>
+  <data name="Recover" xml:space="preserve">
+    <value>Kurtarmak</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Şifreyi yenile</value>
+  </data>
+  <data name="ResetPasswordConfirmation" xml:space="preserve">
+    <value>Şifre sıfırlamayı onayla</value>
+  </data>
+  <data name="ResetPasswordConfirmationText" xml:space="preserve">
+    <value>Şifreniz sıfırlandı. Giriş yapmak için lütfen aşağıdaki bağlantıyı tıklayın.</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Eposta gönder</value>
+  </data>
+  <data name="ForgotPasswordConfirmationText" xml:space="preserve">
+    <value>Şifrenizi sıfırlamak için lütfen e-postanızı kontrol edin</value>
+  </data>
+  <data name="ThankYouForContactingUs" xml:space="preserve">
+    <value>Bizimle iletişime geçtiğiniz için teşekkürler</value>
+  </data>
+  <data name="ThankYouContactUsForm" xml:space="preserve">
+    <value> &lt;div&gt;
+                 &lt;p&gt;Temasa geçtiğiniz için teşekkür ederiz! Bizimle iletişime geçtiğiniz için teşekkür ederiz.&lt;/p&gt;
+              &lt;p&gt;Mümkün olan en kısa zamanda yanıt vermeye çalışıyoruz, bu nedenle Müşteri Hizmetleri çalışma arkadaşlarımızdan biri birkaç saat içinde size geri dönecek.&lt;/p&gt;
+             &lt;p&gt; Günün geri kalanı güzel geçsin!&lt;/p&gt;
+            &lt;/div&gt;
+         </value>
+  </data>
+  <data name="SuccessfullySavedCompleted" xml:space="preserve">
+    <value>İşleminiz başarıyla gerçekleşmiştir.</value>
+  </data>
+  <data name="ThanksForSubscription" xml:space="preserve">
+    <value>&lt;div class="card-body text-center"&gt;
+                        &lt;h3 class="h4 pb-3"&gt;Abonelik için teşekkürler&lt;/h3&gt;
+                        &lt;p class="mb-2"&gt;Mutlu günler dileriz &lt;strong&gt;{0}&lt;/strong&gt;&lt;/p&gt;
+                        &lt;a class="btn btn-secondary mt-3 mr-3" href="{1}"&gt;Alışverişe geri dön&lt;/a&gt;
+                    &lt;/div&gt;</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>Hakkımızda</value>
+  </data>
+  <data name="NoUserFound" xml:space="preserve">
+    <value>Geçersiz Kullanıcı Adı ve/veya Şifre.Lütfen bilgilerinizi kontrol ediniz.</value>
+  </data>
+  <data name="MandatoryField" xml:space="preserve">
+    <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
+  </data>
+  <data name="CustomerAccount" xml:space="preserve">
+    <value>Hesabim</value>
+  </data>
+  <data name="MyBasket" xml:space="preserve">
+    <value>Sepetim</value>
+  </data>
+  <data name="ProceedToCheckout" xml:space="preserve">
+    <value>Alışverişi Tamamla</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Fiyat</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
+  <data name="PlaceOrder" xml:space="preserve">
+    <value>Siparişi Tamamla</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Kayıt ol</value>
+  </data>
+  <data name="CustomerRegister" xml:space="preserve">
+    <value>Üye ol</value>
+  </data>
+  <data name="AlreadyMembered" xml:space="preserve">
+    <value>Zaten Üyeyim</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="OrderFinalReview" xml:space="preserve">
+    <value>Sipariş Özeti</value>
+  </data>
+  <data name="ReviewYourOrder" xml:space="preserve">
+    <value>Siparişini gözden geçir</value>
+  </data>
+  <data name="QuestionAboutItemForCustomer" xml:space="preserve">
+    <value>&lt;section class="uvFaq typeset"&gt;
+                        &lt;p style="font-size:x-large"&gt;
+                            Herhangi bir konu hakkinda soru veya istek için ürünü satan satıcıyla doğrudan iletişime geçin.
+                        &lt;/p&gt;
+                        &lt;h3&gt;Bir konu hakkında soru&lt;/h3&gt;
+                        &lt;p&gt;
+                            &lt;font class="Apple-style-span" color="#2e2f33"&gt;
+                                &lt;span class="Apple-style-span"
+                                      style="line-height: 14px;"&gt;
+                                    &lt;b&gt;Yapmak istediginiz durum için lütfen doğrudan satıcıyla da iletişime geçin:&lt;/b&gt;
+                                &lt;/span&gt;
+                            &lt;/font&gt;
+                        &lt;/p&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;Belirli bir ürün veya ürünün mevcut olup olmadığını sorun&lt;/li&gt;
+                            &lt;li&gt;Siparişiniz hakkında bilgi alın&lt;/li&gt;
+                            &lt;li&gt;Boyut veya renk tercihi gibi siparişinizle ilgili bir mesaj gönderin&lt;/li&gt;
+                            &lt;li&gt;Özel bir ürün istegi isteyin&lt;/li&gt;
+                            &lt;li&gt;İptal, iade, geri ödeme veya değiştirme organize edin&lt;/li&gt;
+                        &lt;/ul&gt; 
+                         
+                    &lt;/section&gt;</value>
+  </data>
+  <data name="FrequentlyAskedQuestions" xml:space="preserve">
+    <value>Sıkça Sorulan Sorular</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Sipariş numarası</value>
+  </data>
+  <data name="Reasons" xml:space="preserve">
+    <value>Nedenler</value>
+  </data>
+  <data name="SelectReason" xml:space="preserve">
+    <value>Neden seçin</value>
+  </data>
+  <data name="SelectReasonsLabel" xml:space="preserve">
+    <value>Lütfen bir neden seçin.</value>
+  </data>
+  <data name="ContactUsPhoneErrorMessage" xml:space="preserve">
+    <value>Lütfen Tel No Giriniz</value>
+  </data>
+  <data name="Discount" xml:space="preserve">
+    <value>İndirim</value>
+  </data>
+  <data name="ThisItemAddedYourCart" xml:space="preserve">
+    <value>Bu ürün sepetinize eklendi.</value>
+  </data>
+  <data name="AddedToCart" xml:space="preserve">
+    <value>Sepete eklendi!</value>
+  </data>
+  <data name="AddToCart" xml:space="preserve">
+    <value>Sepete ekle</value>
+  </data>
+  <data name="LatestReviews" xml:space="preserve">
+    <value>Son Gelen Yorumlar</value>
+  </data>
+  <data name="LeaveReview" xml:space="preserve">
+    <value>Yorum Yaz</value>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>Daha fazla ürün göster</value>
+  </data>
+  <data name="ProductInformation" xml:space="preserve">
+    <value>Ürün Bilgisi</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Yorumlar</value>
+  </data>
+  <data name="ShareProduct" xml:space="preserve">
+    <value>Ürünü paylaş</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
+  <data name="CampaignProducts" xml:space="preserve">
+    <value>KAMPANYALI ÜRÜNLER</value>
+  </data>
+  <data name="NewProducts" xml:space="preserve">
+    <value>YENİ ÜRÜNLER</value>
+  </data>
+  <data name="ShowcaseProducts" xml:space="preserve">
+    <value>VİTRİN ÜRÜNLERİ</value>
+  </data>
+  <data name="StayInformed" xml:space="preserve">
+    <value>Haberdar olun</value>
+  </data>
+  <data name="SubscriptionInfo" xml:space="preserve">
+    <value>Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun.</value>
+  </data>
+  <data name="Subscribe" xml:space="preserve">
+    <value>Abone ol</value>
+  </data>
+  <data name="FeaturedProducts" xml:space="preserve">
+    <value>Öne çıkan Ürünler</value>
+  </data>
+  <data name="DeliveryInfo" xml:space="preserve">
+    <value>Teslimat Bilgileri</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>İletişim</value>
+  </data>
+  <data name="DropUsALine" xml:space="preserve">
+    <value>Bize Yazın</value>
+  </data>
+  <data name="Brands" xml:space="preserve">
+    <value>Markalar</value>
+  </data>
+  <data name="FilterByPrice" xml:space="preserve">
+    <value>Fiyat Aralığı</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Ürün Puani</value>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>Yıldız</value>
+  </data>
+  <data name="AndOverPrice" xml:space="preserve">
+    <value>ve üzerinde</value>
+  </data>
+  <data name="AndUnderPrice" xml:space="preserve">
+    <value>ve altinda</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtrele</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Ana Sayfa</value>
+  </data>
+  <data name="AdditionalComments" xml:space="preserve">
+    <value>Sepetiniz icin Ek Yorumlar</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Not</value>
+  </data>
+  <data name="OrderSummary" xml:space="preserve">
+    <value>Sipariş özeti</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Birim fiyat</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>Ürün Kategorisi</value>
+  </data>
+  <data name="BillingAdress" xml:space="preserve">
+    <value>Fatura Adresi</value>
+  </data>
+  <data name="CargoFreeText" xml:space="preserve">
+    <value>ve üzeri alışverişe KARGO ÜCRETSİZ!</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>Yorum</value>
+  </data>
+  <data name="SubmitReview" xml:space="preserve">
+    <value>Yorumu Gönder</value>
+  </data>
+  <data name="SearchResultTotalCountText" xml:space="preserve">
+    <value>{0} ile ilgili {1} ürün bulduk.</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sırala</value>
+  </data>
+  <data name="HighLowPriceItems" xml:space="preserve">
+    <value>En yüksek fiyat</value>
+  </data>
+  <data name="LowHighPriceItems" xml:space="preserve">
+    <value>En düşük fiyat</value>
+  </data>
+  <data name="NewestItems" xml:space="preserve">
+    <value>En yeniler</value>
+  </data>
+  <data name="DatePurchased" xml:space="preserve">
+    <value>Satın Alınan Tarih</value>
+  </data>
+  <data name="UserEmailNotConfirmed" xml:space="preserve">
+    <value>Kullanıcı E-postası Onaylama surecini bitirmedi</value>
+  </data>
+  <data name="Filtrele" xml:space="preserve">
+    <value>Filtrele</value>
+  </data>
+  <data name="ShippingAddress" xml:space="preserve">
+    <value>Teslimat adresi</value>
+  </data>
+  <data name="PaymentResultSuccessHtml" xml:space="preserve">
+    <value>&lt;div class="card-body text-center"&gt;
+                &lt;h3 class="h4 pb-3"&gt;Siparişiniz için teşekkür ederiz!&lt;/h3&gt;
+                &lt;p class="mb-2"&gt;Siparişiniz verildi ve mümkün olan en kısa sürede işleme alınacak.&lt;/p&gt;
+                &lt;p class="mb-2"&gt;Sipariş numaranızı not ettiğinizden emin olun. &lt;strong&gt; {0} &lt;/strong&gt;&lt;/p&gt;
+                &lt;p&gt;Kısa süre içinde siparişinizin onaylandığı bir e-posta alacaksınız.&lt;/p&gt;
+                &lt;a class="btn btn-secondary mt-3 mr-3" href="{1}"&gt;Alışverişe geri dön&lt;/a&gt;
+            &lt;/div&gt;</value>
+  </data>
+  <data name="WhyNeedIdentityNumber" xml:space="preserve">
+    <value>Fatura kesimi icin TC Kimlik Numarası gerekiyor, Lütfen TC NO Giriniz</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="FailedOrderInfoMessage" xml:space="preserve">
+    <value>Ödemeniz şu anda işleme koyulamıyor, lütfen birkaç dakika sonra tekrar deneyin</value>
+  </data>
+  <data name="TotalPriceOfYourOrderWithCargoPrice" xml:space="preserve">
+    <value>Toplam Ödeme Miktarınız (Kargo ücreti ile birlikte)</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>Müşteri</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Cep Tel</value>
+  </data>
+  <data name="IdentityNumber" xml:space="preserve">
+    <value>TC Kimlik Numarası</value>
+  </data>
+  <data name="IsSameAsShippingAddress" xml:space="preserve">
+    <value>Teslimat adresiniz ile Fatura adresinizin aynı oldugunu bilmenizi isteriz.</value>
+  </data>
+  <data name="PieceOfProductPurchased" xml:space="preserve">
+    <value>ürün satin aldiniz.</value>
+  </data>
+  <data name="DearCustomer" xml:space="preserve">
+    <value>Değerli müşterimiz</value>
+  </data>
+  <data name="ActionOptionsOfSelectedItems" xml:space="preserve">
+    <value>Seçilenler ile Aksiyon</value>
+  </data>
+  <data name="AddImages" xml:space="preserve">
+    <value>Resimler ekle</value>
+  </data>
+  <data name="AdminDeleteConfirmMessage" xml:space="preserve">
+    <value>Seçilenleri silmeyi onayliyor musunuz?</value>
+  </data>
+  <data name="AdminEmail" xml:space="preserve">
+    <value>Yönetici E-postası</value>
+  </data>
+  <data name="AdminEmailDisplayName" xml:space="preserve">
+    <value>Yönetici E-posta Görünen Adı</value>
+  </data>
+  <data name="AdminEmailEnableSsl" xml:space="preserve">
+    <value>Yönetici E-postasını SSL Etkinleştir </value>
+  </data>
+  <data name="AdminEmailHost" xml:space="preserve">
+    <value>Yönetici E-posta Host</value>
+  </data>
+  <data name="AdminEmailPassword" xml:space="preserve">
+    <value>Yönetici E-posta Parolası</value>
+  </data>
+  <data name="AdminEmailPort" xml:space="preserve">
+    <value>Yönetici E-posta Port</value>
+  </data>
+  <data name="AdminEmailUseDefaultCredentials" xml:space="preserve">
+    <value>Yönetici E-postası Varsayılan Kimlik Bilgilerini Kullan</value>
+  </data>
+  <data name="AdminGeneralSettings" xml:space="preserve">
+    <value>Admin Genel Ayarlar</value>
+  </data>
+  <data name="AdminHome" xml:space="preserve">
+    <value>Yönetim Ana Sayfa</value>
+  </data>
+  <data name="AdminMainSeachPlaceHolder" xml:space="preserve">
+    <value>Ürün, kategori veya blog ara</value>
+  </data>
+  <data name="AdminPanelWelcome" xml:space="preserve">
+    <value>Yönetici Paneline Hoş Geldiniz</value>
+  </data>
+  <data name="AdminSettings" xml:space="preserve">
+    <value>Yönetici Ayarlari</value>
+  </data>
+  <data name="AdminUserName" xml:space="preserve">
+    <value>Yönetici Kullanıcı Adı</value>
+  </data>
+  <data name="AllProductLinkText" xml:space="preserve">
+    <value>Tüm Ürünlerin Linki</value>
+  </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Cevap</value>
+  </data>
+  <data name="AnswerSecurityQuestion" xml:space="preserve">
+    <value>Lütfen Güvenlik Sorusunu Cevaplayın (İpucu: İki sayının toplamı)</value>
+  </data>
+  <data name="AppLogs" xml:space="preserve">
+    <value>Uygulama Loglari</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Emin misiniz?</value>
+  </data>
+  <data name="AuthorName" xml:space="preserve">
+    <value>Yazarın İsmi</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Geriye Dönün</value>
+  </data>
+  <data name="BasketMinTotalPrice" xml:space="preserve">
+    <value>Sepet Minimum Toplam Fiyat</value>
+  </data>
+  <data name="BecomeMember" xml:space="preserve">
+    <value>Üye Ol</value>
+  </data>
+  <data name="BillingAddress" xml:space="preserve">
+    <value>Fatura Adresi</value>
+  </data>
+  <data name="BirthDate" xml:space="preserve">
+    <value>Doğum günü</value>
+  </data>
+  <data name="BKM_POS_SELECTED" xml:space="preserve">
+    <value>BKM_POS_SELECTED</value>
+  </data>
+  <data name="Brands1" xml:space="preserve">
+    <value>Markalar</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="ButtonOk" xml:space="preserve">
+    <value>Tamam</value>
+  </data>
+  <data name="CALLBACK_PECCO" xml:space="preserve">
+    <value>CALLBACK_PECCO</value>
+  </data>
+  <data name="CALLBACK_THREEDS" xml:space="preserve">
+    <value>CALLBACK_THREEDS</value>
+  </data>
+  <data name="CancelUpload" xml:space="preserve">
+    <value>Yüklemeyi İptal Et</value>
+  </data>
+  <data name="CancelUploading" xml:space="preserve">
+    <value>Yüklemeyi iptal et</value>
+  </data>
+  <data name="CargoCompany" xml:space="preserve">
+    <value>Kargo Şirketi</value>
+  </data>
+  <data name="CargoDescription" xml:space="preserve">
+    <value>Kargo açıklaması</value>
+  </data>
+  <data name="CargoPrice" xml:space="preserve">
+    <value>Kargo Ücreti</value>
+  </data>
+  <data name="CargoSettings" xml:space="preserve">
+    <value>Kargo Ayarları</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Şifre değiştir</value>
+  </data>
+  <data name="CheckboxesDataTableDoesNotSelected" xml:space="preserve">
+    <value>Veri tablosundaki onay kutuları seçilmedi</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Şehir</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Temizle</value>
+  </data>
+  <data name="Close1" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kod</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Şirket</value>
+  </data>
+  <data name="CompanyAddress" xml:space="preserve">
+    <value>Şirket adresi</value>
+  </data>
+  <data name="CompanyAdminSettings" xml:space="preserve">
+    <value>Şirket Bilgileri</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Şirket Adı</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Yeni şifreyi onayla</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Şifreyi Onayla</value>
+  </data>
+  <data name="ContinueShopping" xml:space="preserve">
+    <value>Alışverişe devam et</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Ülke</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Oluşturma Tarihi</value>
+  </data>
+  <data name="CreateNewAccount" xml:space="preserve">
+    <value>Yeni bir hesap oluştur</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Şimdiki Şifre</value>
+  </data>
+  <data name="CustomerDetail" xml:space="preserve">
+    <value>Müşteri Detayı</value>
+  </data>
+  <data name="CustomerLoginPage" xml:space="preserve">
+    <value>Giriş Yap Veya Üye Ol</value>
+  </data>
+  <data name="CustomerOpenAddress" xml:space="preserve">
+    <value>Açık Adres / Kargo Firmasina Notunuz</value>
+  </data>
+  <data name="CustomerRegistrationAddress" xml:space="preserve">
+    <value>Müşteri Kayıt Adresi</value>
+  </data>
+  <data name="CustomerRegistrationDate" xml:space="preserve">
+    <value>Müşteri Kayıt Tarihi</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Müşteriler</value>
+  </data>
+  <data name="DefaultImageHeight" xml:space="preserve">
+    <value>Varsayılan Resim Yüksekliği</value>
+  </data>
+  <data name="DefaultImageWidth" xml:space="preserve">
+    <value>Varsayılan Resim Genişliği</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="DeletePopupDescription" xml:space="preserve">
+    <value>Bu kayıtları gerçekten silmek istiyor musunuz? Bu işlem geri alınamaz.</value>
+  </data>
+  <data name="DeliveryInfo1" xml:space="preserve">
+    <value>İade &amp; Teslimat Bilgileri</value>
+  </data>
+  <data name="Description1" xml:space="preserve">
+    <value>İçerik açıklaması</value>
+  </data>
+  <data name="Discount1" xml:space="preserve">
+    <value>İndirim</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>Mahalle</value>
+  </data>
+  <data name="Edit1" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="Email1" xml:space="preserve">
+    <value>E-posta</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>E-posta alani zorunlu.</value>
+  </data>
+  <data name="EmailSubject" xml:space="preserve">
+    <value>E-posta Başlık</value>
+  </data>
+  <data name="EnterYourEmailToRecover" xml:space="preserve">
+    <value>Kurtarmak için E-postanızı Girin</value>
+  </data>
+  <data name="EntityDescriptionPage" xml:space="preserve">
+    <value>Genel açıklama</value>
+  </data>
+  <data name="EntityShortFields" xml:space="preserve">
+    <value>Kısa Özellikler</value>
+  </data>
+  <data name="Excel" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="ExistingMainImageText" xml:space="preserve">
+    <value>Mevcut Ana Resim</value>
+  </data>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Excel Dosyasına Aktar</value>
+  </data>
+  <data name="FacebookWebSiteLink" xml:space="preserve">
+    <value>Facebook Link</value>
+  </data>
+  <data name="FAILURE" xml:space="preserve">
+    <value>HATALI</value>
+  </data>
+  <data name="Faq" xml:space="preserve">
+    <value>Sıkça Sorulan Sorular</value>
+  </data>
+  <data name="FileUploadingPage" xml:space="preserve">
+    <value>Resim Yükleme Sayfası</value>
+  </data>
+  <data name="FileUploadingSection" xml:space="preserve">
+    <value>Resim Yükleme Bölümü</value>
+  </data>
+  <data name="Filtrele1" xml:space="preserve">
+    <value>Filtrele</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>İsim</value>
+  </data>
+  <data name="FooterDescription" xml:space="preserve">
+    <value>Footer Açıklaması</value>
+  </data>
+  <data name="FooterEmailListDescription" xml:space="preserve">
+    <value>Footer E-posta Listesi Açıklaması</value>
+  </data>
+  <data name="FooterSettings" xml:space="preserve">
+    <value>Footer Ayarlar</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Şifremi Unuttum</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Cinsiyet</value>
+  </data>
+  <data name="GeneralSaveErrorMessage" xml:space="preserve">
+    <value>Değişiklikler kaydedilemedi. Tekrar deneyin ve sorun devam ederse sistem yöneticinize başvurun.</value>
+  </data>
+  <data name="GenerateNewPasswordforUser" xml:space="preserve">
+    <value>Kullanıcı için Yeni Şifre Oluştur</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingScript" xml:space="preserve">
+    <value>Google Analytics Script</value>
+  </data>
+  <data name="GoogleMapScript" xml:space="preserve">
+    <value>Google Harita Script</value>
+  </data>
+  <data name="GooglePlusWebSiteLink" xml:space="preserve">
+    <value>GooglePlus Link</value>
+  </data>
+  <data name="GridActiveSelectedButtonText" xml:space="preserve">
+    <value>Seçilenleri Yayınla</value>
+  </data>
+  <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
+    <value>Seçilenleri Yayından Kaldır</value>
+  </data>
+  <data name="GridDeleteSelectedButtonText" xml:space="preserve">
+    <value>Seçilen Kayıtları Sil</value>
+  </data>
+  <data name="GridDeleteText" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="GridDeSelectAllButtonText" xml:space="preserve">
+    <value>Seçilenleri Kaldır</value>
+  </data>
+  <data name="GridDetailText" xml:space="preserve">
+    <value>Detay</value>
+  </data>
+  <data name="GridEditText" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="GridImagesText" xml:space="preserve">
+    <value>Resimler</value>
+  </data>
+  <data name="GridMainPageImageText" xml:space="preserve">
+    <value>Resim</value>
+  </data>
+  <data name="GridNoMainPageImageText" xml:space="preserve">
+    <value>Resim Yok</value>
+  </data>
+  <data name="GridOrderingAllButtonText" xml:space="preserve">
+    <value>Sıra Güncelle</value>
+  </data>
+  <data name="GridPagingDropDownText" xml:space="preserve">
+    <value>Sayfalama</value>
+  </data>
+  <data name="GridResultRecordNumber" xml:space="preserve">
+    <value>Toplam Kayit</value>
+  </data>
+  <data name="GridSearchButtonText" xml:space="preserve">
+    <value>Arama</value>
+  </data>
+  <data name="GridSelectAllButtonText" xml:space="preserve">
+    <value>Hepsi seç</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Merhaba</value>
+  </data>
+  <data name="IdentityNumber1" xml:space="preserve">
+    <value>TC Kimlik Numarası</value>
+  </data>
+  <data name="ImageHeight" xml:space="preserve">
+    <value>Resim Boy</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Resimler</value>
+  </data>
+  <data name="ImageState" xml:space="preserve">
+    <value>Resmi Göster</value>
+  </data>
+  <data name="ImageWidth" xml:space="preserve">
+    <value>Resim En</value>
+  </data>
+  <data name="INIT_THREEDS" xml:space="preserve">
+    <value>INIT_THREEDS</value>
+  </data>
+  <data name="InstagramWebSiteLink" xml:space="preserve">
+    <value>Instagram Link</value>
+  </data>
+  <data name="Installment" xml:space="preserve">
+    <value>Taksit</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Yayında mı</value>
+  </data>
+  <data name="IsCampaign1" xml:space="preserve">
+    <value>Kampanya Ürünü</value>
+  </data>
+  <data name="IsFeaturedStory" xml:space="preserve">
+    <value>Öne Çıkan Blog Yazisi</value>
+  </data>
+  <data name="IsPermissionGrantedDescription" xml:space="preserve">
+    <value>Önemli kampanyalardan e-posta ile haberdar olmak istiyorum.</value>
+  </data>
+  <data name="IsProductPriceEnable" xml:space="preserve">
+    <value>Ürün Fiyatı Etkin mi?</value>
+  </data>
+  <data name="IsSameAsShippingAddress1" xml:space="preserve">
+    <value>Teslimat adresleri ile Fatura adresi aynı oldugunu bilmenizi isteriz.</value>
+  </data>
+  <data name="IsService" xml:space="preserve">
+    <value>IsServices</value>
+  </data>
+  <data name="IsValues" xml:space="preserve">
+    <value>IsValues</value>
+  </data>
+  <data name="IyzicoInfo" xml:space="preserve">
+    <value>Iyzico ödeme altyapısı bilgileri</value>
+  </data>
+  <data name="IyziCommissionRateAmount" xml:space="preserve">
+    <value>İyzi Komisyon Oranı Tutarı</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Diller</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Soyisim</value>
+  </data>
+  <data name="LinkedinWebSiteLink" xml:space="preserve">
+    <value>Linkedin Link</value>
+  </data>
+  <data name="LinkIsActive" xml:space="preserve">
+    <value>Dış Link Aktif mi?</value>
+  </data>
+  <data name="Lists" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Login1" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Çıkış Yap</value>
+  </data>
+  <data name="MailBody" xml:space="preserve">
+    <value>E-Posta İçerik</value>
+  </data>
+  <data name="MailBodyPropertyRequiredErrorMessage" xml:space="preserve">
+    <value>İçerik Zorunlu</value>
+  </data>
+  <data name="MailSubject" xml:space="preserve">
+    <value>E-posta Başlık</value>
+  </data>
+  <data name="MailSubjectPropertyErrorMessage" xml:space="preserve">
+    <value>E-posta konusunun uygun hata mesajı olmalıdır</value>
+  </data>
+  <data name="MailSubjectPropertyRequiredErrorMessage" xml:space="preserve">
+    <value>E-posta Başlık Zorunlu</value>
+  </data>
+  <data name="MailTemplates" xml:space="preserve">
+    <value>E-posta Şablonları</value>
+  </data>
+  <data name="MainImageId" xml:space="preserve">
+    <value>Ana Sayfa Resmi</value>
+  </data>
+  <data name="MainPage1" xml:space="preserve">
+    <value>Ana Sayfa</value>
+  </data>
+  <data name="MainPageImages" xml:space="preserve">
+    <value>Ana Sayfa Resimleri</value>
+  </data>
+  <data name="MakeItRootCategory" xml:space="preserve">
+    <value>Ana Kategori Yap</value>
+  </data>
+  <data name="MandatoryField1" xml:space="preserve">
+    <value>Zorunlu Alan {0}. Lütfen Boş bırakmayınız.</value>
+  </data>
+  <data name="ManGender" xml:space="preserve">
+    <value>Erkek</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MenuLink" xml:space="preserve">
+    <value>Menu Link</value>
+  </data>
+  <data name="MenuParentId" xml:space="preserve">
+    <value>Menu Ana Kategori</value>
+  </data>
+  <data name="Menus" xml:space="preserve">
+    <value>Menuler</value>
+  </data>
+  <data name="MenuSameSelectionErrorMessage" xml:space="preserve">
+    <value>Ebeveyn için aynı menüyü seçemezsiniz</value>
+  </data>
+  <data name="MenuTreeName" xml:space="preserve">
+    <value>Menü Ağacı Adı</value>
+  </data>
+  <data name="MerchantCommissionRateAmount" xml:space="preserve">
+    <value>Satıcı Komisyon Oranları Tutarı</value>
+  </data>
+  <data name="MetaKeywords" xml:space="preserve">
+    <value>SEO anahtar kelimeler</value>
+  </data>
+  <data name="MoveProductsInTrees" xml:space="preserve">
+    <value>Ürünleri Tasi</value>
+  </data>
+  <data name="MyAccount" xml:space="preserve">
+    <value>Hesabım</value>
+  </data>
+  <data name="MyOrder" xml:space="preserve">
+    <value>Siparişlerim</value>
+  </data>
+  <data name="NamePropertyErrorMessage" xml:space="preserve">
+    <value>İsim 500 karakterden uzun olamaz</value>
+  </data>
+  <data name="NamePropertyRequiredErrorMessage" xml:space="preserve">
+    <value>İsim Zorunlu</value>
+  </data>
+  <data name="NameShort" xml:space="preserve">
+    <value>Kısaltılmış isim</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Yeni Şifre</value>
+  </data>
+  <data name="NewPasswordMinCharLength" xml:space="preserve">
+    <value>{0} en az {2} karakter uzunluğunda olmalıdır.</value>
+  </data>
+  <data name="NewRecordText" xml:space="preserve">
+    <value>Yeni Giriş</value>
+  </data>
+  <data name="NewUserInsert" xml:space="preserve">
+    <value>Yeni kullanıcı tanımla</value>
+  </data>
+  <data name="NormalSettings" xml:space="preserve">
+    <value>Normal Ayarlar</value>
+  </data>
+  <data name="NoSearchResultsText" xml:space="preserve">
+    <value>Sonuç bulunamadı.</value>
+  </data>
+  <data name="NotMatchesPassword" xml:space="preserve">
+    <value>Yeni şifre ve onay şifresi eşleşmiyor.</value>
+  </data>
+  <data name="NotValidEmailAddress" xml:space="preserve">
+    <value>E-posta alanı geçerli bir e-posta adresi değil.</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Sipariş</value>
+  </data>
+  <data name="OrderComments" xml:space="preserve">
+    <value>Sipariş yorumları</value>
+  </data>
+  <data name="OrderDatePurchased" xml:space="preserve">
+    <value>Ödeme Tarihi</value>
+  </data>
+  <data name="OrderDetails" xml:space="preserve">
+    <value>Sipariş detayları</value>
+  </data>
+  <data name="OrdersBelongCustomer" xml:space="preserve">
+    <value>ait olan siparişler</value>
+  </data>
+  <data name="PageTheme" xml:space="preserve">
+    <value>Sayfa Teması</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Şifre</value>
+  </data>
+  <data name="PasswordAndConfirmationPasswordDoNotMatch" xml:space="preserve">
+    <value>Şifre ve onay şifresi eşleşmiyor.</value>
+  </data>
+  <data name="PasswordInfoMessage" xml:space="preserve">
+    <value>Şifre en az 6 karakterden olusmali, büyük, küçük harf ve sayi içermeli</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>{0} alanı zorunludur.</value>
+  </data>
+  <data name="PasswordStringLength" xml:space="preserve">
+    <value>{0} en az {2} karakter uzunluğunda olmalıdır.</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Ödeme</value>
+  </data>
+  <data name="PaymentIyzicoMerchantBasketId" xml:space="preserve">
+    <value>İşyeri Sepet Numarası</value>
+  </data>
+  <data name="PaymentIyzicoNumber" xml:space="preserve">
+    <value>Iyzico Ödeme Numarası</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Ödeme Durumu</value>
+  </data>
+  <data name="PieceOfProductSold" xml:space="preserve">
+    <value>adet ürün satıldı</value>
+  </data>
+  <data name="PinterestWebSiteLink" xml:space="preserve">
+    <value>Pinterest Link</value>
+  </data>
+  <data name="PleaseSelectYourMenuCategoryFromTree" xml:space="preserve">
+    <value>Lütfen Menü Kategorinizi Ağaçtan Seçin</value>
+  </data>
+  <data name="PleaseSelectYourProductCategoryFromTree" xml:space="preserve">
+    <value>Lütfen Ağaçtan Ürün Kategorinizi Seçiniz</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Sırası</value>
+  </data>
+  <data name="PriceErrorMessage" xml:space="preserve">
+    <value>Fiyat alani Zorunlu</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Ürün</value>
+  </data>
+  <data name="ProductCategories" xml:space="preserve">
+    <value>Ürün Kategorileri</value>
+  </data>
+  <data name="ProductCategoryDiscountPercantage" xml:space="preserve">
+    <value>Ürün Kategorisi İndirim Yüzdesi</value>
+  </data>
+  <data name="ProductCategoryId" xml:space="preserve">
+    <value>Kategori adı</value>
+  </data>
+  <data name="ProductCategoryIdErrorMessage" xml:space="preserve">
+    <value>Kategori ağacından kategori seçmelisiniz.</value>
+  </data>
+  <data name="ProductCategoryParentId" xml:space="preserve">
+    <value>Ürün Kategorisi</value>
+  </data>
+  <data name="ProductCategoryTreeName" xml:space="preserve">
+    <value>Ürün Kategorisi Ağaç Adı</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Ürün Kodu</value>
+  </data>
+  <data name="ProductCodeErrorMessage" xml:space="preserve">
+    <value>Ürün Kodu Zorunludur.</value>
+  </data>
+  <data name="ProductComments" xml:space="preserve">
+    <value>Ürün Yorumları</value>
+  </data>
+  <data name="ProductDynamicTemplates" xml:space="preserve">
+    <value>Ürün Xml Şablonlar</value>
+  </data>
+  <data name="ProductPageTitle" xml:space="preserve">
+    <value>Ürün Sayfası</value>
+  </data>
+  <data name="Products1" xml:space="preserve">
+    <value>Ürünler</value>
+  </data>
+  <data name="ProductSameSelectionErrorMessage" xml:space="preserve">
+    <value>Ürün Aynı Seçim Hata Mesajı</value>
+  </data>
+  <data name="ProductSpecs" xml:space="preserve">
+    <value>Ürün Ek Özellikleri</value>
+  </data>
+  <data name="ProductSpecTemplateItemList" xml:space="preserve">
+    <value>Şablonlarin Deger Listesi</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Soru</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Yenile</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Beni hatırla?</value>
+  </data>
+  <data name="RememberThisBrowser" xml:space="preserve">
+    <value>Bu tarayıcıyı hatırla?</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Raporlar</value>
+  </data>
+  <data name="RequestIsNotValid" xml:space="preserve">
+    <value>İstek Geçerli Değil</value>
+  </data>
+  <data name="ReviewSubject" xml:space="preserve">
+    <value>Yorum Başlık</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roler</value>
+  </data>
+  <data name="SaveButtonAndCloseText" xml:space="preserve">
+    <value>Kayit Et ve Kapat</value>
+  </data>
+  <data name="SaveButtonText" xml:space="preserve">
+    <value>Kayit Et</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Arama Sonuçları</value>
+  </data>
+  <data name="SearchResultsText" xml:space="preserve">
+    <value>Arama sonucu:</value>
+  </data>
+  <data name="SelectBrand" xml:space="preserve">
+    <value>Marka Seçin</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Kategori seç</value>
+  </data>
+  <data name="SelectedCategory" xml:space="preserve">
+    <value>Seçilen Kategori:</value>
+  </data>
+  <data name="SelectRoleAssignments" xml:space="preserve">
+    <value>Rol Atamalarını Seçin</value>
+  </data>
+  <data name="SelectTemplate" xml:space="preserve">
+    <value>Şablon Seçin</value>
+  </data>
+  <data name="SendEmailLink" xml:space="preserve">
+    <value>E-Posta Link Yolla</value>
+  </data>
+  <data name="SendMessageToSeller" xml:space="preserve">
+    <value>Satıcıya Mesaj Gönder</value>
+  </data>
+  <data name="SeoSettings" xml:space="preserve">
+    <value>SEO Bilgileri</value>
+  </data>
+  <data name="SettingKey" xml:space="preserve">
+    <value>Ayar Anahtar Kelimesi</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="SettingValue" xml:space="preserve">
+    <value>Ayar değeri</value>
+  </data>
+  <data name="ShippingAddress1" xml:space="preserve">
+    <value>Teslimat adresi</value>
+  </data>
+  <data name="ShippingOptions" xml:space="preserve">
+    <value>Kargo Bilgisi</value>
+  </data>
+  <data name="ShortDescription" xml:space="preserve">
+    <value>Kısa Açıklama</value>
+  </data>
+  <data name="SignInOrUp" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="SiteIndexMetaDescription" xml:space="preserve">
+    <value>Site Dizini Meta Açıklama</value>
+  </data>
+  <data name="SiteIndexMetaKeywords" xml:space="preserve">
+    <value>Site Dizini Meta Anahtar Kelimeleri</value>
+  </data>
+  <data name="SiteIndexMetaTitle" xml:space="preserve">
+    <value>Site Dizini Meta Başlığı</value>
+  </data>
+  <data name="SmtpEmailSettings" xml:space="preserve">
+    <value>E-Posta Ayarları</value>
+  </data>
+  <data name="SocialMediaSetttings" xml:space="preserve">
+    <value>Sosyal Media Linkleri</value>
+  </data>
+  <data name="StartUpload" xml:space="preserve">
+    <value>Yüklemeye Başla</value>
+  </data>
+  <data name="StartUploadingAndSave" xml:space="preserve">
+    <value>Yüklemeye başla ve Kayıt Et</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="Static" xml:space="preserve">
+    <value>Sabitler</value>
+  </data>
+  <data name="Stories" xml:space="preserve">
+    <value>Bloglar</value>
+  </data>
+  <data name="Story" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="StoryCategories" xml:space="preserve">
+    <value>Blog Kategorileri</value>
+  </data>
+  <data name="StoryCategory" xml:space="preserve">
+    <value>Blog Kategorisi</value>
+  </data>
+  <data name="StoryCategoryId" xml:space="preserve">
+    <value>Blog Kategorisi</value>
+  </data>
+  <data name="StoryCategoryIdErrorMessage" xml:space="preserve">
+    <value>Bir Blog Kategorisi seçin</value>
+  </data>
+  <data name="StoryPageTitle" xml:space="preserve">
+    <value>Blog Sayfasi</value>
+  </data>
+  <data name="StorySubject" xml:space="preserve">
+    <value>Blog Başlık</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Sokak</value>
+  </data>
+  <data name="Subscribers" xml:space="preserve">
+    <value>Aboneler</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>BAŞARILI</value>
+  </data>
+  <data name="Tag" xml:space="preserve">
+    <value>Etiket</value>
+  </data>
+  <data name="TagCategories" xml:space="preserve">
+    <value>Etiket Kategorileri</value>
+  </data>
+  <data name="TagCategory" xml:space="preserve">
+    <value>Etiket Kategorisi</value>
+  </data>
+  <data name="TagCategoryId" xml:space="preserve">
+    <value>Etiket Kategorisi</value>
+  </data>
+  <data name="TagCategoryName" xml:space="preserve">
+    <value>Etiket Kategori İsim</value>
+  </data>
+  <data name="TagName" xml:space="preserve">
+    <value>Etiket İsim</value>
+  </data>
+  <data name="TemplateId" xml:space="preserve">
+    <value>Şablon adı</value>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Şablonlar</value>
+  </data>
+  <data name="TemplateXml" xml:space="preserve">
+    <value>Xml Şablon</value>
+  </data>
+  <data name="TermsConditions" xml:space="preserve">
+    <value>Şartlar ve Koşullar</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Başlık</value>
+  </data>
+  <data name="TotalPrice" xml:space="preserve">
+    <value>Toplam fiyat</value>
+  </data>
+  <data name="Town" xml:space="preserve">
+    <value>İlçe</value>
+  </data>
+  <data name="TwitterWebSiteLink" xml:space="preserve">
+    <value>Twitter Link</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Güncelle</value>
+  </data>
+  <data name="UpdatedDate" xml:space="preserve">
+    <value>Güncelleme Tarihi</value>
+  </data>
+  <data name="UploadedFilesSection" xml:space="preserve">
+    <value>Yüklenen Resimler Bölümü</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Kullanıcılar</value>
+  </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>Kullanıcı Yönetimi</value>
+  </data>
+  <data name="VideoUrl" xml:space="preserve">
+    <value>Video Url</value>
+  </data>
+  <data name="WebSite" xml:space="preserve">
+    <value>Sitenizin Ana Sayfasi</value>
+  </data>
+  <data name="WebSiteCompanyEmailAddress" xml:space="preserve">
+    <value>Web Sitesi Şirketi E-posta Adresi</value>
+  </data>
+  <data name="WebSiteCompanyEmailAddressRequired" xml:space="preserve">
+    <value>Web Sitesi Şirketi E-posta Adresi uygun bir email adresi yaziniz. Zorunlu Alan.</value>
+  </data>
+  <data name="WebSiteCompanyPhoneAndLocation" xml:space="preserve">
+    <value>Şirket Telefon ve Adresi</value>
+  </data>
+  <data name="WebSiteLogo" xml:space="preserve">
+    <value>Web Site Logo</value>
+  </data>
+  <data name="WhatsAppCommunicationScript" xml:space="preserve">
+    <value>WhatsApp Script</value>
+  </data>
+  <data name="WomanGender" xml:space="preserve">
+    <value>Kadın</value>
+  </data>
+  <data name="WrongAccountLoginAttempt" xml:space="preserve">
+    <value>Giriş denemesi başarısız oldu. </value>
+  </data>
+  <data name="WrongSum" xml:space="preserve">
+    <value>Yanlış toplam, lütfen tekrar deneyin.</value>
+  </data>
+  <data name="YourProfileUpdatedSuccessfully" xml:space="preserve">
+    <value>Profil bilgileriniz başarıyla güncellendi.</value>
+  </data>
+  <data name="YoutubeWebSiteLink" xml:space="preserve">
+    <value>Youtube Link</value>
+  </data>
+  <data name="ZipCode" xml:space="preserve">
+    <value>Posta kodu</value>
+  </data>
+  <data name="Zopim" xml:space="preserve">
+    <value>Zopim</value>
+  </data>
+  <data name="RemoveAllFilter" xml:space="preserve">
+    <value>Filtreleri Temizle</value>
+  </data>
+  <data name="NoProductsFoundForCategory" xml:space="preserve">
+    <value>Bu kategoriye eklenmiş bir ürün yoktur.</value>
+  </data>
+  <data name="UsefulLinks" xml:space="preserve">
+    <value>Kullanışlı bağlantılar</value>
+  </data>
+  <data name="NoProductFoundInShoppingBasket" xml:space="preserve">
+    <value>&lt;h1 class="h2"&gt; Alışveriş sepetinizde ürün bulunmuyor!&lt;/h1&gt;
+                                &lt;p class="text-muted"&gt;
+                                    Beğendiğiniz ürünleri sepetinize ekleyerek sipariş verebilirsiniz. Alışveriş yapmak için
+                                    &lt;a class="font-weight-semibold" href="{0}"&gt; tıklayın.&lt;/a&gt;&lt;br&gt;
+                                &lt;/p&gt;</value>
+  </data>
+  <data name="ShopNow" xml:space="preserve">
+    <value>Satın al</value>
+  </data>
+  <data name="NoCommentForProductYet" xml:space="preserve">
+    <value>Bu ürüne henüz yorum yazılmadı. İlk yorumu yazmak ister misin?</value>
+  </data>
+  <data name="CustomerRelationship" xml:space="preserve">
+    <value>Müşteri ilişkileri</value>
+  </data>
+  <data name="NoProductsFoundForSelectedFilters" xml:space="preserve">
+    <value>Seçili Filtreler İçin Ürün Bulunamadı</value>
+  </data>
+  <data name="ProductFoundInfoForCategory" xml:space="preserve">
+    <value>&lt;b&gt;{0}&lt;/b&gt; aramanız ile eşleşen &lt;b&gt;{1}&lt;/b&gt; Sonuç bulundu.</value>
+  </data>
+  <data name="ThanksForYourOrder" xml:space="preserve">
+    <value>Siparişiniz için teşekkürler</value>
+  </data>
+  <data name="Thanks" xml:space="preserve">
+    <value>Teşekkürler</value>
+  </data>
+  <data name="CheckoutBillingDetails" xml:space="preserve">
+    <value>Ödeme Fatura Ayrıntıları</value>
+  </data>
+  <data name="CheckoutPaymentOrderReview" xml:space="preserve">
+    <value>Sipariş İncelemesi</value>
+  </data>
+  <data name="ShowMoreProductInfo" xml:space="preserve">
+    <value>Daha fazla ürün bilgisi göster</value>
+  </data>
+  <data name="ThanksForSubscriptionTitle" xml:space="preserve">
+    <value>Abonelik için teşekkürler</value>
+  </data>
+  <data name="ProductColor" xml:space="preserve">
+    <value>Ürün Rengi</value>
+  </data>
+  <data name="ProductSize" xml:space="preserve">
+    <value>Boyutu</value>
+  </data>
+  <data name="ResetPasswordTextInfo" xml:space="preserve">
+    <value>Lütfen yeni bir şifre oluşturunuz.&lt;br /&gt;
+&lt;strong&gt;{0}&lt;/strong&gt; adresine bağlı hesabınızın şifresi güncellenecektir.</value>
+  </data>
+  <data name="ThankYouForConfirmingEmail" xml:space="preserve">
+    <value>E-postanızı onayladığınız için teşekkür ederiz</value>
+  </data>
+</root>

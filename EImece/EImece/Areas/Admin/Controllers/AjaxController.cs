@@ -106,7 +106,15 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-
+        [DeleteAuthorize()]
+        public JsonResult ChangedOrderStatus(int orderId, string orderStatus)
+        {
+            EImeceOrderStatus? orderStatusEnum = EnumHelper.Parse<EImeceOrderStatus>(orderStatus);
+            var order = OrderService.GetSingle(orderId);
+            order.OrderStatus = (int)orderStatusEnum.Value;
+            OrderService.SaveOrEditEntity(order);
+            return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteTagCategoriesGridItem(List<String> values)

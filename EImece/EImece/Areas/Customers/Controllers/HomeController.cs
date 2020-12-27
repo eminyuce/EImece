@@ -62,6 +62,7 @@ namespace EImece.Areas.Customers.Controllers
         public ActionResult Index()
         {
             Customer customer = GetCustomer();
+          
             return View(customer);
         }
 

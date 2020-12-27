@@ -1101,4 +1101,7 @@
   <data name="ProductSizeOptions" xml:space="preserve">
     <value>Ürün Ölçü Seçenekleri</value>
   </data>
+  <data name="OrderStatus" xml:space="preserve">
+    <value>Sipariş durumu</value>
+  </data>
 </root>

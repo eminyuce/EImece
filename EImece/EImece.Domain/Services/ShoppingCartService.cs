@@ -121,6 +121,7 @@ namespace EImece.Domain.Services
             item.OrderNumber = GeneralHelper.RandomNumber(12);
             item.CargoPrice = shoppingCart.CargoPriceValue;
             item.UserId = userId;
+            item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
             item.Name = shoppingCart.Customer.FullName;
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;

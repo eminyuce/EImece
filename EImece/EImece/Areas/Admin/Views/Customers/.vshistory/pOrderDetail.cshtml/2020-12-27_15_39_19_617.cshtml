@@ -1,0 +1,142 @@
+﻿@model Order
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using Newtonsoft.Json;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+@{
+    var order = Model;
+    var orderProducts = Model.OrderProducts;
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription((EImeceOrderStatus)order.OrderStatus);
+}
+<section class="order-details">
+
+    <div class="text-center">
+        <b>@AdminResource.OrderDatePurchased - @order.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")</b><br />
+        <b>@AdminResource.PaymentIyzicoNumber - @order.PaymentId</b><br />
+        <b>@AdminResource.PaymentIyzicoMerchantBasketId - @order.BasketId</b><br />
+    </div>
+    <section class="customer-details">
+        <h4 class="column__title">@AdminResource.ShippingAddress</h4>
+        <address>
+            @order.ShippingAddress.Description
+        </address>
+    </section>
+    <table class='table table-hover table-bordered table-striped'>
+
+        <thead>
+            <tr class="info">
+                <th colspan="2" class="text-center">@AdminResource.Product</th>
+                <th class="table__product-name product-Quantity">@AdminResource.UnitPrice x @AdminResource.Quantity</th>
+                <th class="table__product-table product-total">@AdminResource.TotalPrice</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var orderProduct in orderProducts)
+            {
+                var ProductSpecItems = orderProduct.ProductSpecObjItems;
+                var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
+                <tr class="table__line-item order_item">
+                    <td class="text-center">
+                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
+                    </td>
+                    <td class="text-left">
+                        @Html.ActionLink(orderProduct.Product.Name,
+                       "Detail",
+                       "Products",
+                       new
+                            {
+                                area = "",
+                                categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
+                           id = orderProduct.Product.GetSeoUrl()
+                            }, new { @class = "btn btn-xl btn-link", @target = "_blank" })
+                        <br />
+                        <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
+                        @if (ProductSpecItems.IsNotEmpty())
+                        {
+                            foreach (var psi in ProductSpecItems)
+                            {
+                                <div> <strong class="product-specs">@psi.SpecsName &#8594; @psi.SpecsValue  </strong></div>
+                            }
+                        }
+                    </td>
+                    <td class="table__product-name product-name">
+                        <strong class="product-quantity">@orderProduct.Price.CurrencySign() × @orderProduct.Quantity</strong>
+                    </td>
+
+                    <td class="text-right">
+                        <span>
+                            @orderProduct.TotalPrice.CurrencySign()
+                        </span>
+                    </td>
+                </tr>
+            }
+
+            @if (!string.IsNullOrEmpty(order.OrderComments))
+            {
+                <tr class="primary">
+                    <td>
+                        <b>
+                            @AdminResource.OrderComments
+                        </b>
+                    </td>
+                    <td colspan="3">
+                        @order.OrderComments
+                    </td>
+                </tr>
+
+            }
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.CargoPrice
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.CargoPrice.CurrencySign()
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        Installment
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.Installment.ToDouble().CurrencySign()
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        MerchantCommissionRateAmount
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="success">
+                <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
+                <td>
+                    <span class="Price-Quantity">
+                        @orderProducts.Sum(r => r.Quantity)  @AdminResource.PieceOfProductSold
+                    </span>
+                </td>
+                <td class="text-right">
+                    @order.PaidPrice.ToDouble().CurrencySign()
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+</section>
