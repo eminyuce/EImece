@@ -178,7 +178,6 @@ namespace EImece.Domain.Helpers
             item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
             item.CategoryFilters.Add(item1);
 
-          
             item1 = new CategoryFilter()
             {
                 CategoryFilterId = string.Format("p{0}", 106),

@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -28,7 +27,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null);
 
-
         /// <summary>
         /// Sends an email
         /// </summary>
@@ -48,7 +46,8 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         void SendEmail(string destination, string subject, string body);
 
-        void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount,   Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
+        void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
+
         void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate);
     }
 }

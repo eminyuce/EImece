@@ -57,7 +57,7 @@ namespace EImece.Domain
         public const string AboutUs = "AboutUs";
         public const string DeliveryInfo = "DeliveryInfo";
         public const string WebSiteLogo = "WebSiteLogo";
-        public const string CompanyName = "CompanyName";  
+        public const string CompanyName = "CompanyName";
         public const string CompanyAddress = "CompanyAddress";
         public const string CompanyGotNewOrderEmailMailTemplate = "CompanyGotNewOrderEmail";
         public const string OrderConfirmationEmailMailTemplate = "OrderConfirmationEmail";
@@ -73,7 +73,7 @@ namespace EImece.Domain
         public const string LinkedinWebSiteLink = "LinkedinWebSiteLink";
         public const string FacebookWebSiteLink = "FacebookWebSiteLink";
         public const string YotubeWebSiteLink = "YotubeWebSiteLink";
-        public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";       
+        public const string GoogleAnalyticsTrackingScript = "GoogleAnalyticsTrackingScript";
         public const string WhatsAppCommunicationScript = "WhatsAppCommunicationScript";
         public const string LastVisit = "LastVisit";
         public const string PrivacyPolicy = "PrivacyPolicy";
@@ -89,7 +89,7 @@ namespace EImece.Domain
 
         public const string CargoCompany = "CargoCompany";
         public const string BasketMinTotalPriceForCargo = "BasketMinTotalPriceForCargo";
-        public const string CargoPrice = "CargoPrice";  
+        public const string CargoPrice = "CargoPrice";
         public const string CargoDescription = "CargoDescription";
 
         public const string TempPath = "~/media/tempFiles/";
@@ -111,6 +111,7 @@ namespace EImece.Domain
         public const string PageThemeT2 = "T2";
         public const string PageThemeT1 = "T1";
         public const string DefaultImageText = "X";
+
         public static object DeleteButtonHtmlAttribute
         {
             get
@@ -134,7 +135,5 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
-
-      
     }
 }

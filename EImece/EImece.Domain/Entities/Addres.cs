@@ -45,7 +45,6 @@ namespace EImece.Domain.Entities
                Description.ToStr(),
                City.ToStr(),
                Country.ToStr());
-
             }
         }
 

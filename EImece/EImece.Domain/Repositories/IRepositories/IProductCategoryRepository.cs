@@ -8,7 +8,7 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
 
-        ProductCategory GetProductCategory(int categoryId, bool isOnlyActive=true);
+        ProductCategory GetProductCategory(int categoryId, bool isOnlyActive = true);
 
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
 

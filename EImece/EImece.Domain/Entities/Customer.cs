@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Resources;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -39,31 +38,33 @@ namespace EImece.Domain.Entities
         public bool IsSameAsShippingAddress { get; set; }
 
         public string UserId { get; set; }
- 
+
         public bool IsPermissionGranted { get; set; }
 
         //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Gender))]
         public int Gender { get; set; }
 
-      //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Street))]
         public string Street { get; set; }
+
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Town))]
         public string Town { get; set; }
+
         //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.District))]
         public string District { get; set; }
 
-      //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        //  [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.City))]
         public string City { get; set; }
 
-     //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Country))]
         public string Country { get; set; }
 
-     //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        //   [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ZipCode))]
         public string ZipCode { get; set; }
 
@@ -80,6 +81,7 @@ namespace EImece.Domain.Entities
 
         [NotMapped]
         public List<Order> Orders { get; set; }
+
         [NotMapped]
         public String FullName
         {
@@ -88,6 +90,7 @@ namespace EImece.Domain.Entities
                 return String.Format("{0} {1}", Name.ToStr(), Surname.ToStr());
             }
         }
+
         [NotMapped]
         public String Address
         {
@@ -103,6 +106,7 @@ namespace EImece.Domain.Entities
                 Environment.NewLine);
             }
         }
+
         [NotMapped]
         public String RegistrationAddress
         {
@@ -116,7 +120,6 @@ namespace EImece.Domain.Entities
                Description.ToStr(),
                City.ToStr(),
                Country.ToStr());
-
             }
         }
 

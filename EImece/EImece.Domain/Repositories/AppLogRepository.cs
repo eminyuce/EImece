@@ -1,19 +1,12 @@
-﻿using EImece.Domain.Entities;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using EImece.Domain.DbContext;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace EImece.Domain.Repositories
 {
@@ -21,6 +14,7 @@ namespace EImece.Domain.Repositories
     public class AppLogRepository
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public List<AppLog> GetAppLogs(string search)
         {
             var applogResult = new List<AppLog>();
@@ -35,18 +29,19 @@ namespace EImece.Domain.Repositories
             }
             return applogResult;
         }
+
         public void DeleteAppLogs(List<string> values)
         {
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
-            String commandText = @"DELETE FROM dbo.AppLogs WHERE Id IN ("+String.Join(",", values)+")";
+            String commandText = @"DELETE FROM dbo.AppLogs WHERE Id IN (" + String.Join(",", values) + ")";
             var parameterList = new List<SqlParameter>();
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
             {
                 DatabaseUtility.ExecuteNonQuery(connection, commandText, commandType, parameterList.ToArray());
             }
-
         }
+
         public void DeleteAppLog(int id)
         {
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
@@ -54,11 +49,12 @@ namespace EImece.Domain.Repositories
             var parameterList = new List<SqlParameter>();
             var commandType = CommandType.Text;
             parameterList.Add(DatabaseUtility.GetSqlParameter("Id", id, SqlDbType.Int));
-            using(var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 DatabaseUtility.ExecuteNonQuery(connection, commandText, commandType, parameterList.ToArray());
             }
         }
+
         public void RemoveAll(string eventLevel = "")
         {
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
@@ -79,17 +75,18 @@ namespace EImece.Domain.Repositories
                 DatabaseUtility.ExecuteNonQuery(connection, commandText, commandType, parameterList.ToArray());
             }
         }
+
         public List<AppLog> GetAppLogsFromDb(string search)
         {
             var list = new List<AppLog>();
-            String commandText ="";
+            String commandText = "";
             if (string.IsNullOrEmpty(search))
             {
                 commandText = @"SELECT * FROM dbo.AppLogs ORDER BY Id DESC";
             }
             else
             {
-                commandText = @"SELECT * FROM dbo.AppLogs where EventMessage LIKE '%"+ search.Trim() + "%' ORDER BY Id DESC";
+                commandText = @"SELECT * FROM dbo.AppLogs where EventMessage LIKE '%" + search.Trim() + "%' ORDER BY Id DESC";
             }
 
             var parameterList = new List<SqlParameter>();
@@ -113,6 +110,7 @@ namespace EImece.Domain.Repositories
             }
             return list;
         }
+
         private static AppLog GetAppLogFromDataRow(DataRow dr)
         {
             var item = new AppLog();
@@ -131,7 +129,5 @@ namespace EImece.Domain.Repositories
             item.CreatedDate = dr["CreatedDate"].ToDateTime();
             return item;
         }
-
-       
     }
 }

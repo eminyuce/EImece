@@ -6,7 +6,6 @@ using GenericRepository;
 using Ninject;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -40,11 +39,13 @@ namespace EImece.Domain.Services
         {
             this.baseRepository = baseRepository;
         }
+
         protected BaseService(IBaseRepository<T> baseRepository, bool IsCachingActivated)
         {
             this.baseRepository = baseRepository;
             this.IsCachingActivated = IsCachingActivated;
         }
+
         public virtual List<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
         {
             return baseRepository.FindBy(whereLambda).ToList();

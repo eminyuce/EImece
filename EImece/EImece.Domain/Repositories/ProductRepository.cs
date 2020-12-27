@@ -7,7 +7,6 @@ using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
 using GenericRepository.EntityFramework.Enums;
 using NLog;
-using Org.BouncyCastle.Math.EC.Multiplier;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -94,7 +93,7 @@ namespace EImece.Domain.Repositories
                 }
                 else
                 {
-                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search) 
+                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search)
                     || r.ProductCode.Contains(search)
                           || r.NameLong.Contains(search)
                            || r.NameShort.Contains(search)

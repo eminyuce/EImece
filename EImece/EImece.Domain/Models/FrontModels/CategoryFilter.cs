@@ -44,7 +44,7 @@ namespace EImece.Domain.Models.FrontModels
                 return false;
             }
 
-            return this.CategoryFilterId.Equals(item.CategoryFilterId,StringComparison.InvariantCultureIgnoreCase);
+            return this.CategoryFilterId.Equals(item.CategoryFilterId, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public override int GetHashCode()

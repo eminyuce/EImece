@@ -4,6 +4,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Services;
 using NLog;
 using System;
+using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -18,6 +19,9 @@ namespace EImece
 
         protected void Application_Start()
         {
+            //System.Net.ServicePointManager.SecurityProtocol
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls; // comparable to modern browsers
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

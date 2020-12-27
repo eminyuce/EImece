@@ -5,12 +5,10 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Model;
-using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using NLog;
 using Resources;
 using System;
-using System.Web;
 
 namespace EImece.Domain.Services
 {
@@ -71,7 +69,7 @@ namespace EImece.Domain.Services
 
         public Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
         {
-            if(shoppingCart == null)
+            if (shoppingCart == null)
             {
                 throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
             }
@@ -94,7 +92,7 @@ namespace EImece.Domain.Services
             }
             if (billingAddressId == 0)
             {
-                shoppingCart.BillingAddress.Name = Resource.BillingAdress; 
+                shoppingCart.BillingAddress.Name = Resource.BillingAdress;
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
                 shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
                 shoppingCart.BillingAddress.City = shoppingCart.Customer.City;
@@ -104,7 +102,6 @@ namespace EImece.Domain.Services
                 billingAddressId = billingAddress.Id;
             }
 
-       
             CustomerService.SaveShippingAddress(userId);
             Order savedOrder = SaveOrder(userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
             SaveOrderProduct(shoppingCart, savedOrder);
@@ -162,7 +159,7 @@ namespace EImece.Domain.Services
             item.ErrorCode = checkoutForm.ErrorCode;
             item.ErrorMessage = checkoutForm.ErrorMessage;
             item.Locale = checkoutForm.Locale;
- 
+
             item.SystemTime = checkoutForm.SystemTime;
             Order savedOrder = OrderService.SaveOrEditEntity(item);
             return savedOrder;

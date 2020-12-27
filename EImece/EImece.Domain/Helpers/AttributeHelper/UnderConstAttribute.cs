@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
-using System.Configuration;
 
 namespace EImece.Domain.Helpers.AttributeHelper
 {
@@ -21,7 +13,6 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 var offlineHelper = new OfflineHelper(ipAddress, filterContext.HttpContext.Server.MapPath);
                 if (offlineHelper.ThisUserShouldBeOffline)
                 {
-
                     filterContext.HttpContext.Response.Redirect("/underconstruction");
                     return;
                 }

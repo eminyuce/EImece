@@ -1,7 +1,6 @@
 ﻿using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace EImece.Domain.Models.FrontModels
@@ -12,7 +11,6 @@ namespace EImece.Domain.Models.FrontModels
         public string ShoppingCartItemId { set; get; }
         public int Quantity { set; get; }
         public ShoppingCartProduct Product { set; get; }
-       
 
         public override string ToString()
         {
@@ -45,13 +43,13 @@ namespace EImece.Domain.Models.FrontModels
 
         public bool IsSameProduct(ShoppingCartItem item)
         {
-            if(item == null)
+            if (item == null)
             {
                 return false;
             }
-            if(Product.Id == item.Product.Id)
+            if (Product.Id == item.Product.Id)
             {
-                if(Product.ProductSpecItems.IsNotEmpty() && item.Product.ProductSpecItems.IsNotEmpty())
+                if (Product.ProductSpecItems.IsNotEmpty() && item.Product.ProductSpecItems.IsNotEmpty())
                 {
                     return Product.ProductSpecItems.FirstOrDefault().Equals(item.Product.ProductSpecItems.FirstOrDefault());
                 }

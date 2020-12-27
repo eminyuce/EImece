@@ -639,7 +639,6 @@ namespace EImece.Domain.Helpers
                     resizeBitmap.Dispose();
                 }
             }
-            
 
             return result;
         }
@@ -968,7 +967,8 @@ namespace EImece.Domain.Helpers
             // Return thumbnail size.
             return new Size((int)(originalWidth * factor), (int)(originalHeight * factor));
         }
-        public  Byte[] GenerateDefaultImg(string text = "", int width=200, int height = 200)
+
+        public Byte[] GenerateDefaultImg(string text = "", int width = 200, int height = 200)
         {
             int emSize = 120;
             using (var mem = new MemoryStream())
@@ -996,9 +996,10 @@ namespace EImece.Domain.Helpers
                 font.Dispose();
                 brush.Dispose();
                 sf.Dispose();
-                return  mem.GetBuffer();
+                return mem.GetBuffer();
             }
         }
+
         public Byte[] GenerateCaptchaImg(string captcha = "", bool includenoise = true)
         {
             using (var mem = new MemoryStream())

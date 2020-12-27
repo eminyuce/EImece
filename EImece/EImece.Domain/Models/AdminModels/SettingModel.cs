@@ -34,7 +34,5 @@ namespace EImece.Domain.Models.AdminModels
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoPrice))]
         public int CargoPrice { get; set; }
-
-
     }
 }

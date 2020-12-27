@@ -89,7 +89,7 @@ namespace EImece.Domain.Services
             {
                 foreach (var item in resultList)
                 {
-                    item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId,StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
                     GetUserFields(item);
                 }
 

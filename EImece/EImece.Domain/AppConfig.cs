@@ -13,10 +13,12 @@ namespace EImece.Domain
     public static class AppConfig
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static string GetDefaultImage(int w,int h)
+
+        public static string GetDefaultImage(int w, int h)
         {
             return GetDefaultImage($"w{w}h{h}");
         }
+
         public static string GetDefaultImage(String imageSize)
         {
             return $"/images/defaultimage/{imageSize}/default.jpg";
@@ -61,7 +63,7 @@ namespace EImece.Domain
             get
             {
                 //var useSll = GetConfigBool("UseSSL", false);
-               // return string.Format("http{0}", useSll ? "s" : "");
+                // return string.Format("http{0}", useSll ? "s" : "");
                 return HttpContext.Current.Request.Url.Scheme;
             }
         }

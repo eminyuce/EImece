@@ -19,8 +19,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         public string CroppedImageUrl { get; set; }
         private string _detailPageUrl { get; set; }
         public List<ProductSpecItem> ProductSpecItems { set; get; }
-        
-        
+
         public string DetailPageUrl
         {
             get
@@ -40,12 +39,11 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
 
         public ShoppingCartProduct()
         {
-            ProductSpecItems   = new List<ProductSpecItem>();
+            ProductSpecItems = new List<ProductSpecItem>();
         }
-       
-        public ShoppingCartProduct(Product product, List<ProductSpecItem> ProductSpecItems):this()
+
+        public ShoppingCartProduct(Product product, List<ProductSpecItem> ProductSpecItems) : this()
         {
-            
             this.Id = product.Id;
             this.Name = product.Name;
             this.Price = product.PriceWithDiscount;

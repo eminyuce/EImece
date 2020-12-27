@@ -21,6 +21,7 @@ namespace EImece.Domain.Repositories
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var pcList = GetAll();
@@ -30,7 +31,7 @@ namespace EImece.Domain.Repositories
                 pcList = pcList.Where(r => r.IsActive == isActive);
             }
             pcList = pcList.Where(r => r.Lang == language);
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived  ? r.IsActive : true).Count() });
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count() });
 
             List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
@@ -46,6 +47,7 @@ namespace EImece.Domain.Repositories
             }
             return returnList;
         }
+
         //Recursion method for recursively get all child nodes
         private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
         {
@@ -54,7 +56,7 @@ namespace EImece.Domain.Repositories
             current.Childrens = new List<ProductCategoryTreeModel>();
             level = level + 1;
             childs.ForEach(r => r.TreeLevel = level);
-           
+
             current.Childrens.AddRange(childs);
             foreach (var i in childs)
             {
@@ -64,8 +66,6 @@ namespace EImece.Domain.Repositories
                 current.ProductCount += i.ProductCount;
             }
         }
-
-      
 
         public ProductCategory GetProductCategory(int categoryId, bool isOnlyActive = true)
         {
@@ -84,8 +84,6 @@ namespace EImece.Domain.Repositories
                 return GetSingleIncluding(categoryId, includeProperties.ToArray());
             }
         }
-
-       
 
         public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
         {

@@ -39,7 +39,8 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public string IsPageActived
         {
-            get{
+            get
+            {
                 String result = "active";
                 var p = MenuLink.Split("_".ToCharArray());
                 var parts = p.First().Split("-".ToCharArray());
@@ -53,9 +54,9 @@ namespace EImece.Domain.Entities
                     && pageAction.Equals("index", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var ppppp = HttpContext.Current.Request.Url.AbsolutePath.ToString();
-                    resultLink = ppppp.ToLower().Contains(MenuLink.Replace("-","/")) ? result : "";
+                    resultLink = ppppp.ToLower().Contains(MenuLink.Replace("-", "/")) ? result : "";
                 }
-                else  if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                else if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
                 {
                     resultLink = pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase) ? result : "";
                 }
@@ -69,7 +70,7 @@ namespace EImece.Domain.Entities
                 else if (pageController.Equals("Products", StringComparison.InvariantCultureIgnoreCase)
                                                           && pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    resultLink =  "";
+                    resultLink = "";
                 }
                 else
                 {
@@ -81,7 +82,7 @@ namespace EImece.Domain.Entities
             }
         }
 
-         [NotMapped]
+        [NotMapped]
         public string DetailPageLink
         {
             get

@@ -36,7 +36,7 @@ namespace EImece.Domain.Services
 
         private List<Setting> GetAllSettings()
         {
-            var cacheKey = "GetAllSettings" ;
+            var cacheKey = "GetAllSettings";
             List<Setting> result = null;
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
@@ -46,6 +46,7 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         public string GetSettingByKey(string key)
         {
             var allSettings = GetAllSettings();
@@ -59,6 +60,7 @@ namespace EImece.Domain.Services
                 return String.Empty;
             }
         }
+
         public string GetSettingByKey(string key, int language)
         {
             var allSettings = GetAllSettings();
@@ -107,12 +109,13 @@ namespace EImece.Domain.Services
                 return setting;
             }
         }
+
         public SystemSettingModel GetSystemSettingModel()
         {
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description,StringComparison.InvariantCultureIgnoreCase)).ToList();
+            List<Setting> Settings = GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -142,7 +145,7 @@ namespace EImece.Domain.Services
 
         public void SaveSystemSettingModel(SystemSettingModel settingModel)
         {
-            if(settingModel == null)
+            if (settingModel == null)
             {
                 throw new ArgumentException("SystemSettingModel cannot be null");
             }
@@ -158,7 +161,7 @@ namespace EImece.Domain.Services
 
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
-                var setting = Settings.FirstOrDefault(r =>   r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting == null)
                 {
                     var newSetting = new Setting();
@@ -177,6 +180,7 @@ namespace EImece.Domain.Services
                 }
             }
         }
+
         public SettingModel GetSettingModel(int language)
         {
             var result = new SettingModel();
@@ -212,7 +216,7 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public void SaveSettingModel(SettingModel settingModel, int  lang)
+        public void SaveSettingModel(SettingModel settingModel, int lang)
         {
             if (settingModel == null)
             {
@@ -252,7 +256,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Dictionary<string, string> CreateShareableSocialMediaLinks(string link,string text, string imagefullPath)
+        public Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath)
         {
             var resultList = new Dictionary<String, String>();
             resultList.Add(Constants.LinkedinWebSiteLink, string.Format("http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
@@ -260,7 +264,6 @@ namespace EImece.Domain.Services
             resultList.Add(Constants.TwitterWebSiteLink, string.Format("https://twitter.com/intent/tweet?url={0}&text={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text)));
             resultList.Add(Constants.PinterestWebSiteLink, string.Format("http://pinterest.com/pin/create/button/?url={0}&media={2}&description={1}", WebUtility.UrlEncode(link), WebUtility.UrlEncode(text), WebUtility.UrlEncode(imagefullPath)));
             return resultList;
-
         }
 
         public EmailAccount GetEmailAccount()
@@ -277,10 +280,8 @@ namespace EImece.Domain.Services
 
             emailAccount.DisplayName = GetSettingByKey(Constants.AdminEmailDisplayName);
             emailAccount.DisplayName = String.IsNullOrEmpty(emailAccount.DisplayName) ? emailAccount.Username : emailAccount.DisplayName;
-         
+
             return emailAccount;
         }
-
-      
     }
 }

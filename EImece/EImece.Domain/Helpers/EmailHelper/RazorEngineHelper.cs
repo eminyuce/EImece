@@ -87,6 +87,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
+
         public Tuple<string, RazorRenderResult, Customer> CompanyGotNewOrderEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.CompanyGotNewOrderEmailMailTemplate);
@@ -94,12 +95,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             {
                 return new Tuple<string, RazorRenderResult, Customer>("", null, null);
             }
-         
+
             var model = MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplate(orderId);
 
             var modelSubject = new
             {
-                OrderNumber =  model.FinishedOrder.OrderNumber
+                OrderNumber = model.FinishedOrder.OrderNumber
             };
 
             string template = emailTemplate.Body;
@@ -108,18 +109,19 @@ namespace EImece.Domain.Helpers.EmailHelper
             string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, modelSubject);
             return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
         }
+
         public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.OrderConfirmationEmailMailTemplate);
             if (emailTemplate == null)
             {
-                return new Tuple<string, RazorRenderResult, Customer>("", null,null);
+                return new Tuple<string, RazorRenderResult, Customer>("", null, null);
             }
 
             var model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
-            var result = GetRenderOutputByRazorEngineModel(template,  model);
+            var result = GetRenderOutputByRazorEngineModel(template, model);
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
 
@@ -181,6 +183,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 WebSiteCompanyEmailAddress,
                 companyname);
         }
+
         public void SendContactUsForCommunication(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsForCommunication);
@@ -190,7 +193,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             string groupName = string.Format("{0} | {1} | {2}", "ContactUsForCommunication", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
-                emailTemplate.Body, 
+                emailTemplate.Body,
                 emailTemplate.Name,
                 groupName);
 
@@ -208,9 +211,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             var settingEmailAccount = SettingService.GetEmailAccount();
 
             RazorEngineLogger.Info("settingEmailAccount:" +
-                settingEmailAccount+ 
-                " body" + body+
-                " subject:" + emailTemplate.Subject + 
+                settingEmailAccount +
+                " body" + body +
+                " subject:" + emailTemplate.Subject +
                 " WebSiteCompanyEmailAddress" + WebSiteCompanyEmailAddress +
                 " companyname:" + companyname);
             EmailSender.SendEmail(settingEmailAccount,
@@ -221,6 +224,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 WebSiteCompanyEmailAddress,
                 companyname);
         }
+
         public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel
         {
             var result = new RazorRenderResult();
@@ -268,6 +272,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             return result;
         }
+
         public RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
         {
             var result = new RazorRenderResult();
@@ -314,7 +319,5 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             return result;
         }
-
-       
     }
 }

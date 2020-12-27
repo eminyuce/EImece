@@ -34,7 +34,8 @@ namespace EImece.Domain.Services
         {
             return MailTemplateRepository.GetMailTemplateByName(templatename);
         }
-         public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
+
+        public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
         {
             var cOrder = OrderService.GetOrderById(orderId);
             var pp = new CompanyGotNewOrderEmailRazorTemplate();
@@ -51,6 +52,7 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
             return pp;
         }
+
         public OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId)
         {
             var cOrder = OrderService.GetOrderById(orderId);

@@ -11,7 +11,7 @@ namespace EImece.Domain.Entities
         public string UserId { get; set; }
         public int OrderStatus { get; set; }
         public string OrderComments { get; set; }
-        public string OrderNumber { get; set; }    
+        public string OrderNumber { get; set; }
         public double CargoPrice { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }

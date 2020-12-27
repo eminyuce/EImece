@@ -21,7 +21,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailDisplayName))]
         public string AdminEmailDisplayName { get; set; }
 
-
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AdminEmailUseDefaultCredentials))]
         public bool AdminEmailUseDefaultCredentials { get; set; }
 
@@ -92,6 +91,5 @@ namespace EImece.Domain.Models.AdminModels
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPrice))]
         public int BasketMinTotalPriceForCargo { get; set; }
-
     }
 }

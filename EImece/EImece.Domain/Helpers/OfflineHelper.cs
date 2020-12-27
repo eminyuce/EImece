@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EImece.Domain.Models.FrontModels;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Helpers
 {
@@ -19,7 +15,6 @@ namespace EImece.Domain.Helpers
 
         public OfflineHelper(string currentIpAddress, Func<string, string> mapPath)
         {
-
             var offlineFilePath = mapPath(OfflineFileData.OfflineFilePath);
             if (File.Exists(offlineFilePath))
             {

@@ -11,7 +11,7 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductCategoryViewModel : ItemListing
     {
         public ProductCategory ProductCategory { get; set; }
-        public List<Product>  CategoryChildrenProducts { get; set; }
+        public List<Product> CategoryChildrenProducts { get; set; }
         public Menu ProductMenu { get; set; }
         public Menu MainPageMenu { get; set; }
         public List<ProductCategory> ChildrenProductCategories { get; set; }
@@ -20,7 +20,6 @@ namespace EImece.Domain.Models.FrontModels
         public List<CategoryFilter> SelectedFilterTypes { get; set; }
 
         public List<Product> AllProducts { get; set; }
-        
 
         public List<Product> Products
         {

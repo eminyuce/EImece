@@ -1,11 +1,7 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,6 +10,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
     public class AuthorizationAttribute : AuthorizeAttribute
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected override bool AuthorizeCore(HttpContextBase actionContext)
         {
             ClaimsPrincipal currentPrincipal = HttpContext.Current.User as ClaimsPrincipal;

@@ -32,6 +32,7 @@ namespace EImece.Domain.Repositories.IRepositories
    int top,
    int skip,
    int language);
+
         List<Product> GetChildrenProducts(int[] childrenCategoryId);
     }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -22,6 +14,7 @@ namespace EImece.Domain.Helpers
                 return AppConfig.GetConfigString("encrypt-password", "SAUW193BX628TD57"); ;
             }
         }
+
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = sEncryptionKey;
@@ -43,7 +36,6 @@ namespace EImece.Domain.Helpers
             }
             return clearText;
         }
-
 
         public static string Decrypt(string cipherText)
         {
@@ -68,5 +60,4 @@ namespace EImece.Domain.Helpers
             return cipherText;
         }
     }
-
 }

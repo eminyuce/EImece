@@ -1,5 +1,4 @@
-﻿using EImece.Domain.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {

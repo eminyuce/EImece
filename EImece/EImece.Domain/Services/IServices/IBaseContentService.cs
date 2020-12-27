@@ -14,7 +14,7 @@ namespace EImece.Domain.Services.IServices
         new void DeleteBaseEntity(List<string> values);
 
         T GetBaseContent(int id);
+
         List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language);
- 
     }
 }

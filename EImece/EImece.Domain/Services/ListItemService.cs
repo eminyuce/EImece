@@ -16,7 +16,6 @@ namespace EImece.Domain.Services
         {
             ListItemRepository = repository;
         }
-    
 
         public void DeleteListItemByListId(int id)
         {

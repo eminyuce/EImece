@@ -1,11 +1,8 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
-using Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -141,7 +138,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");
@@ -179,12 +175,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(customer.Email, customer.FullName);
 
-            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + to +" renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
+            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + to + " renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
             SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2.Result, from, to);
         }
+
         public void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");
@@ -224,6 +220,5 @@ namespace EImece.Domain.Helpers.EmailHelper
             Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + from + " renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
             SendEmail(emailAccount, renderedEmailTemplate.Item1, renderedEmailTemplate.Item2.Result, from, from);
         }
-
     }
 }

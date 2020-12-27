@@ -43,6 +43,7 @@ namespace EImece.Domain.Entities
                 return JsonConvert.DeserializeObject<List<ProductSpecItem>>(ProductSpecItems.ToStr());
             }
         }
+
         [NotMapped]
         public ProductSpecItem ProductSpecColorItem
         {
@@ -51,9 +52,6 @@ namespace EImece.Domain.Entities
                 return ProductSpecObjItems.FirstOrDefault();
             }
         }
-
-
-
 
         public Product Product { get; set; }
 

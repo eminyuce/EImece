@@ -92,7 +92,7 @@ namespace EImece.Domain.Models.FrontModels
             if (ShoppingCartItems.Any(r => r.Product.Id == item.Product.Id))
             {
                 var existingItem = ShoppingCartItems.FirstOrDefault(r => r.IsSameProduct(item));
-                if(existingItem == null)
+                if (existingItem == null)
                 {
                     ShoppingCartItems.Add(item);
                 }

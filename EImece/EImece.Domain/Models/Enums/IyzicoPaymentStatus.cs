@@ -3,9 +3,9 @@
     public enum IyzicoPaymentStatus
     {
         SUCCESS,
-        FAILURE, 
+        FAILURE,
         INIT_THREEDS,
-        CALLBACK_THREEDS, 
+        CALLBACK_THREEDS,
         BKM_POS_SELECTED,
         CALLBACK_PECCO
     }

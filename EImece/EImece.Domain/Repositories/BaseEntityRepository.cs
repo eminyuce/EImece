@@ -13,6 +13,7 @@ namespace EImece.Domain.Repositories
     public abstract class BaseEntityRepository<T> : BaseRepository<T> where T : BaseEntity
     {
         protected static readonly Logger BaseEntityLogger = LogManager.GetCurrentClassLogger();
+
         protected BaseEntityRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }

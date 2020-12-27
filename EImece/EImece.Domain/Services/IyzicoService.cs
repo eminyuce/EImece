@@ -1,24 +1,23 @@
 ﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
 using Newtonsoft.Json;
-using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
-using System.Linq;
-using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
         {
             Options options = GetOptions();
@@ -26,10 +25,12 @@ namespace EImece.Domain.Services
             request.Token = model.Token;
             return CheckoutForm.Retrieve(request, options);
         }
+
         /****
          * https://dev.iyzipay.com/tr/odeme-formu/odeme-formu-baslatma
-         * 
+         *
          */
+
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId)
         {
             if (shoppingCart == null)
@@ -47,21 +48,20 @@ namespace EImece.Domain.Services
 
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
-   
+
             var requestContext = HttpContext.Current.Request.RequestContext;
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
             string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
 
             string callbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
                                                "Payment",
-                                               new {  o,  u },
+                                               new { o, u },
                                                AppConfig.HttpProtocol);
-          
+
             var request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
             //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
             request.ConversationId = shoppingCart.ConversationId;
-
 
             request.Currency = Currency.TRY.ToString();
             request.BasketId = shoppingCart.OrderGuid;
@@ -127,7 +127,7 @@ namespace EImece.Domain.Services
                 firstBasketItem.Category1 = item.CategoryName;
                 firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-                
+
                 firstBasketItem.Price = item.Price.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO));
                 totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);

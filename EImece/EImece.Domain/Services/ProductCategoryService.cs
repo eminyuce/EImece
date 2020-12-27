@@ -21,6 +21,7 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IBrandService BrandService { get; set; }
+
         [Inject]
         public TemplateService TemplateService { get; set; }
 
@@ -40,7 +41,7 @@ namespace EImece.Domain.Services
         {
             List<ProductCategoryTreeModel> result;
             if (IsCachingActivated)
-            { 
+            {
                 var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
                 if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
@@ -70,7 +71,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                result =ProductCategoryRepository.GetProductCategory(categoryId);
+                result = ProductCategoryRepository.GetProductCategory(categoryId);
             }
             return EntityFilterHelper.FilterProductCategory(result);
         }
@@ -103,7 +104,7 @@ namespace EImece.Domain.Services
 
         public void DeleteProductCategory(int productCategoryId)
         {
-            var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId,false);
+            var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId, false);
             var leaves = GetProductCategoryLeaves(null, productCategory.Lang);
             if (leaves.Any(r => r.Id == productCategoryId))
             {
@@ -209,7 +210,7 @@ namespace EImece.Domain.Services
         {
             var result = new ProductCategoryViewModel();
             result.ProductCategory = GetProductCategory(productCategoryId);
-            if(result.ProductCategory.ParentId > 0)
+            if (result.ProductCategory.ParentId > 0)
             {
                 result.ProductCategory.Parent = GetProductCategory(result.ProductCategory.ParentId);
                 if (result.ProductCategory.Parent.ParentId > 0)

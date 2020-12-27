@@ -2,7 +2,6 @@
 using Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -44,7 +43,6 @@ namespace EImece.Domain.Models.FrontModels
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SelectReasonsLabel))]
         public String Reasons { get; set; }
-
 
         public static ContactUsFormViewModel CreateContactUsFormViewModel(string contactFormType, int itemId, EImeceItemType itemType)
         {

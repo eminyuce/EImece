@@ -13,13 +13,14 @@ namespace EImece.Domain.Repositories
         public MenuRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
         public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
             List<Menu> list = GetActiveBaseContents(isActive, language);
             var returnList = new List<MenuTreeModel>();
             //find top levels items
             var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
-          
+
             foreach (var i in topLevels)
             {
                 var p = new MenuTreeModel();
@@ -30,7 +31,8 @@ namespace EImece.Domain.Repositories
             }
             return returnList;
         }
-        private void GetTreeview(List<Menu> list, MenuTreeModel current,int level)
+
+        private void GetTreeview(List<Menu> list, MenuTreeModel current, int level)
         {
             //get child of current item
             var childs = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
@@ -44,14 +46,11 @@ namespace EImece.Domain.Repositories
                     var p = new MenuTreeModel();
                     p.Menu = i;
                     p.Parent = current;
-                    p.TreeLevel = level + 1; 
+                    p.TreeLevel = level + 1;
                     GetTreeview(list, p, p.TreeLevel);
                 }
             }
-            
         }
-
-      
 
         public Menu GetMenuById(int menuId)
         {

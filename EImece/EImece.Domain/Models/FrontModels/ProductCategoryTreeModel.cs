@@ -20,6 +20,7 @@ namespace EImece.Domain.Models.FrontModels
                 return string.Format("{0}", ProductCategory.Name);
             }
         }
+
         public string AdminText
         {
             get
@@ -34,6 +35,7 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
         }
+
         public string Text
         {
             get
@@ -48,6 +50,7 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
         }
+
         public string TextWithArrow
         {
             get
@@ -62,6 +65,7 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
         }
+
         public string ProduceArrow()
         {
             var builder = new StringBuilder();
@@ -73,7 +77,7 @@ namespace EImece.Domain.Models.FrontModels
                     builder.Append(" — ");
                 }
                 builder.Append("> ");
-            }  
+            }
             return builder.ToString();
         }
     }

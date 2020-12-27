@@ -1,9 +1,9 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Services;
 using Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System;
 
 namespace EImece.Models
 {
@@ -22,15 +22,16 @@ namespace EImece.Models
             this.LastName = user.LastName;
             this.Id = user.Id;
         }
+
         public void SetAdminRoles(ApplicationUser user)
         {
             var Db = new ApplicationDbContext();
 
-            // Add all available roles to the list of EditorViewModels: 
+            // Add all available roles to the list of EditorViewModels:
             var allRoles = Db.Roles;
             foreach (var role in allRoles)
             {
-                if(role.Name.Equals(Domain.Constants.AdministratorRole,StringComparison.InvariantCultureIgnoreCase) || role.Name.Equals(Domain.Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase))
+                if (role.Name.Equals(Domain.Constants.AdministratorRole, StringComparison.InvariantCultureIgnoreCase) || role.Name.Equals(Domain.Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // An EditorViewModel will be used by Editor Template:
                     var rvm = new SelectRoleEditorViewModel(role);
@@ -47,6 +48,7 @@ namespace EImece.Models
                 checkUserRole.Selected = true;
             }
         }
+
         public void SetRoles(ApplicationUser user)
         {
             var Db = new ApplicationDbContext();

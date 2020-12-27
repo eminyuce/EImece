@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -11,7 +8,6 @@ namespace EImece.Domain.Models.FrontModels
     {
         public string SpecsName { get; set; }
         public string SpecsValue { get; set; }
-        
 
         public override bool Equals(object obj)
         {
@@ -21,10 +17,10 @@ namespace EImece.Domain.Models.FrontModels
             return SpecsValue.Equals(p.SpecsValue, StringComparison.InvariantCultureIgnoreCase) && SpecsName.Equals(p.SpecsName, StringComparison.InvariantCultureIgnoreCase);
         }
     }
+
     [Serializable]
     public class ProductSpecItemRoot
     {
         public List<ProductSpecItem> selectedTotalSpecs { get; set; }
     }
-
 }

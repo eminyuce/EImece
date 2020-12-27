@@ -1,9 +1,6 @@
 ﻿using EImece.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -13,13 +10,13 @@ namespace EImece.Domain.Models.FrontModels
 
         public MenuTreeModel()
         {
-
         }
 
         public MenuTreeModel(Menu r)
         {
             this.Menu = r;
         }
+
         public MenuTreeModel(Menu r, int level)
         {
             this.Menu = r;
@@ -33,6 +30,7 @@ namespace EImece.Domain.Models.FrontModels
                 return Menu.Id;
             }
         }
+
         public string Name
         {
             get
@@ -52,6 +50,7 @@ namespace EImece.Domain.Models.FrontModels
                 return string.Format("{1}{0}", Menu.Name, ProduceArrow());
             }
         }
+
         public string ProduceArrow()
         {
             var builder = new StringBuilder();
@@ -66,6 +65,5 @@ namespace EImece.Domain.Models.FrontModels
             }
             return builder.ToString();
         }
-
     }
 }

@@ -12,7 +12,6 @@ namespace EImece.Domain.Helpers
 {
     public static class Convert
     {
-
         public static int GetId(this string id)
         {
             if (String.IsNullOrEmpty(id))
@@ -221,7 +220,7 @@ namespace EImece.Domain.Helpers
         {
             long ret = 0;
 
-            long.TryParse(arg.ToStr(),  out ret);
+            long.TryParse(arg.ToStr(), out ret);
 
             return ret;
         }
@@ -419,7 +418,6 @@ namespace EImece.Domain.Helpers
 
             //  if (!DateTime.TryParse(arg.ToStr(), out ret))
 
-           
             if (!DateTime.TryParseExact(arg.ToStr(),
                        format,
                        CultureInfo.InvariantCulture,

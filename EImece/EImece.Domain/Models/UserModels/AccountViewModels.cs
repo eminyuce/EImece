@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Services;
 using Resources;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -104,7 +103,6 @@ namespace EImece.Models
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string PhoneNumber { get; set; }
 
-
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsPermissionGrantedDescription))]
         public bool IsPermissionGranted { get; set; }
 
@@ -123,8 +121,6 @@ namespace EImece.Models
             };
             return user;
         }
-    
-
     }
 
     public class RegisterViewModelForAdmin
