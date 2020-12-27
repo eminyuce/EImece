@@ -78,7 +78,7 @@ columns.Add()
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d => @<b>
-    @Html.ActionLink(AdminResource.CustomerComingOrders, "CustomerOrders", controllerName, new { id = d.UserId }, new { @class = "btn btn-success btn-sm     " })
+    @Html.ActionLink(AdminResource.MyOrder, "CustomerOrders", controllerName, new { id = d.UserId }, new { @class = "btn btn-info btn-sm     " })
 </b>);
 
     columns.Add(o => o.Name)

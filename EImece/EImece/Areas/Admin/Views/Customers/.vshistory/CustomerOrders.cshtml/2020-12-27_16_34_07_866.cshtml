@@ -112,7 +112,7 @@ RenderValueAs(o => ChangeOrderStatus(o));
     @Html.DropDownList("orderStatusSelectList",
     new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
     new { @class = "form-control", @data_change_order_status = order.Id })
-    <span class="text-danger" data-changed-order-result="@order.Id"></span>
+    <span data-changed-order-result="@order.Id"></span>
 }
 
 

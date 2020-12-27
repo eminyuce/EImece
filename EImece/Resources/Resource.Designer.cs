@@ -2324,7 +2324,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Geçersiz Kullanıcı Adı ve/veya Şifre.Lütfen bilgilerinizi kontrol ediniz..
+        ///   Looks up a localized string similar to Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır.Lütfen bilgilerinizi kontrol ediniz..
         /// </summary>
         public static string NoUserFound {
             get {

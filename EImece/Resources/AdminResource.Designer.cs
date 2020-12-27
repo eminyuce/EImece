@@ -601,6 +601,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gelen Siparişler.
+        /// </summary>
+        public static string CustomerComingOrders {
+            get {
+                return ResourceManager.GetString("CustomerComingOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Müşteri Detayı.
         /// </summary>
         public static string CustomerDetail {

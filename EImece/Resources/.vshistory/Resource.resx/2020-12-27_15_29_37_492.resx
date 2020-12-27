@@ -322,7 +322,7 @@
     <value>Hakkımızda</value>
   </data>
   <data name="NoUserFound" xml:space="preserve">
-    <value>Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır.Lütfen bilgilerinizi kontrol ediniz.</value>
+    <value>Geçersiz Kullanıcı Adı ve/veya Şifre.Lütfen bilgilerinizi kontrol ediniz.</value>
   </data>
   <data name="MandatoryField" xml:space="preserve">
     <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
