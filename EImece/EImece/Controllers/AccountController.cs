@@ -25,6 +25,7 @@ namespace EImece.Controllers
         private const string CaptchaAdminLogin = "CaptchaAdminLogin";
         private const string CaptchaCustomerLogin = "CaptchaCustomerLogin";
         private const string CaptchaCustomerRegister = "CaptchaCustomerRegister";
+
         [Inject]
         public IdentityManager IdentityManager { get; set; }
 
@@ -70,7 +71,7 @@ namespace EImece.Controllers
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("",AdminResource.RequestIsNotValid);
+                ModelState.AddModelError("", AdminResource.RequestIsNotValid);
                 return View(model);
             }
 
@@ -453,7 +454,7 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ResetPassword(string userId, string code)
         {
-            if(code == null)
+            if (code == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -461,7 +462,7 @@ namespace EImece.Controllers
             ResetPasswordViewModel model = new ResetPasswordViewModel();
             model.Email = user.Email;
             model.Code = code;
-            return  View(model);
+            return View(model);
         }
 
         //

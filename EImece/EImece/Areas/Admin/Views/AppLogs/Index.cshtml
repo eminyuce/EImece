@@ -59,8 +59,6 @@
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {
 
-
-
            columns.Add()
                           .Encoded(false)
                           .Sanitized(false)
@@ -89,15 +87,12 @@
               SetWidth(10).
               RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.InnerErrorMessage));
 
-
-
            columns.Add(o => o.CreatedDate)
                       .Titled(AdminResource.CreatedDate)
                   .Sortable(true)
                   .Css("gridDateClass")
                   .RenderValueAs(o =>o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss"))
                   .SortInitialDirection(GridSortDirection.Descending);
-
 
        }).SetRowCssClasses(item => item.Id % 2 == 0 ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>
@@ -112,7 +107,7 @@
 
     <!-- Modal -->
     <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
-        <div class="modal-dialog" >
+        <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content" style="width:980px;">

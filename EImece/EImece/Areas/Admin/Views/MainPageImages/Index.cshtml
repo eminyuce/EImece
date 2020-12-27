@@ -65,8 +65,6 @@
                                     @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
                                 </b>);
 
-
-
        if (UserRoleHelper.IsDeletedEnableRoles())
        {
            columns.Add()
@@ -74,8 +72,6 @@
            .Sanitized(false)
            .SetWidth(30)
            .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-
-
 
       { "ItemId", d.Id },
            {"controllerName",controllerName},
@@ -110,7 +106,6 @@
        .Css("gridDateClass")
        .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
        .SortInitialDirection(GridSortDirection.Descending);
-
 
        columns.Add(o => o.ImageState)
 .Titled(AdminResource.ImageState)

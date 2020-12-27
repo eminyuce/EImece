@@ -68,14 +68,12 @@ columns.Add()
     .Sanitized(false)
     .SetWidth(30)
     .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
- 
 
             { "ItemId", d.Id },
            {"controllerName",controllerName},
            { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
            { "DeleteText", gridDeleteText },
            { "ItemDescription", d.Name }
-
 
     }));
 

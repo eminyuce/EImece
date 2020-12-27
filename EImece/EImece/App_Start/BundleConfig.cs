@@ -53,31 +53,29 @@ namespace EImece
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
                   "~/Scripts/adminEimece.js",
                   "~/Scripts/gridmvc.js",
-                  "~/MVCGridHandler.axd/script.js" ));
-            
+                  "~/MVCGridHandler.axd/script.js"));
 
-
-                            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-                    "~/Content/themes/base/accordion.css",
-                    "~/Content/themes/base/all.css",
-                    "~/Content/themes/base/autocomplete.css",
-                    "~/Content/themes/base/base.css",
-                    "~/Content/themes/base/button.css",
-                    "~/Content/themes/base/core.css",
-                    "~/Content/themes/base/datepicker.css",
-                    "~/Content/themes/base/dialog.css",
-                    "~/Content/themes/base/draggable.css",
-                    "~/Content/themes/base/menu.css",
-                    "~/Content/themes/base/progressbar.css",
-                    "~/Content/themes/base/resizable.css",
-                    "~/Content/themes/base/selectable.css",
-                    "~/Content/themes/base/selectmenu.css",
-                    "~/Content/themes/base/slider.css",
-                    "~/Content/themes/base/sortable.css",
-                    "~/Content/themes/base/spinner.css",
-                    "~/Content/themes/base/tabs.css",
-                    "~/Content/themes/base/theme.css",
-                    "~/Content/themes/base/tooltip.css"));
+            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+    "~/Content/themes/base/accordion.css",
+    "~/Content/themes/base/all.css",
+    "~/Content/themes/base/autocomplete.css",
+    "~/Content/themes/base/base.css",
+    "~/Content/themes/base/button.css",
+    "~/Content/themes/base/core.css",
+    "~/Content/themes/base/datepicker.css",
+    "~/Content/themes/base/dialog.css",
+    "~/Content/themes/base/draggable.css",
+    "~/Content/themes/base/menu.css",
+    "~/Content/themes/base/progressbar.css",
+    "~/Content/themes/base/resizable.css",
+    "~/Content/themes/base/selectable.css",
+    "~/Content/themes/base/selectmenu.css",
+    "~/Content/themes/base/slider.css",
+    "~/Content/themes/base/sortable.css",
+    "~/Content/themes/base/spinner.css",
+    "~/Content/themes/base/tabs.css",
+    "~/Content/themes/base/theme.css",
+    "~/Content/themes/base/tooltip.css"));
 
             bundles.Add(new StyleBundle("~/Content/jQuery-File-Upload").Include(
                     "~/Content/jQuery.FileUpload/css/jquery.fileupload.css",
@@ -126,13 +124,11 @@ namespace EImece
                     "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",
                     "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"));
 
-           
-            bundles.Add(new ScriptBundle("~/bundles/eimeceScripts").Include( 
+            bundles.Add(new ScriptBundle("~/bundles/eimeceScripts").Include(
                     "~/Scripts/jquery-3.1.1.min.js",
                     "~/Scripts/eimece.js",
                     "~/Scripts/cookie-consent.js",
                     "~/Scripts/mustache.min.js"));
-
         }
     }
 }

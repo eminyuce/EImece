@@ -11,20 +11,22 @@ namespace EImece.Areas.Admin.Controllers
     public class AdminSettingsController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: Admin/AdminSettings
         public ActionResult Index()
         {
             SettingModel r = SettingService.GetSettingModel(CurrentLanguage);
             return View(r);
         }
-        
+
         [HttpPost]
         public ActionResult Index(SettingModel settingModel)
         {
-            SettingService.SaveSettingModel(settingModel,CurrentLanguage);
+            SettingService.SaveSettingModel(settingModel, CurrentLanguage);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(SettingService.GetSettingModel(CurrentLanguage));
         }
+
         public ActionResult SystemSettings()
         {
             SystemSettingModel r = SettingService.GetSystemSettingModel();
@@ -38,6 +40,7 @@ namespace EImece.Areas.Admin.Controllers
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(SettingService.GetSystemSettingModel());
         }
+
         public ActionResult SendSampleEmail()
         {
             String companyName = "Testing company Name";
@@ -52,21 +55,21 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 string fromAddress = string.IsNullOrEmpty(emailAccount.Email) ? emailAccount.Username : emailAccount.Email;
-              
+
                 EmailSender.SendEmail(emailAccount,
-                  subject:"Test Subject",
-                  body:"Test Email Body",
+                  subject: "Test Subject",
+                  body: "Test Email Body",
                   fromAddress: fromAddress,
                   fromName: emailAccount.Username,
                   toAddress: webSiteCompanyEmailAddress,
                   toName: companyName);
-               
-                ModelState.AddModelError("",   AdminResource.SuccessfullySavedCompleted);
+
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             }
             catch (Exception ex)
             {
                 Logger.Debug("It could not sent sample Email:" + info);
-                ModelState.AddModelError("",   ex.ToFormattedString());
+                ModelState.AddModelError("", ex.ToFormattedString());
             }
 
             return View("SystemSettings", SettingService.GetSystemSettingModel());

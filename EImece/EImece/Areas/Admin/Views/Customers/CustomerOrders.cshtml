@@ -63,17 +63,11 @@ Sortable(true).
 Encoded(false).
 RenderValueAs(o => ChangeOrderStatus(o));
 
-
-
     columns.Add(o => o.PaymentId)
    .Sanitized(false).
    Sortable(true).
    Encoded(false).
    RenderValueAs(o => DisplayIyzicoInfo(o)).Titled(AdminResource.PaymentIyzicoNumber);
-
-
-
-
 
     columns.Add(c => c.Price).
     Titled(AdminResource.Price).
@@ -114,8 +108,6 @@ RenderValueAs(o => ChangeOrderStatus(o));
     new { @class = "form-control", @data_change_order_status = order.Id })
     <span class="text-danger" data-changed-order-result="@order.Id"></span>
 }
-
-
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
@@ -194,8 +186,6 @@ RenderValueAs(o => ChangeOrderStatus(o));
         }
     }
 }
-
-
 
 @helper DisplayPriceColumn(Order o)
 {

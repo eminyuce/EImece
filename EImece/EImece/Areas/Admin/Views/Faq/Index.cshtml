@@ -80,17 +80,12 @@ columns.Add()
     .Titled(AdminResource.Question)
     .Filterable(true);
 
- 
-
-
     columns.Add(o => o.Answer)
 .Titled(AdminResource.Answer)
 .Encoded(false).
     Sanitized(false).
     SetWidth(10).
     RenderValueAs(o => String.Format("<textarea readonly  style='height: 100px; background-color: transparent; width: 589px; margin: 0px;'>{0}</textarea>", GeneralHelper.StripHtml(o.Answer).ToStr(1000)));
-
-
 
     columns.Add(o => o.Position).Titled(AdminResource.Position)
 .Encoded(false).

@@ -1,0 +1,129 @@
+﻿@model List<AppLog>
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = 1000;
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "AppLogs";
+    var title = "AppLogs";
+    var gridName = "AppLogGrid";
+    List<AppLog> contents = Model;
+
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+    var gridMainPageImageText = AdminResource.GridMainPageImageText;
+    var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
+    var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
+}
+
+<h2>@AdminResource.AppLogs</h2>
+<hr class="adminLine" />
+
+<div class="row" style="padding:20px;">
+
+    <div class="col-md-12">
+        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+               {"controllerName",controllerName}
+               ,{"StateTypes","NONE"}
+              ,{"orderingButton",false}
+       ,{"IsNewRecordButtonEnabled",false}
+              ,{"selectAll",true}
+              ,{"deleteAll",true}
+               ,{"SetStateOnOrOff",false},{"IsExcelButtonEnabled",true}})
+        @Html.ActionLink("Trace Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "trace" }, new { @class = "btn btn-default btn-sm" })
+        @Html.ActionLink("Error Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "error" }, new { @class = "btn btn-danger btn-sm" })
+        @Html.ActionLink("Debug Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "debug" }, new { @class = "btn btn-warning btn-sm" })
+        @Html.ActionLink("Info Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "INFO" }, new { @class = "btn btn-info btn-sm" })
+        @Html.ActionLink("Bütün Loglari Sil", "RemoveAll", null, new { @class = "btn btn-link btn-sm" })
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <span class="col-md-6">
+                        <span class="label ">
+                            <span class="badge text-danger text-large">@contents.Count() </span>
+                            @GridResultRecordNumber
+                        </span>
+                    </span>
+                </div>
+            </div>
+            @Html.Grid(contents).Named(gridName).Columns(columns =>
+       {
+
+
+
+           columns.Add()
+                          .Encoded(false)
+                          .Sanitized(false)
+                           .Css("gridButtons")
+                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+                 {"ItemId",d.Id}}));
+
+           columns.Add(c => c.Id)
+      .Filterable(true)
+      .Encoded(false)
+      .Sanitized(false)
+      .RenderValueAs(d => CreateAppLogModal(d));
+
+           columns.Add(c => c.EventLevel)
+         .Filterable(true);
+
+           columns.Add(o => o.EventMessage)
+            .Encoded(false).
+                Sanitized(false).
+                SetWidth(10).
+                RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", String.Format("{0} {1} {2}", o.EventMessage, o.ErrorSource, o.ErrorMessage)));
+
+           columns.Add(o => o.InnerErrorMessage)
+          .Encoded(false).
+              Sanitized(false).
+              SetWidth(10).
+              RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.InnerErrorMessage));
+
+
+
+           columns.Add(o => o.CreatedDate)
+                      .Titled(AdminResource.CreatedDate)
+                  .Sortable(true)
+                  .Css("gridDateClass")
+                  .RenderValueAs(o =>o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss"))
+                  .SortInitialDirection(GridSortDirection.Descending);
+
+
+       }).SetRowCssClasses(item => item.Id % 2 == 0 ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+        </div>
+    </div>
+</div>
+
+@helper CreateAppLogModal(AppLog o)
+{
+    <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" data-order-Id="@o.Id" style="font-size:1em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+        @AdminResource.GridDetailText
+    </a>
+
+    <!-- Modal -->
+    <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
+        <div class="modal-dialog" >
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width:980px;">
+                <div class="modal-body">
+                     @Html.DisplayFor(item=>o)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

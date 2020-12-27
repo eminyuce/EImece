@@ -8,8 +8,6 @@ namespace EImece.Controllers
 {
     public class InfoController : BaseController
     {
-
-
         [Inject]
         public IMenuService MenuService { get; set; }
 

@@ -12,14 +12,12 @@ using Iyzipay.Model;
 using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Provider;
 using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -85,11 +83,10 @@ namespace EImece.Controllers
 
         public ActionResult AddToCart(int productId, int quantity, string orderGuid, string productSpecItems)
         {
-           
             var product = ProductService.GetProductById(productId);
             var shoppingCart = GetShoppingCart();
             shoppingCart.OrderGuid = orderGuid;
- 
+
             var item = new ShoppingCartItem();
             var selectedTotalSpecs = new List<ProductSpecItem>();
             if (!string.IsNullOrEmpty(productSpecItems))
@@ -159,7 +156,7 @@ namespace EImece.Controllers
                 var user = UserManager.FindByName(User.Identity.GetUserName());
                 if (user != null)
                 {
-                   return user.Id;
+                    return user.Id;
                 }
             }
             return string.Empty;
@@ -187,7 +184,7 @@ namespace EImece.Controllers
                 string userId = result.Customer != null ? result.Customer.UserId : "";
                 item.UserId = string.IsNullOrEmpty(userId) ? getUserId() : userId;
             }
-        
+
             result.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
             result.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
             result.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
@@ -202,7 +199,7 @@ namespace EImece.Controllers
                 if (user != null)
                 {
                     var c = CustomerService.GetUserId(user.Id);
-                    if(c == null)
+                    if (c == null)
                     {
                         c = new Customer();
                         c.UserId = user.Id;
@@ -372,7 +369,7 @@ namespace EImece.Controllers
         public ActionResult PlaceOrder()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
-       
+
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
                 return Content("ShoppingCartItems is EMPTY");
@@ -408,7 +405,7 @@ namespace EImece.Controllers
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }
-      
+
         private void SendEmails(Order order)
         {
             try
@@ -430,18 +427,17 @@ namespace EImece.Controllers
             {
                 PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
             }
-
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)
         {
             return View(OrderService.GetSingle(orderId));
         }
+
         public ActionResult NoSuccessForYourOrder()
         {
             return View();
         }
-
 
         private void ClearCart(ShoppingCartSession shoppingCart)
         {

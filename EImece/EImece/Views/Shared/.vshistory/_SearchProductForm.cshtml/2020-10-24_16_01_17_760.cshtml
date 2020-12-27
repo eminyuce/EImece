@@ -1,0 +1,53 @@
+﻿@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using EImece.Domain.Helpers;
+
+@{
+    var SearchProductTextBoxPlaceHolder = Resource.SearchProductTextBoxPlaceHolder;
+    var SearchProductButtonText = Resource.SearchProductButtonText;
+    var SearchProductButtonTextPlaceHolder = Resource.SearchProductTextBoxPlaceHolder;
+    var search = Request.QueryString["search"].ToStr();
+
+}
+
+<div class="flex-grow-1 pb-3 pt-sm-3 my-1 px-sm-2 pr-lg-4 order-sm-2">
+    @using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get))
+    {
+        <input type="submit" style="display:none;" id="searchSubmitButton" />
+
+        <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+                <a title="@Resource.Search"
+                   onclick="onClickSearch(this)"
+                   class="input-group-text rounded-left"
+                   id="search-icon">
+                    <i data-feather="search"></i>
+                </a>
+            </div>
+            <input class="form-control rounded-right" type="text" id="site-search"
+                   aria-label="Search site" aria-describedby="search-icon"
+                   name="search"
+                   placeholder="@SearchProductButtonTextPlaceHolder" value="@search" />
+        </div>
+    }
+</div>
+<!-- search-box-->
+
+<input type="hidden" id="SearchRequiredErrorMessage" value="@Resource.SearchRequiredErrorMessage" />
+<input type="hidden" id="SearchValidText" value="@Resource.SearchValidText" />
+
+<script>
+
+    function isEmpty(str) {
+        return (!str || 0 === str.length);
+    }
+    function onClickSearch(e) {
+        if (isEmpty($("#site-search").val()) || $("#site-search").val().length < 2) {
+            console.log("site-search be empty");
+        } else {
+             document.getElementById('searchSubmitButton').click();
+        }
+    }
+
+</script>

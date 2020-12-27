@@ -30,13 +30,15 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             return View(productCategories);
         }
+
         [HttpGet]
         public ActionResult MoveProductCategory()
         {
-            ViewBag.ProductCategoryDropDownList= GetProductCategoryTreeDropDownList();
+            ViewBag.ProductCategoryDropDownList = GetProductCategoryTreeDropDownList();
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult MoveProductCategory(MoveProductCategory moveProductCategory)
@@ -60,6 +62,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             return RedirectToAction("MoveProductCategory");
         }
+
         private List<SelectListItem> GetProductCategoryTreeDropDownList()
         {
             var resultListItem = new List<SelectListItem>();
@@ -72,7 +75,8 @@ namespace EImece.Areas.Admin.Controllers
 
             return resultListItem;
         }
-        private void GetProductCategoryChildrenTreeDropDownList(List<SelectListItem> resultListItem,  ProductCategoryTreeModel productCategoryTreeModel)
+
+        private void GetProductCategoryChildrenTreeDropDownList(List<SelectListItem> resultListItem, ProductCategoryTreeModel productCategoryTreeModel)
         {
             if (productCategoryTreeModel.Childrens.IsNotEmpty())
             {
@@ -115,9 +119,9 @@ namespace EImece.Areas.Admin.Controllers
             {
                 content = ProductCategoryService.GetBaseContent(id);
                 parentCategory = ProductCategoryService.GetSingle(content.ParentId);
-                if(content.ParentId > 0 && parentCategory == null)
+                if (content.ParentId > 0 && parentCategory == null)
                 {
-                    throw new ArgumentException("ParentId "+ content.ParentId+" parent cannot be NULL");
+                    throw new ArgumentException("ParentId " + content.ParentId + " parent cannot be NULL");
                 }
             }
             ViewBag.ParentCategory = parentCategory;
@@ -171,7 +175,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
             ViewBag.Templates = GetTemplatesDropDown();
-            
+
             RemoveModelState();
             return View(productCategory);
         }

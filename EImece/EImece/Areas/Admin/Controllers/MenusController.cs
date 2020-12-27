@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
@@ -34,6 +33,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
             return View(menus);
         }
+
         [HttpGet]
         public ActionResult MoveMenuCategory()
         {
@@ -41,6 +41,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuCategoryTree = MenuService.BuildTree(null, CurrentLanguage);
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult MoveMenuCategory(MoveMenuCategory moveMenuCategory)
@@ -64,6 +65,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             return RedirectToAction("MoveMenuCategory");
         }
+
         private List<SelectListItem> GetMenuTreeDropDownList()
         {
             var resultListItem = new List<SelectListItem>();
@@ -76,6 +78,7 @@ namespace EImece.Areas.Admin.Controllers
 
             return resultListItem;
         }
+
         private void GetMenuTreeChildrenDropDownList(List<SelectListItem> resultListItem, MenuTreeModel menuTreeModel)
         {
             if (menuTreeModel.Childrens.IsNotEmpty())
@@ -87,6 +90,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
         }
+
         //
         // GET: /Menu/Create
 
@@ -96,7 +100,6 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
-
 
             if (id == 0)
             {
@@ -156,7 +159,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
             ViewBag.MenuLinks = GetMenuPages();
-          
+
             RemoveModelState();
             return View(menu);
         }
@@ -237,8 +240,6 @@ namespace EImece.Areas.Admin.Controllers
             //     menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
             // }
             menuLinks.Add(new SelectListItem() { Text = "Farkli Sayfa Temalari", Value = "pages-index" });
-
-           
 
             return menuLinks;
         }

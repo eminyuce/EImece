@@ -15,6 +15,10 @@ namespace EImece.Controllers
         public FileContentResult RobotsText()
         {
             var content = "";
+            if (AppConfig.IsSiteUnderConstruction)
+            {
+                return File(Encoding.UTF8.GetBytes(content), TextPlain);
+            }
             String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
 
             var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
@@ -22,7 +26,7 @@ namespace EImece.Controllers
             var fLink = builder.Uri;
             content += "User-agent:*: " + Environment.NewLine;
             content += "Sitemap: " + fLink + Environment.NewLine;
-         
+
             content += "Disallow: /Ajax/ " + Environment.NewLine;
             content += "Disallow: /Error/ " + Environment.NewLine;
             content += "Disallow: /Manage/ " + Environment.NewLine;

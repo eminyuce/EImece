@@ -39,8 +39,8 @@ namespace EImece.Areas.Admin.Controllers
                 item = MailTemplateService.GetSingle(id);
             }
 
-           // ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
-          //  ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject);
+            // ViewBag.RazorRenderResultBody = RazorEngineHelper.GetRenderOutput(item.Body); ;
+            //  ViewBag.RazorRenderResultSubject = RazorEngineHelper.GetRenderOutput(item.Subject);
             return View(item);
         }
 
@@ -91,7 +91,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-   
+
             RemoveModelState();
             return View(MailTemplate);
         }

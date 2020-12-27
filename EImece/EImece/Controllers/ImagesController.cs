@@ -6,15 +6,12 @@ using Ninject;
 using NLog;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI;
 
 namespace EImece.Controllers
 {
@@ -95,6 +92,7 @@ namespace EImece.Controllers
                 return new EmptyResult();
             }
         }
+
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public async Task<FileContentResult> DefaultImage(String imageSize)
@@ -136,7 +134,7 @@ namespace EImece.Controllers
             {
                 width = height;
             }
-         
+
             if (height == 0)
             {
                 height = width;
@@ -148,7 +146,6 @@ namespace EImece.Controllers
                 height = 400;
             }
 
-    
             return this.File(FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height), ContentType);
         }
 

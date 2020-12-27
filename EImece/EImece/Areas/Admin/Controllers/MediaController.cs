@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private FilesHelper filesHelper;
 
-        private Dictionary<string,string> CurrentSelectedModul
+        private Dictionary<string, string> CurrentSelectedModul
         {
             get
             {
@@ -40,7 +40,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index(int contentId, String mod, String imageType)
         {
             var currentSelectedModul = new Dictionary<string, string>();
-            currentSelectedModul.Add("contentId", contentId+"");
+            currentSelectedModul.Add("contentId", contentId + "");
             currentSelectedModul.Add("mod", mod);
             currentSelectedModul.Add("imageType", imageType);
             CurrentSelectedModul = currentSelectedModul;
@@ -163,10 +163,12 @@ namespace EImece.Areas.Admin.Controllers
             {
                 FileStorageService.DeleteFileStorage(id);
                 return RedirectToAction("Index",
-                    new { 
-                    contentId=CurrentSelectedModul["contentId"],
-                    mod = CurrentSelectedModul["mod"],  
-                    imageType = CurrentSelectedModul["imageType"] }
+                    new
+                    {
+                        contentId = CurrentSelectedModul["contentId"],
+                        mod = CurrentSelectedModul["mod"],
+                        imageType = CurrentSelectedModul["imageType"]
+                    }
                 );
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -8,8 +7,8 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Ninject;
 using NLog;
 using Resources;
@@ -40,8 +39,10 @@ namespace EImece.Areas.Customers.Controllers
 
         [Inject]
         public ISubscriberService SubsciberService { get; set; }
+
         [Inject]
         public ISettingService SettingService { get; set; }
+
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -62,7 +63,7 @@ namespace EImece.Areas.Customers.Controllers
         public ActionResult Index()
         {
             Customer customer = GetCustomer();
-          
+
             return View(customer);
         }
 

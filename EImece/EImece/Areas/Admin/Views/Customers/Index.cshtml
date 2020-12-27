@@ -69,29 +69,26 @@
     .Sanitized(false)
     .SetWidth(30)
     .RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", "Users", new { id = d.UserId }, new { @class = "btn btn-info btn-sm     " })
-</b>);
+    @<b>
+        @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", "Users", new { id = d.UserId }, new { @class = "btn btn-info btn-sm     " })
+    </b>);
 
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d => @<b>
-    @Html.ActionLink(AdminResource.CustomerComingOrders, "CustomerOrders", controllerName, new { id = d.UserId }, new { @class = "btn btn-success btn-sm     " })
-</b>);
+        @Html.ActionLink(AdminResource.CustomerComingOrders, "CustomerOrders", controllerName, new { id = d.UserId }, new { @class = "btn btn-success btn-sm     " })
+    </b>);
 
     columns.Add(o => o.Name)
     .Encoded(false)
     .Titled(AdminResource.Name)
     .RenderValueAs(o => String.Format("{0} {1}", o.Name, o.Surname));
 
-
     columns.Add(c => c.Orders.Count)
     .Titled(AdminResource.TotalOrderNumber)
     .Filterable(true);
-
-
 
     columns.Add(c => c.GsmNumber).Titled(AdminResource.PhoneNumber);
     columns.Add(c => c.Email).Titled(AdminResource.Email);
@@ -103,14 +100,12 @@ columns.Add()
     .Titled(AdminResource.Gender)
     .Filterable(true);
 
-
     columns.Add(o => o.RegistrationAddress)
 .Titled(AdminResource.CustomerRegistrationAddress)
 .Encoded(false).
     Sanitized(false).
     SetWidth(10).
     RenderValueAs(o => String.Format("<textarea readonly  style='height: 40px; background-color: transparent; width: 300px; margin: 0px;'>{0}</textarea>", o.RegistrationAddress));
-
 
     columns.Add(o => o.CreatedDate)
     .Titled(AdminResource.CustomerRegistrationDate)
@@ -127,11 +122,11 @@ columns.Add()
     var genderEnum = (GenderType)gender;
     if (GenderType.Man == genderEnum)
     {
-        <b>@AdminResource.ManGender</b>
+<b>@AdminResource.ManGender</b>
     }
     else if (GenderType.Woman == genderEnum)
     {
-            <b>@AdminResource.WomanGender</b>
+<b>@AdminResource.WomanGender</b>
         }
 
 }

@@ -27,7 +27,6 @@
 {
     ShoppingCartSession shoppingCart = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
 
-
     if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
     {
         return;
@@ -86,7 +85,6 @@
                             @shoppingCart.TotalPrice.CurrencySign()
                         </td>
                     }
-
                 </tr>
             </table>
         </div>

@@ -4,9 +4,8 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
-using System.Linq.Dynamic;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -37,7 +36,6 @@ namespace EImece.Areas.Admin.Controllers
             this.CustomerService = customerService;
         }
 
-
         public ActionResult Index(String search = "")
         {
             var model = CustomerService.GetCustomerServices(search);
@@ -63,11 +61,13 @@ namespace EImece.Areas.Admin.Controllers
             OrderService.DeleteByUserId(id);
             return RedirectToAction("Index");
         }
+
         public ActionResult CustomerBaskets()
         {
             var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
             return View(baskets);
         }
+
         public ActionResult DeleteAllShoppingCartSessions()
         {
             var baskets = ShoppingCartService.GetAll();

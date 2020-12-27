@@ -1,9 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
-using Ninject;
 using NLog;
 using Resources;
 using System;
@@ -19,7 +17,6 @@ namespace EImece.Areas.Admin.Controllers
     public class FaqController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
 
         public ActionResult Index(String search = "")
         {
@@ -71,7 +68,6 @@ namespace EImece.Areas.Admin.Controllers
                     faq.Lang = CurrentLanguage;
                     FaqService.SaveOrEditEntity(faq);
 
-                   
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -80,7 +76,6 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -89,7 +84,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
-            
+
             RemoveModelState();
             return View(faq);
         }

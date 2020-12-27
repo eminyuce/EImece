@@ -63,7 +63,7 @@ namespace EImece
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-              Redirect301();
+            Redirect301();
         }
 
         private void Redirect301()

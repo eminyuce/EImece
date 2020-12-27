@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
@@ -67,7 +66,6 @@ namespace EImece.Areas.Admin.Controllers
                     brand.Lang = CurrentLanguage;
                     brand = BrandService.SaveOrEditEntity(brand);
 
-
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -84,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
-           
+
             RemoveModelState();
 
             return View(brand);

@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
@@ -75,7 +74,6 @@ namespace EImece.Areas.Admin.Controllers
                         StoryService.SaveStoryTags(story.Id, tags);
                     }
 
-
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -93,7 +91,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
             ViewBag.Categories = StoryCategoryService.GetActiveBaseContents(null, 1);
-             
+
             RemoveModelState();
 
             return View(story);

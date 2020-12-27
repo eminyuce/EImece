@@ -1,0 +1,39 @@
+﻿@using Iyzipay.Model;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@using EImece.Domain.Models.FrontModels;
+@model PaymentResultViewModel
+@{
+    var item = Model;
+    var checkoutForm = Model.CheckoutForm;
+    ViewBag.Title = Resources.Resource.Payment;
+    string urlActionLink = Url.Action("index", "home");
+}
+
+@if (checkoutForm.PaymentStatus.Equals(EImece.Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+{
+    <!-- Page Content-->
+    <div class="container pb-5 mb-sm-4">
+        <div class="pt-5">
+            <div class="card py-3 mt-sm-3">
+                @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.Order.OrderNumber, urlActionLink))
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container pb-5 mb-sm-4">
+        <div class="pt-5">
+            <div class="card py-3 mt-sm-3">
+                <p>NOT SUCCESS</p>
+                @checkoutForm.ErrorMessage
+            </div>
+        </div>
+    </div>
+}
+

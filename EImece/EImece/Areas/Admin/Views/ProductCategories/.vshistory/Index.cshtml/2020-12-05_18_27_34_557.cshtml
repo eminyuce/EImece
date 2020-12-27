@@ -1,0 +1,192 @@
+﻿@model List<ProductCategory>
+@using EImece.Domain.Helpers;
+
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Models.FrontModels;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "ProductCategories";
+    var title = "ProductCategories";
+    var gridName = "ProductCategoriesGrid";
+    var contents = Model;
+    var baseList = contents.DownCasting();
+    var productCategoryLeaves = (List<ProductCategory>)ViewBag.ProductCategoryLeaves;
+
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+
+    List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
+
+}
+ 
+<h2>@AdminResource.ProductCategory</h2>
+<hr class="adminLine" />
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
+                    {"UrlPattern","/admin/productcategories/saveoredit/"}
+                  ,{"IsExcelButtonEnabled",true}})
+
+        <span id="treeClickContainer"></span>
+    </div>
+    <div class="col-md-9">
+
+        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+            {"controllerName",controllerName}
+                     ,{"StateTypes","State,ImageState,MainPage"}
+           ,{"orderingButton",true}
+           ,{"selectAll",true}
+           ,{"deleteAll",true}
+            ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
+        @Html.ActionLink(AdminResource.MoveProductCategory, "MoveProductCategory")
+        <div class="panel panel-primary">
+            @Html.Partial("pGridDropDown", baseList)
+            @Html.Grid(contents).Named(gridName).Columns(columns =>
+       {
+
+       columns.Add(o => o.Id, true);
+       columns.Add()
+   .Encoded(false)
+   .Sanitized(false)
+   .Css("gridButtons")
+   .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
+
+       columns.Add()
+                      .Encoded(false)
+                      .Sanitized(false)
+                      .SetWidth(30)
+                      .RenderValueAs(d =>
+                        @<b>
+                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white   " })
+                        </b>);
+
+if (UserRoleHelper.IsDeletedEnableRoles())
+{
+columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.SetWidth(30)
+.RenderValueAs(d =>
+                        @<b>
+                            @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
+                        </b>
+);
+}
+
+columns.Add(c => c.Name)
+.Titled(AdminResource.Name)
+.Filterable(true);
+
+columns.Add(c => c.DiscountPercantage)
+.Titled(AdminResource.Discount)
+.Encoded(false)
+.Filterable(true)
+.RenderValueAs(o => o.DiscountPercantage.HasValue && o.DiscountPercantage.Value > 0 ? string.Format("%{0} {1}", o.DiscountPercantage, Resource.Discount) : "");
+
+columns.Add(o => o.Position).Titled(AdminResource.Position)
+.Encoded(false).
+Sanitized(false).
+SetWidth(10).
+RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+
+columns.Add(o => o.UpdatedDate)
+.Titled(AdminResource.UpdatedDate)
+.Sortable(true)
+.Css("gridDateClass")
+.RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
+.SortInitialDirection(GridSortDirection.Descending);
+
+columns.Add(o => o.IsActive)
+.Titled(AdminResource.State)
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => GridImageActiveColumn(o, controllerName));
+
+columns.Add(r => r.ImageState)
+.Titled(AdminResource.Images)
+.Encoded(false)
+.Sanitized(false)
+.Css("smallGridColumn")
+.RenderValueAs(o => GridImageColumn(o, controllerName));
+
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+        </div>
+    </div>
+</div>
+@helper GridImageActiveColumn(ProductCategory o, String controllerName)
+{
+    <ul>
+        <li>
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
+                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
+        </li>
+        <li>
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
+                                                    o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
+        </li>
+    </ul>
+
+}
+
+@helper GridImageColumn(ProductCategory o, String controllerName)
+{
+    Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
+    if (IsMainImageExists)
+    {
+        <ul>
+            <li>
+                @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                        o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
+            </li>
+            <li>
+                @Html.Partial("pGridImageMainPage", o)
+            </li>
+        </ul>
+    }
+    else
+    {
+        <ul>
+            <li>
+                <b style="font-size:0.8em;">
+                    @AdminResource.NoImage
+                </b>
+            </li>
+        </ul>
+
+    }
+
+}
+
+@helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
+{
+    if (productCategoryLeaves.Any(r => r.Id == d.Id))
+    {
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+            { "ItemId", d.Id },
+            {"controllerName",controllerName},
+            { "DeleteIcon", "gridBtn  btn btn-danger btn-xs   glyphicon  glyphicon-remove-circle" },
+            { "ItemDescription", d.Name }
+   
+   });
+    }
+    else
+    {
+        @String.Format("No Delete")
+    }
+}

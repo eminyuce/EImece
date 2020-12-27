@@ -15,10 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -46,7 +43,6 @@ namespace EImece.Controllers
         [Inject]
         public IMenuService MenuService { get; set; }
 
-  
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
@@ -61,24 +57,24 @@ namespace EImece.Controllers
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle,CurrentLanguage).ToStr();
+            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle, CurrentLanguage).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
             ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords, CurrentLanguage).ToStr();
 
             return View(mainPageModel);
         }
- 
+
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
             var emailChecker = new EmailAddressAttribute();
-            if (subscriber == null 
+            if (subscriber == null
                 || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim())
                 || !emailChecker.IsValid(subscriber.Email.ToStr().Trim()))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            else  
+            else
             {
                 //validate the captcha through the session variable stored from GetCaptcha
                 subscriber.Name = subscriber.Email;
@@ -86,8 +82,6 @@ namespace EImece.Controllers
                 SubsciberService.SaveOrEditEntity(subscriber);
                 return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
             }
-           
-          
         }
 
         public ActionResult ThanksForSubscription(int? id)
@@ -111,7 +105,7 @@ namespace EImece.Controllers
             resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
             resultList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
             resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
-             
+
             return PartialView("_SocialMediaLinks", resultList);
         }
 
@@ -122,6 +116,7 @@ namespace EImece.Controllers
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
             return Content(GoogleAnalyticsTrackingScript);
         }
+
         [ChildActionOnly]
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WhatsAppCommunicationScript()
@@ -133,17 +128,21 @@ namespace EImece.Controllers
         {
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
             return PartialView("_Languages", listItems);
-        }   
+        }
+
         public ActionResult GetHtmlLangCode()
         {
             switch ((EImeceLanguage)CurrentLanguage)
             {
                 case EImeceLanguage.Turkish:
                     return Content("tr");
+
                 case EImeceLanguage.English:
                     return Content("en");
+
                 case EImeceLanguage.Russian:
                     return Content("ru");
+
                 case EImeceLanguage.German:
                     return Content("de");
             }
@@ -181,12 +180,14 @@ namespace EImece.Controllers
             var footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
+
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GetCompanyName()
         {
             string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
             return Content(companyName);
         }
+
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
@@ -195,7 +196,7 @@ namespace EImece.Controllers
             item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", item);
         }
-       
+
         [HttpPost]
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
@@ -288,6 +289,7 @@ namespace EImece.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
         public ActionResult Language_OLD(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
@@ -300,13 +302,11 @@ namespace EImece.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult OrderConfirmationEmail(int orderId=1)
+        public ActionResult OrderConfirmationEmail(int orderId = 1)
         {
             var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
             EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
             return View(emailTemplate.Item2);
         }
-
-    
     }
 }

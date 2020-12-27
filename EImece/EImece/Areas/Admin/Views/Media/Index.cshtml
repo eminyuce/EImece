@@ -221,7 +221,6 @@
     </div>
 }
 
-
 @helper GridToolsColumn(FileStorage d, String controllerName)
 {
 
@@ -231,7 +230,7 @@
         <span>
             @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
              { "ItemId", d.Id },
-             {"controllerName",controllerName},     
+             {"controllerName",controllerName},
             {"gridDeleteText","Fotoğrafı Sil"},
              { "ItemDescription", d.Name } })
         </span>

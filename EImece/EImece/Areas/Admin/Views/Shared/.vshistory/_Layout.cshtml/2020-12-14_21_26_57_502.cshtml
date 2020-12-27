@@ -1,0 +1,188 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Services.IServices;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@{
+
+    var GridSearchButtonText = AdminResource.GridSearchButtonText;
+    var SettingService = DependencyResolver.Current.GetService<ISettingService>();
+    string companyName = EImece.Domain.Constants.CompanyName;
+    var companyNameSetting = SettingService.GetSettingByKey(companyName).ToStr();
+    var userName = User.Identity.GetUserName();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@companyNameSetting Admin Panel </title>
+
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/adminScripts")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/admincss")
+    @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("Styles", false)
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script src="~/MVCGridHandler.axd/script.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+
+
+</head>
+<body class="fullscreen-container">
+
+    <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
+
+    <nav class="navbar navbar-default" id="nav-1">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <p class="navbar-text" style="font-weight:bolder;">@String.Format("{0} Yönetim Paneli", companyNameSetting)</p>
+
+                <ul class="nav navbar-nav">
+                    <li>
+                        @Html.ActionLink(AdminResource.Hello + " " + userName + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @Html.Action("Languages", "Dashboard")
+                    <li>
+                        <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
+                            @AdminResource.Refresh <span class="glyphicon glyphicon-refresh"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })">
+                            @AdminResource.AdminHome
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/" target="_blank">
+                            @AdminResource.WebSite <span class="glyphicon glyphicon-globe"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
+                        @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                        @Html.AntiForgeryToken()
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-default" id="nav-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-2">
+
+            <p class="navbar-text" style="font-weight:bold;">
+                @String.Format("{0}", DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture))
+            </p>
+
+            <ul class="nav navbar-nav pull-right">
+                <li>    @Html.ActionLink(AdminResource.Customers, "Index", "Customers", new { area = "admin" }, null)   </li>
+                <li>@Html.ActionLink(AdminResource.Menus, "Index", "Menus", new { area = "admin" }, null)</li>
+                <li>@Html.ActionLink(AdminResource.MainPageImages, "Index", "MainPageImages", new { area = "admin" }, null)</li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Products <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink(AdminResource.Products, "Index", "Products", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.ProductCategories, "Index", "ProductCategories", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.ProductDynamicTemplates, "Index", "Templates", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.ProductSpecTemplateItemList, "Index", "Lists", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.Brands, "Index", "Brands", new { area = "admin" }, null)</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Tags <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink(AdminResource.Tags, "Index", "Tags", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.TagCategories, "Index", "TagCategories", new { area = "admin" }, null)</li>
+                    </ul>
+                </li>
+
+                <li style="display:none;" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Stories <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink(AdminResource.Stories, "Index", "Stories", new { area = "admin" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.StoryCategories, "Index", "StoryCategories", new { area = "admin" }, null)</li>
+
+                    </ul>
+                </li>
+
+
+                <li>@Html.ActionLink(AdminResource.Faq, "Index", "Faq", new { area = "admin" }, null)</li>
+                <li>@Html.ActionLink(AdminResource.Subscribers, "Index", "Subscribers", new { area = "admin" }, null)</li>
+
+                @if (UserRoleHelper.IsAdminManagementRoles())
+                {
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+
+                            <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.WebSiteLogo, "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.SystemSettings, "SystemSettings", "AdminSettings", new { area = "admin" }, null)</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.UsersManagement <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>      @Html.ActionLink(AdminResource.UsersManagement, "Index", "Users", new { area = "admin" }, null) </li>
+
+                            <li>    @Html.ActionLink(AdminResource.ChangePassword, "changepassword", "users", new { area = "admin" }, null)   </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setlanguage(selectedLanguage) {
+            window.location.href = "/admin/dashboard/setlanguage/" + selectedLanguage;
+        }
+    </script>
+
+</body>
+</html>

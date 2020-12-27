@@ -6,7 +6,6 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories;
-using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,9 @@ namespace EImece.Areas.Admin.Controllers
     {
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
-        AppLogRepository AppLogRepository { get; set; }
+
+        private AppLogRepository AppLogRepository { get; set; }
+
         public AjaxController(AppLogRepository AppLogRepository)
         {
             this.AppLogRepository = AppLogRepository;
@@ -106,6 +107,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+
         [DeleteAuthorize()]
         public JsonResult ChangedOrderStatus(int orderId, string orderStatus)
         {
@@ -115,6 +117,7 @@ namespace EImece.Areas.Admin.Controllers
             OrderService.SaveOrEditEntity(order);
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteTagCategoriesGridItem(List<String> values)
@@ -136,6 +139,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteProductCommentGridItem(List<String> values)
@@ -146,7 +150,6 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-       
 
         [HttpPost]
         [DeleteAuthorize()]
@@ -204,7 +207,7 @@ namespace EImece.Areas.Admin.Controllers
             }).ConfigureAwait(true);
         }
 
-     [HttpPost]
+        [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteAppLogGridItem(List<String> values)
         {
@@ -214,6 +217,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteProductGridItem(List<String> values)
@@ -526,7 +530,5 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(html, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-
-     
     }
 }

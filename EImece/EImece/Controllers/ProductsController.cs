@@ -9,7 +9,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -19,7 +18,6 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-        
         private readonly IProductCommentService productCommentService;
 
         [Inject]
@@ -65,7 +63,6 @@ namespace EImece.Controllers
 
             return View(product);
         }
-    
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         [Route(Constants.ProductTagPrefix)]
@@ -82,6 +79,7 @@ namespace EImece.Controllers
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
         }
+
         [Route(Constants.SearchProductPrefix)]
         public ActionResult SearchProducts(String search, int page = 1, int sorting = 0)
         {

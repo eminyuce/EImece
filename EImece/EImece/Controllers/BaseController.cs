@@ -17,7 +17,9 @@ namespace EImece.Controllers
     {
         [Inject]
         public ISettingService SettingService { get; set; }
+
         private static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
+
         public void CreateLanguageCookie_OLD(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
@@ -29,6 +31,7 @@ namespace EImece.Controllers
             cultureCookie.Expires = DateTime.Now.AddDays(1);
             Response.Cookies.Add(cultureCookie);
         }
+
         public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
@@ -36,11 +39,12 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             Session[Constants.CultureCookieName] = ((int)selectedLanguage) + "";
         }
+
         protected int CurrentLanguage
         {
             get
             {
-                var cultureCookie =Session[Constants.CultureCookieName];
+                var cultureCookie = Session[Constants.CultureCookieName];
                 if (cultureCookie != null)
                 {
                     return Session[Constants.CultureCookieName].ToInt();
@@ -70,7 +74,7 @@ namespace EImece.Controllers
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            if (filterContext !=null && filterContext.Exception != null)
+            if (filterContext != null && filterContext.Exception != null)
             {
                 BaseLogger.Error("OnException:" + filterContext.Exception.ToFormattedString());
             }

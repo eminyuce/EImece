@@ -151,7 +151,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
-        
+
             ViewBag.Brands = GetBrandsSelectList();
             RemoveModelState();
             return View(product);

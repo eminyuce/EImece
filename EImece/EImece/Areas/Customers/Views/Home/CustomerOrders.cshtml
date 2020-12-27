@@ -65,10 +65,10 @@
                                     <a class="btn btn-pill btn-outline-success mb-2 mr-1" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@Resource.OrderSummary</a>
                                 </td>
                                 <td>
-                                    <h4>@createOrderStatus(o)</h4> 
+                                    <h4>@createOrderStatus(o)</h4>
                                 </td>
                                 <td>
-                                    @o.OrderNumber  
+                                    @o.OrderNumber
                                     @createOrderDetailModal(o)
                                 </td>
                                 <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>

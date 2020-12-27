@@ -26,10 +26,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-         
-
             var content = EntityFactory.GetBaseContentInstance<MainPageImage>();
-            
+
             if (id == 0)
             {
             }

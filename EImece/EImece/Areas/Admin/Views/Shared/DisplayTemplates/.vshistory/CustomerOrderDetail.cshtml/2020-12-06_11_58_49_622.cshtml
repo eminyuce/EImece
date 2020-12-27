@@ -1,0 +1,109 @@
+﻿@model EImece.Domain.Entities.Customer
+@using EImece.Domain.Helpers;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+
+
+<div class="row">
+    <div class="col-md-2">
+        @if (!String.IsNullOrEmpty(Model.FullName))
+        {
+            <b class="display-label">
+                @String.Format("{0} {1}", AdminResource.Name, AdminResource.LastName)
+            </b>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.FullName)
+            </div>
+        }
+    </div>
+    @if (!String.IsNullOrEmpty(Model.Email))
+    {
+        <div class="col-md-2">
+            <b class="display-label">
+                @Html.DisplayNameFor(model => model.Email)
+            </b>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Email)
+            </div>
+        </div>
+    }
+    @if (!String.IsNullOrEmpty(Model.GsmNumber))
+    {
+        <div class="col-md-2">
+            <b class="display-label">
+                @Html.DisplayNameFor(model => model.GsmNumber)
+            </b>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.GsmNumber)
+            </div>
+        </div>
+    }
+    <div class="col-md-1">
+        <b class="display-label">
+            @Html.DisplayNameFor(model => model.Gender)
+        </b>
+        <div class="display-field">
+            @GetGenderText(Model.Gender)
+        </div>
+    </div>
+    <div class="col-md-2">
+        <b class="display-label">
+            @AdminResource.CustomerRegistrationDate
+        </b>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </div>
+    </div>
+    @if (!String.IsNullOrEmpty(Model.Company))
+    {
+        <div class="col-md-2">
+            <b class="display-label">
+                @Html.DisplayNameFor(model => model.Company)
+            </b>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Company)
+            </div>
+        </div>
+    }
+</div>
+@if (!String.IsNullOrEmpty(Model.RegistrationAddress))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <b class="display-label">
+                @AdminResource.CustomerRegistrationAddress
+            </b>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.RegistrationAddress)
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.DisplayFor(model => model.IsPermissionGranted)
+        @AdminResource.IsPermissionGrantedDescription
+    </div>
+</div>
+
+ 
+
+@helper GetGenderText(int gender)
+{
+    var genderEnum = (GenderType)gender;
+    if (GenderType.Man == genderEnum)
+    {
+        <div>@AdminResource.ManGender</div>
+    }
+    else if (GenderType.Woman == genderEnum)
+    {
+        <div>@AdminResource.WomanGender</div>
+    }
+
+}

@@ -21,7 +21,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@companyNameSetting Admin Panel </title>
 
-
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
@@ -36,9 +35,6 @@
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
     <script src="~/MVCGridHandler.axd/script.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-
-
-
 </head>
 <body class="fullscreen-container">
 
@@ -136,10 +132,8 @@
                     <ul class="dropdown-menu">
                         <li>@Html.ActionLink(AdminResource.Stories, "Index", "Stories", new { area = "admin" }, null)</li>
                         <li>@Html.ActionLink(AdminResource.StoryCategories, "Index", "StoryCategories", new { area = "admin" }, null)</li>
-
                     </ul>
                 </li>
-
 
                 <li>@Html.ActionLink(AdminResource.Faq, "Index", "Faq", new { area = "admin" }, null)</li>
                 <li>@Html.ActionLink(AdminResource.Subscribers, "Index", "Subscribers", new { area = "admin" }, null)</li>
@@ -183,6 +177,5 @@
             window.location.href = "/admin/dashboard/setlanguage/" + selectedLanguage;
         }
     </script>
-
 </body>
 </html>

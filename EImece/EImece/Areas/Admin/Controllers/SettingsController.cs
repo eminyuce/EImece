@@ -21,7 +21,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult AddWebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            if(webSiteLogo == null)
+            if (webSiteLogo == null)
             {
                 webSiteLogo = new Setting();
                 webSiteLogo.SettingKey = Constants.WebSiteLogo;
@@ -29,6 +29,7 @@ namespace EImece.Areas.Admin.Controllers
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
             return RedirectToAction("WebSiteLogo", new { id });
         }
+
         public ActionResult WebSiteLogo(int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();

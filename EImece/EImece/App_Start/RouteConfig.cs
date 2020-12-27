@@ -65,7 +65,7 @@ namespace EImece
                       defaults: new { controller = "images", action = "getcaptcha" },
                       namespaces: new[] { "EImece.Controllers" }
                   );
-           
+
             routes.MapRoute(
                  name: "ImageResizing",
                  url: "images/{imageSize}/{id}",
@@ -75,7 +75,7 @@ namespace EImece
 
             routes.MapRoute(
                    name: "StoryTagPage",
-                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/"+Constants.StoryTagPrefix,
+                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/" + Constants.StoryTagPrefix,
                    defaults: new { controller = "stories", action = "Tag", id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
@@ -89,7 +89,7 @@ namespace EImece
 
             routes.MapRoute(
                    name: "StoryDetail",
-                   url: Constants.StoriesCategoriesControllerRoutingPrefix+"/{categoryName}/{id}",
+                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/{categoryName}/{id}",
                    defaults: new { controller = "stories", action = "Detail", id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
@@ -103,14 +103,14 @@ namespace EImece
 
             routes.MapRoute(
                   name: "ProductTagPage",
-                  url: Constants.ProductsControllerRoutingPrefix + "/"+ Constants.ProductTagPrefix,
+                  url: Constants.ProductsControllerRoutingPrefix + "/" + Constants.ProductTagPrefix,
                   defaults: new { controller = "Products", action = "Tag", id = UrlParameter.Optional },
                   namespaces: new[] { "EImece.Controllers" }
               );
 
             routes.MapRoute(
                  name: "SearchProducts",
-                 url: Constants.ProductsControllerRoutingPrefix + "/"+ Constants.SearchProductPrefix,
+                 url: Constants.ProductsControllerRoutingPrefix + "/" + Constants.SearchProductPrefix,
                  defaults: new { controller = "Products", action = "searchproducts" },
                  namespaces: new[] { "EImece.Controllers" }
              );

@@ -1,0 +1,88 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Services.IServices;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">@AdminResource.AdminPanelWelcome</h2>
+<hr class="adminLine" />
+<div class="container">
+    <div class="row justify-content-md-center">
+
+
+        @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "" }))
+        {
+            <div class="col-md-5 col-md-offset-3">
+                <input type="text" name="searchContent"
+                       value="@Request.QueryString["searchContent"].ToStr()"
+                       id="searchTxt"
+                       data-provide="typehead"
+                       title="Aramaya başlamak için en az 2 karakter yazmalısınız"
+                       class="form-control"
+                       placeholder="@AdminResource.AdminMainSeachPlaceHolder"
+                       autocomplete="off">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-search"></span></button>
+            </div>
+        }
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <br /><br />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="MainPage">
+                <div>
+                    <a href="@Url.Action("Index","MainPageImages")">
+                        <img src="~/Areas/Admin/Content/main/giris-kayan-gorseller.png" />
+                    </a>
+                    <a href="@Url.Action("Index","Menus")">
+                        <img src="~/Areas/Admin/Content/main/hakkimizda-iletisim-diger-menuler.png" />
+                    </a>
+                    <a href="@Url.Action("Index","Products")">
+                        <img src="~/Areas/Admin/Content/main/urun-ekle-yonet.png" />
+                    </a>
+                    <a href="@Url.Action("Index","ProductCategories")">
+                        <img src="~/Areas/Admin/Content/main/urun-kategorileri.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+
+        <div class="MainPage">
+        <div>
+            <a href="@Url.Action("Index","adminsettings")">
+                <img src="~/Areas/Admin/Content/main/yonetici-ayarlari.png" />
+            </a>
+            <a href="@Url.Action("Index","adminsettings")">
+                <img src="~/Areas/Admin/Content/main/kargo.png" />
+            </a>
+            <a href="@Url.Action("Index","customers")">
+                <img src="~/Areas/Admin/Content/main/uyeler.png" />
+            </a>
+            <a href="https://sandbox-merchant.iyzipay.com/auth/login/expire">
+                <img src="~/Areas/Admin/Content/main/iyzico.png" />
+            </a>
+        </div>
+    </div>
+</div>
+
+</div>

@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
@@ -62,7 +61,6 @@ namespace EImece.Areas.Admin.Controllers
                     TagCategoryService.SaveOrEditEntity(TagCategory);
                     int contentId = TagCategory.Id;
                     return RedirectToAction("Index");
-
                 }
                 else
                 {

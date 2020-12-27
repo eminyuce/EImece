@@ -1,0 +1,96 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+
+@model List<ProductCategoryTreeModel>
+@{
+    var productCategories = Model;
+}
+
+<!-- Hero slider + Promo list-->
+<section class="container px-3">
+    <div class="mt-4 pt-lg-2 mb-4 mb-md-5">
+        <div class="row">
+            <!-- Categories-->
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="border px-4 py-4">
+                    <ul class="list-unstyled mb-0">
+                        @for (int i = 0; i < productCategories.Count; i++)
+                        {
+                            var productCategory = productCategories[i].ProductCategory;
+                            var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 80, 80);
+                           
+                            var productCategoryLink = productCategory.ProductCategoryLink;
+                            <li @String.Format("{0}", i == productCategories.Count - 1 ? "" : "class='border-bottom'")>
+                                <a class="d-flex align-items-center nav-link-inline pb-3" href="@productCategoryLink"
+                                   data-toggle="popover" data-placement="right" data-trigger="hover" data-html="true"
+                                   data-content="&lt;img src=&quot;@productImgLink&quot; class=&quot;d-block mt-n2&quot; alt=&quot;Computers &amp; Accessories&quot;&gt;&lt;div class=&quot;text-center font-size-sm font-weight-semibold mt-n2 pb-3&quot;&gt;Starting from $149.80&lt;/div&gt;">
+                                <i class="text-primary opacity-60 mr-2 mt-1" data-feather="hard-drive"
+                                   style="width: 1.25rem; height: 1.25rem;">
+                                </i>
+                                <span> @productCategory.Name <i class="ml-1"
+                                    data-feather="chevron-right" style="width: 1rem; height: 1rem;"></i></span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <!-- Hero slider-->
+                <div class="bg-secondary bg-size-cover mb-grid-gutter" style="background-image: url(img/home/electronics/hero-main-bg.jpg);">
+                    <div class="owl-carousel trigger-carousel" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: false, &quot;loop&quot;: true, &quot;autoHeight&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5500 }">
+                        <div class="row align-items-center py-5">
+                            <div class="col-md-5">
+                                <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
+                                    <h3 class="mb-1">Google Home Smart Speaker</h3>
+                                    <h4 class="font-weight-light opacity-70 pb-3">starting at $129.00</h4><a class="btn btn-primary" href="shop-style2-ls.html">Shop now<i class="ml-2" data-feather="arrow-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-7"><img class="d-block mx-auto" src="img/home/electronics/hero-slide01.png" alt="Smart Speaker"></div>
+                        </div>
+                        <div class="row align-items-center py-5">
+                            <div class="col-md-5">
+                                <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
+                                    <h3 class="mb-1">Modern Powerful Vaio Laptop</h3>
+                                    <h4 class="font-weight-light opacity-70 pb-3">for only $1,459.99</h4><a class="btn btn-primary" href="shop-style2-ls.html">Shop now<i class="ml-2" data-feather="arrow-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-7"><img class="d-block mx-auto" src="img/home/electronics/hero-slide02.png" alt="Vaio Laptop"></div>
+                        </div>
+                        <div class="row align-items-center py-5">
+                            <div class="col-md-5">
+                                <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
+                                    <h3 class="mb-1">Wireless Beats Studio by Dr.Dre</h3>
+                                    <h4 class="font-weight-light opacity-70 pb-3">starting at $349.50</h4><a class="btn btn-primary" href="shop-style2-ls.html">Shop now<i class="ml-2" data-feather="arrow-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-7"><img class="d-block mx-auto" src="img/home/electronics/hero-slide03.png" alt="Wireless Beats"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Offers carousel-->
+                <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;565&quot;:{&quot;items&quot;:2},&quot;850&quot;:{&quot;items&quot;:3},&quot;992&quot;:{&quot;items&quot;:2},&quot;1200&quot;:{&quot;items&quot;:3}} }">
+                    <a class="media align-items-center bg-faded-info text-decoration-0" href="shop-style2-ls.html">
+                        <img class="mr-1" src="img/home/electronics/banner-sm01.png" width="125" alt="Banner">
+                        <div class="media-body py-2 pr-2">
+                            <h5 class="text-body mb-1"><span class="font-weight-light">Next Gen <strong>Video</strong> with <strong>360 Cam</strong></span></h5><span class="text-info font-size-sm font-weight-semibold">Shop now<i data-feather="chevron-right" style="width: 1rem; height: 1rem;"></i></span>
+                        </div>
+                    </a><a class="media align-items-center bg-faded-warning text-decoration-0" href="shop-style2-ls.html">
+                        <img class="mr-1" src="img/home/electronics/banner-sm02.png" width="125" alt="Banner">
+                        <div class="media-body py-2 pr-2">
+                            <h5 class="text-body mb-1"><span class="font-weight-light">Top Rated <strong>Gadgets</strong> are on <strong>Sale</strong></span></h5><span class="text-warning font-size-sm font-weight-semibold">Shop now<i data-feather="chevron-right" style="width: 1rem; height: 1rem;"></i></span>
+                        </div>
+                    </a><a class="media align-items-center bg-faded-success text-decoration-0" href="shop-style2-ls.html">
+                        <img class="mr-1" src="img/home/electronics/banner-sm03.png" width="125" alt="Banner">
+                        <div class="media-body py-2 pr-2">
+                            <h5 class="text-body mb-1"><span class="font-weight-light">Catch Big <strong>Deals</strong> on <strong>Earbuds</strong></span></h5><span class="text-success font-size-sm font-weight-semibold">Shop now<i data-feather="chevron-right" style="width: 1rem; height: 1rem;"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-4">
+</section>

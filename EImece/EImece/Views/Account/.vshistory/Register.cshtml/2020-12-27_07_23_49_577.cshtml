@@ -1,0 +1,100 @@
+﻿@model EImece.Models.RegisterViewModel
+@using Resources;
+@{
+    ViewBag.Title = "Register";
+}
+<div class="container pb-5 mb-sm-4">
+    <div class="row pt-5">
+        <div class="col-md-2 pt-sm-3">
+        </div>
+        <div class="col-md-8 pt-5 pt-sm-3">
+            <h2 class="h4 mb-1">@Resource.CustomerRegister</h2>
+            <p class="text-muted mb-4">Kayıt işlemi bir dakikadan az sürer ancak siparişleriniz üzerinde tam kontrol sahibi olmanızı sağlar.</p>
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+            <p class="text-danger  mb-4">  @AdminResource.PasswordInfoMessage</p>
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.ActionLink(Resource.AlreadyMembered, "Login", "Account", null, new { @class = "btn btn-pill  btn-sm btn-outline-info mb-2 mr-1" })
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FirstName)
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Captcha)
+                            <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "CustomerRegister" })" alt="Captcha" />
+                            @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @autocomplete = "false" })
+                            @Html.ValidationMessageFor(m => m.Captcha, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "custom-control-input" })
+                            @Html.LabelFor(m => m.IsPermissionGranted, new { @class = "custom-control-label" })
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <input type="submit" value="@Resource.CustomerRegister" class="btn btn-block btn-outline-warning" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+}

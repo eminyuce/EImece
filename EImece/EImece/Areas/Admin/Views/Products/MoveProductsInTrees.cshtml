@@ -94,7 +94,6 @@
             .RenderValueAs(o => String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'> </span>",
             o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
-
             columns.Add(o => o.MainPage)
             .Titled(AdminResource.MainPage)
            .Encoded(false).
@@ -116,8 +115,6 @@
             .SortInitialDirection(GridSortDirection.Descending);
 
             }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Selectable(false)
-     
-        
         </div>
     </div>
     <div class="col-md-3">

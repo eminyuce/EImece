@@ -1,0 +1,170 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using EImece.Domain.Helpers
+@using Resources;
+@model MainPageViewModel
+@{
+
+    var mainPageImages = Model.MainPageImages;
+    var mainPageProducts = Model.MainPageProducts;
+    var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
+    var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+    var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
+    var mainPageStories = Model.StoryIndexViewModel.Stories;
+    var campaignProducts = Model.CampaignProducts;
+    var latestProducts = Model.LatestProducts;
+    var latestStories = Model.LatestStories;
+
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+}
+
+<!-- Hero slider + Promo list-->
+<section class="container px-1">
+    <div class="mt-4">
+        <div class="row">
+            <!-- Categories-->
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="border px-4 py-2">
+                    <ul class="list-unstyled mb-0">
+                        @for (int i = 0; i < rootMainPageProductCategories.Count; i++)
+                        {
+                            @CreateMainPageCategory(rootMainPageProductCategories[i], Model.MainPageProductCategories, rootMainPageProductCategories.Count - 1 - i == 0)
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <!-- Hero slider-->
+                <div class="bg-secondary bg-size-cover mb-grid-gutter" style="background-image: url(/Content/img/hero-main-bg.jpg);">
+                    <div class="owl-carousel trigger-carousel" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: false, &quot;loop&quot;: true, &quot;autoHeight&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5500 }">
+                        @for (int i = 0; i < mainPageImages.Count; i++)
+                        {
+                            @CreateMainPageImage(mainPageImages[i])
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr>
+</section>
+
+@CreateProductSection(@Resource.FeaturedProducts, mainPageProducts)
+<!-- Promo banner-->
+<section class="container py-4 my-3 px-3">
+    <div class="bg-faded-info position-relative py-4">
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <span class="badge badge-pill badge-warning ml-5">Sınırlı Stok !</span>
+                <div class="pt-4 pl-4 pl-sm-5">
+                    <h3 class="font-family-body font-weight-light mb-2">İstenilen Başlık</h3>
+                    <h2 class="mb-2 pb-1">2021 Yeni Ürünlerimiz</h2>
+                    <h5 class="font-family-body font-weight-light mb-3">Bu alanda istenilen mini cümle<br>gerekiyorsa bu alanda alt cümle</h5>
+                    <a class="btn btn-primary" href="@bannerLink">Ürünleri İncele<i class="ml-2" data-feather="arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="col-md-7"><img class="mx-auto" src="~/media/images/offer.jpg" alt="Promo banner"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Product widgets-->
+<section class="container px-3 pt-2 pb-4 mb-md-2">
+    <div class="row">
+        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
+        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
+        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
+    </div>
+</section>
+
+@helper  CreateMainPageImage(MainPageImage mainPageImage)
+{
+    var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 0);
+    <div class="row align-items-center py-5">
+        <div class="col-md-5">
+            <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
+                <h3 class="mb-1">@mainPageImage.Name</h3>
+                <a class="btn btn-primary" href="@mainPageImage.Link">@Resource.ShopNow<i class="ml-2" data-feather="arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-7"><img class="d-block mx-auto" src="@imgLink" alt="@mainPageImage.Name"></div>
+    </div>
+}
+
+@helper  CreateProductSection(String title, List<Product> mainPageProducts)
+{
+    if (mainPageProducts.IsNotEmpty())
+    {
+        var featuredProductItem = mainPageProducts.First();
+        <!-- Featured products grid-->
+        <section class="container px-1 pt-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+                <h2 class="h3 mb-3">@Resource.FeaturedProducts</h2>
+                <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@featuredProductItem.ProductCategory.DetailPageUrl">
+                    @Resource.MoreInfo
+                    <i class="ml-1 mr-n2" data-feather="chevron-right">
+                    </i>
+                </a>
+            </div>
+            <div class="row no-gutters">
+                @for (int i = 0; i < mainPageProducts.Count; i++)
+                {
+                    var p = mainPageProducts[i];
+                    @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
+                }
+            </div>
+        </section>
+    }
+}
+
+@helper  CreateProductWidget(String title, List<Product> products)
+{
+    if (products.IsNotEmpty())
+    {
+        <div class="col-md-4 col-sm-6 mb-2 py-3">
+            <div class="widget widget-featured-entries">
+                <h3 class="widget-title font-size-lg">@title</h3>
+
+                @for (int i = 0; i < products.Count; i++)
+                {
+                    var p = products[i];
+                    @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+                }
+            </div>
+        </div>
+    }
+}
+
+@helper CreateMainPageCategory(ProductCategory productCategory, List<ProductCategory> productCategories, bool isLast)
+{
+    var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
+    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
+    var productCategoryLink = productCategory.ProductCategoryLink;
+
+    <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
+        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3" href="@productCategoryLink" data-toggle="popover" data-placement="right" data-trigger="hover"
+           data-html="true" data-content="@Html.Raw(CreateChildDataContent2(productCategory))">
+            <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
+            <span>
+                <b>@productCategory.Name</b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
+                </i>
+            </span>
+        </a>
+    </li>
+}
+
+@functions
+{
+    static string CreateChildDataContent2(ProductCategory productCategory)
+    {
+        var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
+        var productCategoryLink = productCategory.ProductCategoryLink;
+        var result = String.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{2}</div>", productImgLink,
+            productCategory.Name,
+            productCategory.Name);
+        return HttpUtility.HtmlEncode(result);
+    }
+}

@@ -14,7 +14,6 @@
     </div>
 }
 
-
 @if (re.LineAdjusted > 0)
 {
     <div class="display-label">
@@ -35,7 +34,6 @@
     </div>
 }
 
-
 @if (!String.IsNullOrEmpty(re.ErrorText))
 {
     <div class="display-label">
@@ -45,7 +43,6 @@
         @Html.DisplayFor(model => re.ErrorText)
     </div>
 }
-
 
 @if (!String.IsNullOrEmpty(re.ErrorNumber))
 {

@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
@@ -71,7 +70,6 @@ namespace EImece.Areas.Admin.Controllers
                     tag.Lang = CurrentLanguage;
                     TagService.SaveOrEditEntity(tag);
                     return RedirectToAction("Index");
-
                 }
             }
             catch (Exception ex)
