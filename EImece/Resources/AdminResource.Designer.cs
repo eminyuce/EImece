@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yönetici Sipariş Notu.
+        /// </summary>
+        public static string Admin_Order_Note {
+            get {
+                return ResourceManager.GetString("Admin Order Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seçilenleri silmeyi onayliyor musunuz?.
         /// </summary>
         public static string AdminDeleteConfirmMessage {
@@ -183,6 +192,15 @@ namespace Resources {
         public static string AdminMainSeachPlaceHolder {
             get {
                 return ResourceManager.GetString("AdminMainSeachPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yönetici Sipariş Notu.
+        /// </summary>
+        public static string AdminOrderNote {
+            get {
+                return ResourceManager.GetString("AdminOrderNote", resourceCulture);
             }
         }
         

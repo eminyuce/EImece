@@ -3,24 +3,37 @@
 }
 
 $(document).ready(function () {
-    bindSaveAdminOrderNote();
-    function bindSaveAdminOrderNote() {
-        $('[data-save-admin-order-note]').each(function () {
+
+    function bindCarouselImage() {
+        $('[data-carusel-file-id]').each(function () {
             $(this).off("click");
-            $(this).on("click", handleSaveAdminOrderNote);
+            $(this).on("click", handleCarouselImage);
         });
     }
-    function handleSaveAdminOrderNote(e) {
+    function handleCarouselImage(e) {
         var caller = e.target;
-        var orderId = $(caller).attr('data-save-admin-order-note');
-        var adminOrderNote = $('[data-textarea-admin-order-note=' + orderId + ']').val();
-      
-        var postData = JSON.stringify({ "orderId": orderId, "adminOrderNote": adminOrderNote });
-        ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
-            $('[data-result-admin-order-note=' + orderId + ']').text(data);
-        });
+        var fileId = $(caller).attr('data-carusel-file-id');
+        var isCarousel = $(caller).attr('data-carusel-file-isCarousel');
+        if (isCarousel === "true") {
+            isCarousel = "false";
+        } else if (isCarousel === "false") {
+            isCarousel = "true";
+        }
+        var postData = JSON.stringify({ "fileId": fileId, "isCarousel": isCarousel });
+        ajaxMethodCall(postData, "/Ajax/ChangeIsCarouselState", changeCarouselStateSuccess);
     }
- 
+    function changeCarouselStateSuccess(data) {
+
+        var mmm = $('a[data-carusel-file-id=' + data.fileId + ']');
+        mmm.attr('data-carusel-file-isCarousel', data.isCarousel);
+        mmm.removeClass("btn-success");
+        mmm.removeClass("btn-danger");
+        if (data.isCarousel) {
+            mmm.addClass("btn-success");
+        } else if (!data.isCarousel) {
+            mmm.addClass("btn-danger");
+        }
+    }
 
     bindChangeOrderStatus();
     function bindChangeOrderStatus() {

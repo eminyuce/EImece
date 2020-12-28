@@ -3,7 +3,7 @@
 }
 
 $(document).ready(function () {
-    bindSaveAdminOrderNote();
+
     function bindSaveAdminOrderNote() {
         $('[data-save-admin-order-note]').each(function () {
             $(this).off("click");
@@ -16,7 +16,7 @@ $(document).ready(function () {
         var adminOrderNote = $('[data-textarea-admin-order-note=' + orderId + ']').val();
       
         var postData = JSON.stringify({ "orderId": orderId, "adminOrderNote": adminOrderNote });
-        ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
+        ajaxMethodCall(postData, "/Ajax/SaveAdminOrderNote", function (data) {
             $('[data-result-admin-order-note=' + orderId + ']').text(data);
         });
     }

@@ -3,24 +3,6 @@
 }
 
 $(document).ready(function () {
-    bindSaveAdminOrderNote();
-    function bindSaveAdminOrderNote() {
-        $('[data-save-admin-order-note]').each(function () {
-            $(this).off("click");
-            $(this).on("click", handleSaveAdminOrderNote);
-        });
-    }
-    function handleSaveAdminOrderNote(e) {
-        var caller = e.target;
-        var orderId = $(caller).attr('data-save-admin-order-note');
-        var adminOrderNote = $('[data-textarea-admin-order-note=' + orderId + ']').val();
-      
-        var postData = JSON.stringify({ "orderId": orderId, "adminOrderNote": adminOrderNote });
-        ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
-            $('[data-result-admin-order-note=' + orderId + ']').text(data);
-        });
-    }
- 
 
     bindChangeOrderStatus();
     function bindChangeOrderStatus() {

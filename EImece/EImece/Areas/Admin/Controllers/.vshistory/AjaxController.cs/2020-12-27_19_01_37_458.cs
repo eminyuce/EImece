@@ -109,15 +109,6 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [DeleteAuthorize()]
-        public JsonResult SaveAdminOrderNote(int orderId, string adminOrderNote)
-        {
-            var order = OrderService.GetSingle(orderId);
-            order.AdminOrderNote = adminOrderNote;
-            OrderService.SaveOrEditEntity(order);
-            return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
-        }
-
-        [DeleteAuthorize()]
         public JsonResult ChangedOrderStatus(int orderId, string orderStatus)
         {
             EImeceOrderStatus? orderStatusEnum = EnumHelper.Parse<EImeceOrderStatus>(orderStatus);

@@ -52,7 +52,6 @@
                         <tr>
                             <th></th>
                             <th>@Resource.OrderStatus</th>
-                            <th>@Resource.AdminOrderNote</th>
                             <th>@Resource.OrderNumber</th>
                             <th>@Resource.DatePurchased</th>
                             <th>@Resource.Total</th>
@@ -61,23 +60,20 @@
                     <tbody>
                         @foreach (var o in paginatedOrders)
                         {
-                        <tr>
-                            <td>
-                                <a class="btn btn-pill btn-outline-success mb-2 mr-1" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@Resource.OrderSummary</a>
-                            </td>
-                            <td>
-                                <h4>@createOrderStatus(o)</h4>
-                            </td>
-                            <td>
-                                @o.AdminOrderNote
-                            </td>
-                            <td>
-                                @o.OrderNumber
-                                @createOrderDetailModal(o)
-                            </td>
-                            <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
-                            <td>@o.PaidPriceDecimal.CurrencySign()</td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <a class="btn btn-pill btn-outline-success mb-2 mr-1" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@Resource.OrderSummary</a>
+                                </td>
+                                <td>
+                                    <h4>@createOrderStatus(o)</h4>
+                                </td>
+                                <td>
+                                    @o.OrderNumber
+                                    @createOrderDetailModal(o)
+                                </td>
+                                <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
+                                <td>@o.PaidPriceDecimal.CurrencySign()</td>
+                            </tr>
                         }
                     </tbody>
                 </table>

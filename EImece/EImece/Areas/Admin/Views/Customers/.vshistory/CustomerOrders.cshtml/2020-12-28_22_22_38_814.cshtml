@@ -56,13 +56,6 @@
 .Sanitized(false)
 .RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
-    columns.Add(c => c.OrderStatus).
-Titled(AdminResource.OrderStatus).
-Sanitized(false).
-Sortable(true).
-Encoded(false).
-RenderValueAs(o => ChangeOrderStatus(o));
-
     columns.Add(c => c.AdminOrderNote).
 Titled(AdminResource.AdminOrderNote).
 Sanitized(false).
@@ -70,6 +63,27 @@ Sortable(true).
 Encoded(false).
 RenderValueAs(o => WriteAdminOrderNote(o));
 
+    columns.Add(c => c.OrderStatus).
+Titled(AdminResource.OrderStatus).
+Sanitized(false).
+Sortable(true).
+Encoded(false).
+RenderValueAs(o => ChangeOrderStatus(o));
+
+    columns.Add(o => o.PaymentId)
+   .Sanitized(false).
+   Sortable(true).
+   Encoded(false).
+   RenderValueAs(o => DisplayIyzicoInfo(o)).Titled(AdminResource.PaymentIyzicoNumber);
+
+
+
+    columns.Add(c => c.OrderStatus).
+    Titled(AdminResource.OrderStatus).
+    Sanitized(false).
+    Sortable(true).
+    Encoded(false).
+    RenderValueAs(o => ChangeOrderStatus(o));
 
     columns.Add(o => o.PaymentId)
    .Sanitized(false).
@@ -78,12 +92,11 @@ RenderValueAs(o => WriteAdminOrderNote(o));
    RenderValueAs(o => DisplayIyzicoInfo(o)).Titled(AdminResource.PaymentIyzicoNumber);
 
     columns.Add(c => c.Price).
-   Titled(AdminResource.Price).
-   Sanitized(false).
-   Sortable(true).
-   Encoded(false).
-   RenderValueAs(o => DisplayPriceColumn(o));
-
+    Titled(AdminResource.Price).
+    Sanitized(false).
+    Sortable(true).
+    Encoded(false).
+    RenderValueAs(o => DisplayPriceColumn(o));
 
     columns.Add(o => o.OrderComments).Titled(AdminResource.OrderComments)
  .Encoded(false).
@@ -106,6 +119,14 @@ RenderValueAs(o => WriteAdminOrderNote(o));
     <div>
         <b>@order.PaymentId</b>
     </div>
+}
+
+@helper WriteAdminOrderNote(Order order)
+{
+    <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-sm btn-dark" />
+    <span class="text-danger" data-result-admin-order-note="@order.Id"></span>
+    <textarea data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
+
 }
 
 @helper ChangeOrderStatus(Order order)
@@ -230,27 +251,3 @@ RenderValueAs(o => WriteAdminOrderNote(o));
     }
 
 }
-
-
-
-
-
-
-@helper WriteAdminOrderNote(Order order)
-{
-<div class="row">
-    <div class="col-md-12">
-        <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
-    </div>
-    <div class="col-md-12">
-        <span class="text-danger" data-result-admin-order-note="@order.Id"></span>
-    </div>
-    <div class="col-md-12"> 
-        <textarea class="form-control" rows="4" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
-    </div>
-</div>
-    
-
-
-}
-

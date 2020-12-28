@@ -1532,7 +1532,4 @@
   <data name="OrderStatus" xml:space="preserve">
     <value>Sipariş durumu</value>
   </data>
-  <data name="AdminOrderNote" xml:space="preserve">
-    <value>Yönetici Sipariş Notu</value>
-  </data>
 </root>

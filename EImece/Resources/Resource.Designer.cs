@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yönetici Sipariş Notu.
+        /// </summary>
+        public static string AdminOrderNote {
+            get {
+                return ResourceManager.GetString("AdminOrderNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yönetici Paneli Girişi.
         /// </summary>
         public static string AdminPanelLoginPage {

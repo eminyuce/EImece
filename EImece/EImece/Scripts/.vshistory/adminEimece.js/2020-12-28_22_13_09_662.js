@@ -3,7 +3,7 @@
 }
 
 $(document).ready(function () {
-    bindSaveAdminOrderNote();
+
     function bindSaveAdminOrderNote() {
         $('[data-save-admin-order-note]').each(function () {
             $(this).off("click");
