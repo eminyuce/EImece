@@ -1,0 +1,118 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+@model NavigationModel
+@{
+
+    var menus = Model.Menus;
+    var productCategories = Model.ProductCategories;
+}
+
+<!-- Third line: Navigation-->
+<div class="navbar navbar-expand-lg navbar-light bg-light px-0">
+    <div class="container px-3">
+        <!-- navbar collapse area-->
+        <div class="collapse navbar-collapse" id="menu">
+            <!-- Site menu-->
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown mega-dropdown dropdown-more">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">@Resources.Resource.ProductCategories<i data-feather="more-horizontal"></i></a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            @for (int i = 0; i < productCategories.Count; i++)
+                            {
+                                @CreateProductTree(productCategories[i])
+                            }
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="@Url.Action("Index","Home")">@Resources.Resource.HomePage</a>
+                </li>
+                @CreateMenuTree(Model)
+            </ul>
+        </div>
+    </div>
+</div>
+
+@helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
+{
+    var productCategory = categoryTreeModel.ProductCategory;
+    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
+    var productCategoryLink = productCategory.ProductCategoryLink;
+
+    <div class="dropdown-column">
+        <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(@productImgLink);">
+            <h3 class="h5 text-red text-shadow my-3"><a class="text-nowrap" href="@productCategory.DetailPageUrl">@productCategory.Name</a></h3>
+        </div>
+        @CreateProductChildrenTree(categoryTreeModel)
+    </div>
+
+}
+@helper CreateProductChildrenTree(ProductCategoryTreeModel categoryTreeModel)
+{
+
+    if (categoryTreeModel.Childrens.IsNotEmpty())
+    {
+        <div class="widget widget-links">
+            <ul>
+                @foreach (var childCategory in categoryTreeModel.Childrens)
+                {
+                    var productChildCategory = childCategory.ProductCategory;
+                    var productChildImgLink = productChildCategory.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
+                    var productChildCategoryLink = productChildCategory.ProductCategoryLink;
+
+                    <li>
+                        <a  class="text-nowrap" href="@productChildCategoryLink">
+                            <i class="widget-categories-indicator" data-feather="chevron-right"></i>
+                            <span class="font-size-sm">@productChildCategory.Name</span>
+                        </a>
+                        @CreateProductChildrenTree(childCategory)
+                    </li>
+
+                }
+            </ul>
+        </div>
+    }
+
+}
+@helper CreateMenuTree(NavigationModel navigationMenu)
+{
+    var menus = navigationMenu.Menus;
+    <ul class="navbar-nav">
+        @foreach (var menu in menus)
+        {
+            @CreateMenuChildrenTree(menu)
+        }
+    </ul>
+}
+@helper CreateMenuChildrenTree(MenuTreeModel menuTreeModel)
+{
+    var menu = menuTreeModel.Menu;
+    if (menuTreeModel.Childrens.IsNotEmpty())
+    {
+        <li class="dropdown @menu.IsPageActived">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">@menu.Name</a>
+            <ul class="dropdown-menu">
+                @foreach (var menuChildren in menuTreeModel.Childrens)
+                {
+                    var menuChild = menuChildren.Menu;
+                    var imgTag = menuChild.GetCroppedImageTag(50, 50);
+                <li>
+                    <a class="dropdown-item" href="@menuChild.DetailPageLink">
+                        <i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">   @menuChildren.Name</span>
+                    </a>
+                </li>
+                    <li class="dropdown-divider"></li>
+                }
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="dropdown @menu.IsPageActived">
+            <a class="nav-link " href="@menu.DetailPageLink">@menu.Name</a>
+        </li>
+    }
+}

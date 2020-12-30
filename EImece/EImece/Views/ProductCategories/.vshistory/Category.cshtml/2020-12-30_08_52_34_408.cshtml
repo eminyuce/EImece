@@ -56,15 +56,9 @@
         @if (!string.IsNullOrEmpty(category.ShortDescription))
         {
 
-            if (string.IsNullOrEmpty(category.Description))
-            {
-                <p class="text-muted mb-2">
-                    @Html.Raw(category.ShortDescription)
-                </p>
-            }
-            else
-            {
 
+            @if (!string.IsNullOrEmpty(category.Description))
+            {
                 <p class="text-muted mb-2">
                     @Html.Raw(category.ShortDescription)
                     <!-- Link with href -->
@@ -74,8 +68,16 @@
                 </p>
                 <!-- Collapse -->
                 <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
                         @Html.Raw(category.Description)
+                    </div>
                 </div>
+            }
+            else
+            {
+                <p class="text-muted mb-2">
+                    @Html.Raw(category.ShortDescription)
+                </p>
             }
 
         }

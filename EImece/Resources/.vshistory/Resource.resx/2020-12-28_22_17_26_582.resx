@@ -1535,7 +1535,4 @@
   <data name="AdminOrderNote" xml:space="preserve">
     <value>Yönetici Sipariş Notu</value>
   </data>
-  <data name="ClickHereForMoreDetails" xml:space="preserve">
-    <value>Devamı için tıklayınız</value>
-  </data>
 </root>

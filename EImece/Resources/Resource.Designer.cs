@@ -610,6 +610,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devamı için tıklayınız.
+        /// </summary>
+        public static string ClickHereForMoreDetails {
+            get {
+                return ResourceManager.GetString("ClickHereForMoreDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giriş yapmak için buraya tıklayın.
         /// </summary>
         public static string ClickHereToLogin {

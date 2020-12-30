@@ -55,29 +55,11 @@
         <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
         @if (!string.IsNullOrEmpty(category.ShortDescription))
         {
-
-            if (string.IsNullOrEmpty(category.Description))
-            {
-                <p class="text-muted mb-2">
-                    @Html.Raw(category.ShortDescription)
-                </p>
-            }
-            else
-            {
-
-                <p class="text-muted mb-2">
-                    @Html.Raw(category.ShortDescription)
-                    <!-- Link with href -->
-                    <a href="#collapseExample" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        @Resource.ClickHereForMoreDetails
-                    </a>
-                </p>
-                <!-- Collapse -->
-                <div class="collapse" id="collapseExample">
-                        @Html.Raw(category.Description)
-                </div>
-            }
-
+            <p class="text-muted mb-2">@Html.Raw(category.ShortDescription)</p>
+            <!-- Link with href -->
+            <a href="#collapseExample" class="btn btn-link mb-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                @Resource.ClickHereForMoreDetails
+            </a>
         }
 
         <hr class="mt-4">
