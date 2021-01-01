@@ -113,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             var order = OrderService.GetSingle(orderId);
             order.AdminOrderNote = adminOrderNote;
-            order.ShipmentCompanyName = shipmentCompanyName;
+            order.shipmentCompanyName = shipmentCompanyName;
             order.ShipmentTrackingNumber = shipmentTrackingNumber;
             OrderService.SaveOrEditEntity(order);
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);

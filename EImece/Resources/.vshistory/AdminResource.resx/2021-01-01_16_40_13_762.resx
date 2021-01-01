@@ -1113,10 +1113,7 @@
   <data name="AdminOrderNote" xml:space="preserve">
     <value>Yönetici Sipariş Notu</value>
   </data>
-  <data name="ShipmentCompanyName" xml:space="preserve">
-    <value>Kargo Firmasi ismi</value>
-  </data>
   <data name="ShipmentTrackingNumber" xml:space="preserve">
-    <value>Kargo Takip Numarası</value>
+    <value>Gönderi Takip Numarası</value>
   </data>
 </root>

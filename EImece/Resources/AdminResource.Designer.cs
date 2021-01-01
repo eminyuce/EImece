@@ -2491,6 +2491,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kargo Firmasi ismi.
+        /// </summary>
+        public static string ShipmentCompanyName {
+            get {
+                return ResourceManager.GetString("ShipmentCompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo Takip Numarası.
+        /// </summary>
+        public static string ShipmentTrackingNumber {
+            get {
+                return ResourceManager.GetString("ShipmentTrackingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teslimat adresi.
         /// </summary>
         public static string ShippingAddress {

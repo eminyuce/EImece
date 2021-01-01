@@ -1538,10 +1538,4 @@
   <data name="ClickHereForMoreDetails" xml:space="preserve">
     <value>Devamı için tıklayınız</value>
   </data>
-  <data name="ShipmentCompanyName" xml:space="preserve">
-    <value>Kargo Firmasi ismi</value>
-  </data>
-  <data name="ShipmentTrackingNumber" xml:space="preserve">
-    <value>Kargo Takip Numarası</value>
-  </data>
 </root>

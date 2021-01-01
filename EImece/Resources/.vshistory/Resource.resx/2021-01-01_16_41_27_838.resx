@@ -1544,4 +1544,7 @@
   <data name="ShipmentTrackingNumber" xml:space="preserve">
     <value>Kargo Takip Numarası</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

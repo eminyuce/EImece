@@ -109,12 +109,10 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [DeleteAuthorize()]
-        public JsonResult SaveAdminOrderNote(int orderId, string adminOrderNote, string shipmentCompanyName="", string shipmentTrackingNumber = "")
+        public JsonResult SaveAdminOrderNote(int orderId, string adminOrderNote, string shipmentCompanyName, string shipmentTrackingNumber)
         {
             var order = OrderService.GetSingle(orderId);
             order.AdminOrderNote = adminOrderNote;
-            order.ShipmentCompanyName = shipmentCompanyName;
-            order.ShipmentTrackingNumber = shipmentTrackingNumber;
             OrderService.SaveOrEditEntity(order);
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }

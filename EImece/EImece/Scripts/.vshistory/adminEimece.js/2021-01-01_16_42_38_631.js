@@ -15,14 +15,9 @@ $(document).ready(function () {
         var orderId = $(caller).attr('data-save-admin-order-note');
         var adminOrderNote = $('[data-textarea-admin-order-note=' + orderId + ']').val();
         var shipmentCompanyName = $('[data-order-shipment-company-name=' + orderId + ']').val();
-        var shipmentTrackingNumber = $('[data-order-shipment-tracking-number=' + orderId + ']').val();
+        var shipmentTrackingNUmber = $('[data-order-shipment-tracking-number=' + orderId + ']').val();
 
-        var postData = JSON.stringify({
-            "orderId": orderId,
-            "adminOrderNote": adminOrderNote,
-            "shipmentCompanyName": shipmentCompanyName,
-            "shipmentTrackingNumber": shipmentTrackingNumber
-        });
+        var postData = JSON.stringify({ "orderId": orderId, "adminOrderNote": adminOrderNote });
         ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
             $('[data-result-admin-order-note=' + orderId + ']').text(data);
         });
