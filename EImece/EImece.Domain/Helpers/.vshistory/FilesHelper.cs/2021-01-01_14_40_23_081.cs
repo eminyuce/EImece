@@ -568,7 +568,21 @@ namespace EImece.Domain.Helpers
                     }
                 }
 
-                //saveWebPformat(fullPath, byteArrayIn);
+                string webPFileName = Path.GetFileNameWithoutExtension(fileName) + ".webp";
+                    string webPImagePath = Path.Combine(StorageRoot, webPFileName);
+                // Then save in WebP format
+                using (FileStream webPFileStream = new FileStream(webPImagePath, FileMode.Create))
+                {
+                    ISupportedImageFormat lg_format = new JpegFormat { Quality = 100 };
+                    Size lg_size = new Size(1000, 0);
+                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: false))
+                    {
+                        imageFactory.Load(byteArrayIn)
+                                    .Format(lg_format)
+                                    .Quality(50)
+                                    .Save(webPFileStream);
+                    }
+                }
             }
             else
             {
@@ -577,23 +591,6 @@ namespace EImece.Domain.Helpers
             }
 
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
-        }
-
-        private void saveWebPformat(string fullPath, byte[] byteArrayIn)
-        {
-            string webPFileName = Path.GetFileNameWithoutExtension(fullPath) + ".webp";
-            string webPImagePath = Path.Combine(StorageRoot, webPFileName);
-            // Then save in WebP format
-            using (FileStream webPFileStream = new FileStream(webPImagePath, FileMode.Create))
-            {
-                ISupportedImageFormat lg_format = new WebPFormat { Quality = 100 };
-                using (ImageFactory imageFactory = new ImageFactory(preserveExifData: false))
-                {
-                    imageFactory.Load(byteArrayIn)
-                                .Format(lg_format)
-                                .Save(webPFileStream);
-                }
-            }
         }
 
         public SavedImage SaveImageByte(int width, int height, HttpPostedFileBase file)
@@ -652,11 +649,8 @@ namespace EImece.Domain.Helpers
                     result = new SavedImage(imageBytes, fileStorage.MimeType);
                     b.Dispose();
                     resizeBitmap.Dispose();
-                    result.UpdatedDated = fileStorage.UpdatedDate;
                 }
             }
-
-         
 
             return result;
         }

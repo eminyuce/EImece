@@ -568,7 +568,7 @@ namespace EImece.Domain.Helpers
                     }
                 }
 
-                //saveWebPformat(fullPath, byteArrayIn);
+                saveWebPformat(fullPath, byteArrayIn);
             }
             else
             {
@@ -652,11 +652,8 @@ namespace EImece.Domain.Helpers
                     result = new SavedImage(imageBytes, fileStorage.MimeType);
                     b.Dispose();
                     resizeBitmap.Dispose();
-                    result.UpdatedDated = fileStorage.UpdatedDate;
                 }
             }
-
-         
 
             return result;
         }

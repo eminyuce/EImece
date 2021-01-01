@@ -87,17 +87,7 @@ namespace EImece.Controllers
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
-                    Response.Cache.SetExpires(DateTime.Now.AddDays(365));
                     Response.Cache.SetCacheability(HttpCacheability.Public);
-                    Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
-                    Response.Cache.SetSlidingExpiration(true);
-                    Response.Cache.SetOmitVaryStar(true);
-                    Response.Headers.Set("Vary",
-                        string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
-                    if (imageByte.UpdatedDated != null)
-                    {
-                        Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
-                    }
                     return File(imageByte.ImageBytes, imageByte.ContentType);
                 }
                 else
@@ -165,6 +155,27 @@ namespace EImece.Controllers
             }
 
             return this.File(FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height), ContentType);
+        }
+
+        public ActionResult Show(int imageId)
+        {
+            var image = GetImage(imageId);
+
+            var resizedImageStream = new MemoryStream();
+            ImageBuilder.Current.Build(image.ImageBytes, resizedImageStream, new ResizeSettings
+            {
+                Width = 500,
+                Height = 500,
+                Mode = FitMode.Crop,
+                Anchor = System.Drawing.ContentAlignment.MiddleCenter,
+                Scale = ScaleMode.Both,
+            });
+
+            var resultStream = new MemoryStream();
+            WebPFormat.SaveToStream(resultStream, new SD.Bitmap(resizedImageStream));
+            resultStream.Seek(0, SeekOrigin.Begin);
+
+            return new FileContentResult(resultStream.ToArray(), "image/webp");
         }
 
         public ActionResult GetModifiedImage(String id, String imageSize)

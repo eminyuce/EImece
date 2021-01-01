@@ -568,7 +568,7 @@ namespace EImece.Domain.Helpers
                     }
                 }
 
-                //saveWebPformat(fullPath, byteArrayIn);
+                saveWebPformat(fullPath, byteArrayIn);
             }
             else
             {

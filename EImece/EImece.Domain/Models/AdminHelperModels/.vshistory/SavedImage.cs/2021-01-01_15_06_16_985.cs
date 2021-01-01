@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EImece.Domain.Models.AdminHelperModels
+﻿namespace EImece.Domain.Models.AdminHelperModels
 {
     public class SavedImage
     {
@@ -16,7 +14,7 @@ namespace EImece.Domain.Models.AdminHelperModels
         public int ThumpBitmapWidth { get; set; }
         public int ThumpBitmapHeight { get; set; }
         public byte[] ImageBytes { get; set; }
-        public DateTime UpdatedDated { get; set; }
+        public Date UpdatedDated { get; set; }
 
 
         public SavedImage()

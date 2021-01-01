@@ -38,7 +38,7 @@
     Model.ProductComment.ProductId = product.Id;
     Model.ProductComment.SeoUrl = product.GetSeoUrl();
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
-    var mainImageImgTag = product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageImgTag = product.GetCroppedImageUrl(productMainImageId, 1000, 0);
     var mainImageThbImgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 }

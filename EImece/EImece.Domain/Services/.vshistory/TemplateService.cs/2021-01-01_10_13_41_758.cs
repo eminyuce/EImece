@@ -48,12 +48,7 @@ namespace EImece.Domain.Services
                 resultList = GetAllActiveTemplates();
                 MemoryCacheProvider.Set(cacheKey, resultList, AppConfig.CacheMediumSeconds);
             }
-            var result = resultList.FirstOrDefault(r=>r.Id == id);
-            if (result == null)
-            {
-                Logger.Error("GetTemplate is null for id" + id);
-            }
-            return result;
+            return resultList.FirstOrDefault(r=>r.Id == id);
         }
     }
 }

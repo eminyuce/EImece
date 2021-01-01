@@ -41,19 +41,14 @@ namespace EImece.Domain.Services
             if (id == 0)
                 return new Template();
             var cacheKey = String.Format("Template-{0}", id);
-            List<Template> resultList = null;
+            List<Template> result = null;
 
-            if (!MemoryCacheProvider.Get(cacheKey, out resultList))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                resultList = GetAllActiveTemplates();
-                MemoryCacheProvider.Set(cacheKey, resultList, AppConfig.CacheMediumSeconds);
+                result = GetAllActiveTemplates();
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
-            var result = resultList.FirstOrDefault(r=>r.Id == id);
-            if (result == null)
-            {
-                Logger.Error("GetTemplate is null for id" + id);
-            }
-            return result;
+            return result.FirstOrDefault(r=>r.Id == id);
         }
     }
 }

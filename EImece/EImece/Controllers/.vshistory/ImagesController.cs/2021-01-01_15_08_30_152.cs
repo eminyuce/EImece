@@ -94,10 +94,7 @@ namespace EImece.Controllers
                     Response.Cache.SetOmitVaryStar(true);
                     Response.Headers.Set("Vary",
                         string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
-                    if (imageByte.UpdatedDated != null)
-                    {
-                        Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
-                    }
+                    Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
                     return File(imageByte.ImageBytes, imageByte.ContentType);
                 }
                 else

@@ -4,9 +4,6 @@ using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Services.IServices;
-using ImageProcessor;
-using ImageProcessor.Imaging.Formats;
-using ImageProcessor.Plugins.WebP.Imaging.Formats;
 using Ninject;
 using NLog;
 using System;
@@ -432,7 +429,7 @@ namespace EImece.Domain.Helpers
                 if (baseContent.MainImageId.HasValue)
                 {
                     String deleted = FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
-                
+                    Logger.Info("SaveFileFromHttpPostedFileBase DeleteFileStorage " + deleted);
                 }
                 SavedImage result = SaveImageByte(width, height, httpPostedFileBase);
                 FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
@@ -503,6 +500,8 @@ namespace EImece.Domain.Helpers
             var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
 
             String fullPath = Path.Combine(StorageRoot, newFileName);
+            System.Diagnostics.Debug.WriteLine(fullPath);
+            System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
             String partThumb1 = Path.Combine(StorageRoot, THUMBS);
             String candidatePathThb = Path.Combine(partThumb1, THB + newFileName);
 
@@ -567,8 +566,6 @@ namespace EImece.Domain.Helpers
                         thumbnail.Save(candidatePathThb, GetImageFormat(ext));
                     }
                 }
-
-                //saveWebPformat(fullPath, byteArrayIn);
             }
             else
             {
@@ -577,23 +574,6 @@ namespace EImece.Domain.Helpers
             }
 
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
-        }
-
-        private void saveWebPformat(string fullPath, byte[] byteArrayIn)
-        {
-            string webPFileName = Path.GetFileNameWithoutExtension(fullPath) + ".webp";
-            string webPImagePath = Path.Combine(StorageRoot, webPFileName);
-            // Then save in WebP format
-            using (FileStream webPFileStream = new FileStream(webPImagePath, FileMode.Create))
-            {
-                ISupportedImageFormat lg_format = new WebPFormat { Quality = 100 };
-                using (ImageFactory imageFactory = new ImageFactory(preserveExifData: false))
-                {
-                    imageFactory.Load(byteArrayIn)
-                                .Format(lg_format)
-                                .Save(webPFileStream);
-                }
-            }
         }
 
         public SavedImage SaveImageByte(int width, int height, HttpPostedFileBase file)
@@ -624,7 +604,7 @@ namespace EImece.Domain.Helpers
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
-            var cacheKey = string.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
+            var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
             if (result == null)
             {
@@ -637,14 +617,26 @@ namespace EImece.Domain.Helpers
        
         private SavedImage createSavedImage(int fileStorageId, int width, int height)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             // Stop.
+            stopwatch.Stop();
+            LoggerFileImage.Info("FileStorageService.GetFileStorage:"+ stopwatch.ElapsedMilliseconds);
+            stopwatch = new Stopwatch();
+            stopwatch.Start();
             SavedImage result = null;
             if (fileStorage != null)
             {
                 String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                 if (File.Exists(fullPath))
                 {
+                    stopwatch.Stop();
+                    LoggerFileImage.Info("File.Exists:" + stopwatch.ElapsedMilliseconds);
+
+                    stopwatch = new Stopwatch();
+                    stopwatch.Start();
+
                     var fullImagePath = Path.Combine(fullPath);
                     Bitmap b = new Bitmap(fullImagePath);
                     var resizeBitmap = ResizeImage(b, width, height);
@@ -652,11 +644,9 @@ namespace EImece.Domain.Helpers
                     result = new SavedImage(imageBytes, fileStorage.MimeType);
                     b.Dispose();
                     resizeBitmap.Dispose();
-                    result.UpdatedDated = fileStorage.UpdatedDate;
+                    LoggerFileImage.Info("SavedImage.Bitmap:" + stopwatch.ElapsedMilliseconds);
                 }
             }
-
-         
 
             return result;
         }
@@ -667,13 +657,13 @@ namespace EImece.Domain.Helpers
         {
             byte[] ReturnedThumbnail;
 
-            using (MemoryStream StartMemoryStream = new MemoryStream(), NewMemoryStream = new System.IO.MemoryStream())
+            using (System.IO.MemoryStream StartMemoryStream = new System.IO.MemoryStream(), NewMemoryStream = new System.IO.MemoryStream())
             {
                 // write the string to the stream
                 StartMemoryStream.Write(PassedImage, 0, PassedImage.Length);
 
                 // create the start Bitmap from the MemoryStream that contains the image
-                Bitmap startBitmap = new Bitmap(StartMemoryStream);
+                System.Drawing.Bitmap startBitmap = new System.Drawing.Bitmap(StartMemoryStream);
 
                 // set thumbnail height and width proportional to the original image.
                 int newHeight;
@@ -934,7 +924,7 @@ namespace EImece.Domain.Helpers
             ImageCodecInfo imageCodecInfo = this.GetEncoderInfo(format);
 
             // Create an Encoder object for the Quality parameter.
-            var encoder = System.Drawing.Imaging.Encoder.Quality;
+            System.Drawing.Imaging.Encoder encoder = System.Drawing.Imaging.Encoder.Quality;
 
             // Create an EncoderParameters object.
             EncoderParameters encoderParameters = new EncoderParameters(1);

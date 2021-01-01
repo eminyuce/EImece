@@ -4,7 +4,6 @@ using EImece.Domain.Services.IServices;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -41,17 +40,12 @@ namespace EImece.Domain.Services
             if (id == 0)
                 return new Template();
             var cacheKey = String.Format("Template-{0}", id);
-            List<Template> resultList = null;
+            Template result = null;
 
-            if (!MemoryCacheProvider.Get(cacheKey, out resultList))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                resultList = GetAllActiveTemplates();
-                MemoryCacheProvider.Set(cacheKey, resultList, AppConfig.CacheMediumSeconds);
-            }
-            var result = resultList.FirstOrDefault(r=>r.Id == id);
-            if (result == null)
-            {
-                Logger.Error("GetTemplate is null for id" + id);
+                result = TemplateRepository.GetSingle(id);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }

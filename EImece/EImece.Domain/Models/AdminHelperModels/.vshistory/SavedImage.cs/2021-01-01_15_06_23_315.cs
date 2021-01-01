@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EImece.Domain.Models.AdminHelperModels
+﻿namespace EImece.Domain.Models.AdminHelperModels
 {
     public class SavedImage
     {
