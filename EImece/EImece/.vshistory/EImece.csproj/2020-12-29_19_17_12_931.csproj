@@ -1614,7 +1614,6 @@
     <Content Include="Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\UnderConstruction\Index.cshtml" />
-    <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

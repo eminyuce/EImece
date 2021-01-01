@@ -236,7 +236,7 @@ namespace EImece.Domain.Repositories
             return result2.Distinct().ToList();
         }
 
-        public List<Product> GetActiveProducts(int? language)
+        public List<Product> GetActiveProducts(bool? isActive, int? language)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ProductTags);
@@ -246,7 +246,7 @@ namespace EImece.Domain.Repositories
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
-            return result.ToList();
+            return result;
         }
 
         public static ItemType ProductsItem

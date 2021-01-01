@@ -258,14 +258,14 @@ namespace EImece.Domain.Services
             }
         }
 
-        public List<Product> GetActiveProducts( int? language)
+        public IQueryable<Product> GetActiveProducts(bool? isActive, int? language)
         {
-            return ProductRepository.GetActiveProducts(language);
+            return ProductRepository.GetActiveProducts(isActive, language);
         }
 
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
-            var items = this.GetActiveProducts(rssParams.Language).Take(rssParams.Take).ToList();
+            var items = this.GetActiveProducts(true, rssParams.Language).Take(rssParams.Take).ToList();
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 

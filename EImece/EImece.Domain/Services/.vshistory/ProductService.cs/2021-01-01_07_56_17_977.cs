@@ -265,7 +265,7 @@ namespace EImece.Domain.Services
 
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
-            var items = this.GetActiveProducts(rssParams.Language).Take(rssParams.Take).ToList();
+            var items = this.GetActiveProducts(true, rssParams.Language).Take(rssParams.Take).ToList();
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 

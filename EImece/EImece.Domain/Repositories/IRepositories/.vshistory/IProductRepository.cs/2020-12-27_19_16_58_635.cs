@@ -24,7 +24,7 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Product> GetRelatedProducts(int[] tagIdList, int take, int lang, int excludedProductId);
 
-        List<Product> GetActiveProducts(int? language);
+        IQueryable<Product> GetActiveProducts(bool? isActive, int? language);
 
         ProductsSearchResult GetProductsSearchResult(
    string search,

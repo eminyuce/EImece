@@ -38,7 +38,7 @@ namespace EImece.Domain.Services.IServices
 
         void SaveProductSpecifications(List<ProductSpecification> specifications, int productId);
 
-        List<Product> GetActiveProducts(int? language);
+        List<Product> GetActiveProducts(bool? isActive, int? language);
 
         ProductsSearchResult GetProductsSearchResult(
          string search,

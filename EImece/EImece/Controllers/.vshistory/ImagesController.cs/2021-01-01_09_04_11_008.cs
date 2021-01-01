@@ -55,10 +55,10 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public async Task<ActionResult> Index(String id, String imageSize)
         {
-            return await Task.Run(() =>
+            return await Task.Run((() =>
             {
                 return GenerateImage(id, imageSize);
-            }).ConfigureAwait(true);
+            })).ConfigureAwait(true);
         }
 
         private ActionResult GenerateImage(string id, string imageSize)
