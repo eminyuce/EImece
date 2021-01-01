@@ -246,12 +246,15 @@ RenderValueAs(o => WriteAdminOrderNote(o));
         <span class="text-danger" data-result-admin-order-note="@order.Id"></span>
     </div>
     <div class="col-md-12">
-        <textarea class="form-control" placeholder="@Resource.AdminOrderNote" rows="4" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
+        <span class="text-info">@Resource.AdminOrderNote</span><br />
+        <textarea class="form-control" rows="4" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
     </div>
     <div class="col-md-12">
+        <span class="text-info">@Resource.ShipmentCompanyName</span><br />
         <input type="text" placeholder="@Resource.ShipmentCompanyName"  data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
     </div>
     <div class="col-md-12">
+        <span class="text-info">@Resource.ShipmentTrackingNumber</span><br />
         <input type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
     </div>
 </div>
