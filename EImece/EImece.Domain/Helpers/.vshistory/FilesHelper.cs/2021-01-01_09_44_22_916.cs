@@ -606,12 +606,20 @@ namespace EImece.Domain.Helpers
             SavedImage result = null;
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
-            if (result == null)
+            if (isRetrievedFromCache)
             {
-                LoggerFileImage.Info("cacheKey for GetResizedImage " + cacheKey);
-                result = createSavedImage(fileStorageId, width, height);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                if (result == null)
+                {
+                    LoggerFileImage.Info("cacheKey "+ cacheKey);
+                    result = createSavedImage(fileStorageId, width, height);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
             }
+            else
+            {
+                result = createSavedImage(fileStorageId, width, height);
+            }
+
             return result;
         }
        
@@ -633,10 +641,6 @@ namespace EImece.Domain.Helpers
                 {
                     stopwatch.Stop();
                     LoggerFileImage.Info("File.Exists:" + stopwatch.ElapsedMilliseconds);
-
-                    stopwatch = new Stopwatch();
-                    stopwatch.Start();
-
                     var fullImagePath = Path.Combine(fullPath);
                     Bitmap b = new Bitmap(fullImagePath);
                     var resizeBitmap = ResizeImage(b, width, height);
@@ -644,7 +648,6 @@ namespace EImece.Domain.Helpers
                     result = new SavedImage(imageBytes, fileStorage.MimeType);
                     b.Dispose();
                     resizeBitmap.Dispose();
-                    LoggerFileImage.Info("SavedImage.Bitmap:" + stopwatch.ElapsedMilliseconds);
                 }
             }
 

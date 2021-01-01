@@ -8,7 +8,6 @@ using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -28,7 +27,7 @@ namespace EImece.Domain.Helpers
 
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private ICacheProvider _memoryCacheProvider { get; set; }
 
         [Inject]
@@ -600,43 +599,37 @@ namespace EImece.Domain.Helpers
 
             return ImageFormat.Jpeg;
         }
-        private static readonly Logger LoggerFileImage = LogManager.GetCurrentClassLogger();
+
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
-            if (result == null)
+            if (isRetrievedFromCache)
             {
-                LoggerFileImage.Info("cacheKey for GetResizedImage " + cacheKey);
-                result = createSavedImage(fileStorageId, width, height);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                if (result == null)
+                {
+                    result = createSavedImage(fileStorageId, width, height);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
             }
+            else
+            {
+                result = createSavedImage(fileStorageId, width, height);
+            }
+
             return result;
         }
-       
+
         private SavedImage createSavedImage(int fileStorageId, int width, int height)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
-            // Stop.
-            stopwatch.Stop();
-            LoggerFileImage.Info("FileStorageService.GetFileStorage:"+ stopwatch.ElapsedMilliseconds);
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
             SavedImage result = null;
             if (fileStorage != null)
             {
                 String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                 if (File.Exists(fullPath))
                 {
-                    stopwatch.Stop();
-                    LoggerFileImage.Info("File.Exists:" + stopwatch.ElapsedMilliseconds);
-
-                    stopwatch = new Stopwatch();
-                    stopwatch.Start();
-
                     var fullImagePath = Path.Combine(fullPath);
                     Bitmap b = new Bitmap(fullImagePath);
                     var resizeBitmap = ResizeImage(b, width, height);
@@ -644,7 +637,6 @@ namespace EImece.Domain.Helpers
                     result = new SavedImage(imageBytes, fileStorage.MimeType);
                     b.Dispose();
                     resizeBitmap.Dispose();
-                    LoggerFileImage.Info("SavedImage.Bitmap:" + stopwatch.ElapsedMilliseconds);
                 }
             }
 

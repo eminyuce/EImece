@@ -606,12 +606,21 @@ namespace EImece.Domain.Helpers
             SavedImage result = null;
             var cacheKey = String.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
-            if (result == null)
+            if (isRetrievedFromCache)
             {
-                LoggerFileImage.Info("cacheKey for GetResizedImage " + cacheKey);
-                result = createSavedImage(fileStorageId, width, height);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                if (result == null)
+                {
+                    LoggerFileImage.Info("cacheKey "+ cacheKey);
+                    result = createSavedImage(fileStorageId, width, height);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
             }
+            else
+            {
+                LoggerFileImage.Info("NO cacheKey " + cacheKey);
+                result = createSavedImage(fileStorageId, width, height);
+            }
+
             return result;
         }
        
