@@ -235,12 +235,13 @@ RenderValueAs(o => WriteAdminOrderNote(o));
             <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
         </div>
         <div class="col-md-12">
+            <span class="text-danger" data-result-admin-order-note="@order.Id"></span>
             <span class="text-danger" data-changed-order-result="@order.Id"></span>
         </div>
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-3">
-                    <h5><b>@AdminResource.OrderStatus</b></h5>
+                    @AdminResource.OrderStatus
                 </div>
                 <div class="col-md-9">
                     @Html.DropDownList("orderStatusSelectList",

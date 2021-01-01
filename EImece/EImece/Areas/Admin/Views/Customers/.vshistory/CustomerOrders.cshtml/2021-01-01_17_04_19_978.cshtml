@@ -56,7 +56,12 @@
 .Sanitized(false)
 .RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
-    
+    columns.Add(c => c.OrderStatus).
+Titled(AdminResource.OrderStatus).
+Sanitized(false).
+Sortable(true).
+Encoded(false).
+RenderValueAs(o => ChangeOrderStatus(o));
 
     columns.Add(c => c.AdminOrderNote).
 Titled(AdminResource.AdminOrderNote).
@@ -84,7 +89,7 @@ RenderValueAs(o => WriteAdminOrderNote(o));
  .Encoded(false).
       Sanitized(false).
       SetWidth(10).
-      RenderValueAs(o => String.Format("<textarea readonly  style='height: 153px; background-color: transparent; width: 242px; margin: 0px;'>{0}</textarea>", o.OrderComments));
+      RenderValueAs(o => String.Format("<textarea readonly  style='height: 189px; background-color: transparent; width: 152px; margin: 0px;'>{0}</textarea>", o.OrderComments));
 
     columns.Add(o => o.CreatedDate)
 .Titled(AdminResource.OrderDatePurchased)
@@ -103,7 +108,15 @@ RenderValueAs(o => WriteAdminOrderNote(o));
     </div>
 }
 
- 
+@helper ChangeOrderStatus(Order order)
+{
+    var os = (EImeceOrderStatus)order.OrderStatus;
+    var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
+    @Html.DropDownList("orderStatusSelectList",
+    new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
+    new { @class = "form-control", @data_change_order_status = order.Id })
+    <span class="text-danger" data-changed-order-result="@order.Id"></span>
+}
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
@@ -225,41 +238,24 @@ RenderValueAs(o => WriteAdminOrderNote(o));
 
 @helper WriteAdminOrderNote(Order order)
 {
-
-    var os = (EImeceOrderStatus)order.OrderStatus;
-    var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
- 
-
-    <div class="row">
-        <div class="col-md-12">
-            <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
-        </div>
-        <div class="col-md-12">
-            <span class="text-danger" data-changed-order-result="@order.Id"></span>
-        </div>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-3">
-                    <h5><b>@AdminResource.OrderStatus</b></h5>
-                </div>
-                <div class="col-md-9">
-                    @Html.DropDownList("orderStatusSelectList",
-new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
-new { @class = "form-control", @data_change_order_status = order.Id })
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <textarea class="form-control" placeholder="@Resource.AdminOrderNote" rows="3" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
-        </div>
-        <div class="col-md-12">
-            <input class="form-control" type="text" placeholder="@Resource.ShipmentCompanyName" data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
-        </div>
-        <div class="col-md-12">
-            <input class="form-control" type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
     </div>
-
+    <div class="col-md-12">
+        <span class="text-danger" data-result-admin-order-note="@order.Id"></span>
+    </div>
+    <div class="col-md-12">
+        <textarea class="form-control" placeholder="@Resource.AdminOrderNote" rows="4" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
+    </div>
+    <div class="col-md-12">
+        <input type="text" placeholder="@Resource.ShipmentCompanyName"  data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
+    </div>
+    <div class="col-md-12">
+        <input type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
+    </div>
+</div>
+    
 
 
 }

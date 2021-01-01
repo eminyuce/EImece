@@ -24,7 +24,7 @@ $(document).ready(function () {
             "shipmentTrackingNumber": shipmentTrackingNumber
         });
         ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
-            $('[data-changed-order-result=' + orderId + ']').text(data);
+            $('[data-result-admin-order-note=' + orderId + ']').text(data);
         });
     }
  
