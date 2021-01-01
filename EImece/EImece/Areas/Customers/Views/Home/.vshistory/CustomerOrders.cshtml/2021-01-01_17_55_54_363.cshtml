@@ -69,11 +69,11 @@
                                 <h4>@createOrderStatus(o)</h4>
                             </td>
                             <td>
-                                @o.OrderNumber
-                                @createOrderDetailModal(o)
+                                @o.AdminOrderNote
                             </td>
                             <td>
-                                @o.ShipmentTrackingNumber
+                                @o.OrderNumber
+                                @createOrderDetailModal(o)
                             </td>
                             <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
                             <td>@o.PaidPriceDecimal.CurrencySign()</td>

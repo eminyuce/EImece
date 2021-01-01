@@ -52,8 +52,8 @@
                         <tr>
                             <th></th>
                             <th>@Resource.OrderStatus</th>
+                            <th>@Resource.AdminOrderNote</th>
                             <th>@Resource.OrderNumber</th>
-                            <th>@Resource.ShipmentTrackingNumber</th>
                             <th>@Resource.DatePurchased</th>
                             <th>@Resource.Total</th>
                         </tr>
@@ -69,11 +69,11 @@
                                 <h4>@createOrderStatus(o)</h4>
                             </td>
                             <td>
-                                @o.OrderNumber
-                                @createOrderDetailModal(o)
+                                @o.AdminOrderNote
                             </td>
                             <td>
-                                @o.ShipmentTrackingNumber
+                                @o.OrderNumber
+                                @createOrderDetailModal(o)
                             </td>
                             <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
                             <td>@o.PaidPriceDecimal.CurrencySign()</td>
