@@ -624,56 +624,37 @@ namespace EImece.Domain.Helpers
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
-            var cacheKeyFile = string.Format("GetOriginalImageBytes-{0}", fileStorageId);
-            var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
-            byte[] imageBytes = null;
-            if (fileStorage != null)
-            {
-                MemoryCacheProvider.Get(cacheKeyFile, out imageBytes);
-                if(imageBytes == null)
-                {
-                    String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
-                    if (File.Exists(fullPath))
-                    {
-                        var fullImagePath = Path.Combine(fullPath);
-                        imageBytes = File.ReadAllBytes(fullImagePath);
-                        MemoryCacheProvider.Set(cacheKeyFile, imageBytes, AppConfig.CacheLongSeconds);
-                    }
-                }
-            }
-
             var cacheKey = string.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
             Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
             if (result == null)
             {
                 LoggerFileImage.Info("cacheKey for GetResizedImage " + cacheKey);
-                result = createSavedImage(imageBytes, width, height, fileStorage.MimeType);
+                result = createSavedImage(fileStorageId, width, height);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
-            result.UpdatedDated = fileStorage.UpdatedDate;
             return result;
         }
        
-        private SavedImage createSavedImage(byte[] imageBytes, int width, int height, string mimeType)
+        private SavedImage createSavedImage(int fileStorageId, int width, int height)
         {
+            var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             // Stop.
             SavedImage result = null;
-            using (MemoryStream StartMemoryStream = new MemoryStream(), NewMemoryStream = new System.IO.MemoryStream())
+            if (fileStorage != null)
             {
-                // write the string to the stream
-                StartMemoryStream.Write(imageBytes, 0, imageBytes.Length);
-
-                // create the start Bitmap from the MemoryStream that contains the image
-                Bitmap startBitmap = new Bitmap(StartMemoryStream);
-                var resizeBitmap = ResizeImage(startBitmap, width, height);
-                byte[] resizedImageBytes = GetBitmapBytes(resizeBitmap);
-                result = new SavedImage(resizedImageBytes, mimeType);
-                startBitmap.Dispose();
-                resizeBitmap.Dispose();
+                String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
+                if (File.Exists(fullPath))
+                {
+                    var fullImagePath = Path.Combine(fullPath);
+                    Bitmap b = new Bitmap(fullImagePath);
+                    var resizeBitmap = ResizeImage(b, width, height);
+                    byte[] imageBytes = GetBitmapBytes(resizeBitmap);
+                    result = new SavedImage(imageBytes, fileStorage.MimeType);
+                    b.Dispose();
+                    resizeBitmap.Dispose();
+                    result.UpdatedDated = fileStorage.UpdatedDate;
+                }
             }
-            
-                 
-                   
 
          
 

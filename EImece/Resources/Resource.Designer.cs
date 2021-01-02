@@ -3406,7 +3406,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kargo Takip Numarası.
+        ///   Looks up a localized string similar to Kargo Takip No.
         /// </summary>
         public static string ShipmentTrackingNumber {
             get {

@@ -624,7 +624,7 @@ namespace EImece.Domain.Helpers
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
-            var cacheKeyFile = string.Format("GetOriginalImageBytes-{0}", fileStorageId);
+            var cacheKeyFile = string.Format("GetImageBytes-{0}", fileStorageId);
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             byte[] imageBytes = null;
             if (fileStorage != null)
@@ -647,7 +647,7 @@ namespace EImece.Domain.Helpers
             if (result == null)
             {
                 LoggerFileImage.Info("cacheKey for GetResizedImage " + cacheKey);
-                result = createSavedImage(imageBytes, width, height, fileStorage.MimeType);
+                result = createSavedImage(imageBytes, width, height);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             result.UpdatedDated = fileStorage.UpdatedDate;

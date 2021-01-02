@@ -122,14 +122,14 @@
 
 @helper createOrderDetailModal(Order order)
 {
-var os = (EImeceOrderStatus)order.OrderStatus;
+var os = (EImeceOrderStatus)o.OrderStatus;
 var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
     <!-- Order Details-->
     <div class="modal fade" id="@string.Format("order-details-{0}",order.OrderNumber)">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">@string.Format("{0} - {1} - {2}",Resource.OrderSummary,order.OrderNumber,orderStatusText)</h4>
+                    <h4 class="modal-title">@string.Format("{0}-{1}-{2}",Resource.OrderSummary,order.OrderNumber,orderStatusText)</h4>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body pb-0">

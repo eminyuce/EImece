@@ -1542,6 +1542,6 @@
     <value>Kargo Firmasi ismi</value>
   </data>
   <data name="ShipmentTrackingNumber" xml:space="preserve">
-    <value>Kargo Takip No</value>
+    <value>Kargo Takip Numarası</value>
   </data>
 </root>

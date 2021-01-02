@@ -624,7 +624,7 @@ namespace EImece.Domain.Helpers
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
-            var cacheKeyFile = string.Format("GetOriginalImageBytes-{0}", fileStorageId);
+            var cacheKeyFile = string.Format("GetImageBytes-{0}", fileStorageId);
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             byte[] imageBytes = null;
             if (fileStorage != null)

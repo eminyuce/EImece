@@ -122,7 +122,7 @@
 
 @helper createOrderDetailModal(Order order)
 {
-var os = (EImeceOrderStatus)order.OrderStatus;
+var os = (EImeceOrderStatus)o.OrderStatus;
 var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
     <!-- Order Details-->
     <div class="modal fade" id="@string.Format("order-details-{0}",order.OrderNumber)">
