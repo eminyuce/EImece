@@ -59,11 +59,22 @@ namespace EImece.Domain.Helpers
 
         public void InitFilesMediaFolder()
         {
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.FileUploadDeleteURL,            Constants.DeleteType,               AppConfig.StorageRoot,                Constants.UrlBase,                Constants.TempPath,                Constants.ServerMapPath)
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
             Init(Constants.DeleteURL, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
 
         public void InitFilesMediaFolder(String deleteUrl)
         {
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.FileUploadDeleteURL,            Constants.DeleteType,               AppConfig.StorageRoot,                Constants.UrlBase,                Constants.TempPath,                Constants.ServerMapPath)
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
             Init(deleteUrl, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
 
@@ -609,42 +620,40 @@ namespace EImece.Domain.Helpers
 
             return ImageFormat.Jpeg;
         }
+        private static readonly Logger LoggerFileImage = LogManager.GetCurrentClassLogger();
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
-            FileStorage fileStorage;
-            byte[] imageBytes = GetFileStorageFromCache(fileStorageId, out fileStorage);
-            if (imageBytes == null)
-            {
-                return null;
-            }
-            result = resizeImageBytesByWidthAndHeight(imageBytes, width, height, fileStorage.MimeType);
-            result.UpdatedDated = fileStorage.UpdatedDate;
-            return result;
-        }
-
-        public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
-        {
+            var cacheKeyFile = string.Format("GetOriginalImageBytes-{0}", fileStorageId);
+            var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             byte[] imageBytes = null;
-            var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}"; 
-            fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             if (fileStorage != null)
             {
                 MemoryCacheProvider.Get(cacheKeyFile, out imageBytes);
-                if (imageBytes == null)
+                if(imageBytes == null)
                 {
                     String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                     if (File.Exists(fullPath))
                     {
-                        imageBytes = File.ReadAllBytes(Path.Combine(fullPath));
+                        var fullImagePath = Path.Combine(fullPath);
+                        imageBytes = File.ReadAllBytes(fullImagePath);
                         MemoryCacheProvider.Set(cacheKeyFile, imageBytes, AppConfig.CacheLongSeconds);
                     }
                 }
-            }
-            return imageBytes;
-        }
 
-        private SavedImage resizeImageBytesByWidthAndHeight(byte[] imageBytes, int width, int height, string mimeType)
+                result = createSavedImage(imageBytes, width, height, fileStorage.MimeType);
+                result.UpdatedDated = fileStorage.UpdatedDate;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+            
+
+        }
+       
+        private SavedImage createSavedImage(byte[] imageBytes, int width, int height, string mimeType)
         {
             // Stop.
             SavedImage result = null;
@@ -661,6 +670,11 @@ namespace EImece.Domain.Helpers
                 startBitmap.Dispose();
                 resizeBitmap.Dispose();
             }
+            
+                 
+                   
+
+         
 
             return result;
         }
@@ -995,7 +1009,7 @@ namespace EImece.Domain.Helpers
             int emSize = 120;
             using (var mem = new MemoryStream())
             using (var bmp = new Bitmap(width, height))
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = Graphics.FromImage((Image)bmp))
             {
                 gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                 gfx.SmoothingMode = SmoothingMode.AntiAlias;

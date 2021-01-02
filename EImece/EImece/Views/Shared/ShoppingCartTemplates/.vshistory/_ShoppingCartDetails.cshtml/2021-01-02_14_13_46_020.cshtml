@@ -42,7 +42,7 @@
                             }
 
                 <a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a>
-                <span>@item.Quantity x @product.Price.CurrencySign()</span>
+                <span>@item.quantity x @product.Price.CurrencySign()</span>
                 <div class="clearfix"></div>
             </li>
         </ul>

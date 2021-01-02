@@ -164,8 +164,7 @@ namespace EImece.Controllers
                 height = 400;
             }
 
-            byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
-            return this.File(fileContents, ContentType);
+            return this.File(FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height), ContentType);
         }
 
         public ActionResult GetModifiedImage(String id, String imageSize)

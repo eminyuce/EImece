@@ -59,11 +59,22 @@ namespace EImece.Domain.Helpers
 
         public void InitFilesMediaFolder()
         {
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.FileUploadDeleteURL,            Constants.DeleteType,               AppConfig.StorageRoot,                Constants.UrlBase,                Constants.TempPath,                Constants.ServerMapPath)
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
             Init(Constants.DeleteURL, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
 
         public void InitFilesMediaFolder(String deleteUrl)
         {
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.FileUploadDeleteURL,            Constants.DeleteType,               AppConfig.StorageRoot,                Constants.UrlBase,                Constants.TempPath,                Constants.ServerMapPath)
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
+            //Init(Constants.DeleteURL, Constants.DeleteType,AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
             Init(deleteUrl, Constants.DeleteType, AppConfig.StorageRoot, Constants.UrlBase, Constants.TempPath, Constants.ServerMapPath);
         }
 
@@ -623,7 +634,7 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
-        public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
+        private byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
         {
             byte[] imageBytes = null;
             var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}"; 

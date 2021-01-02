@@ -1281,6 +1281,7 @@
     <Content Include="Areas\Admin\Views\Dashboard\SearchContent.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pSaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\_pProductCategoryTree.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductTags.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductFiles.cshtml" />
     <Content Include="Areas\Admin\Views\Media\Index.cshtml" />

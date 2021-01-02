@@ -26,8 +26,8 @@
             foreach (var item in products)
             {
 
-                var product = item.Product;
-                double totalPricePerItem = product.Price * item.Quantity;
+                var product = item.product;
+                double totalPricePerItem = product.Price * item.quantity;
 
                 <!-- Item #1 -->
         <tr>
@@ -41,7 +41,7 @@
             </td>
             <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
             <td>@product.Price.CurrencySign()</td>
-            <td class="qty-checkout">@item.Quantity</td>
+            <td class="qty-checkout">@item.quantity</td>
             <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
         </tr>
 

@@ -1,5 +1,4 @@
-﻿using EImece.Domain.Caching;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
@@ -27,6 +26,23 @@ namespace EImece.Domain.Services
         public IStoryService StoryService { get; set; }
 
         public IFileStorageRepository FileStorageRepository { get; set; }
+
+        private ICacheProvider _memoryCacheProvider { get; set; }
+
+        [Inject]
+        public ICacheProvider MemoryCacheProvider
+        {
+            get
+            {
+                _memoryCacheProvider.CacheDuration = AppConfig.GetConfigInt("CacheLongSeconds");
+                return _memoryCacheProvider;
+            }
+            set
+            {
+                _memoryCacheProvider = value;
+            }
+        }
+
 
         public FileStorageService(IFileStorageRepository repository) : base(repository)
         {
@@ -283,5 +299,25 @@ namespace EImece.Domain.Services
             return "error";
         }
     }
- 
+    public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
+    {
+        byte[] imageBytes = null;
+        var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}";
+        fileStorage = GetFileStorage(fileStorageId);
+        if (fileStorage != null)
+        {
+            MemoryCacheProvider.Get(cacheKeyFile, out imageBytes);
+            if (imageBytes == null)
+            {
+                String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
+                if (File.Exists(fullPath))
+                {
+                    var fullImagePath = Path.Combine(fullPath);
+                    imageBytes = File.ReadAllBytes(fullImagePath);
+                    MemoryCacheProvider.Set(cacheKeyFile, imageBytes, AppConfig.CacheLongSeconds);
+                }
+            }
+        }
+        return imageBytes;
+    }
 }

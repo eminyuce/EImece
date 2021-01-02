@@ -15,7 +15,7 @@
     var storyFiles = story.StoryFiles.ToList();
     var storyTags = story.StoryTags.Select(r => r.Tag).ToList();
     var storyCategory = story.StoryCategory;
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 
     var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
     var RelatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(8).ToList();
@@ -71,8 +71,8 @@
                 </figure>
 
                 <section class="date">
-                    <span class="day">@story.CreatedDate.Day</span>
-                    <span class="month">@story.CreatedDate.ToString("MMM")</span>
+                    <span class="day">@story.CreatedDate.Value.Day</span>
+                    <span class="month">@story.CreatedDate.Value.ToString("MMM")</span>
                 </section>
 
                 <section class="post-content">

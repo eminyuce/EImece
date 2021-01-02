@@ -145,7 +145,7 @@ namespace EImece.Controllers
                 imageSize = "w150h150";
             }
 
-            width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
+            width = GetWidthByRegex(imageSize);
             height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
 
             if (width == 0 && height > 0)
@@ -166,6 +166,11 @@ namespace EImece.Controllers
 
             byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
             return this.File(fileContents, ContentType);
+        }
+
+        private static int GetWidthByRegex(string imageSize)
+        {
+            return Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
         }
 
         public ActionResult GetModifiedImage(String id, String imageSize)

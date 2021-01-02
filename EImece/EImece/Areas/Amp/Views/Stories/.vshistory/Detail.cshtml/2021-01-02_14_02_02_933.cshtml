@@ -15,7 +15,7 @@
     var storyFiles = story.StoryFiles.ToList();
     var storyTags = story.StoryTags.Select(r => r.Tag).ToList();
     var storyCategory = story.StoryCategory;
-    var isUserAuthenticated = User.Identity.IsAuthenticated;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && Settings.IsEditLinkEnable;
 
     var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
     var RelatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(8).ToList();

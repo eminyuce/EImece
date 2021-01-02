@@ -1,5 +1,4 @@
-﻿using EImece.Domain.Caching;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
@@ -283,5 +282,25 @@ namespace EImece.Domain.Services
             return "error";
         }
     }
- 
+    private byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
+    {
+        byte[] imageBytes = null;
+        var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}";
+        fileStorage = FileStorageService.GetFileStorage(fileStorageId);
+        if (fileStorage != null)
+        {
+            MemoryCacheProvider.Get(cacheKeyFile, out imageBytes);
+            if (imageBytes == null)
+            {
+                String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
+                if (File.Exists(fullPath))
+                {
+                    var fullImagePath = Path.Combine(fullPath);
+                    imageBytes = File.ReadAllBytes(fullImagePath);
+                    MemoryCacheProvider.Set(cacheKeyFile, imageBytes, AppConfig.CacheLongSeconds);
+                }
+            }
+        }
+        return imageBytes;
+    }
 }
