@@ -1,0 +1,297 @@
+﻿@model EImece.Domain.Entities.Product
+@using EImece.Domain.Entities;
+@using EImece.Domain.Models.Enums;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+@{
+    var saveButtonText = AdminResource.SaveButtonText;
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    ViewBag.Title = "SaveOrEdit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var productCategory = (ProductCategory)ViewBag.ProductCategory;
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var PleaseSelectYourProductCategoryFromTree = AdminResource.PleaseSelectYourProductCategoryFromTree;
+    Product product = (Product)Model;
+    List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
+    var brands = (List<SelectListItem>)ViewBag.Brands;
+    var controllerName = "Products";
+}
+<h2>@AdminResource.ProductPageTitle</h2>
+<hr class="adminLine" />
+
+<div class="row">
+
+    <div class="col-md-3">
+        @if (ProductCategoryTree.IsNotEmpty())
+        {
+            @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
+                           {"UrlPattern",""}
+                 ,{"IsExcelButtonEnabled",true}})
+        }
+    </div>
+    <div class="col-md-9">
+
+        @using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.UpdatedDate)
+                @Html.HiddenFor(model => model.Lang)
+
+                <div class="panel with-nav-tabs panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
+                            <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
+                            <li class="Tools">
+                                <input type="submit" name="saveButton" value="@saveButtonText" style="width:110px;" class="btn btn-sm btn-success" />
+                            </li>
+                            <li class="Tools">
+                                <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
+                            </li>
+                            <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="tab1default" class="tab-pane fade in active">
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @if (productCategory != null && productCategory.Id > 0)
+                                        {
+                                            <span style="color:red;font-size:x-large" id="OldCategoryName">
+                                                @productCategory.Name
+                                            </span>
+                                        }
+                                        else
+                                        {
+
+                                            <span style="color:red;font-size:x-large" id="OldCategoryName">
+                                                @PleaseSelectYourProductCategoryFromTree
+                                            </span>
+                                        }
+
+                                        @Html.HiddenFor(model => model.ProductCategoryId)
+                                        @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.BrandId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @if (brands != null)
+                                        {
+                                            @Html.DropDownListFor(model => model.BrandId,
+                                                   brands,
+                                                   AdminResource.SelectBrand,
+                                                   new { @class = "form-control" })
+                                        }
+                                        @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NameLong, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NameLong, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NameLong, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.ShortDescription, 2, 20, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NameShort, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NameShort, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NameShort, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @if (isProductPriceEnable.SettingValue.ToBool(false))
+                                {
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-3">
+                                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                        </div>
+                                        @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-3">
+                                            @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(model => model.Price)
+                                    @Html.HiddenFor(model => model.Discount)
+                                }
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ProductColorOptions, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ProductColorOptions, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ProductColorOptions, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.IsActive)
+                                        @Html.EditorFor(model => model.IsActive)
+                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.MainPage)
+                                        @Html.EditorFor(model => model.MainPage)
+                                        @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.IsCampaign)
+                                        @Html.EditorFor(model => model.IsCampaign)
+                                        @Html.ValidationMessageFor(model => model.IsCampaign, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-3">
+                                        <input type="file" name="postedImage" />
+                                        @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.ImageState)
+                                        @Html.EditorFor(model => model.ImageState)
+                                        @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @if (Model.MainImageId.HasValue)
+                                        {
+                                            <b>@ExistingMainImageText :</b>
+                                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                        }
+                                    </div>
+                                </div>
+                                @Html.Partial("pSliderResizing", (BaseContent)Model)
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="Tags"></label>
+                                    <div class="col-md-10">
+                                        <div id="productTagsHtml">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab2default">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink(AdminResource.BackToList, "Index")
+            </div>
+            <div class="col-md-4">
+                @GridToolsDeleteColumn(Model, controllerName)
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function productTreeClick(e, id, name) {
+            e.preventDefault();   // use this to NOT go to href site
+            console.log(e);
+            $('#OldCategoryName').text(name);
+            $('#ProductCategoryId').val(id);
+        }
+        $(document).ready(function () {
+            setPreSelectedTreeNode($("#ProductCategoryId"))
+
+            CreateTags();
+            function CreateTags() {
+                var postData = JSON.stringify({ "language": $("#Lang").val(), "productId": $("#Id").val() });
+                console.log(postData);
+                ajaxMethodCall(postData, "/admin/Ajax/GetProductTags", function (data) {
+                    $("#productTagsHtml").html(data);
+                });
+            }
+
+        });
+    </script>
+}
+
+@helper GridToolsDeleteColumn(Product d, String controllerName)
+{
+    if (d.Id > 0)
+    {
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+                   { "ItemId", d.Id },
+                   {"controllerName",controllerName},
+                    {"gridDeleteText",string.Format("'{0}' ürünü silmek istiyorum",d.Name)},
+                   { "ItemDescription", d.Name }
+             });
+    }
+
+}

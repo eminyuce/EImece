@@ -1,32 +1,27 @@
-﻿@model EImece.Domain.Entities.MainPageImage
-@using EImece.Domain.Entities;
+﻿@model EImece.Domain.Entities.StoryCategory
 @using EImece.Domain.Models.Enums;
-
+@using EImece.Domain.Entities;
 @using Resources;
+
 @{
-    ViewBag.Title = "SaveOrEdit";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    ViewBag.Title = "SaveOrEdit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
 
 }
 
-<h2>@AdminResource.MainPageImages</h2>
+<h2>@AdminResource.StoryCategory</h2>
 <hr class="adminLine" />
 
-<div class="row" style="padding:20px;">
-
-    @using (Html.BeginForm("SaveOrEdit", "MainPageImages", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-
+@using (Html.BeginForm("SaveOrEdit", "StoryCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
 
-        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+       @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
         @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.AddUserId)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
 
@@ -43,7 +38,7 @@
                     <li class="Tools">
                         <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
                     </li>
-                    <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+                    <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'"  value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
                 </ul>
             </div>
             <div class="panel-body">
@@ -55,14 +50,6 @@
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
@@ -93,25 +80,40 @@
                         </div>
 
                         <div class="form-group">
+                            @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.ImageState)
+                                    @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-3">
-                                <input type="file" name="postedImage" />
+                            <div class="col-md-5">
+                                <input type="file" name="postedImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
                                 @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-3">
-                                @Html.LabelFor(model => model.ImageState)
-                                @Html.EditorFor(model => model.ImageState)
-                                @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 @if (Model.MainImageId.HasValue)
                                 {
                                     <b>@ExistingMainImageText :</b>
-                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model)
                                 }
                             </div>
                         </div>
                         @Html.Partial("pSliderResizing", (BaseContent)Model)
+
+                        <div id="pageThemeWrapper" class="form-group">
+                            @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.Partial("pPageThemes", Model)
+                                    @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="tab2default">
                         <div class="form-group">
@@ -124,22 +126,13 @@
             </div>
         </div>
     </div>
-    }
-</div>
+
+}
 
 <div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
+       @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-    <script>
-        var $form = null;
-
-        $(function () {
-
-        });
-    </script>
-
 }

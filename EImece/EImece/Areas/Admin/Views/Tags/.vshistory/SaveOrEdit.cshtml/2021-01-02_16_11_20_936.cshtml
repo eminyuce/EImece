@@ -1,23 +1,40 @@
-﻿@model EImece.Domain.Entities.TagCategory
+﻿@model EImece.Domain.Entities.Tag
 @using EImece.Domain.Models.Enums;
 @using Resources;
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = "SaveOrEdit";
+    var categories = (List<SelectListItem>)ViewBag.Categories;
 }
-<h2>@AdminResource.TagCategory</h2>
+
+<h2>@AdminResource.Tag</h2>
 <hr class="adminLine" />
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.AddUserId)
     @Html.HiddenFor(model => model.CreatedDate)
     @Html.HiddenFor(model => model.UpdatedDate)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TagCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (categories != null)
+            {
+                @Html.DropDownListFor(model => model.TagCategoryId,
+                       categories,
+                       AdminResource.SelectCategory,
+                       new { @class = "form-control" })
+            }
+            @Html.ValidationMessageFor(model => model.TagCategoryId, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -54,7 +71,7 @@
 }
 
 <div>
-       @Html.ActionLink(AdminResource.BackToList, "Index")
+    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {

@@ -1305,7 +1305,6 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DropDown.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\TextBox.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pImagePopUp.cshtml" />
-    <Content Include="Areas\Admin\Views\Products\Index2.cshtml" />
     <Content Include="Areas\Admin\Views\Error\BadRequest.cshtml" />
     <Content Include="Areas\Admin\Views\Error\Forbidden.cshtml" />
     <Content Include="Areas\Admin\Views\Error\Index.cshtml" />

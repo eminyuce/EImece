@@ -1,6 +1,6 @@
-﻿@model EImece.Domain.Entities.StoryCategory
+﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Models.Enums;
-@using EImece.Domain.Entities;
+@model Brand
 @using Resources;
 
 @{
@@ -12,17 +12,17 @@
 
 }
 
-<h2>@AdminResource.StoryCategory</h2>
+<h2>@AdminResource.Brands</h2>
 <hr class="adminLine" />
 
-@using (Html.BeginForm("SaveOrEdit", "StoryCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("SaveOrEdit", "brands", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
+
 <div class="form-horizontal">
 
     @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
     @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.AddUserId)
     @Html.HiddenFor(model => model.CreatedDate)
     @Html.HiddenFor(model => model.UpdatedDate)
 
@@ -39,7 +39,9 @@
                 <li class="Tools">
                     <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
                 </li>
-                <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+                <li class="Tools">
+                    <input type="button" onClick="parent.location='@Url.Action("Index")'"  value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" />
+                </li>
             </ul>
         </div>
         <div class="panel-body">
@@ -63,12 +65,17 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="checkbox checkbox-danger">
-                                @Html.EditorFor(model => model.IsActive)
-                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.IsActive)
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.MainPage)
+                            @Html.EditorFor(model => model.MainPage)
+                            @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -81,40 +88,25 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.ImageState)
-                                @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-5">
-                            <input type="file" name="postedImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
+                        <div class="col-md-3">
+                            <input type="file" name="postedImage" />
                             @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.ImageState)
+                            @Html.EditorFor(model => model.ImageState)
+                            @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
                             @if (Model.MainImageId.HasValue)
-                            {
-                                <b>@ExistingMainImageText :</b>
-                                @Html.Partial("pGridImageMainPage", (BaseContent)Model)
-                            }
+                                {
+                            <b>@ExistingMainImageText :</b>
+                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                }
                         </div>
                     </div>
                     @Html.Partial("pSliderResizing", (BaseContent)Model)
-
-                    <div id="pageThemeWrapper" class="form-group">
-                        @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="checkbox">
-                                @Html.Partial("pPageThemes", Model)
-                                @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-pane fade" id="tab2default">
                     <div class="form-group">
@@ -131,9 +123,15 @@
 }
 
 <div>
-       @Html.ActionLink(AdminResource.BackToList, "Index")
+    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
 }
