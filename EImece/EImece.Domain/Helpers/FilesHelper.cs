@@ -642,14 +642,7 @@ namespace EImece.Domain.Helpers
                 }
             }
 
-            var cacheKey = string.Format("GetResizedImage-{0}-{1}-{2}", fileStorageId, width, height);
-            Boolean isRetrievedFromCache = MemoryCacheProvider.Get(cacheKey, out result);
-            if (result == null)
-            {
-                LoggerFileImage.Info("cacheKey for GetResizedImage " + cacheKey);
-                result = createSavedImage(imageBytes, width, height, fileStorage.MimeType);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
+            result = createSavedImage(imageBytes, width, height, fileStorage.MimeType);
             result.UpdatedDated = fileStorage.UpdatedDate;
             return result;
         }
