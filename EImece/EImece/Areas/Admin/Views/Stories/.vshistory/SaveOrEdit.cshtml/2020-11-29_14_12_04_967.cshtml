@@ -1,0 +1,177 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Models.Enums;
+@model Story
+@using Resources;
+
+@{
+    var saveButtonText = AdminResource.SaveButtonText;
+    var ExistingMainImageText = AdminResource.ExistingMainImageText;
+    ViewBag.Title = "SaveOrEdit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var categories = (List<StoryCategory>)ViewBag.Categories;
+    var categoriesDb = categories.Select(r => new SelectListItem() { Text = r.Name, Value = r.Id.ToString() }).ToList();
+    var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
+
+}
+
+<h2>@AdminResource.StoryPageTitle</h2>
+<hr class="adminLine" />
+
+@using (Html.BeginForm("SaveOrEdit", "Stories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.CreatedDate)
+        @Html.HiddenFor(model => model.UpdatedDate)
+
+        @Html.HiddenFor(model => model.Lang)
+
+        <div class="panel with-nav-tabs panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
+                    <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
+                    <li class="Tools">
+                        <input type="submit" name="saveButton" value="@saveButtonText" style="width:110px;" class="btn btn-sm btn-success" />
+                    </li>
+                    <li class="Tools">
+                        <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
+                    </li>
+                    <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'"  value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div id="tab1default" class="tab-pane fade in active">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.StoryCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.DropDownListFor(model => model.StoryCategoryId,
+                   categoriesDb,
+                   null,
+                   new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Lang, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Name">@AdminResource.StorySubject</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AuthorName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.AuthorName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AuthorName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.IsActive)
+                                @Html.EditorFor(model => model.IsActive)
+                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.IsFeaturedStory)
+                                @Html.EditorFor(model => model.IsFeaturedStory)
+                                @Html.ValidationMessageFor(model => model.IsFeaturedStory, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.MainPage)
+                                @Html.EditorFor(model => model.MainPage)
+                                @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-3">
+                                <input type="file" name="postedImage" />
+                                @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ImageState)
+                                @Html.EditorFor(model => model.ImageState)
+                                @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                @if (Model.MainImageId.HasValue)
+                                {
+                                    <b>@ExistingMainImageText :</b>
+                                    @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                }
+                            </div>
+                        </div>
+                        @Html.Partial("pSliderResizing", (BaseContent)Model)
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Tags"> </label>
+                            <div class="col-md-10">
+                                <div id="storyTagsHtml">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab2default">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink(AdminResource.BackToList, "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            CreateTags();
+            function CreateTags() {
+                var postData = JSON.stringify({ "language": $("#Lang").val(), "storyId": $("#Id").val() });
+                ajaxMethodCall(postData, "/admin/Ajax/GetStoryTags", function (data) {
+                    $("#storyTagsHtml").html(data);
+                });
+            }
+
+        });
+    </script>
+}

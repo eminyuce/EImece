@@ -54,18 +54,12 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public async Task<ActionResult> Index333333(String id, String imageSize)
+        public async Task<ActionResult> Index(String id, String imageSize)
         {
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 return GenerateImage(id, imageSize);
-            });
-        }
-
-        [AcceptVerbs(HttpVerbs.Get)]
-        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult Index(String id, String imageSize)
-        {
-            return GenerateImage(id, imageSize);
+            }).ConfigureAwait(true);
         }
 
         private ActionResult GenerateImage(string id, string imageSize)

@@ -38,9 +38,8 @@
     Model.ProductComment.ProductId = product.Id;
     Model.ProductComment.SeoUrl = product.GetSeoUrl();
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
-    var mainImageImgSrc = product.MainImageSrc.Item1;
-    var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
-    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var mainImageImgSrc = product.MainImageSrc.Item1; // product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageThbImgSrc = product.MainImageSrc.Item2; //product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 }
 
@@ -95,11 +94,11 @@
                 </ul>
                 <div class="product-carousel owl-carousel">
 
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgSrc))
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgTag))
                     {
 
-                        <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@mainImageImgSrc"  width="610" height="610" alt="Product">
+                        <a href="@mainImageImgTag" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@mainImageImgTag" alt="Product">
                         </a>
 
                     }

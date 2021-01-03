@@ -8,9 +8,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
-using NLog;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -20,7 +18,6 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IProductCommentService productCommentService;
 
         [Inject]
@@ -61,15 +58,8 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var productId = id.GetId();
-
-            var timer = new Stopwatch();
-            timer.Start();
             var product = ProductService.GetProductDetailViewModelById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
-            timer.Stop();
-            Logger.Info("ProductService.GetProductDetailViewModelById timer:" + timer.ElapsedMilliseconds);
-
-
 
             return View(product);
         }

@@ -145,8 +145,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-      
-
         public String DeleteFile(String file, HttpContextBase ContentBase)
         {
             var request = ContentBase.Request;
@@ -257,7 +255,7 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
-       
+
         private SavedImage GetFileImageSize(int width, int height, byte[] fileByte)
         {
             Bitmap img = ByteArrayToBitmap(fileByte);
@@ -620,41 +618,9 @@ namespace EImece.Domain.Helpers
             {
                 return null;
             }
-
             result = resizeImageBytesByWidthAndHeight(imageBytes, width, height, fileStorage.MimeType);
             result.UpdatedDated = fileStorage.UpdatedDate;
             return result;
-        }
-        public Tuple<string, string> GetImageSrcPath(int fileStorageId)
-        {
-            var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
-            return GetFileStorageSrcPath(fileStorage);
-        }
-        public static Tuple<string, string> GetFileStorageSrcPath(FileStorage fileStorage)
-        {
-            if(fileStorage == null)
-            {
-                return new Tuple<string, string>("","");
-            }
-            else
-            {
-                return GetFileStorageSrcPath(fileStorage.FileName);
-            }
-           
-        }
-        public static Tuple<string, string> GetFileStorageSrcPath(String fileName)
-        {
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                String fullPath = Path.Combine(AppConfig.StorageRoot, fileName);
-                if (File.Exists(fullPath))
-                {
-                    var fullPathImgSrc = "/media/images/" + fileName;
-                    var candidatePathThb = "/media/images/thumbs/" + fileName;
-                    return new Tuple<string, string>(fullPathImgSrc, candidatePathThb);
-                }
-            }
-            return new Tuple<string, string>("", "");
         }
 
         public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)

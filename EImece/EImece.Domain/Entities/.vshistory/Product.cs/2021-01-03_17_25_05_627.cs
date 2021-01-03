@@ -137,7 +137,7 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public byte [] MainImageBytes { get; set; }
         [NotMapped]
-        public Tuple<string,string> MainImageSrc { get; set; }
+        public string MainImageSrc { get; set; }
 
         [NotMapped]
         public double PriceWithDiscount

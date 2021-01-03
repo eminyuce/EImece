@@ -38,9 +38,8 @@
     Model.ProductComment.ProductId = product.Id;
     Model.ProductComment.SeoUrl = product.GetSeoUrl();
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
-    var mainImageImgSrc = product.MainImageSrc.Item1;
-    var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
-    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var mainImageImgTag = product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageThbImgTag = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 }
 
@@ -72,12 +71,12 @@
             <!-- Product gallery-->
             <div class="product-gallery">
                 <ul class="product-thumbnails">
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
+                    @if (product.ImageState && product.MainImageBytes != null)
                     {
 
                         <li class="active">
                             <a href="#one">
-                                <img alt="Product thumb" src="@mainImageThbImgSrc" width="95" height="105"  />
+                                <img src="data:image;base64,@System.Convert.ToBase64String(product.MainImageBytes)" width="95" height="100" />
                             </a>
                         </li>
                     }
@@ -95,12 +94,12 @@
                 </ul>
                 <div class="product-carousel owl-carousel">
 
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgSrc))
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgTag))
                     {
 
-                        <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@mainImageImgSrc"  width="610" height="610" alt="Product">
-                        </a>
+                    <a href="@mainImageImgTag" data-fancybox="prod-gallery" data-hash="one">
+                        <img src="data:image;base64,@System.Convert.ToBase64String(product.MainImageBytes)" width="95"  alt="Product" height="100" />
+                    </a>
 
                     }
                     else

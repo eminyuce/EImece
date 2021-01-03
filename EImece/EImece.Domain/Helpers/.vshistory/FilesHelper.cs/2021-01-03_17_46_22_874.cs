@@ -628,33 +628,14 @@ namespace EImece.Domain.Helpers
         public Tuple<string, string> GetImageSrcPath(int fileStorageId)
         {
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
-            return GetFileStorageSrcPath(fileStorage);
+            return GetImageSrcPath(fileStorage.FileName);
         }
-        public static Tuple<string, string> GetFileStorageSrcPath(FileStorage fileStorage)
+
+        private static Tuple<string, string> GetImageSrcPath(String fileName)
         {
-            if(fileStorage == null)
-            {
-                return new Tuple<string, string>("","");
-            }
-            else
-            {
-                return GetFileStorageSrcPath(fileStorage.FileName);
-            }
-           
-        }
-        public static Tuple<string, string> GetFileStorageSrcPath(String fileName)
-        {
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                String fullPath = Path.Combine(AppConfig.StorageRoot, fileName);
-                if (File.Exists(fullPath))
-                {
-                    var fullPathImgSrc = "/media/images/" + fileName;
-                    var candidatePathThb = "/media/images/thumbs/" + fileName;
-                    return new Tuple<string, string>(fullPathImgSrc, candidatePathThb);
-                }
-            }
-            return new Tuple<string, string>("", "");
+            var fullPath = "/media/images/" + fileStorage.FileName;
+            var candidatePathThb = "/media/images/thumbs/" + fileStorage.FileName;
+            return new Tuple<string, string>(fullPath, candidatePathThb);
         }
 
         public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)

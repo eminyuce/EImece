@@ -5,7 +5,6 @@ using EImece.Domain.Helpers.AttributeHelper;
 using Ninject;
 using NLog;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -54,18 +53,12 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public async Task<ActionResult> Index333333(String id, String imageSize)
+        public async Task<ActionResult> Index(String id, String imageSize)
         {
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 return GenerateImage(id, imageSize);
-            });
-        }
-
-        [AcceptVerbs(HttpVerbs.Get)]
-        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult Index(String id, String imageSize)
-        {
-            return GenerateImage(id, imageSize);
+            }).ConfigureAwait(true);
         }
 
         private ActionResult GenerateImage(string id, string imageSize)
@@ -88,11 +81,9 @@ namespace EImece.Controllers
 
                 width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
                 height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
-                var timer = new Stopwatch();
-                timer.Start();
+
                 var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
-                timer.Stop();
-                Logger.Info("FilesHelper.GetResizedImage:" + fileStorageId + " width:" + width + " height:" + height+ " timer:"+ timer.ElapsedMilliseconds);
+
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
@@ -172,12 +163,8 @@ namespace EImece.Controllers
                 width = 300;
                 height = 400;
             }
-            var timer = new Stopwatch();
-            timer.Start();
-            byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
-            timer.Stop();
-            Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
+            byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
             return this.File(fileContents, ContentType);
         }
 

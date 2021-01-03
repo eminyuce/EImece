@@ -267,7 +267,7 @@ namespace EImece.Tests.Controllers
 
         }
         [TestMethod]
-        public void ReadAllBytesImages()
+        public void GetActiveBaseContents()
         {
            var imageBytes = File.ReadAllBytes(@"‪C:\Users\YUCE\Desktop\vesikalik.jpg");
 

@@ -60,10 +60,10 @@ namespace EImece.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var productId = id.GetId();
 
             var timer = new Stopwatch();
             timer.Start();
+            var productId = id.GetId();
             var product = ProductService.GetProductDetailViewModelById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
             timer.Stop();

@@ -264,13 +264,7 @@ namespace EImece.Tests.Controllers
             {
                 Console.WriteLine(sql.Replace("[REPLACE_TEXT]", line).Replace("[ProductCodeValue]", GeneralHelper.RandomNumber(6)+""));
             }
-
-        }
-        [TestMethod]
-        public void ReadAllBytesImages()
-        {
-           var imageBytes = File.ReadAllBytes(@"‪C:\Users\YUCE\Desktop\vesikalik.jpg");
-
+   
         }
 
             [TestMethod]

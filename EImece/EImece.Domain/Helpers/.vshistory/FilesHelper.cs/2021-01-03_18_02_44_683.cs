@@ -646,12 +646,13 @@ namespace EImece.Domain.Helpers
         {
             if (!string.IsNullOrEmpty(fileName))
             {
-                String fullPath = Path.Combine(AppConfig.StorageRoot, fileName);
+                String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                 if (File.Exists(fullPath))
                 {
-                    var fullPathImgSrc = "/media/images/" + fileName;
+
+                    var fullPath = "/media/images/" + fileName;
                     var candidatePathThb = "/media/images/thumbs/" + fileName;
-                    return new Tuple<string, string>(fullPathImgSrc, candidatePathThb);
+                    return new Tuple<string, string>(fullPath, candidatePathThb);
                 }
             }
             return new Tuple<string, string>("", "");

@@ -40,7 +40,7 @@
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
     var mainImageImgSrc = product.MainImageSrc.Item1;
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
-    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var mainImageThbImgSrc = product.MainImageSrc.Item2; //product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 }
 

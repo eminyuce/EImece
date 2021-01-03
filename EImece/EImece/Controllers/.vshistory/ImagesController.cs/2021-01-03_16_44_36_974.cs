@@ -54,18 +54,12 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public async Task<ActionResult> Index333333(String id, String imageSize)
+        public async Task<ActionResult> Index(String id, String imageSize)
         {
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 return GenerateImage(id, imageSize);
-            });
-        }
-
-        [AcceptVerbs(HttpVerbs.Get)]
-        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult Index(String id, String imageSize)
-        {
-            return GenerateImage(id, imageSize);
+            }).ConfigureAwait(true);
         }
 
         private ActionResult GenerateImage(string id, string imageSize)
@@ -172,12 +166,8 @@ namespace EImece.Controllers
                 width = 300;
                 height = 400;
             }
-            var timer = new Stopwatch();
-            timer.Start();
-            byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
-            timer.Stop();
-            Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
+            byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
             return this.File(fileContents, ContentType);
         }
 

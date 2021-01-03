@@ -67,7 +67,7 @@ namespace EImece.Controllers
             var product = ProductService.GetProductDetailViewModelById(productId);
             ViewBag.SeoId = product.Product.GetSeoUrl();
             timer.Stop();
-            Logger.Info("ProductService.GetProductDetailViewModelById timer:" + timer.ElapsedMilliseconds);
+            Logger.Info("Product.Detail:" + id + " width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
 
 

@@ -61,7 +61,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                Logger.Info("GetMainPageViewModel Page is coming from cache:" + cacheKey+ " CacheDuration:" + MemoryCacheProvider.CacheDuration);
+                Logger.Info("GetMainPageViewModel Page is coming from cache:" + cacheKey);
             }
             return result;
         }

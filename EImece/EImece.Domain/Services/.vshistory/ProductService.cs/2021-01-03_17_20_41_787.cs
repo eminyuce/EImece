@@ -123,15 +123,11 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("Product is null for id:" + id);
             }
-            // if (product.MainImageId.HasValue)
-            // {
-            //     FileStorage fileStorage = null;
-            //     product.MainImageBytes = FilesHelper.GetFileStorageFromCache(product.MainImageId.Value, out fileStorage);
-            // }
-             if (product.MainImageId.HasValue)
-             {
-                 product.MainImageSrc = FilesHelper.GetImageSrcPath(product.MainImageId.Value);
-            }
+           // if (product.MainImageId.HasValue)
+           // {
+           //     FileStorage fileStorage = null;
+           //     product.MainImageBytes = FilesHelper.GetFileStorageFromCache(product.MainImageId.Value, out fileStorage);
+           // }
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);

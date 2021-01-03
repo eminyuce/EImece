@@ -59,10 +59,6 @@ namespace EImece.Domain.Services
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
-            else
-            {
-                Logger.Info("GetMainPageViewModel Page is coming from cache:" + cacheKey+ " CacheDuration:" + MemoryCacheProvider.CacheDuration);
-            }
             return result;
         }
 

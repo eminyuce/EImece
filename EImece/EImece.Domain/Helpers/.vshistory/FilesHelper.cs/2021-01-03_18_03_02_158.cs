@@ -646,7 +646,7 @@ namespace EImece.Domain.Helpers
         {
             if (!string.IsNullOrEmpty(fileName))
             {
-                String fullPath = Path.Combine(AppConfig.StorageRoot, fileName);
+                String fullPath = Path.Combine(StorageRoot, fileName);
                 if (File.Exists(fullPath))
                 {
                     var fullPathImgSrc = "/media/images/" + fileName;

@@ -1,7 +1,4 @@
-﻿using EImece.Domain.Helpers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace EImece.Domain.Entities
 {
@@ -17,14 +14,5 @@ namespace EImece.Domain.Entities
         public bool IsFileExist { get; set; }
 
         public ICollection<FileStorageTag> FileStorageTags { get; set; }
-
-        [NotMapped]
-        public Tuple<string, string> FileStorageSrcPaths
-        {
-            get
-            {
-                return FilesHelper.GetFileStorageSrcPath(this);
-            }
-        }
     }
 }
