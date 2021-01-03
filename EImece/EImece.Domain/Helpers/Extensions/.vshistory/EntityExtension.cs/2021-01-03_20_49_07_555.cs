@@ -279,18 +279,14 @@ namespace EImece.Domain.Helpers.Extensions
                 if (entity != null && entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
                 {
                     string imagePath = Constants.UrlBase + entity.MainImage.FileName;
-                    String fullPath = Path.Combine(AppConfig.StorageRoot, entity.MainImage.FileName);
-                    if (File.Exists(fullPath))
+                    if (isThump)
                     {
-                        if (isThump)
-                        {
-                            string fileName = entity.MainImage.FileName;
-                            string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                            string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
-                            imagePath = partThumb2;
-                        }
-                        return imagePath;
+                        string fileName = entity.MainImage.FileName;
+                        string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                        string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                        imagePath = partThumb2;
                     }
+                    return imagePath;
                 }
             }
             catch (Exception e)
@@ -351,21 +347,11 @@ namespace EImece.Domain.Helpers.Extensions
                 if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is BaseContent)
                 {
                     var baseContentEntity = (BaseContent)entity;
-                    var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
-                    if (!string.IsNullOrEmpty(imagePath))
+                    var imagePath = GetFullPathImageUrlFromFileSystem((BaseContent)entity, false);
+                    if (!File.Exists(HttpContext.Current.Server.MapPath(imagePath)))
                     {
-                        return imagePath;
+                        imagePath = "/images/w100h100/"+
                     }
-                    else
-                    {
-                        if (width == 0 && height == 0)
-                        {
-                            width = 800;
-                            height = 600;
-                        }
-                        imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
-                    }
-                  
                     return imagePath;
                 }
                 else

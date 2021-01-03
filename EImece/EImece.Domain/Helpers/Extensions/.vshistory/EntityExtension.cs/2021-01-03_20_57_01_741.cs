@@ -352,11 +352,10 @@ namespace EImece.Domain.Helpers.Extensions
                 {
                     var baseContentEntity = (BaseContent)entity;
                     var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
-                    if (!string.IsNullOrEmpty(imagePath))
+                    if (!string.IsNullOrEmpty(imagePath)))
                     {
                         return imagePath;
-                    }
-                    else
+                    }else
                     {
                         if (width == 0 && height == 0)
                         {
@@ -365,6 +364,7 @@ namespace EImece.Domain.Helpers.Extensions
                         }
                         imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
                     }
+
                   
                     return imagePath;
                 }

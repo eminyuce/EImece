@@ -250,14 +250,6 @@ namespace EImece.Domain
             }
         }
 
-        public static bool IsImageFullSrcUnderMediaFolder
-        {
-            get
-            {
-                return GetConfigBool("IsImageFullSrcUnderMediaFolder", true);
-            }
-        }
-
         public static int ProductDefaultRecordPerPage
         {
             get { return 24; }

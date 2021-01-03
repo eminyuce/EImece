@@ -289,8 +289,9 @@ namespace EImece.Domain.Helpers.Extensions
                             string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
                             imagePath = partThumb2;
                         }
-                        return imagePath;
                     }
+                      
+                    return imagePath;
                 }
             }
             catch (Exception e)
@@ -352,20 +353,19 @@ namespace EImece.Domain.Helpers.Extensions
                 {
                     var baseContentEntity = (BaseContent)entity;
                     var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
-                    if (!string.IsNullOrEmpty(imagePath))
+
+            
+
+                        if (!string.IsNullOrEmpty(imagePath) && File.Exists(HttpContext.Current.Server.MapPath(imagePath)))
                     {
                         return imagePath;
                     }
-                    else
+                    if(width == 0 && height == 0)
                     {
-                        if (width == 0 && height == 0)
-                        {
-                            width = 800;
-                            height = 600;
-                        }
-                        imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
+                        width = 800;
+                        height = 600;
                     }
-                  
+                    imagePath= $"/images/defaultimage/w{width}h{height}/default.jpg";
                     return imagePath;
                 }
                 else

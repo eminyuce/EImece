@@ -282,15 +282,16 @@ namespace EImece.Domain.Helpers.Extensions
                     String fullPath = Path.Combine(AppConfig.StorageRoot, entity.MainImage.FileName);
                     if (File.Exists(fullPath))
                     {
-                        if (isThump)
-                        {
-                            string fileName = entity.MainImage.FileName;
-                            string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                            string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
-                            imagePath = partThumb2;
-                        }
-                        return imagePath;
+
                     }
+                        if (isThump)
+                    {
+                        string fileName = entity.MainImage.FileName;
+                        string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                        string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                        imagePath = partThumb2;
+                    }
+                    return imagePath;
                 }
             }
             catch (Exception e)
@@ -352,20 +353,19 @@ namespace EImece.Domain.Helpers.Extensions
                 {
                     var baseContentEntity = (BaseContent)entity;
                     var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
-                    if (!string.IsNullOrEmpty(imagePath))
+
+            
+
+                        if (!string.IsNullOrEmpty(imagePath) && File.Exists(HttpContext.Current.Server.MapPath(imagePath)))
                     {
                         return imagePath;
                     }
-                    else
+                    if(width == 0 && height == 0)
                     {
-                        if (width == 0 && height == 0)
-                        {
-                            width = 800;
-                            height = 600;
-                        }
-                        imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
+                        width = 800;
+                        height = 600;
                     }
-                  
+                    imagePath= $"/images/defaultimage/w{width}h{height}/default.jpg";
                     return imagePath;
                 }
                 else

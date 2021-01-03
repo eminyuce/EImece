@@ -352,7 +352,7 @@ namespace EImece.Domain.Helpers.Extensions
                 {
                     var baseContentEntity = (BaseContent)entity;
                     var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
-                    if (!string.IsNullOrEmpty(imagePath))
+                    if (!string.IsNullOrEmpty(imagePath)))
                     {
                         return imagePath;
                     }

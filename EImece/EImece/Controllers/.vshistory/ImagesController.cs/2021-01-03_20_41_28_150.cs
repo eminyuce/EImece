@@ -22,10 +22,8 @@ namespace EImece.Controllers
         private const string ContentType = "image/Jpeg";
         private ICacheProvider _memoryCacheProvider { get; set; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
-
         [Inject]
         public ICacheProvider MemoryCacheProvider
         {
@@ -60,8 +58,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public async Task<ActionResult> Index333333(String id, String imageSize)
         {
-            return await Task.Run(() =>
-            {
+            return await Task.Run(() => {
                 return GenerateImage(id, imageSize);
             });
         }
@@ -93,33 +90,36 @@ namespace EImece.Controllers
 
                 width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
                 height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+         
+                   
 
-                var timer = new Stopwatch();
-                timer.Start();
-                var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
-                timer.Stop();
-                Logger.Info("FilesHelper.GetResizedImage:" + fileStorageId + " width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
-                if (imageByte != null && imageByte.ImageBytes != null)
-                {
-                    Response.StatusCode = 200;
-                    Response.Cache.SetExpires(DateTime.Now.AddDays(365));
-                    Response.Cache.SetCacheability(HttpCacheability.Public);
-                    Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
-                    Response.Cache.SetSlidingExpiration(true);
-                    Response.Cache.SetOmitVaryStar(true);
-                    Response.Headers.Set("Vary",
-                        string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
-                    if (imageByte.UpdatedDated != null)
+                    var timer = new Stopwatch();
+                    timer.Start();
+                    var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
+                    timer.Stop();
+                    Logger.Info("FilesHelper.GetResizedImage:" + fileStorageId + " width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
+                    if (imageByte != null && imageByte.ImageBytes != null)
                     {
-                        Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
+                        Response.StatusCode = 200;
+                        Response.Cache.SetExpires(DateTime.Now.AddDays(365));
+                        Response.Cache.SetCacheability(HttpCacheability.Public);
+                        Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
+                        Response.Cache.SetSlidingExpiration(true);
+                        Response.Cache.SetOmitVaryStar(true);
+                        Response.Headers.Set("Vary",
+                            string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
+                        if (imageByte.UpdatedDated != null)
+                        {
+                            Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
+                        }
+                        return File(imageByte.ImageBytes, imageByte.ContentType);
                     }
-                    return File(imageByte.ImageBytes, imageByte.ContentType);
+                    else
+                    {
+                        return this.GetDefaultFileContentResult((string)imageSize);
+                    }
+
                 }
-                else
-                {
-                    return this.GetDefaultFileContentResult((string)imageSize);
-                }
-            }
             else
             {
                 return new EmptyResult();
