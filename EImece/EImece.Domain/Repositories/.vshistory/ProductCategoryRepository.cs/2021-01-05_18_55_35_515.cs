@@ -72,7 +72,6 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.Products);
-            includeProperties.Add(r => r.Products.Select(t => t.MainImage));
             includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
             includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
             if (isOnlyActive)
