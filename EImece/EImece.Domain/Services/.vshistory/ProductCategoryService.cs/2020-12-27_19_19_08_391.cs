@@ -227,7 +227,5 @@ namespace EImece.Domain.Services
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
-
-       
     }
 }

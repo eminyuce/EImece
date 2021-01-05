@@ -34,7 +34,5 @@ namespace EImece.Domain.Repositories.IRepositories
    int language);
 
         List<Product> GetChildrenProducts(int[] childrenCategoryId);
-
-        List<Product> GetRandomProductsByCategoryId(int productCategoryId, int take, int lang, int excludedProductId);
     }
 }

@@ -231,7 +231,7 @@ namespace EImece.Domain.Repositories
             && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId))
             && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
             var result2 = result.ToList();
             return result2.Distinct().ToList();
         }
@@ -244,7 +244,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.ProductCategoryId == productCategoryId && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
             var result2 = result.ToList();
             return result2.Distinct().ToList();
         }
@@ -258,7 +258,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result.ToList();
         }

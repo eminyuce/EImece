@@ -165,9 +165,6 @@ namespace EImece.Domain.Services
                 result.RelatedProducts.AddRange(ProductRepository.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
             }
 
-
-            result.RelatedProducts = result.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
-
             return result;
         }
 

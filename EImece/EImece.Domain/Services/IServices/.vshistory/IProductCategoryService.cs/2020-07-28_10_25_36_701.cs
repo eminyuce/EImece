@@ -23,6 +23,5 @@ namespace EImece.Domain.Services.IServices
         List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage);
 
         List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language);
-   
     }
 }

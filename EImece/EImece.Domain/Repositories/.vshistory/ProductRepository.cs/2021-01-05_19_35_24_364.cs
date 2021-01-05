@@ -258,7 +258,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result.ToList();
         }

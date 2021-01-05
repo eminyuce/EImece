@@ -162,11 +162,13 @@ namespace EImece.Domain.Services
             if (result.RelatedProducts.Count < 20)
             {
                 relatedProductTake -= result.RelatedProducts.Count;
-                result.RelatedProducts.AddRange(ProductRepository.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
+                var categoryProducts = ProductCategoryService.GetProductCategory(product.ProductCategoryId)
+                    .Products;
+                result.RelatedProducts.AddRange(categoryProducts
+                    .OrderBy(x => Guid.NewGuid())
+                    .Take(relatedProductTake)
+                    .OrderByDescending(r => r.UpdatedDate).ToList());
             }
-
-
-            result.RelatedProducts = result.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
