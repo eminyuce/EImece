@@ -57,7 +57,7 @@ namespace EImece.Domain.Services
                 if (!MemoryCacheProvider.Get(cacheKey, out lists))
                 {
                     lists = GetActiveBaseContents(true, language);
-                    MemoryCacheProvider.Set(cacheKey, lists, AppConfig.CacheVeryLongSeconds);
+                    MemoryCacheProvider.Set(cacheKey, lists, AppConfig.CacheMediumSeconds);
                 }
             }
             else

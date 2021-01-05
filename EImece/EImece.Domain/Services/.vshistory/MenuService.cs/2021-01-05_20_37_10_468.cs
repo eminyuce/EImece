@@ -54,15 +54,15 @@ namespace EImece.Domain.Services
             if (IsCachingActivated)
             {
                 var cacheKey = String.Format("GetPageByMenuLink-{0}-{1}", menuLink, language);
-                if (!MemoryCacheProvider.Get(cacheKey, out lists))
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
                     lists = GetActiveBaseContents(true, language);
-                    MemoryCacheProvider.Set(cacheKey, lists, AppConfig.CacheVeryLongSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else
             {
-                lists = GetActiveBaseContents(true, language);
+                result = MenuRepository.BuildTree(isActive, language);
             }
 
             var menu = lists.FirstOrDefault(r => r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));

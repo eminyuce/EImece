@@ -50,22 +50,7 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
-            List<Menu> lists = null;
-            if (IsCachingActivated)
-            {
-                var cacheKey = String.Format("GetPageByMenuLink-{0}-{1}", menuLink, language);
-                if (!MemoryCacheProvider.Get(cacheKey, out lists))
-                {
-                    lists = GetActiveBaseContents(true, language);
-                    MemoryCacheProvider.Set(cacheKey, lists, AppConfig.CacheVeryLongSeconds);
-                }
-            }
-            else
-            {
-                lists = GetActiveBaseContents(true, language);
-            }
-
-            var menu = lists.FirstOrDefault(r => r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            var menu = GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             if (menu == null)
             {
                 return null;
