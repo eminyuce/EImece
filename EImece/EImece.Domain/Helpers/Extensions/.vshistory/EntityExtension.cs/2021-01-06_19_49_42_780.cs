@@ -371,11 +371,10 @@ namespace EImece.Domain.Helpers.Extensions
                     }
                   
                     return imagePath;
-                } 
-                else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is ProductFile)
+                } else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is BaseContent)
                 {
-                    var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
+                    var baseContentEntity = (BaseContent)entity;
+                    var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
                     if (!string.IsNullOrEmpty(imagePath))
                     {
                         return imagePath;

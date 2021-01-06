@@ -271,30 +271,26 @@ namespace EImece.Domain.Helpers.Extensions
 
             return imageTag;
         }
-        public static string GetFullPathImageUrlFromFileStorage(FileStorage mainImage, bool isThump)
-        {
-            string imagePath = Constants.UrlBase + mainImage.FileName;
-            String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
-            if (File.Exists(fullPath))
-            {
-                if (isThump)
-                {
-                    string fileName = mainImage.FileName;
-                    string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                    string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
-                    imagePath = partThumb2;
-                }
-                return imagePath;
-            }
-            return string.Empty;
-        }
+
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
             try
             {
                 if (entity != null && entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
                 {
-                   return GetFullPathImageUrlFromFileStorage(entity.MainImage,isThump);
+                    string imagePath = Constants.UrlBase + entity.MainImage.FileName;
+                    String fullPath = Path.Combine(AppConfig.StorageRoot, entity.MainImage.FileName);
+                    if (File.Exists(fullPath))
+                    {
+                        if (isThump)
+                        {
+                            string fileName = entity.MainImage.FileName;
+                            string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                            string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                            imagePath = partThumb2;
+                        }
+                        return imagePath;
+                    }
                 }
             }
             catch (Exception e)
@@ -370,26 +366,6 @@ namespace EImece.Domain.Helpers.Extensions
                         imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
                     }
                   
-                    return imagePath;
-                } 
-                else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is ProductFile)
-                {
-                    var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
-                    if (!string.IsNullOrEmpty(imagePath))
-                    {
-                        return imagePath;
-                    }
-                    else
-                    {
-                        if (width == 0 && height == 0)
-                        {
-                            width = 800;
-                            height = 600;
-                        }
-                        imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
-                    }
-
                     return imagePath;
                 }
                 else

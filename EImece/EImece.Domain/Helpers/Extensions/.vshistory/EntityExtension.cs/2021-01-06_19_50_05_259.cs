@@ -375,7 +375,7 @@ namespace EImece.Domain.Helpers.Extensions
                 else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is ProductFile)
                 {
                     var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
+                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity, false);
                     if (!string.IsNullOrEmpty(imagePath))
                     {
                         return imagePath;

@@ -21,7 +21,5 @@ namespace EImece.Domain.Services.IServices
         string DeleteFileStorage(int id);
 
         FileStorage GetFileStorage(int fileStorageId);
-
-        void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod);
     }
 }

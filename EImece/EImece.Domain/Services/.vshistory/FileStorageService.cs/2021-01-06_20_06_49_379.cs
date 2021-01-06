@@ -157,29 +157,25 @@ namespace EImece.Domain.Services
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
         }
-        public void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod)
-        {
-            FileStorage f = FileStorageRepository.GetSingle(fileStorageId);
-            DeleteUploadImageByFileStorage(contentId, mod, f.Id);
-        }
-        public void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId)
+
+        private void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId)
         {
             bool isResult = false;
             switch (mod.Value)
             {
                 case MediaModType.Stories:
-                    isResult = StoryFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.StoryId == contentId);
-                    this.DeleteFileStorage(fileStorageId);
+                    isResult = StoryFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId.Id && r.StoryId == contentId);
+                    this.DeleteFileStorage(fileStorageId.Id);
                     break;
 
                 case MediaModType.Products:
-                    isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.ProductId == contentId);
-                    this.DeleteFileStorage(fileStorageId);
+                    isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId.Id && r.ProductId == contentId);
+                    this.DeleteFileStorage(fileStorageId.Id);
                     break;
 
                 case MediaModType.Menus:
-                    isResult = MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.MenuId == contentId);
-                    this.DeleteFileStorage(fileStorageId);
+                    isResult = MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId.Id && r.MenuId == contentId);
+                    this.DeleteFileStorage(fileStorageId.Id);
                     break;
 
                 default:

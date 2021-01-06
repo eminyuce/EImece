@@ -271,7 +271,7 @@ namespace EImece.Domain.Helpers.Extensions
 
             return imageTag;
         }
-        public static string GetFullPathImageUrlFromFileStorage(FileStorage mainImage, bool isThump)
+        public static string GetFullPathImageUrlFromFileStorage(FileStorage mainImage)
         {
             string imagePath = Constants.UrlBase + mainImage.FileName;
             String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
@@ -286,7 +286,6 @@ namespace EImece.Domain.Helpers.Extensions
                 }
                 return imagePath;
             }
-            return string.Empty;
         }
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
@@ -294,7 +293,8 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 if (entity != null && entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
                 {
-                   return GetFullPathImageUrlFromFileStorage(entity.MainImage,isThump);
+                    FileStorage mainImage = entity.MainImage;
+                  
                 }
             }
             catch (Exception e)
@@ -370,26 +370,6 @@ namespace EImece.Domain.Helpers.Extensions
                         imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
                     }
                   
-                    return imagePath;
-                } 
-                else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is ProductFile)
-                {
-                    var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
-                    if (!string.IsNullOrEmpty(imagePath))
-                    {
-                        return imagePath;
-                    }
-                    else
-                    {
-                        if (width == 0 && height == 0)
-                        {
-                            width = 800;
-                            height = 600;
-                        }
-                        imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
-                    }
-
                     return imagePath;
                 }
                 else

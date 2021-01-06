@@ -157,11 +157,7 @@ namespace EImece.Domain.Services
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
         }
-        public void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod)
-        {
-            FileStorage f = FileStorageRepository.GetSingle(fileStorageId);
-            DeleteUploadImageByFileStorage(contentId, mod, f.Id);
-        }
+
         public void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId)
         {
             bool isResult = false;

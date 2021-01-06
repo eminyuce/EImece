@@ -371,26 +371,6 @@ namespace EImece.Domain.Helpers.Extensions
                     }
                   
                     return imagePath;
-                } 
-                else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is ProductFile)
-                {
-                    var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
-                    if (!string.IsNullOrEmpty(imagePath))
-                    {
-                        return imagePath;
-                    }
-                    else
-                    {
-                        if (width == 0 && height == 0)
-                        {
-                            width = 800;
-                            height = 600;
-                        }
-                        imagePath = $"/images/defaultimage/w{width}h{height}/default.jpg";
-                    }
-
-                    return imagePath;
                 }
                 else
                 {

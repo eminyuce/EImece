@@ -161,12 +161,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                int contentId = CurrentSelectedModul["contentId"].ToInt();
-                var returnModel = new MediaAdminIndexModel();
-                MediaModType? enumMod = EnumHelper.Parse<MediaModType>(CurrentSelectedModul["mod"]);
-                EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(CurrentSelectedModul["imageType"]);
-
-                FileStorageService.DeleteUploadImage(id, contentId, enumImageType, enumMod);
+                FileStorageService.DeleteFileStorage(id);
                 return RedirectToAction("Index",
                     new
                     {
