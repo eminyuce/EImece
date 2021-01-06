@@ -85,7 +85,7 @@
                     @for (int i = 0; i < productFiles.Count; i++)
                     {
                         var f = productFiles[i];
-                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
+                        var imgTag = product.GetCroppedImageUrl(f.FileStorageId, 95, 105);
                         <li class="">
                             <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
                                 <img alt="Product thumb" src="@imgTag" />
