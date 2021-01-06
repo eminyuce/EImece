@@ -304,7 +304,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ve altinda.
+        ///   Looks up a localized string similar to ve altında.
         /// </summary>
         public static string AndUnderPrice {
             get {
@@ -2914,7 +2914,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ürün Puani.
+        ///   Looks up a localized string similar to Ürün Puanı.
         /// </summary>
         public static string Rating {
             get {
