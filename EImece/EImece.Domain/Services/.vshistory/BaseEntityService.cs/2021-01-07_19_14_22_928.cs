@@ -137,10 +137,7 @@ namespace EImece.Domain.Services
                     }
                 }
             }
-            if (isEdit)
-            {
-                baseEntityRepository.Save();
-            }
+            baseEntityRepository.Save();
         }
     }
 }

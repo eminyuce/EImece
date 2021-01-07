@@ -28,9 +28,9 @@ namespace EImece.Domain.Repositories
             bool isActived = isActive != null && isActive.HasValue;
             if (isActived)
             {
-                pcList = pcList.Where(r => r.IsActive == isActive);
+                pcList = pcList.Where(r => r.IsActive == isActive).ToList();
             }
-            pcList = pcList.Where(r => r.Lang == language);
+            pcList = pcList.Where(r => r.Lang == language).ToList();
             var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
             new { 
                 ProductCategory = c, 

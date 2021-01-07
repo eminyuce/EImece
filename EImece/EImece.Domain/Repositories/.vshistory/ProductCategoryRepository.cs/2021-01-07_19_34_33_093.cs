@@ -24,7 +24,7 @@ namespace EImece.Domain.Repositories
 
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            var pcList = GetAll();
+            var pcList = GetActiveProductCategoriesWithActiveProducts();
             bool isActived = isActive != null && isActive.HasValue;
             if (isActived)
             {
@@ -50,17 +50,6 @@ namespace EImece.Domain.Repositories
                 GetTreeview(list, i, level);
             }
             return returnList;
-        }
-
-        private List<ProductCategory> GetActiveProductCategoriesWithActiveProducts(int language)
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
-            Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t=>t.IsActive);
-            var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
-
-            return result.ToList();
         }
 
         //Recursion method for recursively get all child nodes

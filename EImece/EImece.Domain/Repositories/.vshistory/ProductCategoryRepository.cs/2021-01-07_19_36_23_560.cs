@@ -24,7 +24,7 @@ namespace EImece.Domain.Repositories
 
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            var pcList = GetAll();
+            var pcList = GetActiveProductCategoriesWithActiveProducts(language);
             bool isActived = isActive != null && isActive.HasValue;
             if (isActived)
             {
@@ -52,11 +52,10 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
-        private List<ProductCategory> GetActiveProductCategoriesWithActiveProducts(int language)
+        private object GetActiveProductCategoriesWithActiveProducts(int language)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
             Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t=>t.IsActive);
             var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 

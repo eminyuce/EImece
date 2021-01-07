@@ -48,9 +48,9 @@ namespace EImece.Domain.Services
             {
                 result = new MainPageViewModel();
                 var queryables = ProductService.GetActiveProducts(language);
-                result.MainPageProducts = queryables.Where(r => r.IsActive &&  r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
-                result.LatestProducts = queryables.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(8).ToList();
-                result.CampaignProducts = queryables.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
+                result.MainPageProducts = queryables.Where(r => r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
+                result.LatestProducts = queryables.Where(r => r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(8).ToList();
+                result.CampaignProducts = queryables.Where(r => r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
 
                 result.MainPageMenu = MenuService.GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);

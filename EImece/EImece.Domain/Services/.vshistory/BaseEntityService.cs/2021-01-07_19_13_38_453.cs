@@ -77,7 +77,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("values cannot be null");
             }
-            bool isEdit = false;
+
             foreach (OrderingItem item in values)
             {
                 var t = baseEntityRepository.GetSingle(item.Id);
@@ -129,17 +129,13 @@ namespace EImece.Domain.Services
                             }
                         }
                         baseEntityRepository.Edit(t);
-                        isEdit = true;
+                        baseEntityRepository.Save();
                     }
                     catch (Exception exception)
                     {
                         BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + item.Id, checkbox);
                     }
                 }
-            }
-            if (isEdit)
-            {
-                baseEntityRepository.Save();
             }
         }
     }

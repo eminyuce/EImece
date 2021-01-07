@@ -31,11 +31,7 @@ namespace EImece.Domain.Repositories
                 pcList = pcList.Where(r => r.IsActive == isActive);
             }
             pcList = pcList.Where(r => r.Lang == language);
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
-            new { 
-                ProductCategory = c, 
-                ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count() 
-            });
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c => new { ProductCategory = c, ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count() });
 
             List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
@@ -50,17 +46,6 @@ namespace EImece.Domain.Repositories
                 GetTreeview(list, i, level);
             }
             return returnList;
-        }
-
-        private List<ProductCategory> GetActiveProductCategoriesWithActiveProducts(int language)
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
-            Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t=>t.IsActive);
-            var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
-
-            return result.ToList();
         }
 
         //Recursion method for recursively get all child nodes

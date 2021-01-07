@@ -24,13 +24,13 @@ namespace EImece.Domain.Repositories
 
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            var pcList = GetAll();
+            List<ProductCategory> pcList = GetActiveProductCategoriesWithActiveProducts(language);
             bool isActived = isActive != null && isActive.HasValue;
             if (isActived)
             {
-                pcList = pcList.Where(r => r.IsActive == isActive);
+                pcList = pcList.Where(r => r.IsActive == isActive).ToList();
             }
-            pcList = pcList.Where(r => r.Lang == language);
+            pcList = pcList.Where(r => r.Lang == language).ToList();
             var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
             new { 
                 ProductCategory = c, 
@@ -56,7 +56,6 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
             Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t=>t.IsActive);
             var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 

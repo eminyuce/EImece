@@ -13,7 +13,6 @@ namespace EImece.Domain.Services
         private const string STATE = "state";
         private const string MAIN_PAGE = "mainpage";
         private const string IMAGE_STATE = "imagestate";
-        private const string IS_CAMPAIGN = "IsCampaign";
         private static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
 
         private IBaseEntityRepository<T> baseEntityRepository { get; set; }
@@ -77,7 +76,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("values cannot be null");
             }
-            bool isEdit = false;
+
             foreach (OrderingItem item in values)
             {
                 var t = baseEntityRepository.GetSingle(item.Id);
@@ -120,7 +119,7 @@ namespace EImece.Domain.Services
                                 product.ImageState = item.IsActive;
                             }
                         }
-                        else if (checkbox.Equals(IS_CAMPAIGN, StringComparison.InvariantCultureIgnoreCase))
+                        else if (checkbox.Equals("IsCampaign", StringComparison.InvariantCultureIgnoreCase))
                         {
                             if (baseContent is Product)
                             {
@@ -129,17 +128,13 @@ namespace EImece.Domain.Services
                             }
                         }
                         baseEntityRepository.Edit(t);
-                        isEdit = true;
+                        baseEntityRepository.Save();
                     }
                     catch (Exception exception)
                     {
                         BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + item.Id, checkbox);
                     }
                 }
-            }
-            if (isEdit)
-            {
-                baseEntityRepository.Save();
             }
         }
     }

@@ -52,17 +52,6 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
-        private List<ProductCategory> GetActiveProductCategoriesWithActiveProducts(int language)
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
-            Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t=>t.IsActive);
-            var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
-
-            return result.ToList();
-        }
-
         //Recursion method for recursively get all child nodes
         private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
         {
