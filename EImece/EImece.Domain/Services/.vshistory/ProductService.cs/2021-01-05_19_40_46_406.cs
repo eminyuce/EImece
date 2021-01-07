@@ -132,10 +132,6 @@ namespace EImece.Domain.Services
              {
                  product.MainImageSrc = FilesHelper.GetImageSrcPath(product.MainImageId.Value);
             }
-            else
-            {
-                product.MainImageSrc = new Tuple<string, string>("", "");
-            }
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);

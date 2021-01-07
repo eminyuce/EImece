@@ -700,7 +700,7 @@
     <value>Yüklemeyi İptal Et</value>
   </data>
   <data name="CancelUploading" xml:space="preserve">
-    <value>Yüklemeyi İptal Et</value>
+    <value>Yüklemeyi iptal et</value>
   </data>
   <data name="CargoCompany" xml:space="preserve">
     <value>Kargo Şirketi</value>

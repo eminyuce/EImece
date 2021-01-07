@@ -592,7 +592,7 @@
     <value>Teslimat adresiniz ile Fatura adresinizin aynı oldugunu bilmenizi isteriz.</value>
   </data>
   <data name="PieceOfProductPurchased" xml:space="preserve">
-    <value>ürün satın aldınız.</value>
+    <value>ürün satin aldiniz.</value>
   </data>
   <data name="DearCustomer" xml:space="preserve">
     <value>Değerli müşterimiz</value>
@@ -700,7 +700,7 @@
     <value>Yüklemeyi İptal Et</value>
   </data>
   <data name="CancelUploading" xml:space="preserve">
-    <value>Yüklemeyi İptal Et</value>
+    <value>Yüklemeyi iptal et</value>
   </data>
   <data name="CargoCompany" xml:space="preserve">
     <value>Kargo Şirketi</value>

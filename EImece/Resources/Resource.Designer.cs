@@ -502,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yüklemeyi iptal et.
+        ///   Looks up a localized string similar to Yüklemeyi İptal Et.
         /// </summary>
         public static string CancelUploading {
             get {
@@ -2555,7 +2555,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ürün satin aldiniz..
+        ///   Looks up a localized string similar to ürün satın aldınız..
         /// </summary>
         public static string PieceOfProductPurchased {
             get {
