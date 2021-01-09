@@ -337,9 +337,7 @@ namespace EImece.Domain.Services
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
 
-                    var value = request.Unvalidated.Form.Get(name.Value);
-
-                 //   var value = request.Form[name.Value];
+                    var value = request.Form[name.Value];
 
                     if (name != null)
                     {

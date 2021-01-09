@@ -47,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
-        [HttpPost, ValidateInput(false)]
+        [HttpPost]
         public ActionResult SaveOrEditProductSpecs(int id, int templateId)
         {
             int productId = id;

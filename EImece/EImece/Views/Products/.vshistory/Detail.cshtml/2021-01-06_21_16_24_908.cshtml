@@ -295,7 +295,7 @@
                     <ul class="list-unstyled mb-2 pb-2">
                         @foreach (var specs in Model.ProdSpecs)
                         {
-                            <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @Html.Raw(specs.value) @specs.unit </li>
+                            <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @specs.value @specs.unit </li>
                         }
                     </ul>
                 </div>

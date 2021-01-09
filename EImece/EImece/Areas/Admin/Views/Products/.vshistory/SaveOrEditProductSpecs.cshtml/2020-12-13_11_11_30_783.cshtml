@@ -15,7 +15,7 @@
     var saveButtonText = AdminResource.SaveButtonText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
     var p = Model;
-    var imageTag = p.GetCroppedImageUrl(p.MainImageId.HasValue?p.MainImageId.Value:0, 150, 0);
+    var imageTag = p.GetCroppedImageTag(p.MainImageId.HasValue?p.MainImageId.Value:0, 150, 0);
 }
 
 <h2>@AdminResource.ProductSpecs   &#8594;   @AdminResource.TemplateXml : @Html.ActionLink(@template.Name, "SaveOrEdit", "Templates", new { id = template.Id }, new { @class = "" }) </h2>
@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-md-3">
         <div class="text-center">
-          <img src="@imageTag" style="max-width: 300px; max-height: 300px;" />
+            @Html.Raw(imageTag)
         </div>
     </div>
     <div class="col-md-3">
