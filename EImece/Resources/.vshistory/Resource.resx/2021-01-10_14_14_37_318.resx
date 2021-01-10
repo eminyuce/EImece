@@ -157,7 +157,7 @@
     <value>E-POSTA LİSTESİ</value>
   </data>
   <data name="MainPage" xml:space="preserve">
-    <value>Vitrin Ürünü</value>
+    <value>Ana Sayfa</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Isim</value>
@@ -1030,7 +1030,7 @@
     <value>E-posta Şablonları</value>
   </data>
   <data name="MainImageId" xml:space="preserve">
-    <value>Vitrin Ürünü Resmi</value>
+    <value>Ana Sayfa Resmi</value>
   </data>
   <data name="MainPageImages" xml:space="preserve">
     <value>Ana Sayfa Kayan Resimleri</value>

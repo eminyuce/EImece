@@ -1960,7 +1960,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ana Sayfa Resmi.
+        ///   Looks up a localized string similar to Vitrin Ürünü Resmi.
         /// </summary>
         public static string MainImageId {
             get {
@@ -1969,7 +1969,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ana Sayfa.
+        ///   Looks up a localized string similar to Vitrin Ürünü.
         /// </summary>
         public static string MainPage {
             get {
@@ -1978,16 +1978,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ana Sayfa.
-        /// </summary>
-        public static string MainPage1 {
-            get {
-                return ResourceManager.GetString("MainPage1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ana Sayfa Resimleri.
+        ///   Looks up a localized string similar to Ana Sayfa Kayan Resimleri.
         /// </summary>
         public static string MainPageImages {
             get {

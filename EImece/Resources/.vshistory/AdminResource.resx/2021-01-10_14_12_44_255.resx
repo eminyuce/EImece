@@ -202,7 +202,7 @@
     <value>Lütfen Menü Kategorinizi Ağaçtan Seçin</value>
   </data>
   <data name="MainImageId" xml:space="preserve">
-    <value>Vitrin Ürünü Resmi</value>
+    <value>Ana Sayfa Resmi</value>
   </data>
   <data name="IsActive" xml:space="preserve">
     <value>Yayında mı</value>
@@ -361,7 +361,7 @@
     <value>Şablonlar</value>
   </data>
   <data name="MainPageImages" xml:space="preserve">
-    <value>Ana Sayfa Kayan Resimleri</value>
+    <value>Ana Sayfa Resimleri</value>
   </data>
   <data name="Subscribers" xml:space="preserve">
     <value>Email Üyeliği</value>
