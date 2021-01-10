@@ -447,11 +447,11 @@ namespace EImece.Domain.Helpers.Extensions
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 if (String.IsNullOrEmpty(categoryName))
                 {
-                    return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity),area="" }, protocol);
+                    return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity) }, protocol);
                 }
                 else
                 {
-                    return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity), area = "" }, protocol);
+                    return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity) }, protocol);
                 }
             }
             return "";

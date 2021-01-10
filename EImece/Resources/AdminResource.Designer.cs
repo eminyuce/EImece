@@ -2716,6 +2716,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ara toplam.
+        /// </summary>
+        public static string Subtotal {
+            get {
+                return ResourceManager.GetString("Subtotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BAŞARILI.
         /// </summary>
         public static string SUCCESS {

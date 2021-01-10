@@ -451,7 +451,7 @@ namespace EImece.Domain.Helpers.Extensions
                 }
                 else
                 {
-                    return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity), area = "" }, protocol);
+                    return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity) }, protocol);
                 }
             }
             return "";

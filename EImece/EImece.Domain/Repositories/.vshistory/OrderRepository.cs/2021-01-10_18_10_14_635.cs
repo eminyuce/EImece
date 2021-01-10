@@ -38,7 +38,6 @@ namespace EImece.Domain.Repositories
         public List<Order> GetOrdersUserId(string userId, string search)
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.OrderProducts);
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.MainImage));
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
             includeProperties.Add(r => r.ShippingAddress);
