@@ -137,6 +137,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
             var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
@@ -145,9 +146,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             EmailSender.SendEmail(SettingService.GetEmailAccount(),
                 subject,
                 body,
-                adminUserName,
+                webSiteCompanyEmailAddress,
                 companyname,
-                adminUserName,
+                webSiteCompanyEmailAddress,
                 companyname);
         }
 
@@ -162,7 +163,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
-            var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
@@ -178,9 +179,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             EmailSender.SendEmail(SettingService.GetEmailAccount(),
                 emailTemplate.Subject,
                 body,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname);
         }
 
@@ -198,7 +199,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 groupName);
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
-            var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
@@ -214,14 +215,14 @@ namespace EImece.Domain.Helpers.EmailHelper
                 settingEmailAccount +
                 " body" + body +
                 " subject:" + emailTemplate.Subject +
-                " adminUserName:" + adminUserName +
+                " WebSiteCompanyEmailAddress" + WebSiteCompanyEmailAddress +
                 " companyname:" + companyname);
             EmailSender.SendEmail(settingEmailAccount,
                 emailTemplate.Subject,
                 body,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname);
         }
 

@@ -198,7 +198,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 groupName);
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
-            var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            var WebSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
@@ -214,14 +214,14 @@ namespace EImece.Domain.Helpers.EmailHelper
                 settingEmailAccount +
                 " body" + body +
                 " subject:" + emailTemplate.Subject +
-                " adminUserName:" + adminUserName +
+                " WebSiteCompanyEmailAddress" + WebSiteCompanyEmailAddress +
                 " companyname:" + companyname);
             EmailSender.SendEmail(settingEmailAccount,
                 emailTemplate.Subject,
                 body,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname);
         }
 

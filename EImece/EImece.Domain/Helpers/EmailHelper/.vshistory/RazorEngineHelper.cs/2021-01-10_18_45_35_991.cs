@@ -214,14 +214,14 @@ namespace EImece.Domain.Helpers.EmailHelper
                 settingEmailAccount +
                 " body" + body +
                 " subject:" + emailTemplate.Subject +
-                " adminUserName:" + adminUserName +
+                " adminUserName" + adminUserName +
                 " companyname:" + companyname);
             EmailSender.SendEmail(settingEmailAccount,
                 emailTemplate.Subject,
                 body,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname);
         }
 

@@ -219,9 +219,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             EmailSender.SendEmail(settingEmailAccount,
                 emailTemplate.Subject,
                 body,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname,
-                adminUserName,
+                WebSiteCompanyEmailAddress,
                 companyname);
         }
 
