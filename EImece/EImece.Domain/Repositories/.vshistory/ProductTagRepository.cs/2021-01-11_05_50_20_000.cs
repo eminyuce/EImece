@@ -48,7 +48,7 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Product);
-            includeProperties.Add(r => r.Product.MainImage);
+            includeProperties.Add(r => r.Product);
             includeProperties.Add(r => r.Product.ProductCategory);
             return this.Paginate(pageIndex, pageSize, r => r.Product.Position, r => r.TagId == tagId, includeProperties.ToArray());
         }

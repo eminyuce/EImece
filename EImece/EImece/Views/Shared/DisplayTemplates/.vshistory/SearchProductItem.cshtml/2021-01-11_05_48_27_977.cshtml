@@ -10,7 +10,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
-    var mainImageThbImgSrc = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
     var productLink = product.DetailPageAbsoluteUrl;
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
 }
