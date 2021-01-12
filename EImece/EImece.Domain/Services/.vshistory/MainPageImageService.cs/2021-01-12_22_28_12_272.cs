@@ -53,8 +53,8 @@ namespace EImece.Domain.Services
                 result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
 
                 result.MainPageMenu = MenuService.GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-               // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
-               // result.LatestStories = StoryService.GetLatestStories(language, 4);
+                result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
+                result.LatestStories = StoryService.GetLatestStories(language, 4);
                 result.MainPageImages = GetActiveBaseContents(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);

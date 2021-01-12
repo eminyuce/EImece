@@ -52,7 +52,7 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
-        [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Index()
         {
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
@@ -277,7 +277,12 @@ namespace EImece.Controllers
                 contact.Message, Environment.NewLine);
             SubsciberService.SaveOrEditEntity(s);
         }
-     
+        public ActionResult BackUpDb()
+        {
+            BackupService backupService = new BackupService("eimece");
+            backupService.BackupAllUserDatabases();
+            return View();
+        }
         public ActionResult Language(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();

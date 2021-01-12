@@ -12,7 +12,7 @@
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
     var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
     var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
-    var mainPageStories = Model.StoryIndexViewModel == null ? new List<Story>() : Model.StoryIndexViewModel.Stories;
+    var mainPageStories = Model.StoryIndexViewModel == null ? new List<Story>(); : Model.StoryIndexViewModel.Stories;
     var campaignProducts = Model.CampaignProducts;
     var latestProducts = Model.LatestProducts;
     var latestStories = Model.LatestStories;

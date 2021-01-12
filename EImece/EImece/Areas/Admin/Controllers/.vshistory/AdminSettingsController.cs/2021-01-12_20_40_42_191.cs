@@ -38,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             BackupService backupService = new BackupService("");
             backupService.BackupSystemDatabase();
-            return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
+            return View();
         }
 
         [HttpPost]

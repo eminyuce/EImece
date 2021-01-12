@@ -201,7 +201,7 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public ProductCategoryViewModel GetProductCategoryViewModelWithCache(int categoryId)
+        private ProductCategoryViewModel GetProductCategoryViewModelWithCache(int categoryId)
         {
             ProductCategoryViewModel result;
             var cacheKey = string.Format("GetProductCategoryViewModel-{0}", categoryId);

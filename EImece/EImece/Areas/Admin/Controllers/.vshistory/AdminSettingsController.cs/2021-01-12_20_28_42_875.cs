@@ -28,17 +28,14 @@ namespace EImece.Areas.Admin.Controllers
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(SettingService.GetSettingModel(CurrentLanguage));
         }
-    
+        public ActionResult BackUpDb()
+        {
+            BackupService backupService = new BackupService("~/App_Data");
+        }
         public ActionResult SystemSettings()
         {
             SystemSettingModel r = SettingService.GetSystemSettingModel();
             return View(r);
-        }
-        public ActionResult BackUpDb()
-        {
-            BackupService backupService = new BackupService("");
-            backupService.BackupSystemDatabase();
-            return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
         }
 
         [HttpPost]

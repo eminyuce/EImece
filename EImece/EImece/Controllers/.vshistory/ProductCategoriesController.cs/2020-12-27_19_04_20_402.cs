@@ -1,7 +1,6 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
@@ -30,7 +29,7 @@ namespace EImece.Controllers
         }
 
         [Route(Constants.CategoryPrefix)]
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        //[CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
             try

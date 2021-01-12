@@ -189,26 +189,18 @@ namespace EImece.Domain.Services
         public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
             ProductCategoryViewModel result = null;
+            var cacheKey = string.Format("GetProductCategoryViewModel-{0}", categoryId);
             if (IsCachingActivated)
             {
-                result = GetProductCategoryViewModelWithCache(categoryId);
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                {
+                    result = GetProductCategoryViewModelNoCache(categoryId);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                }
             }
             else
             {
                 result = GetProductCategoryViewModelNoCache(categoryId);
-            }
-
-            return result;
-        }
-
-        public ProductCategoryViewModel GetProductCategoryViewModelWithCache(int categoryId)
-        {
-            ProductCategoryViewModel result;
-            var cacheKey = string.Format("GetProductCategoryViewModel-{0}", categoryId);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = GetProductCategoryViewModelNoCache(categoryId);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
 
             return result;

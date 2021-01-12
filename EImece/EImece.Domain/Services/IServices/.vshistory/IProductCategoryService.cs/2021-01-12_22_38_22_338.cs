@@ -24,7 +24,7 @@ namespace EImece.Domain.Services.IServices
 
         List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language);
 
-        ProductCategoryViewModel GetProductCategoryViewModelWithCache(int categoryId);
+        public ProductCategoryViewModel GetProductCategoryViewModelWithCache(int categoryId)l
 
 
     }

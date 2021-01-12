@@ -72,7 +72,7 @@ namespace EImece.Areas.Admin.Controllers
            var activeCategories = ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
             foreach (var c in activeCategories)
             {
-                ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
+                ProductCategoryService.GetProductCategoryViewModel(c.Id);
             }
         
             if (urlReferrer != null)

@@ -4,8 +4,6 @@ using EImece.Domain.Models.AdminModels;
 using NLog;
 using Resources;
 using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -28,17 +26,40 @@ namespace EImece.Areas.Admin.Controllers
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(SettingService.GetSettingModel(CurrentLanguage));
         }
-    
+        public ActionResult BackUpDb()
+        {
+            SqlConnection con = new SqlConnection();
+            SqlCommand sqlcmd = new SqlCommand();
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
+
+            con.ConnectionString = ConfigurationManager.ConnectionStrings["MyConString"].ConnectionString;
+            string backupDIR = "~/BackupDB";
+            string path = Server.MapPath(backupDIR);
+
+            try
+            {
+                var databaseName = "MyFirstDatabase";
+                con.Open();
+                string saveFileName = "HiteshBackup";
+                sqlcmd = new SqlCommand("backup database" + databaseName.BKSDatabaseName + "to disk='" + path + "\\" + saveFileName + ".Bak'", con);
+                sqlcmd.ExecuteNonQuery();
+                con.Close();
+
+
+                ViewBag.Success = "Backup database successfully";
+                return View("Create");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Error Occured During DB backup process !<br>" + ex.ToString();
+                return View("Create");
+            }
+        }
         public ActionResult SystemSettings()
         {
             SystemSettingModel r = SettingService.GetSystemSettingModel();
             return View(r);
-        }
-        public ActionResult BackUpDb()
-        {
-            BackupService backupService = new BackupService("");
-            backupService.BackupSystemDatabase();
-            return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
         }
 
         [HttpPost]
