@@ -75,7 +75,6 @@ namespace EImece.Areas.Admin.Controllers
                 ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
             }
             MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-            SettingService.GetAllActiveSettings();
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());

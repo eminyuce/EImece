@@ -69,13 +69,13 @@ namespace EImece.Areas.Admin.Controllers
 
             var urlReferrer = Request.UrlReferrer;
             MainPageImageService.GetMainPageViewModel(CurrentLanguage);
-            var activeCategories = ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
+            ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
+            MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
             foreach (var c in activeCategories)
             {
                 ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
             }
-            MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-            SettingService.GetAllActiveSettings();
+        
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());

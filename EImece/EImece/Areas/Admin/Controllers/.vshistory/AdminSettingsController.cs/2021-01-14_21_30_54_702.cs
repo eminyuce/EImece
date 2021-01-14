@@ -6,7 +6,6 @@ using Resources;
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -40,7 +39,30 @@ namespace EImece.Areas.Admin.Controllers
             BackupService backupService = new BackupService("");
             backupService.BackupSystemDatabase();
 
-          
+            var script = new StringBuilder();
+
+            Server server = new Server(new ServerConnection(new SqlConnection(connectionString)));
+            Database database = server.Databases[databaseName];
+            ScriptingOptions options = new ScriptingOptions
+            {
+                ScriptData = true,
+                ScriptSchema = true,
+                ScriptDrops = false,
+                Indexes = true,
+                IncludeHeaders = true
+            };
+
+            foreach (Table table in database.Tables)
+            {
+                foreach (var statement in table.EnumScript(options))
+                {
+                    script.Append(statement);
+                    script.Append(Environment.NewLine);
+                }
+            }
+
+            File.WriteAllText(backupPath + databaseName + ".sql", script.ToString());
+
             return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
         }
 

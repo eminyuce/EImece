@@ -363,7 +363,6 @@
     <Content Include="android-chrome-72x72.png" />
     <Content Include="android-chrome-96x96.png" />
     <Content Include="apple-touch-icon.png" />
-    <Content Include="App_Data\eimece_sql_data.sql" />
     <Content Include="App_Data\notOffLineIpAddresses.txt" />
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
@@ -1357,8 +1356,6 @@
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\SelectUserRolesViewModel.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pLanguages.cshtml" />
-    <Content Include="App_Data\il-ilce-mahalle\iller.json" />
-    <Content Include="App_Data\il-ilce-mahalle\ilceler.json" />
     <Content Include="Areas\Admin\Views\Products\MoveProductsInTrees.cshtml" />
     <Content Include="Areas\Admin\Views\Customers\Index.cshtml" />
     <Content Include="Areas\Customers\Views\web.config" />
@@ -1378,7 +1375,6 @@
     <Content Include="Areas\Admin\Views\Brands\SaveOrEdit.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_SendContactSellerForCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\ProductComments\Index.cshtml" />
-    <Content Include="App_Data\menuLinks.json" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
