@@ -94,7 +94,10 @@ namespace EImece.Controllers
                 width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
                 height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
 
+                var timer = new Stopwatch();
+                timer.Start();
                 var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
+                timer.Stop();
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
