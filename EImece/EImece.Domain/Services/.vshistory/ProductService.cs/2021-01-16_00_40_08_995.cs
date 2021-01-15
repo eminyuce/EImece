@@ -155,6 +155,7 @@ namespace EImece.Domain.Services
             //    var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
             // result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
             // }
+            result.RelatedStories = new List<Story>();
             int relatedProductTake = 20;
             result.RelatedProducts = new List<Product>();
             if (product.ProductTags.Any())

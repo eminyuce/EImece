@@ -5,9 +5,9 @@ using EImece.Domain.Models.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
-using NLog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Web;
@@ -17,8 +17,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class DashboardController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
@@ -86,37 +84,24 @@ namespace EImece.Areas.Admin.Controllers
 
         private void ExecuteWarmUpSql()
         {
-            try
+            MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            var activeCategories = ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
+            if (activeCategories.IsNotEmpty())
             {
-                SettingService.GetAllActiveSettings();
-                MainPageImageService.GetMainPageViewModel(CurrentLanguage);
-                var activeCategories = ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
-                if (activeCategories.IsNotEmpty())
+                foreach (var c in activeCategories)
                 {
-                    foreach (var c in activeCategories)
-                    {
-                        ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
-                    }
-                }
-                MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                var products = ProductService.GetActiveProducts(CurrentLanguage);
-                if (products.IsNotEmpty())
-                {
-                    int i = 0;
-                    foreach (var p in products)
-                    {
-                        ProductService.GetProductDetailViewModelById(p.Id);
-                        if (i == 3)
-                        {
-                            break;
-                        }
-                        i++;
-                    }
+                    ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
                 }
             }
-            catch (Exception ex)
+            MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
+            SettingService.GetAllActiveSettings();
+            var products = ProductService.GetActiveProducts(CurrentLanguage);\
+            if (products.IsNotEmpty())
             {
-                Logger.Error(ex, "ExecuteWarmUpSql error");
+                foreach (var p in products.Take(3))
+                {
+                    var product = ProductService.GetProductDetailViewModelById(p.Id);
+                }
             }
         }
 

@@ -128,9 +128,9 @@ namespace EImece.Domain.Services
             //     FileStorage fileStorage = null;
             //     product.MainImageBytes = FilesHelper.GetFileStorageFromCache(product.MainImageId.Value, out fileStorage);
             // }
-            if (product.MainImageId.HasValue)
-            {
-                product.MainImageSrc = FilesHelper.GetImageSrcPath(product.MainImageId.Value);
+             if (product.MainImageId.HasValue)
+             {
+                 product.MainImageSrc = FilesHelper.GetImageSrcPath(product.MainImageId.Value);
             }
             else
             {
@@ -150,11 +150,11 @@ namespace EImece.Domain.Services
             }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
             result.RelatedStories = new List<Story>();
-            // if (product.ProductTags.Any())
-            // {
-            //    var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
-            // result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
-            // }
+            if (product.ProductTags.Any())
+            {
+                var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
+                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
+            }
             int relatedProductTake = 20;
             result.RelatedProducts = new List<Product>();
             if (product.ProductTags.Any())
@@ -168,6 +168,7 @@ namespace EImece.Domain.Services
                 relatedProductTake -= result.RelatedProducts.Count;
                 result.RelatedProducts.AddRange(ProductRepository.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
             }
+
 
             result.RelatedProducts = result.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
 
@@ -269,7 +270,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public List<Product> GetActiveProducts(int? language)
+        public List<Product> GetActiveProducts( int? language)
         {
             return ProductRepository.GetActiveProducts(language);
         }
@@ -339,7 +340,7 @@ namespace EImece.Domain.Services
 
                     var value = request.Unvalidated.Form.Get(name.Value);
 
-                    //   var value = request.Form[name.Value];
+                 //   var value = request.Form[name.Value];
 
                     if (name != null)
                     {

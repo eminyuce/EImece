@@ -150,11 +150,11 @@ namespace EImece.Domain.Services
             }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
             result.RelatedStories = new List<Story>();
-            // if (product.ProductTags.Any())
-            // {
-            //    var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
-            // result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
-            // }
+           // if (product.ProductTags.Any())
+           // {
+           //    var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
+               // result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 20, product.Lang, 0);
+           // }
             int relatedProductTake = 20;
             result.RelatedProducts = new List<Product>();
             if (product.ProductTags.Any())
