@@ -13,7 +13,6 @@
     var PleaseSelectYourMenuCategoryFromTree = AdminResource.PleaseSelectYourMenuCategoryFromTree;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     List<MenuTreeModel> MenuTree = ViewBag.MenuTree;
-    var controllerName = "Menus";
 }
 
 <h2>@AdminResource.Menu</h2>
@@ -199,26 +198,18 @@
             </div>
         }
     </div>
-    <div class="row">
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-2">
-            @Html.ActionLink(AdminResource.BackToList, "Index")
-        </div>
-        <div class="col-md-4">
-            @GridToolsDeleteColumn(Model, controllerName)
-        </div>
-    </div>
 </div>
- 
-@helper GridToolsDeleteColumn(Menu d, String controllerName)
+<div>
+    @Html.ActionLink(AdminResource.BackToList, "Index")
+</div>
+@helper GridToolsDeleteColumn(Product d, String controllerName)
 {
     if (d.Id > 0)
     {
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
                    { "ItemId", d.Id },
                    {"controllerName",controllerName},
-                    {"gridDeleteText",string.Format("'{0}' menusu silmek istiyorum",d.Name)},
+                    {"gridDeleteText",string.Format("'{0}' ürünü silmek istiyorum",d.Name)},
                    { "ItemDescription", d.Name }
              });
     }

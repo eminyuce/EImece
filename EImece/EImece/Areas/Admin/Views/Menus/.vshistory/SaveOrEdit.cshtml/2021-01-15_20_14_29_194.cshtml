@@ -211,14 +211,14 @@
     </div>
 </div>
  
-@helper GridToolsDeleteColumn(Menu d, String controllerName)
+@helper GridToolsDeleteColumn(Product d, String controllerName)
 {
     if (d.Id > 0)
     {
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
                    { "ItemId", d.Id },
                    {"controllerName",controllerName},
-                    {"gridDeleteText",string.Format("'{0}' menusu silmek istiyorum",d.Name)},
+                    {"gridDeleteText",string.Format("'{0}' ürünü silmek istiyorum",d.Name)},
                    { "ItemDescription", d.Name }
              });
     }
