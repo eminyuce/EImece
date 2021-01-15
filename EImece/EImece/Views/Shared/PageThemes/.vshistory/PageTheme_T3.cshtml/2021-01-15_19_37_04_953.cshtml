@@ -16,6 +16,7 @@
 
     int Width = ViewData["Width"].ToInt(300);
     int Height = ViewData["Height"].ToInt(214);
+    var imgMenuUrl = menu.ImageState ? menu.GetCroppedImageUrl(menu.MainImageId, 0, 0) : "";
 }
 
 <div class="page-title-wrapper" aria-label="Page title">
@@ -37,19 +38,33 @@
         <hr class="mt-4">
     </div>
 </div>
-@if (files.IsNotEmpty())
-{
-    <div class="container">
-        <!-- Row-->
-        <div class="row">
-            <!-- Row-->
-            @for (int i = 0; i < files.Count; i++)
-            {
-            FileStorage f = files[i].FileStorage;
-            <div class="col-md-4">
-                @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+
+<div class="container">
+    <!-- Row-->
+    <div class="row">
+        <div class="col-md-8">
+            <div>
+                @Html.Raw(menu.Description)
             </div>
+            @if (files.IsNotEmpty())
+            {
+                <!-- Row-->
+                <div class="row">
+                    @for (int i = 0; i < files.Count; i++)
+                    {
+                        var f = files[i].FileStorage;
+                        <div class="col-md-4 mb-2">
+                            @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+                        </div>
+                    }
+                </div>
             }
         </div>
+        @if (!string.IsNullOrEmpty(imgMenuUrl))
+        {
+            <div class="col-md-4">
+                    <img src="@imgMenuUrl" class="img-thumbnail rounded" alt="Rounded image">
+            </div>
+        }
     </div>
-}
+</div>

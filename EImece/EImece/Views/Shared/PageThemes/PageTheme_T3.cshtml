@@ -53,7 +53,7 @@
                     @for (int i = 0; i < files.Count; i++)
                     {
                         var f = files[i].FileStorage;
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-4">
                             @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
                         </div>
                     }
@@ -63,9 +63,7 @@
         @if (!string.IsNullOrEmpty(imgMenuUrl))
         {
             <div class="col-md-4">
-                <div>
                     <img src="@imgMenuUrl" class="img-thumbnail rounded" alt="Rounded image">
-                </div>
             </div>
         }
     </div>
