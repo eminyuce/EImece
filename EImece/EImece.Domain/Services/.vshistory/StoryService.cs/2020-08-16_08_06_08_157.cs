@@ -62,10 +62,9 @@ namespace EImece.Domain.Services
             }
             if (story.StoryFiles != null)
             {
-                var menuFiles = new List<StoryFile>(story.StoryFiles);
-                foreach (var file in menuFiles)
+                foreach (var file in story.StoryFiles)
                 {
-                    FileStorageService.DeleteUploadImageByFileStorage(storyId, MediaModType.Stories, file.FileStorageId);
+                    FileStorageService.DeleteFileStorage(file.FileStorageId);
                 }
                 StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == storyId);
             }

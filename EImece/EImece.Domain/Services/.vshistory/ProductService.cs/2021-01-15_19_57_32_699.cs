@@ -214,7 +214,7 @@ namespace EImece.Domain.Services
                     var menuFiles = new List<ProductFile>(product.ProductFiles);
                     foreach (var file in menuFiles)
                     {
-                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
+                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Menus, file.FileStorageId);
                     }
                     ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 }

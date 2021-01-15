@@ -211,10 +211,10 @@ namespace EImece.Domain.Services
                 }
                 if (product.ProductFiles != null)
                 {
-                    var menuFiles = new List<ProductFile>(product.ProductFiles);
+                    var menuFiles = new List<MenuFile>(product.ProductFiles);
                     foreach (var file in menuFiles)
                     {
-                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
+                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Menus, file.FileStorageId);
                     }
                     ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 }

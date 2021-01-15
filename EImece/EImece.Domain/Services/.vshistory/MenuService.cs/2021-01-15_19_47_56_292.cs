@@ -107,10 +107,10 @@ namespace EImece.Domain.Services
                 }
                 if (menu.MenuFiles != null)
                 {
-                    var menuFiles = new List<MenuFile>(menu.MenuFiles);
-                    foreach (var file in menuFiles)
+                    foreach (var file in menu.MenuFiles)
                     {
                         FileStorageService.DeleteUploadImageByFileStorage(menuId, MediaModType.Menus,file.FileStorageId);
+
                     }
                     MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
                 }
