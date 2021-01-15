@@ -64,7 +64,14 @@
 { "DeleteText", gridDeleteText },
 { "ItemDescription", String.Format("{0} {1}", d.Name, d.Surname) } }));
 
-       
+        columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(d =>
+    @<b>
+        @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", "Users", new { id = d.UserId }, new { @class = "btn btn-info btn-sm     " })
+    </b>);
 
 columns.Add()
 .Encoded(false)
