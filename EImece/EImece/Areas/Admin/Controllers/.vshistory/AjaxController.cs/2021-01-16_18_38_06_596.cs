@@ -70,16 +70,16 @@ namespace EImece.Areas.Admin.Controllers
                 item.MainImageId = null;
                 StoryCategoryService.SaveOrEditEntity(item);
             }
-            else if (contentClass.Equals(typeof(MainPageImage).Name, StringComparison.InvariantCultureIgnoreCase))
+            else if (contentClass.Equals(typeof(StoryCategory).Name, StringComparison.InvariantCultureIgnoreCase))
             {
                 FileStorageService.DeleteFileStorage(imageId);
-                var item = MainPageImageService.GetSingle(contentId);
+                var item = StoryCategoryService.GetSingle(contentId);
                 item.MainImageId = null;
-                MainPageImageService.SaveOrEditEntity(item);
+                StoryCategoryService.SaveOrEditEntity(item);
             }
             else
             {
-                throw new NotImplementedException("No Development for "+contentId + " " + imageId + " " + contentClass);
+                throw new ArgumentException(contentId + " " + imageId + " " + contentClass);
             }
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }
@@ -159,7 +159,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-                    throw new NotImplementedException(term+" "+ action + " "+controller);
+                    throw new ArgumentException(term+" "+ action + " "+controller);
                 }
 
                 return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);

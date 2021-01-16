@@ -12,19 +12,16 @@
         var gridMainPageImageText = AdminResource.GridMainPageImageText;
         var gridMainNoPageImageText = AdminResource.GridNoMainPageImageText;
         Boolean IsMainImageExists = FilesHelper.IsMainImageExists(baseContent.MainImageId, f);
-        string className = ObjectContext.GetObjectType(baseContent.GetType()).Name;
-        var confirmationText = AdminResource.RemoveMainImageConfirmationText;
+        string className = ObjectContext.GetObjectType(baseContent.GetType());
+
     }
 
     @if (IsMainImageExists)
     {
-    <span data-main-image-delete-id="@f.Id">
         <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",baseContent.MainImageId)">@gridMainPageImageText</a>
-        @Html.Partial("pImagePopUp", f)
+        @Html.Partial("pImagePopUp", f);
         <input id="MainImageId" name="MainImageId" type="hidden" value="@baseContent.MainImageId">
-        <a onclick="deleteBaseContentMainImage(@baseContent.Id, @f.Id,'@className','@confirmationText')" class="btn btn-outline btn-danger btn-xs">@AdminResource.RemoveJustImage</a>
-    </span>
-         
+        <a data-main-image-delete-id="@f.Id" onclick="mainImageDelete(@f.Id,@className)" class="btn btn-outline btn-danger btn-xs">@AdminResource.RemoveJustImage</a>
     }
     else
     {

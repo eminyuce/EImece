@@ -2,21 +2,6 @@
     return (!str || 0 === str.length);
 }
 
-function deleteBaseContentMainImage(contentId, ImageId, contentClass, confirmationText) {
-
-    if (confirm(confirmationText)) {
-        var postData = JSON.stringify({
-            "contentId": contentId,
-            "imageId": ImageId,
-            "contentClass": contentClass
-        });
-        ajaxMethodCall(postData, "/admin/Ajax/DeleteBaseContentMainImage", function (data) {
-            $('[data-main-image-delete-id=' + ImageId + ']').html(data);
-        });
-    } 
-}
-
-
 $(document).ready(function () {
     bindSaveAdminOrderNote();
     function bindSaveAdminOrderNote() {

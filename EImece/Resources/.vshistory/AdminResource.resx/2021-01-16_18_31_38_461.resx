@@ -1125,7 +1125,4 @@
   <data name="RemoveJustImage" xml:space="preserve">
     <value>Resmi Sil</value>
   </data>
-  <data name="RemoveMainImageConfirmationText" xml:space="preserve">
-    <value>Ana resmi silmek istediğinize emin misiniz?</value>
-  </data>
 </root>

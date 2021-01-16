@@ -28,58 +28,19 @@ namespace EImece.Areas.Admin.Controllers
         {
             this.AppLogRepository = AppLogRepository;
         }
-        public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
+        public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClassName)
         {
-            if (string.IsNullOrEmpty(contentClass))
+            if (string.IsNullOrEmpty(contentClassName))
             {
                 return Json("Error contentClassName does not exists", JsonRequestBehavior.AllowGet);
             }
 
-            if (contentClass.Equals(typeof(Product).Name, StringComparison.InvariantCultureIgnoreCase))
+            if (contentClassName.Equals(typeof(Product).Name, StringComparison.InvariantCultureIgnoreCase))
             {
                 FileStorageService.DeleteFileStorage(imageId);
-                var item = ProductService.GetSingle(contentId);
-                item.MainImageId = null;
-                ProductService.SaveOrEditEntity(item);
-            }
-            else if (contentClass.Equals(typeof(Menu).Name, StringComparison.InvariantCultureIgnoreCase))
-            {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = MenuService.GetSingle(contentId);
-                item.MainImageId = null;
-                MenuService.SaveOrEditEntity(item);
-            }
-            else if (contentClass.Equals(typeof(ProductCategory).Name, StringComparison.InvariantCultureIgnoreCase))
-            {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = ProductCategoryService.GetSingle(contentId);
-                item.MainImageId = null;
-                ProductCategoryService.SaveOrEditEntity(item);
-            }
-            else if (contentClass.Equals(typeof(Story).Name, StringComparison.InvariantCultureIgnoreCase))
-            {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = StoryService.GetSingle(contentId);
-                item.MainImageId = null;
-                StoryService.SaveOrEditEntity(item);
-            }
-            else if (contentClass.Equals(typeof(StoryCategory).Name, StringComparison.InvariantCultureIgnoreCase))
-            {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = StoryCategoryService.GetSingle(contentId);
-                item.MainImageId = null;
-                StoryCategoryService.SaveOrEditEntity(item);
-            }
-            else if (contentClass.Equals(typeof(MainPageImage).Name, StringComparison.InvariantCultureIgnoreCase))
-            {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = MainPageImageService.GetSingle(contentId);
-                item.MainImageId = null;
-                MainPageImageService.SaveOrEditEntity(item);
-            }
-            else
-            {
-                throw new NotImplementedException("No Development for "+contentId + " " + imageId + " " + contentClass);
+                var product = ProductService.GetSingle(contentId);
+                product.MainImageId = null;
+                ProductService.SaveOrEditEntity(product);
             }
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }
@@ -156,10 +117,6 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     var users = ApplicationDbContext.Users.AsQueryable();
                     list = users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToList();
-                }
-                else
-                {
-                    throw new NotImplementedException(term+" "+ action + " "+controller);
                 }
 
                 return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);

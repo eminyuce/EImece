@@ -4,7 +4,7 @@
 
 function deleteBaseContentMainImage(contentId, ImageId, contentClass, confirmationText) {
 
-    if (confirm(confirmationText)) {
+    if (confirm('Are you sure you want to save this thing into the database?')) {
         var postData = JSON.stringify({
             "contentId": contentId,
             "imageId": ImageId,

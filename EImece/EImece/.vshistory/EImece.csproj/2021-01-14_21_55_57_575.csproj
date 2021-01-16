@@ -1405,6 +1405,7 @@
     <Content Include="Views\Shared\pSearchForm.cshtml" />
     <Content Include="Views\Shared\pGridDropDown.cshtml" />
     <Content Include="Views\Shared\pGridCheckbox.cshtml" />
+    <Content Include="Views\Shared\pGridImageMainPage.cshtml" />
     <Content Include="Areas\Customers\Views\Home\SendMessageToSeller.cshtml" />
     <Content Include="Areas\Customers\Views\Home\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_ProductCategoryTreeChildren.cshtml" />

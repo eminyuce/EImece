@@ -79,7 +79,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                throw new NotImplementedException("No Development for "+contentId + " " + imageId + " " + contentClass);
+                throw new ArgumentException(contentId + " " + imageId + " " + contentClass);
             }
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }
@@ -159,7 +159,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-                    throw new NotImplementedException(term+" "+ action + " "+controller);
+                    throw new ArgumentException(term+" "+ action + " "+controller);
                 }
 
                 return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);

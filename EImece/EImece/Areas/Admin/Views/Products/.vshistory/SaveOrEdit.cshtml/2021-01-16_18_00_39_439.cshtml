@@ -205,11 +205,11 @@
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <input type="file" name="postedImage" />
                                     @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     @Html.LabelFor(model => model.ImageState)
                                     @Html.EditorFor(model => model.ImageState)
                                     @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })

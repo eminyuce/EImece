@@ -2284,6 +2284,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resmi Sil.
+        /// </summary>
+        public static string RemoveJustImage {
+            get {
+                return ResourceManager.GetString("RemoveJustImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ana resmi silmek istediğinize emin misiniz?.
+        /// </summary>
+        public static string RemoveMainImageConfirmationText {
+            get {
+                return ResourceManager.GetString("RemoveMainImageConfirmationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Raporlar.
         /// </summary>
         public static string Reports {
