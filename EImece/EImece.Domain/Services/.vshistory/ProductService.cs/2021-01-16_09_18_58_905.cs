@@ -402,13 +402,9 @@ namespace EImece.Domain.Services
             r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
             return r;
         }
-        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
+        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting)
         {
-            var r = new SimiliarProductTagsViewModel();
-            r.Tag = TagService.GetSingle(tagId);
-            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
-            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
-            return r;
+            throw new NotImplementedException();
         }
     }
 }

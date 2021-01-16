@@ -83,12 +83,11 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var tagId = id.GetId();
-            int pageSize = AppConfig.ProductDefaultRecordPerPage;
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
+            int pageIndex = 1;
+            int pageSize = 20;
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
             products.Page = page;
-            products.RecordPerPage = pageSize;
-            products.Sorting = (SortingType)sorting;
-            products.TagId = id;
+            products.Sorting = sorting;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
         }

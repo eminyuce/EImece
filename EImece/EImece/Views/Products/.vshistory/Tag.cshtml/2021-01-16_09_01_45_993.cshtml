@@ -1,13 +1,11 @@
 ﻿@model EImece.Domain.Models.FrontModels.SimiliarProductTagsViewModel
 @using GenericRepository;
-@using EImece.Domain.Entities
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
-@using EImece.Domain.Models.FrontModels;
 @using EImece.Domain;
-@using EImece.Domain.Helpers.HtmlHelpers;
-@using EImece.Domain.Models;
-@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
 @using Resources;
 @{
     PaginatedList<ProductTag> productTags = Model.ProductTags;
@@ -32,35 +30,17 @@
                 </li>
             </ol>
         </nav>
-        <h1 class="page-title">@tag.Name</h1>
+        <h1 class="page-title"></h1>
         <span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
-        <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
-            <div class="d-flex flex-wrap">
-                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.TagResultTotalCountText, tag.Name, productTags.TotalCount))</span>
-            </div>
-        </div>
     </div>
 </div>
 
 <div class="container potrfolio-container">
-
     <div class="clearfix"></div>
-    <!-- Toolbar-->
-    <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+    <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
         <div class="d-flex flex-wrap">
-            <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
-                <div class="button-group tabs">
-
-                    <a href="@Model.ProductsListPageUrl(SortingType.Newest,productsTagPaging)"
-                       rel="nofollow" class="@activeButtonClass(SortingType.Newest, productsTagPaging)">@Resource.NewestItems</a>
-                    <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,productsTagPaging)"
-                       rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, productsTagPaging)">@Resource.LowHighPriceItems</a>
-                    <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,productsTagPaging)"
-                       rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, productsTagPaging)">@Resource.HighLowPriceItems</a>
-                </div>
-            </div>
+            <span class="d-block mt-2">@String.Format(Resource.TagResultTotalCountText, tag.Name, productTags.TotalCount)</span>
         </div>
     </div>
     <!-- Products grid-->
@@ -75,10 +55,3 @@
                           {"actionName","Tag"}, {"controllerName","products" } })
     </div>
 </div>
-@functions {
-
-    public string activeButtonClass(SortingType selected, IPaginatedModelList products)
-    {
-        return String.Format("{0}", products.Sorting == (int)selected ? "btn btn-pill btn-secondary mb-2 mr-1" : "btn btn-pill btn-outline-secondary mb-2 mr-1");
-    }
-}

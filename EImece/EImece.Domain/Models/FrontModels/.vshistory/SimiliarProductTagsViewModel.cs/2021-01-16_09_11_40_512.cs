@@ -20,7 +20,13 @@ namespace EImece.Domain.Models.FrontModels
             var sortingInt = (int)sorting;
             routeValues.Remove("sorting");
             routeValues.Add("sorting", sortingInt);
+            routeValues.Remove("RouteId");
+            routeValues.Add("RouteId", TagId);
             var urlHelp = new UrlHelper(requestContext);
+            if (string.IsNullOrEmpty(paginatedModelList.Filter))
+            {
+                routeValues.Remove("filtreler");
+            }
             return urlHelp.Action("tag", "Products", routeValues);
         }
     }

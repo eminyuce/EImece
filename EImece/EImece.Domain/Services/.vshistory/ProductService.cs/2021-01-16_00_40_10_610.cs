@@ -244,6 +244,14 @@ namespace EImece.Domain.Services
             return r;
         }
 
+        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
+        {
+            var r = new SimiliarProductTagsViewModel();
+            r.Tag = TagService.GetSingle(tagId);
+            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang);
+            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
+            return r;
+        }
 
         public void SaveProductSpecifications(List<ProductSpecification> specifications, int productId)
         {
@@ -392,23 +400,6 @@ namespace EImece.Domain.Services
                 }
             }
             return ProductRepository.GetChildrenProducts(allCategoriesId.ToArray());
-        }
-
-        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
-        {
-            var r = new SimiliarProductTagsViewModel();
-            r.Tag = TagService.GetSingle(tagId);
-            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang);
-            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
-            return r;
-        }
-        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
-        {
-            var r = new SimiliarProductTagsViewModel();
-            r.Tag = TagService.GetSingle(tagId);
-            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
-            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
-            return r;
         }
     }
 }

@@ -84,11 +84,10 @@ namespace EImece.Controllers
             }
             var tagId = id.GetId();
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage);
             products.Page = page;
             products.RecordPerPage = pageSize;
             products.Sorting = (SortingType)sorting;
-            products.TagId = id;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
         }

@@ -75,7 +75,7 @@ namespace EImece.Domain.Repositories
             }
             else if (sorting == SortingType.Newest)
             {
-                Expression<Func<ProductTag, DateTime>> keySelector = t => t.Product.UpdatedDate;
+                Expression<Func<ProductTag, double>> keySelector = t => t.Product.UpdatedDate;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else
@@ -83,6 +83,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductTag, double>> keySelector = t => t.Product.Position;
                 return this.Paginate(pageIndex, pageSize, keySelector, r => r.TagId == tagId, includeProperties.ToArray());
             }
+
         }
     }
 }

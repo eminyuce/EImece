@@ -8,7 +8,6 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class SimiliarProductTagsViewModel : ItemListing
     {
-        public string TagId { get; set; }
         public Tag Tag { get; set; }
         public PaginatedList<ProductTag> ProductTags { get; set; }
         public PaginatedList<StoryTag> StoryTags { get; set; }
@@ -20,8 +19,14 @@ namespace EImece.Domain.Models.FrontModels
             var sortingInt = (int)sorting;
             routeValues.Remove("sorting");
             routeValues.Add("sorting", sortingInt);
+            routeValues.Remove("search");
+            routeValues.Add("search", Search);
             var urlHelp = new UrlHelper(requestContext);
-            return urlHelp.Action("tag", "Products", routeValues);
+            if (string.IsNullOrEmpty(paginatedModelList.Filter))
+            {
+                routeValues.Remove("filtreler");
+            }
+            return urlHelp.Action("searchproducts", "Products", routeValues);
         }
     }
 }

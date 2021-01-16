@@ -61,21 +61,20 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Product);
             includeProperties.Add(r => r.Product.MainImage);
             includeProperties.Add(r => r.Product.ProductCategory);
-            Expression<Func<ProductTag, bool>> match = r2 => r2.Tag.IsActive && r2.Tag.Lang == lang &&  r2.TagId == tagId;
 
             if (sorting == SortingType.LowHighPrice)
             {
-                Expression<Func<ProductTag, double>> keySelector = t => t.Product.Price;
+                Expression<Func<Product, double>> keySelector = t => t.Price;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else if (sorting == SortingType.HighLowPrice)
             {
-                Expression<Func<ProductTag, double>> keySelector = t => t.Product.Price;
+                Expression<Func<Product, double>> keySelector = t => t.Price;
                 return this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else if (sorting == SortingType.Newest)
             {
-                Expression<Func<ProductTag, DateTime>> keySelector = t => t.Product.UpdatedDate;
+                Expression<Func<Product, DateTime>> keySelector = t => t.UpdatedDate;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else
@@ -83,6 +82,8 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductTag, double>> keySelector = t => t.Product.Position;
                 return this.Paginate(pageIndex, pageSize, keySelector, r => r.TagId == tagId, includeProperties.ToArray());
             }
+            
+
         }
     }
 }

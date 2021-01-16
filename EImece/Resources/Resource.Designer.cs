@@ -3226,7 +3226,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} ile ilgili {1} ürün bulduk..
+        ///   Looks up a localized string similar to &lt;b&gt;{0}&lt;/b&gt; ile ilgili &lt;b&gt;{1}&lt;/b&gt; ürün bulduk..
         /// </summary>
         public static string SearchResultTotalCountText {
             get {
@@ -3807,6 +3807,15 @@ namespace Resources {
         public static string TagName {
             get {
                 return ResourceManager.GetString("TagName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;{0}&lt;/b&gt; etiketi ile ilgili &lt;b&gt;{1}&lt;/b&gt; ürün bulduk..
+        /// </summary>
+        public static string TagResultTotalCountText {
+            get {
+                return ResourceManager.GetString("TagResultTotalCountText", resourceCulture);
             }
         }
         

@@ -21,6 +21,10 @@ namespace EImece.Domain.Models.FrontModels
             routeValues.Remove("sorting");
             routeValues.Add("sorting", sortingInt);
             var urlHelp = new UrlHelper(requestContext);
+            if (string.IsNullOrEmpty(paginatedModelList.Filter))
+            {
+                routeValues.Remove("filtreler");
+            }
             return urlHelp.Action("tag", "Products", routeValues);
         }
     }

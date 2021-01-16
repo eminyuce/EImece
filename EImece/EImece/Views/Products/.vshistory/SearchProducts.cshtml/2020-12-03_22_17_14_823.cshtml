@@ -47,13 +47,8 @@ else
                     </li>
                 </ol>
             </nav>
-            <h1 class="page-title">@Model.Search</h1><span class="d-block mt-2 text-muted"></span>
+            <h1 class="page-title">@String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount)</h1><span class="d-block mt-2 text-muted"></span>
             <hr class="mt-4">
-            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
-                <div class="d-flex flex-wrap">
-                    <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount))</span>
-                </div>
-            </div>
         </div>
     </div>
 

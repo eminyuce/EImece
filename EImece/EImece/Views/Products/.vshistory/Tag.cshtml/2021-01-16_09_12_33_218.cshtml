@@ -53,12 +53,12 @@
                 <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
                 <div class="button-group tabs">
 
-                    <a href="@Model.ProductsListPageUrl(SortingType.Newest,productsTagPaging)"
-                       rel="nofollow" class="@activeButtonClass(SortingType.Newest, productsTagPaging)">@Resource.NewestItems</a>
-                    <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,productsTagPaging)"
-                       rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, productsTagPaging)">@Resource.LowHighPriceItems</a>
-                    <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,productsTagPaging)"
-                       rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, productsTagPaging)">@Resource.HighLowPriceItems</a>
+                    <a href="@Model.ProductsListPageUrl(SortingType.Newest,products)"
+                       rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
+                    <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,products)"
+                       rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
+                    <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,products)"
+                       rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
                 </div>
             </div>
         </div>
@@ -75,10 +75,3 @@
                           {"actionName","Tag"}, {"controllerName","products" } })
     </div>
 </div>
-@functions {
-
-    public string activeButtonClass(SortingType selected, IPaginatedModelList products)
-    {
-        return String.Format("{0}", products.Sorting == (int)selected ? "btn btn-pill btn-secondary mb-2 mr-1" : "btn btn-pill btn-outline-secondary mb-2 mr-1");
-    }
-}

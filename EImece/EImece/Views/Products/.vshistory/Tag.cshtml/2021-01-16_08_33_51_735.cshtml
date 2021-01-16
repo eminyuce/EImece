@@ -1,0 +1,51 @@
+﻿@model EImece.Domain.Models.FrontModels.SimiliarProductTagsViewModel
+@using GenericRepository;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    PaginatedList<ProductTag> productTags = Model.ProductTags;
+    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
+    var tag = Model.Tag;
+    ViewBag.Title = tag.GetSeoTitle();
+    ViewBag.Description = String.Join(",", productTags.Select(r => r.Product.Name)).ToStr(150);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+}
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                </li>
+                <li class="breadcrumb-item">
+                    @tag.Name
+                </li>
+            </ol>
+        </nav>
+        <h1 class="page-title">@tag.Name</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+
+<div class="container potrfolio-container">
+    <div class="clearfix"></div>
+
+    <!-- Products grid-->
+    <div class="row no-gutters">
+        @foreach (var p in productTags)
+        {
+            @Html.DisplayFor(model => p.Product, "SearchProductItem", new { Width = 300, Height = 300 })
+        }
+    </div>
+    <div class="offset-md-4 col-md-8 pb-5">
+        @Html.Partial("_PaginatedModelList", productTags, new ViewDataDictionary(ViewData){
+                          {"actionName","Tag"}, {"controllerName","products" } })
+    </div>
+</div>

@@ -532,7 +532,7 @@
     <value>Yorumu Gönder</value>
   </data>
   <data name="SearchResultTotalCountText" xml:space="preserve">
-    <value>&lt;b&gt;{0}&lt;/b&gt; ile ilgili &lt;b&gt;{1}&lt;/b&gt; ürün bulduk.</value>
+    <value>{0} ile ilgili {1} ürün bulduk.</value>
   </data>
   <data name="SortBy" xml:space="preserve">
     <value>Sırala</value>
@@ -1542,6 +1542,6 @@
     <value>Kargo Takip No</value>
   </data>
   <data name="TagResultTotalCountText" xml:space="preserve">
-    <value>&lt;b&gt;{0}&lt;/b&gt; etiketi ile ilgili &lt;b&gt;{1}&lt;/b&gt; ürün bulduk.</value>
+    <value>&lt;b&gt;{0}&lt;/b&gt; etiketi ile ilgili {1} ürün bulduk.</value>
   </data>
 </root>

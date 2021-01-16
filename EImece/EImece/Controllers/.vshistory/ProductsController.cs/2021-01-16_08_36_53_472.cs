@@ -76,19 +76,18 @@ namespace EImece.Controllers
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         [Route(Constants.ProductTagPrefix)]
-        public ActionResult Tag(String id, int page = 1, int sorting = 0)
+        public ActionResult Tag(String id, int page = 1)
         {
             if (String.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var tagId = id.GetId();
-            int pageSize = AppConfig.ProductDefaultRecordPerPage;
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
+            int pageIndex = 1;
+            int pageSize = 20;
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
             products.Page = page;
-            products.RecordPerPage = pageSize;
-            products.Sorting = (SortingType)sorting;
-            products.TagId = id;
+            products.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             return View(products);
         }

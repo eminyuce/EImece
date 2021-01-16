@@ -83,6 +83,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductTag, double>> keySelector = t => t.Product.Position;
                 return this.Paginate(pageIndex, pageSize, keySelector, r => r.TagId == tagId, includeProperties.ToArray());
             }
+
         }
     }
 }
