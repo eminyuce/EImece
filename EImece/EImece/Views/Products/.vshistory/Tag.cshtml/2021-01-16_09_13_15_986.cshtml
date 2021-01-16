@@ -12,8 +12,6 @@
 @{
     PaginatedList<ProductTag> productTags = Model.ProductTags;
     var productsTagPaging = new PaginatedModelList<ProductTag>(productTags, Model.Page, Model.RecordPerPage, productTags.TotalCount);
-    productsTagPaging.PageIndex = Model.Page;
-    productsTagPaging.Sorting = (int)Model.Sorting;
     var tag = Model.Tag;
     ViewBag.Title = tag.GetSeoTitle();
     ViewBag.Description = String.Join(",", productTags.Select(r => r.Product.Name)).ToStr(150);
