@@ -36,28 +36,26 @@ else
 
     <div class="page-title-wrapper" aria-label="Page title">
         <div class="container">
-            <div class="alert alert-secondary" role="alert">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                        <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            @Resource.SearchResults
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-                <h1 class="page-title">@Model.Search</h1><span class="d-block mt-2 text-muted"></span>
-                <hr class="mt-4">
-                <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
-                    <div class="d-flex flex-wrap">
-                        <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount))</span>
-                    </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        @Resource.SearchResults
+                    </li>
+                </ol>
+            </nav>
+            <h1 class="page-title">@Model.Search</h1><span class="d-block mt-2 text-muted"></span>
+            <hr class="mt-4">
+            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
+                <div class="d-flex flex-wrap">
+                    <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount))</span>
                 </div>
             </div>
         </div>
+    </div>
 
     <div class="container potrfolio-container">
 
