@@ -13,12 +13,7 @@
     var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
 
 
-    string className = string.Format("{0}", parentProductCategory.ParentId == 0 ? "collapse" : "");
-    bool isMatchedCategory = productCategoryTreeModel.AllChildrens.Any(r => r.ProductCategory.Id.Equals(selectedProductCategory.Id));
-    if (isMatchedCategory)
-    {
-        className = "collapse show";
-    }
+    string className = "collapse";
 }
  
 @if (productCategories.IsNotEmpty())

@@ -11,19 +11,11 @@
     var productCategories = productCategoryTreeModel.Childrens;
     var firstProductCategory = productCategoryTreeModel.Childrens.FirstOrDefault();
     var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
-
-
-    string className = string.Format("{0}", parentProductCategory.ParentId == 0 ? "collapse" : "");
-    bool isMatchedCategory = productCategoryTreeModel.AllChildrens.Any(r => r.ProductCategory.Id.Equals(selectedProductCategory.Id));
-    if (isMatchedCategory)
-    {
-        className = "collapse show";
-    }
 }
- 
+
 @if (productCategories.IsNotEmpty())
 {
-    <ul class="@className" id="@string.Format("shopCategories{0}",parentProductCategory.Id)" data-parent="#shopCategories">
+    <ul class="@string.Format("{0}",parentProductCategory.ParentId == 0 ? "collapse" : "")" id="@string.Format("shopCategories{0}",parentProductCategory.Id)" data-parent="#shopCategories">
         @foreach (var p in productCategories)
         {
             var productCategory = p.ProductCategory;
@@ -63,7 +55,7 @@
     }
     else
     {
-        if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
+        if (selectedProductCategory.Equals(p.ProductCategory))
         {
             <b class="text-dark">@p.ProductCategoryName</b>
         }

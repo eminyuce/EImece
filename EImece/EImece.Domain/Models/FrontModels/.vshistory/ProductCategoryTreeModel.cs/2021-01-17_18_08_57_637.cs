@@ -35,14 +35,10 @@ namespace EImece.Domain.Models.FrontModels
         {
             if (child.Childrens.IsNotEmpty())
             {
-                allchildrens.AddRange(child.Childrens);
                 foreach (var item in child.Childrens)
                 {
-                    if (item.Childrens.IsNotEmpty())
-                    {
-                        allchildrens.AddRange(child.Childrens);
-                        GetSubChildren(item, allchildrens);
-                    }
+                    allchildrens.AddRange(item.Childrens);
+                    GetSubChildren(item, allchildrens);
                 }
             }
         }

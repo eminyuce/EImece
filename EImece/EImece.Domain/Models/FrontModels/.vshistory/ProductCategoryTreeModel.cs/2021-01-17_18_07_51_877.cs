@@ -21,10 +21,9 @@ namespace EImece.Domain.Models.FrontModels
                 List<ProductCategoryTreeModel> allchildrens = new List<ProductCategoryTreeModel>();
                 if (Childrens.IsNotEmpty())
                 {
-                    allchildrens.AddRange(Childrens);
                     foreach (var item in Childrens)
                     {
-                        GetSubChildren(item, allchildrens);
+                        GetSubChildren(item, allchildrens)l
                     }
                 }
                 return allchildrens;
@@ -34,15 +33,11 @@ namespace EImece.Domain.Models.FrontModels
         private void GetSubChildren(ProductCategoryTreeModel child, List<ProductCategoryTreeModel> allchildrens)
         {
             if (child.Childrens.IsNotEmpty())
-            {
-                allchildrens.AddRange(child.Childrens);
                 foreach (var item in child.Childrens)
+            {
+                if (item.Childrens.IsNotEmpty())
                 {
-                    if (item.Childrens.IsNotEmpty())
-                    {
-                        allchildrens.AddRange(child.Childrens);
-                        GetSubChildren(item, allchildrens);
-                    }
+                    allchildrens.AddRange(item.Childrens);
                 }
             }
         }

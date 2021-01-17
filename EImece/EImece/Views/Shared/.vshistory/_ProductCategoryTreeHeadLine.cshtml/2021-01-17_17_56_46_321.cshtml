@@ -34,7 +34,7 @@
                             <i class="widget-categories-indicator" data-feather="chevron-down"></i>
                             @badgeProductNumber(p, selectedProductCategory)
                         </a>
-                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel, string>(selectedProductCategory, p,className))
                     </li>
 
                 }

@@ -13,6 +13,25 @@
 @{
     var selectedProductCategory = Model.Item1;
     var productCategories = Model.Item2;
+    bool isAnyMatched = false;
+    foreach (var c in productCategories)
+    {
+        isAnyMatched = c.AllChildrens.Any(item => item.ProductCategory.Id.Equals(selectedProductCategory.Id));
+        if (isAnyMatched)
+        {
+            break;
+        }
+    }
+
+    string className = "collapse";
+    if (isAnyMatched)
+    {
+        className = "collapse show";
+    }
+    else
+    {
+        className = "collapse";
+    }
 
 }
 
@@ -34,7 +53,7 @@
                             <i class="widget-categories-indicator" data-feather="chevron-down"></i>
                             @badgeProductNumber(p, selectedProductCategory)
                         </a>
-                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel, string>(selectedProductCategory, p,className))
                     </li>
 
                 }

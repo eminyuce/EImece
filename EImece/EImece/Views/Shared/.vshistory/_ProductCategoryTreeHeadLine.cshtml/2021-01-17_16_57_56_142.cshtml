@@ -7,13 +7,11 @@
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Models;
 @using EImece.Domain.Models.Enums;
-@using System.Linq;
 
 @model Tuple<ProductCategory, List<ProductCategoryTreeModel>>
 @{
     var selectedProductCategory = Model.Item1;
     var productCategories = Model.Item2;
-
 }
 
 @if (productCategories.IsNotEmpty())

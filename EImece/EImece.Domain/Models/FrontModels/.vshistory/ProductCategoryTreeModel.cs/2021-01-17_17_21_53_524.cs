@@ -7,7 +7,6 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductCategoryTreeModel
     {
-        public string CssClassName { get; set; }
         public int TreeLevel { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public int ProductCount { get; set; }
@@ -24,26 +23,13 @@ namespace EImece.Domain.Models.FrontModels
                     allchildrens.AddRange(Childrens);
                     foreach (var item in Childrens)
                     {
-                        GetSubChildren(item, allchildrens);
-                    }
+                        if (Childrens.IsNotEmpty())
+                        {
+                            allchildrens.AddRange(Childrens);
+                        }
+                }
                 }
                 return allchildrens;
-            }
-        }
-
-        private void GetSubChildren(ProductCategoryTreeModel child, List<ProductCategoryTreeModel> allchildrens)
-        {
-            if (child.Childrens.IsNotEmpty())
-            {
-                allchildrens.AddRange(child.Childrens);
-                foreach (var item in child.Childrens)
-                {
-                    if (item.Childrens.IsNotEmpty())
-                    {
-                        allchildrens.AddRange(child.Childrens);
-                        GetSubChildren(item, allchildrens);
-                    }
-                }
             }
         }
 

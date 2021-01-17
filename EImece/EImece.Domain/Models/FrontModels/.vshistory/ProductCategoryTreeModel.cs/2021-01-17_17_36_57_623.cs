@@ -24,26 +24,13 @@ namespace EImece.Domain.Models.FrontModels
                     allchildrens.AddRange(Childrens);
                     foreach (var item in Childrens)
                     {
-                        GetSubChildren(item, allchildrens);
+                        if (item.Childrens.IsNotEmpty())
+                        {
+                            allchildrens.AddRange(item.Childrens);
+                        }
                     }
                 }
                 return allchildrens;
-            }
-        }
-
-        private void GetSubChildren(ProductCategoryTreeModel child, List<ProductCategoryTreeModel> allchildrens)
-        {
-            if (child.Childrens.IsNotEmpty())
-            {
-                allchildrens.AddRange(child.Childrens);
-                foreach (var item in child.Childrens)
-                {
-                    if (item.Childrens.IsNotEmpty())
-                    {
-                        allchildrens.AddRange(child.Childrens);
-                        GetSubChildren(item, allchildrens);
-                    }
-                }
             }
         }
 

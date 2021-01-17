@@ -3,24 +3,19 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
 
-@model Tuple<ProductCategory, ProductCategoryTreeModel>
+@model Tuple<ProductCategory, ProductCategoryTreeModel, bool>
 @{
     var selectedProductCategory = Model.Item1;
     var productCategoryTreeModel = Model.Item2;
+    var isAnyMatchedParent = Model.Item3;
     var parentProductCategory = productCategoryTreeModel.ProductCategory;
     var productCategories = productCategoryTreeModel.Childrens;
     var firstProductCategory = productCategoryTreeModel.Childrens.FirstOrDefault();
     var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
-
-
-    string className = string.Format("{0}", parentProductCategory.ParentId == 0 ? "collapse" : "");
-    bool isMatchedCategory = productCategoryTreeModel.AllChildrens.Any(r => r.ProductCategory.Id.Equals(selectedProductCategory.Id));
-    if (isMatchedCategory)
-    {
-        className = "collapse show";
-    }
+    bool isAnyMatched = productCategoryTreeModel.AllChildrens.Any(item => item.ProductCategory.Id.Equals(selectedProductCategory.Id));
+    string className = string.Format("{0}", isAnyMatched || isAnyMatchedParent ? "collapse show" : "collapsed");
 }
- 
+
 @if (productCategories.IsNotEmpty())
 {
     <ul class="@className" id="@string.Format("shopCategories{0}",parentProductCategory.Id)" data-parent="#shopCategories">
@@ -34,7 +29,7 @@
                        href="@productCategory.DetailPageUrl">
                         @badgeProductNumber(p, selectedProductCategory)
                     </a>
-                    @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+                    @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel,bool>(selectedProductCategory, p, isAnyMatched))
                 </li>
             }
             else
@@ -59,12 +54,12 @@
         else
         {
             @p.ProductCategoryName <span class="badge text-muted ml-1">(@p.ProductCount)</span>
-        }
     }
-    else
+}
+else
+{
+    if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
     {
-        if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
-        {
             <b class="text-dark">@p.ProductCategoryName</b>
         }
         else

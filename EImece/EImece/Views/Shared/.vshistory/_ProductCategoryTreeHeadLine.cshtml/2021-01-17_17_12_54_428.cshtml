@@ -13,7 +13,7 @@
 @{
     var selectedProductCategory = Model.Item1;
     var productCategories = Model.Item2;
-
+    bool isAnyMatched = productCategories.Any(item => item.ProductCategory.Id.Equals(selectedProductCategory.Id));
 }
 
 @if (productCategories.IsNotEmpty())
@@ -21,7 +21,7 @@
     <!-- Categories-->
     <div class="widget widget-categories mb-4 py-1">
         <h3 class="widget-title">@AdminResource.ProductCategories</h3>
-        <ul id="shopCategories">
+        <ul  id="shopCategories">
             @foreach (var p in productCategories)
             {
                 var productCategory = p.ProductCategory;
@@ -34,7 +34,7 @@
                             <i class="widget-categories-indicator" data-feather="chevron-down"></i>
                             @badgeProductNumber(p, selectedProductCategory)
                         </a>
-                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel,bool>(selectedProductCategory, p, isAnyMatched))
                     </li>
 
                 }

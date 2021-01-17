@@ -7,17 +7,20 @@
 @{
     var selectedProductCategory = Model.Item1;
     var productCategoryTreeModel = Model.Item2;
+
     var parentProductCategory = productCategoryTreeModel.ProductCategory;
     var productCategories = productCategoryTreeModel.Childrens;
     var firstProductCategory = productCategoryTreeModel.Childrens.FirstOrDefault();
     var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
-
-
+    bool isAnyMatched = productCategoryTreeModel.AllChildrens.Any(item => item.ProductCategory.Id.Equals(selectedProductCategory.Id));
     string className = string.Format("{0}", parentProductCategory.ParentId == 0 ? "collapse" : "");
-    bool isMatchedCategory = productCategoryTreeModel.AllChildrens.Any(r => r.ProductCategory.Id.Equals(selectedProductCategory.Id));
-    if (isMatchedCategory)
+    if (isAnyMatched)
     {
         className = "collapse show";
+    }
+    else
+    {
+        className = "collapse";
     }
 }
  

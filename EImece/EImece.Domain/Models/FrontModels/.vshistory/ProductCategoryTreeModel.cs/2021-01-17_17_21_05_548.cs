@@ -1,5 +1,4 @@
 ﻿using EImece.Domain.Entities;
-using EImece.Domain.Helpers.Extensions;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,46 +6,21 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductCategoryTreeModel
     {
-        public string CssClassName { get; set; }
         public int TreeLevel { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public int ProductCount { get; set; }
         public int ProductCountAdmin { get; set; }
         public List<ProductCategoryTreeModel> Childrens { get; set; }
 
-        public List<ProductCategoryTreeModel> AllChildrens
-        {
-            get
-            {
+        public List<ProductCategoryTreeModel> AllChildrens {
+            get {
                 List<ProductCategoryTreeModel> allchildrens = new List<ProductCategoryTreeModel>();
-                if (Childrens.IsNotEmpty())
-                {
-                    allchildrens.AddRange(Childrens);
-                    foreach (var item in Childrens)
-                    {
-                        GetSubChildren(item, allchildrens);
-                    }
-                }
+
+
                 return allchildrens;
-            }
-        }
+            } }
 
-        private void GetSubChildren(ProductCategoryTreeModel child, List<ProductCategoryTreeModel> allchildrens)
-        {
-            if (child.Childrens.IsNotEmpty())
-            {
-                allchildrens.AddRange(child.Childrens);
-                foreach (var item in child.Childrens)
-                {
-                    if (item.Childrens.IsNotEmpty())
-                    {
-                        allchildrens.AddRange(child.Childrens);
-                        GetSubChildren(item, allchildrens);
-                    }
-                }
-            }
-        }
-
+        
         public ProductCategoryTreeModel Parent { get; set; }
 
         public string ProductCategoryName

@@ -13,7 +13,7 @@
 @{
     var selectedProductCategory = Model.Item1;
     var productCategories = Model.Item2;
-
+    bool isAnyMatched = productCategories.Any(item => item.ProductCategory.Id.Equals(selectedProductCategory.Id));
 }
 
 @if (productCategories.IsNotEmpty())
@@ -21,7 +21,7 @@
     <!-- Categories-->
     <div class="widget widget-categories mb-4 py-1">
         <h3 class="widget-title">@AdminResource.ProductCategories</h3>
-        <ul id="shopCategories">
+        <ul  id="shopCategories" class="@string.Format("{0}",isAnyMatched ? "collapse show": "collapse")">
             @foreach (var p in productCategories)
             {
                 var productCategory = p.ProductCategory;

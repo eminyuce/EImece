@@ -14,6 +14,17 @@
     var selectedProductCategory = Model.Item1;
     var productCategories = Model.Item2;
 
+    bool isAnyMatched = productCategoryTreeModel.AllChildrens.Any(item => item.ProductCategory.Id.Equals(selectedProductCategory.Id));
+    string className = string.Format("{0}", parentProductCategory.ParentId == 0 ? "collapse" : "");
+    if (isAnyMatched)
+    {
+        className = "collapse show";
+    }
+    else
+    {
+        className = "collapse";
+    }
+
 }
 
 @if (productCategories.IsNotEmpty())
