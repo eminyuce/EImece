@@ -99,13 +99,15 @@
                     {
 
                         <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@mainImageImgSrc"  width="610" height="610" alt="Product">
+                            <img src="@mainImageImgSrc" width="610" height="610" alt="Product">
                         </a>
 
                     }
                     else
                     {
-                        <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")">
+                        <a href="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" width="610" height="610" alt="Product">
+                        </a>
                     }
 
                     @for (int i = 0; i < productFiles.Count; i++)

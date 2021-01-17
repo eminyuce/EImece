@@ -139,9 +139,8 @@ namespace EImece.Domain.Services
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
-            List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, product.Lang);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
@@ -193,7 +192,7 @@ namespace EImece.Domain.Services
             var cacheKey = string.Format("GetRelatedProducts-{0}-{1}-{2}-{3}", string.Join(",", tagIdList), relatedProductTake, lang, id);
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake, lang, id);
+                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;

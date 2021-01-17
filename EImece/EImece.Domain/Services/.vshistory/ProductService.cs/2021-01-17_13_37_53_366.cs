@@ -139,9 +139,8 @@ namespace EImece.Domain.Services
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
-            List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, product.Lang);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
@@ -175,13 +174,22 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
+        private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int language, int id)
         {
-            List<Product> result = null;
-            var cacheKey = string.Format("GetRandomProductsByCategoryId-{0}-{1}-{2}-{3}", productCategoryId, relatedProductTake,lang,id);
+            ProductIndexViewModel result = null;
+            var cacheKey = String.Format("GetRandomProductsByCategoryId-{0}-{1}", productCategoryId, relatedProductTake,lang,id);
+
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake*3, lang, id);
+                result = new ProductIndexViewModel();
+                int pageSize = AppConfig.RecordPerPage;
+                result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
+                var items = ProductRepository.GetActiveProducts(page, pageSize, language);
+                result.Products = items;
+                result.Tags = TagService.GetActiveBaseEntities(true, language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
@@ -189,14 +197,7 @@ namespace EImece.Domain.Services
 
         private List<Product> GetRelatedProducts(int[] tagIdList, int relatedProductTake, int lang, int id)
         {
-            List<Product> result = null;
-            var cacheKey = string.Format("GetRelatedProducts-{0}-{1}-{2}-{3}", string.Join(",", tagIdList), relatedProductTake, lang, id);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake, lang, id);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            return result;
+            throw new NotImplementedException();
         }
 
         public virtual new void DeleteBaseEntity(List<string> values)

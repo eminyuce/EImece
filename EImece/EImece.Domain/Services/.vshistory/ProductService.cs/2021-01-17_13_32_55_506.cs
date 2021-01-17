@@ -139,9 +139,8 @@ namespace EImece.Domain.Services
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
-            List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, product.Lang);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, product.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
@@ -161,41 +160,17 @@ namespace EImece.Domain.Services
             if (product.ProductTags.Any())
             {
                 var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
-                result.RelatedProducts = this.GetRelatedProducts(tagIdList, relatedProductTake, product.Lang, id);
+                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake, product.Lang, id);
             }
 
             if (result.RelatedProducts.Count < 20)
             {
                 relatedProductTake -= result.RelatedProducts.Count;
-                result.RelatedProducts.AddRange(this.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
+                result.RelatedProducts.AddRange(ProductRepository.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
             }
 
             result.RelatedProducts = result.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
 
-            return result;
-        }
-
-        private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
-        {
-            List<Product> result = null;
-            var cacheKey = string.Format("GetRandomProductsByCategoryId-{0}-{1}-{2}-{3}", productCategoryId, relatedProductTake,lang,id);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake*3, lang, id);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            return result;
-        }
-
-        private List<Product> GetRelatedProducts(int[] tagIdList, int relatedProductTake, int lang, int id)
-        {
-            List<Product> result = null;
-            var cacheKey = string.Format("GetRelatedProducts-{0}-{1}-{2}-{3}", string.Join(",", tagIdList), relatedProductTake, lang, id);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake, lang, id);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
             return result;
         }
 
