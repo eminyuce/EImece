@@ -145,7 +145,7 @@
 
     <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
         <a class="d-flex align-items-center nav-link-inline pb-3 pt-3" href="@productCategoryLink" data-toggle="popover" data-placement="right" data-trigger="hover"
-           data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent())">
+           data-html="true" data-content="@Html.Raw(CreateChildDataContent2(productCategory))">
             <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
             <span>
                 <b>@productCategory.Name</b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
@@ -155,4 +155,15 @@
     </li>
 }
 
- 
+@functions
+{
+    static string CreateChildDataContent2(ProductCategory productCategory)
+    {
+        var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImage, productCategory.MainImageId, 300, 0);
+        var productCategoryLink = productCategory.ProductCategoryLink;
+        var result = String.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{2}</div>", productImgLink,
+            productCategory.Name,
+            productCategory.Name);
+        return HttpUtility.HtmlEncode(result);
+    }
+}

@@ -73,17 +73,5 @@ namespace EImece.Domain.Entities
         }
 
         public Template Template { get; set; }
-
-        public string CreateChildDataContent()
-        {
-            var productImgLink = MainImage.GetCroppedImageUrl(
-                 this.MainImageId,
-                 300, 0, false);
-            var productCategoryLink = this.ProductCategoryLink;
-            var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{2}</div>", productImgLink,
-                this.Name,
-                this.Name);
-            return HttpUtility.HtmlEncode(result);
-        }
     }
 }
