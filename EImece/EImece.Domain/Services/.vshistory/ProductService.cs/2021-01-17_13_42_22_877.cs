@@ -193,7 +193,7 @@ namespace EImece.Domain.Services
             var cacheKey = string.Format("GetRelatedProducts-{0}-{1}-{2}-{3}", string.Join(",", tagIdList), relatedProductTake, lang, id);
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake*3, lang, id);
+                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake, lang, id);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
