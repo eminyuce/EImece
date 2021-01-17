@@ -71,7 +71,7 @@
 </section>
 
 <!-- Product widgets-->
-<section class="container px-1 pt-1 pb-1 mb-md-1">
+<section class="container px-3 pt-2 pb-4 mb-md-2">
     <div class="row">
         @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
         @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())

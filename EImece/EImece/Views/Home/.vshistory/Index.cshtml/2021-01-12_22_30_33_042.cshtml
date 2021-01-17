@@ -53,7 +53,7 @@
 
 @CreateProductSection(@Resource.FeaturedProducts, mainPageProducts)
 <!-- Promo banner-->
-<section class="container py-1 my-1 px-1">
+<section class="container py-4 my-3 px-3">
     <div class="bg-faded-info position-relative py-4">
         <div class="row align-items-center">
             <div class="col-md-5">
@@ -71,7 +71,7 @@
 </section>
 
 <!-- Product widgets-->
-<section class="container px-1 pt-1 pb-1 mb-md-1">
+<section class="container px-3 pt-2 pb-4 mb-md-2">
     <div class="row">
         @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
         @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
