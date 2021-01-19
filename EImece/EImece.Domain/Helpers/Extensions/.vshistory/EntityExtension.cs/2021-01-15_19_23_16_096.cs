@@ -273,23 +273,20 @@ namespace EImece.Domain.Helpers.Extensions
         }
         public static string GetFullPathImageUrlFromFileStorage(FileStorage mainImage, bool isThump)
         {
-            if(mainImage == null)
+            string imagePath = Constants.UrlBase + mainImage.FileName;
+            String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
+            if (File.Exists(fullPath))
             {
-                return String.Empty;
-            }
-            else
-            {
-                string imagePath = Constants.UrlBase + mainImage.FileName;
-                String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
-
                 if (isThump)
                 {
                     string fileName = mainImage.FileName;
                     string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                    imagePath = Path.Combine(partThumb1, "thb" + fileName);
+                    string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+                    imagePath = partThumb2;
                 }
                 return imagePath;
             }
+            return string.Empty;
         }
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
@@ -355,20 +352,19 @@ namespace EImece.Domain.Helpers.Extensions
         {
             if (entity != null && fileStorageId > 0)
             {
-                bool isImageFullSrcUnderMediaFolder = AppConfig.IsImageFullSrcUnderMediaFolder;
-                if (isImageFullSrcUnderMediaFolder && entity is BaseContent)
+                if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is BaseContent)
                 {
                     var baseContentEntity = (BaseContent)entity;
                     var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 } 
-                else if (isImageFullSrcUnderMediaFolder && entity is ProductFile)
+                else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is ProductFile)
                 {
                     var baseContentEntity = (ProductFile)entity;
                     var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
-                else if (isImageFullSrcUnderMediaFolder && entity is FileStorage)
+                else if (AppConfig.IsImageFullSrcUnderMediaFolder && entity is FileStorage)
                 {
                     var fileStorage = (FileStorage)entity;
                     var imagePath = GetFullPathImageUrlFromFileStorage(fileStorage, false);

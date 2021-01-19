@@ -275,7 +275,7 @@ namespace EImece.Domain.Helpers.Extensions
         {
             if(mainImage == null)
             {
-                return String.Empty;
+
             }
             else
             {
@@ -290,6 +290,8 @@ namespace EImece.Domain.Helpers.Extensions
                 }
                 return imagePath;
             }
+           
+           
         }
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
