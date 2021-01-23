@@ -60,18 +60,18 @@ namespace EImece.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            try
-            {
-                var productId = id.GetId();
-                var product = ProductService.GetProductDetailViewModelById(productId);
-                ViewBag.SeoId = product.Product.GetSeoUrl();
-                return View(product);
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "Products.Detail page");
-                return RedirectToAction("InternalServerError", "Error");
-            }
+            var productId = id.GetId();
+
+            var timer = new Stopwatch();
+            timer.Start();
+            var product = ProductService.GetProductDetailViewModelById(productId);
+            ViewBag.SeoId = product.Product.GetSeoUrl();
+            timer.Stop();
+            Logger.Info("ProductService.GetProductDetailViewModelById timer:" + timer.ElapsedMilliseconds);
+
+
+
+            return View(product);
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]

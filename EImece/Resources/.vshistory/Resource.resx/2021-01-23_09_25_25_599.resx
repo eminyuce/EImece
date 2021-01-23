@@ -1580,10 +1580,4 @@
   <data name="PageNotFoundText" xml:space="preserve">
     <value>Sayfa bulunamadı</value>
   </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>Yetkisiz Giriş</value>
-  </data>
-  <data name="UnauthorizedText" xml:space="preserve">
-    <value>Maalesef sayfa kimlik doğrulaması gerektiriyor.</value>
-  </data>
 </root>

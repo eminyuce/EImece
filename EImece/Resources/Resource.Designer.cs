@@ -376,6 +376,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geçersiz istek.
+        /// </summary>
+        public static string BadRequest {
+            get {
+                return ResourceManager.GetString("BadRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tarayıcınız bu sunucunun anlayamadığı bir istek gönderdi..
+        /// </summary>
+        public static string BadRequestText {
+            get {
+                return ResourceManager.GetString("BadRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sepet Minimum Toplam Fiyat.
         /// </summary>
         public static string BasketMinTotalPrice {
@@ -1087,6 +1105,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maalesef bu sayfaya erişim izniniz yok..
+        /// </summary>
+        public static string DontHavePermissionText {
+            get {
+                return ResourceManager.GetString("DontHavePermissionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bize Yazın.
         /// </summary>
         public static string DropUsALine {
@@ -1344,6 +1371,15 @@ namespace Resources {
         public static string FooterSettings {
             get {
                 return ResourceManager.GetString("FooterSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yasak.
+        /// </summary>
+        public static string Forbidden {
+            get {
+                return ResourceManager.GetString("Forbidden", resourceCulture);
             }
         }
         
@@ -1677,6 +1713,15 @@ namespace Resources {
         public static string Installment {
             get {
                 return ResourceManager.GetString("Installment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu garip bir olay. İşleminiz gerçekleştirilirken bir hata oluştu. İçiniz rahat olsun, bu sorun günlüğe kaydedildi ve sorunu çözmek için hamsterlar serbest bırakıldı..
+        /// </summary>
+        public static string InternalServererrorText {
+            get {
+                return ResourceManager.GetString("InternalServererrorText", resourceCulture);
             }
         }
         
@@ -2122,6 +2167,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to izinsiz metod.
+        /// </summary>
+        public static string MethodNotAllowed {
+            get {
+                return ResourceManager.GetString("MethodNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daha fazla ürün göster.
         /// </summary>
         public static string MoreInfo {
@@ -2342,6 +2396,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maalesef aradığınız sayfa bulunamadı..
+        /// </summary>
+        public static string NotFoundText {
+            get {
+                return ResourceManager.GetString("NotFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yeni şifre ve onay şifresi eşleşmiyor..
         /// </summary>
         public static string NotMatchesPassword {
@@ -2446,6 +2509,15 @@ namespace Resources {
         public static string OrderSummary {
             get {
                 return ResourceManager.GetString("OrderSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sayfa bulunamadı.
+        /// </summary>
+        public static string PageNotFoundText {
+            get {
+                return ResourceManager.GetString("PageNotFoundText", resourceCulture);
             }
         }
         
@@ -4041,6 +4113,33 @@ namespace Resources {
         public static string TwitterWebSiteLink {
             get {
                 return ResourceManager.GetString("TwitterWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yetkisiz Giriş.
+        /// </summary>
+        public static string Unauthorized {
+            get {
+                return ResourceManager.GetString("Unauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maalesef sayfa kimlik doğrulaması gerektiriyor..
+        /// </summary>
+        public static string UnauthorizedText {
+            get {
+                return ResourceManager.GetString("UnauthorizedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beklenmeyen hata.
+        /// </summary>
+        public static string UnexpectedErrorText {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorText", resourceCulture);
             }
         }
         

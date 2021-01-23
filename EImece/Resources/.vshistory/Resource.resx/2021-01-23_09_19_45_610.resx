@@ -1553,37 +1553,10 @@
   <data name="InvalidLoginAttemptPasswordNotCorrect" xml:space="preserve">
     <value>Geçersiz giriş denemesi.Parola doğru değil</value>
   </data>
-  <data name="DontHavePermissionText" xml:space="preserve">
-    <value>Maalesef bu sayfaya erişim izniniz yok.</value>
-  </data>
   <data name="InternalServererrorText" xml:space="preserve">
     <value>Bu garip bir olay. İşleminiz gerçekleştirilirken bir hata oluştu. İçiniz rahat olsun, bu sorun günlüğe kaydedildi ve sorunu çözmek için hamsterlar serbest bırakıldı.</value>
   </data>
-  <data name="MethodNotAllowed" xml:space="preserve">
-    <value>izinsiz metod</value>
-  </data>
-  <data name="UnexpectedErrorText" xml:space="preserve">
+  <data name="UnexpectedError" xml:space="preserve">
     <value>Beklenmeyen hata</value>
-  </data>
-  <data name="BadRequest" xml:space="preserve">
-    <value>Geçersiz istek</value>
-  </data>
-  <data name="BadRequestText" xml:space="preserve">
-    <value>Tarayıcınız bu sunucunun anlayamadığı bir istek gönderdi.</value>
-  </data>
-  <data name="Forbidden" xml:space="preserve">
-    <value>Yasak</value>
-  </data>
-  <data name="NotFoundText" xml:space="preserve">
-    <value>Maalesef aradığınız sayfa bulunamadı.</value>
-  </data>
-  <data name="PageNotFoundText" xml:space="preserve">
-    <value>Sayfa bulunamadı</value>
-  </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>Yetkisiz Giriş</value>
-  </data>
-  <data name="UnauthorizedText" xml:space="preserve">
-    <value>Maalesef sayfa kimlik doğrulaması gerektiriyor.</value>
   </data>
 </root>

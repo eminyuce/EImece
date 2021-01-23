@@ -62,15 +62,15 @@ namespace EImece.Controllers
             }
             try
             {
-                var productId = id.GetId();
                 var product = ProductService.GetProductDetailViewModelById(productId);
                 ViewBag.SeoId = product.Product.GetSeoUrl();
+                var productId = id.GetId();
                 return View(product);
             }
-            catch (Exception e)
+            catch (Exception )
             {
-                Logger.Error(e, "Products.Detail page");
-                return RedirectToAction("InternalServerError", "Error");
+
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
 

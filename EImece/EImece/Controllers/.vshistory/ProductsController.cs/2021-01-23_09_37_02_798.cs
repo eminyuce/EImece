@@ -70,7 +70,7 @@ namespace EImece.Controllers
             catch (Exception e)
             {
                 Logger.Error(e, "Products.Detail page");
-                return RedirectToAction("InternalServerError", "Error");
+                return RedirectToAction("", "");
             }
         }
 
