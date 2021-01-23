@@ -1547,9 +1547,6 @@
   <data name="InvalidLoginAttempt" xml:space="preserve">
     <value>Geçersiz giriş denemesi</value>
   </data>
-  <data name="InvalidLoginAttemptEmailLockedOut" xml:space="preserve">
-    <value>Geçersiz oturum açma denemesi. {0} Kilitlendi</value>
-  </data>
   <data name="InvalidLoginAttemptPasswordNotCorrect" xml:space="preserve">
     <value>Geçersiz giriş denemesi.Parola doğru değil</value>
   </data>

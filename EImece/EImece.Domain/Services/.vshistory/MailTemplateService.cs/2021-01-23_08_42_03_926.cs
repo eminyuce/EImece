@@ -37,6 +37,7 @@ namespace EImece.Domain.Services
             return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename,StringComparison.InvariantCultureIgnoreCase));
         }
 
+
         public List<MailTemplate> GetAllMailTemplatesWithCache()
         {
             List<MailTemplate> result;
@@ -85,7 +86,5 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
             return pp;
         }
-
-    
     }
 }

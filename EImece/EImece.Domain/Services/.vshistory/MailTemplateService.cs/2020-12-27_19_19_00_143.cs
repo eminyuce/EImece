@@ -5,7 +5,6 @@ using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
@@ -26,7 +25,6 @@ namespace EImece.Domain.Services
         [Inject]
         public ISettingService SettingService { get; set; }
 
-
         public MailTemplateService(IMailTemplateRepository repository) : base(repository)
         {
             MailTemplateRepository = repository;
@@ -34,20 +32,7 @@ namespace EImece.Domain.Services
 
         public MailTemplate GetMailTemplateByName(string templatename)
         {
-            return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename,StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public List<MailTemplate> GetAllMailTemplatesWithCache()
-        {
-            List<MailTemplate> result;
-            var cacheKey = "GetAllMailTemplatesWithCache";
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = this.GetAll();
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-
-            return result;
+            return MailTemplateRepository.GetMailTemplateByName(templatename);
         }
 
         public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
@@ -85,7 +70,5 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
             return pp;
         }
-
-    
     }
 }

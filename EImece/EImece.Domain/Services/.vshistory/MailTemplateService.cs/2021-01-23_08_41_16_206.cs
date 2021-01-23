@@ -34,8 +34,9 @@ namespace EImece.Domain.Services
 
         public MailTemplate GetMailTemplateByName(string templatename)
         {
-            return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename,StringComparison.InvariantCultureIgnoreCase));
+            return MailTemplateRepository.GetMailTemplateByName(templatename);
         }
+
 
         public List<MailTemplate> GetAllMailTemplatesWithCache()
         {
@@ -43,7 +44,7 @@ namespace EImece.Domain.Services
             var cacheKey = "GetAllMailTemplatesWithCache";
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = this.GetAll();
+                result = MailTemplateRepository.GetAll();
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
 
@@ -85,7 +86,5 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
             return pp;
         }
-
-    
     }
 }

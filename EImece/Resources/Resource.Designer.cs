@@ -1681,6 +1681,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geçersiz giriş denemesi.
+        /// </summary>
+        public static string InvalidLoginAttempt {
+            get {
+                return ResourceManager.GetString("InvalidLoginAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geçersiz oturum açma denemesi. {0} Kilitlendi.
+        /// </summary>
+        public static string InvalidLoginAttemptEmailLockedOut {
+            get {
+                return ResourceManager.GetString("InvalidLoginAttemptEmailLockedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geçersiz giriş denemesi.Parola doğru değil.
+        /// </summary>
+        public static string InvalidLoginAttemptPasswordNotCorrect {
+            get {
+                return ResourceManager.GetString("InvalidLoginAttemptPasswordNotCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yayında mı.
         /// </summary>
         public static string IsActive {

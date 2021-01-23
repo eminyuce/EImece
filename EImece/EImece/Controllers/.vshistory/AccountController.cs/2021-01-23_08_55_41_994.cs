@@ -225,22 +225,15 @@ namespace EImece.Controllers
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                     case SignInStatus.Failure:
-                        var user = ApplicationDbContext.Users.FirstOrDefault(u => u.UserName.Equals(model.Email));
-                        if (user != null)
+                        var user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                        bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                        if (!checkPassword)
                         {
-                            bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
-                            if (!checkPassword)
-                            {
-                                ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", Resource.InvalidLoginAttempt + result.ToString());
-                            }
+                            ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
                         }
                         else
                         {
-                            ModelState.AddModelError("", Resource.NoUserFound);
+                            ModelState.AddModelError("", Resource.InvalidLoginAttempt + result.ToString());
                         }
                         return View(model);
 

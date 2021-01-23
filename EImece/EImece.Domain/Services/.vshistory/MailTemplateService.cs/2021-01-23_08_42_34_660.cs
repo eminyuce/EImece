@@ -85,7 +85,5 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
             return pp;
         }
-
-    
     }
 }

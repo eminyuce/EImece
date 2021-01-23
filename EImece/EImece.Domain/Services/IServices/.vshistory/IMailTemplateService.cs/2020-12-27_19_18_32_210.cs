@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
-using System.Collections.Generic;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -11,6 +10,5 @@ namespace EImece.Domain.Services.IServices
         OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId);
 
         CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId);
-        List<MailTemplate> GetAllMailTemplatesWithCache();
     }
 }

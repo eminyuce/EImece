@@ -100,7 +100,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
                 var products = ProductService.GetActiveProducts(CurrentLanguage);
-                MailTemplateService.GetAllMailTemplatesWithCache();
+                MailTemplateService.GetActiveBaseEntitiesFromCache
                 if (products.IsNotEmpty())
                 {
                     int i = 0;
