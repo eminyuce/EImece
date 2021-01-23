@@ -288,15 +288,7 @@ namespace EImece.Domain.Services
 
         public List<Product> GetActiveProducts(int? language)
         {
-            List<Product> result = null;
-            var cacheKey = string.Format("GetActiveProducts-{0}", language);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = ProductRepository.GetActiveProducts(language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            return result;
-
+            return ProductRepository.GetActiveProducts(language);
         }
 
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)

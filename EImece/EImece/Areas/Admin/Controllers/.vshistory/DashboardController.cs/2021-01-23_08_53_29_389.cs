@@ -33,7 +33,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult SearchContent(String searchContent)
         {
             String search = searchContent.ToStr().Trim();
-
+            var resultList = new List<BaseContent>();
             ViewBag.SearchKey = search;
             if (String.IsNullOrEmpty(search))
             {
@@ -47,14 +47,7 @@ namespace EImece.Areas.Admin.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            List<BaseContent> resultList = SearchDatabaseForDashboard(search);
 
-            return View(resultList);
-        }
-
-        private List<BaseContent> SearchDatabaseForDashboard(string search)
-        {
-            var resultList = new List<BaseContent>();
             Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.Contains(search);
             resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search, CurrentLanguage));
 
@@ -69,7 +62,8 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.Contains(search);
             resultList.AddRange(MenuService.SearchEntities(whereLamba5, search, CurrentLanguage));
-            return resultList;
+
+            return View(resultList);
         }
 
         [HttpGet]

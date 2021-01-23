@@ -52,10 +52,10 @@ namespace EImece.Domain.Services
                 result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(8).ToList();
                 result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
 
-                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.MainPageMenu = MenuService.GetActiveBaseContents(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
                // result.LatestStories = StoryService.GetLatestStories(language, 4);
-                result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
+                result.MainPageImages = GetActiveBaseContents(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
@@ -74,7 +74,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new FooterViewModel();
-                result.Menus = MenuService.GetActiveBaseContentsFromCache(true, language).ToList();
+                result.Menus = MenuService.GetActiveBaseContents(true, language).ToList();
                 result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language).ToList();
                 result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
                 result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);

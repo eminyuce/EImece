@@ -55,7 +55,7 @@ namespace EImece.Domain.Services
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
                // result.LatestStories = StoryService.GetLatestStories(language, 4);
-                result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
+                result.MainPageImages = GetActiveBaseContents(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }

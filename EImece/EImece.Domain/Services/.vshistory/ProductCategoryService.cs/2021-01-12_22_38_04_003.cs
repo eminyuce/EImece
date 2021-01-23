@@ -125,15 +125,7 @@ namespace EImece.Domain.Services
 
         public List<ProductCategory> GetMainPageProductCategories(int language)
         {
-            List<ProductCategory> result;
-            var cacheKey = string.Format("GetMainPageProductCategories-{0}", language);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = ProductCategoryRepository.GetMainPageProductCategories(language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-
-            return result;
+            return ProductCategoryRepository.GetMainPageProductCategories(language);
         }
 
         public List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage)
