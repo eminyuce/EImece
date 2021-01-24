@@ -34,8 +34,7 @@ namespace EImece.Domain.Repositories
             var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
             
 
-            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel() {
-                ProductCategory = r }).ToList();
+            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
             int level = 1;

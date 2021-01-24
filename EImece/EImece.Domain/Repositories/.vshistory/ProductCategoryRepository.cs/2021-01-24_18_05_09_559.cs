@@ -31,11 +31,13 @@ namespace EImece.Domain.Repositories
             {
                 match.And(r => r.IsActive == isActive);
             }
-            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
-            
+            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
+            new {
+                ProductCategory = c 
+            }).ToList();
 
-            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel() {
-                ProductCategory = r }).ToList();
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
             int level = 1;

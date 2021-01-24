@@ -37,25 +37,7 @@ namespace EImece.Domain.Services
         {
             this.IsCachingActivated = IsCachingActivated;
         }
-        public List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int language = 1)
-        {
-            List<ProductCategoryTreeModel> result;
-            if (IsCachingActivated)
-            {
-                var cacheKey = String.Format("BuildNavigation-{0}-{1}", isActive, language);
-                if (!MemoryCacheProvider.Get(cacheKey, out result))
-                {
-                    result = ProductCategoryRepository.BuildNavigation(isActive, language);
-                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-                }
-            }
-            else
-            {
-                result = ProductCategoryRepository.BuildTree(isActive, language);
-            }
 
-            return result;
-        }
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             List<ProductCategoryTreeModel> result;

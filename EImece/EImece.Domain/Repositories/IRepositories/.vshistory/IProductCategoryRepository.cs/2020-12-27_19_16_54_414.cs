@@ -17,6 +17,5 @@ namespace EImece.Domain.Repositories.IRepositories
         List<ProductCategory> GetAdminProductCategories(string search, int language);
 
         List<ProductCategory> GetProductCategoriesByParentId(int parentId);
-        List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1);
     }
 }

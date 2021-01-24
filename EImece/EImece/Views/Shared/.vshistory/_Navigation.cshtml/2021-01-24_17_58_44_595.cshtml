@@ -38,10 +38,9 @@
 
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
 {
-var productCategory = categoryTreeModel.ProductCategory;
-var mainImage = productCategory.MainImage;
-var productImgLink = mainImage.GetCroppedImageUrl(mainImage.Id, 200, 0);
-var productCategoryLink = productCategory.ProductCategoryLink;
+    var productCategory = categoryTreeModel.ProductCategory;
+    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImage.Id, 200, 0);
+    var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
         <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(@productImgLink);">
@@ -61,6 +60,7 @@ var productCategoryLink = productCategory.ProductCategoryLink;
                 @foreach (var childCategory in categoryTreeModel.Childrens)
                 {
                     var productChildCategory = childCategory.ProductCategory;
+                    var productChildImgLink = productChildCategory.MainImage.GetCroppedImageUrl(productChildCategory.MainImage.Id, 200, 0);
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
 
                     <li>

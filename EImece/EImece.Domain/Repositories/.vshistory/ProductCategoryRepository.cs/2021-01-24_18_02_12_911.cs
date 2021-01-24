@@ -21,34 +21,7 @@ namespace EImece.Domain.Repositories
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
-        public List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1)
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            Expression<Func<ProductCategory, bool>> match = r => r.Lang == language;
-            bool isActived = isActive != null && isActive.HasValue;
-            if (isActived)
-            {
-                match.And(r => r.IsActive == isActive);
-            }
-            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
-            
 
-            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel() {
-                ProductCategory = r }).ToList();
-            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
-
-            int level = 1;
-            //find top levels items
-            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
-            topLevels.ForEach(r => r.TreeLevel = level);
-            returnList.AddRange(topLevels);
-            foreach (var i in topLevels)
-            {
-                GetTreeview(list, i, level);
-            }
-            return returnList;
-        }
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -59,7 +32,7 @@ namespace EImece.Domain.Repositories
             {
                 match.And(r => r.IsActive == isActive);
             }
-            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
             var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
             new { 
                 ProductCategory = c, 

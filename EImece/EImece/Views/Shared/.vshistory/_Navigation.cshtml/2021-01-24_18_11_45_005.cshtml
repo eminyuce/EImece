@@ -61,6 +61,7 @@ var productCategoryLink = productCategory.ProductCategoryLink;
                 @foreach (var childCategory in categoryTreeModel.Childrens)
                 {
                     var productChildCategory = childCategory.ProductCategory;
+                    var productChildImgLink = productChildCategory.MainImage.GetCroppedImageUrl(productChildCategory.MainImage.Id, 200, 0);
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
 
                     <li>

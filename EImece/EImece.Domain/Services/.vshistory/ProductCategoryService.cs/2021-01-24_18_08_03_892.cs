@@ -37,7 +37,7 @@ namespace EImece.Domain.Services
         {
             this.IsCachingActivated = IsCachingActivated;
         }
-        public List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int language = 1)
+        public List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1)
         {
             List<ProductCategoryTreeModel> result;
             if (IsCachingActivated)
