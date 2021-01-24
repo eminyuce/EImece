@@ -39,7 +39,7 @@
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
 {
     var productCategory = categoryTreeModel.ProductCategory;
-    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
+    var productImgLink = productCategory.GetCroppedImageUrl(productCategory.MainImageId, 200, 0);
     var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
@@ -60,7 +60,7 @@
                 @foreach (var childCategory in categoryTreeModel.Childrens)
                 {
                     var productChildCategory = childCategory.ProductCategory;
-                    var productChildImgLink = productChildCategory.MainImage.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
+                    var productChildImgLink = productChildCategory.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
 
                     <li>

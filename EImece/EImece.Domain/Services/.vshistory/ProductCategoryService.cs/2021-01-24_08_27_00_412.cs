@@ -133,7 +133,23 @@ namespace EImece.Domain.Services
                 result = ProductCategoryRepository.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
-           
+            if (result.IsNotEmpty())
+            {
+                foreach (var item in result)
+                {
+                    if (item.MainImage != null)
+                    {
+                        item.MainImageUrl = item.MainImage.GetCroppedImageUrl(
+                         item.MainImage.Id,
+                         300, 0, false);
+                    }
+                    else
+                    {
+                        item.MainImageUrl = "NO IMAGE URL";
+                    }
+                   
+                }
+            }
            
             return result;
         }

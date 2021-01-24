@@ -44,7 +44,7 @@
 
     <div class="dropdown-column">
         <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-3 py-4 mb-3" style="background-image: url(@productImgLink);">
-            <h3 class="h5 text-red text-shadow my-3"><a href="@productCategory.DetailPageUrl">@productCategory.Name</a></h3>
+            <h3 class="h5 text-red text-shadow my-3"><a href="@productCategory.DetailPageUrl">@productCategory.Name @productCategory.MainImage.Name</a></h3>
         </div>
         @CreateProductChildrenTree(categoryTreeModel)
     </div>

@@ -60,7 +60,7 @@
                 @foreach (var childCategory in categoryTreeModel.Childrens)
                 {
                     var productChildCategory = childCategory.ProductCategory;
-                    var productChildImgLink = productChildCategory.MainImage.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
+                    var productChildImgLink = productChildCategory.GetCroppedImageUrl(productChildCategory.MainImageId, 200, 0);
                     var productChildCategoryLink = productChildCategory.ProductCategoryLink;
 
                     <li>
