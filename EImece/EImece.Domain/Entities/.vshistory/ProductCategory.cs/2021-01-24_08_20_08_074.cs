@@ -82,6 +82,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
+          
                 var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", MainImageUrl,
                     this.Name);
                 return HttpUtility.HtmlEncode(result);

@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -131,26 +130,9 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.GetMainPageProductCategories(language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
-            if (result.IsNotEmpty())
-            {
-                foreach (var item in result)
-                {
-                    if (item.MainImage != null)
-                    {
-                        item.MainImageUrl = item.MainImage.GetCroppedImageUrl(
-                         item.MainImage.Id,
-                         300, 0, false);
-                    }
-                    else
-                    {
-                        item.MainImageUrl = "NO IMAGE URL";
-                    }
-                   
-                }
-            }
-           
+
             return result;
         }
 
@@ -234,7 +216,7 @@ namespace EImece.Domain.Services
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = GetProductCategoryViewModelNoCache(categoryId);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
 
             return result;

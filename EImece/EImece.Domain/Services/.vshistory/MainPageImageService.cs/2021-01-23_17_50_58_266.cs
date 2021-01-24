@@ -57,7 +57,7 @@ namespace EImece.Domain.Services
                // result.LatestStories = StoryService.GetLatestStories(language, 4);
                 result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             else
             {
