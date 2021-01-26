@@ -40,11 +40,7 @@
 {
 var productCategory = categoryTreeModel.ProductCategory;
 var mainImage = productCategory.MainImage;
-string productImgLink = "";
-if (mainImage != null)
-{
-    productImgLink = mainImage.GetCroppedImageUrl(mainImage.Id, 200, 0);
-}
+var productImgLink = mainImage.GetCroppedImageUrl(mainImage.Id, 200, 0);
 var productCategoryLink = productCategory.ProductCategoryLink;
 
     <div class="dropdown-column">
