@@ -19,6 +19,5 @@ namespace EImece.Domain.Services.IServices
         void DeleteMenus(List<string> values);
 
         void UpdateStoryCategoryMenuLink(int storyCategoryId, int lang);
-        List<Menu> GetMenus();
     }
 }

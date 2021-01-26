@@ -11,7 +11,5 @@ namespace EImece.Domain.Repositories.IRepositories
         Menu GetMenuById(int menuId);
 
         List<Menu> GetMenuLeaves(bool? isActive, int language);
-
-        List<Menu> GetMenus();
     }
 }

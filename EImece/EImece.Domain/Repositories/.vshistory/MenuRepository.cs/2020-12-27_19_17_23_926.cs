@@ -62,14 +62,6 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
-        public List<Menu> GetMenus()
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
-            includeProperties.Add(r => r.MainImage);
-            return GetAllIncluding(includeProperties.ToArray()).ToList();
-        }
-
         public List<Menu> GetMenuLeaves(bool? isActive, int language)
         {
             var menus = GetActiveBaseContents(isActive, language);

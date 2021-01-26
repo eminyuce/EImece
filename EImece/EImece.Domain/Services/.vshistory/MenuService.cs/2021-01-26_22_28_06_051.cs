@@ -74,7 +74,7 @@ namespace EImece.Domain.Services
         }
         public List<Menu> GetMenus()
         {
-            var cacheKey = "GetMenus";
+            var cacheKey = string.Format("GetMenus");
             List<Menu> result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
@@ -91,7 +91,7 @@ namespace EImece.Domain.Services
             {
                 result = new MenuPageViewModel();
                 result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-                result.Menu = GetMenus().FirstOrDefault(r=>r.Id.Equals(menuId));
+                result.Menu = MenuRepository.GetMenuById(menuId);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);

@@ -72,17 +72,7 @@ namespace EImece.Domain.Services
             }
             return GetPageById(menu.Id);
         }
-        public List<Menu> GetMenus()
-        {
-            var cacheKey = "GetMenus";
-            List<Menu> result = null;
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = MenuRepository.GetMenus();
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            return result;
-        }
+
         public MenuPageViewModel GetPageById(int menuId)
         {
             var cacheKey = String.Format("GetPageById-{0}", menuId);
@@ -91,7 +81,7 @@ namespace EImece.Domain.Services
             {
                 result = new MenuPageViewModel();
                 result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-                result.Menu = GetMenus().FirstOrDefault(r=>r.Id.Equals(menuId));
+                result.Menu = MenuRepository.GetMenuById(menuId);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);

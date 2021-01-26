@@ -98,7 +98,6 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-                SettingService.GetEmailAccount();
                 SettingService.GetAllActiveSettings();
                 SiteMapService.GenerateSiteMap();
                 MainPageImageService.GetMainPageViewModel(CurrentLanguage);
@@ -110,7 +109,6 @@ namespace EImece.Areas.Admin.Controllers
                         ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
                     }
                 }
-                MenuService.GetMenus();
                 var menus = MenuService.BuildTree(true, CurrentLanguage);
                 var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
                 MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);

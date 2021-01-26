@@ -98,11 +98,10 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-                SettingService.GetEmailAccount();
                 SettingService.GetAllActiveSettings();
                 SiteMapService.GenerateSiteMap();
                 MainPageImageService.GetMainPageViewModel(CurrentLanguage);
-                var activeCategories = ProductCategoryService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
+                var activeCategories = ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
                 if (activeCategories.IsNotEmpty())
                 {
                     foreach (var c in activeCategories)
@@ -110,11 +109,8 @@ namespace EImece.Areas.Admin.Controllers
                         ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
                     }
                 }
-                MenuService.GetMenus();
-                var menus = MenuService.BuildTree(true, CurrentLanguage);
-                var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
                 MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                var products = ProductService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
+                var products = ProductService.GetActiveProducts(CurrentLanguage);
                 MailTemplateService.GetAllMailTemplatesWithCache();
                 if (products.IsNotEmpty())
                 {

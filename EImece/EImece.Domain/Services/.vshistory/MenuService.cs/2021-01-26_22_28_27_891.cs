@@ -74,7 +74,7 @@ namespace EImece.Domain.Services
         }
         public List<Menu> GetMenus()
         {
-            var cacheKey = "GetMenus";
+            var cacheKey = string.Format("GetMenus");
             List<Menu> result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
