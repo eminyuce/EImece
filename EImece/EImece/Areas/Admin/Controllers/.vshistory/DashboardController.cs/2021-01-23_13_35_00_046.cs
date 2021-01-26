@@ -2,7 +2,6 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
@@ -22,9 +21,6 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
-
-        [Inject]
-        public SiteMapService SiteMapService { get; set; }
 
         // GET: Admin/Dashboard
         public ActionResult Index()
@@ -99,7 +95,6 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 SettingService.GetAllActiveSettings();
-                SiteMapService.GenerateSiteMap();
                 MainPageImageService.GetMainPageViewModel(CurrentLanguage);
                 var activeCategories = ProductCategoryService.GetActiveBaseContents(true, CurrentLanguage);
                 if (activeCategories.IsNotEmpty())
@@ -118,7 +113,7 @@ namespace EImece.Areas.Admin.Controllers
                     foreach (var p in products)
                     {
                         ProductService.GetProductDetailViewModelById(p.Id);
-                        if (i == 50)
+                        if (i == 3)
                         {
                             break;
                         }

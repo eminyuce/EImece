@@ -118,7 +118,7 @@ namespace EImece.Areas.Admin.Controllers
                     foreach (var p in products)
                     {
                         ProductService.GetProductDetailViewModelById(p.Id);
-                        if (i == 50)
+                        if (i == 15)
                         {
                             break;
                         }

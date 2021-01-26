@@ -123,7 +123,7 @@ namespace EImece.Areas.Customers.Controllers
         public ActionResult SendMessageToSeller()
         {
             var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
+            var faqs = FaqService.GetActiveBaseEntities(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
@@ -142,7 +142,7 @@ namespace EImece.Areas.Customers.Controllers
         public ActionResult Faq()
         {
             var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
+            var faqs = FaqService.GetActiveBaseEntities(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
