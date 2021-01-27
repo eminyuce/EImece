@@ -17,6 +17,7 @@ using NLog;
 using RazorEngine;
 using RazorEngine.Templating;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -31,8 +32,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace EImece.Tests.Controllers
 {
@@ -72,14 +73,16 @@ namespace EImece.Tests.Controllers
             Console.WriteLine("Reflecting Repository Assemblies");
         }
 
+
         [TestMethod]
         public void TestEmail()
         {
+
             var mail = new MailMessage();
             var SmtpServer = new SmtpClient("srvm02.turhost.com");
             mail.From = new MailAddress("test@websiteniz.com");
             mail.To.Add("test@websiteniz.com");
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             mail.Subject = "Test Mail";
             mail.Body = "This is for testing SMTP mail";
             SmtpServer.Port = 587;
@@ -94,12 +97,12 @@ namespace EImece.Tests.Controllers
             using (var db = new EImeceContext(ConnectionString))
             {
                 var repository = new SettingRepository(db);
-                var SettingService = new SettingService(repository);
-                SettingService.MemoryCacheProvider = new MemoryCacheProvider();
-                EmailAccount emailAccount = SettingService.GetEmailAccount();
-                Console.WriteLine(emailAccount.ToString());
-                EmailSender emailSender = new EmailSender();
-                //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
+                    var SettingService = new SettingService(repository);
+                    SettingService.MemoryCacheProvider = new MemoryCacheProvider();
+                    EmailAccount emailAccount = SettingService.GetEmailAccount();
+                    Console.WriteLine(emailAccount.ToString());
+                    EmailSender emailSender = new EmailSender();
+                    //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
             }
         }
 
@@ -107,7 +110,7 @@ namespace EImece.Tests.Controllers
         public void GetDeserializeObjectProductSpecItem()
         {
             var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>("{\"selectedTotalSpecs\":[{\"SpecsName\":\"color\",\"SpecsValue\":\"Kirmizi\"}]}");
-            var selectedTotalSpecs = ooo.selectedTotalSpecs;
+            var  selectedTotalSpecs = ooo.selectedTotalSpecs;
         }
 
         private String ConnectionString { get { return Constants.DbConnectionKey; } }
@@ -197,7 +200,6 @@ namespace EImece.Tests.Controllers
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
         }
-
         [TestMethod]
         public void GetShoppingSession()
         {
@@ -206,7 +208,6 @@ namespace EImece.Tests.Controllers
             Console.WriteLine(shoppingCart.ShoppingCartItems.Count);
             Assert.IsNotNull(shoppingCart.ShoppingCartItems);
         }
-
         [TestMethod]
         public void GetEmailTemplateById()
         {
@@ -261,42 +262,18 @@ namespace EImece.Tests.Controllers
             var lines = File.ReadAllLines(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\productNames.txt");
             foreach (var line in lines)
             {
-                Console.WriteLine(sql.Replace("[REPLACE_TEXT]", line).Replace("[ProductCodeValue]", GeneralHelper.RandomNumber(6) + ""));
+                Console.WriteLine(sql.Replace("[REPLACE_TEXT]", line).Replace("[ProductCodeValue]", GeneralHelper.RandomNumber(6)+""));
             }
-        }
 
+        }
         [TestMethod]
         public void ReadAllBytesImages()
         {
-            var imageBytes = File.ReadAllBytes(@"‪C:\Users\YUCE\Desktop\vesikalik.jpg");
+           var imageBytes = File.ReadAllBytes(@"‪C:\Users\YUCE\Desktop\vesikalik.jpg");
+
         }
 
-        [TestMethod]
-        public void ReadSiteMapXmlAndRequest()
-        {
-            var oooo = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\siteMap2.xml");
-            ReadSiteMapXmlAndRequest(oooo);
-        }
-
-        public void ReadSiteMapXmlAndRequest(string xml)
-        {
-            if (String.IsNullOrEmpty(xml))
-            {
-                return;
-            }
-
-            XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
-            using (StringReader reader = new StringReader(xml))
-            {
-                var test = (Urlset)serializer.Deserialize(reader);
-                foreach (var tUrl in test.Url)
-                {
-                    var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
-                }
-            }
-        }
-
-        [TestMethod]
+            [TestMethod]
         public void GetActiveBaseContents()
         {
             var xdoc = XDocument.Parse(File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\ProductTemplate.xml"));
@@ -416,6 +393,7 @@ QUITE
             Console.WriteLine(DateTimeOffset.ParseExact("2014-12-11T04:44:16Z", "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                                        CultureInfo.InvariantCulture));
         }
+
 
         [TestMethod]
         public void TestParsing()

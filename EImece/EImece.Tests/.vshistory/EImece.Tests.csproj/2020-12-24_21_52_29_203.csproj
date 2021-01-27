@@ -133,9 +133,6 @@
   <ItemGroup>
     <Content Include="App.config" />
     <Content Include="dataFolder\emailTemplates\OrderConfirmationEmail.html" />
-    <Content Include="dataFolder\siteMap2.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="dataFolder\shoppingSession.txt" />
     <Content Include="dataFolder\sql.txt" />
     <Content Include="dataFolder\productNames.txt" />

@@ -564,10 +564,7 @@ namespace EImece.Domain.Helpers
             }
             return ret;
         }
-        public static byte[] GetImageFromUrl(string url)
-        {
-            return GetImageFromUrl(url,null);
-        }
+
         public static byte[] GetImageFromUrl(string url, Dictionary<String, String> dictionary)
         {
             System.Net.HttpWebRequest request = null;
@@ -587,14 +584,12 @@ namespace EImece.Domain.Helpers
                         BinaryReader br = new BinaryReader(receiveStream);
                         b = br.ReadBytes(500000);
                         br.Close();
-                        if (dictionary != null)
+
+                        foreach (var h in response.Headers.AllKeys)
                         {
-                            foreach (var h in response.Headers.AllKeys)
-                            {
-                                dictionary.Add(h, response.Headers[h]);
-                            }
-                            dictionary.Add("ContentType", response.ContentType);
+                            dictionary.Add(h, response.Headers[h]);
                         }
+                        dictionary.Add("ContentType", response.ContentType);
                     }
                 }
             }

@@ -302,28 +302,15 @@ namespace EImece.Domain.Services
 
         public void ReadSiteMapXmlAndRequest(string xml)
         {
-            if (String.IsNullOrEmpty(xml))
+           XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
+            using (StringReader reader = new StringReader(xml))
             {
-                return;
-            }
-            Logger.Info("SiteMap.ReadSiteMapXmlAndRequest");
-            try
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
-                using (StringReader reader = new StringReader(xml))
+               var test = (Urlset)serializer.Deserialize(reader);
+                foreach (var tUrl in test.Url)
                 {
-                    var test = (Urlset)serializer.Deserialize(reader);
-                    foreach (var tUrl in test.Url)
-                    {
-                        var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
-                        Logger.Info("SiteMap.Url:"+ tUrl.Loc);
-                    }
-
+                    var buffer = GeneralHelper.GetImageFromUrl(tUrl);
                 }
-            }
-            catch (Exception ttt)
-            {
-
+              
             }
 
         }
@@ -347,7 +334,7 @@ namespace EImece.Domain.Services
         public double Priority { get; set; }
     }
 
-    [XmlRoot("urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")]
+    [XmlRoot(ElementName = "urlset")]
     public class Urlset
     {
 

@@ -10,9 +10,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -85,6 +83,8 @@ namespace EImece.Areas.Admin.Controllers
 
             var urlReferrer = Request.UrlReferrer;
             ExecuteWarmUpSql();
+            ExecuteWarmUpSql();
+            ExecuteWarmUpSql();
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());
@@ -125,11 +125,7 @@ namespace EImece.Areas.Admin.Controllers
                         ProductService.GetProductDetailViewModelById(p.Id);
                     }
                 }
-            
-                var pppp = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
-                var buffer = GeneralHelper.GetImageFromUrl(pppp + "/sitemap.xml");
-                SiteMapService.ReadSiteMapXmlAndRequest(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
-
+                ReadSiteMapXmlAndRequest();
             }
             catch (Exception ex)
             {
@@ -137,8 +133,47 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-   
+        private void ReadSiteMapXmlAndRequest()
+        {
+            throw new NotImplementedException();
+        }
 
+        [XmlRoot(ElementName = "url")]
+        public class Url
+        {
+
+            [XmlElement(ElementName = "loc")]
+            public string Loc { get; set; }
+
+            [XmlElement(ElementName = "lastmod")]
+            public DateTime Lastmod { get; set; }
+
+            [XmlElement(ElementName = "changefreq")]
+            public string Changefreq { get; set; }
+
+            [XmlElement(ElementName = "priority")]
+            public double Priority { get; set; }
+        }
+
+        [XmlRoot(ElementName = "urlset")]
+        public class Urlset
+        {
+
+            [XmlElement(ElementName = "url")]
+            public List<Url> Url { get; set; }
+
+            [XmlAttribute(AttributeName = "xmlns")]
+            public string Xmlns { get; set; }
+
+            [XmlAttribute(AttributeName = "xsi")]
+            public string Xsi { get; set; }
+
+            [XmlAttribute(AttributeName = "schemaLocation")]
+            public string SchemaLocation { get; set; }
+
+            [XmlText]
+            public string Text { get; set; }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

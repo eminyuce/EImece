@@ -10,9 +10,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -85,6 +83,8 @@ namespace EImece.Areas.Admin.Controllers
 
             var urlReferrer = Request.UrlReferrer;
             ExecuteWarmUpSql();
+            ExecuteWarmUpSql();
+            ExecuteWarmUpSql();
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());
@@ -125,11 +125,7 @@ namespace EImece.Areas.Admin.Controllers
                         ProductService.GetProductDetailViewModelById(p.Id);
                     }
                 }
-            
-                var pppp = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
-                var buffer = GeneralHelper.GetImageFromUrl(pppp + "/sitemap.xml");
-                SiteMapService.ReadSiteMapXmlAndRequest(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
-
+                SiteMapService.ReadSiteMapXmlAndRequest(UTF8Encoding.GetString(GeneralHelper.GetImageFromUrl("/sitemap.xml")));
             }
             catch (Exception ex)
             {

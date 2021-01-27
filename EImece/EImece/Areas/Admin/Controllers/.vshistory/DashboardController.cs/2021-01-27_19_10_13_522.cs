@@ -125,11 +125,12 @@ namespace EImece.Areas.Admin.Controllers
                         ProductService.GetProductDetailViewModelById(p.Id);
                     }
                 }
-            
-                var pppp = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
+                var pppp=string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
                 var buffer = GeneralHelper.GetImageFromUrl(pppp + "/sitemap.xml");
-                SiteMapService.ReadSiteMapXmlAndRequest(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
-
+                Task.Run(() => {
+                    SiteMapService.ReadSiteMapXmlAndRequest(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
+                });
+          
             }
             catch (Exception ex)
             {

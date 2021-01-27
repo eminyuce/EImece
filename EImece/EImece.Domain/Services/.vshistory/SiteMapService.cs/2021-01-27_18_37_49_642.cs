@@ -306,7 +306,7 @@ namespace EImece.Domain.Services
             {
                 return;
             }
-            Logger.Info("SiteMap.ReadSiteMapXmlAndRequest");
+
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
@@ -315,13 +315,12 @@ namespace EImece.Domain.Services
                     var test = (Urlset)serializer.Deserialize(reader);
                     foreach (var tUrl in test.Url)
                     {
-                        var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
-                        Logger.Info("SiteMap.Url:"+ tUrl.Loc);
+                        var buffer = GeneralHelper.GetImageFromUrl(tUrl);
                     }
 
                 }
             }
-            catch (Exception ttt)
+            catch (Exception)
             {
 
             }
@@ -347,7 +346,7 @@ namespace EImece.Domain.Services
         public double Priority { get; set; }
     }
 
-    [XmlRoot("urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")]
+    [XmlRoot(ElementName = "urlset")]
     public class Urlset
     {
 

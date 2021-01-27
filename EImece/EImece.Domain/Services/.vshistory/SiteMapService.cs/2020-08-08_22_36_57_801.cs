@@ -8,11 +8,9 @@ using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Xml.Serialization;
 
 namespace EImece.Domain.Services
 {
@@ -141,7 +139,6 @@ namespace EImece.Domain.Services
                 Logger.Error(ex, ex.Message);
             }
         }
-
 
         private List<StoryCategory> GenerateStoryCategorySiteMap(List<SitemapItem> sitemapItems, int language, List<StoryCategory> storyCategories)
         {
@@ -298,72 +295,5 @@ namespace EImece.Domain.Services
                 Logger.Error(ex, ex.Message);
             }
         }
-
-
-        public void ReadSiteMapXmlAndRequest(string xml)
-        {
-            if (String.IsNullOrEmpty(xml))
-            {
-                return;
-            }
-            Logger.Info("SiteMap.ReadSiteMapXmlAndRequest");
-            try
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
-                using (StringReader reader = new StringReader(xml))
-                {
-                    var test = (Urlset)serializer.Deserialize(reader);
-                    foreach (var tUrl in test.Url)
-                    {
-                        var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
-                        Logger.Info("SiteMap.Url:"+ tUrl.Loc);
-                    }
-
-                }
-            }
-            catch (Exception ttt)
-            {
-
-            }
-
-        }
-
-    }
-
-    [XmlRoot(ElementName = "url")]
-    public class Url
-    {
-
-        [XmlElement(ElementName = "loc")]
-        public string Loc { get; set; }
-
-        [XmlElement(ElementName = "lastmod")]
-        public DateTime Lastmod { get; set; }
-
-        [XmlElement(ElementName = "changefreq")]
-        public string Changefreq { get; set; }
-
-        [XmlElement(ElementName = "priority")]
-        public double Priority { get; set; }
-    }
-
-    [XmlRoot("urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")]
-    public class Urlset
-    {
-
-        [XmlElement(ElementName = "url")]
-        public List<Url> Url { get; set; }
-
-        [XmlAttribute(AttributeName = "xmlns")]
-        public string Xmlns { get; set; }
-
-        [XmlAttribute(AttributeName = "xsi")]
-        public string Xsi { get; set; }
-
-        [XmlAttribute(AttributeName = "schemaLocation")]
-        public string SchemaLocation { get; set; }
-
-        [XmlText]
-        public string Text { get; set; }
     }
 }

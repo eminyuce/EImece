@@ -1,0 +1,15 @@
+﻿<component>
+  <group name="Ürün Özellikleri">
+    <dropdown name="Renk" values="Renkler" />
+    <textbox name="KafaSekli" display="Kafa Şekli" />
+    <textbox name="Hacim" unit="m3" />
+    <textbox name="Çap"  unit="m" />
+    <textbox name="Yükseklik" unit="m" />
+    <textbox name="Ağırlık"   unit="kg" />
+    <textbox name="Koli Adeti" />
+    <textbox name="Palet Adeti" />
+    <textbox name="Boyu" unit="cm" />
+    <checkbox name="Depoda Var mi?" />
+    <dropdown name="hayvan" display="Hayvan Secin" values="Ingilizce Hayvan Isimleri" />
+  </group>
+</component>
