@@ -83,8 +83,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var urlReferrer = Request.UrlReferrer;
             ExecuteWarmUpSql();
-            ExecuteWarmUpSql();
-            ExecuteWarmUpSql();
+
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());
@@ -120,9 +119,15 @@ namespace EImece.Areas.Admin.Controllers
                 MailTemplateService.GetAllMailTemplatesWithCache();
                 if (products.IsNotEmpty())
                 {
+                    int i = 0;
                     foreach (var p in products)
                     {
                         ProductService.GetProductDetailViewModelById(p.Id);
+                        if (i == 50)
+                        {
+                            break;
+                        }
+                        i++;
                     }
                 }
             }
