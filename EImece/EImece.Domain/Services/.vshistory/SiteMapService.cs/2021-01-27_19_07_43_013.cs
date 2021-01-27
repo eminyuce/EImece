@@ -306,6 +306,7 @@ namespace EImece.Domain.Services
             {
                 return;
             }
+            Logger.Info("SiteMap.ReadSiteMapXmlAndRequest");
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
@@ -315,6 +316,7 @@ namespace EImece.Domain.Services
                     foreach (var tUrl in test.Url)
                     {
                         var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
+                        Logger.Info("SiteMap.Url:"+ tUrl.Loc);
                     }
 
                 }
