@@ -85,7 +85,6 @@ namespace EImece.Areas.Admin.Controllers
 
             var urlReferrer = Request.UrlReferrer;
             ExecuteWarmUpSql();
-            ExecuteWarmUpSql();
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());
@@ -104,7 +103,6 @@ namespace EImece.Areas.Admin.Controllers
                 SettingService.GetAllActiveSettings();
                 SiteMapService.GenerateSiteMap();
                 MainPageImageService.GetMainPageViewModel(CurrentLanguage);
-                MainPageImageService.GetFooterViewModel(CurrentLanguage);
                 var activeCategories = ProductCategoryService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
                 if (activeCategories.IsNotEmpty())
                 {

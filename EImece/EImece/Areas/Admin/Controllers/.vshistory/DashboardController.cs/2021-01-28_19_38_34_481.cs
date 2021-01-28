@@ -85,7 +85,6 @@ namespace EImece.Areas.Admin.Controllers
 
             var urlReferrer = Request.UrlReferrer;
             ExecuteWarmUpSql();
-            ExecuteWarmUpSql();
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());
