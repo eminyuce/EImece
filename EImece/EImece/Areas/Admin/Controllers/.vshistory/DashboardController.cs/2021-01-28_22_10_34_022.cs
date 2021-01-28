@@ -100,7 +100,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-                FaqService.GetActiveBaseEntitiesFromCache(true,CurrentLanguage);
+                FaqService.GetActiveBaseEntitiesFromCache(CurrentLanguage);
                 SettingService.GetEmailAccount();
                 SettingService.GetAllActiveSettings();
                 SiteMapService.GenerateSiteMap();
