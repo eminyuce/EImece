@@ -32,7 +32,7 @@ namespace EImece.Domain.Models.AdminModels
         [AllowHtml]
         public string CargoDescription { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPriceForCargo))]
-        public int BasketMinTotalPriceForCargo { get; set; }
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoPrice))]
+        public int CargoPrice { get; set; }
     }
 }

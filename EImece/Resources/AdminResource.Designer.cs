@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum Sipariş Kargo Tutarı.
+        /// </summary>
+        public static string BasketMinTotalPriceForCargo {
+            get {
+                return ResourceManager.GetString("BasketMinTotalPriceForCargo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Üye Ol.
         /// </summary>
         public static string BecomeMember {

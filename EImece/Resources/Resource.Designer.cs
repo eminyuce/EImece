@@ -556,6 +556,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to KARGO ÜCRETSİZ!.
+        /// </summary>
+        public static string CargoFreeTextInfo {
+            get {
+                return ResourceManager.GetString("CargoFreeTextInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kargo Ücreti.
         /// </summary>
         public static string CargoPrice {

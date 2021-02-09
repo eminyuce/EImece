@@ -98,27 +98,27 @@
                     }
                     else
                     {
-                        <span class="badge badge-pill badge-danger mr-2 mb-2 text-center">
-                            @Resource.CargoFreeTextInfo
-                        </span>
-                    }
+                <span class="badge badge-pill badge-danger mr-2 mb-2">
+                    @Resource.CargoFreeTextInfo
+                </span>
+                            }
 
-                    <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
+                            <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
 
-                    <div class="font-size-sm border-bottom pt-2 pb-3">
-                        <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
-                        <div class="d-flex justify-content-between mb-2"><span>@AdminResource.CargoPrice:</span><span id="CargoPrice">@Model.CargoPriceValue.CurrencySign()</span></div>
+                            <div class="font-size-sm border-bottom pt-2 pb-3">
+                                <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
+                                <div class="d-flex justify-content-between mb-2"><span>@AdminResource.CargoPrice:</span><span id="CargoPrice">@Model.CargoPriceValue.CurrencySign()</span></div>
+                            </div>
+                            <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:   </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
+                            <hr>
+                            <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
+                            <textarea class="form-control mb-3"
+                                      data-shopping-order-guid="@Model.OrderGuid"
+                                      id="orderComments" rows="5">@Model.OrderComments</textarea>
+                            <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+                                <i class="mr-2" data-feather="credit-card"></i>@Resource.ProceedToCheckout
+                            </a>
                     </div>
-                    <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:   </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
-                    <hr>
-                    <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
-                    <textarea class="form-control mb-3"
-                              data-shopping-order-guid="@Model.OrderGuid"
-                              id="orderComments" rows="5">@Model.OrderComments</textarea>
-                    <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
-                        <i class="mr-2" data-feather="credit-card"></i>@Resource.ProceedToCheckout
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -146,21 +146,21 @@
                 </a>
             }
 
-            <div class="media-body pt-3">
-                <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                    <a href="@product.DetailPageUrl">@product.Name</a>
-                </h3>
-                <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
-                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
-                <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory :</span>@product.CategoryName</div>
-                @if (product.ProductSpecItems.IsNotEmpty())
+        <div class="media-body pt-3">
+            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                <a href="@product.DetailPageUrl">@product.Name</a>
+            </h3>
+            <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
+            <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory :</span>@product.CategoryName</div>
+            @if (product.ProductSpecItems.IsNotEmpty())
+            {
+                foreach (var productSpecs in product.ProductSpecItems)
                 {
-                    foreach (var productSpecs in product.ProductSpecItems)
-                    {
-                        <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
-                    }
+        <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
                 }
-            </div>
+            }
+        </div>
         </div>
         <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
 

@@ -1586,7 +1586,4 @@
   <data name="UnauthorizedText" xml:space="preserve">
     <value>Maalesef sayfa kimlik doğrulaması gerektiriyor.</value>
   </data>
-  <data name="CargoFreeTextInfo" xml:space="preserve">
-    <value>KARGO ÜCRETSİZ!</value>
-  </data>
 </root>

@@ -92,13 +92,14 @@
 
                 <!-- Sidebar-->
                 <div class="col-xl-3 col-md-4 pt-3 pt-md-0">
+                    @Model.BasketMinTotalPriceForCargoInt
                     @if (Model.BasketMinTotalPriceForCargoInt > 0)
                     {
                         <span class="badge badge-pill badge-danger mr-2 mb-2">@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</span>
                     }
                     else
                     {
-                        <span class="badge badge-pill badge-danger mr-2 mb-2 text-center">
+                        <span class="badge badge-pill badge-danger mr-2 mb-2">
                             @Resource.CargoFreeTextInfo
                         </span>
                     }

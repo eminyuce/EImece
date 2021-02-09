@@ -1128,7 +1128,4 @@
   <data name="RemoveMainImageConfirmationText" xml:space="preserve">
     <value>Ana resmi silmek istediğinize emin misiniz?</value>
   </data>
-  <data name="BasketMinTotalPriceForCargo" xml:space="preserve">
-    <value>Minimum Sipariş Kargo Tutarı</value>
-  </data>
 </root>
