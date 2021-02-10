@@ -14,6 +14,7 @@ namespace EImece.Domain.Repositories.IRepositories
         void DeleteProductTags(int productId);
 
         PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang);
+
         PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting);
     }
 }

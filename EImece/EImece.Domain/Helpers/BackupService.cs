@@ -27,14 +27,15 @@ namespace EImece.Domain.Helpers
                 BackupDatabase(databaseName);
             }
         }
+
         public void BackupSystemDatabase()
         {
             var SSB = new SqlConnectionStringBuilder(_connectionString);
             BackupDatabase(SSB.InitialCatalog);
         }
+
         public void BackupDatabase(String databaseName)
         {
-
             string filePath = BuildBackupPathWithFilename(databaseName);
 
             using (var connection = new SqlConnection(_connectionString))

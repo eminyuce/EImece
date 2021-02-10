@@ -26,7 +26,6 @@ namespace EImece.Domain.Services
         [Inject]
         public ISettingService SettingService { get; set; }
 
-
         public MailTemplateService(IMailTemplateRepository repository) : base(repository)
         {
             MailTemplateRepository = repository;
@@ -34,7 +33,7 @@ namespace EImece.Domain.Services
 
         public MailTemplate GetMailTemplateByName(string templatename)
         {
-            return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename,StringComparison.InvariantCultureIgnoreCase));
+            return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public List<MailTemplate> GetAllMailTemplatesWithCache()
@@ -85,7 +84,5 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
             return pp;
         }
-
-    
     }
 }

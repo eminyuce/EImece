@@ -11,6 +11,7 @@ namespace EImece.Domain.Services.IServices
         OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId);
 
         CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId);
+
         List<MailTemplate> GetAllMailTemplatesWithCache();
     }
 }

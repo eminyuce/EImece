@@ -52,7 +52,6 @@ namespace EImece.Domain.Entities
         public string ShipmentTrackingNumber { get; set; }
         public string ShipmentCompanyName { get; set; }
 
-
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; set; }

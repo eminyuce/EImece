@@ -277,7 +277,7 @@ namespace EImece.Controllers
                 contact.Message, Environment.NewLine);
             SubsciberService.SaveOrEditEntity(s);
         }
-     
+
         public ActionResult Language(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();

@@ -4,9 +4,6 @@ using EImece.Domain.Models.AdminModels;
 using NLog;
 using Resources;
 using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -29,18 +26,18 @@ namespace EImece.Areas.Admin.Controllers
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(SettingService.GetSettingModel(CurrentLanguage));
         }
-    
+
         public ActionResult SystemSettings()
         {
             SystemSettingModel r = SettingService.GetSystemSettingModel();
             return View(r);
         }
+
         public ActionResult BackUpDb()
         {
             BackupService backupService = new BackupService("");
             backupService.BackupSystemDatabase();
 
-          
             return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
         }
 

@@ -4,7 +4,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web;
 
@@ -51,6 +50,7 @@ namespace EImece.Domain.Services.IServices
         void MoveProductsInTrees(int newCategoryId, string products);
 
         List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories);
+
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting);
     }
 }

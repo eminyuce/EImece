@@ -46,7 +46,7 @@ namespace EImece.Domain.Repositories
                 Save();
             }
         }
-   
+
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -55,13 +55,14 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Product.ProductCategory);
             return this.Paginate(pageIndex, pageSize, r => r.Product.Position, r => r.TagId == tagId, includeProperties.ToArray());
         }
+
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Product);
             includeProperties.Add(r => r.Product.MainImage);
             includeProperties.Add(r => r.Product.ProductCategory);
-            Expression<Func<ProductTag, bool>> match = r2 => r2.Tag.IsActive && r2.Tag.Lang == lang &&  r2.TagId == tagId;
+            Expression<Func<ProductTag, bool>> match = r2 => r2.Tag.IsActive && r2.Tag.Lang == lang && r2.TagId == tagId;
 
             if (sorting == SortingType.LowHighPrice)
             {

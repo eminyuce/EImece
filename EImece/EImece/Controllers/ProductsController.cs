@@ -10,7 +10,6 @@ using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;

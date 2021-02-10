@@ -74,7 +74,6 @@ namespace EImece.Domain.Entities
 
         public Template Template { get; set; }
 
-
         [NotMapped]
         public string CreateChildDataContent
         {

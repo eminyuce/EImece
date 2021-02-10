@@ -1,5 +1,4 @@
-﻿using EImece.Domain.Caching;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
@@ -27,7 +26,6 @@ namespace EImece.Domain.Services
         public IStoryService StoryService { get; set; }
 
         public IFileStorageRepository FileStorageRepository { get; set; }
-        
 
         public FileStorageService(IFileStorageRepository repository) : base(repository)
         {
@@ -157,11 +155,13 @@ namespace EImece.Domain.Services
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
         }
+
         public void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod)
         {
             FileStorage f = FileStorageRepository.GetSingle(fileStorageId);
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
         }
+
         public void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId)
         {
             bool isResult = false;
@@ -289,10 +289,9 @@ namespace EImece.Domain.Services
             catch (Exception exception)
             {
                 var innerExpMessage = exception.InnerException == null ? "" : exception.InnerException.Message;
-                Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id+""+ innerExpMessage);
+                Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
             }
             return "error";
         }
     }
- 
 }

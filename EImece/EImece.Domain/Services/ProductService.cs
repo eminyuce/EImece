@@ -178,10 +178,10 @@ namespace EImece.Domain.Services
         private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
-            var cacheKey = string.Format("GetRandomProductsByCategoryId-{0}-{1}-{2}-{3}", productCategoryId, relatedProductTake,lang,id);
+            var cacheKey = string.Format("GetRandomProductsByCategoryId-{0}-{1}-{2}-{3}", productCategoryId, relatedProductTake, lang, id);
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake*3, lang, id);
+                result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake * 3, lang, id);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
@@ -193,7 +193,7 @@ namespace EImece.Domain.Services
             var cacheKey = string.Format("GetRelatedProducts-{0}-{1}-{2}-{3}", string.Join(",", tagIdList), relatedProductTake, lang, id);
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake*3, lang, id);
+                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
@@ -269,7 +269,6 @@ namespace EImece.Domain.Services
             return r;
         }
 
-
         public void SaveProductSpecifications(List<ProductSpecification> specifications, int productId)
         {
             if (specifications.IsNotEmpty())
@@ -296,7 +295,6 @@ namespace EImece.Domain.Services
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
-
         }
 
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
@@ -435,6 +433,7 @@ namespace EImece.Domain.Services
             r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
             return r;
         }
+
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             var r = new SimiliarProductTagsViewModel();

@@ -142,7 +142,6 @@ namespace EImece.Domain.Services
             }
         }
 
-
         private List<StoryCategory> GenerateStoryCategorySiteMap(List<SitemapItem> sitemapItems, int language, List<StoryCategory> storyCategories)
         {
             try
@@ -299,7 +298,6 @@ namespace EImece.Domain.Services
             }
         }
 
-
         public void ReadSiteMapXmlAndRequest(string xml)
         {
             if (String.IsNullOrEmpty(xml))
@@ -316,22 +314,17 @@ namespace EImece.Domain.Services
                     {
                         var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
                     }
-
                 }
             }
             catch (Exception ttt)
             {
-
             }
-
         }
-
     }
 
     [XmlRoot(ElementName = "url")]
     public class Url
     {
-
         [XmlElement(ElementName = "loc")]
         public string Loc { get; set; }
 
@@ -348,7 +341,6 @@ namespace EImece.Domain.Services
     [XmlRoot("urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")]
     public class Urlset
     {
-
         [XmlElement(ElementName = "url")]
         public List<Url> Url { get; set; }
 

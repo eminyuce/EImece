@@ -72,6 +72,7 @@ namespace EImece.Domain.Services
             }
             return GetPageById(menu.Id);
         }
+
         public List<Menu> GetMenus()
         {
             var cacheKey = "GetMenus";
@@ -83,6 +84,7 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         public MenuPageViewModel GetPageById(int menuId)
         {
             var cacheKey = String.Format("GetPageById-{0}", menuId);
@@ -91,7 +93,7 @@ namespace EImece.Domain.Services
             {
                 result = new MenuPageViewModel();
                 result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-                result.Menu = GetMenus().FirstOrDefault(r=>r.Id.Equals(menuId));
+                result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
@@ -120,7 +122,7 @@ namespace EImece.Domain.Services
                     var menuFiles = new List<MenuFile>(menu.MenuFiles);
                     foreach (var file in menuFiles)
                     {
-                        FileStorageService.DeleteUploadImageByFileStorage(menuId, MediaModType.Menus,file.FileStorageId);
+                        FileStorageService.DeleteUploadImageByFileStorage(menuId, MediaModType.Menus, file.FileStorageId);
                     }
                     MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
                 }

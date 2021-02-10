@@ -249,7 +249,6 @@ namespace EImece.Domain.Repositories
             return result2.Distinct().ToList();
         }
 
-
         public List<Product> GetActiveProducts(int? language)
         {
             var includeProperties = GetIncludePropertyExpressionList();

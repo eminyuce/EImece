@@ -28,6 +28,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             this.AppLogRepository = AppLogRepository;
         }
+
         public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
         {
             if (string.IsNullOrEmpty(contentClass))
@@ -79,10 +80,11 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                throw new NotImplementedException("No Development for "+contentId + " " + imageId + " " + contentClass);
+                throw new NotImplementedException("No Development for " + contentId + " " + imageId + " " + contentClass);
             }
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
         {
@@ -159,7 +161,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-                    throw new NotImplementedException(term+" "+ action + " "+controller);
+                    throw new NotImplementedException(term + " " + action + " " + controller);
                 }
 
                 return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
@@ -167,7 +169,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [DeleteAuthorize()]
-        public JsonResult SaveAdminOrderNote(int orderId, string adminOrderNote, string shipmentCompanyName="", string shipmentTrackingNumber = "")
+        public JsonResult SaveAdminOrderNote(int orderId, string adminOrderNote, string shipmentCompanyName = "", string shipmentTrackingNumber = "")
         {
             var order = OrderService.GetSingle(orderId);
             order.AdminOrderNote = adminOrderNote;

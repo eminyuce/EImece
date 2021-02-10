@@ -4,7 +4,6 @@ using EImece.Domain.Models.FrontModels;
 using GenericRepository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EImece.Domain.Repositories.IRepositories
 {

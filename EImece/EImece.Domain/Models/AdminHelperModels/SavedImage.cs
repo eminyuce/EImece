@@ -18,7 +18,6 @@ namespace EImece.Domain.Models.AdminHelperModels
         public byte[] ImageBytes { get; set; }
         public DateTime UpdatedDated { get; set; }
 
-
         public SavedImage()
         {
         }

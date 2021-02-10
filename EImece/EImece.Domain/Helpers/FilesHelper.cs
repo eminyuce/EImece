@@ -11,7 +11,6 @@ using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -145,8 +144,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-      
-
         public String DeleteFile(String file, HttpContextBase ContentBase)
         {
             var request = ContentBase.Request;
@@ -257,7 +254,7 @@ namespace EImece.Domain.Helpers
                 }
             }
         }
-       
+
         private SavedImage GetFileImageSize(int width, int height, byte[] fileByte)
         {
             Bitmap img = ByteArrayToBitmap(fileByte);
@@ -423,7 +420,6 @@ namespace EImece.Domain.Helpers
                 if (baseContent.MainImageId.HasValue)
                 {
                     String deleted = FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
-                
                 }
                 SavedImage result = SaveImageByte(width, height, httpPostedFileBase);
                 FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
@@ -611,6 +607,7 @@ namespace EImece.Domain.Helpers
 
             return ImageFormat.Jpeg;
         }
+
         public SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
@@ -625,23 +622,25 @@ namespace EImece.Domain.Helpers
             result.UpdatedDated = fileStorage.UpdatedDate;
             return result;
         }
+
         public Tuple<string, string> GetImageSrcPath(int fileStorageId)
         {
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             return GetFileStorageSrcPath(fileStorage);
         }
+
         public static Tuple<string, string> GetFileStorageSrcPath(FileStorage fileStorage)
         {
-            if(fileStorage == null)
+            if (fileStorage == null)
             {
-                return new Tuple<string, string>("","");
+                return new Tuple<string, string>("", "");
             }
             else
             {
                 return GetFileStorageSrcPath(fileStorage.FileName);
             }
-           
         }
+
         public static Tuple<string, string> GetFileStorageSrcPath(String fileName)
         {
             if (!string.IsNullOrEmpty(fileName))
@@ -660,7 +659,7 @@ namespace EImece.Domain.Helpers
         public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
         {
             byte[] imageBytes = null;
-            var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}"; 
+            var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}";
             fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             if (fileStorage != null)
             {

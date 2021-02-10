@@ -271,9 +271,10 @@ namespace EImece.Domain.Helpers.Extensions
 
             return imageTag;
         }
+
         public static string GetFullPathImageUrlFromFileStorage(FileStorage mainImage, bool isThump)
         {
-            if(mainImage == null)
+            if (mainImage == null)
             {
                 return String.Empty;
             }
@@ -291,13 +292,14 @@ namespace EImece.Domain.Helpers.Extensions
                 return imagePath;
             }
         }
+
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
         {
             try
             {
                 if (entity != null && entity.MainImageId.HasValue && entity.MainImageId.Value != 0 && entity.ImageState)
                 {
-                   return GetFullPathImageUrlFromFileStorage(entity.MainImage,isThump);
+                    return GetFullPathImageUrlFromFileStorage(entity.MainImage, isThump);
                 }
             }
             catch (Exception e)
@@ -361,7 +363,7 @@ namespace EImece.Domain.Helpers.Extensions
                     var baseContentEntity = (BaseContent)entity;
                     var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
-                } 
+                }
                 else if (isImageFullSrcUnderMediaFolder && entity is ProductFile)
                 {
                     var baseContentEntity = (ProductFile)entity;
@@ -387,7 +389,6 @@ namespace EImece.Domain.Helpers.Extensions
                         return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" });
                     }
                 }
-               
             }
             return AppConfig.GetDefaultImage(width, height);
         }
@@ -448,7 +449,7 @@ namespace EImece.Domain.Helpers.Extensions
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 if (String.IsNullOrEmpty(categoryName))
                 {
-                    return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity),area="" }, protocol);
+                    return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" }, protocol);
                 }
                 else
                 {

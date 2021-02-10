@@ -564,10 +564,12 @@ namespace EImece.Domain.Helpers
             }
             return ret;
         }
+
         public static byte[] GetImageFromUrl(string url)
         {
-            return GetImageFromUrl(url,null);
+            return GetImageFromUrl(url, null);
         }
+
         public static byte[] GetImageFromUrl(string url, Dictionary<String, String> dictionary)
         {
             System.Net.HttpWebRequest request = null;

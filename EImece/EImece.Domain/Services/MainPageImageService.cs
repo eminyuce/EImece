@@ -48,20 +48,20 @@ namespace EImece.Domain.Services
             {
                 result = new MainPageViewModel();
                 var activeProducts = ProductService.GetActiveProducts(language);
-                result.MainPageProducts = activeProducts.Where(r => r.IsActive &&  r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
+                result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
                 result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(8).ToList();
                 result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
 
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-               // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
-               // result.LatestStories = StoryService.GetLatestStories(language, 4);
+                // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
+                // result.LatestStories = StoryService.GetLatestStories(language, 4);
                 result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             else
             {
-                Logger.Info("GetMainPageViewModel Page is coming from cache:" + cacheKey+ " CacheDuration:" + MemoryCacheProvider.CacheDuration);
+                Logger.Info("GetMainPageViewModel Page is coming from cache:" + cacheKey + " CacheDuration:" + MemoryCacheProvider.CacheDuration);
             }
             return result;
         }

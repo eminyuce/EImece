@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -37,6 +36,7 @@ namespace EImece.Domain.Services
         {
             this.IsCachingActivated = IsCachingActivated;
         }
+
         public List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int language = 1)
         {
             List<ProductCategoryTreeModel> result;
@@ -56,6 +56,7 @@ namespace EImece.Domain.Services
 
             return result;
         }
+
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             List<ProductCategoryTreeModel> result;
@@ -151,8 +152,7 @@ namespace EImece.Domain.Services
                 result = ProductCategoryRepository.GetMainPageProductCategories(language);
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
-           
-           
+
             return result;
         }
 
@@ -264,7 +264,5 @@ namespace EImece.Domain.Services
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
-
-       
     }
 }

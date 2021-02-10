@@ -21,6 +21,7 @@ namespace EImece.Domain.Repositories
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
         public List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -32,10 +33,11 @@ namespace EImece.Domain.Repositories
                 match = match.And(r => r.IsActive == isActive);
             }
             var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
-            
 
-            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel() {
-                ProductCategory = r }).ToList();
+            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel()
+            {
+                ProductCategory = r
+            }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
             int level = 1;
@@ -49,6 +51,7 @@ namespace EImece.Domain.Repositories
             }
             return returnList;
         }
+
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -61,9 +64,10 @@ namespace EImece.Domain.Repositories
             }
             var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
             var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
-            new { 
-                ProductCategory = c, 
-                ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count() 
+            new
+            {
+                ProductCategory = c,
+                ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count()
             }).ToList();
 
             List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
@@ -86,7 +90,7 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.Products);
-            Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t=>t.IsActive);
+            Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language && r.Products.Any(t => t.IsActive);
             var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result.ToList();
