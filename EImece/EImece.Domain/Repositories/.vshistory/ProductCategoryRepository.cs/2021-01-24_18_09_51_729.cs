@@ -29,7 +29,7 @@ namespace EImece.Domain.Repositories
             bool isActived = isActive != null && isActive.HasValue;
             if (isActived)
             {
-                match = match.And(r => r.IsActive == isActive);
+                match.And(r => r.IsActive == isActive);
             }
             var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
             
@@ -57,7 +57,7 @@ namespace EImece.Domain.Repositories
             bool isActived = isActive != null && isActive.HasValue;
             if (isActived)
             {
-                match = match.And(r => r.IsActive == isActive);
+                match.And(r => r.IsActive == isActive);
             }
             var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
             var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
