@@ -144,19 +144,19 @@
     var productCategoryLink = productCategory.ProductCategoryLink;
 
     <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
-        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"
+        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3" 
            href="@productCategoryLink"
            data-toggle="popover" data-placement="right" data-trigger="hover"
            data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent)">
             <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
             <span>
 
-                <b>
-                    @productCategory.Name
-            </b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
-            </i>
-        </span>
-    </a>
-</li>
+                <b>@productCategory.Name 
+                    </b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
+                </i>
+            </span>
+        </a>
+    </li>
 }
 
+ 

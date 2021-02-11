@@ -59,9 +59,9 @@
             <div class="col-md-5">
                 <span class="badge badge-pill badge-warning ml-5">Sınırlı Stok !</span>
                 <div class="pt-4 pl-4 pl-sm-5">
-                    <h3 class="font-family-body font-weight-light mb-2">Tek Ürün</h3>
-                    <h2 class="mb-2 pb-1">Bu üründen bu renkte<br> sadece bir adet üretilmiştir.</h2>
-                    <h5 class="font-family-body font-weight-light mb-3">Eşsiz ve taklit edilemez olmak isteyenlere özel</h5>
+                    <h3 class="font-family-body font-weight-light mb-2">İstenilen Başlık</h3>
+                    <h2 class="mb-2 pb-1">2021 Yeni Ürünlerimiz</h2>
+                    <h5 class="font-family-body font-weight-light mb-3">Bu alanda istenilen mini cümle<br>gerekiyorsa bu alanda alt cümle</h5>
                     <a class="btn btn-primary" href="@bannerLink">Ürünleri İncele<i class="ml-2" data-feather="arrow-right"></i></a>
                 </div>
             </div>
@@ -144,19 +144,19 @@
     var productCategoryLink = productCategory.ProductCategoryLink;
 
     <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
-        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"
+        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3" 
            href="@productCategoryLink"
            data-toggle="popover" data-placement="right" data-trigger="hover"
            data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent)">
             <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
             <span>
 
-                <b>
-                    @productCategory.Name
-            </b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
-            </i>
-        </span>
-    </a>
-</li>
+                <b>@productCategory.Name 
+                    </b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
+                </i>
+            </span>
+        </a>
+    </li>
 }
 
+ 
