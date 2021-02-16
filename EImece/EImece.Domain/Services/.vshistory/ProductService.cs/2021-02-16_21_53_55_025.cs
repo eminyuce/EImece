@@ -170,6 +170,12 @@ namespace EImece.Domain.Services
                 result.RelatedProducts.AddRange(this.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
             }
 
+            if (result.RelatedProducts.Count < 20)
+            {
+                relatedProductTake -= result.RelatedProducts.Count;
+
+            }
+
             result.RelatedProducts = result.RelatedProducts.Distinct().OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
