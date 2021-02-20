@@ -44,8 +44,7 @@
                 var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
                 <tr class="table__line-item order_item">
                     <td class="text-center">
-                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl">
-                        <img src="@imgTag" style="max-width:180px;" alt="Product"></a>
+                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl"><img src="@imgTag" alt="Product"></a>
                     </td>
                     <td class="text-left">
                         @Html.ActionLink(orderProduct.Product.Name,

@@ -185,7 +185,7 @@ RenderValueAs(o => WriteAdminOrderNote(o));
 
 @helper DisplayPriceColumn(Order o)
 {
-    <span class="text-primary">@o.PaidPriceDecimal.CurrencySign()</span>
+    <span class="text-primary">@o.Price.ToDouble().CurrencySign()</span>
 
 }
 @helper DisplayPaymentStatusColumn(Order o)
