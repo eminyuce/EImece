@@ -127,7 +127,7 @@
 @helper CreateShoppingCartItem(ShoppingCartItem item, int i)
 {
     var product = item.Product;
-    double totalPricePerItem = product.Price * item.Quantity;
+    var totalPricePerItem = product.Price * item.Quantity;
     <!-- Item-->
     <div data-shopping-item-row="@item.ShoppingCartItemId" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
         <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">

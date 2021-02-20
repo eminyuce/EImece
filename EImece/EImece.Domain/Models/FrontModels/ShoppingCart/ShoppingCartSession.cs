@@ -115,14 +115,14 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         [JsonIgnore]
-        public double CargoPriceValue
+        public decimal CargoPriceValue
         {
             get
             {
                 if (TotalPrice == 0)
                     return 0;
                 else if (TotalPrice < BasketMinTotalPriceForCargoInt)
-                    return CargoPrice.SettingValue.ToDouble();
+                    return CargoPrice.SettingValue.ToDecimal();
                 else
                     return 0;
             }
@@ -137,7 +137,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public double TotalPriceWithCargoPrice
+        public decimal TotalPriceWithCargoPrice
         {
             get
             {
@@ -145,7 +145,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public double TotalPrice
+        public decimal TotalPrice
         {
             get
             {
@@ -157,7 +157,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public double SubTotalPrice
+        public decimal SubTotalPrice
         {
             get
             {

@@ -45,6 +45,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
             }
+       
 
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
@@ -75,7 +76,7 @@ namespace EImece.Domain.Services
             buyer.Surname = customer.Surname;
             buyer.GsmNumber = customer.GsmNumber;
             buyer.Email = customer.Email;
-            buyer.IdentityNumber = customer.IdentityNumber.ToStr(AppConfig.BuyerIdentityNumber);
+            buyer.IdentityNumber = customer.IdentityNumber;
             buyer.LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat);
             buyer.RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat);
             buyer.RegistrationAddress = customer.RegistrationAddress;
@@ -117,7 +118,7 @@ namespace EImece.Domain.Services
             }
 
             List<BasketItem> basketItems = new List<BasketItem>();
-            double totalPrice = 0;
+            decimal totalPrice = 0;
             foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems) //Session'da tutmuş oldugum sepette bulunan ürünler
             {
                 var item = shoppingCartItem.Product;
@@ -128,13 +129,13 @@ namespace EImece.Domain.Services
                 firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
 
-                firstBasketItem.Price = item.Price.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO));
+                firstBasketItem.Price = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", "."); // item.Price.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO));
                 totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);
             }
             //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
-            request.Price = totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
-            request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",",".");  //totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.PaidPrice = decimal.Round(shoppingCart.TotalPriceWithCargoPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", "."); //shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
             request.BasketItems = basketItems;
             Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
             return CheckoutFormInitialize.Create(request, options);

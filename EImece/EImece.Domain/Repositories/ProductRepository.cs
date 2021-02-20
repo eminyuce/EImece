@@ -142,12 +142,12 @@ namespace EImece.Domain.Repositories
 
             if (sorting == SortingType.LowHighPrice)
             {
-                Expression<Func<Product, double>> keySelector = t => t.Price;
+                Expression<Func<Product, decimal>> keySelector = t => t.Price;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else if (sorting == SortingType.HighLowPrice)
             {
-                Expression<Func<Product, double>> keySelector = t => t.Price;
+                Expression<Func<Product, decimal>> keySelector = t => t.Price;
                 return this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else if (sorting == SortingType.Newest)

@@ -1,0 +1,134 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+
+@{
+    ViewBag.Title = Resources.Resource.CheckoutPaymentOrderReview;
+    var products = Model.ShoppingCartItems;
+    var customer = Model.Customer;
+}
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        @Resource.OrderFinalReview
+                    </li>
+                </ol>
+            </nav>
+        </div>
+            <h1 class="page-title">@Resource.OrderFinalReview</h1><span class="d-block mt-2 text-muted"></span>
+        </div>
+    </div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <!-- Steps (wizard)-->
+    <div class="steps">
+        <div class="steps-body">
+            <a class="step step-completed" href="@Url.Action("ShoppingCart")">
+                <span class="step-indicator"><i data-feather="check"></i></span>
+                <span class="step-icon"><i data-feather="shopping-cart"></i></span>1.@Resource.MyBasket
+            </a>
+            <a class="step step-completed" href="@Url.Action("checkoutbillingdetails")">
+                <span class="step-indicator">
+                    <i data-feather="check"></i>
+                </span><span class="step-icon">
+                    <i data-feather="user"></i>
+                </span>2.@AdminResource.OrderDetails
+            </a>
+            <a class="step step-active" href="@Url.Action("checkoutPaymentOrderReview")">
+                <span class="step-indicator"><i data-feather="check"></i></span><span class="step-icon">
+                    <i data-feather="check-circle"></i>
+                </span>3.@Resource.OrderFinalReview
+            </a><a class="step" href="@Url.Action("PlaceOrder")">
+                <span class="step-icon">
+                    <i data-feather="credit-card"></i>
+                </span>4.@AdminResource.Payment
+            </a>
+        </div>
+    </div>
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-xl-9 col-md-8">
+            <h2 class="h6 px-4 py-3 bg-secondary mb-4">@Resource.ReviewYourOrder</h2>
+            @if (products.IsNotEmpty())
+            {
+                for (int i = 0; i < products.Count; i++)
+                {
+                    @CreateShoppingCartItem(products[i], i)
+                }
+            }
+
+            <!-- Client details-->
+            <div class="bg-secondary px-4 pt-4 pb-2">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="list-unstyled">
+                            <li><span class="text-muted">@Resource.Client:&nbsp;</span>@customer.FullName</li>
+                            <li><span class="text-muted">@Resource.Email:&nbsp;</span>@customer.Email</li>
+                            <li><span class="text-muted">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
+                            <li><span class="text-muted">@Resource.IdentityNumber:&nbsp;</span>@customer.IdentityNumber</li>
+                            <li><span class="text-muted"><strong>@Resource.ShippingAddress:&nbsp;</strong></span>@Html.Partial("ShoppingCartTemplates/_AddressReview", Model)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation-->
+            <div class="d-flex pt-4">
+                <div class="w-50 pr-3"><a class="btn btn-outline-secondary btn-block" href="@Url.Action("checkoutbillingdetails")"><i class="mr-1" data-feather="chevron-left"></i>@Resource.Back</a></div>
+                <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="@Url.Action("PlaceOrder")"><span class="d-none d-sm-inline">@AdminResource.Payment</span><span class="d-inline d-sm-none">Complete</span><i class="ml-1" data-feather="chevron-right"></i></a></div>
+            </div>
+        </div>
+        @Html.Partial("_OrderSummary", Model)
+    </div>
+</div>
+
+@helper CreateShoppingCartItem(ShoppingCartItem item, int i)
+{
+    var product = item.Product;
+    double totalPricePerItem = product.Price * item.Quantity;
+
+    <!-- Item-->
+    <div class="d-sm-flex justify-content-between my-4">
+        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
+        <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+            @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
+            {
+                <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
+                    <img src="@product.CroppedImageUrl" alt="Product">
+                </a>
+            }
+        <div class="media-body pt-3">
+            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                <a href="@product.DetailPageUrl">@product.Name</a>
+            </h3>
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
+            @if (product.ProductSpecItems.IsNotEmpty())
+            {
+                foreach (var productSpecs in product.ProductSpecItems)
+                {
+                    <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+                }
+            }
+        </div>
+        </div>
+        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.Quantity</span></div>
+            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Total:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
+        </div>
+    </div>
+
+}

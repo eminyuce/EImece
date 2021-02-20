@@ -13,7 +13,7 @@ namespace EImece.Domain.Entities
         public string AdminOrderNote { get; set; }
         public string OrderComments { get; set; }
         public string OrderNumber { get; set; }
-        public double CargoPrice { get; set; }
+        public decimal CargoPrice { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
         public string OrderGuid { get; set; }

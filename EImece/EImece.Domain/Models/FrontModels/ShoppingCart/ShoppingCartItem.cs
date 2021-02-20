@@ -17,7 +17,7 @@ namespace EImece.Domain.Models.FrontModels
             return String.Format("quantity:%d product:%d", Quantity, Product.Id);
         }
 
-        public double UnitPrice
+        public decimal UnitPrice
         {
             get
             {
@@ -25,7 +25,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public double TotalPrice
+        public decimal TotalPrice
         {
             get
             {

@@ -66,12 +66,12 @@ namespace EImece.Domain.Repositories
 
             if (sorting == SortingType.LowHighPrice)
             {
-                Expression<Func<ProductTag, double>> keySelector = t => t.Product.Price;
+                Expression<Func<ProductTag, decimal>> keySelector = t => t.Product.Price;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else if (sorting == SortingType.HighLowPrice)
             {
-                Expression<Func<ProductTag, double>> keySelector = t => t.Product.Price;
+                Expression<Func<ProductTag, decimal>> keySelector = t => t.Product.Price;
                 return this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
             }
             else if (sorting == SortingType.Newest)

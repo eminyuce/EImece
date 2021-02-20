@@ -1,0 +1,37 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@model TestPriceEntity
+
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+

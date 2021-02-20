@@ -1,0 +1,23 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@model Product
+
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+ 
+
+   
+        @Html.HiddenFor(model => model.Id)
+

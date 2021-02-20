@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using System;
 using System.Data;
 using System.Globalization;
@@ -19,7 +20,17 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
+
+            decimal totalPrice =2.46m;
+
+            Console.WriteLine(totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)));
+
+            Console.WriteLine(decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero) + "");
             int id = 13769;
+            string priceStr = "329,90".Replace(",",".");
+            Console.WriteLine(priceStr.ToDouble());
+            Console.WriteLine((decimal)priceStr.ToDouble());
+
             // 0J6G4H2D1B
             var result = GeneralHelper.ModifyId(id);
             Console.WriteLine(result);

@@ -36,10 +36,14 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
         [DataType(DataType.Currency)]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
+
+        [NotMapped]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
+        public String PriceStr { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductDiscount))]
-        public double Discount { get; set; }
+        public decimal ? Discount { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCodeErrorMessage))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCode))]
@@ -125,13 +129,17 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public double DiscountPercentage
+        public decimal DiscountPercentage
         {
             get
             {
-                double discountedDiff = Price - PriceWithDiscount;
-                var result = Math.Round(discountedDiff * 100 / Price, 2);
-                return result;
+                if (Price > 0)
+                {
+                    var discountedDiff = Price - PriceWithDiscount;
+                    var result = Math.Round(discountedDiff * 100 / Price, 2);
+                    return result;
+                }
+                return 0;
             }
         }
 
@@ -142,15 +150,15 @@ namespace EImece.Domain.Entities
         public Tuple<string, string> MainImageSrc { get; set; }
 
         [NotMapped]
-        public double PriceWithDiscount
+        public decimal PriceWithDiscount
         {
             get
             {
                 if (HasDiscount)
                 {
                     ProductCategory productCategory = ProductCategory;
-                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? ProductCategory.DiscountPercantage.Value : 0;
-                    return Price - (Discount) - (Price * (categoryDiscount / 100));
+                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? (decimal)ProductCategory.DiscountPercantage.Value/100 : 0;
+                    return Price - (Discount.HasValue ? Discount.Value : 0) - (Price * (categoryDiscount));
                 }
                 else
                 {

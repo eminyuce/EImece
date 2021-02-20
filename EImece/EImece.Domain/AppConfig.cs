@@ -263,14 +263,6 @@ namespace EImece.Domain
             get { return 24; }
         }
 
-        public static string BuyerIdentityNumber
-        {
-            get
-            {
-                return GetConfigString("BuyerIdentityNumber", "38108089344");
-            }
-        }
-
         public static List<int> IyzicoEnabledInstallments
         {
             get

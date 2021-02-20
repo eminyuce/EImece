@@ -12,7 +12,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }

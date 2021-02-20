@@ -23,11 +23,11 @@ namespace EImece.Domain.Entities
         public int OrderId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public double TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public string ProductSpecItems { set; get; }
 
         [NotMapped]
-        public double Price
+        public decimal Price
         {
             get
             {
