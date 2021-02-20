@@ -220,40 +220,34 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Boolean DeleteProductById(int id)
+        public void DeleteProductById(int id)
         {
-            var isAnyProductSold = OrderProductRepository.GetAll().Where(r => r.ProductId == id).ToList();
-            if (isAnyProductSold.IsEmpty())
+            try
             {
-                try
+                var product = ProductRepository.GetProduct(id);
+                ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
+               // OrderProductRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                if (product.MainImageId.HasValue)
                 {
-                    var product = ProductRepository.GetProduct(id);
-                    ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    // OrderProductRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    if (product.MainImageId.HasValue)
-                    {
-                        FileStorageService.DeleteFileStorage(product.MainImageId.Value);
-                    }
-                    if (product.ProductFiles != null)
-                    {
-                        var menuFiles = new List<ProductFile>(product.ProductFiles);
-                        foreach (var file in menuFiles)
-                        {
-                            FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
-                        }
-                        ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    }
-                    DeleteEntity(product);
-                    return true;
+                    FileStorageService.DeleteFileStorage(product.MainImageId.Value);
                 }
-                catch (Exception e)
+                if (product.ProductFiles != null)
                 {
-                    ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
+                    var menuFiles = new List<ProductFile>(product.ProductFiles);
+                    foreach (var file in menuFiles)
+                    {
+                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
+                    }
+                    ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 }
+                DeleteEntity(product);
             }
-            return false;
+            catch (Exception e)
+            {
+                ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
+            }
         }
 
         public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)

@@ -175,7 +175,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 Boolean isDeleted =  ProductService.DeleteProductById(id);
-                if (!isDeleted)
+                if (isDeleted)
                 {
                     Logger.Info("Product has sold items cannot be deleted right now. ProductId: "+ id);
                 }

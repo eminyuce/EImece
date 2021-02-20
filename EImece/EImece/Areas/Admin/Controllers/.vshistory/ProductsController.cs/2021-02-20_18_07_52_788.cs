@@ -166,21 +166,20 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-             
-            Product product = ProductService.GetSingle(id);
+            var isAnyProductSold = OrderProductService.GetAll().Where(r => r.ProductId == id).ToList();
+            if (isAnyProductSold.IsEmpty())
+            {
+
+            }
+                Product product = ProductService.GetSingle(id);
             if (product == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                Boolean isDeleted =  ProductService.DeleteProductById(id);
-                if (!isDeleted)
-                {
-                    Logger.Info("Product has sold items cannot be deleted right now. ProductId: "+ id);
-                }
+                ProductService.DeleteProductById(id);
                 return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
-
             }
             catch (Exception ex)
             {

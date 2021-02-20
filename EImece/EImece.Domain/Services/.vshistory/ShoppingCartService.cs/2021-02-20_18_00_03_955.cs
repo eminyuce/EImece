@@ -174,7 +174,7 @@ namespace EImece.Domain.Services
                     OrderId = savedOrder.Id,
                     ProductId = shoppingCartItem.Product.Id,
                     ProductSalePrice = shoppingCartItem.Product.Price,
-                    ProductName = shoppingCartItem.Product.Name,
+                    Name = shoppingCartItem.Product.Name,
                     ProductCode = shoppingCartItem.Product.ProductCode,
                     CategoryName = shoppingCartItem.Product.CategoryName,
                     Quantity = shoppingCartItem.Quantity,

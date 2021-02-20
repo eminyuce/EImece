@@ -220,7 +220,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Boolean DeleteProductById(int id)
+        public void DeleteProductById(int id)
         {
             var isAnyProductSold = OrderProductRepository.GetAll().Where(r => r.ProductId == id).ToList();
             if (isAnyProductSold.IsEmpty())
@@ -253,7 +253,6 @@ namespace EImece.Domain.Services
                     ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
                 }
             }
-            return false;
         }
 
         public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)

@@ -174,13 +174,8 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                Boolean isDeleted =  ProductService.DeleteProductById(id);
-                if (!isDeleted)
-                {
-                    Logger.Info("Product has sold items cannot be deleted right now. ProductId: "+ id);
-                }
+                ProductService.DeleteProductById(id);
                 return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
-
             }
             catch (Exception ex)
             {
