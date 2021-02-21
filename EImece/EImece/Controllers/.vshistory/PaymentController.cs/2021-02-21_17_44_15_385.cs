@@ -23,7 +23,7 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-   // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
+    [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BaseController
     {
         private readonly IyzicoService iyzicoService;

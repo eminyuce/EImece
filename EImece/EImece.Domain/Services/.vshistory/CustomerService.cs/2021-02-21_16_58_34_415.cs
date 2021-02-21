@@ -82,10 +82,9 @@ namespace EImece.Domain.Services
 
         public List<Customer> GetCustomerServices(string search)
         {
-            search = search.ToStr().Trim();
             var result = CustomerRepository.GetAll();
             var allOrders = OrderService.GetAll();
-            var resultList = result.ToList();
+            var resultList = result.OrderByDescending(r => r.CreatedDate).ToList();
             if (resultList.IsNotEmpty())
             {
                 foreach (var item in resultList)
@@ -93,13 +92,12 @@ namespace EImece.Domain.Services
                     item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
                     GetUserFields(item);
                 }
-                if (!String.IsNullOrEmpty(search))
-                {
-                    resultList = resultList.Where(r => r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 || string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-                }
             }
-          
-            return resultList.OrderByDescending(r => r.CreatedDate).ToList();
+            if (!String.IsNullOrEmpty(search))
+            {
+                resultList = resultList.Where(r => r.Email.Contains(search) || r.Name.Contains(search) || r.Surname.Contains(search)).ToList();
+            }
+            return resultList;
         }
 
         public void GetUserFields(Customer item)

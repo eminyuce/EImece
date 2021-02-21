@@ -82,7 +82,6 @@ namespace EImece.Domain.Services
 
         public List<Customer> GetCustomerServices(string search)
         {
-            search = search.ToStr().Trim();
             var result = CustomerRepository.GetAll();
             var allOrders = OrderService.GetAll();
             var resultList = result.ToList();

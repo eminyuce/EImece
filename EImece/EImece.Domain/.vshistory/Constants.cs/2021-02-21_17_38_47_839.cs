@@ -15,8 +15,6 @@ namespace EImece.Domain
         public const string ProductTagPrefix = "t/{id}"; // tags
         public const string StoryTagPrefix = "t/{id}"; // tags
         public const string CategoryPrefix = "pc/{id}"; //
-        public const string ShoppingCartPrefix = "s"; //
-        
 
         public const string LogoImagePath = "/images/logo.jpg";
 

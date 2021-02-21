@@ -23,7 +23,7 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-   // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
+    [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BaseController
     {
         private readonly IyzicoService iyzicoService;
@@ -70,7 +70,7 @@ namespace EImece.Controllers
             AddressService = addressService;
             CustomerService = customerService;
         }
-       // [Route(Domain.Constants.ShoppingCartPrefix)]
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult ShoppingCart()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();

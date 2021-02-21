@@ -23,7 +23,6 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-   // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BaseController
     {
         private readonly IyzicoService iyzicoService;
@@ -70,17 +69,7 @@ namespace EImece.Controllers
             AddressService = addressService;
             CustomerService = customerService;
         }
-       // [Route(Domain.Constants.ShoppingCartPrefix)]
-        public ActionResult ShoppingCart()
-        {
-            ShoppingCartSession shoppingCart = GetShoppingCart();
-            var urlReferrer = Request.UrlReferrer;
-            if (urlReferrer != null)
-            {
-                shoppingCart.UrlReferrer = urlReferrer.ToStr();
-            }
-            return View(shoppingCart);
-        }
+
         public ActionResult Index()
         {
             return View();
@@ -226,7 +215,16 @@ namespace EImece.Controllers
             return GetShoppingCartFromDataSource();
         }
 
-        
+        public ActionResult ShoppingCart()
+        {
+            ShoppingCartSession shoppingCart = GetShoppingCart();
+            var urlReferrer = Request.UrlReferrer;
+            if (urlReferrer != null)
+            {
+                shoppingCart.UrlReferrer = urlReferrer.ToStr();
+            }
+            return View(shoppingCart);
+        }
 
         public ActionResult CheckoutBillingDetails()
         {

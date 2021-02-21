@@ -19,11 +19,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using EImece.Domain;
+using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
+using Ninject;
+using NLog;
+using System;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-   // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
+    [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BaseController
     {
         private readonly IyzicoService iyzicoService;
@@ -70,17 +85,7 @@ namespace EImece.Controllers
             AddressService = addressService;
             CustomerService = customerService;
         }
-       // [Route(Domain.Constants.ShoppingCartPrefix)]
-        public ActionResult ShoppingCart()
-        {
-            ShoppingCartSession shoppingCart = GetShoppingCart();
-            var urlReferrer = Request.UrlReferrer;
-            if (urlReferrer != null)
-            {
-                shoppingCart.UrlReferrer = urlReferrer.ToStr();
-            }
-            return View(shoppingCart);
-        }
+
         public ActionResult Index()
         {
             return View();
@@ -226,7 +231,16 @@ namespace EImece.Controllers
             return GetShoppingCartFromDataSource();
         }
 
-        
+        public ActionResult ShoppingCart()
+        {
+            ShoppingCartSession shoppingCart = GetShoppingCart();
+            var urlReferrer = Request.UrlReferrer;
+            if (urlReferrer != null)
+            {
+                shoppingCart.UrlReferrer = urlReferrer.ToStr();
+            }
+            return View(shoppingCart);
+        }
 
         public ActionResult CheckoutBillingDetails()
         {
