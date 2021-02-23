@@ -2329,6 +2329,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İleri.
+        /// </summary>
+        public static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bu ürüne henüz yorum yazılmadı. İlk yorumu yazmak ister misin?.
         /// </summary>
         public static string NoCommentForProductYet {
@@ -4167,6 +4176,15 @@ namespace Resources {
         public static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Güncellendi.
+        /// </summary>
+        public static string Updated {
+            get {
+                return ResourceManager.GetString("Updated", resourceCulture);
             }
         }
         

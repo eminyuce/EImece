@@ -1589,10 +1589,4 @@
   <data name="CargoFreeTextInfo" xml:space="preserve">
     <value>KARGO ÜCRETSİZ!</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>İleri</value>
-  </data>
-  <data name="Updated" xml:space="preserve">
-    <value>Güncellendi</value>
-  </data>
 </root>
