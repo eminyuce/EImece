@@ -60,38 +60,41 @@
         </div>
     </div>
 
-    <div class="row pt-4 mt-2">
-        <!-- Content-->
-        <div class="col-md-12">
-            <div class="alert alert-secondary">
-                <div class="pt-3 pb-2 text-center">
-                    <b class="text-dark">
-                        @Resource.CustomerBillingDetailsNotFilledOut 
-                    </b>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-xl-9 col-md-8">
+                <div class="alert alert-secondary">
+                    <div class="pt-3 pb-2 text-center ">
+                        <p class="text-muted">
+                            @Resource.CustomerBillingDetailsNotFilledOut<br>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
         <div class="col-xl-9 col-md-8">
-            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
-                    <div class="media">
-                        <div class="media-body align-self-center">
-                            <h6 class="mb-1">@customer.FullName</h6>
-                            <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
-                            <div class="font-size-lg">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
-                        </div>
+            <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
+                <div class="media">
+                    <div class="media-body align-self-center">
+                        <h6 class="mb-1">@customer.FullName</h6>
+                        <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
                     </div>
                 </div>
-
+            </div>
+            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
                 @Html.HiddenFor(model => customer.Id)
                 @Html.HiddenFor(model => customer.CreatedDate)
                 @Html.HiddenFor(model => customer.UpdatedDate)
                 @Html.HiddenFor(model => customer.Email)
                 <div class="row">
                     @Html.AntiForgeryToken()
-
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.Name)

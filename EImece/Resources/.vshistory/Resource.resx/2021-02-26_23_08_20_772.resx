@@ -325,7 +325,7 @@
     <value>Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır.Lütfen bilgilerinizi kontrol ediniz.</value>
   </data>
   <data name="MandatoryField" xml:space="preserve">
-    <value>Zorunlu Alan, Lütfen Boş bırakmayınız.</value>
+    <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
   </data>
   <data name="CustomerAccount" xml:space="preserve">
     <value>Hesabim</value>

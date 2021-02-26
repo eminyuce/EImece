@@ -287,47 +287,35 @@ namespace EImece.Controllers
         {
             if (String.IsNullOrEmpty(customer.Name))
             {
-                ModelState.AddModelError("customer.Name", Resource.MandatoryField);
+                ModelState.AddModelError("Name", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.Surname))
             {
-                ModelState.AddModelError("customer.Surname", Resource.MandatoryField);
+                ModelState.AddModelError("Surname", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.GsmNumber))
             {
-                ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
+                ModelState.AddModelError("GsmNumber", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.Email))
             {
-                ModelState.AddModelError("customer.Email", Resource.MandatoryField);
+                ModelState.AddModelError("Email", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.City))
             {
-                ModelState.AddModelError("customer.City", Resource.MandatoryField);
+                ModelState.AddModelError("City", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.Town))
             {
-                ModelState.AddModelError("customer.Town", Resource.MandatoryField);
+                ModelState.AddModelError("Town", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.ZipCode))
             {
-                ModelState.AddModelError("customer.ZipCode", Resource.MandatoryField);
+                ModelState.AddModelError("ZipCode", Resource.MandatoryField);
             }
             if (String.IsNullOrEmpty(customer.Country))
             {
-                ModelState.AddModelError("customer.Country", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.District))
-            {
-                ModelState.AddModelError("customer.District", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Street))
-            {
-                ModelState.AddModelError("customer.Street", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.IdentityNumber))
-            {
-                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
+                ModelState.AddModelError("Country", Resource.MandatoryField);
             }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }

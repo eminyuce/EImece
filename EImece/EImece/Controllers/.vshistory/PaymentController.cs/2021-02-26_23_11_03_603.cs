@@ -317,18 +317,6 @@ namespace EImece.Controllers
             {
                 ModelState.AddModelError("customer.Country", Resource.MandatoryField);
             }
-            if (String.IsNullOrEmpty(customer.District))
-            {
-                ModelState.AddModelError("customer.District", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Street))
-            {
-                ModelState.AddModelError("customer.Street", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.IdentityNumber))
-            {
-                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
-            }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 

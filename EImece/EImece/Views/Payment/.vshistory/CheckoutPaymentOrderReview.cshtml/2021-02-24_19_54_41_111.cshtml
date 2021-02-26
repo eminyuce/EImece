@@ -91,7 +91,8 @@
             </div>
         </div>
         @Html.Partial("_OrderSummary", Model)
-        
+
+        @customer.IsEmpty()
     </div>
 </div>
 

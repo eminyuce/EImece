@@ -925,6 +925,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Degerli Müşterimiz, Faturaniz icin Bilgileriniz ve Teslimat Adres bilgisi doldurulması gereklidir..
+        /// </summary>
+        public static string CustomerBillingDetailsNotFilledOut {
+            get {
+                return ResourceManager.GetString("CustomerBillingDetailsNotFilledOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Müşteri Detayı.
         /// </summary>
         public static string CustomerDetail {
@@ -2077,7 +2086,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zorunlu Alan. Lütfen Boş bırakmayınız..
+        ///   Looks up a localized string similar to Zorunlu Alan, Lütfen Boş bırakmayınız..
         /// </summary>
         public static string MandatoryField {
             get {
@@ -2695,6 +2704,15 @@ namespace Resources {
         public static string PlaceOrder {
             get {
                 return ResourceManager.GetString("PlaceOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen Aşağıdaki Zorunlu Alanları Doldurun.
+        /// </summary>
+        public static string PleaseFillOutMandatoryBelowFields {
+            get {
+                return ResourceManager.GetString("PleaseFillOutMandatoryBelowFields", resourceCulture);
             }
         }
         

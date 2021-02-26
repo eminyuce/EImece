@@ -325,7 +325,7 @@
     <value>Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır.Lütfen bilgilerinizi kontrol ediniz.</value>
   </data>
   <data name="MandatoryField" xml:space="preserve">
-    <value>Zorunlu Alan, Lütfen Boş bırakmayınız.</value>
+    <value>Zorunlu Alan. Lütfen Boş bırakmayınız.</value>
   </data>
   <data name="CustomerAccount" xml:space="preserve">
     <value>Hesabim</value>
@@ -1597,8 +1597,5 @@
   </data>
   <data name="CustomerBillingDetailsNotFilledOut" xml:space="preserve">
     <value>Degerli Müşterimiz, Faturaniz icin Bilgileriniz ve Teslimat Adres bilgisi doldurulması gereklidir.</value>
-  </data>
-  <data name="PleaseFillOutMandatoryBelowFields" xml:space="preserve">
-    <value>Lütfen Aşağıdaki Zorunlu Alanları Doldurun</value>
   </data>
 </root>

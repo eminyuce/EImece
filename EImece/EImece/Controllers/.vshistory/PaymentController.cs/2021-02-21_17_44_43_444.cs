@@ -15,7 +15,6 @@ using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using Ninject;
 using NLog;
-using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -253,10 +252,9 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CheckoutBillingDetails(Customer customer)
+        public ActionResult SaveCustomer(Customer customer)
         {
-            Boolean isValidCustomer = customer != null && customer.isValid();
-            if (isValidCustomer)
+            if (customer != null && customer.isValid())
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
                 shoppingCart.Customer = customer;
@@ -276,60 +274,8 @@ namespace EImece.Controllers
             }
             else
             {
-                InformCustomerToFillOutForm(customer);
-                ShoppingCartSession shoppingCart = GetShoppingCart();
-                shoppingCart.Customer = customer;
-                return View(shoppingCart);
+                return RedirectToAction("CheckoutBillingDetails");
             }
-        }
-
-        private void InformCustomerToFillOutForm(Customer customer)
-        {
-            if (String.IsNullOrEmpty(customer.Name))
-            {
-                ModelState.AddModelError("customer.Name", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Surname))
-            {
-                ModelState.AddModelError("customer.Surname", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.GsmNumber))
-            {
-                ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Email))
-            {
-                ModelState.AddModelError("customer.Email", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.City))
-            {
-                ModelState.AddModelError("customer.City", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Town))
-            {
-                ModelState.AddModelError("customer.Town", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.ZipCode))
-            {
-                ModelState.AddModelError("customer.ZipCode", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Country))
-            {
-                ModelState.AddModelError("customer.Country", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.District))
-            {
-                ModelState.AddModelError("customer.District", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Street))
-            {
-                ModelState.AddModelError("customer.Street", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.IdentityNumber))
-            {
-                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
-            }
-            ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 
         private Domain.Entities.Address SetAddress(Customer customer, Domain.Entities.Address address)
