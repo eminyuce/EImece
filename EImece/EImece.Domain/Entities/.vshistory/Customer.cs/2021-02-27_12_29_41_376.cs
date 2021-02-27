@@ -131,7 +131,8 @@ namespace EImece.Domain.Entities
                             && !string.IsNullOrEmpty(Email)
                             && !string.IsNullOrEmpty(City)
                             && !string.IsNullOrEmpty(Town)
-                            && !string.IsNullOrEmpty(Country);
+                            && !string.IsNullOrEmpty(Country)
+                            && !string.IsNullOrEmpty(ZipCode);
         }
 
         public bool IsEmpty()
@@ -141,10 +142,12 @@ namespace EImece.Domain.Entities
                             || string.IsNullOrEmpty(GsmNumber)
                             || string.IsNullOrEmpty(Email)
                             || string.IsNullOrEmpty(District)
+                            || string.IsNullOrEmpty(Description)
                              || string.IsNullOrEmpty(City)
                              || string.IsNullOrEmpty(Town)
                              || string.IsNullOrEmpty(Street)
-                             || string.IsNullOrEmpty(Country) ;
+                             || string.IsNullOrEmpty(Country)
+                             || string.IsNullOrEmpty(ZipCode);
         }
 
         public override string ToString()

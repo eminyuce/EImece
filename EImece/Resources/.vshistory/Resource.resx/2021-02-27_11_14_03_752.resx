@@ -1120,7 +1120,7 @@
     <value>Ödeme Tarihi</value>
   </data>
   <data name="OrderDetails" xml:space="preserve">
-    <value>Sipariş Detayları</value>
+    <value>Sipariş detayları</value>
   </data>
   <data name="OrdersBelongCustomer" xml:space="preserve">
     <value>ait olan siparişler</value>
@@ -1596,7 +1596,7 @@
     <value>Güncellendi</value>
   </data>
   <data name="CustomerBillingDetailsNotFilledOut" xml:space="preserve">
-    <value>Değerli Müşterimiz, faturanız için bilgileriniz ve teslimat adres bilgisi doldurulması gereklidir.</value>
+    <value>Degerli Müşterimiz, Faturaniz icin Bilgileriniz ve Teslimat Adres bilgisi doldurulması gereklidir.</value>
   </data>
   <data name="PleaseFillOutMandatoryBelowFields" xml:space="preserve">
     <value>Lütfen Aşağıdaki Zorunlu Alanları Doldurun</value>

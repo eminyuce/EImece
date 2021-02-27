@@ -1613,7 +1613,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\UnderConstruction\Index.cshtml" />
     <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
-    <Content Include="Views\Payment\_PaymentSteps.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

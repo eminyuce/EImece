@@ -655,7 +655,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Açık Adres / Kargo Firmasina Notunuz.
+        ///   Looks up a localized string similar to Açık Adres / Kargo Firmasına Notunuz.
         /// </summary>
         public static string CustomerOpenAddress {
             get {

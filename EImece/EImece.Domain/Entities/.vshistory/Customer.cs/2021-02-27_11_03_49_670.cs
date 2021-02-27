@@ -129,9 +129,11 @@ namespace EImece.Domain.Entities
                             && !string.IsNullOrEmpty(Surname)
                             && !string.IsNullOrEmpty(GsmNumber)
                             && !string.IsNullOrEmpty(Email)
+                            && !string.IsNullOrEmpty(Description)
                             && !string.IsNullOrEmpty(City)
                             && !string.IsNullOrEmpty(Town)
-                            && !string.IsNullOrEmpty(Country);
+                            && !string.IsNullOrEmpty(Country)
+                            && !string.IsNullOrEmpty(ZipCode);
         }
 
         public bool IsEmpty()
@@ -141,15 +143,12 @@ namespace EImece.Domain.Entities
                             || string.IsNullOrEmpty(GsmNumber)
                             || string.IsNullOrEmpty(Email)
                             || string.IsNullOrEmpty(District)
+                            || string.IsNullOrEmpty(Description)
                              || string.IsNullOrEmpty(City)
                              || string.IsNullOrEmpty(Town)
                              || string.IsNullOrEmpty(Street)
-                             || string.IsNullOrEmpty(Country) ;
-        }
-
-        public override string ToString()
-        {
-            return $"{{{nameof(Surname)}={Surname}, {nameof(GsmNumber)}={GsmNumber}, {nameof(Email)}={Email}, {nameof(IdentityNumber)}={IdentityNumber}, {nameof(Ip)}={Ip}, {nameof(IsSameAsShippingAddress)}={IsSameAsShippingAddress.ToString()}, {nameof(UserId)}={UserId}, {nameof(IsPermissionGranted)}={IsPermissionGranted.ToString()}, {nameof(Gender)}={Gender.ToString()}, {nameof(Street)}={Street}, {nameof(Town)}={Town}, {nameof(District)}={District}, {nameof(City)}={City}, {nameof(Country)}={Country}, {nameof(ZipCode)}={ZipCode}, {nameof(Description)}={Description}, {nameof(Company)}={Company}, {nameof(Captcha)}={Captcha}, {nameof(Orders)}={Orders}, {nameof(FullName)}={FullName}, {nameof(Address)}={Address}, {nameof(RegistrationAddress)}={RegistrationAddress}, {nameof(Id)}={Id.ToString()}, {nameof(Name)}={Name}, {nameof(CreatedDate)}={CreatedDate.ToString()}, {nameof(UpdatedDate)}={UpdatedDate.ToString()}, {nameof(IsActive)}={IsActive.ToString()}, {nameof(Position)}={Position.ToString()}, {nameof(Lang)}={Lang.ToString()}}}";
+                             || string.IsNullOrEmpty(Country)
+                             || string.IsNullOrEmpty(ZipCode);
         }
     }
 }

@@ -925,7 +925,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Degerli Müşterimiz, Faturaniz icin Bilgileriniz ve Teslimat Adres bilgisi doldurulması gereklidir..
+        ///   Looks up a localized string similar to Değerli Müşterimiz, faturanız için bilgileriniz ve teslimat adres bilgisi doldurulması gereklidir..
         /// </summary>
         public static string CustomerBillingDetailsNotFilledOut {
             get {
@@ -2486,7 +2486,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sipariş detayları.
+        ///   Looks up a localized string similar to Sipariş Detayları.
         /// </summary>
         public static string OrderDetails {
             get {

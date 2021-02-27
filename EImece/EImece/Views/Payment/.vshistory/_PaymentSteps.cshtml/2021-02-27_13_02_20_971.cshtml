@@ -1,0 +1,41 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  String
+@{
+    var pageName = Model;
+    var page1 = @pageName.Equals("ShoppingCart", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
+    var page2 = @pageName.Equals("ShoppingCart", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
+    var page3 = @pageName.Equals("ShoppingCart", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
+    var page4 = @pageName.Equals("ShoppingCart", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
+}
+
+<!-- Steps (wizard)-->
+<div class="steps">
+    <div class="steps-body">
+        <a class="step " href="@Url.Action("ShoppingCart")">
+            <span class="step-indicator">
+                <i data-feather="check"></i>
+            </span><span class="step-icon">
+                <i data-feather="shopping-cart"></i>
+            </span>1.@Resource.MyBasket
+        </a>
+        <a class="step" href="@Url.Action("checkoutbillingdetails")">
+            <span class="step-icon">
+                <i data-feather="user"></i>
+            </span>2.@Resource.OrderDetails
+        </a>
+        <a class="step" href="@Url.Action("checkoutPaymentOrderReview")">
+            <span class="step-icon">
+                <i data-feather="check-circle"></i>
+            </span>3.@Resource.OrderFinalReview
+        </a>
+        <a class="step" href="@Url.Action("PlaceOrder")">
+            <span class="step-icon"><i data-feather="credit-card"></i></span>4.@AdminResource.Payment
+        </a>
+    </div>
+</div>

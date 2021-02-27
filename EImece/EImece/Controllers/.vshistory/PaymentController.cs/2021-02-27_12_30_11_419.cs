@@ -286,43 +286,43 @@ namespace EImece.Controllers
 
         private void InformCustomerToFillOutForm(Customer customer)
         {
-            if (string.IsNullOrEmpty(customer.Name))
+            if (String.IsNullOrEmpty(customer.Name))
             {
                 ModelState.AddModelError("customer.Name", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Surname))
+            if (String.IsNullOrEmpty(customer.Surname))
             {
                 ModelState.AddModelError("customer.Surname", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.GsmNumber))
+            if (String.IsNullOrEmpty(customer.GsmNumber))
             {
                 ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Email))
+            if (String.IsNullOrEmpty(customer.Email))
             {
                 ModelState.AddModelError("customer.Email", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.City))
+            if (String.IsNullOrEmpty(customer.City))
             {
                 ModelState.AddModelError("customer.City", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Town))
+            if (String.IsNullOrEmpty(customer.Town))
             {
                 ModelState.AddModelError("customer.Town", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Country))
+            if (String.IsNullOrEmpty(customer.Country))
             {
                 ModelState.AddModelError("customer.Country", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.District))
+            if (String.IsNullOrEmpty(customer.District))
             {
                 ModelState.AddModelError("customer.District", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Street))
+            if (String.IsNullOrEmpty(customer.Street))
             {
                 ModelState.AddModelError("customer.Street", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.IdentityNumber))
+            if (String.IsNullOrEmpty(customer.IdentityNumber))
             {
                 ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
             }

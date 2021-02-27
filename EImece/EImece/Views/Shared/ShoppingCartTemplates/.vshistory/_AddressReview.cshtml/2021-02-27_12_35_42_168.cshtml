@@ -26,21 +26,17 @@
         {
             <li>@customer.Town</li>
         }
-        @if (!string.IsNullOrEmpty(customer.District))
-        {
-            <li>@customer.District</li>
-        }
         @if (!string.IsNullOrEmpty(customer.Street))
         {
             <li>@customer.Street</li>
         }
-        @if (!string.IsNullOrEmpty(customer.ZipCode))
-        {
-            <li>@customer.ZipCode</li>
-        }
         @if (!string.IsNullOrEmpty(customer.Country))
         {
             <li>@customer.Country</li>
+        }
+        @if (!string.IsNullOrEmpty(customer.ZipCode))
+        {
+            <li>@customer.ZipCode</li>
         }
         @if (!string.IsNullOrEmpty(customer.Description))
         {

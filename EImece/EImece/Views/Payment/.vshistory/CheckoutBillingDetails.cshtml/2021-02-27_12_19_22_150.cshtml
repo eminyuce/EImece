@@ -23,18 +23,42 @@
                         <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        @Resource.OrderDetails
+                        @Resource.ProceedToCheckout
                     </li>
                 </ol>
             </nav>
         </div>
-        <h1 class="page-title">@Resource.OrderDetails</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@Resource.ProceedToCheckout</h1><span class="d-block mt-2 text-muted"></span>
     </div>
 </div>
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <!-- Steps (wizard)-->
-    @Html.Partial("_PaymentSteps", "CheckoutBillingDetails")
+    <div class="steps">
+        <div class="steps-body">
+            <a class="step step-completed" href="@Url.Action("ShoppingCart")">
+                <span class="step-indicator">
+                    <i data-feather="check"></i>
+                </span><span class="step-icon">
+                    <i data-feather="shopping-cart"></i>
+                </span>1.@Resource.MyBasket
+            </a>
+            <a class="step step-active" href="@Url.Action("checkoutbillingdetails")">
+                <span class="step-indicator"><i data-feather="check"></i></span>
+                <span class="step-icon">
+                    <i data-feather="user"></i>
+                </span>2.@AdminResource.OrderDetails
+            </a>
+            <a class="step" href="@Url.Action("checkoutPaymentOrderReview")">
+                <span class="step-icon">
+                    <i data-feather="check-circle"></i>
+                </span>3.@Resource.OrderFinalReview
+            </a>
+            <a class="step" href="@Url.Action("PlaceOrder")">
+                <span class="step-icon"><i data-feather="credit-card"></i></span>4.@AdminResource.Payment
+            </a>
+        </div>
+    </div>
 
     <div class="row pt-4 mt-2">
         <!-- Content-->
@@ -193,7 +217,7 @@
             }
         </div>
         @Html.Partial("_OrderSummary", Model)
-
+        @customer.ToString()
     </div>
 </div>
 

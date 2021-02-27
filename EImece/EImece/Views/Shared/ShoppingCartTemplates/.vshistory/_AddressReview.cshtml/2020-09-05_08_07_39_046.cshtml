@@ -18,34 +18,10 @@
         {
             <li>@customer.Company</li>
         }
-        @if (!string.IsNullOrEmpty(customer.City))
-        {
-            <li>@customer.City</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Town))
-        {
-            <li>@customer.Town</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.District))
-        {
-            <li>@customer.District</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Street))
-        {
-            <li>@customer.Street</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.ZipCode))
-        {
-            <li>@customer.ZipCode</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Country))
-        {
-            <li>@customer.Country</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Description))
-        {
-            <li>@customer.Description</li>
-        }
+        <li>@billingAddress.Description</li>
+        <li>@billingAddress.ZipCode</li>
+        <li>@billingAddress.City</li>
+        <li>@billingAddress.Country</li>
     </ul>
 </div>
 <div class="custom-control custom-checkbox">
