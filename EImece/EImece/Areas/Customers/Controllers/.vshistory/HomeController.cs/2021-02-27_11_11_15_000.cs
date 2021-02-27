@@ -134,6 +134,10 @@ namespace EImece.Areas.Customers.Controllers
             {
                 ModelState.AddModelError("GsmNumber", Resource.MandatoryField);
             }
+            if (String.IsNullOrEmpty(customer.Email))
+            {
+                ModelState.AddModelError("Email", Resource.MandatoryField);
+            }
             if (String.IsNullOrEmpty(customer.City))
             {
                 ModelState.AddModelError("City", Resource.MandatoryField);
