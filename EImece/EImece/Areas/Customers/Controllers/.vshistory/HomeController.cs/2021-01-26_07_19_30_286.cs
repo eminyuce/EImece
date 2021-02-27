@@ -97,77 +97,29 @@ namespace EImece.Areas.Customers.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            bool isValidCustomer = customer != null && customer.isValidCustomer();
-            if (isValidCustomer)
-            {
-                var user = UserManager.FindByName(User.Identity.GetUserName());
-                if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    user.FirstName = customer.Name;
-                    user.LastName = customer.Surname;
-                    UserManager.Update(user);
-                }
 
-                customer.UserId = user.Id;
-                customer.Ip = GeneralHelper.GetIpAddress();
-                customer = CustomerService.SaveOrEditEntity(customer);
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
-            }
-            else
-            {
-                InformCustomerToFillOutForm(customer);
-                return View(customer);
-            }
-        }
-        private void InformCustomerToFillOutForm(Customer customer)
-        {
-            if (String.IsNullOrEmpty(customer.Name))
-            {
-                ModelState.AddModelError("Name", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Surname))
-            {
-                ModelState.AddModelError("Surname", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.GsmNumber))
-            {
-                ModelState.AddModelError("GsmNumber", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Email))
-            {
-                ModelState.AddModelError("Email", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.City))
-            {
-                ModelState.AddModelError("City", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Town))
-            {
-                ModelState.AddModelError("Town", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.ZipCode))
-            {
-                ModelState.AddModelError("ZipCode", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Country))
-            {
-                ModelState.AddModelError("Country", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.District))
-            {
-                ModelState.AddModelError("District", Resource.MandatoryField);
-            }
-            if (String.IsNullOrEmpty(customer.Street))
-            {
-                ModelState.AddModelError("Street", Resource.MandatoryField);
-            }
             if (string.IsNullOrEmpty(customer.IdentityNumber))
             {
+                ModelState.AddModelError("", string.Format(AdminResource.MandatoryField, AdminResource.IdentityNumber) + " " + Resource.WhyNeedIdentityNumber);
                 ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
+                return View(customer);
             }
-            ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
+
+            var user = UserManager.FindByName(User.Identity.GetUserName());
+            if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
+            {
+                user.FirstName = customer.Name;
+                user.LastName = customer.Surname;
+                UserManager.Update(user);
+            }
+
+            customer.UserId = user.Id;
+            customer.Ip = GeneralHelper.GetIpAddress();
+            customer = CustomerService.SaveOrEditEntity(customer);
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(customer);
         }
+
         public ActionResult SendMessageToSeller()
         {
             var customer = GetCustomer();

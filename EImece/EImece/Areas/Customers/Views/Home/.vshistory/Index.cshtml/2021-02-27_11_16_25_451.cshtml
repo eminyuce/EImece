@@ -12,7 +12,8 @@
     {
         orders = new List<Order>();
     }
-  
+    string[] countriesArray = new string[] { "Türkiye", "Amerika Birleşik Devletleri", "Kanada","Almanya", "Diğerleri" };
+    var countries = new SelectList(countriesArray.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye ");
 }
 
 <!-- Page Content-->
@@ -105,7 +106,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Country, countries, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                     </div>
                 </div>

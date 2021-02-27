@@ -98,27 +98,22 @@ namespace EImece.Areas.Customers.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             bool isValidCustomer = customer != null && customer.isValidCustomer();
-            if (isValidCustomer)
-            {
-                var user = UserManager.FindByName(User.Identity.GetUserName());
-                if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    user.FirstName = customer.Name;
-                    user.LastName = customer.Surname;
-                    UserManager.Update(user);
-                }
 
-                customer.UserId = user.Id;
-                customer.Ip = GeneralHelper.GetIpAddress();
-                customer = CustomerService.SaveOrEditEntity(customer);
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
-            }
-            else
+           
+
+            var user = UserManager.FindByName(User.Identity.GetUserName());
+            if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
             {
-                InformCustomerToFillOutForm(customer);
-                return View(customer);
+                user.FirstName = customer.Name;
+                user.LastName = customer.Surname;
+                UserManager.Update(user);
             }
+
+            customer.UserId = user.Id;
+            customer.Ip = GeneralHelper.GetIpAddress();
+            customer = CustomerService.SaveOrEditEntity(customer);
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(customer);
         }
         private void InformCustomerToFillOutForm(Customer customer)
         {
@@ -165,6 +160,7 @@ namespace EImece.Areas.Customers.Controllers
             if (string.IsNullOrEmpty(customer.IdentityNumber))
             {
                 ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
+                return View(customer);
             }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }

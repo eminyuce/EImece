@@ -123,7 +123,7 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public bool isValidCustomer()
+        public bool isValid()
         {
             return !string.IsNullOrEmpty(Name)
                             && !string.IsNullOrEmpty(Surname)

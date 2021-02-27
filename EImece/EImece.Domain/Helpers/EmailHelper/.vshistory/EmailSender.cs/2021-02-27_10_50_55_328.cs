@@ -102,16 +102,14 @@ namespace EImece.Domain.Helpers.EmailHelper
                 }
                 message.Attachments.Add(attachment);
             }
-            if (Constants.IsSmtpClientEnabled)
+
+            using (var smtpClient = new SmtpClient())
             {
-                using (var smtpClient = new SmtpClient())
-                {
-                    smtpClient.Host = emailAccount.Host;
-                    smtpClient.Port = emailAccount.Port;
-                    smtpClient.EnableSsl = emailAccount.EnableSsl;
-                    smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                    smtpClient.Send(message);
-                }
+                smtpClient.Host = emailAccount.Host;
+                smtpClient.Port = emailAccount.Port;
+                smtpClient.EnableSsl = emailAccount.EnableSsl;
+                smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
+               // smtpClient.Send(message);
             }
         }
 

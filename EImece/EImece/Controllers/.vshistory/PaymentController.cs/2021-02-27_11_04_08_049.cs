@@ -237,7 +237,6 @@ namespace EImece.Controllers
                 if (shoppingCart.Customer == null)
                 {
                     shoppingCart.Customer = new Customer();
-                    shoppingCart.Customer.Country = "Türkiye";
                 }
                 if (shoppingCart.Customer.IsEmpty())
                 {
@@ -256,7 +255,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckoutBillingDetails(Customer customer)
         {
-            bool isValidCustomer = customer != null && customer.isValidCustomer();
+            Boolean isValidCustomer = customer != null && customer.isValidCustomer();
             if (isValidCustomer)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();

@@ -170,7 +170,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.Country)
-                            @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                            @Html.EditorFor(model => customer.Country, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
                         </div>
                     </div>

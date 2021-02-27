@@ -97,28 +97,27 @@ namespace EImece.Areas.Customers.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            bool isValidCustomer = customer != null && customer.isValidCustomer();
-            if (isValidCustomer)
-            {
-                var user = UserManager.FindByName(User.Identity.GetUserName());
-                if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    user.FirstName = customer.Name;
-                    user.LastName = customer.Surname;
-                    UserManager.Update(user);
-                }
 
-                customer.UserId = user.Id;
-                customer.Ip = GeneralHelper.GetIpAddress();
-                customer = CustomerService.SaveOrEditEntity(customer);
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
-            }
-            else
+            if (string.IsNullOrEmpty(customer.IdentityNumber))
             {
-                InformCustomerToFillOutForm(customer);
+                ModelState.AddModelError("", string.Format(AdminResource.MandatoryField, AdminResource.IdentityNumber) + " " + Resource.WhyNeedIdentityNumber);
+                ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
                 return View(customer);
             }
+
+            var user = UserManager.FindByName(User.Identity.GetUserName());
+            if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
+            {
+                user.FirstName = customer.Name;
+                user.LastName = customer.Surname;
+                UserManager.Update(user);
+            }
+
+            customer.UserId = user.Id;
+            customer.Ip = GeneralHelper.GetIpAddress();
+            customer = CustomerService.SaveOrEditEntity(customer);
+            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            return View(customer);
         }
         private void InformCustomerToFillOutForm(Customer customer)
         {
@@ -162,9 +161,9 @@ namespace EImece.Areas.Customers.Controllers
             {
                 ModelState.AddModelError("Street", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.IdentityNumber))
+            if (String.IsNullOrEmpty(customer.IdentityNumber))
             {
-                ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
+                ModelState.AddModelError("IdentityNumber", Resource.MandatoryField);
             }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }

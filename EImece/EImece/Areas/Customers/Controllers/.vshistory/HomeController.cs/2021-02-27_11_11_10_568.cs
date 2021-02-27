@@ -119,6 +119,9 @@ namespace EImece.Areas.Customers.Controllers
                 InformCustomerToFillOutForm(customer);
                 return View(customer);
             }
+           
+
+          
         }
         private void InformCustomerToFillOutForm(Customer customer)
         {

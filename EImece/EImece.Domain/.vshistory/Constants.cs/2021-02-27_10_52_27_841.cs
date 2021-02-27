@@ -114,7 +114,7 @@ namespace EImece.Domain
         public const string PageThemeT2 = "T2";
         public const string PageThemeT1 = "T1";
         public const string DefaultImageText = "X";
-        public static bool IsSmtpClientEnabled = false;
+
         public static object DeleteButtonHtmlAttribute
         {
             get
@@ -139,6 +139,6 @@ namespace EImece.Domain
             }
         }
 
-       
+        public static bool IsSmtpClientEnabled { get; internal set; }
     }
 }

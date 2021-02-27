@@ -237,7 +237,6 @@ namespace EImece.Controllers
                 if (shoppingCart.Customer == null)
                 {
                     shoppingCart.Customer = new Customer();
-                    shoppingCart.Customer.Country = "Türkiye";
                 }
                 if (shoppingCart.Customer.IsEmpty())
                 {

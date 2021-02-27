@@ -28,14 +28,6 @@ namespace EImece.Domain.Helpers
         private const string ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
         private static Random random = new Random();
 
-        public static SelectList GetStaticCountries()
-        {
-            string[] countriesArray = new string[] { "Türkiye", "Amerika Birleşik Devletleri", "Kanada", "Almanya", "Diğerleri" };
-            return new SelectList(countriesArray.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye");
-        }
-
-             
-
         public static string ReverseString(string srtVarable)
         {
             return new string(srtVarable.Reverse().ToArray());

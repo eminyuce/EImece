@@ -123,17 +123,17 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public bool isValidCustomer()
+        public bool isValid()
         {
-            return !string.IsNullOrEmpty(Name)
-                            && !string.IsNullOrEmpty(Surname)
-                            && !string.IsNullOrEmpty(GsmNumber)
-                            && !string.IsNullOrEmpty(Email)
-                            && !string.IsNullOrEmpty(Description)
-                            && !string.IsNullOrEmpty(City)
-                            && !string.IsNullOrEmpty(Town)
-                            && !string.IsNullOrEmpty(Country)
-                            && !string.IsNullOrEmpty(ZipCode);
+            return !(string.IsNullOrEmpty(Name)
+                            && string.IsNullOrEmpty(Surname)
+                            && string.IsNullOrEmpty(GsmNumber)
+                            && string.IsNullOrEmpty(Email)
+                            && string.IsNullOrEmpty(Description)
+                            && string.IsNullOrEmpty(City)
+                            && string.IsNullOrEmpty(Town)
+                            && string.IsNullOrEmpty(Country)
+                            && string.IsNullOrEmpty(ZipCode));
         }
 
         public bool IsEmpty()

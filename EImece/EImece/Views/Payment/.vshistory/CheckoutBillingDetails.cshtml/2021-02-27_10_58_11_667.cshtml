@@ -28,9 +28,9 @@
                 </ol>
             </nav>
         </div>
-        <h1 class="page-title">@Resource.ProceedToCheckout</h1><span class="d-block mt-2 text-muted"></span>
+            <h1 class="page-title">@Resource.ProceedToCheckout</h1><span class="d-block mt-2 text-muted"></span>
+        </div>
     </div>
-</div>
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <!-- Steps (wizard)-->
@@ -66,7 +66,7 @@
             <div class="alert alert-secondary">
                 <div class="pt-3 pb-2 text-center">
                     <b class="text-dark">
-                        @Resource.CustomerBillingDetailsNotFilledOut
+                        @Resource.CustomerBillingDetailsNotFilledOut 
                     </b>
                 </div>
             </div>
@@ -134,88 +134,89 @@
                             @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Town)
-                            @Html.EditorFor(model => customer.Town, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.Town)
+                                @Html.EditorFor(model => customer.Town, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.District)
-                            @Html.EditorFor(model => customer.District, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.District)
+                                @Html.EditorFor(model => customer.District, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.Street)
+                                @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Street)
-                            @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-6">
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.ZipCode)
-                            @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.ZipCode)
+                                @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.Country)
+                                @Html.EditorFor(model => customer.Country, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Country)
-                            @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.Company)
+                                @Html.EditorFor(model => customer.Company, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.Company, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Company)
-                            @Html.EditorFor(model => customer.Company, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Company, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => customer.Description)
+                                @Html.EditorFor(model => customer.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Description)
-                            @Html.EditorFor(model => customer.Description, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                    <h6 class="mb-3 pt-4 pb-3 border-bottom">@Resource.BillingAdress</h6>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" checked="">
+                        @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
+                    </div>
+                    <!-- Navigation-->
+                    <div class="d-flex pt-4 mt-3">
+                        <div class="w-50 pr-3">
+                            <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart")">
+                                <i class="mr-1" data-feather="chevron-left"></i>
+                                <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">@Resource.Back</span>
+                            </a>
+                        </div>
+                        <div class="w-50 pl-2">
+                            <input type="submit" id="ReviewYourOrder" style="display:none;" />
+                            <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
+                                <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
+                                <span class="d-inline d-sm-none">@Resource.Next</span><i class="ml-1" data-feather="chevron-right"></i>
+                            </a>
                         </div>
                     </div>
+                    }
                 </div>
-                <h6 class="mb-3 pt-4 pb-3 border-bottom">@Resource.BillingAdress</h6>
-                <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" type="checkbox" checked="">
-                    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
-                </div>
-                <!-- Navigation-->
-                <div class="d-flex pt-4 mt-3">
-                    <div class="w-50 pr-3">
-                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart")">
-                            <i class="mr-1" data-feather="chevron-left"></i>
-                            <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">@Resource.Back</span>
-                        </a>
-                    </div>
-                    <div class="w-50 pl-2">
-                        <input type="submit" id="ReviewYourOrder" style="display:none;" />
-                        <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
-                            <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
-                            <span class="d-inline d-sm-none">@Resource.Next</span><i class="ml-1" data-feather="chevron-right"></i>
-                        </a>
-                    </div>
-                </div>
-            }
-        </div>
         @Html.Partial("_OrderSummary", Model)
     </div>
 </div>

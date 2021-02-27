@@ -237,7 +237,6 @@ namespace EImece.Controllers
                 if (shoppingCart.Customer == null)
                 {
                     shoppingCart.Customer = new Customer();
-                    shoppingCart.Customer.Country = "Türkiye";
                 }
                 if (shoppingCart.Customer.IsEmpty())
                 {
@@ -256,7 +255,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckoutBillingDetails(Customer customer)
         {
-            bool isValidCustomer = customer != null && customer.isValidCustomer();
+            Boolean isValidCustomer = customer != null && customer.isValid();
             if (isValidCustomer)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -431,7 +430,7 @@ namespace EImece.Controllers
             {
                 return Content("ShoppingCartItems is EMPTY");
             }
-            if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
+            if (shoppingCart.Customer.isValid() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 var user = UserManager.FindByName(User.Identity.GetUserName());
                 ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
