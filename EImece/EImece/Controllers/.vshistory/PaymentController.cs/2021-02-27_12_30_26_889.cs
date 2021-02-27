@@ -234,23 +234,16 @@ namespace EImece.Controllers
             if (Request.IsAuthenticated)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
-                if (shoppingCart.ShoppingCartItems.IsNotEmpty())
+                if (shoppingCart.Customer == null)
                 {
-                    if (shoppingCart.Customer == null)
-                    {
-                        shoppingCart.Customer = new Customer();
-                        shoppingCart.Customer.Country = "Türkiye";
-                    }
-                    if (shoppingCart.Customer.IsEmpty())
-                    {
-                        GetCustomerIfAuthenticated(shoppingCart);
-                    }
-                    return View(shoppingCart);
+                    shoppingCart.Customer = new Customer();
+                    shoppingCart.Customer.Country = "Türkiye";
                 }
-                else
+                if (shoppingCart.Customer.IsEmpty())
                 {
-                    return RedirectToAction("shoppingcart", "Payment");
+                    GetCustomerIfAuthenticated(shoppingCart);
                 }
+                return View(shoppingCart);
             }
             else
             {
@@ -366,14 +359,7 @@ namespace EImece.Controllers
         public ActionResult CheckoutPaymentOrderReview()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
-            if (shoppingCart.ShoppingCartItems.IsNotEmpty())
-            {
-                return View(shoppingCart);
-            }
-            else
-            {
-                return RedirectToAction("shoppingcart", "Payment");
-            }
+            return View(shoppingCart);
         }
 
         public ActionResult renderShoppingCartPrice()
@@ -439,7 +425,7 @@ namespace EImece.Controllers
 
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
-                return RedirectToAction("shoppingcart", "Payment");
+                return Content("ShoppingCartItems is EMPTY");
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {

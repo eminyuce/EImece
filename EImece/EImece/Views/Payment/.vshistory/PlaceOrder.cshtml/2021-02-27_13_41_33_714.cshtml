@@ -12,8 +12,6 @@
 @{
 
     ViewBag.Title = Resources.Resource.PlaceOrder;
-    var products = Model.ShoppingCartItems;
-    var customer = Model.Customer;
     CheckoutFormInitialize checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
 }
 @*
@@ -43,7 +41,7 @@
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <!-- Steps (wizard)-->
-    @Html.Partial("_PaymentSteps", "PlaceOrder", new ViewDataDictionary(ViewData){
+    @Html.Partial("_PaymentSteps", "ShoppingCart", new ViewDataDictionary(ViewData){
        {"AnyProducts",products.IsNotEmpty()}
          })
     <div class="row pt-4 mt-2">

@@ -249,7 +249,8 @@ namespace EImece.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("shoppingcart", "Payment");
+                    return RedirectToAction("Login", "Account",
+                  new { returnUrl = Url.Action("CheckoutPaymentOrderReview", "Payment") });
                 }
             }
             else
@@ -366,14 +367,7 @@ namespace EImece.Controllers
         public ActionResult CheckoutPaymentOrderReview()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
-            if (shoppingCart.ShoppingCartItems.IsNotEmpty())
-            {
-                return View(shoppingCart);
-            }
-            else
-            {
-                return RedirectToAction("shoppingcart", "Payment");
-            }
+            return View(shoppingCart);
         }
 
         public ActionResult renderShoppingCartPrice()
@@ -439,7 +433,7 @@ namespace EImece.Controllers
 
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
-                return RedirectToAction("shoppingcart", "Payment");
+                return Content("ShoppingCartItems is EMPTY");
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {

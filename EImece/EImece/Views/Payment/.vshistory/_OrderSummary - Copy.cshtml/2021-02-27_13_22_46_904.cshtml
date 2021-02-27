@@ -1,0 +1,35 @@
+﻿@using Iyzipay;
+@using Iyzipay.Model;
+@using Iyzipay.Request;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+
+<!-- Sidebar-->
+
+
+<div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
+
+
+    @if (Model.BasketMinTotalPriceForCargoInt > 0)
+    {
+    <span class="badge badge-pill badge-danger mr-2 mb-2">
+        @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
+    </span>
+            }
+
+    
+
+        <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
+        <div class="font-size-sm border-bottom pt-2 pb-3">
+            <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span>@Model.TotalPrice.CurrencySign()</span></div>
+            <div class="d-flex justify-content-between mb-2"><span>@AdminResource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span></div>
+        </div>
+        <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:  </span><span>@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
+        <hr>
+    </div>

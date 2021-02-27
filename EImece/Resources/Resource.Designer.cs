@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sepetiniz icin Ek Yorumlar.
+        ///   Looks up a localized string similar to Siparişiniz için notunuz.
         /// </summary>
         public static string AdditionalComments {
             get {

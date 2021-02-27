@@ -34,9 +34,7 @@
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <!-- Steps (wizard)-->
-    @Html.Partial("_PaymentSteps", "CheckoutPaymentOrderReview", new ViewDataDictionary(ViewData){
-       {"AnyProducts",products.IsNotEmpty()}
-         })
+    @Html.Partial("_PaymentSteps", "CheckoutPaymentOrderReview")
     <div class="row pt-4 mt-2">
         <!-- Content-->
         <div class="col-xl-9 col-md-8">

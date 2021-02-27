@@ -439,7 +439,7 @@ namespace EImece.Controllers
 
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
-                return RedirectToAction("shoppingcart", "Payment");
+                return Content("ShoppingCartItems is EMPTY");
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {

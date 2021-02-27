@@ -1614,7 +1614,6 @@
     <Content Include="Views\UnderConstruction\Index.cshtml" />
     <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Payment\_PaymentSteps.cshtml" />
-    <Content Include="Views\Payment\ShoppingCart - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

@@ -34,9 +34,7 @@
 </div>
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
-    @Html.Partial("_PaymentSteps", "ShoppingCart", new ViewDataDictionary(ViewData){
-       {"AnyProducts",products.IsNotEmpty()}
-         })
+    @Html.Partial("_PaymentSteps", "ShoppingCart")
     <div class="row pt-4 mt-2">
         <!-- Content-->
         <div class="col-md-12">
@@ -69,13 +67,34 @@
                 <input type="hidden" id="OrderGuid" value="@Model.OrderGuid" />
 
                 <!-- Sidebar-->
-                @Html.Partial("_OrderSummary", Model, new ViewDataDictionary(ViewData){
-       {"IsAdditionalComment",true},  
-               {"AnyProducts",products.IsNotEmpty()}
-         })
+                <div class="col-xl-3 col-md-4 pt-3 pt-md-0">
+                    @if (Model.BasketMinTotalPriceForCargoInt > 0)
+                    {
+                        <span class="badge badge-pill badge-danger mr-2 mb-2">@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger mr-2 mb-2 text-center">
+                            @Resource.CargoFreeTextInfo
+                        </span>
+                    }
 
+                    <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
 
-
+                    <div class="font-size-sm border-bottom pt-2 pb-3">
+                        <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
+                        <div class="d-flex justify-content-between mb-2"><span>@AdminResource.CargoPrice:</span><span id="CargoPrice">@Model.CargoPriceValue.CurrencySign()</span></div>
+                    </div>
+                    <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:  </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
+                    <hr>
+                    <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
+                    <textarea class="form-control mb-3"
+                              data-shopping-order-guid="@Model.OrderGuid"
+                              id="orderComments" rows="5">@Model.OrderComments</textarea>
+                    <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+                        <i class="mr-2" data-feather="credit-card"></i>@Resource.ProceedToCheckout
+                    </a>
+                </div>
             </div>
         </div>
     </div>
