@@ -101,7 +101,7 @@
     var totalPricePerItem = product.Price * item.Quantity;
 
     <!-- Item-->
-    <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+    <div class="d-sm-flex justify-content-between my-4">
         <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
         <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
         <div class="media d-block d-sm-flex text-center text-sm-left">
