@@ -468,8 +468,8 @@
   <data name="Subscribe" xml:space="preserve">
     <value>Abone ol</value>
   </data>
-  <data name="FeaturedProductCategories" xml:space="preserve">
-    <value>Ürün Kategorileri</value>
+  <data name="FeaturedProducts" xml:space="preserve">
+    <value>Öne çıkan Ürünler</value>
   </data>
   <data name="DeliveryInfo" xml:space="preserve">
     <value>Teslimat Bilgileri</value>

@@ -9,7 +9,7 @@
 
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
-    var mainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId != 0).OrderBy(r => r.Position).Take(12).ToList();
+    var mainPageProductCategories = Model.MainPageProductCategories.OrderBy(r => r.Position).Take(12).ToList();
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
     var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
     var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
@@ -49,6 +49,7 @@
             </div>
         </div>
     </div>
+    <hr>
 </section>
 
 @CreateProductCategorySection(@Resource.FeaturedProductCategories, mainPageProductCategories)

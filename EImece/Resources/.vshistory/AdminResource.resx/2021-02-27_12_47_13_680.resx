@@ -181,7 +181,7 @@
     <value>Resmi Göster</value>
   </data>
   <data name="MainPage" xml:space="preserve">
-    <value>Vitrinde mi?</value>
+    <value>Vitrin Ürünü</value>
   </data>
   <data name="State" xml:space="preserve">
     <value>Durum</value>
@@ -202,7 +202,7 @@
     <value>Lütfen Menü Kategorinizi Ağaçtan Seçin</value>
   </data>
   <data name="MainImageId" xml:space="preserve">
-    <value>Vitrin Resmi</value>
+    <value>Vitrin Ürünü Resmi</value>
   </data>
   <data name="IsActive" xml:space="preserve">
     <value>Yayında mı</value>

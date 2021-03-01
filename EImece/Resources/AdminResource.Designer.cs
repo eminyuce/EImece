@@ -1483,7 +1483,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vitrin Ürünü Resmi.
+        ///   Looks up a localized string similar to Vitrin Resmi.
         /// </summary>
         public static string MainImageId {
             get {
@@ -1492,7 +1492,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vitrin Ürünü.
+        ///   Looks up a localized string similar to Vitrinde mi?.
         /// </summary>
         public static string MainPage {
             get {

@@ -1294,11 +1294,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Öne çıkan Ürünler.
+        ///   Looks up a localized string similar to Ürün Kategorileri.
         /// </summary>
-        public static string FeaturedProducts {
+        public static string FeaturedProductCategories {
             get {
-                return ResourceManager.GetString("FeaturedProducts", resourceCulture);
+                return ResourceManager.GetString("FeaturedProductCategories", resourceCulture);
             }
         }
         
@@ -2050,7 +2050,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vitrin Ürünü Resmi.
+        ///   Looks up a localized string similar to Vitrin Resmi.
         /// </summary>
         public static string MainImageId {
             get {
@@ -2059,7 +2059,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vitrin Ürünü.
+        ///   Looks up a localized string similar to Vitrinde mi?.
         /// </summary>
         public static string MainPage {
             get {

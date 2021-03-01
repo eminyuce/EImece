@@ -157,7 +157,7 @@
     <value>E-POSTA LİSTESİ</value>
   </data>
   <data name="MainPage" xml:space="preserve">
-    <value>Vitrinde mi?</value>
+    <value>Vitrin Ürünü</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Isim</value>
@@ -468,8 +468,8 @@
   <data name="Subscribe" xml:space="preserve">
     <value>Abone ol</value>
   </data>
-  <data name="FeaturedProductCategories" xml:space="preserve">
-    <value>Ürün Kategorileri</value>
+  <data name="FeaturedProducts" xml:space="preserve">
+    <value>Öne çıkan Ürünler</value>
   </data>
   <data name="DeliveryInfo" xml:space="preserve">
     <value>Teslimat Bilgileri</value>
@@ -1030,7 +1030,7 @@
     <value>E-posta Şablonları</value>
   </data>
   <data name="MainImageId" xml:space="preserve">
-    <value>Vitrin Resmi</value>
+    <value>Vitrin Ürünü Resmi</value>
   </data>
   <data name="MainPageImages" xml:space="preserve">
     <value>Ana Sayfa Kayan Resimleri</value>

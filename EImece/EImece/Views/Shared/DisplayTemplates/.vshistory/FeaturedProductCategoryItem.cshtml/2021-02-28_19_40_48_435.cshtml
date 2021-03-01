@@ -1,0 +1,30 @@
+﻿@model EImece.Domain.Entities.ProductCategory
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var product = Model;
+    var productLink = product.DetailPageUrl;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    int Width = ViewData["Width"].ToInt(0);
+    int Height = ViewData["Height"].ToInt(0);
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
+    var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
+}
+
+<!-- Product-->
+<div class="col-lg-3 col-sm-4 col-6 border border-collapse">
+    <div class="product-card">
+        <div class="product-thumb">
+            <a class="product-thumb-link" href="@productLink"></a>
+            <img src="@mainImageImgSrcUrl" alt="@product.Name" />
+        </div>
+        <div class="product-card-body">
+            <div class="d-flex flex-wrap justify-content-between pb-1">
+                <a class="product-meta" href="#">@product.Name</a>
+            </div>
+            <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3>
+        </div>
+    </div>
+</div>

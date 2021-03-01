@@ -9,7 +9,7 @@
 
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
-    var mainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId != 0).OrderBy(r => r.Position).Take(12).ToList();
+    var mainPageProductCategories = Model.MainPageProductCategories.Take(9).OrderBy(r=>r.Position).ToList();
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
     var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
     var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
@@ -49,6 +49,7 @@
             </div>
         </div>
     </div>
+    <hr>
 </section>
 
 @CreateProductCategorySection(@Resource.FeaturedProductCategories, mainPageProductCategories)
@@ -100,11 +101,19 @@
         var featuredItem = mainPageProductCategories.First();
         <!-- Featured products grid-->
         <section class="container px-1 pt-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+                <h2 class="h3 mb-3">@title</h2>
+                <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@featuredItem.DetailPageUrl">
+                    @Resource.MoreInfo
+                    <i class="ml-1 mr-n2" data-feather="chevron-right">
+                    </i>
+                </a>
+            </div>
             <div class="row no-gutters">
-                @for (int i = 0; i < mainPageProductCategories.Count; i++)
+                @for (int i = 0; i < featuredItem.Count; i++)
                 {
-                    var p = mainPageProductCategories[i];
-                    @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })
+                    var p = featuredItem[i];
+                    @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
                 }
             </div>
         </section>

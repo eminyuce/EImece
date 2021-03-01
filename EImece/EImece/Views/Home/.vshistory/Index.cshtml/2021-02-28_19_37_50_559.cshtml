@@ -9,7 +9,7 @@
 
     var mainPageImages = Model.MainPageImages;
     var mainPageProducts = Model.MainPageProducts;
-    var mainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId != 0).OrderBy(r => r.Position).Take(12).ToList();
+    var mainPageProductCategories = Model.MainPageProductCategories.Take(9).OrderBy(r=>r.Position).ToList();
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
     var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
     var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
@@ -49,9 +49,10 @@
             </div>
         </div>
     </div>
+    <hr>
 </section>
 
-@CreateProductCategorySection(@Resource.FeaturedProductCategories, mainPageProductCategories)
+@CreateProductSection(@Resource.FeaturedProductCategories, mainPageProductCategories)
 <!-- Promo banner-->
 <section class="container py-1 my-1 px-1">
     <div class="bg-faded-info position-relative py-4">
@@ -93,18 +94,26 @@
     </div>
 }
 
-@helper  CreateProductCategorySection(String title, List<ProductCategory> mainPageProductCategories)
+@helper  CreateProductSection(String title, List<Product> mainPageProducts)
 {
-    if (mainPageProductCategories.IsNotEmpty())
+    if (mainPageProducts.IsNotEmpty())
     {
-        var featuredItem = mainPageProductCategories.First();
+        var featuredProductItem = mainPageProducts.First();
         <!-- Featured products grid-->
         <section class="container px-1 pt-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+                <h2 class="h3 mb-3">@title</h2>
+                <a class="btn btn-outline-primary btn-sm border-0 mb-3" href="@featuredProductItem.ProductCategory.DetailPageUrl">
+                    @Resource.MoreInfo
+                    <i class="ml-1 mr-n2" data-feather="chevron-right">
+                    </i>
+                </a>
+            </div>
             <div class="row no-gutters">
-                @for (int i = 0; i < mainPageProductCategories.Count; i++)
+                @for (int i = 0; i < mainPageProducts.Count; i++)
                 {
-                    var p = mainPageProductCategories[i];
-                    @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })
+                    var p = mainPageProducts[i];
+                    @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 305, Height = 305 })
                 }
             </div>
         </section>
