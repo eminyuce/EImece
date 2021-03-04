@@ -21,13 +21,22 @@ namespace EImece.MyConsole
         private static void Main(string[] args)
         {
 
-            int number = 7199;
-            Console.WriteLine(System.Convert.ToDecimal(number).ToString("#,##"));
-
             decimal totalPrice =69000m;
-            double totalPrice2 = 7199;
+            double totalPrice2 = 69000;
             Console.WriteLine(totalPrice2.CurrencySign());
-           
+            Console.WriteLine(totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)));
+
+            Console.WriteLine(decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero) + "");
+            int id = 13769;
+            string priceStr = "329,90".Replace(",",".");
+            Console.WriteLine(priceStr.ToDouble());
+            Console.WriteLine((decimal)priceStr.ToDouble());
+
+            // 0J6G4H2D1B
+            var result = GeneralHelper.ModifyId(id);
+            Console.WriteLine(result);
+            var id33= GeneralHelper.RevertId(result);
+            Console.WriteLine(id33);
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }
