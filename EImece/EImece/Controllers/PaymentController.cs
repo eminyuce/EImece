@@ -25,7 +25,7 @@ using System.Web.Mvc;
 namespace EImece.Controllers
 {
    // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
-    public class PaymentController : BaseController
+    public class PaymentController : BasePaymentController
     {
         private readonly IyzicoService iyzicoService;
 
@@ -301,72 +301,6 @@ namespace EImece.Controllers
             }
         }
 
-        private void InformCustomerToFillOutForm(Customer customer)
-        {
-            if (string.IsNullOrEmpty(customer.Name))
-            {
-                ModelState.AddModelError("customer.Name", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.Surname))
-            {
-                ModelState.AddModelError("customer.Surname", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.GsmNumber))
-            {
-                ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.Email))
-            {
-                ModelState.AddModelError("customer.Email", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.City))
-            {
-                ModelState.AddModelError("customer.City", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.Town))
-            {
-                ModelState.AddModelError("customer.Town", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.Country))
-            {
-                ModelState.AddModelError("customer.Country", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.District))
-            {
-                ModelState.AddModelError("customer.District", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.Street))
-            {
-                ModelState.AddModelError("customer.Street", Resource.MandatoryField);
-            }
-            if (string.IsNullOrEmpty(customer.IdentityNumber))
-            {
-                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
-            }
-            ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
-        }
-
-        private Domain.Entities.Address SetAddress(Customer customer, Domain.Entities.Address address)
-        {
-            if (address == null)
-            {
-                address = new Domain.Entities.Address();
-            }
-            address.Street = customer.Street;
-            address.District = customer.District;
-            address.City = customer.City;
-            address.Country = customer.Country;
-            address.ZipCode = customer.ZipCode;
-            address.Description = customer.RegistrationAddress;
-            address.Name = customer.FullName;
-            address.CreatedDate = DateTime.Now;
-            address.UpdatedDate = DateTime.Now;
-            address.IsActive = true;
-            address.Position = 1;
-            address.Lang = CurrentLanguage;
-            return address;
-        }
-
         public ActionResult CheckoutDelivery()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -531,5 +465,6 @@ namespace EImece.Controllers
         {
             return Content("PaymentSuccess is done");
         }
+       
     }
 }

@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+﻿@model EImece.Domain.Models.FrontModels.BuyNowModel
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -17,31 +17,24 @@
 @using System.Text.RegularExpressions;
 
 @{
-    var customer = new Customer();
-    var product = Model.Product;
+    var customer = Model.Customer;
+    var product = Model.ProductDetailViewModel.Product;
     ViewBag.Title = product.GetProductSeoTitle();
     ViewBag.Description = product.GetSeoDescription();
     ViewBag.Keywords = product.GetSeoKeywords();
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var productFiles = product.ProductFiles.ToList();
-    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
     var productCategory = product.ProductCategory;
-    var productSpecs = product.ProductSpecifications;
 
-    Model.ProductComment.ProductId = product.Id;
-    Model.ProductComment.SeoUrl = product.GetSeoUrl();
-    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
     var mainImageImgSrc = product.MainImageSrc.Item1;
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
-    var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 }
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
-            @Html.Partial("_ProductBreadCrumb", Model)
+            @Html.Partial("_ProductBreadCrumb", Model.ProductDetailViewModel)
         </div>
         <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
@@ -90,7 +83,7 @@
         </div>
         <div class="col-md-12">
             <div class="alert alert-secondary">
-                <div class="pt-3 pb-2 text-center">
+                <div class="text-center">
                     <b class="text-dark">
                         @Resource.CustomerBillingDetailsNotFilledOut
                     </b>
@@ -101,6 +94,7 @@
             <h6 class="mb-3 pt-2 pb-3 border-bottom">@Resource.ShippingAddress</h6>
             @using (Html.BeginForm("BuyNow", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                <input type="hidden" name="productId" value="@product.ModifiedId" />
                 <div class="row">
                     @Html.AntiForgeryToken()
                     <div class="col-sm-6">
@@ -136,18 +130,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.GsmNumber)
                             @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
                             <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
-                            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.GsmNumber)
-                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>

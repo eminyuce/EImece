@@ -6,9 +6,11 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
+using Resources;
 using System;
 using System.Linq;
 using System.Net;
@@ -17,13 +19,32 @@ using System.Web.Mvc;
 namespace EImece.Controllers
 {
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
-    public class ProductsController : BaseController
+    public class ProductsController : BasePaymentController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IProductCommentService productCommentService;
+        protected BuyNowModel BuyNowSession
+        {
+            get
+            {
+                return (BuyNowModel)Session["BuyNowSession"];
+            }
+            set
+            {
+                Session["BuyNowSession"] = value;
+            }
+        }
 
         [Inject]
         public IProductService ProductService { get; set; }
+
+        [Inject]
+        public IyzicoService IyzicoService { get; set; }
+        [Inject]
+        public IAddressService AddressService { get; set; }
+        [Inject]
+        public ICustomerService CustomerService { get; set; }
+
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
@@ -62,15 +83,45 @@ namespace EImece.Controllers
                 var productId = id.GetId();
                 var product = ProductService.GetProductDetailViewModelById(productId);
                 ViewBag.SeoId = product.Product.GetSeoUrl();
-                return View(product);
+                BuyNowModel buyNowModel = new BuyNowModel();
+                buyNowModel.ProductDetailViewModel = product;
+                return View(buyNowModel);
             }
             catch (Exception e)
             {
-                Logger.Error(e, "Products.Detail page");
+                Logger.Error(e, "Products.BuyNow page");
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-            [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+      
+
+        [HttpPost]
+        public ActionResult BuyNow(String productId, Customer customer)
+        {
+            bool isValidCustomer = customer != null && customer.isValidCustomer();
+            BuyNowModel buyNowModel = new BuyNowModel();
+            buyNowModel.ProductId = GeneralHelper.RevertId(productId);
+            buyNowModel.ProductDetailViewModel = ProductService.GetProductDetailViewModelById(buyNowModel.ProductId);
+            buyNowModel.Customer = customer;
+
+            if (isValidCustomer)
+            {
+                buyNowModel.ShippingAddress = SetAddress(customer, buyNowModel.ShippingAddress);
+                buyNowModel.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                buyNowModel.OrderGuid = Guid.NewGuid().ToString();
+                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
+
+                BuyNowSession = buyNowModel;
+                return View("BuyNowPayment", buyNowModel);
+            }
+            else
+            {
+                InformCustomerToFillOutForm(customer);
+                return View(buyNowModel);
+            }
+               
+        }
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)
         {
             if (String.IsNullOrEmpty(id))

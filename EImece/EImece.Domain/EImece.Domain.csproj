@@ -258,6 +258,7 @@
     <Compile Include="Models\AdminModels\SystemSettingModel.cs" />
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />
     <Compile Include="Models\Enums\IyzicoPaymentStatus.cs" />
+    <Compile Include="Models\FrontModels\BuyNowModel.cs" />
     <Compile Include="Models\FrontModels\CompanyGotNewOrderEmailRazorTemplate.cs" />
     <Compile Include="Models\FrontModels\MenuTreeModel.cs" />
     <Compile Include="Models\FrontModels\OfflineFileData.cs" />

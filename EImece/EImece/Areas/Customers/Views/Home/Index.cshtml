@@ -86,6 +86,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
                         @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone" } })
+                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
                         @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>

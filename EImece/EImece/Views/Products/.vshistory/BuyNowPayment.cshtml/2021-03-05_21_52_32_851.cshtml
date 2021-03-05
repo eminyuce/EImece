@@ -1,0 +1,55 @@
+﻿@using Iyzipay;
+@using Iyzipay.Model;
+@using Iyzipay.Request;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+@{
+
+    ViewBag.Title = Resources.Resource.PlaceOrder;
+    var products = Model.ShoppingCartItems;
+    var customer = Model.Customer;
+    CheckoutFormInitialize checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
+}
+@*
+    İyzico Ödeme Ekranı
+     Html.DisplayFor(model => checkoutFormInitialize)
+*@
+
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        @Resource.Payment
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@AdminResource.Payment</h1><span class="d-block mt-2 text-muted"></span>
+    </div>
+</div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <!-- Steps (wizard)-->
+    @Html.Partial("_PaymentSteps", "PlaceOrder", new ViewDataDictionary(ViewData){
+       {"AnyProducts",products.IsNotEmpty()}
+         })
+    <div class="row pt-4 mt-2">
+        <div class="col-md-12">
+            <div id="iyzipay-checkout-form" class="responsive"></div>
+            @Html.Raw(checkoutFormInitialize.CheckoutFormContent)
+        </div>
+    </div>
+</div>

@@ -141,6 +141,79 @@ namespace EImece.Domain.Services
             return CheckoutFormInitialize.Create(request, options);
         }
 
+        public CheckoutFormInitialize CreateCheckoutFormInitializeBuyNow(BuyNowModel buyNowModel)
+        {
+            Options options = GetOptions();
+            var customer = buyNowModel.Customer;
+
+            var requestContext = HttpContext.Current.Request.RequestContext;
+            string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
+
+            string callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
+                                               "Products",
+                                               new { o  },
+                                               AppConfig.HttpProtocol);
+
+            var request = new CreateCheckoutFormInitializeRequest();
+            request.Locale = Locale.TR.ToString();
+            //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
+            request.ConversationId = buyNowModel.ConversationId;
+
+            request.Currency = Currency.TRY.ToString();
+            request.BasketId = buyNowModel.OrderGuid;
+            request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
+            request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
+            request.EnabledInstallments = AppConfig.IyzicoEnabledInstallments;
+
+            Buyer buyer = new Buyer();
+            buyer.Id = customer.Id.ToString();
+            buyer.Name = customer.Name;
+            buyer.Surname = customer.Surname;
+            buyer.GsmNumber = customer.GsmNumber;
+            buyer.Email = customer.Email;
+            buyer.IdentityNumber = customer.IdentityNumber;
+            buyer.LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat);
+            buyer.RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat);
+            buyer.RegistrationAddress = customer.RegistrationAddress;
+            buyer.Ip = customer.Ip;
+            buyer.City = customer.City;
+            buyer.Country = customer.Country;
+            buyer.ZipCode = customer.ZipCode;
+            request.Buyer = buyer;
+
+            Address shippingAddress = new Address();
+            shippingAddress.ContactName = customer.FullName;
+            Entities.Address shippingAddress1 = buyNowModel.ShippingAddress;
+            shippingAddress.City = shippingAddress1.City;
+            shippingAddress.Country = shippingAddress1.Country;
+            shippingAddress.Description = shippingAddress1.Description;
+            shippingAddress.ZipCode = shippingAddress1.ZipCode;
+            request.ShippingAddress = shippingAddress;
+            request.BillingAddress = shippingAddress;
+
+            List<BasketItem> basketItems = new List<BasketItem>();
+            decimal totalPrice = 0;
+
+            var item = buyNowModel.ProductDetailViewModel.Product;
+            BasketItem firstBasketItem = new BasketItem();
+            firstBasketItem.Id = item.ProductCode;
+            firstBasketItem.Name = item.NameLong;
+            firstBasketItem.Category1 = item.ProductCategory.Name;
+            firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
+            firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
+
+            firstBasketItem.Price = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");
+            totalPrice += item.Price;
+            basketItems.Add(firstBasketItem);
+
+            //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
+            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");  //totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.PaidPrice = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", "."); //shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.BasketItems = basketItems;
+            Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
+            return CheckoutFormInitialize.Create(request, options);
+        }
+
         private Options GetOptions()
         {
             Options options = new Options();

@@ -1,0 +1,188 @@
+﻿@model EImece.Domain.Entities.Customer
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
+@{
+    Layout = "~/Areas/Customers/Views/Shared/_Layout.cshtml";
+    List<Order> orders = Model.Orders;
+    if (orders.IsEmpty())
+    {
+        orders = new List<Order>();
+    }
+  
+}
+
+<!-- Page Content-->
+<div class="container pt-lg-3 pb-5 mb-sm-3">
+    <!-- Toast notifications-->
+    <div class="toast-container toast-bottom-center">
+        <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
+                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="toast-body">@AdminResource.YourProfileUpdatedSuccessfully</div>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <!-- Main content-->
+        <div class="col-lg-12">
+            @Html.Partial("_CustomerDetails", Model)
+            <div class="col-md-12">
+                <div class="alert alert-secondary">
+                    <div class="text-center">
+                        <b class="text-dark">
+                            @Resource.CustomerBillingDetailsNotFilledOut
+                        </b>
+                    </div>
+                </div>
+            </div>
+
+            @using (Html.BeginForm("Index", "Home",
+            null,
+            FormMethod.Post, new { @class = "row" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+                </div>
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.IsActive)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.UpdatedDate)
+                @Html.HiddenFor(model => model.Lang)
+                @Html.HiddenFor(model => model.Ip)
+                @Html.HiddenFor(model => model.UserId)
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label", @for = "account-fn" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "account-fn" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label", @for = "account-ln" })
+                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @id = "account-ln" } })
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
+                        @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
+                        @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone" } })
+                        @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })<br />
+                        Kadin  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString())
+                        Erkek  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString())
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Town, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="alert alert-secondary" role="alert">
+                            Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. <br />
+                            Hatta varsa adresinizin tarif bilgilerini de @Resource.CustomerOpenAddress bölümüne yazabilirsiniz. <br /> (Örnek: Postanenin yanından girince üçüncü sokak vs.)
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <hr class="mt-2 mb-3">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="custom-control custom-checkbox d-block">
+                            @Html.EditorFor(model => model.IsPermissionGranted, new { htmlAttributes = new { @class = "custom-control-input" } })
+                            <label class="custom-control-label" for="subscribe_me">@Resource.IsPermissionGrantedDescription</label>
+                        </div>
+                        <button class="btn btn-outline-success rounded mb-2 mr-1 btn-block" type="submit" data-toggle="toast" data-target="#profile-toast">@AdminResource.Update</button>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                minDate: -20,
+                maxDate: "+1M +15D",
+                dateFormat: 'mm.dd.yy'
+            });
+        });
+    </script>
+}
