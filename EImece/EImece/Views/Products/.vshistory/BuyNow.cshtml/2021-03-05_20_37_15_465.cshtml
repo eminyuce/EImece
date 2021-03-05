@@ -1,76 +1,100 @@
-﻿@using EImece.Domain.Models.FrontModels;
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@model  ShoppingCartSession
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
+@using System.Text.RegularExpressions;
 
 @{
-    ViewBag.Title = Resources.Resource.CheckoutBillingDetails;
-    var products = Model.ShoppingCartItems;
-    var customer = Model.Customer;
+    var customer = new Customer();
+    var product = Model.Product;
+    ViewBag.Title = product.GetProductSeoTitle();
+    ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var productFiles = product.ProductFiles.ToList();
+    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
+    var productCategory = product.ProductCategory;
+    var productSpecs = product.ProductSpecifications;
+
+    Model.ProductComment.ProductId = product.Id;
+    Model.ProductComment.SeoUrl = product.GetSeoUrl();
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var mainImageImgSrc = product.MainImageSrc.Item1;
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 }
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        @Resource.OrderDetails
-                    </li>
-                </ol>
-            </nav>
+            @Html.Partial("_ProductBreadCrumb", Model)
         </div>
-        <h1 class="page-title">@Resource.OrderDetails</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
     </div>
 </div>
-<!-- Page Content-->
-<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
-    <!-- Steps (wizard)-->
-    @Html.Partial("_PaymentSteps", "CheckoutBillingDetails", new ViewDataDictionary(ViewData){
-       {"AnyProducts",products.IsNotEmpty()}
-         })
 
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <div class="row pt-4 mt-2">
         <!-- Content-->
-        <div class="col-md-12">
-            <div class="alert alert-secondary">
-                <div class="pt-3 pb-2 text-center">
-                    <b class="text-dark">
-                        @Resource.CustomerBillingDetailsNotFilledOut
-                    </b>
-                </div>
-            </div>
-        </div>
         <div class="col-xl-9 col-md-8">
-            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
-                    <div class="media">
-                        <div class="media-body align-self-center">
-                            <h6 class="mb-1">@customer.FullName</h6>
-                            <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
-                            <div class="font-size-lg">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+            <h2 class="h6 px-4 py-3 bg-secondary mb-4">Hizli Sepet</h2>
+            <!-- Item-->
+            <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+                <div class="media d-block d-sm-flex text-center text-sm-left">
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
+                    {
+                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageRelativeUrl"><img src="@mainImageThbImgSrc" alt="Product"></a>
+                    }
+                    else
+                    {
+                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageRelativeUrl"><img src="@EImece.Domain.AppConfig.GetDefaultImage("w170h170")" alt="Product"></a>
+                    }
+
+                    <div class="media-body pt-3">
+                        <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="@product.DetailPageRelativeUrl">@product.NameLong</a></h3>
+                        <div class="font-size-lg text-primary pt-2">@product.Price.CurrencySign()</div>
                     </div>
                 </div>
+                <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+                    <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">1</span></div>
+                </div>
+            </div>
 
-                @Html.HiddenFor(model => customer.Id)
-                @Html.HiddenFor(model => customer.CreatedDate)
-                @Html.HiddenFor(model => customer.UpdatedDate)
-                @Html.HiddenFor(model => customer.Email)
+            <!-- Navigation-->
+
+        </div>
+        <!-- Sidebar-->
+        <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
+            <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
+            <div class="font-size-sm border-bottom pt-2 pb-3">
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Quantity :</span>1</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory :</span>@product.ProductCategory.Name</div>
+            </div>
+            <div class="h3 font-weight-semibold text-center py-3">@product.Price.CurrencySign()</div>
+        </div>
+
+        <div class="col-xl-9 col-md-8">
+
+            @using (Html.BeginForm("BuyNow", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
                 <div class="row">
                     @Html.AntiForgeryToken()
-
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.Name)
@@ -89,6 +113,22 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
+                            @Html.LabelFor(model => customer.Email)
+                            @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.GsmNumber)
+                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
                             @Html.LabelFor(model => customer.IdentityNumber)
                             @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control" } })
                             <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
@@ -99,7 +139,6 @@
                         <div class="form-group">
                             @Html.LabelFor(model => customer.GsmNumber)
                             @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
                             @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -180,80 +219,12 @@
                 <!-- Navigation-->
                 <div class="d-flex pt-4 mt-3">
                     <div class="w-50 pr-3">
-                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart")">
-                            <i class="mr-1" data-feather="chevron-left"></i>
-                            <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">@Resource.Back</span>
-                        </a>
-                    </div>
-                    <div class="w-50 pl-2">
-                        <input type="submit" id="ReviewYourOrder" style="display:none;" />
-                        <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
-                            <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
-                            <span class="d-inline d-sm-none">@Resource.Next</span><i class="ml-1" data-feather="chevron-right"></i>
-                        </a>
+                        <input type="submit" class="btn btn-outline-secondary btn-block" id="ReviewYourOrder" value="@Resource.GoToPayment" />
                     </div>
                 </div>
             }
+
         </div>
-        @Html.Partial("_OrderSummary", Model)
 
+        </div>
     </div>
-</div>
-
-@section Scripts{
-    <script id="CityHtml" type="text/template">
-
-        {{ #items}}
-        <option value="{{id}}">
-            {{name}}
-        </option>
-        {{/items}}
-    </script>
-    <script id="optionHtml" type="text/template">
-        <select id="il_select">
-            {{ #items}}
-            <option value="{{id}}">
-                {{name}}
-            </option>
-            {{/items}}
-        </select>
-    </script>
-
-    <script>
-
-        $(document).ready(function () {
-
-            //  GetIller();
-            function GetIller() {
-                var postData = JSON.stringify({});
-                console.log(postData);
-                ajaxMethodCall(postData, "/Ajax/GetIller", function (data) {
-
-                    $.each(data, function (key, value) {
-                        $.each(value, function (key1, value1) {
-                            $("#customer_Country").add(new Option(value1.name, value1.id));
-                        });
-                    });
-
-                    $("#il_select").on('change', function () {
-                        GetIlceler(this.value);
-                    });
-                    var il_id = $("#il_select").val();
-                    if (il_id === null) {
-                        il_id = 1;
-                    }
-                    GetIlceler(il_id);
-                });
-
-                function GetIlceler(il_id) {
-                    var postData = JSON.stringify({ il_id: il_id });
-                    console.log(postData);
-                    ajaxMethodCall(postData, "/Ajax/GetIlceler", function (data) {
-                        var p = $('#optionHtml').html();
-                        $("#ilceler").html(Mustache.render(p, data))
-                    });
-                }
-            }
-        });
-    </script>
-}

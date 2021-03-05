@@ -1,0 +1,228 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
+@using System.Text.RegularExpressions;
+
+
+@{
+    var product = Model.Product;
+    ViewBag.Title = product.GetProductSeoTitle();
+    ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var productFiles = product.ProductFiles.ToList();
+    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
+    var productCategory = product.ProductCategory;
+    var productSpecs = product.ProductSpecifications;
+
+
+    Model.ProductComment.ProductId = product.Id;
+    Model.ProductComment.SeoUrl = product.GetSeoUrl();
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var mainImageImgSrc = product.MainImageSrc.Item1;
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
+}
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            @Html.Partial("_ProductBreadCrumb", Model)
+        </div>
+        <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+
+<div class="container pb-4">
+    <div class="row">
+        <div class="col-lg-7">
+            <!-- Product gallery-->
+            <div class="product-gallery">
+                <ul class="product-thumbnails">
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
+                    {
+
+                        <li class="active">
+                            <a href="#one">
+                                <img alt="Product thumb" src="@mainImageThbImgSrc" width="95" height="105" />
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
+                        <li class="">
+                            <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img alt="Product thumb" src="@imgTag" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="product-carousel owl-carousel">
+
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgSrc))
+                    {
+
+                        <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@mainImageImgSrc" width="610" height="610" alt="Product">
+                        </a>
+
+                    }
+                    else
+                    {
+                        <a href="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" width="610" height="610" alt="Product">
+                        </a>
+                    }
+
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                        if (!string.IsNullOrEmpty(imgTag))
+                        {
+                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img src="@imgTag" alt="Product">
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Product details    -->
+        <div class="col-lg-5 pt-4 pt-lg-0">
+            <div class="pb-4">
+                @if (product.ProductComments.IsNotEmpty())
+                {
+                    <a class="d-inline-block scroll-to" href="#reviews">
+                        <div class="star-rating">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                if (i + 1 > product.Rating)
+                                {
+                                    <i class="sr-star" data-feather="star"></i>
+                                }
+                                else
+                                {
+                                    <i class="sr-star active" data-feather="star"></i>
+                                }
+                            }
+                        </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
+                    </a>
+                }
+
+                <h2 class="h1 font-weight-light pt-3 pb-2">
+                    @if (product.HasDiscount)
+                    {
+                        <del class="lead text-muted mr-2">
+                            @product.Price.CurrencySign()
+                        </del>
+                    }
+                    <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                </h2>
+                @if (product.HasDiscount)
+                {
+                    <h4>
+                        <span class="badge badge-pill badge-warning mr-2 mb-2">
+                            @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
+                        </span>
+                    </h4>
+                }
+                @if (ProductSizeOptions.IsNotEmpty())
+                {
+                    <div class="form-group">
+                        <div class="pb-2 text-right"></div>
+                        <select data-product-selected-specs="@product.Id" class="form-control custom-select" id="color" name="@Resource.ProductSize" required>
+                            @foreach (var pSize in ProductSizeOptions)
+                            {
+                                <option value="@pSize">@pSize</option>
+                            }
+                        </select>
+                    </div>
+                }
+                 
+                <div class="d-flex align-items-center pt-2">
+                    <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                    <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
+                        <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
+                    </button>
+                </div>
+                <!--
+                <div  class="d-flex align-items-center pt-2">
+                    <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
+                </div>
+                            -->
+            </div>
+
+            <!-- Product panels-->
+            <div class="accordion" id="productPanels">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="accordion-heading">
+                            <a href="#productInfo" role="button"
+                               data-toggle="collapse" aria-expanded="true"
+                               aria-controls="productInfo">
+                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                    <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
+                                </span>@Resource.ProductInformation
+                                <span class="accordion-indicator">
+                                    <i data-feather="chevron-up"></i>
+                                </span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="card-body">
+                            @if (!String.IsNullOrEmpty(product.ProductCode))
+                            {
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
+                            }
+                            @Html.Raw(product.ShortDescription)
+                            <ul class="mb-0">
+                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.CargoDescription.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@AdminResource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        </div>
+                        <div class="collapse" id="shippingOptions" data-parent="#productPanels">
+                            <div class="card-body">
+                                @Html.Raw(Model.CargoDescription.SettingValue)
+                            </div>
+                        </div>
+                    </div>
+                }
+
+             
+            </div>
+        </div>
+    </div>
+</div>

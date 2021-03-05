@@ -1,0 +1,95 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
+@using System.Text.RegularExpressions;
+
+
+@{
+    var product = Model.Product;
+    ViewBag.Title = product.GetProductSeoTitle();
+    ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var productFiles = product.ProductFiles.ToList();
+    var productTags = product.ProductTags.Select(r => r.Tag).ToList();
+    var productCategory = product.ProductCategory;
+    var productSpecs = product.ProductSpecifications;
+
+
+    Model.ProductComment.ProductId = product.Id;
+    Model.ProductComment.SeoUrl = product.GetSeoUrl();
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var mainImageImgSrc = product.MainImageSrc.Item1;
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
+}
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            @Html.Partial("_ProductBreadCrumb", Model)
+        </div>
+        <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-md-12">
+            <div class="row">
+
+                <div class="col-xl-9 col-md-8">
+                    @if (products.IsNotEmpty())
+                    {
+                        <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
+                            <span>@Resource.Products</span><a class="font-size-sm" href="@continueShoppingLink">
+                                <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>@AdminResource.ContinueShopping
+                            </a>
+                        </h2>
+
+                        for (int i = 0; i < products.Count; i++)
+                        {
+                            @CreateShoppingCartItem(products[i], i)
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary">
+                            <div class="pt-3 pb-2 text-center ">
+                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, Url.Action("Index", "Home")))
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <input type="hidden" id="OrderGuid" value="@Model.OrderGuid" />
+
+                <!-- Sidebar-->
+                @Html.Partial("_OrderSummary", Model, new ViewDataDictionary(ViewData){
+       {"IsAdditionalComment",true},
+               {"AnyProducts",products.IsNotEmpty()}
+         })
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

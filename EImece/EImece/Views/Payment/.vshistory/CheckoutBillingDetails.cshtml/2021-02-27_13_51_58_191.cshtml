@@ -99,7 +99,6 @@
                         <div class="form-group">
                             @Html.LabelFor(model => customer.GsmNumber)
                             @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
                             @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>

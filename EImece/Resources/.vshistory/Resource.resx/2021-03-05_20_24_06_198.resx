@@ -1607,7 +1607,4 @@
   <data name="GoToPayment" xml:space="preserve">
     <value>Ödemeye Geç</value>
   </data>
-  <data name="WhyNeedGsmNumber" xml:space="preserve">
-    <value>Siparişin gönderimi ve takibi için talep edilir.</value>
-  </data>
 </root>

@@ -1501,6 +1501,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ödemeye Geç.
+        /// </summary>
+        public static string GoToPayment {
+            get {
+                return ResourceManager.GetString("GoToPayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seçilenleri Yayınla.
         /// </summary>
         public static string GridActiveSelectedButtonText {
@@ -4338,6 +4347,15 @@ namespace Resources {
         public static string WhatsAppCommunicationScript {
             get {
                 return ResourceManager.GetString("WhatsAppCommunicationScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişin gönderimi ve takibi için talep edilir..
+        /// </summary>
+        public static string WhyNeedGsmNumber {
+            get {
+                return ResourceManager.GetString("WhyNeedGsmNumber", resourceCulture);
             }
         }
         
