@@ -1601,7 +1601,4 @@
   <data name="PleaseFillOutMandatoryBelowFields" xml:space="preserve">
     <value>Lütfen Aşağıdaki Zorunlu Alanları Doldurun</value>
   </data>
-  <data name="BuyNow" xml:space="preserve">
-    <value>Hemen AL</value>
-  </data>
 </root>

@@ -13,7 +13,6 @@ $('[data-add-prodoct-cart]').each(function () {
         });
         console.log(postData);
         ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-            console.log(data);
             GetShoppingCartLinks();
         });
     });

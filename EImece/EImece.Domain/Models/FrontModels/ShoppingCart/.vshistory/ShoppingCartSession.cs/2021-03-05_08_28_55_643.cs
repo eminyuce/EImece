@@ -111,7 +111,7 @@ namespace EImece.Domain.Models.FrontModels
                     }
                     else
                     {
-                        existingItem = ShoppingCartItems.FirstOrDefault(r => r.Product.Id == item.Product.Id);
+                        var existingItemSpecs = existingItem.Product.ProductSpecItems.FirstOrDefault(r => r.Product.Id == item.Product.Id);
                         existingItem.Quantity += item.Quantity;
                     }
                 }

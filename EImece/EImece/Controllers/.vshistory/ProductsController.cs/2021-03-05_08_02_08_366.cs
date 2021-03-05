@@ -51,6 +51,7 @@ namespace EImece.Controllers
             var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
             return View(products);
         }
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult BuyNow(String id)
         {
             if (String.IsNullOrEmpty(id))

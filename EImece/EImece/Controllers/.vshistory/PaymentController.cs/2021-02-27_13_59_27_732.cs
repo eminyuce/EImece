@@ -93,36 +93,26 @@ namespace EImece.Controllers
             return PartialView("ShoppingCartTemplates/_HomePageShoppingCart", GetShoppingCart());
         }
 
-        public ActionResult AddToCart(string productId, int quantity, string orderGuid, string productSpecItems)
+        public ActionResult AddToCart(int productId, int quantity, string orderGuid, string productSpecItems)
         {
-            int pId = GeneralHelper.RevertId(productId);
-            var product = ProductService.GetProductById(pId);
-            if(product != null)
-            {
-                var shoppingCart = GetShoppingCart();
-                shoppingCart.OrderGuid = orderGuid;
+            var product = ProductService.GetProductById(productId);
+            var shoppingCart = GetShoppingCart();
+            shoppingCart.OrderGuid = orderGuid;
 
-                var item = new ShoppingCartItem();
-                var selectedTotalSpecs = new List<ProductSpecItem>();
-                if (!string.IsNullOrEmpty(productSpecItems))
-                {
-                    var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>(productSpecItems);
-                    selectedTotalSpecs = ooo.selectedTotalSpecs;
-                }
-                item.Product = new ShoppingCartProduct(product, selectedTotalSpecs);
-                item.Quantity = quantity;
-                item.ShoppingCartItemId = Guid.NewGuid().ToString();
-                shoppingCart.Add(item);
-                SaveShoppingCart(shoppingCart);
-                PaymentLogger.Info(JsonConvert.SerializeObject(shoppingCart));
-                return Json("success", JsonRequestBehavior.AllowGet);
-            }
-            else
+            var item = new ShoppingCartItem();
+            var selectedTotalSpecs = new List<ProductSpecItem>();
+            if (!string.IsNullOrEmpty(productSpecItems))
             {
-                return Json("failed", JsonRequestBehavior.AllowGet);
+                var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>(productSpecItems);
+                selectedTotalSpecs = ooo.selectedTotalSpecs;
             }
-          
-          
+            item.Product = new ShoppingCartProduct(product, selectedTotalSpecs);
+            item.Quantity = quantity;
+            item.ShoppingCartItemId = Guid.NewGuid().ToString();
+            shoppingCart.Add(item);
+            SaveShoppingCart(shoppingCart);
+            PaymentLogger.Info(JsonConvert.SerializeObject(shoppingCart));
+            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         [NoCache]

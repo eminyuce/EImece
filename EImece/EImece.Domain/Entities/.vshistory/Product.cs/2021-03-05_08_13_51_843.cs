@@ -152,7 +152,7 @@ namespace EImece.Domain.Entities
             }
         }
         [NotMapped]
-        public string ModifiedId { get { return GeneralHelper.ModifyId(Id); } }
+        public string MainImageBytes { get { GeneralHelper.ModifyId(Id) } }
 
         [NotMapped]
         public byte[] MainImageBytes { get; set; }

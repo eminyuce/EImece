@@ -484,6 +484,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hemen AL.
+        /// </summary>
+        public static string BuyNow {
+            get {
+                return ResourceManager.GetString("BuyNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CALLBACK_PECCO.
         /// </summary>
         public static string CALLBACK_PECCO {

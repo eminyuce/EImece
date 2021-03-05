@@ -1,5 +1,4 @@
-﻿using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
+﻿using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -151,8 +150,6 @@ namespace EImece.Domain.Entities
                 return 0;
             }
         }
-        [NotMapped]
-        public string ModifiedId { get { return GeneralHelper.ModifyId(Id); } }
 
         [NotMapped]
         public byte[] MainImageBytes { get; set; }

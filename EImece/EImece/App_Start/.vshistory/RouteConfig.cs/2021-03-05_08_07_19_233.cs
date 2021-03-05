@@ -121,14 +121,12 @@ namespace EImece
                defaults: new { controller = "Products", action = "advancedsearchproducts" },
                namespaces: new[] { "EImece.Controllers" }
            );
-
             routes.MapRoute(
                name: "ProductBuyNow",
                url: Constants.ProductsControllerRoutingPrefix + "/b/{categoryName}/{id}",
-               defaults: new { controller = "Products", action = "BuyNow", id = UrlParameter.Optional },
+               defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );
-
             routes.MapRoute(
                name: "ProductDetail",
                url: Constants.ProductsControllerRoutingPrefix + "/{categoryName}/{id}",

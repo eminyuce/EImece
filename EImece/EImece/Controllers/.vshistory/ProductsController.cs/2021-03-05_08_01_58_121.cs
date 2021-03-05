@@ -51,24 +51,10 @@ namespace EImece.Controllers
             var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
             return View(products);
         }
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult BuyNow(String id)
         {
-            if (String.IsNullOrEmpty(id))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            try
-            {
-                var productId = id.GetId();
-                var product = ProductService.GetProductDetailViewModelById(productId);
-                ViewBag.SeoId = product.Product.GetSeoUrl();
-                return View(product);
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "Products.Detail page");
-                return RedirectToAction("InternalServerError", "Error");
-            }
+
         }
             [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)
