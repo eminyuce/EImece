@@ -158,9 +158,7 @@ function bindCalcuateTotalPrice() {
     });
 
     renderShoppingCartPrice(function (data) {
-        
         $('#CargoPrice').html(data.CargoPrice);
-        $('#CargoFreeTextInfo').html(data.CargoPriceHtml);
         $('#TotalPrice').html(data.TotalPrice);
         $('#TotalPriceWithCargoPrice').html(data.TotalPriceWithCargoPrice);
         $('#HomePageTotalPrice').html(data.price);

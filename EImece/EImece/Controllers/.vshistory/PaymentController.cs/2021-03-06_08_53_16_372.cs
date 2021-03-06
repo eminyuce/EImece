@@ -304,19 +304,15 @@ namespace EImece.Controllers
         public ActionResult renderShoppingCartPrice()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
-            String cargoPriceHtml = "";
+            String cargoPricehtml = "";
             if(shoppingCart.CargoPriceValue == 0)
             {
-                cargoPriceHtml = string.Format("<span class='badge badge-pill badge-danger mr-2 mb-2'>{0}</span>", Resource.CargoFreeTextInfo);
-            }
-            else
-            {
-                cargoPriceHtml = string.Format("<span>{0}:</span><span>{1}</span>", AdminResource.CargoPrice, shoppingCart.CargoPriceValue.CurrencySign());
+                cargoPricehtml = "";
             }
             return Json(new
             {
                 status = Domain.Constants.SUCCESS,
-                CargoPriceHtml= cargoPriceHtml,
+                cargoPricehtml= cargoPricehtml,
                 CargoPriceInt = shoppingCart.CargoPriceValue,
                 CargoPrice = shoppingCart.CargoPriceValue.CurrencySign(),
                 BasketMinTotalPriceForCargoInt = shoppingCart.BasketMinTotalPriceForCargoInt,

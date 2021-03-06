@@ -311,7 +311,7 @@ namespace EImece.Controllers
             }
             else
             {
-                cargoPriceHtml = string.Format("<span>{0}:</span><span>{1}</span>", AdminResource.CargoPrice, shoppingCart.CargoPriceValue.CurrencySign());
+                cargoPriceHtml = string.Format("<span>{0}:</span><span>{0}</span>", AdminResource.CargoPrice, shoppingCart.CargoPriceValue.CurrencySign());
             }
             return Json(new
             {

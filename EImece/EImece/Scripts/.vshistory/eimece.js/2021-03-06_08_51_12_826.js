@@ -158,9 +158,12 @@ function bindCalcuateTotalPrice() {
     });
 
     renderShoppingCartPrice(function (data) {
-        
-        $('#CargoPrice').html(data.CargoPrice);
-        $('#CargoFreeTextInfo').html(data.CargoPriceHtml);
+        if (data.CargoPriceInt === 0) {
+            $('#CargoFreeTextInfo').html(data.CargoPrice);
+        } else {
+            $('#CargoPrice').html(data.CargoPrice);
+        }
+       
         $('#TotalPrice').html(data.TotalPrice);
         $('#TotalPriceWithCargoPrice').html(data.TotalPriceWithCargoPrice);
         $('#HomePageTotalPrice').html(data.price);
