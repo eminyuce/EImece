@@ -8,15 +8,12 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using Iyzipay.Request;
-using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using Resources;
 using System;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -125,22 +122,9 @@ namespace EImece.Controllers
                
         }
 
-        public ActionResult BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
+        public ActionResult BuyNowPaymentResult(String o)
         {
-            var checkoutForm = IyzicoService.GetCheckoutForm(model);
-            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
-            {
-                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                var order = ShoppingCartService.SaveBuyNow(BuyNowSession, checkoutForm);
-                SendEmails(order);
-                BuyNowSession = new BuyNowModel();
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
-            }
-            else
-            {
-                Logger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
-                return RedirectToAction("NoSuccessForYourOrder");
-            }
+
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]

@@ -10,7 +10,7 @@
 @using Resources;
 @model  ShoppingCartSession
 
-@{
+@{ 
     bool IsAdditionalComment = ViewData["IsAdditionalComment"].ToBool(false);
     bool anyProducts = ViewData["AnyProducts"].ToBool(false);
 }
@@ -21,18 +21,18 @@
         <span class="badge badge-pill badge-danger mr-2 mb-2">
             @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
         </span>
-    }
-    else
-    {
+            }
+            else
+            {
 
-    }
+            }
     <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
     <div class="font-size-sm border-bottom pt-2 pb-3">
         <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
         <div class="d-flex justify-content-between mb-2">
             @if (Model.BasketMinTotalPriceForCargoInt > 0)
             {
-                if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                @if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
                 {
                     <span class="badge badge-pill badge-danger mr-2 mb-2">
                         @Resource.CargoFreeTextInfo

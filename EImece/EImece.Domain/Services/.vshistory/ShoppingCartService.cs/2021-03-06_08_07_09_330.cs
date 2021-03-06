@@ -165,7 +165,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public static Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
+        public static object SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
         {
             throw new NotImplementedException();
         }

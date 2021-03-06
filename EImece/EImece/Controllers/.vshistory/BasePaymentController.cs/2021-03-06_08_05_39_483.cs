@@ -53,10 +53,6 @@ namespace EImece.Controllers
 
         protected void InformCustomerToFillOutForm(Customer customer)
         {
-            if(customer == null)
-            {
-                throw new NotSupportedException();
-            }
             if (string.IsNullOrEmpty(customer.Name.ToStr().Trim()))
             {
                 ModelState.AddModelError("customer.Name", Resource.PleaseEnterYourName);
@@ -106,10 +102,6 @@ namespace EImece.Controllers
             {
                 address = new Domain.Entities.Address();
             }
-            if (customer == null)
-            {
-                throw new NotSupportedException();
-            }
             address.Street = customer.Street;
             address.District = customer.District;
             address.City = customer.City;
@@ -125,7 +117,7 @@ namespace EImece.Controllers
             return address;
         }
 
-        protected void SendEmails(Order order)
+        public void SendEmails(Order order)
         {
             try
             {

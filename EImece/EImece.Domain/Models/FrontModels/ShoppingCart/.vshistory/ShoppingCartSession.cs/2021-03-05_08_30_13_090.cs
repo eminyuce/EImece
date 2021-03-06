@@ -129,9 +129,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 if (TotalPrice == 0)
                     return 0;
-                else if (BasketMinTotalPriceForCargoInt > 0 && TotalPrice > BasketMinTotalPriceForCargoInt)
-                    return 0;
-                else if (CargoPrice.SettingValue.ToDecimal() > 0)
+                else if (TotalPrice < BasketMinTotalPriceForCargoInt)
                     return CargoPrice.SettingValue.ToDecimal();
                 else
                     return 0;
@@ -186,7 +184,7 @@ namespace EImece.Domain.Models.FrontModels
         public static ShoppingCartSession CreateDefaultShopingCard(int currentLanguage, string ip)
         {
             ShoppingCartSession shoppingCart = new ShoppingCartSession();
-            var shippingAddress = new Address();
+            var shippingAddress = new Domain.Entities.Address();
             shippingAddress.Country = "Turkiye";
             shippingAddress.AddressType = (int)AddressType.ShippingAddress;
             var billingAddress = new Domain.Entities.Address();

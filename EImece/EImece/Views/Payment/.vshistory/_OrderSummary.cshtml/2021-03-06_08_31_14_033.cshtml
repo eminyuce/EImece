@@ -32,7 +32,7 @@
         <div class="d-flex justify-content-between mb-2">
             @if (Model.BasketMinTotalPriceForCargoInt > 0)
             {
-                if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                @if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
                 {
                     <span class="badge badge-pill badge-danger mr-2 mb-2">
                         @Resource.CargoFreeTextInfo

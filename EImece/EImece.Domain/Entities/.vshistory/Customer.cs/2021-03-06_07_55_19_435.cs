@@ -75,7 +75,7 @@ namespace EImece.Domain.Entities
         public string Company { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
         [JsonIgnore]
         public String Captcha { get; set; }
 

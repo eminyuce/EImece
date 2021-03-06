@@ -28,7 +28,7 @@ namespace EImece.Controllers
     public class PaymentController : BasePaymentController
     {
         [Inject]
-        public IyzicoService IyzicoService { get; set; }
+        public IyzicoService IyzicoService;
 
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
 
@@ -41,14 +41,20 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
+       
+
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
+
+
+
 
         public PaymentController(
             ApplicationUserManager userManager,
             ApplicationSignInManager signInManager)
         {
+            this.IyzicoService = IyzicoService;
             UserManager = userManager;
             SignInManager = signInManager;
         }

@@ -14,21 +14,21 @@ namespace EImece.Domain.Entities
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         //   [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         [NotMapped]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
         public string Surname { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PhoneNumber))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
         public string GsmNumber { get; set; }
 
         //     [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsEmailErrorMessage))]
         //     [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
 
         [NotMapped]
-        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
+        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
         public string Email { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IdentityNumber))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IdentityNumber))]
         public string IdentityNumber { get; set; }
 
         public string Ip { get; set; }
@@ -75,7 +75,7 @@ namespace EImece.Domain.Entities
         public string Company { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
         [JsonIgnore]
         public String Captcha { get; set; }
 

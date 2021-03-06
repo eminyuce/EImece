@@ -31,32 +31,8 @@ namespace EImece.Controllers
 {
     public abstract class BasePaymentController : BaseController
     {
-        private static readonly Logger BasePaymentLogger = LogManager.GetCurrentClassLogger();
-
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
-
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public IAddressService AddressService { get; set; }
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-
         protected void InformCustomerToFillOutForm(Customer customer)
         {
-            if(customer == null)
-            {
-                throw new NotSupportedException();
-            }
             if (string.IsNullOrEmpty(customer.Name.ToStr().Trim()))
             {
                 ModelState.AddModelError("customer.Name", Resource.PleaseEnterYourName);
@@ -106,10 +82,6 @@ namespace EImece.Controllers
             {
                 address = new Domain.Entities.Address();
             }
-            if (customer == null)
-            {
-                throw new NotSupportedException();
-            }
             address.Street = customer.Street;
             address.District = customer.District;
             address.City = customer.City;
@@ -125,7 +97,7 @@ namespace EImece.Controllers
             return address;
         }
 
-        protected void SendEmails(Order order)
+        private void SendEmails(Order order)
         {
             try
             {
@@ -134,7 +106,7 @@ namespace EImece.Controllers
             }
             catch (Exception e)
             {
-                BasePaymentLogger.Error(e, "OrderConfirmationEmail exception");
+                PaymentLogger.Error(e, "OrderConfirmationEmail exception");
             }
 
             try
@@ -144,7 +116,7 @@ namespace EImece.Controllers
             }
             catch (Exception e)
             {
-                BasePaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
+                PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
             }
         }
     }

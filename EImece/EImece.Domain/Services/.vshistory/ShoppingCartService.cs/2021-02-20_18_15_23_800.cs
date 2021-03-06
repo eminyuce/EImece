@@ -165,11 +165,6 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public static Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
-        {
-            throw new NotImplementedException();
-        }
-
         private void SaveOrderProduct(ShoppingCartSession shoppingCart, Order savedOrder)
         {
             foreach (var shoppingCartItem in shoppingCart.ShoppingCartItems)

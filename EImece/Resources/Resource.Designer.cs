@@ -961,7 +961,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Açık Adres / Kargo Firmasina Notunuz.
+        ///   Looks up a localized string similar to Kargo Firmasina Notunuz.
         /// </summary>
         public static string CustomerOpenAddress {
             get {
@@ -2726,6 +2726,87 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lütfen adresi giriniz..
+        /// </summary>
+        public static string PleaseEnterYourAddress {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen şehir giriniz..
+        /// </summary>
+        public static string PleaseEnterYourCity {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen ulke giriniz..
+        /// </summary>
+        public static string PleaseEnterYourCountry {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen mahalle giriniz..
+        /// </summary>
+        public static string PleaseEnterYourDistrict {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourDistrict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen e-posta giriniz..
+        /// </summary>
+        public static string PleaseEnterYourEmail {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen isim giriniz..
+        /// </summary>
+        public static string PleaseEnterYourName {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen sokak giriniz..
+        /// </summary>
+        public static string PleaseEnterYourStreet {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourStreet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen soyad giriniz..
+        /// </summary>
+        public static string PleaseEnterYourSurname {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourSurname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen ilçe giriniz..
+        /// </summary>
+        public static string PleaseEnterYourTown {
+            get {
+                return ResourceManager.GetString("PleaseEnterYourTown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lütfen Aşağıdaki Zorunlu Alanları Doldurun.
         /// </summary>
         public static string PleaseFillOutMandatoryBelowFields {
@@ -3843,6 +3924,15 @@ namespace Resources {
         public static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

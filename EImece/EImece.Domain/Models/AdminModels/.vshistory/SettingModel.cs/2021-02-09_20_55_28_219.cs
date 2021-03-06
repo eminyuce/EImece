@@ -28,9 +28,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]
         public string CargoCompany { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoPrice))]
-        public int CargoPrice { get; set; }
-
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoDescription))]
         [AllowHtml]
         public string CargoDescription { get; set; }

@@ -106,10 +106,6 @@ namespace EImece.Controllers
             {
                 address = new Domain.Entities.Address();
             }
-            if (customer == null)
-            {
-                throw new NotSupportedException();
-            }
             address.Street = customer.Street;
             address.District = customer.District;
             address.City = customer.City;

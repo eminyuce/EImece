@@ -41,9 +41,14 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
+       
+
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
+
+
+
 
         public PaymentController(
             ApplicationUserManager userManager,

@@ -31,69 +31,45 @@ namespace EImece.Controllers
 {
     public abstract class BasePaymentController : BaseController
     {
-        private static readonly Logger BasePaymentLogger = LogManager.GetCurrentClassLogger();
-
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
-
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public IAddressService AddressService { get; set; }
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-
         protected void InformCustomerToFillOutForm(Customer customer)
         {
-            if(customer == null)
-            {
-                throw new NotSupportedException();
-            }
-            if (string.IsNullOrEmpty(customer.Name.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.Name))
             {
                 ModelState.AddModelError("customer.Name", Resource.PleaseEnterYourName);
             }
-            if (string.IsNullOrEmpty(customer.Surname.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.Surname))
             {
                 ModelState.AddModelError("customer.Surname", Resource.PleaseEnterYourSurname);
             }
-            if (string.IsNullOrEmpty(customer.GsmNumber.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.GsmNumber))
             {
                 ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Email.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.Email))
             {
                 ModelState.AddModelError("customer.Email", Resource.PleaseEnterYourEmail);
             }
-            if (string.IsNullOrEmpty(customer.City.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.City))
             {
                 ModelState.AddModelError("customer.City", Resource.PleaseEnterYourCity);
             }
-            if (string.IsNullOrEmpty(customer.Town.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.Town))
             {
                 ModelState.AddModelError("customer.Town", Resource.PleaseEnterYourTown);
             }
-            if (string.IsNullOrEmpty(customer.Country.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.Country))
             {
-                ModelState.AddModelError("customer.Country", Resource.PleaseEnterYourCountry);
+                ModelState.AddModelError("customer.Country", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.District.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.District))
             {
-                ModelState.AddModelError("customer.District", Resource.PleaseEnterYourDistrict);
+                ModelState.AddModelError("customer.District", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.Street.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.Street))
             {
-                ModelState.AddModelError("customer.Street", Resource.PleaseEnterYourStreet);
+                ModelState.AddModelError("customer.Street", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
+            if (string.IsNullOrEmpty(customer.IdentityNumber))
             {
                 ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
             }
@@ -105,10 +81,6 @@ namespace EImece.Controllers
             if (address == null)
             {
                 address = new Domain.Entities.Address();
-            }
-            if (customer == null)
-            {
-                throw new NotSupportedException();
             }
             address.Street = customer.Street;
             address.District = customer.District;
@@ -123,29 +95,6 @@ namespace EImece.Controllers
             address.Position = 1;
             address.Lang = CurrentLanguage;
             return address;
-        }
-
-        protected void SendEmails(Order order)
-        {
-            try
-            {
-                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
-            }
-            catch (Exception e)
-            {
-                BasePaymentLogger.Error(e, "OrderConfirmationEmail exception");
-            }
-
-            try
-            {
-                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
-                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
-            }
-            catch (Exception e)
-            {
-                BasePaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
-            }
         }
     }
 }

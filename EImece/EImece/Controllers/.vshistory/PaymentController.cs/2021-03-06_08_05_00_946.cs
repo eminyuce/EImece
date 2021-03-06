@@ -27,8 +27,7 @@ namespace EImece.Controllers
    // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BasePaymentController
     {
-        [Inject]
-        public IyzicoService IyzicoService { get; set; }
+        private readonly IyzicoService iyzicoService;
 
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
 
@@ -41,14 +40,25 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
+     
+
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
 
-        public PaymentController(
-            ApplicationUserManager userManager,
+        [Inject]
+        public IAddressService AddressService { get; set; }
+        [Inject]
+        public ICustomerService CustomerService { get; set; }
+
+
+        public PaymentController(        ApplicationUserManager userManager,
             ApplicationSignInManager signInManager)
         {
+            this.iyzicoService = iyzicoService;
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -369,7 +379,7 @@ namespace EImece.Controllers
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 var user = UserManager.FindByName(User.Identity.GetUserName());
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
+                ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
                 return View(shoppingCart);
             }
             else
@@ -380,7 +390,7 @@ namespace EImece.Controllers
 
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
         {
-            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            CheckoutForm checkoutForm = iyzicoService.GetCheckoutForm(model);
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));

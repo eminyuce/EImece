@@ -772,7 +772,7 @@
     <value>Giriş Yap Veya Üye Ol</value>
   </data>
   <data name="CustomerOpenAddress" xml:space="preserve">
-    <value>Kargo Firmasina Notunuz</value>
+    <value>Açık Adres / Kargo Firmasina Notunuz</value>
   </data>
   <data name="CustomerRegistrationAddress" xml:space="preserve">
     <value>Müşteri Kayıt Adresi</value>
@@ -1609,35 +1609,5 @@
   </data>
   <data name="WhyNeedGsmNumber" xml:space="preserve">
     <value>Siparişin gönderimi ve takibi için talep edilir.</value>
-  </data>
-  <data name="PleaseEnterYourAddress" xml:space="preserve">
-    <value>Lütfen adresi giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourCity" xml:space="preserve">
-    <value>Lütfen şehir giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourCountry" xml:space="preserve">
-    <value>Lütfen ulke giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourDistrict" xml:space="preserve">
-    <value>Lütfen mahalle giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourEmail" xml:space="preserve">
-    <value>Lütfen e-posta giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourName" xml:space="preserve">
-    <value>Lütfen isim giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourStreet" xml:space="preserve">
-    <value>Lütfen sokak giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourSurname" xml:space="preserve">
-    <value>Lütfen soyad giriniz.</value>
-  </data>
-  <data name="PleaseEnterYourTown" xml:space="preserve">
-    <value>Lütfen ilçe giriniz.</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
 </root>

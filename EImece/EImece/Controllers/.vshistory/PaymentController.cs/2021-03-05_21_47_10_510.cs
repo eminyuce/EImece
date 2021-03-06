@@ -27,8 +27,7 @@ namespace EImece.Controllers
    // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BasePaymentController
     {
-        [Inject]
-        public IyzicoService IyzicoService { get; set; }
+        private readonly IyzicoService iyzicoService;
 
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
 
@@ -41,16 +40,36 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
+        [Inject]
+        public IMailTemplateService MailTemplateService { get; set; }
+
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
 
-        public PaymentController(
+        [Inject]
+        public IEmailSender EmailSender { get; set; }
+
+        public IAddressService AddressService { get; set; }
+
+        public ICustomerService CustomerService { get; set; }
+
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
+
+        public PaymentController(IyzicoService iyzicoService,
             ApplicationUserManager userManager,
-            ApplicationSignInManager signInManager)
+            ApplicationSignInManager signInManager,
+             AddressService addressService, CustomerService customerService)
         {
+            this.iyzicoService = iyzicoService;
             UserManager = userManager;
             SignInManager = signInManager;
+            AddressService = addressService;
+            CustomerService = customerService;
         }
        // [Route(Domain.Constants.ShoppingCartPrefix)]
         public ActionResult ShoppingCart()
@@ -369,7 +388,7 @@ namespace EImece.Controllers
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 var user = UserManager.FindByName(User.Identity.GetUserName());
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
+                ViewBag.CheckoutFormInitialize = iyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
                 return View(shoppingCart);
             }
             else
@@ -380,7 +399,7 @@ namespace EImece.Controllers
 
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
         {
-            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            CheckoutForm checkoutForm = iyzicoService.GetCheckoutForm(model);
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
@@ -398,7 +417,28 @@ namespace EImece.Controllers
             }
         }
 
-     
+        private void SendEmails(Order order)
+        {
+            try
+            {
+                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
+            }
+            catch (Exception e)
+            {
+                PaymentLogger.Error(e, "OrderConfirmationEmail exception");
+            }
+
+            try
+            {
+                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
+                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
+            }
+            catch (Exception e)
+            {
+                PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
+            }
+        }
 
         public ActionResult ThankYouForYourOrder(int orderId)
         {

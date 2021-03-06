@@ -9,14 +9,12 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Request;
-using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using Resources;
 using System;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -131,14 +129,14 @@ namespace EImece.Controllers
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                var order = ShoppingCartService.SaveBuyNow(BuyNowSession, checkoutForm);
+                var order = ShoppingCartService.SaveBuyNow(shoppingCart, checkoutForm, userId);
                 SendEmails(order);
-                BuyNowSession = new BuyNowModel();
+                ClearCart(shoppingCart);
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
             else
             {
-                Logger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
+                PaymentLogger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }

@@ -9,7 +9,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Request;
-using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using Resources;
@@ -133,12 +132,12 @@ namespace EImece.Controllers
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 var order = ShoppingCartService.SaveBuyNow(BuyNowSession, checkoutForm);
                 SendEmails(order);
-                BuyNowSession = new BuyNowModel();
+                ClearCart(shoppingCart);
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
             else
             {
-                Logger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
+                PaymentLogger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }

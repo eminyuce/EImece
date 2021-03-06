@@ -9,7 +9,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Request;
-using Newtonsoft.Json;
 using Ninject;
 using NLog;
 using Resources;
