@@ -39,12 +39,17 @@ namespace EImece.Domain.Entities
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
+        [DataType(DataType.Currency)]
+        public decimal ? Discount { get; set; }
+
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
         public String PriceStr { get; set; }
 
+        [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductDiscount))]
-        public decimal ? Discount { get; set; }
+        public String DiscountStr { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCodeErrorMessage))]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCode))]
@@ -99,7 +104,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return this.GetDetailPageUrl("BuyNow", "Products", ProductCategory.Name);
+                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory.Name);
             }
         }
 

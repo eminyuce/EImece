@@ -150,7 +150,7 @@ namespace EImece.Domain.Services
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
 
             string callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
-                                               "Products",
+                                               "Payment",
                                                new { o  },
                                                AppConfig.HttpProtocol);
 

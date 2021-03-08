@@ -103,13 +103,13 @@ namespace EImece.Domain.Repositories
             }
             catch (DbEntityValidationException ex)
             {
-                string errorMessage = "";
+                string errorMessage = ex.Message;
                 foreach (var errors in ex.EntityValidationErrors)
                 {
                     foreach (var validationError in errors.ValidationErrors)
                     {
                         // get the error message
-                        errorMessage += validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
+                        errorMessage += " " + validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
                     }
                 }
                 BaseLogger.Error(errorMessage);

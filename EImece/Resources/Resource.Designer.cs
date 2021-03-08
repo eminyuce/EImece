@@ -2104,7 +2104,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zorunlu Alan, Lütfen Boş bırakmayınız..
+        ///   Looks up a localized string similar to Bu alanın doldurulması zorunludur..
         /// </summary>
         public static string MandatoryField {
             get {
@@ -2789,7 +2789,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen soyad giriniz..
+        ///   Looks up a localized string similar to Lütfen soyisim giriniz..
         /// </summary>
         public static string PleaseEnterYourSurname {
             get {
@@ -2830,6 +2830,15 @@ namespace Resources {
         public static string PleaseSelectYourProductCategoryFromTree {
             get {
                 return ResourceManager.GetString("PleaseSelectYourProductCategoryFromTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Popüler Ürünler​.
+        /// </summary>
+        public static string PopularProducts {
+            get {
+                return ResourceManager.GetString("PopularProducts", resourceCulture);
             }
         }
         
@@ -4374,6 +4383,15 @@ namespace Resources {
         public static string VideoUrl {
             get {
                 return ResourceManager.GetString("VideoUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürünleri İncele.
+        /// </summary>
+        public static string ViewProducts {
+            get {
+                return ResourceManager.GetString("ViewProducts", resourceCulture);
             }
         }
         

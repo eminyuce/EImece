@@ -76,6 +76,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 content = ProductService.GetBaseContent(id);
                 content.PriceStr = decimal.Round(content.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",");
+                content.DiscountStr = content.Discount.HasValue ?  decimal.Round(content.Discount.Value, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",") : "";
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
@@ -118,7 +119,13 @@ namespace EImece.Areas.Admin.Controllers
                              product.ImageWidth,
                              EImeceImageType.ProductMainImage,
                               product);
-                        product.Price = decimal.Round((decimal)product.PriceStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
+
+                        if (!string.IsNullOrEmpty(product.PriceStr))
+                            product.Price = decimal.Round((decimal)product.PriceStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
+                        if (!string.IsNullOrEmpty(product.DiscountStr))
+                            product.Discount = decimal.Round((decimal)product.DiscountStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
+                        
+
                         product.Lang = CurrentLanguage;
                         ProductService.SaveOrEditEntity(product);
                         contentId = product.Id;

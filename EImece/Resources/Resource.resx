@@ -325,7 +325,7 @@
     <value>Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır.Lütfen bilgilerinizi kontrol ediniz.</value>
   </data>
   <data name="MandatoryField" xml:space="preserve">
-    <value>Zorunlu Alan, Lütfen Boş bırakmayınız.</value>
+    <value>Bu alanın doldurulması zorunludur.</value>
   </data>
   <data name="CustomerAccount" xml:space="preserve">
     <value>Hesabim</value>
@@ -1632,12 +1632,18 @@
     <value>Lütfen sokak giriniz.</value>
   </data>
   <data name="PleaseEnterYourSurname" xml:space="preserve">
-    <value>Lütfen soyad giriniz.</value>
+    <value>Lütfen soyisim giriniz.</value>
   </data>
   <data name="PleaseEnterYourTown" xml:space="preserve">
     <value>Lütfen ilçe giriniz.</value>
   </data>
   <data name="String1" xml:space="preserve">
     <value />
+  </data>
+  <data name="PopularProducts" xml:space="preserve">
+    <value>Popüler Ürünler​</value>
+  </data>
+  <data name="ViewProducts" xml:space="preserve">
+    <value>Ürünleri İncele</value>
   </data>
 </root>

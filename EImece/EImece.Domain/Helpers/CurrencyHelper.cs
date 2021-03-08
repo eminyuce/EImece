@@ -6,7 +6,7 @@ namespace EImece.Domain.Helpers
 {
     public static class CurrencyHelper
     {
-        private const string CulturaInfoName = "en-US";
+        private const string CulturaInfoName = "tr-TR";
 
         public static string CurrencySign(this decimal price)
         {

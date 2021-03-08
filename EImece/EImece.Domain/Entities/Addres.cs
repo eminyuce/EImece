@@ -27,7 +27,6 @@ namespace EImece.Domain.Entities
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string Country { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         public string ZipCode { get; set; }
 
         public string Street { get; set; }

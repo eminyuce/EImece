@@ -331,7 +331,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\BasePaymentController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -1617,8 +1616,8 @@
     <Content Include="Views\Payment\_PaymentSteps.cshtml" />
     <Content Include="Views\Payment\ShoppingCart - Copy.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FeaturedProductCategoryItem.cshtml" />
-    <Content Include="Views\Products\BuyNow.cshtml" />
-    <Content Include="Views\Products\BuyNowPayment.cshtml" />
+    <Content Include="Views\Payment\BuyNow.cshtml" />
+    <Content Include="Views\Payment\BuyNowPayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

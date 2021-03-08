@@ -19,18 +19,37 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
    // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
-    public class PaymentController : BasePaymentController
+    public class PaymentController : BaseController
     {
+        private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
+       
+
+        [Inject]
+        public IMailTemplateService MailTemplateService { get; set; }
+
+        [Inject]
+        public IEmailSender EmailSender { get; set; }
+
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
+
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
+        [Inject]
+        public IAddressService AddressService { get; set; }
+        [Inject]
+        public ICustomerService CustomerService { get; set; }
+
         [Inject]
         public IyzicoService IyzicoService { get; set; }
-
-        private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
@@ -408,8 +427,6 @@ namespace EImece.Controllers
             }
         }
 
-     
-
         public ActionResult ThankYouForYourOrder(int orderId)
         {
             return View(OrderService.GetSingle(orderId));
@@ -435,6 +452,192 @@ namespace EImece.Controllers
         {
             return Content("PaymentSuccess is done");
         }
-       
+        public ActionResult BuyNow(String id)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            try
+            {
+                var productId = id.GetId();
+                var product = ProductService.GetProductDetailViewModelById(productId);
+                ViewBag.SeoId = product.Product.GetSeoUrl();
+                BuyNowModel buyNowModel = new BuyNowModel();
+                buyNowModel.ProductDetailViewModel = product;
+                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
+                return View(buyNowModel);
+            }
+            catch (Exception e)
+            {
+                PaymentLogger.Error(e, "Products.BuyNow page");
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult BuyNow(String productId, Customer customer)
+        {
+            bool isValidCustomer = customer != null && customer.isValidCustomer();
+            BuyNowModel buyNowModel = new BuyNowModel();
+            buyNowModel.ProductId = GeneralHelper.RevertId(productId);
+            buyNowModel.ProductDetailViewModel = ProductService.GetProductDetailViewModelById(buyNowModel.ProductId);
+            buyNowModel.Customer = customer;
+
+            if (isValidCustomer)
+            {
+                buyNowModel.ShippingAddress = SetAddress(customer, buyNowModel.ShippingAddress);
+                buyNowModel.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                buyNowModel.OrderGuid = Guid.NewGuid().ToString();
+
+                var item = new ShoppingCart();
+                item.CreatedDate = DateTime.Now;
+                item.UpdatedDate = DateTime.Now;
+                item.Name = buyNowModel.OrderGuid;
+                item.IsActive = false;
+                item.Lang = CurrentLanguage;
+                item.Position = 0;
+                item.ShoppingCartJson = JsonConvert.SerializeObject(buyNowModel);
+                item.OrderGuid = buyNowModel.OrderGuid;
+                item.UserId = Domain.Constants.BuyNowCustomerUserId;
+                ShoppingCartService.SaveOrEditShoppingCart(item);
+      
+                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
+               
+
+
+                return View("BuyNowPayment", buyNowModel);
+            }
+            else
+            {
+                InformCustomerToFillOutForm(customer);
+                return View(buyNowModel);
+            }
+
+        }
+
+        public ActionResult BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
+        {
+            var checkoutForm = IyzicoService.GetCheckoutForm(model);
+            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
+                var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
+                BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
+                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
+
+                var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
+               // SendEmails(order);
+
+
+                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
+            }
+            else
+            {
+                PaymentLogger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
+                return RedirectToAction("NoSuccessForYourOrder");
+            }
+        }
+        protected void InformCustomerToFillOutForm(Customer customer)
+        {
+            if (customer == null)
+            {
+                throw new NotSupportedException();
+            }
+            if (string.IsNullOrEmpty(customer.Name.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.Name", Resource.PleaseEnterYourName);
+            }
+            if (string.IsNullOrEmpty(customer.Surname.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.Surname", Resource.PleaseEnterYourSurname);
+            }
+            if (string.IsNullOrEmpty(customer.GsmNumber.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
+            }
+            if (string.IsNullOrEmpty(customer.Email.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.Email", Resource.PleaseEnterYourEmail);
+            }
+            if (string.IsNullOrEmpty(customer.City.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.City", Resource.PleaseEnterYourCity);
+            }
+            if (string.IsNullOrEmpty(customer.Town.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.Town", Resource.PleaseEnterYourTown);
+            }
+            if (string.IsNullOrEmpty(customer.Country.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.Country", Resource.PleaseEnterYourCountry);
+            }
+            if (string.IsNullOrEmpty(customer.District.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.District", Resource.PleaseEnterYourDistrict);
+            }
+            if (string.IsNullOrEmpty(customer.Street.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.Street", Resource.PleaseEnterYourStreet);
+            }
+            if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
+            {
+                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
+            }
+            ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
+        }
+
+        protected Domain.Entities.Address SetAddress(Customer customer, Domain.Entities.Address address)
+        {
+            if (address == null)
+            {
+                address = new Domain.Entities.Address();
+            }
+            if (customer == null)
+            {
+                throw new NotSupportedException();
+            }
+            address.Street = customer.Street;
+            address.District = customer.District;
+            address.City = customer.City;
+            address.Country = customer.Country;
+            address.ZipCode = customer.ZipCode;
+            address.Description = customer.RegistrationAddress;
+            address.Name = customer.FullName;
+            address.CreatedDate = DateTime.Now;
+            address.UpdatedDate = DateTime.Now;
+            address.IsActive = true;
+            address.Position = 1;
+            address.Lang = CurrentLanguage;
+            return address;
+        }
+
+        protected void SendEmails(Order order)
+        {
+            try
+            {
+                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
+            }
+            catch (Exception e)
+            {
+                PaymentLogger.Error(e, "OrderConfirmationEmail exception");
+            }
+
+            try
+            {
+                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
+                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
+            }
+            catch (Exception e)
+            {
+                PaymentLogger.Error(e, "CompanyGotNewOrderEmail exception");
+            }
+        }
     }
 }

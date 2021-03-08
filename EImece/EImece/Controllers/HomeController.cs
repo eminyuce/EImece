@@ -64,6 +64,8 @@ namespace EImece.Controllers
             return View(mainPageModel);
         }
 
+       
+
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {

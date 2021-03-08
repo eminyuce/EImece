@@ -22,21 +22,11 @@ using System.Web.Mvc;
 namespace EImece.Controllers
 {
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
-    public class ProductsController : BasePaymentController
+    public class ProductsController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IProductCommentService productCommentService;
-        protected BuyNowModel BuyNowSession
-        {
-            get
-            {
-                return (BuyNowModel)Session["BuyNowSession"];
-            }
-            set
-            {
-                Session["BuyNowSession"] = value;
-            }
-        }
+      
 
         [Inject]
         public IProductService ProductService { get; set; }
@@ -75,73 +65,7 @@ namespace EImece.Controllers
             var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
             return View(products);
         }
-        public ActionResult BuyNow(String id)
-        {
-            if (String.IsNullOrEmpty(id))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            try
-            {
-                var productId = id.GetId();
-                var product = ProductService.GetProductDetailViewModelById(productId);
-                ViewBag.SeoId = product.Product.GetSeoUrl();
-                BuyNowModel buyNowModel = new BuyNowModel();
-                buyNowModel.ProductDetailViewModel = product;
-                return View(buyNowModel);
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "Products.BuyNow page");
-                return RedirectToAction("InternalServerError", "Error");
-            }
-        }
-      
-
-        [HttpPost]
-        public ActionResult BuyNow(String productId, Customer customer)
-        {
-            bool isValidCustomer = customer != null && customer.isValidCustomer();
-            BuyNowModel buyNowModel = new BuyNowModel();
-            buyNowModel.ProductId = GeneralHelper.RevertId(productId);
-            buyNowModel.ProductDetailViewModel = ProductService.GetProductDetailViewModelById(buyNowModel.ProductId);
-            buyNowModel.Customer = customer;
-
-            if (isValidCustomer)
-            {
-                buyNowModel.ShippingAddress = SetAddress(customer, buyNowModel.ShippingAddress);
-                buyNowModel.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                buyNowModel.OrderGuid = Guid.NewGuid().ToString();
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
-
-                BuyNowSession = buyNowModel;
-                return View("BuyNowPayment", buyNowModel);
-            }
-            else
-            {
-                InformCustomerToFillOutForm(customer);
-                return View(buyNowModel);
-            }
-               
-        }
-
-        public ActionResult BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
-        {
-            var checkoutForm = IyzicoService.GetCheckoutForm(model);
-            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
-            {
-                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                var order = ShoppingCartService.SaveBuyNow(BuyNowSession, checkoutForm);
-                SendEmails(order);
-                BuyNowSession = new BuyNowModel();
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
-            }
-            else
-            {
-                Logger.Error("CheckoutForm NOT SUCCESS:" + JsonConvert.SerializeObject(checkoutForm));
-                return RedirectToAction("NoSuccessForYourOrder");
-            }
-        }
+   
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)
