@@ -143,7 +143,7 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public int DiscountPercentage
+        public decimal DiscountPercentage
         {
             get
             {
@@ -151,7 +151,7 @@ namespace EImece.Domain.Entities
                 {
                     var discountedDiff = Price - PriceWithDiscount;
                     var result = Math.Round(discountedDiff * 100 / Price, 2);
-                    return (int)result;
+                    return result;
                 }
                 return 0;
             }

@@ -24,7 +24,7 @@ namespace EImece.Controllers
             var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
             builder.Path += "sitemap.xml";
             var fLink = builder.Uri;
-            content += "User-agent:* " + Environment.NewLine;
+            content += "User-agent:*: " + Environment.NewLine;
             content += "Sitemap: " + fLink + Environment.NewLine;
 
             content += "Disallow: /Ajax/ " + Environment.NewLine;

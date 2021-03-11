@@ -103,6 +103,26 @@
                     @order.CargoPrice.CurrencySign()
                 </td>
             </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        Installment
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.Installment.ToDouble().CurrencySign()
+                </td>
+            </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        MerchantCommissionRateAmount
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.MerchantCommissionRateAmount.ToDouble().CurrencySign()
+                </td>
+            </tr>
         </tbody>
         <tfoot>
             <tr class="success">
