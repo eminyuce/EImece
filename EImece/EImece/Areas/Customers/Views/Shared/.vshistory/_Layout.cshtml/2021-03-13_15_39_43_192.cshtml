@@ -41,11 +41,9 @@
             </ul>
             <!-- links collapsed (moblie)-->
             <div class="dropdown d-inline-block d-lg-none">
-                <a class="dropdown-toggle text-light opacity-75 font-size-sm py-1" href="#" data-toggle="dropdown">@Resource.UsefulLinks</a>
-                <div class="dropdown-menu">
-                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
-                </div>
+                @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
             </div>
+            
         </div>
     </div>
 

@@ -43,6 +43,10 @@
             <div class="dropdown d-inline-block d-lg-none">
                 <a class="dropdown-toggle text-light opacity-75 font-size-sm py-1" href="#" data-toggle="dropdown">@Resource.UsefulLinks</a>
                 <div class="dropdown-menu">
+                    <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info")">@Resource.AboutUs</a>
+                    <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info")">@Resource.DeliveryInfo</a>
+                    <div class="dropdown-divider">
+                    </div>
                     @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
                 </div>
             </div>
