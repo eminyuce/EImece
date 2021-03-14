@@ -47,7 +47,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body lang="@Html.Action("GetHtmlLangCode", "Home")">
-    <input name="currentLang" type="hidden" value="@Thread.CurrentThread.CurrentUICulture.ToString()" />
+    <input name="currentLang" type="text" value="@Thread.CurrentThread.CurrentUICulture.ToString()" />
     <!-- Navbar Multilevel-->
     <!-- First line: Topbar-->
     <div class="">

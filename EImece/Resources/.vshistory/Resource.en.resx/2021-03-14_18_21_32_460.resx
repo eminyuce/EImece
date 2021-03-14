@@ -274,10 +274,10 @@
     <value>Forgot Password Confirmation</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>Oturum aç</value>
   </data>
   <data name="LostYourPassword" xml:space="preserve">
-    <value>Lost Your Password</value>
+    <value>Şifreni mi unuttun?</value>
   </data>
   <data name="Recover" xml:space="preserve">
     <value>Kurtarmak</value>
@@ -1006,10 +1006,10 @@
     <value>Lists</value>
   </data>
   <data name="Login1" xml:space="preserve">
-    <value>Login</value>
+    <value>Giriş</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+    <value>Çıkış Yap</value>
   </data>
   <data name="MailBody" xml:space="preserve">
     <value>E-Posta İçerik</value>
@@ -1611,13 +1611,13 @@
     <value>Siparişin gönderimi ve takibi için talep edilir.</value>
   </data>
   <data name="PleaseEnterYourAddress" xml:space="preserve">
-    <value>Please Enter Your Address</value>
+    <value>Lütfen adresi giriniz.</value>
   </data>
   <data name="PleaseEnterYourCity" xml:space="preserve">
-    <value>Please Enter Your City</value>
+    <value>Lütfen şehir giriniz.</value>
   </data>
   <data name="PleaseEnterYourCountry" xml:space="preserve">
-    <value>Please Enter Your Country</value>
+    <value>Lütfen ulke giriniz.</value>
   </data>
   <data name="PleaseEnterYourDistrict" xml:space="preserve">
     <value>Lütfen mahalle giriniz.</value>

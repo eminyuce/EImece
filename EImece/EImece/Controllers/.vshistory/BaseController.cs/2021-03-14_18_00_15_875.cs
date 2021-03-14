@@ -38,6 +38,7 @@ namespace EImece.Controllers
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+            //Session[Constants.CultureCookieName] = ((int)selectedLanguage) + "";
         }
 
         protected int CurrentLanguage

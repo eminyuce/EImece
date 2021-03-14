@@ -271,13 +271,13 @@
     <value>Giriş yapmak için buraya tıklayın</value>
   </data>
   <data name="ForgotPasswordConfirmation" xml:space="preserve">
-    <value>Forgot Password Confirmation</value>
+    <value>Şifremi Unuttum Onayı</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>Oturum aç</value>
   </data>
   <data name="LostYourPassword" xml:space="preserve">
-    <value>Lost Your Password</value>
+    <value>Şifreni mi unuttun?</value>
   </data>
   <data name="Recover" xml:space="preserve">
     <value>Kurtarmak</value>
@@ -295,7 +295,7 @@
     <value>Eposta gönder</value>
   </data>
   <data name="ForgotPasswordConfirmationText" xml:space="preserve">
-    <value>Please check your email to reset your password</value>
+    <value>Şifrenizi sıfırlamak için lütfen e-postanızı kontrol edin</value>
   </data>
   <data name="ThankYouForContactingUs" xml:space="preserve">
     <value>Bizimle iletişime geçtiğiniz için teşekkürler</value>
@@ -400,7 +400,7 @@
                     &lt;/section&gt;</value>
   </data>
   <data name="FrequentlyAskedQuestions" xml:space="preserve">
-    <value>Frequently Asked Questions</value>
+    <value>Sıkça Sorulan Sorular</value>
   </data>
   <data name="OrderNumber" xml:space="preserve">
     <value>Sipariş numarası</value>
@@ -868,10 +868,10 @@
     <value>Footer Ayarlar</value>
   </data>
   <data name="ForgotPassword" xml:space="preserve">
-    <value>Forgot Password</value>
+    <value>Şifremi Unuttum</value>
   </data>
   <data name="Gender" xml:space="preserve">
-    <value>Gender</value>
+    <value>Cinsiyet</value>
   </data>
   <data name="GeneralSaveErrorMessage" xml:space="preserve">
     <value>Değişiklikler kaydedilemedi. Tekrar deneyin ve sorun devam ederse sistem yöneticinize başvurun.</value>
@@ -1006,10 +1006,10 @@
     <value>Lists</value>
   </data>
   <data name="Login1" xml:space="preserve">
-    <value>Login</value>
+    <value>Giriş</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+    <value>Çıkış Yap</value>
   </data>
   <data name="MailBody" xml:space="preserve">
     <value>E-Posta İçerik</value>
@@ -1596,7 +1596,7 @@
     <value>Güncellendi</value>
   </data>
   <data name="CustomerBillingDetailsNotFilledOut" xml:space="preserve">
-    <value>Dear Customer, it is necessary to fill in your information and delivery address information for your invoice.</value>
+    <value>Değerli Müşterimiz, faturanız için bilgileriniz ve teslimat adres bilgisi doldurulması gereklidir.</value>
   </data>
   <data name="PleaseFillOutMandatoryBelowFields" xml:space="preserve">
     <value>Lütfen Aşağıdaki Zorunlu Alanları Doldurun</value>
@@ -1611,13 +1611,13 @@
     <value>Siparişin gönderimi ve takibi için talep edilir.</value>
   </data>
   <data name="PleaseEnterYourAddress" xml:space="preserve">
-    <value>Please Enter Your Address</value>
+    <value>Lütfen adresi giriniz.</value>
   </data>
   <data name="PleaseEnterYourCity" xml:space="preserve">
-    <value>Please Enter Your City</value>
+    <value>Lütfen şehir giriniz.</value>
   </data>
   <data name="PleaseEnterYourCountry" xml:space="preserve">
-    <value>Please Enter Your Country</value>
+    <value>Lütfen ulke giriniz.</value>
   </data>
   <data name="PleaseEnterYourDistrict" xml:space="preserve">
     <value>Lütfen mahalle giriniz.</value>
