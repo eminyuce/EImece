@@ -225,11 +225,7 @@ namespace EImece.Controllers
                 }
                 return View("_ContactUsFormViewModel", contact);
             }
-            else if(!validateContactUsFormViewModel(contact))
-            {
-                return View("_ContactUsFormViewModel", contact);
-            }
-            else
+            else if(validateContactUsFormViewModel(contact))
             {
                 try
                 {
@@ -262,28 +258,20 @@ namespace EImece.Controllers
                     HomeLogger.Error(ex, "Exception Message:" + ex.Message);
                 }
             }
+            else
+            {
+
+            }
 
             return View("_pThankYouForContactingUs", contact);
         }
         private bool validateContactUsFormViewModel(ContactUsFormViewModel contact)
         {
             bool result = true;
-            if (string.IsNullOrEmpty(contact.Email))
+            if (!string.IsNullOrEmpty(contact.Email))
             {
                 result = false;
-                ModelState.AddModelError("Email", Resource.EmailRequired);
-            }
-
-            if (string.IsNullOrEmpty(contact.Name))
-            {
-                result = false;
-                ModelState.AddModelError("Name", Resource.MandatoryField);
-            }
-
-            if (string.IsNullOrEmpty(contact.Message))
-            {
-                result = false;
-                ModelState.AddModelError("Message", Resource.ContactUsMessageErrorMessage);
+                ModelState.AddModelError("Email", Resource.ContactUsWrongSumForSecurityQuestion);
             }
 
             return result;

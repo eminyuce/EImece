@@ -133,19 +133,19 @@
     <value>E-Posta</value>
   </data>
   <data name="ContactUsEmailErrorMessage" xml:space="preserve">
-    <value>Lütfen E-Postanızı Giriniz</value>
+    <value>Lütfen E-Postanizi girin</value>
   </data>
   <data name="ContactUsMessage" xml:space="preserve">
     <value>Mesajınız</value>
   </data>
   <data name="ContactUsMessageErrorMessage" xml:space="preserve">
-    <value>Lütfen Mesajınızı Giriniz</value>
+    <value>Lütfen Mesajinizi Giriniz</value>
   </data>
   <data name="ContactUsName" xml:space="preserve">
     <value>Ad / Soyad</value>
   </data>
   <data name="ContactUsNameErrorMessage" xml:space="preserve">
-    <value>Lütfen Ad / Soyadınızı Giriniz</value>
+    <value>Lütfen Ad / Soyadınızı Girin</value>
   </data>
   <data name="ContactUsPhone" xml:space="preserve">
     <value>Telefon</value>

@@ -280,10 +280,10 @@ namespace EImece.Controllers
                 ModelState.AddModelError("Name", Resource.MandatoryField);
             }
 
-            if (string.IsNullOrEmpty(contact.Message))
+            if (string.IsNullOrEmpty(contact.Address))
             {
                 result = false;
-                ModelState.AddModelError("Message", Resource.ContactUsMessageErrorMessage);
+                ModelState.AddModelError("Address", Resource.MandatoryField);
             }
 
             return result;

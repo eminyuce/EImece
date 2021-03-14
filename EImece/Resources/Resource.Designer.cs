@@ -790,7 +790,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sirketiniz ismi.
+        ///   Looks up a localized string similar to Firma Adı.
         /// </summary>
         public static string ContactUsCompanyName {
             get {
@@ -808,7 +808,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen E-Postanizi girin.
+        ///   Looks up a localized string similar to Lütfen E-Postanızı Giriniz.
         /// </summary>
         public static string ContactUsEmailErrorMessage {
             get {
@@ -817,7 +817,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesajiniz.
+        ///   Looks up a localized string similar to Mesajınız.
         /// </summary>
         public static string ContactUsMessage {
             get {
@@ -826,7 +826,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen Mesajinizi Giriniz.
+        ///   Looks up a localized string similar to Lütfen Mesajınızı Giriniz.
         /// </summary>
         public static string ContactUsMessageErrorMessage {
             get {
@@ -844,7 +844,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen Ad / Soyadınızı Girin.
+        ///   Looks up a localized string similar to Lütfen Ad / Soyadınızı Giriniz.
         /// </summary>
         public static string ContactUsNameErrorMessage {
             get {
