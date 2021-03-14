@@ -17,7 +17,6 @@ using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Net;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -325,13 +324,15 @@ namespace EImece.Controllers
 
             if (languageCookie == null) languageCookie = new HttpCookie("Language");
 
-            languageCookie.Value = cultureName;
+            languageCookie.Value = lang;
 
             languageCookie.Expires = DateTime.Now.AddDays(10);
 
             Response.SetCookie(languageCookie);
 
-            return RedirectToAction("Index", "Home");
+            Response.Redirect(Request.UrlReferrer.ToString());
+
+
         }
 
         public ActionResult Language_OLD(string id)

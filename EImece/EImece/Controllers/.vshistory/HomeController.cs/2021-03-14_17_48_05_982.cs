@@ -17,7 +17,6 @@ using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Net;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -313,23 +312,20 @@ namespace EImece.Controllers
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            string culture = "en-US";
+            if (Request.UserLanguages != null)
+            {
+                culture = Request.UserLanguages[0];
+            }
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(culture);
+
+
 
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
             MemoryCacheProvider.ClearAll();
-
-
-            Response.Cookies.Remove("Language");
-
-            var languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
-
-            if (languageCookie == null) languageCookie = new HttpCookie("Language");
-
-            languageCookie.Value = cultureName;
-
-            languageCookie.Expires = DateTime.Now.AddDays(10);
-
-            Response.SetCookie(languageCookie);
 
             return RedirectToAction("Index", "Home");
         }

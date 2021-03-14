@@ -38,15 +38,14 @@ namespace EImece.Controllers
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
-            //Session[Constants.CultureCookieName] = ((int)selectedLanguage) + "";
+            Session[Constants.CultureCookieName] = ((int)selectedLanguage) + "";
         }
 
         protected int CurrentLanguage
         {
             get
             {
-                var lang = Thread.CurrentThread.CurrentCulture.ToString();
-                return EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
+                return Thread.CurrentThread.CurrentCulture.ToString();
             }
         }
 
@@ -73,21 +72,6 @@ namespace EImece.Controllers
                 BaseLogger.Error("OnException:" + filterContext.Exception.ToFormattedString());
             }
             base.OnException(filterContext);
-        }
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
-            if (languageCookie != null)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(languageCookie.Value);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCookie.Value);
-            }
-            else
-            {
-                //other code here
-            }
-
-            base.Initialize(requestContext);
         }
     }
 }

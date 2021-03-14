@@ -331,7 +331,9 @@ namespace EImece.Controllers
 
             Response.SetCookie(languageCookie);
 
-            return RedirectToAction("Index", "Home");
+            Response.Redirect(Request.UrlReferrer.ToString());
+
+
         }
 
         public ActionResult Language_OLD(string id)
