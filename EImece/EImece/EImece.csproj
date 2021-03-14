@@ -322,10 +322,6 @@
     <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
-    <Compile Include="Areas\Amp\AmpAreaRegistration.cs" />
-    <Compile Include="Areas\Amp\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Amp\Controllers\ProductsController.cs" />
-    <Compile Include="Areas\Amp\Controllers\StoriesController.cs" />
     <Compile Include="Areas\Customers\Controllers\HomeController.cs" />
     <Compile Include="Areas\Customers\CustomersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -1347,15 +1343,8 @@
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\Index.cshtml" />
-    <Content Include="Areas\Amp\Views\web.config" />
-    <Content Include="Areas\Amp\Views\Stories\Detail.cshtml" />
-    <Content Include="Areas\Amp\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Amp\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Amp\Views\Stories\Index.cshtml" />
-    <Content Include="Areas\Amp\Views\Products\Detail.cshtml" />
     <Content Include="Content\Web.config" />
     <Content Include="manifest.json" />
-    <Content Include="Areas\Amp\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\SelectUserRolesViewModel.cshtml" />
@@ -1394,7 +1383,6 @@
     <Content Include="ApplicationInsights.config" />
     <Content Include="Areas\Admin\Views\ProductCategories\MoveProductCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\MoveMenuCategory.cshtml" />
-    <Content Include="Areas\Amp\Views\Shared\_ProductSpecs.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\BaseContentSearchItem\ProductSearchItem.cshtml" />
     <Content Include="Areas\Admin\Views\Customers\CustomerBaskets.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
