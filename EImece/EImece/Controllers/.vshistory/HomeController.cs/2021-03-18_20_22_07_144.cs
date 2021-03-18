@@ -18,7 +18,6 @@ using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Web;
@@ -360,33 +359,26 @@ namespace EImece.Controllers
         public ActionResult DisplayAllCache()
         {
             var cache = MemoryCache.Default;
-            List<string> cacheKeys = cache.Select(kvp => kvp.Key).Where(r=>r.Contains("Memory:")).ToList();
+            List<string> cacheKeys = cache.Select(kvp => kvp.Key).ToList();
+            foreach (String key in cacheKeys)
+            {
+            
+            }
+
             List<string> keys = new List<string>();
+
             IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                string key = (string)enumerator.Key;
-                keys.Add(key);
+        
             }
+            return View();
+        }
 
-            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize= GetApproximateSize(cache) });
-        }
-        public static long GetApproximateSize(MemoryCache cache)
-        {
-            var statsField = typeof(MemoryCache).GetField("_stats", BindingFlags.NonPublic | BindingFlags.Instance);
-            var statsValue = statsField.GetValue(cache);
-            var monitorField = statsValue.GetType().GetField("_cacheMemoryMonitor", BindingFlags.NonPublic | BindingFlags.Instance);
-            var monitorValue = monitorField.GetValue(statsValue);
-            var sizeField = monitorValue.GetType().GetField("_sizedRefMultiple", BindingFlags.NonPublic | BindingFlags.Instance);
-            var sizeValue = sizeField.GetValue(monitorValue);
-            var approxProp = sizeValue.GetType().GetProperty("ApproximateSize", BindingFlags.NonPublic | BindingFlags.Instance);
-            return (long)approxProp.GetValue(sizeValue, null);
-        }
         public class AllCacheList
         {
-            public List<string> MemoryCacheKey;
-            public List<string> HttpRuntimeKey;
-            public long ApproximateSize;
+            public List<string> memoryCacheKey;
+            public List<string> httpRuntimeKey;
         }
     }
 }

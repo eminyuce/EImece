@@ -18,7 +18,6 @@ namespace EImece.Domain.Caching
 
         public override bool Get<T>(string key, out T value)
         {
-            key = "Memory:" + key;
             if (_cache[key] == null)
             {
                 value = default(T);
@@ -26,11 +25,21 @@ namespace EImece.Domain.Caching
             }
             value = (T)_cache[key];
             return true;
+
+            try
+            {
+                value = default(T);
+                return false;
+            }
+            catch
+            {
+                value = default(T);
+                return false;
+            }
         }
 
         public override void Set<T>(string key, T value)
         {
-            key = "Memory:"+key;
             if (IsCacheProviderActive)
             {
                 Set<T>(key, value, CacheDuration);
@@ -39,10 +48,10 @@ namespace EImece.Domain.Caching
 
         public override void Set<T>(string key, T value, int duration)
         {
-            key = "Memory:" + key;
             if (value != null)
             {
-                var policy = new CacheItemPolicy();
+                CacheItemPolicy policy = null;
+                policy = new CacheItemPolicy();
                 policy.Priority = CacheItemPriority.Default;
                 policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
                 _cache.Set(key, value, policy);

@@ -39,7 +39,6 @@ namespace EImece.Domain.Caching
 
         public override void Set<T>(string key, T value, int duration)
         {
-            key = "Memory:" + key;
             if (value != null)
             {
                 var policy = new CacheItemPolicy();

@@ -18,7 +18,6 @@ using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Web;
@@ -369,7 +368,7 @@ namespace EImece.Controllers
                 keys.Add(key);
             }
 
-            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize= GetApproximateSize(cache) });
+            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys });
         }
         public static long GetApproximateSize(MemoryCache cache)
         {
@@ -377,7 +376,7 @@ namespace EImece.Controllers
             var statsValue = statsField.GetValue(cache);
             var monitorField = statsValue.GetType().GetField("_cacheMemoryMonitor", BindingFlags.NonPublic | BindingFlags.Instance);
             var monitorValue = monitorField.GetValue(statsValue);
-            var sizeField = monitorValue.GetType().GetField("_sizedRefMultiple", BindingFlags.NonPublic | BindingFlags.Instance);
+            var sizeField = monitorValue.GetType().GetField("_sizedRef", BindingFlags.NonPublic | BindingFlags.Instance);
             var sizeValue = sizeField.GetValue(monitorValue);
             var approxProp = sizeValue.GetType().GetProperty("ApproximateSize", BindingFlags.NonPublic | BindingFlags.Instance);
             return (long)approxProp.GetValue(sizeValue, null);
@@ -386,7 +385,6 @@ namespace EImece.Controllers
         {
             public List<string> MemoryCacheKey;
             public List<string> HttpRuntimeKey;
-            public long ApproximateSize;
         }
     }
 }

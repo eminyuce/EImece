@@ -23,6 +23,11 @@ namespace EImece.Domain.Caching
             _cache = InitCache();
         }
 
+        public CacheProvider(int durationInMinutes)
+        {
+            CacheDuration = durationInMinutes;
+            _cache = InitCache();
+        }
 
         protected abstract TCache InitCache();
 

@@ -1,0 +1,33 @@
+﻿@using System;
+@using System.Collections;
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Runtime.Caching;
+
+
+@{
+
+    var cache = MemoryCache.Default;
+    List<string> cacheKeys = cache.Select(kvp => kvp.Key).ToList();
+    foreach (String key in cacheKeys)
+    {
+        @{ 
+            <div>@key</div>
+        }
+    }
+
+    List<string> keys = new List<string>();
+
+    IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
+    while (enumerator.MoveNext())
+    {
+        string key = (string)enumerator.Key;
+        keys.Add(key);
+    }
+
+    foreach (string key in keys)
+    {
+        System.Web.HttpRuntime.Cache.Remove(key);
+    }
+
+}

@@ -1,0 +1,28 @@
+﻿@using System;
+@using System.Collections;
+@using System.Collections.Generic;
+@using System.Linq;
+@model EImece.Controllers.HomeController.AllCacheList
+
+
+@{
+
+
+
+}
+<h2>Memory Cache Key</h2>
+@foreach (var item in Model.memoryCacheKey)
+{
+    <div>
+        @item
+        <hr />
+    </div>
+}
+<h2>http Runtime Key</h2>
+@foreach (var item in Model.httpRuntimeKey)
+{
+    <div>
+        @item
+        <hr />
+    </div>
+}
