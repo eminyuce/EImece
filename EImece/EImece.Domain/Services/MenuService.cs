@@ -50,22 +50,8 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
-            List<Menu> lists = null;
-            if (IsCachingActivated)
-            {
-                var cacheKey = String.Format("GetPageByMenuLink-{0}-{1}", menuLink, language);
-                if (!MemoryCacheProvider.Get(cacheKey, out lists))
-                {
-                    lists = GetActiveBaseContents(true, language);
-                    MemoryCacheProvider.Set(cacheKey, lists, AppConfig.CacheVeryLongSeconds);
-                }
-            }
-            else
-            {
-                lists = GetActiveBaseContents(true, language);
-            }
-
-            var menu = lists.FirstOrDefault(r => r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            List<Menu> lists = GetMenus();
+            var menu = lists.FirstOrDefault(r => (language.HasValue ? ( r.Lang == language.Value) : true)  && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             if (menu == null)
             {
                 return null;
@@ -77,27 +63,25 @@ namespace EImece.Domain.Services
         {
             var cacheKey = "GetMenus";
             List<Menu> result = null;
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result) && IsCachingActivated)
             {
                 result = MenuRepository.GetMenus();
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+            }
+            else
+            {
+                result = MenuRepository.GetMenus();
             }
             return result;
         }
 
         public MenuPageViewModel GetPageById(int menuId)
         {
-            var cacheKey = String.Format("GetPageById-{0}", menuId);
-            MenuPageViewModel result = null;
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = new MenuPageViewModel();
+                var result = new MenuPageViewModel();
                 result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
                 result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
                 result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
             return result;
         }
 

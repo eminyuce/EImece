@@ -178,24 +178,18 @@ namespace EImece.Domain.Services
         private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
-            var cacheKey = string.Format("GetRandomProductsByCategoryId-{0}-{1}-{2}-{3}", productCategoryId, relatedProductTake, lang, id);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
+            
                 result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake * 3, lang, id);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
+           
             return result;
         }
 
         private List<Product> GetRelatedProducts(int[] tagIdList, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
-            var cacheKey = string.Format("GetRelatedProducts-{0}-{1}-{2}-{3}", string.Join(",", tagIdList), relatedProductTake, lang, id);
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
+           
                 result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
+          
             return result;
         }
 

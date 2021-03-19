@@ -31,21 +31,6 @@ namespace EImece.Domain.Helpers
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
         private static Logger Logger = LogManager.GetCurrentClassLogger();
-        private ICacheProvider _memoryCacheProvider { get; set; }
-
-        [Inject]
-        public ICacheProvider MemoryCacheProvider
-        {
-            get
-            {
-                _memoryCacheProvider.CacheDuration = AppConfig.GetConfigInt("CacheLongSeconds");
-                return _memoryCacheProvider;
-            }
-            set
-            {
-                _memoryCacheProvider = value;
-            }
-        }
 
         public int CurrentLanguage { get; set; }
 
@@ -659,18 +644,15 @@ namespace EImece.Domain.Helpers
         public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
         {
             byte[] imageBytes = null;
-            var cacheKeyFile = $"GetOriginalImageBytes-{fileStorageId}";
             fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             if (fileStorage != null)
             {
-                MemoryCacheProvider.Get(cacheKeyFile, out imageBytes);
                 if (imageBytes == null)
                 {
                     String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                     if (File.Exists(fullPath))
                     {
                         imageBytes = File.ReadAllBytes(Path.Combine(fullPath));
-                        MemoryCacheProvider.Set(cacheKeyFile, imageBytes, AppConfig.CacheLongSeconds);
                     }
                 }
             }

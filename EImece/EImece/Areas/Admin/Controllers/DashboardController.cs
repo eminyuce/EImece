@@ -80,11 +80,10 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult ClearCache()
         {
-            MemoryCacheProvider.ClearAll();
-
             var urlReferrer = Request.UrlReferrer;
+            MemoryCacheProvider.ClearAll();
             ExecuteWarmUpSql();
-            ExecuteWarmUpSql();
+         
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());
@@ -110,7 +109,7 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     foreach (var c in activeCategories)
                     {
-                        ProductCategoryService.GetProductCategoryViewModelWithCache(c.Id);
+                        ProductCategoryService.GetProductCategoryViewModel(c.Id);
                     }
                 }
                 MenuService.GetMenus();

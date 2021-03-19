@@ -41,12 +41,8 @@ namespace EImece.Domain.Services
 
         public MainPageViewModel GetMainPageViewModel(int language)
         {
-            var cacheKey = String.Format("GetMainPageViewModel-{0}", language);
-            MainPageViewModel result = null;
+            var result = new MainPageViewModel();
 
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = new MainPageViewModel();
                 var activeProducts = ProductService.GetActiveProducts(language);
                 result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
                 result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(8).ToList();
@@ -57,23 +53,14 @@ namespace EImece.Domain.Services
                 // result.LatestStories = StoryService.GetLatestStories(language, 4);
                 result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
                 result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-            else
-            {
-                Logger.Info("GetMainPageViewModel Page is coming from cache:" + cacheKey + " CacheDuration:" + MemoryCacheProvider.CacheDuration);
-            }
+            
             return result;
         }
 
         public FooterViewModel GetFooterViewModel(int language)
         {
-            var cacheKey = String.Format("GetFooterViewModel-{0}", language);
-            FooterViewModel result = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = new FooterViewModel();
+           
+            var result =  new FooterViewModel();
                 result.Menus = MenuService.GetActiveBaseContentsFromCache(true, language).ToList();
                 result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language).ToList();
                 result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
@@ -82,8 +69,7 @@ namespace EImece.Domain.Services
                 result.FooterDescription = SettingService.GetSettingObjectByKey(Constants.FooterDescription, language);
                 result.FooterEmailListDescription = SettingService.GetSettingObjectByKey(Constants.FooterEmailListDescription, language);
                 result.FooterHtmlDescription = SettingService.GetSettingObjectByKey(Constants.FooterHtmlDescription, language);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
+            
             return result;
         }
     }

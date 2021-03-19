@@ -40,14 +40,7 @@ namespace EImece.Domain.Services
         {
             if (id == 0)
                 return new Template();
-            var cacheKey = String.Format("Template-{0}", id);
-            List<Template> resultList = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out resultList))
-            {
-                resultList = GetAllActiveTemplates();
-                MemoryCacheProvider.Set(cacheKey, resultList, AppConfig.CacheMediumSeconds);
-            }
+            List<Template> resultList = GetAllActiveTemplates();
             var result = resultList.FirstOrDefault(r => r.Id == id);
             if (result == null)
             {

@@ -51,7 +51,7 @@ namespace EImece.Domain.Caching
 
         public override void Clear(string key)
         {
-            _cache.Remove(key);
+            _cache.Remove(key, CacheEntryRemovedReason.Removed);
         }
 
         public override IEnumerable<KeyValuePair<string, object>> GetAll()
@@ -84,6 +84,7 @@ namespace EImece.Domain.Caching
             {
                 System.Web.HttpRuntime.Cache.Remove(key);
             }
+   
         }
     }
 }

@@ -34,18 +34,7 @@ namespace EImece.Domain.Services
 
         public FileStorage GetFileStorage(int fileStorageId)
         {
-            List<FileStorage> fileStorages = base.GetActiveBaseEntitiesFromCache(true, null);
-            FileStorage result = fileStorages.FirstOrDefault(r => r.Id == fileStorageId);
-            if (result == null)
-            {
-                var cacheKey = String.Format("fileStorageId-{0}", fileStorageId);
-                if (!MemoryCacheProvider.Get(cacheKey, out result))
-                {
-                    result = GetSingle(fileStorageId);
-                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-                }
-            }
-            return result;
+            return GetSingle(fileStorageId); 
         }
 
         public void SaveUploadImages(int contentId,
@@ -272,7 +261,7 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var fileStorage = FileStorageRepository.GetSingle(id);
+                var fileStorage = GetSingle(id);
                 if (fileStorage != null)
                 {
                     FileStorageTagRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorage.Id);

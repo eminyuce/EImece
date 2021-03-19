@@ -134,15 +134,7 @@ namespace EImece.Controllers
 
         private FileContentResult GetDefaultFileContentResult(string imageSize)
         {
-            var cacheKey = $"DefaultImage-{imageSize}";
-            FileContentResult result = null;
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = GetDefaultImage(imageSize);
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
-            }
-
-            return result;
+            return  GetDefaultImage(imageSize);  
         }
 
         [AcceptVerbs(HttpVerbs.Get)]

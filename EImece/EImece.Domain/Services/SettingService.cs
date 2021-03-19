@@ -23,15 +23,7 @@ namespace EImece.Domain.Services
 
         public List<Setting> GetAllActiveSettings()
         {
-            var cacheKey = String.Format("GetAllActiveSettings");
-            List<Setting> result = null;
-
-            if (!MemoryCacheProvider.Get(cacheKey, out result))
-            {
-                result = SettingRepository.GetAllActiveSettings();
-                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-            return result;
+            return GetAllSettings().Where(t => t.IsActive).ToList();
         }
 
         private List<Setting> GetAllSettings()
