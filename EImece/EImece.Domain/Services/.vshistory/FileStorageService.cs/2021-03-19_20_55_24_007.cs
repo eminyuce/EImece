@@ -34,12 +34,7 @@ namespace EImece.Domain.Services
 
         public FileStorage GetFileStorage(int fileStorageId)
         {
-            var result = GetFileStorages().FirstOrDefault(r => r.Id == fileStorageId);
-            if(result == null)
-            {
-                result = GetSingle(fileStorageId);
-            }
-            return result;
+            return GetFileStorages().FirstOrDefault(r => r.Id == fileStorageId);
         }
         public List<FileStorage> GetFileStorages()
         {

@@ -34,12 +34,7 @@ namespace EImece.Domain.Services
 
         public FileStorage GetFileStorage(int fileStorageId)
         {
-            var result = GetFileStorages().FirstOrDefault(r => r.Id == fileStorageId);
-            if(result == null)
-            {
-                result = GetSingle(fileStorageId);
-            }
-            return result;
+            return GetSingle(fileStorageId); 
         }
         public List<FileStorage> GetFileStorages()
         {
@@ -47,12 +42,12 @@ namespace EImece.Domain.Services
             List<FileStorage> result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result) && IsCachingActivated)
             {
-                result = FileStorageRepository.GetAll().ToList();
+                result = FileStorageRepository.GetAll();
                 MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             else
             {
-                result = FileStorageRepository.GetAll().ToList();
+                result = FileStorageRepository.GetAll();
             }
             return result;
         }
