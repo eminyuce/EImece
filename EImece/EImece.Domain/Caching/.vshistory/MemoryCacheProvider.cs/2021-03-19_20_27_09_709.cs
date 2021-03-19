@@ -18,49 +18,34 @@ namespace EImece.Domain.Caching
 
         public override bool Get<T>(string key, out T value)
         {
-            if (AppConfig.IsCacheActive)
-            {
-                key = "Memory:" + key;
-                if (_cache[key] == null)
-                {
-                    value = default(T);
-                    return false;
-                }
-                value = (T)_cache[key];
-                return true;
-            }
-            else
+            key = "Memory:" + key;
+            if (_cache[key] == null)
             {
                 value = default(T);
                 return false;
             }
-           
+            value = (T)_cache[key];
+            return true;
         }
 
         public override void Set<T>(string key, T value)
         {
-            if (AppConfig.IsCacheActive)
+            key = "Memory:"+key;
+            if (IsCacheProviderActive)
             {
-                key = "Memory:"+key;
-                if (IsCacheProviderActive)
-                {
-                    Set<T>(key, value, CacheDuration);
-                }
+                Set<T>(key, value, CacheDuration);
             }
         }
 
         public override void Set<T>(string key, T value, int duration)
         {
-            if (AppConfig.IsCacheActive)
+            key = "Memory:" + key;
+            if (value != null)
             {
-                key = "Memory:" + key;
-                if (value != null)
-                {
-                    var policy = new CacheItemPolicy();
-                    policy.Priority = CacheItemPriority.Default;
-                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-                    _cache.Set(key, value, policy);
-                }
+                var policy = new CacheItemPolicy();
+                policy.Priority = CacheItemPriority.Default;
+                policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                _cache.Set(key, value, policy);
             }
         }
 

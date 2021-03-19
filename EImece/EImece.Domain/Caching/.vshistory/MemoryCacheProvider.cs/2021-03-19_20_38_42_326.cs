@@ -47,20 +47,21 @@ namespace EImece.Domain.Caching
                     Set<T>(key, value, CacheDuration);
                 }
             }
+            else
+            {
+
+            }
         }
 
         public override void Set<T>(string key, T value, int duration)
         {
-            if (AppConfig.IsCacheActive)
+            key = "Memory:" + key;
+            if (value != null)
             {
-                key = "Memory:" + key;
-                if (value != null)
-                {
-                    var policy = new CacheItemPolicy();
-                    policy.Priority = CacheItemPriority.Default;
-                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-                    _cache.Set(key, value, policy);
-                }
+                var policy = new CacheItemPolicy();
+                policy.Priority = CacheItemPriority.Default;
+                policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                _cache.Set(key, value, policy);
             }
         }
 

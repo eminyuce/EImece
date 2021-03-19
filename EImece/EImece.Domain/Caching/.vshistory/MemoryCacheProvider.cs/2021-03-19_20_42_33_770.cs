@@ -54,13 +54,13 @@ namespace EImece.Domain.Caching
             if (AppConfig.IsCacheActive)
             {
                 key = "Memory:" + key;
-                if (value != null)
-                {
-                    var policy = new CacheItemPolicy();
-                    policy.Priority = CacheItemPriority.Default;
-                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-                    _cache.Set(key, value, policy);
-                }
+            if (value != null)
+            {
+                var policy = new CacheItemPolicy();
+                policy.Priority = CacheItemPriority.Default;
+                policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                _cache.Set(key, value, policy);
+            }
             }
         }
 
