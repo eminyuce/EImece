@@ -179,8 +179,6 @@ namespace EImece.Domain.Services
             }
             buyNowSession.Customer.UserId = Constants.BuyNowCustomerUserId;
             Customer customer = buyNowSession.Customer;
-            customer.CreatedDate = DateTime.Now;
-            customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);
             Entities.Address shippingAddress = buyNowSession.ShippingAddress;
             int shippingAddressId = shippingAddress.Id;
@@ -280,16 +278,15 @@ namespace EImece.Domain.Services
             {
                 OrderId = savedOrder.Id,
                 ProductId = product.Id,
-                ProductSalePrice = buyNowModel.TotalPrice,
+                ProductSalePrice = product.Price,
                 ProductName = product.Name,
                 ProductCode = product.ProductCode,
                 CategoryName = product.CategoryName,
                 Quantity = 1,
-                TotalPrice = buyNowModel.TotalPrice,
+                TotalPrice = buyNowModel.CargoPriceValue,
                 ProductSpecItems = ""
             };
-            var savedOrderProduct=   OrderProductService.SaveOrEditEntity(entity);
-            Logger.Info("savedOrderProduct :"+ savedOrderProduct.ToString());
+            OrderProductService.SaveOrEditEntity(entity);
         }
     }
 }

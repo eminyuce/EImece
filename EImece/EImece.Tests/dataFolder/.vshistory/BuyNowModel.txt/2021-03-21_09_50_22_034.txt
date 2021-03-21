@@ -1,0 +1,115 @@
+﻿{
+  "OrderGuid": "fa6e5b37-aa67-4b63-9198-e0da4bde10ef",
+  "UrlReferrer": null,
+  "OrderComments": null,
+  "ConversationId": "c-0-p-13896,13869",
+  "ShoppingCartItems": [
+    {
+      "ShoppingCartItemId": "2a080371-bb67-4a1e-92c5-992cfdbe184b",
+      "Quantity": 1,
+      "Product": {
+        "Id": 13896,
+        "Name": "Gokce.test",
+        "Price": 689,
+        "ProductCode": "123456",
+        "CategoryName": "İpek Yastık",
+        "CroppedImageUrl": "/images/w200h0/gokce-1b9a9a0j.jpg/",
+        "ProductSpecItems": [
+          {
+            "SpecsName": "Ürün Rengi",
+            "SpecsValue": "Beyaz"
+          }
+        ],
+        "DetailPageUrl": "/p/ipek-yastik/gokcetest-6g0j5i2d1b/"
+      },
+      "UnitPrice": 689,
+      "TotalPrice": 689,
+      "PName": "Gokce.test"
+    },
+    {
+      "ShoppingCartItemId": "aac9912f-323b-46fa-bc2b-b1852186a318",
+      "Quantity": 1,
+      "Product": {
+        "Id": 13869,
+        "Name": "İpek Yüz Maskesi Siyah",
+        "Price": 500,
+        "ProductCode": "ASH-FM19-BL-0036",
+        "CategoryName": "İpek Yüz Maskesi",
+        "CroppedImageUrl": "/images/w200h0/ipek-yuz-maskesi-siyah-4h7e0j5i.jpg/",
+        "ProductSpecItems": [],
+        "DetailPageUrl": "/p/ipek-yuz-maskesi/ipek-yuz-maskesi-siyah-0j6g5i2d1b/"
+      },
+      "UnitPrice": 500,
+      "TotalPrice": 500,
+      "PName": "İpek Yüz Maskesi Siyah"
+    }
+  ],
+  "Customer": {
+    "Surname": null,
+    "GsmNumber": null,
+    "Email": null,
+    "IdentityNumber": "e9d0947e-6ef0-4e7c-b5a8-cb91c40837d0",
+    "Ip": "176.40.38.133",
+    "IsSameAsShippingAddress": true,
+    "UserId": null,
+    "IsPermissionGranted": false,
+    "Gender": 0,
+    "Street": null,
+    "Town": null,
+    "District": null,
+    "City": null,
+    "Country": "Turkiye",
+    "ZipCode": null,
+    "Description": null,
+    "Company": null,
+    "Orders": null,
+    "FullName": " ",
+    "Address": " \r\n  \r\n  \r\n  \r\n Turkiye \r\n  \r\n",
+    "RegistrationAddress": "      Turkiye",
+    "Id": 0,
+    "Name": null,
+    "CreatedDate": "2020-12-24T20:41:31.4774809+03:00",
+    "UpdatedDate": "2020-12-24T20:41:31.4774809+03:00",
+    "IsActive": true,
+    "Position": 1,
+    "Lang": 1
+  },
+  "ShippingAddress": {
+    "Description": null,
+    "AddressType": 1,
+    "City": null,
+    "Country": "Turkiye",
+    "ZipCode": null,
+    "Street": null,
+    "District": null,
+    "AddressInfo": "     Turkiye",
+    "Id": 0,
+    "Name": null,
+    "CreatedDate": "0001-01-01T00:00:00",
+    "UpdatedDate": "0001-01-01T00:00:00",
+    "IsActive": false,
+    "Position": 0,
+    "Lang": 0
+  },
+  "BillingAddress": {
+    "Description": null,
+    "AddressType": 2,
+    "City": null,
+    "Country": "Turkiye",
+    "ZipCode": null,
+    "Street": null,
+    "District": null,
+    "AddressInfo": "     Turkiye",
+    "Id": 0,
+    "Name": null,
+    "CreatedDate": "0001-01-01T00:00:00",
+    "UpdatedDate": "0001-01-01T00:00:00",
+    "IsActive": false,
+    "Position": 0,
+    "Lang": 0
+  },
+  "TotalPriceWithCargoPrice": 1189,
+  "TotalPrice": 1189,
+  "SubTotalPrice": 1189,
+  "TotalItemCount": 2
+}

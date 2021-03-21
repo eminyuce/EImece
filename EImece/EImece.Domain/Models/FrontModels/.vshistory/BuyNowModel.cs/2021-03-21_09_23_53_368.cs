@@ -15,16 +15,8 @@ namespace EImece.Domain.Models.FrontModels
         public int ProductId { get; set; }
         public Customer Customer { get; set; }
         public string OrderGuid { get; set; }
-        public string ConversationId
-        {
-            get
-            {
-                return string.Format("c-{0}-p-{1}", Customer.Id, ProductId);
-            }
-        }
+        public string ConversationId { get; set; }
         public ShoppingCartItem ShoppingCartItem { get; set; }
-        [JsonIgnore]
-        public ProductDetailViewModel ProductDetailViewModel { get; set; }
         public Address ShippingAddress { get; set; }
 
         [JsonIgnore]

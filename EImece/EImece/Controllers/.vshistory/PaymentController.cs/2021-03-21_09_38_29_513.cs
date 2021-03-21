@@ -461,7 +461,7 @@ namespace EImece.Controllers
             try
             {
                 var productId = id.GetId();
-                BuyNowModel buyNowModel = CreateBuyNowModel(productId);
+                BuyNowModel buyNowModel = CreateBuyNowModel();
                 ViewBag.SeoId = buyNowModel.ProductDetailViewModel.Product.GetSeoUrl();
                 return View(buyNowModel);
             }
@@ -471,10 +471,9 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-        private BuyNowModel CreateBuyNowModel(int productId)
+        private BuyNowModel CreateBuyNowModel()
         {
             BuyNowModel buyNowModel = new BuyNowModel();
-            buyNowModel.ProductId = productId;
             buyNowModel.ProductDetailViewModel = ProductService.GetProductDetailViewModelById(productId);
             buyNowModel.ShoppingCartItem = new ShoppingCartItem();
             buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(ProductService.GetProductById(productId), new List<ProductSpecItem>());
@@ -483,7 +482,6 @@ namespace EImece.Controllers
             buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
             buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
             buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-        
             return buyNowModel;
         }
 
@@ -491,8 +489,16 @@ namespace EImece.Controllers
         public ActionResult BuyNow(String productId, Customer customer)
         {
             bool isValidCustomer = customer != null && customer.isValidCustomer();
-            BuyNowModel buyNowModel = CreateBuyNowModel(GeneralHelper.RevertId(productId));
+
+            BuyNowModel buyNowModel = CreateBuyNowModel();
+            buyNowModel.ProductId = GeneralHelper.RevertId(productId);
             buyNowModel.Customer = customer;
+
+            buyNowModel.ProductDetailViewModel = ProductService.GetProductDetailViewModelById(buyNowModel.ProductId);
+            buyNowModel.ShoppingCartItem = new ShoppingCartItem();
+            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(ProductService.GetProductById(buyNowModel.ProductId), new List<ProductSpecItem>());
+            buyNowModel.ShoppingCartItem.Quantity = 1;
+            buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
 
             if (isValidCustomer)
             {
@@ -513,6 +519,7 @@ namespace EImece.Controllers
                 ShoppingCartService.SaveOrEditShoppingCart(item);
       
                 ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
+               
 
 
                 return View("BuyNowPayment", buyNowModel);
@@ -522,9 +529,10 @@ namespace EImece.Controllers
                 InformCustomerToFillOutForm(customer);
                 return View(buyNowModel);
             }
+
         }
 
-
+    
 
         public ActionResult BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
         {
@@ -534,19 +542,10 @@ namespace EImece.Controllers
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
                 BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
-                if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
-                {
-                    throw new ArgumentException("buyNowModel.ShoppingCartItem.Product cannot be null");
-                }
-                if (buyNowModel.Customer == null)
-                {
-                    throw new ArgumentException("buyNowModel.Customer cannot be null");
-                }
                 buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
                 buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
                 buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-                buyNowModel.Customer.Lang = CurrentLanguage;
-          
+
                 var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
                // SendEmails(order);
 

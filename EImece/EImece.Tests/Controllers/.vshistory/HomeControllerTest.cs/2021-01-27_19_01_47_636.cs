@@ -208,14 +208,6 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetBuyNow()
-        {
-            String sessionJson = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\BuyNowModel.txt");
-            var buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(sessionJson);
-            Assert.IsNotNull(buyNowModel.ShoppingCartItem);
-        }
-
-        [TestMethod]
         public void GetEmailTemplateById()
         {
             var db = new EImeceContext(ConnectionString);

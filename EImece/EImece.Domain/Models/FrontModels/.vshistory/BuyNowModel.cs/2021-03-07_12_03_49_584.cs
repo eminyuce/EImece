@@ -9,21 +9,12 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    [Serializable]
     public class BuyNowModel
     {
         public int ProductId { get; set; }
         public Customer Customer { get; set; }
         public string OrderGuid { get; set; }
-        public string ConversationId
-        {
-            get
-            {
-                return string.Format("c-{0}-p-{1}", Customer.Id, ProductId);
-            }
-        }
-        public ShoppingCartItem ShoppingCartItem { get; set; }
-        [JsonIgnore]
+        public string ConversationId { get; set; }
         public ProductDetailViewModel ProductDetailViewModel { get; set; }
         public Address ShippingAddress { get; set; }
 
@@ -73,7 +64,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return ShoppingCartItem.Product.Price;
+                return ProductDetailViewModel.Product.Price;
             }
         }
 

@@ -45,7 +45,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         public ShoppingCartProduct(Product product, List<ProductSpecItem> ProductSpecItems) : this()
         {
             this.Id = product.Id;
-            this.Name = product.NameLong;
+            this.Name = product.Name;
             this.Price = product.PriceWithDiscount;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory.Name;

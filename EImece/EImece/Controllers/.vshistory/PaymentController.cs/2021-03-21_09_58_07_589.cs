@@ -483,7 +483,6 @@ namespace EImece.Controllers
             buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
             buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
             buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-        
             return buyNowModel;
         }
 
@@ -513,6 +512,7 @@ namespace EImece.Controllers
                 ShoppingCartService.SaveOrEditShoppingCart(item);
       
                 ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
+               
 
 
                 return View("BuyNowPayment", buyNowModel);
@@ -522,6 +522,7 @@ namespace EImece.Controllers
                 InformCustomerToFillOutForm(customer);
                 return View(buyNowModel);
             }
+
         }
 
 
@@ -534,19 +535,14 @@ namespace EImece.Controllers
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
                 BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
+                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
                 if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
                 {
                     throw new ArgumentException("buyNowModel.ShoppingCartItem.Product cannot be null");
                 }
-                if (buyNowModel.Customer == null)
-                {
-                    throw new ArgumentException("buyNowModel.Customer cannot be null");
-                }
-                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
-                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
-                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-                buyNowModel.Customer.Lang = CurrentLanguage;
-          
+                 
                 var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
                // SendEmails(order);
 

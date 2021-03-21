@@ -534,6 +534,9 @@ namespace EImece.Controllers
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
                 BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
+                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
                 if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
                 {
                     throw new ArgumentException("buyNowModel.ShoppingCartItem.Product cannot be null");
@@ -542,11 +545,7 @@ namespace EImece.Controllers
                 {
                     throw new ArgumentException("buyNowModel.Customer cannot be null");
                 }
-                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
-                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
-                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-                buyNowModel.Customer.Lang = CurrentLanguage;
-          
+                buyNowModel.Customer.Lang=CurrentLanguage''
                 var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
                // SendEmails(order);
 

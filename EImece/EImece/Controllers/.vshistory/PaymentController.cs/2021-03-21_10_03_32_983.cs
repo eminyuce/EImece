@@ -546,7 +546,6 @@ namespace EImece.Controllers
                 buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
                 buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
                 buyNowModel.Customer.Lang = CurrentLanguage;
-          
                 var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
                // SendEmails(order);
 

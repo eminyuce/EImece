@@ -19,7 +19,8 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return string.Format("c-{0}-p-{1}", Customer.Id, ProductId);
+                return string.Format("c-{0}-p-{1}",
+                Customer.Id.ToString(), ProductId);
             }
         }
         public ShoppingCartItem ShoppingCartItem { get; set; }

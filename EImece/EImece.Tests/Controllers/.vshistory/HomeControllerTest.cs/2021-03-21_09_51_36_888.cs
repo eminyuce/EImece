@@ -211,8 +211,9 @@ namespace EImece.Tests.Controllers
         public void GetBuyNow()
         {
             String sessionJson = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\BuyNowModel.txt");
-            var buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(sessionJson);
-            Assert.IsNotNull(buyNowModel.ShoppingCartItem);
+            var shoppingCart = JsonConvert.DeserializeObject<ShoppingCartSession>(sessionJson);
+            Console.WriteLine(shoppingCart.ShoppingCartItems.Count);
+            Assert.IsNotNull(shoppingCart.ShoppingCartItems);
         }
 
         [TestMethod]

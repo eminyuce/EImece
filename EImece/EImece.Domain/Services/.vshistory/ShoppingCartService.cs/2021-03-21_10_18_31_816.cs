@@ -285,11 +285,10 @@ namespace EImece.Domain.Services
                 ProductCode = product.ProductCode,
                 CategoryName = product.CategoryName,
                 Quantity = 1,
-                TotalPrice = buyNowModel.TotalPrice,
+                TotalPrice = buyNowModel.CargoPriceValue,
                 ProductSpecItems = ""
             };
             var savedOrderProduct=   OrderProductService.SaveOrEditEntity(entity);
-            Logger.Info("savedOrderProduct :"+ savedOrderProduct.ToString());
         }
     }
 }
