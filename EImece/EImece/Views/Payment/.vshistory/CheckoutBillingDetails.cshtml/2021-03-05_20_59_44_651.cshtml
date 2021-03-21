@@ -1,0 +1,259 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+
+@{
+    ViewBag.Title = Resources.Resource.CheckoutBillingDetails;
+    var products = Model.ShoppingCartItems;
+    var customer = Model.Customer;
+}
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        @Resource.OrderDetails
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@Resource.OrderDetails</h1><span class="d-block mt-2 text-muted"></span>
+    </div>
+</div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <!-- Steps (wizard)-->
+    @Html.Partial("_PaymentSteps", "CheckoutBillingDetails", new ViewDataDictionary(ViewData){
+       {"AnyProducts",products.IsNotEmpty()}
+         })
+
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-md-12">
+            <div class="alert alert-secondary">
+                <div class="text-center">
+                    <b class="text-dark">
+                        @Resource.CustomerBillingDetailsNotFilledOut
+                    </b>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-8">
+            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
+                    <div class="media">
+                        <div class="media-body align-self-center">
+                            <h6 class="mb-1">@customer.FullName</h6>
+                            <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
+                            <div class="font-size-lg">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => customer.Id)
+                @Html.HiddenFor(model => customer.CreatedDate)
+                @Html.HiddenFor(model => customer.UpdatedDate)
+                @Html.HiddenFor(model => customer.Email)
+                <div class="row">
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Name)
+                            @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Surname)
+                            @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.IdentityNumber)
+                            @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
+                            @Html.ValidationMessageFor(model => customer.IdentityNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.GsmNumber)
+                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
+                            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.City)
+                            @Html.EditorFor(model => customer.City, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Town)
+                            @Html.EditorFor(model => customer.Town, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.District)
+                            @Html.EditorFor(model => customer.District, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Street)
+                            @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.ZipCode)
+                            @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Country)
+                            @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Company)
+                            @Html.EditorFor(model => customer.Company, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Company, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Description)
+                            @Html.EditorFor(model => customer.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <h6 class="mb-3 pt-4 pb-3 border-bottom">@Resource.BillingAdress</h6>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" checked="">
+                    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
+                </div>
+                <!-- Navigation-->
+                <div class="d-flex pt-4 mt-3">
+                    <div class="w-50 pr-3">
+                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart")">
+                            <i class="mr-1" data-feather="chevron-left"></i>
+                            <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">@Resource.Back</span>
+                        </a>
+                    </div>
+                    <div class="w-50 pl-2">
+                        <input type="submit" id="ReviewYourOrder" style="display:none;" />
+                        <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
+                            <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
+                            <span class="d-inline d-sm-none">@Resource.Next</span><i class="ml-1" data-feather="chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        @Html.Partial("_OrderSummary", Model)
+
+    </div>
+</div>
+
+@section Scripts{
+    <script id="CityHtml" type="text/template">
+
+        {{ #items}}
+        <option value="{{id}}">
+            {{name}}
+        </option>
+        {{/items}}
+    </script>
+    <script id="optionHtml" type="text/template">
+        <select id="il_select">
+            {{ #items}}
+            <option value="{{id}}">
+                {{name}}
+            </option>
+            {{/items}}
+        </select>
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            //  GetIller();
+            function GetIller() {
+                var postData = JSON.stringify({});
+                console.log(postData);
+                ajaxMethodCall(postData, "/Ajax/GetIller", function (data) {
+
+                    $.each(data, function (key, value) {
+                        $.each(value, function (key1, value1) {
+                            $("#customer_Country").add(new Option(value1.name, value1.id));
+                        });
+                    });
+
+                    $("#il_select").on('change', function () {
+                        GetIlceler(this.value);
+                    });
+                    var il_id = $("#il_select").val();
+                    if (il_id === null) {
+                        il_id = 1;
+                    }
+                    GetIlceler(il_id);
+                });
+
+                function GetIlceler(il_id) {
+                    var postData = JSON.stringify({ il_id: il_id });
+                    console.log(postData);
+                    ajaxMethodCall(postData, "/Ajax/GetIlceler", function (data) {
+                        var p = $('#optionHtml').html();
+                        $("#ilceler").html(Mustache.render(p, data))
+                    });
+                }
+            }
+        });
+    </script>
+}

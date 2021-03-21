@@ -34,14 +34,13 @@ namespace EImece.Domain.Caching
                 value = default(T);
                 return false;
             }
-           
         }
 
         public override void Set<T>(string key, T value)
         {
             if (AppConfig.IsCacheActive)
             {
-                key = "Memory:"+key;
+                key = "Memory:" + key;
                 if (IsCacheProviderActive)
                 {
                     Set<T>(key, value, CacheDuration);
@@ -99,7 +98,6 @@ namespace EImece.Domain.Caching
             {
                 System.Web.HttpRuntime.Cache.Remove(key);
             }
-   
         }
     }
 }

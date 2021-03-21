@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
 
@@ -45,7 +44,6 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
             }
-       
 
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
@@ -134,7 +132,7 @@ namespace EImece.Domain.Services
                 basketItems.Add(firstBasketItem);
             }
             //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
-            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",",".");  //totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");  //totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
             request.PaidPrice = decimal.Round(shoppingCart.TotalPriceWithCargoPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", "."); //shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
             request.BasketItems = basketItems;
             Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
@@ -151,7 +149,7 @@ namespace EImece.Domain.Services
 
             string callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
                                                "Payment",
-                                               new { o  },
+                                               new { o },
                                                AppConfig.HttpProtocol);
 
             var request = new CreateCheckoutFormInitializeRequest();

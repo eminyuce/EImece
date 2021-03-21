@@ -124,7 +124,7 @@ namespace EImece
 
             routes.MapRoute(
                name: "PaymentBuyNow",
-               url:  "b/{categoryName}/{id}",
+               url: "b/{categoryName}/{id}",
                defaults: new { controller = "Payment", action = "BuyNow", id = UrlParameter.Optional },
                namespaces: new[] { "EImece.Controllers" }
            );

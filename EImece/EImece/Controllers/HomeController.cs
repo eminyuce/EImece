@@ -70,8 +70,6 @@ namespace EImece.Controllers
             return View(mainPageModel);
         }
 
-       
-
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
@@ -231,7 +229,7 @@ namespace EImece.Controllers
                 }
                 return View("_ContactUsFormViewModel", contact);
             }
-            else if(!validateContactUsFormViewModel(contact))
+            else if (!validateContactUsFormViewModel(contact))
             {
                 return View("_ContactUsFormViewModel", contact);
             }
@@ -271,6 +269,7 @@ namespace EImece.Controllers
 
             return View("_pThankYouForContactingUs", contact);
         }
+
         private bool validateContactUsFormViewModel(ContactUsFormViewModel contact)
         {
             bool result = true;
@@ -294,6 +293,7 @@ namespace EImece.Controllers
 
             return result;
         }
+
         private void saveSubsciber(ContactUsFormViewModel contact)
         {
             var s = new Subscriber();
@@ -321,7 +321,6 @@ namespace EImece.Controllers
 
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
             MemoryCacheProvider.ClearAll();
-
 
             Response.Cookies.Remove("Language");
 
@@ -360,7 +359,7 @@ namespace EImece.Controllers
         public ActionResult DisplayAllCache()
         {
             var cache = MemoryCache.Default;
-            List<string> cacheKeys = cache.Select(kvp => kvp.Key).Where(r=>r.Contains("Memory:")).ToList();
+            List<string> cacheKeys = cache.Select(kvp => kvp.Key).Where(r => r.Contains("Memory:")).ToList();
             List<string> keys = new List<string>();
             IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
             while (enumerator.MoveNext())
@@ -369,13 +368,14 @@ namespace EImece.Controllers
                 keys.Add(key);
             }
 
-            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize= GetApproximateSize(cache) });
+            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize = GetApproximateSize(cache) });
         }
+
         public static long GetApproximateSize(MemoryCache cache)
         {
             try
             {
-                    var statsField = typeof(MemoryCache).GetField("_stats", BindingFlags.NonPublic | BindingFlags.Instance);
+                var statsField = typeof(MemoryCache).GetField("_stats", BindingFlags.NonPublic | BindingFlags.Instance);
                 var statsValue = statsField.GetValue(cache);
                 var monitorField = statsValue.GetType().GetField("_cacheMemoryMonitor", BindingFlags.NonPublic | BindingFlags.Instance);
                 var monitorValue = monitorField.GetValue(statsValue);
@@ -387,8 +387,9 @@ namespace EImece.Controllers
             catch (Exception)
             {
                 return -1;
-            } 
+            }
         }
+
         public class AllCacheList
         {
             public List<string> MemoryCacheKey;

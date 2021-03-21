@@ -98,7 +98,7 @@ namespace EImece.Domain.Services
                     resultList = resultList.Where(r => r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 || string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
                 }
             }
-          
+
             return resultList.OrderByDescending(r => r.CreatedDate).ToList();
         }
 

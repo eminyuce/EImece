@@ -35,12 +35,13 @@ namespace EImece.Domain.Services
         public FileStorage GetFileStorage(int fileStorageId)
         {
             var result = GetFileStorages().FirstOrDefault(r => r.Id == fileStorageId);
-            if(result == null)
+            if (result == null)
             {
                 result = GetSingle(fileStorageId);
             }
             return result;
         }
+
         public List<FileStorage> GetFileStorages()
         {
             var cacheKey = "GetFileStorages";
@@ -56,6 +57,7 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
         public void SaveUploadImages(int contentId,
             EImeceImageType? contentImageType,
             MediaModType? contentMediaType,

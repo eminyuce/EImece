@@ -1,0 +1,57 @@
+﻿.FileUploader-dv-container {
+    display: block;
+}
+
+.FileUploader-form {
+    background-color: #eee;
+    padding: 10px;
+}
+
+/*
+.FileUploader-inputbtn-file, .FileUploader-inputbtn-url {
+    border:1px solid black;
+    padding:5px;
+    cursor:pointer;
+    display:inline-block;
+    margin:5px;
+    text-decoration: none;
+}
+*/
+
+.FileUploader-inputbtn-file {
+}
+
+.FileUploader-inputbtn-url {
+}
+
+.FileUploader-input-url, .FileUploader-input-file {
+    margin-left: 10px;
+    width: 250px;
+}
+
+.FileUploader-input-url {
+}
+
+.FileUploader-input-file {
+    border: 1px solid #ccc;
+    padding: 3px;
+    background-color: white;
+}
+
+.FileUploader-dragdrop-container {
+    border: 1px solid #008000;
+    height: 100px;
+    text-align: center;
+    /*http://www.sketchingwithcss.com/samplechapter/cheatsheet.html */
+    display: flex;
+    -webkit-flex-direction: row; /* works with row or column */
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.FileUploader-dragdrop-message {
+    font-weight: bold;
+}

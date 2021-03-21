@@ -1,0 +1,10 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 14px;
+    line-height: 140%;
+}
+
+a {
+    color: #444;
+    text-decoration: none;
+}

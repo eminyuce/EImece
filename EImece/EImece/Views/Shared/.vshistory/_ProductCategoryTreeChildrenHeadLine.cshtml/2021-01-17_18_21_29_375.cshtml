@@ -1,0 +1,75 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+
+@model Tuple<ProductCategory, ProductCategoryTreeModel>
+@{
+    var selectedProductCategory = Model.Item1;
+    var productCategoryTreeModel = Model.Item2;
+    var parentProductCategory = productCategoryTreeModel.ProductCategory;
+    var productCategories = productCategoryTreeModel.Childrens;
+    var firstProductCategory = productCategoryTreeModel.Childrens.FirstOrDefault();
+    var level = firstProductCategory != null ? firstProductCategory.TreeLevel : -1;
+
+
+    string className = string.Format("{0}", parentProductCategory.ParentId == 0 ? "collapse" : "");
+    bool isMatchedCategory = productCategoryTreeModel.AllChildrens.Any(r => r.ProductCategory.Id.Equals(selectedProductCategory.Id));
+    if (isMatchedCategory)
+    {
+        className = "collapse show";
+    }
+}
+ 
+@if (productCategories.IsNotEmpty())
+{
+    <ul class="@className" id="@string.Format("shopCategories{0}",parentProductCategory.Id)" data-parent="#shopCategories">
+        @foreach (var p in productCategories)
+        {
+            var productCategory = p.ProductCategory;
+            if (p.Childrens.IsNotEmpty())
+            {
+                <li class="@string.Format("child-{0} has-sublist",p.TreeLevel)">
+                    <a id="@string.Format("productCategory{0}",productCategory.Id)"
+                       href="@productCategory.DetailPageUrl">
+                        @badgeProductNumber(p, selectedProductCategory)
+                    </a>
+                    @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a id="@string.Format("productCategory{0}",productCategory.Id)" href="@productCategory.DetailPageUrl">@badgeProductNumber(p, selectedProductCategory)</a>
+                </li>
+            }
+        }
+    </ul>
+}
+
+@helper badgeProductNumber(ProductCategoryTreeModel p, ProductCategory selectedProductCategory)
+{
+
+    if (p.ProductCount > 0)
+    {
+        if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
+        {
+            <b class="text-dark">@p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span></b>
+        }
+        else
+        {
+            @p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span>
+        }
+    }
+    else
+    {
+        if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
+        {
+            <b class="text-dark">@p.ProductCategoryName</b>
+        }
+        else
+        {
+            @p.ProductCategoryName
+        }
+    }
+}

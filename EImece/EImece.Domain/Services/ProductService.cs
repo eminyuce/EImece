@@ -60,7 +60,7 @@ namespace EImece.Domain.Services
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
             ProductIndexViewModel result = null;
-            var cacheKey = String.Format("GetMainPageProducts-{0}-{1}", page, language);
+            var cacheKey = $"GetMainPageProducts-{page}-{language}";
 
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
@@ -178,18 +178,18 @@ namespace EImece.Domain.Services
         private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
-            
-                result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake * 3, lang, id);
-           
+
+            result = ProductRepository.GetRandomProductsByCategoryId(productCategoryId, relatedProductTake * 3, lang, id);
+
             return result;
         }
 
         private List<Product> GetRelatedProducts(int[] tagIdList, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
-           
-                result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
-          
+
+            result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
+
             return result;
         }
 
@@ -288,7 +288,7 @@ namespace EImece.Domain.Services
         public List<Product> GetActiveProducts(int? language)
         {
             List<Product> result = null;
-            var cacheKey = string.Format("GetActiveProducts-{0}", language);
+            var cacheKey = $"GetActiveProducts-{language}";
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductRepository.GetActiveProducts(language);

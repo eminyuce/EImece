@@ -1,0 +1,65 @@
+﻿@using Iyzipay;
+@using Iyzipay.Model;
+@using Iyzipay.Request;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+
+@{
+    bool IsAdditionalComment = ViewData["IsAdditionalComment"].ToBool(false);
+    bool anyProducts = ViewData["AnyProducts"].ToBool(false);
+}
+<!-- Sidebar-->
+<div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
+    @if (Model.BasketMinTotalPriceForCargoInt > 0)
+    {
+        <span class="badge badge-pill badge-danger mr-2 mb-2">
+            @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
+        </span>
+    }
+
+    <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
+    <div class="font-size-sm border-bottom pt-2 pb-3">
+        <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
+        <div  id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
+            @if (Model.BasketMinTotalPriceForCargoInt > 0)
+            {
+                    if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                    {
+                    <span class="badge badge-pill badge-danger mr-2 mb-2">
+                        @Resource.CargoFreeTextInfo
+                    </span>
+                    }
+                    else
+                    {
+                        <span>@AdminResource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
+                    }
+               
+            }
+            else
+            {
+                <span class="badge badge-pill badge-danger mr-2 mb-2">
+                    @Resource.CargoFreeTextInfo
+                </span>
+            }
+        </div>
+    </div>
+    <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:  </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
+    @if (IsAdditionalComment && anyProducts)
+    {
+        <hr>
+        <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
+        <textarea class="form-control mb-3"
+                  data-shopping-order-guid="@Model.OrderGuid"
+                  id="orderComments" rows="5">@Model.OrderComments</textarea>
+        <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+            <i class="mr-2" data-feather="credit-card"></i>@Resource.ProceedToCheckout
+        </a>
+    }
+</div>
+

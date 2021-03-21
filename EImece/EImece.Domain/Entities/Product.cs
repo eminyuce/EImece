@@ -41,7 +41,7 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
         [DataType(DataType.Currency)]
-        public decimal ? Discount { get; set; }
+        public decimal? Discount { get; set; }
 
         [NotMapped]
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
@@ -99,6 +99,7 @@ namespace EImece.Domain.Entities
                 return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name);
             }
         }
+
         [NotMapped]
         public string BuyNowRelativeUrl
         {
@@ -156,6 +157,7 @@ namespace EImece.Domain.Entities
                 return 0;
             }
         }
+
         [NotMapped]
         public string ModifiedId { get { return GeneralHelper.ModifyId(Id); } }
 
@@ -173,7 +175,7 @@ namespace EImece.Domain.Entities
                 if (HasDiscount)
                 {
                     ProductCategory productCategory = ProductCategory;
-                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? (decimal)ProductCategory.DiscountPercantage.Value/100 : 0;
+                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? (decimal)ProductCategory.DiscountPercantage.Value / 100 : 0;
                     return Price - (Discount.HasValue ? Discount.Value : 0) - (Price * (categoryDiscount));
                 }
                 else

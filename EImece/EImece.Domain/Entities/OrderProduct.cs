@@ -29,7 +29,7 @@ namespace EImece.Domain.Entities
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }
         public string ProductSpecItems { set; get; }
-        
+
         [NotMapped]
         public decimal Price
         {

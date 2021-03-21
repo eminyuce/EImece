@@ -34,8 +34,6 @@ namespace EImece.Domain.Helpers
             return new SelectList(countriesArray.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye");
         }
 
-             
-
         public static string ReverseString(string srtVarable)
         {
             return new string(srtVarable.Reverse().ToArray());

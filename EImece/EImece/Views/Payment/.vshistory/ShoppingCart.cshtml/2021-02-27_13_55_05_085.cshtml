@@ -1,0 +1,169 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+
+@{
+    ViewBag.Title = Resources.Resource.MyBasket;
+    var products = Model.ShoppingCartItems;
+    string continueShoppingLink = String.IsNullOrEmpty(Model.UrlReferrer) ? Url.Action("category", "ProductCategories") : Model.UrlReferrer;
+}
+
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        @Resource.MyBasket
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@Resource.MyBasket</h1><span class="d-block mt-2 text-muted"></span>
+    </div>
+</div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    @Html.Partial("_PaymentSteps", "ShoppingCart", new ViewDataDictionary(ViewData){
+       {"AnyProducts",products.IsNotEmpty()}
+         })
+    <div class="row pt-4 mt-2">
+        <!-- Content-->
+        <div class="col-md-12">
+            <div class="row">
+
+                <div class="col-xl-9 col-md-8">
+                    @if (products.IsNotEmpty())
+                    {
+                        <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
+                            <span>@Resource.Products</span><a class="font-size-sm" href="@continueShoppingLink">
+                                <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>@AdminResource.ContinueShopping
+                            </a>
+                        </h2>
+
+                        for (int i = 0; i < products.Count; i++)
+                        {
+                            @CreateShoppingCartItem(products[i], i)
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary">
+                            <div class="pt-3 pb-2 text-center ">
+                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, Url.Action("Index", "Home")))
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <input type="hidden" id="OrderGuid" value="@Model.OrderGuid" />
+
+                <!-- Sidebar-->
+                @Html.Partial("_OrderSummary", Model, new ViewDataDictionary(ViewData){
+       {"IsAdditionalComment",true},  
+               {"AnyProducts",products.IsNotEmpty()}
+         })
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@helper CreateShoppingCartItem(ShoppingCartItem item, int i)
+{
+    var product = item.Product;
+    var totalPricePerItem = product.Price * item.Quantity;
+    <!-- Item-->
+    <div data-shopping-item-row="@item.ShoppingCartItemId" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
+        <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+            @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
+            {
+                <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
+                    <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+                </a>
+            }
+            else
+            {
+                <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
+                    <img class="rsImg" src="@AppConfig.GetDefaultImage(200, 0)" alt="" />
+                </a>
+            }
+
+            <div class="media-body pt-3">
+                <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                    <a href="@product.DetailPageUrl">@product.Name</a>
+                </h3>
+                <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">@AdminResource.ProductCategory :</span>@product.CategoryName</div>
+                @if (product.ProductSpecItems.IsNotEmpty())
+                {
+                    foreach (var productSpecs in product.ProductSpecItems)
+                    {
+                        <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+
+            <div class="form-group mb-2">
+                <label for="quantity2">@Resource.Quantity</label>
+                <input min="1" class="form-control form-control-sm" name=@String.Format("quantity[{0}]", i)
+                       data-shopping-quantity-id="@item.ShoppingCartItemId"
+                       type="number" id="quantity2" value="@item.Quantity">
+            </div>
+            <button data-shopping-button-price="@item.ShoppingCartItemId" class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="refresh-cw"></i>@AdminResource.Update</button>
+            <button data-shopping-item-remove="@item.ShoppingCartItemId" class="btn btn-outline-danger btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="trash-2"></i>@AdminResource.Remove</button>
+        </div>
+    </div>
+}
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('input[data-shopping-quantity-id]').each(function () {
+                $(this).off("change");
+                $(this).on("change", function (e) {
+                    e.preventDefault();
+                    var caller = e.target;
+                    var min = parseInt($(caller).attr('min'));
+                    if ($(this).val() < min) {
+                        $(this).val(min);
+                    }
+                });
+            });
+
+            $('#ProceedToCheckout').click(function (event) {
+                event.preventDefault();
+                var txtArea = $("#orderComments");
+                var postData = JSON.stringify({
+                    orderComments: txtArea.val(),
+                    orderGuid: txtArea.attr("data-shopping-order-guid")
+                });
+                console.log(postData);
+                var hrefUrl = $(this).attr('href');
+                ajaxMethodCall(postData, "/Payment/sendOrderComments", function (data) {
+                    window.location.href = hrefUrl;
+                });
+            });
+
+        });
+    </script>
+}

@@ -134,7 +134,7 @@ namespace EImece.Controllers
 
         private FileContentResult GetDefaultFileContentResult(string imageSize)
         {
-            return  GetDefaultImage(imageSize);  
+            return GetDefaultImage(imageSize);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]

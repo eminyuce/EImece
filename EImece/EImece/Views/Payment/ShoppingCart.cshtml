@@ -70,12 +70,9 @@
 
                 <!-- Sidebar-->
                 @Html.Partial("_OrderSummary", Model, new ViewDataDictionary(ViewData){
-       {"IsAdditionalComment",true},  
+       {"IsAdditionalComment",true},
                {"AnyProducts",products.IsNotEmpty()}
          })
-
-
-
             </div>
         </div>
     </div>

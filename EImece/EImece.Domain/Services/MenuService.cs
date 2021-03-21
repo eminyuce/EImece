@@ -51,7 +51,7 @@ namespace EImece.Domain.Services
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
             List<Menu> lists = GetMenus();
-            var menu = lists.FirstOrDefault(r => (language.HasValue ? ( r.Lang == language.Value) : true)  && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            var menu = lists.FirstOrDefault(r => (language.HasValue ? (r.Lang == language.Value) : true) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             if (menu == null)
             {
                 return null;
@@ -77,11 +77,11 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageById(int menuId)
         {
-                var result = new MenuPageViewModel();
-                result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-                result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
-                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            var result = new MenuPageViewModel();
+            result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
+            result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
             return result;
         }
 

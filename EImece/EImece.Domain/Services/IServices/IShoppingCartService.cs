@@ -13,6 +13,7 @@ namespace EImece.Domain.Services.IServices
         Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId);
 
         void DeleteByOrderGuid(string orderGuid);
+
         Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm);
     }
 }

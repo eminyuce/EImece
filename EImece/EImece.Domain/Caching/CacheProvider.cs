@@ -15,14 +15,12 @@ namespace EImece.Domain.Caching
             get; set;
         }
 
-
         protected TCache _cache;
 
         public CacheProvider()
         {
             _cache = InitCache();
         }
-
 
         protected abstract TCache InitCache();
 

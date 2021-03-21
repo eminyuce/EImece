@@ -152,18 +152,18 @@ namespace EImece.Domain.Services
         {
             List<ProductCategoryTreeModel> result = new List<ProductCategoryTreeModel>();
 
-                var tree = BuildTree(true, language);
-                ProductCategoryTreeModel productCategoryTreeModel = null;
-                foreach (var t in tree)
+            var tree = BuildTree(true, language);
+            ProductCategoryTreeModel productCategoryTreeModel = null;
+            foreach (var t in tree)
+            {
+                productCategoryTreeModel = FindNode(t, productCategoryId);
+                if (productCategoryTreeModel != null)
                 {
-                    productCategoryTreeModel = FindNode(t, productCategoryId);
-                    if (productCategoryTreeModel != null)
-                    {
-                        break;
-                    }
+                    break;
                 }
+            }
 
-                AddParent(result, productCategoryTreeModel);
+            AddParent(result, productCategoryTreeModel);
 
             return result;
         }
@@ -194,6 +194,7 @@ namespace EImece.Domain.Services
 
             return null;
         }
+
         public ProductCategoryViewModel GetProductCategoryViewModel(int productCategoryId)
         {
             var result = new ProductCategoryViewModel();
@@ -216,7 +217,5 @@ namespace EImece.Domain.Services
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
-
-      
     }
 }

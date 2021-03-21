@@ -1,0 +1,176 @@
+﻿body {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+
+.main-page-product img {
+    width: 100%;
+    height: auto;
+}
+
+.main-page-product h3,
+.main-page-product h4 {
+    margin-top: 0;
+}
+
+/* Footer
+---------------------------------------------------------------------- */
+#footer {
+    background: #606060;
+    color: #d0d0d0;
+    padding: 35px 0 40px 0;
+    margin: 0;
+}
+
+    #footer h3.footer {
+        color: #fff;
+        background: #606060;
+        text-transform: uppercase;
+    }
+
+    #footer .line {
+        border-color: #747474;
+        margin-bottom: 28px;
+    }
+
+    #footer a {
+        color: #d0d0d0;
+    }
+
+/* Bottom Footer
+------------------------------------- */
+#footer-bottom {
+    background: #505050;
+    color: #a8a8a8;
+    padding: 17px 0 13px 0;
+}
+
+    #footer-bottom a {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    #footer-bottom a {
+        color: #e0e0e0;
+    }
+
+/* Newsletter
+------------------------------------- */
+.newsletter-btn {
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+    z-index: 5;
+    position: relative;
+    padding: 10px 15px;
+    line-height: 18px;
+    margin: 0;
+    height: 40px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    background-color: #808080;
+    border: none;
+    color: #fff;
+    box-shadow: none;
+}
+
+    .newsletter-btn:hover {
+        background-color: #c0c0c0;
+    }
+
+input.newsletter {
+    float: left;
+    color: #808080;
+    font-weight: 600;
+    z-index: 1;
+    position: relative;
+    font-size: 13px;
+    width: 85%;
+    margin-top: -40px;
+    padding: 10px 14px;
+    line-height: 18px;
+    height: 20px;
+    background-color: #505050;
+    border: none;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+    input.newsletter::-webkit-input-placeholder {
+        color: #909090;
+    }
+
+    input.newsletter:-moz-placeholder {
+        color: #909090;
+    }
+
+    input.newsletter::-moz-placeholder {
+        color: #909090;
+    }
+
+    input.newsletter:-ms-input-placeholder {
+        color: #909090;
+    }
+
+input:focus.newsletter {
+    background-color: #4c4c4c;
+    border: none;
+    color: #999;
+}
+
+/* Footer Links
+------------------------------------- */
+ul.footer-links {
+    margin: 0 0 15px 0;
+}
+
+.footer-links li a {
+    padding: 0 0 7px 0;
+    display: inline-block;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+    .footer-links li a:hover {
+        padding-left: 3px;
+        color: #fff !important;
+    }
+
+.footer-links li:before {
+    font-family: "FontAwesome";
+    font-size: 12px;
+    content: "ïƒš";
+    color: #fff;
+    position: relative;
+    left: 0;
+    top: -1px;
+    padding: 0 7px 0 0;
+    color: #fff;
+}

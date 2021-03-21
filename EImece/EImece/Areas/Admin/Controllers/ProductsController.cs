@@ -59,6 +59,7 @@ namespace EImece.Areas.Admin.Controllers
             RemoveModelState();
             return View(content);
         }
+
         //
         // GET: /Product/Create
         [HttpGet]
@@ -76,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 content = ProductService.GetBaseContent(id);
                 content.PriceStr = decimal.Round(content.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",");
-                content.DiscountStr = content.Discount.HasValue ?  decimal.Round(content.Discount.Value, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",") : "";
+                content.DiscountStr = content.Discount.HasValue ? decimal.Round(content.Discount.Value, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",") : "";
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
@@ -106,11 +107,11 @@ namespace EImece.Areas.Admin.Controllers
                         ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
                         ModelState.AddModelError("", AdminResource.ProductCategoryIdErrorMessage);
                     }
-               //     else if (isProductPriceEnable.SettingValue.ToBool(false) && product.Price <= 0)
-                 //   {
-                //        ModelState.AddModelError("Price", AdminResource.PriceErrorMessage);
-               //         ModelState.AddModelError("", AdminResource.PriceErrorMessage);
-              //      }
+                    //     else if (isProductPriceEnable.SettingValue.ToBool(false) && product.Price <= 0)
+                    //   {
+                    //        ModelState.AddModelError("Price", AdminResource.PriceErrorMessage);
+                    //         ModelState.AddModelError("", AdminResource.PriceErrorMessage);
+                    //      }
                     else
                     {
                         FilesHelper.SaveFileFromHttpPostedFileBase(
@@ -124,7 +125,6 @@ namespace EImece.Areas.Admin.Controllers
                             product.Price = decimal.Round((decimal)product.PriceStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
                         if (!string.IsNullOrEmpty(product.DiscountStr))
                             product.Discount = decimal.Round((decimal)product.DiscountStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
-                        
 
                         product.Lang = CurrentLanguage;
                         ProductService.SaveOrEditEntity(product);
@@ -173,7 +173,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-             
+
             Product product = ProductService.GetSingle(id);
             if (product == null)
             {
@@ -181,13 +181,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                Boolean isDeleted =  ProductService.DeleteProductById(id);
+                Boolean isDeleted = ProductService.DeleteProductById(id);
                 if (!isDeleted)
                 {
-                    Logger.Info("Product has sold items cannot be deleted right now. ProductId: "+ id);
+                    Logger.Info("Product has sold items cannot be deleted right now. ProductId: " + id);
                 }
                 return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
-
             }
             catch (Exception ex)
             {

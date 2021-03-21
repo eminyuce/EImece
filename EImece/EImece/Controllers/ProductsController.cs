@@ -8,15 +8,11 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using Iyzipay.Request;
-using Newtonsoft.Json;
 using Ninject;
 using NLog;
-using Resources;
 using System;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -26,18 +22,18 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IProductCommentService productCommentService;
-      
 
         [Inject]
         public IProductService ProductService { get; set; }
 
         [Inject]
         public IyzicoService IyzicoService { get; set; }
+
         [Inject]
         public IAddressService AddressService { get; set; }
+
         [Inject]
         public ICustomerService CustomerService { get; set; }
-
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
@@ -65,7 +61,6 @@ namespace EImece.Controllers
             var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
             return View(products);
         }
-   
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id)

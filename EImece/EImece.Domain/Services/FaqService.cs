@@ -2,7 +2,6 @@
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
-using System.Collections.Generic;
 
 namespace EImece.Domain.Services
 {

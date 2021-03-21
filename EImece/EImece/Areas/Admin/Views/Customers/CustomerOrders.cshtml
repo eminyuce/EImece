@@ -56,15 +56,12 @@
 .Sanitized(false)
 .RenderValueAs(d => CustomerOrderDetail(d, controllerName));
 
-    
-
     columns.Add(c => c.AdminOrderNote).
 Titled(AdminResource.AdminOrderNote).
 Sanitized(false).
 Sortable(true).
 Encoded(false).
 RenderValueAs(o => WriteAdminOrderNote(o));
-
 
     columns.Add(o => o.PaymentId)
    .Sanitized(false).
@@ -78,7 +75,6 @@ RenderValueAs(o => WriteAdminOrderNote(o));
    Sortable(true).
    Encoded(false).
    RenderValueAs(o => DisplayPriceColumn(o));
-
 
     columns.Add(o => o.OrderComments).Titled(AdminResource.OrderComments)
  .Encoded(false).
@@ -102,8 +98,6 @@ RenderValueAs(o => WriteAdminOrderNote(o));
         <b>@order.PaymentId</b>
     </div>
 }
-
- 
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
@@ -218,17 +212,11 @@ RenderValueAs(o => WriteAdminOrderNote(o));
 
 }
 
-
-
-
-
-
 @helper WriteAdminOrderNote(Order order)
 {
 
     var os = (EImeceOrderStatus)order.OrderStatus;
     var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
- 
 
     <div class="row">
         <div class="col-md-12">
@@ -260,7 +248,4 @@ new { @class = "form-control", @data_change_order_status = order.Id })
         </div>
     </div>
 
-
-
 }
-

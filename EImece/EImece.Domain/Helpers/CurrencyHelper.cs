@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
 
 namespace EImece.Domain.Helpers
 {
@@ -27,7 +26,7 @@ namespace EImece.Domain.Helpers
         {
             var cultureInfo = new CultureInfo(CulturaInfoName);
             return string.Format("{0} TL", System.Convert.ToDecimal(price).ToString("#,##", cultureInfo));
-           // return price.ToString("C");
+            // return price.ToString("C");
         }
     }
 }

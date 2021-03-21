@@ -177,12 +177,12 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
             }
-           
+
             Customer customer = buyNowSession.Customer;
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);
-            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12)+"-"+Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
+            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
             Entities.Address shippingAddress = buyNowSession.ShippingAddress;
             int shippingAddressId = shippingAddress.Id;
             if (shippingAddressId == 0)
@@ -200,6 +200,7 @@ namespace EImece.Domain.Services
             SaveOrderProduct(buyNowSession, savedOrder);
             return savedOrder;
         }
+
         private Order SaveOrder(String userId, BuyNowModel buyNowSession, CheckoutForm checkoutForm,
           int shippingAddressId)
         {
@@ -259,7 +260,7 @@ namespace EImece.Domain.Services
         {
             foreach (var shoppingCartItem in shoppingCart.ShoppingCartItems)
             {
-               var product = shoppingCartItem.Product;
+                var product = shoppingCartItem.Product;
                 OrderProductService.SaveOrEditEntity(new OrderProduct()
                 {
                     OrderId = savedOrder.Id,
@@ -271,9 +272,10 @@ namespace EImece.Domain.Services
                     Quantity = shoppingCartItem.Quantity,
                     TotalPrice = shoppingCartItem.TotalPrice,
                     ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems)
-                });  
+                });
             }
         }
+
         private void SaveOrderProduct(BuyNowModel buyNowModel, Order savedOrder)
         {
             var product = buyNowModel.ShoppingCartItem.Product;
@@ -289,7 +291,7 @@ namespace EImece.Domain.Services
                 TotalPrice = buyNowModel.TotalPrice,
                 ProductSpecItems = ""
             };
-            var savedOrderProduct=   OrderProductService.SaveOrEditEntity(entity);
+            var savedOrderProduct = OrderProductService.SaveOrEditEntity(entity);
         }
     }
 }

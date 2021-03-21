@@ -1,0 +1,38 @@
+@-webkit-keyframes loaderSprite {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -2000px;
+    }
+}
+
+@-moz-keyframes loaderSprite {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -2000px;
+    }
+}
+
+@keyframes loaderSprite {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -2000px;
+    }
+}
+
+.sonic-loader {
+    width: 100px;
+    height: 100px;
+    background-image: url("/Content/sonic/blue-circle-loader-spritesheet.png");
+    -webkit-animation: loaderSprite 1s steps(20, end) infinite;
+    -moz-animation: loaderSprite 1s steps(20, end) infinite;
+    animation: loaderSprite 1s steps(20, end) infinite;
+}

@@ -54,7 +54,6 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
     {
 
-    
         columns.Add(o => o.CreatedDate)
         .Titled(AdminResource.CustomerRegistrationDate)
         .Sortable(true)
@@ -64,5 +63,3 @@
 
     }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
-
- 

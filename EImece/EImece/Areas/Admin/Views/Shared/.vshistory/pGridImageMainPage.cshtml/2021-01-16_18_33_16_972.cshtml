@@ -1,0 +1,35 @@
+﻿@model  BaseContent
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+@using System.Data.Entity.Core.Objects;
+<b>
+    @{
+        var baseContent = Model;
+        FileStorage f = baseContent.MainImage;
+        var gridMainPageImageText = AdminResource.GridMainPageImageText;
+        var gridMainNoPageImageText = AdminResource.GridNoMainPageImageText;
+        Boolean IsMainImageExists = FilesHelper.IsMainImageExists(baseContent.MainImageId, f);
+        string className = ObjectContext.GetObjectType(baseContent.GetType()).Name;
+        var confirmationText = AdminResource.RemoveMainImageConfirmationText;
+    }
+
+    @if (IsMainImageExists)
+    {
+    <span data-main-image-delete-id="@f.Id">
+        <a data-toggle="modal" class="btn btn-outline btn-info btn-xs" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",baseContent.MainImageId)">@gridMainPageImageText</a>
+        @Html.Partial("pImagePopUp", f)
+        <input id="MainImageId" name="MainImageId" type="hidden" value="@baseContent.MainImageId">
+        <a onclick="deleteBaseContentMainImage(@baseContent.Id, @f.Id,'@className','@confirmationText')" class="btn btn-outline btn-danger btn-xs">@AdminResource.RemoveJustImage</a>
+    </span>
+         
+    }
+    else
+    {
+        <b style="font-size:0.8em;">
+            @AdminResource.NoImage
+        </b>
+    }
+</b>

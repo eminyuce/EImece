@@ -16,7 +16,6 @@ namespace EImece.Domain
         public const string StoryTagPrefix = "t/{id}"; // tags
         public const string CategoryPrefix = "pc/{id}"; //
         public const string ShoppingCartPrefix = "s"; //
-        
 
         public const string LogoImagePath = "/images/logo.jpg";
 
@@ -116,6 +115,7 @@ namespace EImece.Domain
         public const string DefaultImageText = "X";
         public const bool IsSmtpClientEnabled = true;
         public const string BuyNowCustomerUserId = "BNC";
+
         public static object DeleteButtonHtmlAttribute
         {
             get
@@ -139,7 +139,5 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
-
-       
     }
 }

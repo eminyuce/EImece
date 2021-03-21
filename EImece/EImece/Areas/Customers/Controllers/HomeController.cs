@@ -120,6 +120,7 @@ namespace EImece.Areas.Customers.Controllers
                 return View(customer);
             }
         }
+
         private void InformCustomerToFillOutForm(Customer customer)
         {
             if (String.IsNullOrEmpty(customer.Name))
@@ -164,6 +165,7 @@ namespace EImece.Areas.Customers.Controllers
             }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
+
         public ActionResult SendMessageToSeller()
         {
             var customer = GetCustomer();

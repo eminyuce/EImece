@@ -2,10 +2,6 @@
 using EImece.Domain.Helpers;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -15,6 +11,7 @@ namespace EImece.Domain.Models.FrontModels
         public int ProductId { get; set; }
         public Customer Customer { get; set; }
         public string OrderGuid { get; set; }
+
         public string ConversationId
         {
             get
@@ -22,9 +19,12 @@ namespace EImece.Domain.Models.FrontModels
                 return string.Format("c-{0}-p-{1}", Customer.Id, ProductId);
             }
         }
+
         public ShoppingCartItem ShoppingCartItem { get; set; }
+
         [JsonIgnore]
         public ProductDetailViewModel ProductDetailViewModel { get; set; }
+
         public Address ShippingAddress { get; set; }
 
         [JsonIgnore]

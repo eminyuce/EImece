@@ -201,7 +201,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
             var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
-
             var Request = HttpContext.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
 

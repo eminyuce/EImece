@@ -25,11 +25,10 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-   // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
+    // [RoutePrefix(EImece.Domain.Constants.PaymentControllerRoutingPrefix)]
     public class PaymentController : BaseController
     {
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
-       
 
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
@@ -45,6 +44,7 @@ namespace EImece.Controllers
 
         [Inject]
         public IAddressService AddressService { get; set; }
+
         [Inject]
         public ICustomerService CustomerService { get; set; }
 
@@ -71,7 +71,8 @@ namespace EImece.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
-       // [Route(Domain.Constants.ShoppingCartPrefix)]
+
+        // [Route(Domain.Constants.ShoppingCartPrefix)]
         public ActionResult ShoppingCart()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -82,6 +83,7 @@ namespace EImece.Controllers
             }
             return View(shoppingCart);
         }
+
         public ActionResult Index()
         {
             return View();
@@ -97,7 +99,7 @@ namespace EImece.Controllers
         {
             int pId = GeneralHelper.RevertId(productId);
             var product = ProductService.GetProductById(pId);
-            if(product != null)
+            if (product != null)
             {
                 var shoppingCart = GetShoppingCart();
                 shoppingCart.OrderGuid = orderGuid;
@@ -121,8 +123,6 @@ namespace EImece.Controllers
             {
                 return Json("failed", JsonRequestBehavior.AllowGet);
             }
-          
-          
         }
 
         [NoCache]
@@ -237,8 +237,6 @@ namespace EImece.Controllers
             return GetShoppingCartFromDataSource();
         }
 
-        
-
         public ActionResult CheckoutBillingDetails()
         {
             if (Request.IsAuthenticated)
@@ -319,12 +317,13 @@ namespace EImece.Controllers
                 return RedirectToAction("shoppingcart", "Payment");
             }
         }
+
         // Sepetteki guncelle butona basilinca calisan ActionResult
         public ActionResult renderShoppingCartPrice()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
             String cargoPriceHtml = "";
-            if(shoppingCart.CargoPriceValue == 0)
+            if (shoppingCart.CargoPriceValue == 0)
             {
                 cargoPriceHtml = string.Format("<span class='badge badge-pill badge-danger mr-2 mb-2'>{0}</span>", Resource.CargoFreeTextInfo);
             }
@@ -335,7 +334,7 @@ namespace EImece.Controllers
             return Json(new
             {
                 status = Domain.Constants.SUCCESS,
-                CargoPriceHtml= cargoPriceHtml,
+                CargoPriceHtml = cargoPriceHtml,
                 CargoPriceInt = shoppingCart.CargoPriceValue,
                 CargoPrice = shoppingCart.CargoPriceValue.CurrencySign(),
                 BasketMinTotalPriceForCargoInt = shoppingCart.BasketMinTotalPriceForCargoInt,
@@ -452,6 +451,7 @@ namespace EImece.Controllers
         {
             return Content("PaymentSuccess is done");
         }
+
         public ActionResult BuyNow(String id)
         {
             if (String.IsNullOrEmpty(id))
@@ -471,6 +471,7 @@ namespace EImece.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
+
         private BuyNowModel CreateBuyNowModel(int productId)
         {
             BuyNowModel buyNowModel = new BuyNowModel();
@@ -483,7 +484,7 @@ namespace EImece.Controllers
             buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
             buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
             buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-        
+
             return buyNowModel;
         }
 
@@ -511,9 +512,8 @@ namespace EImece.Controllers
                 item.OrderGuid = buyNowModel.OrderGuid;
                 item.UserId = Domain.Constants.BuyNowCustomerUserId;
                 ShoppingCartService.SaveOrEditShoppingCart(item);
-      
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
 
+                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
 
                 return View("BuyNowPayment", buyNowModel);
             }
@@ -544,7 +544,7 @@ namespace EImece.Controllers
                 buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
                 buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
                 buyNowModel.Customer.Lang = CurrentLanguage;
-          
+
                 var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
                 // SendEmails(order);
                 ClearBuyNow(buyNowModel);

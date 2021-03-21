@@ -83,7 +83,7 @@ namespace EImece.Areas.Admin.Controllers
             var urlReferrer = Request.UrlReferrer;
             MemoryCacheProvider.ClearAll();
             ExecuteWarmUpSql();
-         
+
             if (urlReferrer != null)
             {
                 return Redirect(urlReferrer.ToStr());

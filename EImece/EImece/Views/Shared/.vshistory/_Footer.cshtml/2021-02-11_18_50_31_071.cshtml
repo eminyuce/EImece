@@ -1,0 +1,99 @@
+﻿@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@model FooterViewModel
+@{
+    var footerModel = Model;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
+    int communicationId = 0;
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
+    var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 2114).OrderBy(r => r.Position).ToList();
+
+    var productCategories = Model.ProductCategories;
+    var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
+}
+<!-- Footer-->
+<footer class="page-footer bg-dark">
+    <!-- first row-->
+    <div class="pt-5 pb-0 pb-md-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-sm-4">
+                    <div class="widget widget-links pb-4">
+                        <h3 class="widget-title text-white border-light">@Resource.ProductCategories</h3>
+                        <ul>
+                            @if (productRootCategories.IsNotEmpty())
+                            {
+                                foreach (var m in productRootCategories)
+                                {
+                                    <li>
+                                        <a class="nav-link-inline nav-link-light" href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">
+                                            <i class="widget-categories-indicator" data-feather="chevron-right">
+                                            </i><span class="font-size-sm">@m.Name</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <div class="widget widget-links pb-4">
+                        <h3 class="widget-title text-white border-light">@Resource.AboutUs</h3>
+                        <ul>
+                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action(Constants.AboutUs,"info")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.AboutUs</span></a></li>
+                            @if (communicationPageLink != null)
+                            {
+                                communicationId = communicationPageLink.Id;
+                                <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
+                            }
+                            @if (aboutUsChildrenLinks.IsNotEmpty())
+                            {
+                                foreach (var m in aboutUsChildrenLinks)
+                                {
+                                    <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <div class="widget widget-links pb-4">
+                        <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
+                        <ul>
+                            @if (musteriIliskileriChildren.IsNotEmpty())
+                            {
+                                foreach (var m in musteriIliskileriChildren)
+                                {
+                                    <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-4 offset-xl-1 col-md-5">
+                    <div class="widget">
+                        <!-- Subscription form (MailChimp)-->
+                        <h3 class="widget-title text-white border-light">@Resource.StayInformed</h3>
+                        @Html.Partial("_AddSubscriber", Model)
+                    </div>
+                    <img src="~/Content/img/logo-footer-mastervisa.png" />
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
+    {
+        <div class="py-3" style="background-color: #1a1a1a;">
+            @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
+        </div>
+    }
+    <div class="py-3" style="background-color: #1a1a1a;">
+        <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>
+    </div>
+</footer>
