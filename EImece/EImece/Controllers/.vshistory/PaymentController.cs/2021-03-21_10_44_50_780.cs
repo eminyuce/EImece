@@ -546,8 +546,8 @@ namespace EImece.Controllers
                 buyNowModel.Customer.Lang = CurrentLanguage;
           
                 var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
-                // SendEmails(order);
-                ClearBuyNow(buyNowModel);
+               // SendEmails(order);
+
 
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
@@ -557,12 +557,6 @@ namespace EImece.Controllers
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }
-
-        private void ClearBuyNow(BuyNowModel buyNowModel)
-        {
-            ShoppingCartService.DeleteByOrderGuid(buyNowModel.OrderGuid);
-        }
-
         protected void InformCustomerToFillOutForm(Customer customer)
         {
             if (customer == null)

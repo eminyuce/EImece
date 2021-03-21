@@ -62,5 +62,10 @@ namespace EImece.Domain.Entities
         public OrderProduct()
         {
         }
+
+        public override string ToString()
+        {
+            return $"{{{nameof(Id)}={Id.ToString()}, {nameof(OrderId)}={OrderId.ToString()}, {nameof(ProductId)}={ProductId.ToString()}, {nameof(Quantity)}={Quantity.ToString()}, {nameof(TotalPrice)}={TotalPrice.ToString()}, {nameof(ProductSalePrice)}={ProductSalePrice.ToString()}, {nameof(ProductName)}={ProductName}, {nameof(ProductCode)}={ProductCode}, {nameof(CategoryName)}={CategoryName}, {nameof(ProductSpecItems)}={ProductSpecItems}, {nameof(Price)}={Price.ToString()}, {nameof(ProductSpecObjItems)}={ProductSpecObjItems}, {nameof(ProductSpecColorItem)}={ProductSpecColorItem}, {nameof(Product)}={Product}}}";
+        }
     }
 }

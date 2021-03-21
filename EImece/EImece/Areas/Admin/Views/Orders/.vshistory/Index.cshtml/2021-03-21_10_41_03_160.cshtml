@@ -1,0 +1,68 @@
+﻿@using EImece.Models;
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+@model List<Order>
+@{
+    var orders = Model;
+
+    ViewBag.Title = "Orders";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "Orders";
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var title = "Orders";
+    var gridName = "OrdersGrid";
+    var contents = Model;
+
+    var gridImagesText = AdminResource.GridImagesText;
+
+    var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
+    var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
+}
+<h2>@AdminResource.Orders</h2>
+<hr class="adminLine" />
+
+<div class="panel panel-info">
+    <div class="row">
+        <span class="col-md-12">
+            @Html.Partial("pSearchForm")
+        </span>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <span class="col-md-6">
+                <span class="label ">
+                    <span class="badge text-danger text-large">@contents.Count() </span>
+                    @GridResultRecordNumber
+                </span>
+            </span>
+            <span class="col-md-3">
+                <p class="text-right">@GridPagingDropDownText</p>
+            </span>
+        </div>
+    </div>
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+
+    
+    columns.Add(o => o.CreatedDate)
+    .Titled(AdminResource.CustomerRegistrationDate)
+    .Sortable(true)
+    .Css("gridDateClass")
+    .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
+    .SortInitialDirection(GridSortDirection.Descending);
+
+}).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+</div>
+
+ 

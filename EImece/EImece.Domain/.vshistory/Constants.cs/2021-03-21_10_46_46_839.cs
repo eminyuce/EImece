@@ -115,7 +115,7 @@ namespace EImece.Domain
         public const string PageThemeT1 = "T1";
         public const string DefaultImageText = "X";
         public const bool IsSmtpClientEnabled = true;
-        public const string BuyNowCustomerUserId = "BNC";
+        public const string BuyNowCustomerUserId = "bnc";
         public static object DeleteButtonHtmlAttribute
         {
             get

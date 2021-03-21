@@ -182,7 +182,7 @@ namespace EImece.Domain.Services
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);
-            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12)+"-"+Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
+            buyNowSession.Customer.UserId = Constants.BuyNowCustomerUserId + GeneralHelper.RandomNumber(12) + "-" + buyNowSession.Customer.Id;
             Entities.Address shippingAddress = buyNowSession.ShippingAddress;
             int shippingAddressId = shippingAddress.Id;
             if (shippingAddressId == 0)

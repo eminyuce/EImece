@@ -1825,6 +1825,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Siparişler.
+        /// </summary>
+        public static string Orders {
+            get {
+                return ResourceManager.GetString("Orders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ait olan siparişler.
         /// </summary>
         public static string OrdersBelongCustomer {

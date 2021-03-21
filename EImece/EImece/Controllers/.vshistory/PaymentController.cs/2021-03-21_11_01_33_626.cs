@@ -560,7 +560,7 @@ namespace EImece.Controllers
 
         private void ClearBuyNow(BuyNowModel buyNowModel)
         {
-            ShoppingCartService.DeleteByOrderGuid(buyNowModel.OrderGuid);
+            throw new NotImplementedException();
         }
 
         protected void InformCustomerToFillOutForm(Customer customer)

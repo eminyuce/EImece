@@ -300,7 +300,7 @@
     <Compile Include="Areas\Admin\Controllers\AppLogsController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\BrandsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BuyNowOrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\CustomersController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
@@ -1387,7 +1387,6 @@
     <Content Include="Areas\Admin\Views\Menus\MoveMenuCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\BaseContentSearchItem\ProductSearchItem.cshtml" />
     <Content Include="Areas\Admin\Views\Customers\CustomerBaskets.cshtml" />
-    <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
@@ -1613,6 +1612,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
+    <Folder Include="Areas\Admin\Views\BuyNowOrders\" />
     <Folder Include="Areas\Customers\Data\" />
     <Folder Include="Scripts\codemirror\addon\" />
     <Folder Include="Views\BasePayment\" />

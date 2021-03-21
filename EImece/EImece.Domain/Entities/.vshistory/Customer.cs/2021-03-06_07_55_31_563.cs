@@ -23,7 +23,7 @@ namespace EImece.Domain.Entities
         //     [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ContactUsEmailErrorMessage))]
         //     [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
 
-        
+        [NotMapped]
         [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }

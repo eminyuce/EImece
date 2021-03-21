@@ -1131,7 +1131,4 @@
   <data name="BasketMinTotalPriceForCargo" xml:space="preserve">
     <value>Minimum Sipariş Kargo Tutarı</value>
   </data>
-  <data name="Orders" xml:space="preserve">
-    <value>Siparişler</value>
-  </data>
 </root>

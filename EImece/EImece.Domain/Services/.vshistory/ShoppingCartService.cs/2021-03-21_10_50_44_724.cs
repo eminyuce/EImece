@@ -177,12 +177,11 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
             }
-           
+            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12);
             Customer customer = buyNowSession.Customer;
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);
-            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12)+"-"+Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
             Entities.Address shippingAddress = buyNowSession.ShippingAddress;
             int shippingAddressId = shippingAddress.Id;
             if (shippingAddressId == 0)
