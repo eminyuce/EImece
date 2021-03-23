@@ -292,21 +292,5 @@ namespace EImece.Domain
                 return GetConfigBool("IsSiteUnderConstruction", false);
             }
         }
-
-        public static bool IsSiteLive
-        {
-            get
-            {
-                String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
-                return string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
-        public static bool IsSiteUnderDevelopment
-        {
-            get
-            {
-                return !IsSiteLive;
-            }
-        }
     }
 }

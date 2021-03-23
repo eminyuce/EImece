@@ -305,7 +305,8 @@ namespace EImece.Domain
         {
             get
             {
-                return !IsSiteLive;
+                String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
+                return string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase);
             }
         }
     }

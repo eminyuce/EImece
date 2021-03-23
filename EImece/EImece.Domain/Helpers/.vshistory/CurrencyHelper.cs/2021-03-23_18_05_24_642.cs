@@ -37,8 +37,9 @@ namespace EImece.Domain.Helpers
         {
             var cultureInfo = new CultureInfo(CulturaInfoName);
             decimal v = System.Convert.ToDecimal(price);
+
             if (v > 0)
-                return string.Format("{0} TL", v.ToString("#,##", cultureInfo));
+            return string.Format("{0} TL", v.ToString("#,##", cultureInfo));
             else
                 return "0 TL";
         }

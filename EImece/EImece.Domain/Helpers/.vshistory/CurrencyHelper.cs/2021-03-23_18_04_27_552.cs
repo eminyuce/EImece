@@ -26,21 +26,15 @@ namespace EImece.Domain.Helpers
         public static string CurrencySign(this double price)
         {
             var cultureInfo = new CultureInfo(CulturaInfoName);
-            decimal v = System.Convert.ToDecimal(price); 
-            if (v > 0)
-                return string.Format("{0} TL", v.ToString("#,##", cultureInfo));
-            else
-                return "0 TL";
+            return string.Format("{0} TL", System.Convert.ToDecimal(price).ToString("#,##", cultureInfo));
+            //  return price.ToString("C");
         }
 
         public static string CurrencySign(this int price)
         {
             var cultureInfo = new CultureInfo(CulturaInfoName);
-            decimal v = System.Convert.ToDecimal(price);
-            if (v > 0)
-                return string.Format("{0} TL", v.ToString("#,##", cultureInfo));
-            else
-                return "0 TL";
+            return string.Format("{0} TL", System.Convert.ToDecimal(price).ToString("#,##", cultureInfo));
+            // return price.ToString("C");
         }
     }
 }

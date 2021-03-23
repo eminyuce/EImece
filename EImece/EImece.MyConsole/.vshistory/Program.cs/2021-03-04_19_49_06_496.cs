@@ -20,9 +20,13 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-            decimal CargoPrice = 0;
-            Console.WriteLine(CargoPrice.CurrencySign());
-        
+
+            int number = 7199;
+            Console.WriteLine(System.Convert.ToDecimal(number).ToString("#,##"));
+
+            decimal totalPrice =69000m;
+            double totalPrice2 = 7199;
+            Console.WriteLine(totalPrice2.CurrencySign());
            
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);

@@ -15,7 +15,12 @@ namespace EImece.Controllers
         public FileContentResult RobotsText()
         {
             var content = "";
-            if (AppConfig.IsSiteLive)
+            if (AppConfig.IsSiteUnderConstruction)
+            {
+                content += "Disallow: /" + Environment.NewLine;
+                content += "# Disallow Robots (Debug)" + Environment.NewLine;
+            }
+            else if (AppConfig.IsSiteLive)
             {
                 var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
                 builder.Path += "sitemap.xml";
@@ -29,7 +34,7 @@ namespace EImece.Controllers
                 content += "Disallow: /Account/ " + Environment.NewLine;
                 content += "# Allow Robots (Release)" + Environment.NewLine;
             }
-            else if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+            else
             {
                 content = "Disallow: /" + Environment.NewLine;
                 content += "# Disallow Robots (Debug)" + Environment.NewLine;

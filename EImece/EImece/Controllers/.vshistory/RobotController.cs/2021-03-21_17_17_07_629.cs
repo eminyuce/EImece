@@ -15,7 +15,7 @@ namespace EImece.Controllers
         public FileContentResult RobotsText()
         {
             var content = "";
-            if (AppConfig.IsSiteLive)
+            else if (AppConfig.IsSiteLive)
             {
                 var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
                 builder.Path += "sitemap.xml";

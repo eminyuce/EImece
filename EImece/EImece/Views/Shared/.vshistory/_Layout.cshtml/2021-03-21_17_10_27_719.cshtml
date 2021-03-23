@@ -29,10 +29,11 @@
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
 
-    @if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+    @if (AppConfig.IsSiteUnderConstruction)
     {
         <meta name="robots" content="noindex">
         <meta name="googlebot" content="noindex">
+
     }
 
 

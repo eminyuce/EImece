@@ -15,8 +15,16 @@ namespace EImece.Controllers
         public FileContentResult RobotsText()
         {
             var content = "";
-            if (AppConfig.IsSiteLive)
+            if (AppConfig.IsSiteUnderConstruction)
             {
+                content += "Disallow: /" + Environment.NewLine;
+                content += "# Disallow Robots (Debug)" + Environment.NewLine;
+                return File(Encoding.UTF8.GetBytes(content), TextPlain);
+            }
+            else
+            {
+                String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
+
                 var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
                 builder.Path += "sitemap.xml";
                 var fLink = builder.Uri;
@@ -27,15 +35,19 @@ namespace EImece.Controllers
                 content += "Disallow: /Error/ " + Environment.NewLine;
                 content += "Disallow: /Manage/ " + Environment.NewLine;
                 content += "Disallow: /Account/ " + Environment.NewLine;
-                content += "# Allow Robots (Release)" + Environment.NewLine;
-            }
-            else if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
-            {
-                content = "Disallow: /" + Environment.NewLine;
-                content += "# Disallow Robots (Debug)" + Environment.NewLine;
-            }
+                if (string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    content += "# Allow Robots (Release)" + Environment.NewLine;
+                }
+                else
+                {
+                    content += "Disallow: /" + Environment.NewLine;
+                    content += "# Disallow Robots (Debug)" + Environment.NewLine;
+                }
 
-            return File(Encoding.UTF8.GetBytes(content), TextPlain);
+                return File(Encoding.UTF8.GetBytes(content), TextPlain);
+            }
+           
         }
     }
 }

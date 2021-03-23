@@ -301,12 +301,5 @@ namespace EImece.Domain
                 return string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase);
             }
         }
-        public static bool IsSiteUnderDevelopment
-        {
-            get
-            {
-                return !IsSiteLive;
-            }
-        }
     }
 }

@@ -28,14 +28,6 @@
     }
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
-
-    @if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
-    {
-        <meta name="robots" content="noindex">
-        <meta name="googlebot" content="noindex">
-    }
-
-
     <meta name="Robots" content="index,follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon and Touch Icons-->
