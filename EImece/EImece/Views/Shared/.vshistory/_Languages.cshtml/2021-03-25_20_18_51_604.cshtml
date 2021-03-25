@@ -10,23 +10,13 @@
     var selectedClass = "text-info font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light";
     var currentLanguage = Thread.CurrentThread.CurrentCulture.ToString();
 }
-
+ 
 @if (listItems.Count() > 1)
 {
     foreach (var item in listItems)
     {
         var selectedLanguage = (EImeceLanguage)item.Value.ToInt();
         var desc = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
-        switch (selectedLanguage)
-        {
-            case EImeceLanguage.English:
-                <img src="~/Content/mstore/img/flags/en.png" />
-                break;
-            case EImeceLanguage.Turkish:
-                <img src="~/Content/mstore/img/flags/tr.png" />
-                break;
-        }
-
-        <a class="@(desc.Equals(currentLanguage) ? selectedClass : normalClass)" href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
+        @Html.ActionLink(item.Text, "Language", "Home", new { id = item.Value }, new { @class = desc.Equals(currentLanguage) ? selectedClass : normalClass })
     }
 }

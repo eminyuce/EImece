@@ -198,7 +198,7 @@ namespace EImece.Domain.Helpers
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
-         
+
             var languagesText = AppConfig.ApplicationLanguages;
             if (String.IsNullOrEmpty(languagesText))
             {

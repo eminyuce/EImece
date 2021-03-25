@@ -27,6 +27,6 @@
                 break;
         }
 
-        <a class="@(desc.Equals(currentLanguage) ? selectedClass : normalClass)" href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
+        <a class="@(desc.Equals(currentLanguage) ? selectedClass : normalClass)" href="@Url.Action("Language", "Home")">@item.Text</a>
     }
 }

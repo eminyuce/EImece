@@ -589,7 +589,6 @@
     <Content Include="Content\mstore\img\flags\en.png" />
     <Content Include="Content\mstore\img\flags\fr.png" />
     <Content Include="Content\mstore\img\flags\it.png" />
-    <Content Include="Content\mstore\img\flags\tr.png" />
     <Content Include="Content\mstore\img\gallery-cursor%402x.png" />
     <Content Include="Content\mstore\img\gallery-cursor.png" />
     <Content Include="Content\mstore\img\home\apparel\hero-slide-logo01.png" />

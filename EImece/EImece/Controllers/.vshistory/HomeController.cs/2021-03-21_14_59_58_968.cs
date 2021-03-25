@@ -132,7 +132,7 @@ namespace EImece.Controllers
 
         public ActionResult Languages()
         {
-            List<SelectListItem> listItems = EnumHelper.ToSelectList3("Language");
+            List<SelectListItem> listItems = EnumHelper.ToSelectList3(Constants.CultureCookieName);
             return PartialView("_Languages", listItems);
         }
 

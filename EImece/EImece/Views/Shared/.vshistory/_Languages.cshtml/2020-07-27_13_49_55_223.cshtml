@@ -1,0 +1,15 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@model  List<SelectListItem>
+@{
+    var listItems = Model;
+}
+
+@if (listItems.Count() > 1)
+{
+    foreach (var item in listItems)
+    {
+        @Html.ActionLink(item.Text, "Language", "Home", new { id = item.Value }, new { @class = item.Selected ? "selectedLang" : "" })
+    }
+}

@@ -178,7 +178,9 @@ namespace EImece.Domain.Helpers
                 var attributes = (DescriptionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
                 return attributes.Length > 0 ? attributes[0].Description : value.ToString();
             }
+#pragma warning disable CS0168 // The variable 'ex' is declared but never used
             catch (Exception ex)
+#pragma warning restore CS0168 // The variable 'ex' is declared but never used
             {
                 return String.Empty;
             }
@@ -198,7 +200,7 @@ namespace EImece.Domain.Helpers
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
-         
+
             var languagesText = AppConfig.ApplicationLanguages;
             if (String.IsNullOrEmpty(languagesText))
             {
