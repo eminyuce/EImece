@@ -60,7 +60,7 @@ namespace EImece.Domain.Services
             pp.CompanyPhoneNumber = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation).SettingValue.Trim();
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
+            var builder = new UriBuilder(HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
             pp.CompanyWebSiteUrl = url;
             pp.ImgLogoSrc = url + Constants.LogoImagePath;
@@ -78,7 +78,7 @@ namespace EImece.Domain.Services
             pp.CompanyPhoneNumber = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation).SettingValue.Trim();
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
+            var builder = new UriBuilder(HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
             pp.CompanyWebSiteUrl = url;
             pp.ImgLogoSrc = url + Constants.LogoImagePath;

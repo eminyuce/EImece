@@ -312,7 +312,7 @@ namespace EImece.Domain.Services
             };
 
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, AppConfig.HttpProtocol);
+            String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, HttpContext.Current.Request.Url.Scheme);
 
             feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
             var formatter = new Rss20FeedFormatter(feed);

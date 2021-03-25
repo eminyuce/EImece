@@ -54,7 +54,7 @@ namespace EImece.Domain
             {
                 var useSll = GetConfigBool("UseSSLImages", false);
                 return string.Format("http{0}", useSll ? "s" : "");
-                // return AppConfig.HttpProtocol;
+                // return HttpContext.Current.Request.Url.Scheme;
             }
         }
 
@@ -64,7 +64,7 @@ namespace EImece.Domain
             {
                  var useSll = GetConfigBool("UseSSL", false);
                  return string.Format("http{0}", useSll ? "s" : "");
-               // return AppConfig.HttpProtocol;
+               // return HttpContext.Current.Request.Url.Scheme;
             }
         }
 

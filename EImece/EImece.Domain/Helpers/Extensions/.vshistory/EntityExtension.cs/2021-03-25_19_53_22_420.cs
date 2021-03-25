@@ -384,7 +384,7 @@ namespace EImece.Domain.Helpers.Extensions
                     {
                         return urlHelper.Action(Constants.ImageActionName, 
                             "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" },
-                            AppConfig.HttpProtocolForImages);
+                            AppConfig.HttpProtocol);
                     }
                     else
                     {

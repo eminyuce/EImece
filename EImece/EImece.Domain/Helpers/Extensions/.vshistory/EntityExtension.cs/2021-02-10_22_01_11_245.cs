@@ -382,9 +382,7 @@ namespace EImece.Domain.Helpers.Extensions
                     var imageSize = $"w{width}h{height}";
                     if (isFullPathImageUrl)
                     {
-                        return urlHelper.Action(Constants.ImageActionName, 
-                            "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" },
-                            AppConfig.HttpProtocolForImages);
+                        return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" }, HttpContext.Current.Request.Url.Scheme);
                     }
                     else
                     {
