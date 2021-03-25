@@ -1615,6 +1615,7 @@
     <Folder Include="App_Data\logs\" />
     <Folder Include="Areas\Customers\Data\" />
     <Folder Include="Scripts\codemirror\addon\" />
+    <Folder Include="Views\BasePayment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

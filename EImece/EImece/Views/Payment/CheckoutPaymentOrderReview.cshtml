@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -66,7 +66,7 @@
             <!-- Navigation-->
             <div class="d-flex pt-4">
                 <div class="w-50 pr-3"><a class="btn btn-outline-secondary btn-block" href="@Url.Action("checkoutbillingdetails")"><i class="mr-1" data-feather="chevron-left"></i>@Resource.Back</a></div>
-                <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="@Url.Action("PlaceOrder")"><span class="d-none d-sm-inline">@AdminResource.Payment</span><span class="d-inline d-sm-none">@Resource.Payment</span><i class="ml-1" data-feather="chevron-right"></i></a></div>
+                <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="@Url.Action("PlaceOrder")"><span class="d-none d-sm-inline">@Resource.Payment</span><span class="d-inline d-sm-none">@Resource.Payment</span><i class="ml-1" data-feather="chevron-right"></i></a></div>
             </div>
         </div>
         @Html.Partial("_OrderSummary", Model)

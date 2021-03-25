@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -239,7 +239,7 @@
                     {
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@AdminResource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                                <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@Resource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
                             </div>
                             <div class="collapse" id="shippingOptions" data-parent="#productPanels">
                                 <div class="card-body">
@@ -257,7 +257,7 @@
                                     <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
                                         <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                             <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
-                                        </span>@AdminResource.Tags<span class="accordion-indicator">
+                                        </span>@Resource.Tags<span class="accordion-indicator">
                                             <i data-feather="chevron-up"></i>
                                         </span>
                                     </a>

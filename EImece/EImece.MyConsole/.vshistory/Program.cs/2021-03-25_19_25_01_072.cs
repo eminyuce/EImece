@@ -36,22 +36,12 @@ namespace EImece.MyConsole
                 {
                     foreach (var child2 in child.GetDirectories())
                     {
-                        if (child2.GetDirectories() != null)
-                        {
-                            foreach (var child4 in child2.GetDirectories())
-                            {
-                                ChangeFileContent(child4);
-                            }
-                        }
-                        else
-                        {
-                            ChangeFileContent(child2);
-                        }
+                        ChangeFileContent(child2);
                     }
                 }
                 else
                 {
-                    ChangeFileContent(child);
+                    ChangeFileContent(child2);
                 }
           
             }
@@ -62,19 +52,12 @@ namespace EImece.MyConsole
             var newName = child.FullName;
             foreach (var f in Directory.GetFiles(child.FullName))
             {
-                if (f.Contains("2020-") || f.Contains("2021-"))
+                var fileContent = File.ReadAllText(f);
+                if (fileContent.Contains("AdminResource"))
                 {
-                    continue;
-                }
-                else
-                {
-                    var fileContent = File.ReadAllText(f);
-                    if (fileContent.Contains("AdminResource"))
-                    {
-                        String newFileContent = fileContent.Replace("AdminResource", "Resource");
-                        //File.WriteAllText(f, newFileContent);
-                        Console.WriteLine("f:" + f);
-                    }
+                    String newFileContent = fileContent.Replace("AdminResource", "Resource");
+                    //File.WriteAllText(f, newFileContent);
+                    Console.WriteLine("f:" + f);
                 }
             }
         }

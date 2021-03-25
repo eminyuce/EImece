@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.FrontModels.ContactUsFormViewModel
+@model EImece.Domain.Models.FrontModels.ContactUsFormViewModel
 @using EImece.Domain.Helpers;
 @using Resources;
 @{
@@ -69,7 +69,7 @@
                     <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "ContactUsLogin" })" alt="Captcha" />
                 </div>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = AdminResource.AnswerSecurityQuestion, @autocomplete = "false" })
+                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = Resource.AnswerSecurityQuestion, @autocomplete = "false" })
                     @Html.ValidationMessageFor(model => model.Captcha, "", new { @class = "text-danger" })
                 </div>
             </div>

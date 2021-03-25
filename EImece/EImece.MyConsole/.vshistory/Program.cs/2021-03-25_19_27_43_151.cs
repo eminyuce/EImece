@@ -76,6 +76,7 @@ namespace EImece.MyConsole
                         Console.WriteLine("f:" + f);
                     }
                 }
+                
             }
         }
 

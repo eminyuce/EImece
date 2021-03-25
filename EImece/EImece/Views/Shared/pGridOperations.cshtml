@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using Resources;
 
 @{
@@ -12,19 +12,19 @@
     var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
     var isNewRecordButtonEnabled = ViewData["IsNewRecordButtonEnabled"].ToBool(true);
     var IsExcelButtonEnabled = ViewData["IsExcelButtonEnabled"].ToBool(false);
-    var NewRecordText = AdminResource.NewRecordText;
+    var NewRecordText = Resource.NewRecordText;
 
-    var GridSelectAllButtonText = AdminResource.GridSelectAllButtonText;
-    var GridDeSelectAllButtonText = AdminResource.GridDeSelectAllButtonText;
-    var GridDeleteSelectedButtonText = AdminResource.GridDeleteSelectedButtonText;
-    var GridActiveSelectedButtonText = AdminResource.GridActiveSelectedButtonText;
-    var GridDeActiveSelectedButtonText = AdminResource.GridDeActiveSelectedButtonText;
-    var GridOrderingAllButtonText = AdminResource.GridOrderingAllButtonText;
-    var State = AdminResource.State;
-    var ImageState = AdminResource.ImageState;
-    var MainPage = AdminResource.MainPage;
-    var IsCampaign = AdminResource.IsCampaign;
-    var AdminDeleteConfirmMessage = AdminResource.AdminDeleteConfirmMessage;
+    var GridSelectAllButtonText = Resource.GridSelectAllButtonText;
+    var GridDeSelectAllButtonText = Resource.GridDeSelectAllButtonText;
+    var GridDeleteSelectedButtonText = Resource.GridDeleteSelectedButtonText;
+    var GridActiveSelectedButtonText = Resource.GridActiveSelectedButtonText;
+    var GridDeActiveSelectedButtonText = Resource.GridDeActiveSelectedButtonText;
+    var GridOrderingAllButtonText = Resource.GridOrderingAllButtonText;
+    var State = Resource.State;
+    var ImageState = Resource.ImageState;
+    var MainPage = Resource.MainPage;
+    var IsCampaign = Resource.IsCampaign;
+    var AdminDeleteConfirmMessage = Resource.AdminDeleteConfirmMessage;
 
 }
 
@@ -134,7 +134,7 @@
                                     <a href="@Url.Action("ExportExcel", controllerName)">
                                         <span>
                                             <img src="~/Areas/Admin/Content/main/excel.jpg" />
-                                            @AdminResource.Excel
+                                            @Resource.Excel
                                         </span>
                                     </a>
                                 </div>
@@ -157,8 +157,8 @@
             <div class="modal-body" id="confirmMessage">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-link" id="confirmOk">@AdminResource.ButtonOk</button>
-                <button type="button" class="btn btn-link" id="confirmCancel">@AdminResource.ButtonCancel</button>
+                <button type="button" class="btn btn-link" id="confirmOk">@Resource.ButtonOk</button>
+                <button type="button" class="btn btn-link" id="confirmCancel">@Resource.ButtonCancel</button>
             </div>
         </div>
     </div>

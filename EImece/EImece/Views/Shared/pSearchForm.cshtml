@@ -1,4 +1,4 @@
-﻿@using EImece.Domain;
+@using EImece.Domain;
 @using EImece.Domain.Helpers;
 @using Resources;
 @{
@@ -6,8 +6,8 @@
     string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
     string search = @Request.QueryString["search"].ToStr();
-    var gridSearchButtonText = AdminResource.GridSearchButtonText;
-    var clear = AdminResource.Clear;
+    var gridSearchButtonText = Resource.GridSearchButtonText;
+    var clear = Resource.Clear;
 }
 <input type="hidden" id="action" value="@action" />
 <input type="hidden" id="controller" value="@controller" />

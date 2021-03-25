@@ -62,19 +62,16 @@ namespace EImece.MyConsole
             var newName = child.FullName;
             foreach (var f in Directory.GetFiles(child.FullName))
             {
-                if (f.Contains("2020-") || f.Contains("2021-"))
+                if (child.FullName.Contains("2020-") || child.FullName.Contains("2021-"))
                 {
                     continue;
                 }
-                else
+                var fileContent = File.ReadAllText(f);
+                if (fileContent.Contains("AdminResource"))
                 {
-                    var fileContent = File.ReadAllText(f);
-                    if (fileContent.Contains("AdminResource"))
-                    {
-                        String newFileContent = fileContent.Replace("AdminResource", "Resource");
-                        //File.WriteAllText(f, newFileContent);
-                        Console.WriteLine("f:" + f);
-                    }
+                    String newFileContent = fileContent.Replace("AdminResource", "Resource");
+                    //File.WriteAllText(f, newFileContent);
+                    Console.WriteLine("f:" + f);
                 }
             }
         }

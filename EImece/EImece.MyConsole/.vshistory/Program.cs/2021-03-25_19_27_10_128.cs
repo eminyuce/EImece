@@ -66,15 +66,12 @@ namespace EImece.MyConsole
                 {
                     continue;
                 }
-                else
+                var fileContent = File.ReadAllText(f);
+                if (fileContent.Contains("AdminResource"))
                 {
-                    var fileContent = File.ReadAllText(f);
-                    if (fileContent.Contains("AdminResource"))
-                    {
-                        String newFileContent = fileContent.Replace("AdminResource", "Resource");
-                        //File.WriteAllText(f, newFileContent);
-                        Console.WriteLine("f:" + f);
-                    }
+                    String newFileContent = fileContent.Replace("AdminResource", "Resource");
+                    //File.WriteAllText(f, newFileContent);
+                    Console.WriteLine("f:" + f);
                 }
             }
         }

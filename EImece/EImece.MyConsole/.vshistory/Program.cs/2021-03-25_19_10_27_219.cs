@@ -20,65 +20,20 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-
-            ReplaceFileContent();
-            Console.Write("Press any key to continue . . . ");
-            Console.ReadKey(true);
-        }
-
-        private static void ReplaceFileContent()
-        {
-            var parent = new DirectoryInfo(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\Views");
+            var parent = new DirectoryInfo(@"C:\Users\dell\Desktop\rename");
 
             foreach (var child in parent.GetDirectories())
             {
-                if (child.GetDirectories() != null)
-                {
-                    foreach (var child2 in child.GetDirectories())
-                    {
-                        if (child2.GetDirectories() != null)
-                        {
-                            foreach (var child4 in child2.GetDirectories())
-                            {
-                                ChangeFileContent(child4);
-                            }
-                        }
-                        else
-                        {
-                            ChangeFileContent(child2);
-                        }
-                    }
+                var newName = child.FullName;
+               
+                     foreach (var d in Directory.GetFiles(child.FullName))
+                
                 }
-                else
-                {
-                    ChangeFileContent(child);
-                }
-          
-            }
-        }
 
-        private static void ChangeFileContent(DirectoryInfo child)
-        {
-            var newName = child.FullName;
-            foreach (var f in Directory.GetFiles(child.FullName))
-            {
-                if (f.Contains("2020-") || f.Contains("2021-"))
-                {
-                    continue;
-                }
-                else
-                {
-                    var fileContent = File.ReadAllText(f);
-                    if (fileContent.Contains("AdminResource"))
-                    {
-                        String newFileContent = fileContent.Replace("AdminResource", "Resource");
-                        //File.WriteAllText(f, newFileContent);
-                        Console.WriteLine("f:" + f);
-                    }
-                }
-            }
+            Console.Write("Press any key to continue . . . ");
+            Console.ReadKey(true);
         }
-
+ 
         static public string Encode(string source, int length)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(source);

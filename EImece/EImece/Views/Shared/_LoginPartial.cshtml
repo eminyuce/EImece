@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity
 @using Resources;
 @if (Request.IsAuthenticated)
 {
@@ -8,9 +8,9 @@
 
         <ul>
             <li>
-                @Html.ActionLink(AdminResource.Hello + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink(Resource.Hello + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">@AdminResource.Logout</a></li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resource.Logout</a></li>
             <li>@Html.ActionLink("Admin Dashboard", "Index", "Dashboard", routeValues: new { area = "admin" }, htmlAttributes: new { id = "registerLink" })</li>
         </ul>
     }

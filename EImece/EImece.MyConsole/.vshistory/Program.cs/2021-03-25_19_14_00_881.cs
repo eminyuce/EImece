@@ -20,8 +20,8 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-
             ReplaceFileContent();
+
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }
@@ -32,41 +32,9 @@ namespace EImece.MyConsole
 
             foreach (var child in parent.GetDirectories())
             {
-                if (child.GetDirectories() != null)
-                {
-                    foreach (var child2 in child.GetDirectories())
-                    {
-                        if (child2.GetDirectories() != null)
-                        {
-                            foreach (var child4 in child2.GetDirectories())
-                            {
-                                ChangeFileContent(child4);
-                            }
-                        }
-                        else
-                        {
-                            ChangeFileContent(child2);
-                        }
-                    }
-                }
-                else
-                {
-                    ChangeFileContent(child);
-                }
-          
-            }
-        }
+                var newName = child.FullName;
 
-        private static void ChangeFileContent(DirectoryInfo child)
-        {
-            var newName = child.FullName;
-            foreach (var f in Directory.GetFiles(child.FullName))
-            {
-                if (f.Contains("2020-") || f.Contains("2021-"))
-                {
-                    continue;
-                }
-                else
+                foreach (var f in Directory.GetFiles(child.FullName))
                 {
                     var fileContent = File.ReadAllText(f);
                     if (fileContent.Contains("AdminResource"))

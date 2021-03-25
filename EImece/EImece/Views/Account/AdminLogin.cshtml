@@ -1,4 +1,4 @@
-﻿@using EImece.Models
+@using EImece.Models
 @model LoginViewModel
 @using Resources;
 @{
@@ -57,19 +57,19 @@
                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                         <div style="margin-bottom: 25px" class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @AdminResource.Email, @id = "login-username" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @Resource.Email, @id = "login-username" })
                         </div>
 
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                         <div style="margin-bottom: 5px" class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @AdminResource.Password, @id = "login-password" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @Resource.Password, @id = "login-password" })
                         </div>
 
                         <div class="input-group">
                             <div class="checkbox">
                                 <label>
-                                    @Html.CheckBoxFor(m => m.RememberMe)    @AdminResource.RememberMe
+                                    @Html.CheckBoxFor(m => m.RememberMe)    @Resource.RememberMe
                                 </label>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                                 <br />
                                 <div class="form-group">
                                     <div class="col-md-offset-1 col-md-10">
-                                        <input type="submit" id="LoginButton" value="@AdminResource.Login" class="btn btn-info btn-block" />
+                                        <input type="submit" id="LoginButton" value="@Resource.Login" class="btn btn-info btn-block" />
                                     </div>
                                 </div>
                                 }
