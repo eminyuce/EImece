@@ -13,20 +13,20 @@ namespace EImece.Domain.Entities
 {
     public class ProductCategory : BaseContent
     {
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryParentId))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryParentId))]
         public int ParentId { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public Boolean MainPage { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ShortDescription))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ShortDescription))]
         public string ShortDescription { get; set; }
 
         public ICollection<Product> Products { get; set; }
 
         [ForeignKey("Template")]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.TemplateId))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TemplateId))]
         public int? TemplateId { get; set; }
 
         [NotMapped]
@@ -35,7 +35,7 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public ProductCategory Parent { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryDiscountPercantage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
 
         [NotMapped]

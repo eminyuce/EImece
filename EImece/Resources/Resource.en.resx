@@ -1646,4 +1646,43 @@
   <data name="ViewProducts" xml:space="preserve">
     <value>View Products</value>
   </data>
+  <data name="BasketMinTotalPriceForCargo" xml:space="preserve">
+    <value>Basket Min Total Price For Cargo</value>
+  </data>
+  <data name="FirstCategoryId" xml:space="preserve">
+    <value>FirstCategoryId</value>
+  </data>
+  <data name="FirstMenuCategoryId" xml:space="preserve">
+    <value>FirstMenuCategoryId</value>
+  </data>
+  <data name="FooterHtmlDescription" xml:space="preserve">
+    <value>Footer Html Description</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="ProductColorOptions" xml:space="preserve">
+    <value>Product Color Options</value>
+  </data>
+  <data name="ProductDiscount" xml:space="preserve">
+    <value>Product Discount</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="ProductNameLong" xml:space="preserve">
+    <value>Product Name (Long)</value>
+  </data>
+  <data name="ProductShortDescription" xml:space="preserve">
+    <value>Short Description</value>
+  </data>
+  <data name="ProductSizeOptions" xml:space="preserve">
+    <value>Product Size Options</value>
+  </data>
+  <data name="SecondCategoryId" xml:space="preserve">
+    <value>SecondCategoryId</value>
+  </data>
+  <data name="SecondMenuCategoryId" xml:space="preserve">
+    <value>SecondMenuCategoryId</value>
+  </data>
 </root>

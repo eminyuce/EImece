@@ -11,61 +11,61 @@ namespace EImece.Domain.Entities
 {
     public class Product : BaseContent
     {
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductName))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductName))]
         public override string Name { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NameShort))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.NameShort))]
         public string NameShort { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductNameLong))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductNameLong))]
         public string NameLong { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCategoryIdErrorMessage))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCategoryId))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ProductCategoryIdErrorMessage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryId))]
         [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Brands))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Brands))]
         public int? BrandId { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public Boolean MainPage { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductShortDescription))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductShortDescription))]
         public string ShortDescription { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Price))]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Price))]
         [DataType(DataType.Currency)]
         public decimal? Discount { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Price))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Price))]
         public String PriceStr { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductDiscount))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductDiscount))]
         public String DiscountStr { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.ProductCodeErrorMessage))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductCode))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.ProductCodeErrorMessage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCode))]
         public string ProductCode { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.VideoUrl))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.VideoUrl))]
         public string VideoUrl { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsCampaign))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsCampaign))]
         public Boolean IsCampaign { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductColorOptions))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductColorOptions))]
         public String ProductColorOptions { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ProductSizeOptions))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductSizeOptions))]
         public String ProductSizeOptions { get; set; }
 
         public ProductCategory ProductCategory { get; set; }

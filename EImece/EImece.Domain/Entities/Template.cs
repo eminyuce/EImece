@@ -5,7 +5,7 @@ namespace EImece.Domain.Entities
 {
     public class Template : BaseEntity
     {
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.TemplateXml))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TemplateXml))]
         public string TemplateXml { get; set; }
     }
 }

@@ -8,14 +8,14 @@ namespace EImece.Domain.Entities
     public class MailTemplate : BaseEntity
     {
         [AllowHtml]
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailSubjectPropertyRequiredErrorMessage))]
-        [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailSubjectPropertyErrorMessage))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MailSubject))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MailSubjectPropertyRequiredErrorMessage))]
+        [StringLength(500, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MailSubjectPropertyErrorMessage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MailSubject))]
         public String Subject { get; set; }
 
         [AllowHtml]
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MailBodyPropertyRequiredErrorMessage))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MailBody))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MailBodyPropertyRequiredErrorMessage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MailBody))]
         [DataType(DataType.MultilineText)]
         public String Body { get; set; }
 

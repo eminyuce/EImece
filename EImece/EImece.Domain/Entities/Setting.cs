@@ -9,14 +9,14 @@ namespace EImece.Domain.Entities
     public class Setting : BaseEntity
     {
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Description))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Description))]
         public string Description { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SettingKey))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SettingKey))]
         public string SettingKey { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SettingValue))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SettingValue))]
         public string SettingValue { get; set; }
 
         public bool IsEmpty()

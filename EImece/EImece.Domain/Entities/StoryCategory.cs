@@ -13,7 +13,7 @@ namespace EImece.Domain.Entities
     {
         public ICollection<Story> Stories { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PageTheme))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PageTheme))]
         public String PageTheme { get; set; }
 
         [NotMapped]

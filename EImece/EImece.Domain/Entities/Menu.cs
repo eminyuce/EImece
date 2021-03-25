@@ -13,22 +13,22 @@ namespace EImece.Domain.Entities
 {
     public class Menu : BaseContent
     {
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MenuParentId))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MenuParentId))]
         public int ParentId { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public Boolean MainPage { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MenuLink))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MenuLink))]
         public string MenuLink { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Link))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Link))]
         public string Link { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PageTheme))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PageTheme))]
         public string PageTheme { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LinkIsActive))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LinkIsActive))]
         public Boolean LinkIsActive { get; set; }
 
         [NotMapped]

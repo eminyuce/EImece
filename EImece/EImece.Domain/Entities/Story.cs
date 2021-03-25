@@ -10,17 +10,17 @@ namespace EImece.Domain.Entities
     [Serializable]
     public class Story : BaseContent
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.StoryCategoryIdErrorMessage))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.StoryCategoryId))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.StoryCategoryIdErrorMessage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.StoryCategoryId))]
         public int StoryCategoryId { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MainPage))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public bool MainPage { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AuthorName))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AuthorName))]
         public string AuthorName { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsFeaturedStory))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsFeaturedStory))]
         public bool IsFeaturedStory { get; set; }
 
         public StoryCategory StoryCategory { get; set; }

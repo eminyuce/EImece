@@ -74,13 +74,13 @@ namespace EImece.Models
 
         public string Id { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string UserName { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FirstName))]
         public string FirstName { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string LastName { get; set; }
 
         public List<SelectRoleEditorViewModel> Roles { get; set; }

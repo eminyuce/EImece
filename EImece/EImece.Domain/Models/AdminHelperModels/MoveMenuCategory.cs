@@ -5,10 +5,10 @@ namespace EImece.Domain.Models.AdminHelperModels
 {
     public class MoveMenuCategory
     {
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstMenuCategoryId))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FirstMenuCategoryId))]
         public int FirstCategoryId { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SecondMenuCategoryId))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SecondMenuCategoryId))]
         public int SecondCategoryId { get; set; }
     }
 }

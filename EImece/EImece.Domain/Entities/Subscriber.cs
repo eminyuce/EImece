@@ -6,11 +6,11 @@ namespace EImece.Domain.Entities
     public class Subscriber : BaseEntity
     {
         [Required]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Note))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Note))]
         public string Note { get; set; }
     }
 }

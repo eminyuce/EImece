@@ -28,34 +28,34 @@ namespace EImece.Models
 
     public class SetPasswordViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NewPassword))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.NewPassword))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmNewPassword))]
-        [Compare("NewPassword", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotMatchesPassword))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ConfirmNewPassword))]
+        [Compare("NewPassword", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotMatchesPassword))]
         public string ConfirmPassword { get; set; }
     }
 
     public class ChangePasswordViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CurrentPassword))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CurrentPassword))]
         public string OldPassword { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
-        [StringLength(100, ErrorMessageResourceName = nameof(AdminResource.NewPasswordMinCharLength), ErrorMessageResourceType = typeof(AdminResource), MinimumLength = 6)]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
+        [StringLength(100, ErrorMessageResourceName = nameof(Resource.NewPasswordMinCharLength), ErrorMessageResourceType = typeof(Resource), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.NewPassword))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.NewPassword))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmNewPassword))]
-        [Compare("NewPassword", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotMatchesPassword))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ConfirmNewPassword))]
+        [Compare("NewPassword", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotMatchesPassword))]
         public string ConfirmPassword { get; set; }
     }
 
@@ -63,7 +63,7 @@ namespace EImece.Models
     {
         [Required]
         [Phone]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PhoneNumber))]
         public string Number { get; set; }
     }
 
@@ -73,9 +73,9 @@ namespace EImece.Models
         [Display(Name = "Code")]
         public string Code { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Phone]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PhoneNumber))]
         public string PhoneNumber { get; set; }
     }
 

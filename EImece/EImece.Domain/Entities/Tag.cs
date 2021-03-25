@@ -10,7 +10,7 @@ namespace EImece.Domain.Entities
 {
     public class Tag : BaseEntity
     {
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.TagCategoryId))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TagCategoryId))]
         public int TagCategoryId { get; set; }
 
         public TagCategory TagCategory { get; set; }

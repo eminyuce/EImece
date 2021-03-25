@@ -403,6 +403,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum Sipariş Kargo Tutarı.
+        /// </summary>
+        public static string BasketMinTotalPriceForCargo {
+            get {
+                return ResourceManager.GetString("BasketMinTotalPriceForCargo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Üye Ol.
         /// </summary>
         public static string BecomeMember {
@@ -1366,6 +1375,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taşımak İstenilen Ürün Kategorisi.
+        /// </summary>
+        public static string FirstCategoryId {
+            get {
+                return ResourceManager.GetString("FirstCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gideceği Yeni Kategori.
+        /// </summary>
+        public static string FirstMenuCategoryId {
+            get {
+                return ResourceManager.GetString("FirstMenuCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İsim.
         /// </summary>
         public static string FirstName {
@@ -1389,6 +1416,15 @@ namespace Resources {
         public static string FooterEmailListDescription {
             get {
                 return ResourceManager.GetString("FooterEmailListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Footer Html İçerik.
+        /// </summary>
+        public static string FooterHtmlDescription {
+            get {
+                return ResourceManager.GetString("FooterHtmlDescription", resourceCulture);
             }
         }
         
@@ -1938,6 +1974,15 @@ namespace Resources {
         public static string LeaveReview {
             get {
                 return ResourceManager.GetString("LeaveReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link.
+        /// </summary>
+        public static string Link {
+            get {
+                return ResourceManager.GetString("Link", resourceCulture);
             }
         }
         
@@ -2996,11 +3041,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Renk Seçenekleri.
+        /// </summary>
+        public static string ProductColorOptions {
+            get {
+                return ResourceManager.GetString("ProductColorOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Yorumları.
         /// </summary>
         public static string ProductComments {
             get {
                 return ResourceManager.GetString("ProductComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürüne özel ek TL indirimi.
+        /// </summary>
+        public static string ProductDiscount {
+            get {
+                return ResourceManager.GetString("ProductDiscount", resourceCulture);
             }
         }
         
@@ -3028,6 +3091,24 @@ namespace Resources {
         public static string ProductInformation {
             get {
                 return ResourceManager.GetString("ProductInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Adı.
+        /// </summary>
+        public static string ProductName {
+            get {
+                return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Adı (Uzun).
+        /// </summary>
+        public static string ProductNameLong {
+            get {
+                return ResourceManager.GetString("ProductNameLong", resourceCulture);
             }
         }
         
@@ -3077,6 +3158,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Promosyon Yazısı.
+        /// </summary>
+        public static string ProductShortDescription {
+            get {
+                return ResourceManager.GetString("ProductShortDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Bilgisi.
         /// </summary>
         public static string ProductsInfo {
@@ -3091,6 +3181,15 @@ namespace Resources {
         public static string ProductSize {
             get {
                 return ResourceManager.GetString("ProductSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Ölçü Seçenekleri.
+        /// </summary>
+        public static string ProductSizeOptions {
+            get {
+                return ResourceManager.GetString("ProductSizeOptions", resourceCulture);
             }
         }
         
@@ -3483,6 +3582,24 @@ namespace Resources {
         public static string SearchValidText {
             get {
                 return ResourceManager.GetString("SearchValidText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecondCategoryId.
+        /// </summary>
+        public static string SecondCategoryId {
+            get {
+                return ResourceManager.GetString("SecondCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gideceği Yeni Menu Kategori.
+        /// </summary>
+        public static string SecondMenuCategoryId {
+            get {
+                return ResourceManager.GetString("SecondMenuCategoryId", resourceCulture);
             }
         }
         

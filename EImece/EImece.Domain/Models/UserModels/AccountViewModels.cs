@@ -7,9 +7,9 @@ namespace EImece.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
     }
 
@@ -24,7 +24,7 @@ namespace EImece.Models
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RememberMe))]
         public bool RememberMe { get; set; }
     }
 
@@ -34,80 +34,80 @@ namespace EImece.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Code))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Code))]
         public string Code { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberThisBrowser))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RememberThisBrowser))]
         public bool RememberBrowser { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RememberMe))]
         public bool RememberMe { get; set; }
     }
 
     public class ForgotViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Password))]
         public string Password { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RememberMe))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RememberMe))]
         public bool RememberMe { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
         public string Captcha { get; set; }
     }
 
     public class RegisterViewModel
     {
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
         public string Email { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
-        [StringLength(100, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordStringLength), MinimumLength = 6)]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
+        [StringLength(100, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordStringLength), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Password))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
-        [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ConfirmPassword))]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FirstName))]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string LastName { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PhoneNumber))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PhoneNumber))]
         public string PhoneNumber { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsPermissionGrantedDescription))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsPermissionGrantedDescription))]
         public bool IsPermissionGranted { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AnswerSecurityQuestion))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
         public string Captcha { get; set; }
 
         public ApplicationUser GetUser()
@@ -125,28 +125,28 @@ namespace EImece.Models
 
     public class RegisterViewModelForAdmin
     {
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
         public string Email { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordRequired))]
-        [StringLength(100, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordStringLength), MinimumLength = 6)]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
+        [StringLength(100, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordStringLength), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Password))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
-        [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ConfirmPassword))]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FirstName))]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string LastName { get; set; }
 
         public ApplicationUser GetUser()
@@ -164,20 +164,20 @@ namespace EImece.Models
 
     public class ResetPasswordViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Password))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Password))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ConfirmPassword))]
-        [Compare("Password", ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.PasswordAndConfirmationPasswordDoNotMatch))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ConfirmPassword))]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -185,9 +185,9 @@ namespace EImece.Models
 
     public class ForgotPasswordViewModel
     {
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.EmailRequired))]
-        [EmailAddress(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
     }
 }

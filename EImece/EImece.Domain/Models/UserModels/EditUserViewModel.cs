@@ -15,15 +15,15 @@ namespace EImece.Models
         public string Id { get; set; }
 
         [Required]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FirstName))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FirstName))]
         public string FirstName { get; set; }
 
         [Required]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.LastName))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string LastName { get; set; }
 
         [Required]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Email))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
 
         public virtual String Role { get; set; }

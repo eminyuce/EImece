@@ -7,9 +7,9 @@ namespace EImece.Domain.Entities
     public class Faq : BaseEntity
     {
         [AllowHtml]
-        [Required(ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [StringLength(500, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.MandatoryField))]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Question))]
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [StringLength(500, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Question))]
         public string Question { get; set; }
 
         [AllowHtml]

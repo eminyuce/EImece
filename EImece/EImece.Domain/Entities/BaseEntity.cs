@@ -21,10 +21,10 @@ namespace EImece.Domain.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsActive))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsActive))]
         public bool IsActive { get; set; }
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Position))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Position))]
         public int Position { get; set; }
 
         public int Lang { get; set; }
