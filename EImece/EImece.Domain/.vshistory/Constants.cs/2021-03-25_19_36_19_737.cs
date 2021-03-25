@@ -140,6 +140,6 @@ namespace EImece.Domain
             }
         }
 
-        public static string TR = "tr-TR";
+        public static string TR = "TR-tr";
     }
 }

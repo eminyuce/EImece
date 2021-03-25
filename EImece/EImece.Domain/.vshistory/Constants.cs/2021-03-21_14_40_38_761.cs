@@ -139,7 +139,5 @@ namespace EImece.Domain
                 return "class='gridNotActiveIcon glyphicon  glyphicon-remove-circle'";
             }
         }
-
-        public static string TR = "tr-TR";
     }
 }

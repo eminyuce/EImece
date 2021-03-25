@@ -101,8 +101,8 @@ namespace EImece.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
-                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
+                        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Doamin.Constants.TR);
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
                         return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
 
                     case SignInStatus.LockedOut:
