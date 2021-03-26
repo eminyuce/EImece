@@ -16,8 +16,18 @@
     foreach (var item in listItems)
     {
         var selectedLanguage = (EImeceLanguage)item.Value.ToInt();
-        var countryCode = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
-        <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
-        <a class="@(countryCode.Equals(currentLanguage) ? selectedClass : normalClass)" href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
+        var desc = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
+        switch (selectedLanguage)
+        {
+            case EImeceLanguage.English:
+
+                <img src="~/Content/mstore/img/flags/flag-eng.png" />
+                break;
+            case EImeceLanguage.Turkish:
+
+                break;
+        }
+        <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",desc) />
+        <a class="@(desc.Equals(currentLanguage) ? selectedClass : normalClass)" href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
     }
 }

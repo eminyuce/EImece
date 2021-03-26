@@ -587,8 +587,8 @@
     <Content Include="Content\mstore\img\docs\technologies.png" />
     <Content Include="Content\mstore\img\flags\de.png" />
     <Content Include="Content\mstore\img\flags\en.png" />
-    <Content Include="Content\mstore\img\flags\flag-en-US.png" />
-    <Content Include="Content\mstore\img\flags\flag-tr-TR.png" />
+    <Content Include="Content\mstore\img\flags\flag-eng.png" />
+    <Content Include="Content\mstore\img\flags\flag-tr.png" />
     <Content Include="Content\mstore\img\flags\fr.png" />
     <Content Include="Content\mstore\img\flags\it.png" />
     <Content Include="Content\mstore\img\flags\tr.png" />
