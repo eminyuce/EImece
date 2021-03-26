@@ -58,8 +58,6 @@ namespace EImece.Controllers
         public ActionResult AdminLogin(string returnUrl = "")
         {
             ViewBag.ReturnUrl = returnUrl;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
             return View();
         }
 
@@ -103,6 +101,8 @@ namespace EImece.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
+                        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
                         return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
 
                     case SignInStatus.LockedOut:

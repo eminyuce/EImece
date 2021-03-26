@@ -205,6 +205,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yönetici Paneli Giriş Sayfası.
+        /// </summary>
+        public static string AdminPanelLoginPage {
+            get {
+                return ResourceManager.GetString("AdminPanelLoginPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yönetici Paneline Hoş Geldiniz.
         /// </summary>
         public static string AdminPanelWelcome {
@@ -808,6 +817,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giriş Tarihi : {0}.
+        /// </summary>
+        public static string EnterDateForAdmin {
+            get {
+                return ResourceManager.GetString("EnterDateForAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kurtarmak için E-postanızı Girin.
         /// </summary>
         public static string EnterYourEmailToRecover {
@@ -1267,6 +1285,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP Adresiniz : {0}.
+        /// </summary>
+        public static string IPAddressForAdmin {
+            get {
+                return ResourceManager.GetString("IPAddressForAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yayında mı.
         /// </summary>
         public static string IsActive {
@@ -1353,6 +1380,15 @@ namespace Resources {
         public static string IyziCommissionRateAmount {
             get {
                 return ResourceManager.GetString("IyziCommissionRateAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu Bölüm Yalnız Yöneticilere Açıktır.
+        /// </summary>
+        public static string JustOpenForAdmin {
+            get {
+                return ResourceManager.GetString("JustOpenForAdmin", resourceCulture);
             }
         }
         

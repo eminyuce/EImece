@@ -93,18 +93,16 @@ namespace EImece.Domain.Helpers
             var values = ConfigureLanguagesFromAppConfigs();
             if (selected.ToInt() > 0)
             {
-                // Admin Panel Dil DropDown icin Dil ENUM degerini (int) kullanmisiz.
                 return (from EImeceLanguage e in values
                         select new SelectListItem
                         {
-                            Selected = selected.ToInt().Equals((int)e),
+                            Selected = GetEnumDescription(e).Equals(selected),
                             Text = e.GetDisplayValue(),
                             Value = ((int)e).ToStr()
                         }).ToList();
             }
             else
-            { 
-                // Son kullanici ekrani Dil secenekleri icin Dil ENUM Description (ulke kodu) kullanmisiz.
+            {
                 return (from EImeceLanguage e in values
                         select new SelectListItem
                         {

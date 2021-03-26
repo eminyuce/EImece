@@ -1134,9 +1134,6 @@
   <data name="Orders" xml:space="preserve">
     <value>Siparişler</value>
   </data>
-  <data name="AdminPanelLoginPage" xml:space="preserve">
-    <value>Yönetici Paneli Giriş Sayfası</value>
-  </data>
   <data name="EnterDateForAdmin" xml:space="preserve">
     <value>Giriş Tarihi : {0}</value>
   </data>

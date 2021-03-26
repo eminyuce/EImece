@@ -8,6 +8,7 @@
 @if (listItems.Count() > 1)
 {
 <li>
+    @ViewBag.cultureCookie
     <select class="form-control" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" style=" margin-top: 7px;">
         @foreach (var l in listItems)
         {

@@ -103,7 +103,7 @@
                             <div class="panel-footer">
                                 <div>@AdminResource.JustOpenForAdmin</div>
                                 <div>@String.Format(AdminResource.EnterDateForAdmin, DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss"))</div>
-                                <div>@String.Format(AdminResource.IPAddressForAdmin, EImece.Domain.Helpers.GeneralHelper.GetRemoteIP(Request.ServerVariables))  </div>
+                                <div>@String.Format("IP Adresiniz : {0}", EImece.Domain.Helpers.GeneralHelper.GetRemoteIP(Request.ServerVariables))  </div>
                             </div>
                         </div>
         </div>

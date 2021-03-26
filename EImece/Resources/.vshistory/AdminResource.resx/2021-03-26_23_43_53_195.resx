@@ -1134,14 +1134,8 @@
   <data name="Orders" xml:space="preserve">
     <value>Siparişler</value>
   </data>
-  <data name="AdminPanelLoginPage" xml:space="preserve">
-    <value>Yönetici Paneli Giriş Sayfası</value>
-  </data>
   <data name="EnterDateForAdmin" xml:space="preserve">
     <value>Giriş Tarihi : {0}</value>
-  </data>
-  <data name="IPAddressForAdmin" xml:space="preserve">
-    <value>IP Adresiniz : {0}</value>
   </data>
   <data name="JustOpenForAdmin" xml:space="preserve">
     <value>Bu Bölüm Yalnız Yöneticilere Açıktır</value>

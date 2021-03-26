@@ -8,19 +8,17 @@
 @if (listItems.Count() > 1)
 {
 <li>
+
     <select class="form-control" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" style=" margin-top: 7px;">
         @foreach (var l in listItems)
         {
-            if (l.Selected)
-            {
-                <option selected="selected" value="@l.Value">@l.Text</option>
-            }
-            else
-            {
-                <option value="@l.Value">@l.Text</option>
-            }
-
+            <option value="@l.Value">@l.Text</option>
         }
+
+
     </select>
+
+
+    @Html.DropDownList("CookieLanguage", listItems, new { @onchange = "setlanguage(this.value)", @style = " margin-top: 7px;", @class = "form-control" })
 </li>
 }

@@ -272,7 +272,7 @@
 
             CreateTags();
             function CreateTags() {
-                var postData = JSON.stringify({ "language": $("#CookieLanguage").val(), "productId": $("#Id").val() });
+                var postData = JSON.stringify({ "language": $("#Lang").val(), "productId": $("#Id").val() });
                 console.log(postData);
                 ajaxMethodCall(postData, "/admin/Ajax/GetProductTags", function (data) {
                     $("#productTagsHtml").html(data);
