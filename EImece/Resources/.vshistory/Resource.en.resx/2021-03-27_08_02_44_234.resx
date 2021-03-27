@@ -1685,13 +1685,4 @@
   <data name="SecondMenuCategoryId" xml:space="preserve">
     <value>SecondMenuCategoryId</value>
   </data>
-  <data name="PromoBannerText" xml:space="preserve">
-    <value>&lt;h3 class="font-family-body font-weight-light mb-2"&gt;Unique Product&lt;/h3&gt;
-                        &lt;h2 class="mb-2 pb-1"&gt;Only one piece of this product &lt;br&gt; produced in this color.&lt;/h2&gt;
-                        &lt;h5 class="font-family-body font-weight-light mb-3"&gt;Special for those who want to be unique and inimitable&lt;/h5&gt;
-                        &lt;a class="btn btn-primary" href="{0}"&gt;View Product&lt;i class="ml-2" data-feather="arrow-right"&gt;&lt;/i&gt;&lt;/a&gt;</value>
-  </data>
-  <data name="LimitedStock" xml:space="preserve">
-    <value>Limited Stock</value>
-  </data>
 </root>

@@ -1978,6 +1978,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sınırlı Stok.
+        /// </summary>
+        public static string LimitedStock {
+            get {
+                return ResourceManager.GetString("LimitedStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link.
         /// </summary>
         public static string Link {
@@ -3208,6 +3217,18 @@ namespace Resources {
         public static string ProductSpecTemplateItemList {
             get {
                 return ResourceManager.GetString("ProductSpecTemplateItemList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;h3 class=&quot;font-family-body font-weight-light mb-2&quot;&gt;Tek Ürün&lt;/h3&gt;
+        ///                    &lt;h2 class=&quot;mb-2 pb-1&quot;&gt;Bu üründen bu renkte&lt;br&gt; sadece bir adet üretilmiştir.&lt;/h2&gt;
+        ///                    &lt;h5 class=&quot;font-family-body font-weight-light mb-3&quot;&gt;Eşsiz ve taklit edilemez olmak isteyenlere özel&lt;/h5&gt;
+        ///                    &lt;a class=&quot;btn btn-primary&quot; href=&quot;{0}&quot;&gt;Ürünleri İncele&lt;i class=&quot;ml-2&quot; data-feather=&quot;arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;.
+        /// </summary>
+        public static string PromoBannerText {
+            get {
+                return ResourceManager.GetString("PromoBannerText", resourceCulture);
             }
         }
         

@@ -1691,7 +1691,4 @@
                         &lt;h5 class="font-family-body font-weight-light mb-3"&gt;Special for those who want to be unique and inimitable&lt;/h5&gt;
                         &lt;a class="btn btn-primary" href="{0}"&gt;View Product&lt;i class="ml-2" data-feather="arrow-right"&gt;&lt;/i&gt;&lt;/a&gt;</value>
   </data>
-  <data name="LimitedStock" xml:space="preserve">
-    <value>Limited Stock</value>
-  </data>
 </root>

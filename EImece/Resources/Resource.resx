@@ -1685,4 +1685,13 @@
   <data name="SecondMenuCategoryId" xml:space="preserve">
     <value>Gideceği Yeni Menu Kategori</value>
   </data>
+  <data name="PromoBannerText" xml:space="preserve">
+    <value>&lt;h3 class="font-family-body font-weight-light mb-2"&gt;Tek Ürün&lt;/h3&gt;
+                    &lt;h2 class="mb-2 pb-1"&gt;Bu üründen bu renkte&lt;br&gt; sadece bir adet üretilmiştir.&lt;/h2&gt;
+                    &lt;h5 class="font-family-body font-weight-light mb-3"&gt;Eşsiz ve taklit edilemez olmak isteyenlere özel&lt;/h5&gt;
+                    &lt;a class="btn btn-primary" href="{0}"&gt;Ürünleri İncele&lt;i class="ml-2" data-feather="arrow-right"&gt;&lt;/i&gt;&lt;/a&gt;</value>
+  </data>
+  <data name="LimitedStock" xml:space="preserve">
+    <value>Sınırlı Stok</value>
+  </data>
 </root>

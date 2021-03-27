@@ -55,15 +55,15 @@
 @CreatePromoBanner(bannerLink)
 @helper CreatePromoBanner(String bannerLink)
 {
-
+    
     <!-- Promo banner-->
     <section class="container py-1 my-1 px-1">
         <div class="bg-faded-info position-relative py-4">
             <div class="row align-items-center">
                 <div class="col-md-5">
-                    <span class="badge badge-pill badge-warning ml-5">@Resource.LimitedStock !</span>
+                    <span class="badge badge-pill badge-warning ml-5">Sınırlı Stok !</span>
                     <div class="pt-4 pl-4 pl-sm-5">
-                        @Html.Raw(string.Format(Resource.PromoBannerText, bannerLink))
+                        @Html.Raw(string.Format(Resource.PromoBannerText,bannerLink))
                     </div>
                 </div>
                 <div class="col-md-7"><img class="mx-auto" src="~/media/images/offer.jpg" alt="Promo banner"></div>
@@ -81,70 +81,88 @@
     </div>
 </section>
 
-
-@helper  CreateMainPageImage(MainPageImage mainPageImage)
-{var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 0);
+@helper CreateMainPageImage(MainPageImage mainPageImage)
+{
+    var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 0);
     <div class="row align-items-center py-5">
-        <div class="col-md-5">
-            <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
-                <h3 class="mb-1">@mainPageImage.Name</h3>
-                <a class="btn btn-primary" href="@mainPageImage.Link">@Resource.ShopNow<i class="ml-2" data-feather="arrow-right"></i></a>
-            </div>
+    <div class="col-md-5">
+        <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
+            <h1 class="mb-1">@mainPageImage.Name</h1>
+            <a class="btn btn-primary" href="@mainPageImage.Link">@Resource.ViewProducts<i class="ml-2" data-feather="arrow-right"></i></a>
         </div>
-        <div class="col-md-7"><img class="d-block mx-auto" src="@imgLink" alt="@mainPageImage.Name"></div>
+    </div>
+    <div class="col-md-7"><img class="d-block mx-auto" src="@imgLink" alt="@mainPageImage.Name"></div>
     </div>
 }
 
-@helper  CreateProductCategorySection(String title, List<ProductCategory> mainPageProductCategories)
-{if (mainPageProductCategories.IsNotEmpty())
-                    {
-                        var featuredItem = mainPageProductCategories.First();<!-- Featured products grid-->
-                        <section class="container px-1 pt-2">
-                            <div class="row no-gutters">
-                                @for (int i = 0; i < mainPageProductCategories.Count; i++)
-                                {
-                                    var p = mainPageProductCategories[i];
-            @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })}
-                            </div>
-                        </section>}
+@helper CreateProductCategorySection(String title, List<ProductCategory> mainPageProductCategories)
+{
+    if (mainPageProductCategories.IsNotEmpty())
+    {
+        var featuredItem = mainPageProductCategories.First();
+        < !--Featured products grid-->
+        < section class="container px-1 pt-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-center pb-2">
+            <h2 class="h3 mb-3">@title</h2>
+        </div>
+        <div class="row no-gutters">
+            @for (int i = 0; i < mainPageProductCategories.Count; i++)
+            {
+                var p = mainPageProductCategories[i];
+                @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })
+            }
+            </ div >
+            </ section >
+        }
 }
 
+@helper CreateProductWidget(String title, List<Product> products)
+{
+    if (products.IsNotEmpty())
+    {
+        < div class= "col-md-4 col-sm-6 mb-2 py-3" >
 
+        < div class= "widget widget-featured-entries" >
 
-@helper  CreateProductWidget(String title, List<Product> products)
-{if (products.IsNotEmpty())
-                    {
-    <div class="col-md-4 col-sm-6 mb-2 py-3">
-        <div class="widget widget-featured-entries">
-            <h3 class="widget-title font-size-lg">@title</h3>
+        < h3 class= "widget-title font-size-lg" > @title </ h3 >
 
-            @for (int i = 0; i < products.Count; i++)
-            {
-                var p = products[i];
-@Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })}
-        </div>
-    </div>}
+        @for (int i = 0; i < products.Count; i++)
+        {
+            var p = products[i];
+            @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })
+        }
+        </ div >
+        </ div >
+    }
 }
 
 @helper CreateMainPageCategory(ProductCategory productCategory, List<ProductCategory> productCategories, bool isLast)
-{var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
-                    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
-                    var productCategoryLink = productCategory.ProductCategoryLink;
+{
+    var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
+    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
+    var productCategoryLink = productCategory.ProductCategoryLink;
 
-    <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
-        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"
-           href="@productCategoryLink"
-           data-toggle="popover" data-placement="right" data-trigger="hover"
-           data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent)">
-            <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
-            <span>
+    < li @string.Format("{0}", isLast ? "" : "class=border-bottom") >
 
-                <b>
-                    @productCategory.Name
-                </b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
-                </i>
-            </span>
-        </a>
-    </li>
+    < a class= "d-flex align-items-center nav-link-inline pb-3 pt-3"
+    href = "@productCategoryLink"
+    data - toggle = "popover" data - placement = "right" data - trigger = "hover"
+    data - html = "true" data - content = "@Html.Raw(productCategory.CreateChildDataContent)" >
+
+    < i class= "text-primary opacity-60 mr-2 mt-1" data - feather = "arrow-right" style = "width: 1.25rem; height: 1.25rem;" ></ i >
+
+    < span >
+
+
+    < b >
+    @productCategory.Name
+    </ b > < i class= "ml-1" data - feather = "chevron-right" style = "width: 1rem; height: 1rem;" >
+
+    </ i >
+
+    </ span >
+
+    </ a >
+
+    </ li >
 }
-

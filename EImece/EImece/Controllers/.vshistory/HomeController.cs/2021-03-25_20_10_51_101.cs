@@ -370,7 +370,7 @@ namespace EImece.Controllers
 
             return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize = GetApproximateSize(cache) });
         }
-        
+
         public static long GetApproximateSize(MemoryCache cache)
         {
             try

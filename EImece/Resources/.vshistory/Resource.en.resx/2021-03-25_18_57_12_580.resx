@@ -283,7 +283,7 @@
     <value>Recover</value>
   </data>
   <data name="ResetPassword" xml:space="preserve">
-    <value>Reset Password</value>
+    <value>ResetPassword</value>
   </data>
   <data name="ResetPasswordConfirmation" xml:space="preserve">
     <value>Confirm password reset</value>
@@ -319,7 +319,7 @@
                     &lt;/div&gt;</value>
   </data>
   <data name="AboutUs" xml:space="preserve">
-    <value>About Us</value>
+    <value>AboutUs</value>
   </data>
   <data name="NoUserFound" xml:space="preserve">
     <value>There is no such user registered in our system. Please check your information.</value>
@@ -355,13 +355,13 @@
     <value>Place order</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Düzenle</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
   <data name="CustomerRegister" xml:space="preserve">
-    <value>Customer Register</value>
+    <value>CustomerRegister</value>
   </data>
   <data name="AlreadyMembered" xml:space="preserve">
     <value>AlreadyMembered</value>
@@ -601,7 +601,7 @@
     <value>ActionOptionsOfSelectedItems</value>
   </data>
   <data name="AddImages" xml:space="preserve">
-    <value>Add Images</value>
+    <value>AddImages</value>
   </data>
   <data name="AdminDeleteConfirmMessage" xml:space="preserve">
     <value>AdminDeleteConfirmMessage</value>
@@ -661,19 +661,19 @@
     <value>Are you sure?</value>
   </data>
   <data name="AuthorName" xml:space="preserve">
-    <value>Author Name</value>
+    <value>AuthorName</value>
   </data>
   <data name="BackToList" xml:space="preserve">
-    <value>Back To List</value>
+    <value>BackToList</value>
   </data>
   <data name="BasketMinTotalPrice" xml:space="preserve">
     <value>BasketMinTotalPrice</value>
   </data>
   <data name="BecomeMember" xml:space="preserve">
-    <value>Become Member</value>
+    <value>BecomeMember</value>
   </data>
   <data name="BillingAddress" xml:space="preserve">
-    <value>Billing Address</value>
+    <value>BillingAddress</value>
   </data>
   <data name="BirthDate" xml:space="preserve">
     <value>BirthDate</value>
@@ -685,10 +685,10 @@
     <value>Brands</value>
   </data>
   <data name="ButtonCancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>ButtonCancel</value>
   </data>
   <data name="ButtonOk" xml:space="preserve">
-    <value>Ok</value>
+    <value>ButtonOk</value>
   </data>
   <data name="CALLBACK_PECCO" xml:space="preserve">
     <value>CALLBACK_PECCO</value>
@@ -1177,7 +1177,7 @@
     <value>Product</value>
   </data>
   <data name="ProductCategories" xml:space="preserve">
-    <value>Product Categories</value>
+    <value>ProductCategories</value>
   </data>
   <data name="ProductCategoryDiscountPercantage" xml:space="preserve">
     <value>Product Category Sale Percentage</value>
@@ -1533,7 +1533,7 @@
     <value>Admin order note</value>
   </data>
   <data name="ClickHereForMoreDetails" xml:space="preserve">
-    <value>Click here for details</value>
+    <value>Click h ere for details</value>
   </data>
   <data name="ShipmentCompanyName" xml:space="preserve">
     <value>Shipment Company</value>
@@ -1684,14 +1684,5 @@
   </data>
   <data name="SecondMenuCategoryId" xml:space="preserve">
     <value>SecondMenuCategoryId</value>
-  </data>
-  <data name="PromoBannerText" xml:space="preserve">
-    <value>&lt;h3 class="font-family-body font-weight-light mb-2"&gt;Unique Product&lt;/h3&gt;
-                        &lt;h2 class="mb-2 pb-1"&gt;Only one piece of this product &lt;br&gt; produced in this color.&lt;/h2&gt;
-                        &lt;h5 class="font-family-body font-weight-light mb-3"&gt;Special for those who want to be unique and inimitable&lt;/h5&gt;
-                        &lt;a class="btn btn-primary" href="{0}"&gt;View Product&lt;i class="ml-2" data-feather="arrow-right"&gt;&lt;/i&gt;&lt;/a&gt;</value>
-  </data>
-  <data name="LimitedStock" xml:space="preserve">
-    <value>Limited Stock</value>
   </data>
 </root>
