@@ -7,10 +7,6 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
 
-@{ 
-    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
-}
-
 <!DOCTYPE html>
 <html lang="@Html.Action("GetHtmlLangCode", "Home")">
 <head>
@@ -69,7 +65,7 @@
     <div class="">
         <div class="">
             <a href="/i/kumaslarin-kralicesi-ipek-2d2d1b2d/">
-                <img src="~/Content/img/@string.Format("ustbant-{0}.png",countryCode)"  alt="Info" class="responsive" />
+                <img src="~/Content/img/ustbant.png"  alt="Nature" class="responsive" />
             </a>
         </div>
     </div>

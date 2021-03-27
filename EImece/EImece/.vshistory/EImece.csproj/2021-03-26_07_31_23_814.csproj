@@ -476,8 +476,6 @@
     <Content Include="Content\img\iyzico-ile-Ode%401X.png" />
     <Content Include="Content\img\iyzico-ile-Ode_Alt%401X.png" />
     <Content Include="Content\img\logo-footer-mastervisa.png" />
-    <Content Include="Content\img\ustbant-en-US.png" />
-    <Content Include="Content\img\ustbant-tr-TR.png" />
     <Content Include="Content\img\ustbant.png" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-noscript.css" />
     <Content Include="Content\jQuery.FileUpload\css\jquery.fileupload-ui-noscript.css" />
