@@ -3345,6 +3345,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kayıt işlemi bir dakikadan az sürer ancak siparişleriniz üzerinde tam kontrol sahibi olmanızı sağlar..
+        /// </summary>
+        public static string RegistrationInfoText {
+            get {
+                return ResourceManager.GetString("RegistrationInfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İlgili Bloglar.
         /// </summary>
         public static string RelatedBlogsForProducts {

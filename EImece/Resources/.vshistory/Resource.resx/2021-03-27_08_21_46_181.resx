@@ -1694,7 +1694,4 @@
   <data name="LimitedStock" xml:space="preserve">
     <value>Sınırlı Stok</value>
   </data>
-  <data name="RegistrationInfoText" xml:space="preserve">
-    <value>Kayıt işlemi bir dakikadan az sürer ancak siparişleriniz üzerinde tam kontrol sahibi olmanızı sağlar.</value>
-  </data>
 </root>
