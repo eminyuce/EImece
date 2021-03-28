@@ -1960,6 +1960,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Soy isim.
+        /// </summary>
+        public static string LastName2 {
+            get {
+                return ResourceManager.GetString("LastName2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Son Gelen Yorumlar.
         /// </summary>
         public static string LatestReviews {

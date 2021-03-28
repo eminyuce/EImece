@@ -1637,6 +1637,9 @@
   <data name="PleaseEnterYourTown" xml:space="preserve">
     <value>This field is required.</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
   <data name="PopularProducts" xml:space="preserve">
     <value>Popular Products​</value>
   </data>
@@ -1693,8 +1696,5 @@
   </data>
   <data name="RegistrationInfoText" xml:space="preserve">
     <value>The registration process takes less than a minute, but gives you full control over your orders.</value>
-  </data>
-  <data name="LastName2" xml:space="preserve">
-    <value>Last Name</value>
   </data>
 </root>

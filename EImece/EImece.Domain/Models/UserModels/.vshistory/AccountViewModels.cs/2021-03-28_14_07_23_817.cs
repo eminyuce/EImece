@@ -146,7 +146,7 @@ namespace EImece.Models
         public string FirstName { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName2))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string LastName { get; set; }
 
         public ApplicationUser GetUser()

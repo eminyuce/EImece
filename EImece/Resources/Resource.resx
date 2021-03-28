@@ -1697,4 +1697,7 @@
   <data name="RegistrationInfoText" xml:space="preserve">
     <value>Kayıt işlemi bir dakikadan az sürer ancak siparişleriniz üzerinde tam kontrol sahibi olmanızı sağlar.</value>
   </data>
+  <data name="LastName2" xml:space="preserve">
+    <value>Soy isim</value>
+  </data>
 </root>
