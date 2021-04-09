@@ -32,7 +32,7 @@ namespace EImece.Controllers
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
-        public ICacheProvider MemoryCacheProvider { get; set; }
+        public IEimeceCacheProvider MemoryCacheProvider { get; set; }
 
         [Inject]
         public IEmailSender EmailSender { get; set; }

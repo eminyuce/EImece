@@ -16,12 +16,12 @@ namespace EImece.Domain.Services
         [Inject]
         public IHttpContextFactory HttpContextFactory { get; set; }
 
-        private ICacheProvider _memoryCacheProvider { get; set; }
+        private IEimeceCacheProvider _memoryCacheProvider { get; set; }
 
         public bool IsCachingActivated { get; set; } = true;
 
         [Inject]
-        public ICacheProvider MemoryCacheProvider
+        public IEimeceCacheProvider MemoryCacheProvider
         {
             get
             {

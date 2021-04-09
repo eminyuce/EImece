@@ -1,0 +1,183 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+
+@{
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="@Html.Action("GetHtmlLangCode", "Home")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Html.Raw(ViewBag.Title)</title>
+    @if (!string.IsNullOrEmpty(ViewBag.Description))
+    {
+        <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+    }
+
+    @if (!string.IsNullOrEmpty(ViewBag.Keywords))
+    {
+        <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
+    }
+    @{
+        String seoId = (String)ViewBag.SeoId;
+
+    }
+    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
+    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
+
+    @if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+    {
+        <meta name="robots" content="noindex">
+        <meta name="googlebot" content="noindex">
+    }
+    else
+    {
+        <meta name="Robots" content="index,follow" />
+    }
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon and Touch Icons-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" color="#111" href="~/Content/safari-pinned-tab.svg">
+    <meta name="msapplication-TileColor" content="#111">
+    <meta name="theme-color" content="#ffffff">
+
+    @Styles.Render("~/Content/eimeceTheme")
+
+    <link href="~/Content/mstore/css/skins/theme-5c77fc.min.css" rel="stylesheet" />
+    <link href="~/Content/mstore/css/skins/theme-5c77fc-rounded.min.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body lang="@Html.Action("GetHtmlLangCode", "Home")">
+    <input name="currentLang" type="hidden" value="@Thread.CurrentThread.CurrentUICulture.ToString()" />
+    <!-- Navbar Multilevel-->
+    <!-- First line: Topbar-->
+    <div class="">
+        <div class="">
+            <a href="/i/kumaslarin-kralicesi-ipek-2d2d1b2d/">
+                <img src="~/Content/img/@string.Format("ustbant-{0}.png",countryCode)" alt="Info" class="responsive" />
+            </a>
+        </div>
+    </div>
+
+    <!-- Navbar Multilevel-->
+    <!-- First line: Topbar-->
+    <div class="navbar bg-dark py-2 px-0">
+        <div class="container px-3">
+
+            @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = false })
+            <!-- links collapsed (moblie)-->
+            <div class="dropdown d-inline-block d-lg-none">
+                <a class="dropdown-toggle text-light opacity-75 font-size-sm py-1" href="#" data-toggle="dropdown">@Resource.UsefulLinks</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info")">@Resource.AboutUs</a>
+                    <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info")">@Resource.DeliveryInfo</a>
+                    <div class="dropdown-divider">
+                    </div>
+                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
+                </div>
+            </div>
+            <div class="d-flex">
+                <!-- topbar menu-->
+                <ul class="list-inline mb-0 d-none d-lg-block">
+                    <li class="list-inline-item mr-2">
+                        @Html.Action("Languages", "Home")
+                    </li>
+                    <li class="list-inline-item mr-2">
+                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light"
+                           href="@Url.Action(Constants.AboutUs,"info")">@Resource.AboutUs</a>
+                    </li>
+                    <li class="list-inline-item mr-2">
+                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2"
+                           href="@Url.Action(Constants.DeliveryInfo,"info")">@Resource.DeliveryInfo</a>
+                    </li>
+                </ul>
+
+                @Html.Action("SocialMediaLinks", "Home")
+            </div>
+        </div>
+    </div>
+
+    <!-- Second line-->
+    <header class="navbar navbar-expand-lg navbar-light bg-light px-0">
+        <div class="container flex-sm-nowrap px-3">
+            <!-- navbar brand-->
+            <a class="navbar-brand mr-0 mr-sm-4" style="min-width: 100px;" href="@Url.Action("Index","Home")">
+                <img src="/images/logo.jpg" style="max-width: 200px;" alt="@Html.Action("GetCompanyName", "Home")" />
+            </a>
+
+            <!-- navbar buttons-->
+            <div class="navbar-btns d-flex position-relative order-sm-3">
+                <div class="navbar-toggler navbar-btn collapsed bg-0 border-left-0 my-3"
+                     data-toggle="collapse" data-target="#menu">
+                    <i class="mx-auto mb-2" data-feather="menu">
+                    </i>Menu
+                </div>
+                @if (Request.IsAuthenticated)
+                {
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                        <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
+                    </a>
+                }
+
+                @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+            </div>
+
+            @Html.Partial("_SearchProductForm")
+        </div>
+    </header>
+
+    @Html.Raw(Html.Action("Navigation", "Home"))
+
+    @RenderBody()
+
+    @Html.Action("Footer", "Home")
+
+    @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
+    @Html.Raw(Html.Action("WhatsAppCommunicationScript", "Home"))
+    <a class="scroll-to-top-btn" href="#"><i class="scroll-to-top-btn-icon" data-feather="chevron-up"></i></a>
+
+    @Scripts.Render("~/bundles/mstore")
+    @Scripts.Render("~/bundles/eimeceScripts")
+    @RenderSection("scripts", required: false)
+
+    <!-- Modal markup -->
+    <div class="covidModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Html.Raw(Resource.CovidSubjectText)</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="@Resource.Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Html.Raw(Resource.CovidInfoText)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">@Resource.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+     
+</body>
+</html>

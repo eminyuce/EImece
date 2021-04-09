@@ -76,7 +76,7 @@ namespace EImece.Areas.Admin.Controllers
         public IEmailSender EmailSender { get; set; }
 
         [Inject]
-        public ICacheProvider MemoryCacheProvider { get; set; }
+        public IEimeceCacheProvider MemoryCacheProvider { get; set; }
 
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }

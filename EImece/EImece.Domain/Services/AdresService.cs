@@ -13,10 +13,10 @@ namespace EImece.Domain.Services
         {
         }
 
-        private ICacheProvider _memoryCacheProvider { get; set; }
+        private IEimeceCacheProvider _memoryCacheProvider { get; set; }
 
         [Inject]
-        public ICacheProvider MemoryCacheProvider
+        public IEimeceCacheProvider MemoryCacheProvider
         {
             get
             {

@@ -20,14 +20,14 @@ namespace EImece.Controllers
     public class ImagesController : BaseController
     {
         private const string ContentType = "image/Jpeg";
-        private ICacheProvider _memoryCacheProvider { get; set; }
+        private IEimeceCacheProvider _memoryCacheProvider { get; set; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
 
         [Inject]
-        public ICacheProvider MemoryCacheProvider
+        public IEimeceCacheProvider MemoryCacheProvider
         {
             get
             {

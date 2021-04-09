@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using LazyCache;
+using Microsoft.Extensions.Caching.Memory;
+using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,26 +9,35 @@ using System.Runtime.Caching;
 
 namespace EImece.Domain.Caching
 {
-    public class MemoryCacheProvider : CacheProvider<MemoryCache>
+    public class MemoryCacheProvider  : IEimeceCacheProvider
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        protected override MemoryCache InitCache()
+        private readonly IAppCache _lazyCache = new CachingService();
+        private static List<string> allCacheKeys = new List<string>();
+        public void Clear(string key)
         {
-            return MemoryCache.Default;
+            _lazyCache.Remove(key);
         }
 
-        public override bool Get<T>(string key, out T value)
+        public void ClearAll()
+        {
+            foreach (var key in allCacheKeys)
+            {
+                _lazyCache.Remove(key);
+            }
+        }
+
+        public bool Get<T>(string key, out T value)
         {
             if (AppConfig.IsCacheActive)
             {
                 key = "Memory:" + key;
-                if (_cache[key] == null)
+                if (_lazyCache.Get<T>(key) == null)
                 {
                     value = default(T);
                     return false;
                 }
-                value = (T)_cache[key];
+                value = (T)_lazyCache.Get<T>(key);
                 return true;
             }
             else
@@ -35,68 +46,16 @@ namespace EImece.Domain.Caching
                 return false;
             }
         }
-
-        public override void Set<T>(string key, T value)
+       
+        public void Set<T>(string key, T value, int duration)
         {
             if (AppConfig.IsCacheActive)
             {
-                key = "Memory:" + key;
-                if (IsCacheProviderActive)
-                {
-                    Set<T>(key, value, CacheDuration);
-                }
-            }
-        }
-
-        public override void Set<T>(string key, T value, int duration)
-        {
-            if (AppConfig.IsCacheActive)
-            {
-                key = "Memory:" + key;
-                if (value != null)
-                {
-                    var policy = new CacheItemPolicy();
-                    policy.Priority = CacheItemPriority.Default;
-                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-                    _cache.Set(key, value, policy);
-                }
-            }
-        }
-
-        public override void Clear(string key)
-        {
-            _cache.Remove(key, CacheEntryRemovedReason.Removed);
-        }
-
-        public override IEnumerable<KeyValuePair<string, object>> GetAll()
-        {
-            List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
-            foreach (String key in cacheKeys)
-            {
-                yield return new KeyValuePair<string, object>(key, _cache[key]);
-            }
-        }
-
-        public override void ClearAll()
-        {
-            List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
-            foreach (String key in cacheKeys)
-            {
-                Clear(key);
-            }
-
-            List<string> keys = new List<string>();
-
-            IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                string key = (string)enumerator.Key;
-                keys.Add(key);
-            }
-
-            foreach (string key in keys)
-            {
-                System.Web.HttpRuntime.Cache.Remove(key);
+                MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
+                options.AbsoluteExpiration = DateTime.Now.AddSeconds(duration);
+                options.SlidingExpiration = TimeSpan.FromSeconds(duration);
+                _lazyCache.Add(key, value, options);
+                allCacheKeys.Add(key);
             }
         }
     }
