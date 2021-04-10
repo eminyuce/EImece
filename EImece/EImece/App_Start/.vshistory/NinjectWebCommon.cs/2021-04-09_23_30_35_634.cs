@@ -79,7 +79,7 @@ namespace EImece.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IEimeceCacheProvider>().To<LazyCacheProvider>().InSingletonScope();
+            kernel.Bind<IEimeceCacheProvider>().To<MemoryCacheProvider>().InSingletonScope();
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();

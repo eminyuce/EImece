@@ -95,7 +95,7 @@ namespace EImece.Tests.Controllers
             {
                 var repository = new SettingRepository(db);
                 var SettingService = new SettingService(repository);
-                SettingService.MemoryCacheProvider = new LazyCacheProvider();
+                SettingService.MemoryCacheProvider = new MemoryCacheProvider();
                 EmailAccount emailAccount = SettingService.GetEmailAccount();
                 Console.WriteLine(emailAccount.ToString());
                 EmailSender emailSender = new EmailSender();
@@ -244,7 +244,7 @@ namespace EImece.Tests.Controllers
         {
             var db = new EImeceContext(ConnectionString);
             var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db));
-            ProductCategoryService.MemoryCacheProvider = new LazyCacheProvider();
+            ProductCategoryService.MemoryCacheProvider = new MemoryCacheProvider();
             var breadCrumb = ProductCategoryService.GetBreadCrumb(215, 1);
             foreach (var item in breadCrumb)
             {

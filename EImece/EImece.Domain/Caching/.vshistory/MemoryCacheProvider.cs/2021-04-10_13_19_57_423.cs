@@ -16,18 +16,22 @@ namespace EImece.Domain.Caching
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         MemoryCache _cache = MemoryCache.Default;
+        protected MemoryCache InitCache()
+        {
+            return MemoryCache.Default;
+        }
 
         public bool Get<T>(string key, out T value)
         {
             if (AppConfig.IsCacheActive)
             {
-                var keyNew = "Memory:" + key;
-                if (_cache[keyNew] == null)
+                key = "Memory:" + key;
+                if (_cache[key] == null)
                 {
                     value = default(T);
                     return false;
                 }
-                value = (T)_cache[keyNew];
+                value = (T)_cache[key];
                 return true;
             }
             else
@@ -41,13 +45,13 @@ namespace EImece.Domain.Caching
         {
             if (AppConfig.IsCacheActive)
             {
-                var keyNew = "Memory:" + key;
+                key = "Memory:" + key;
                 if (value != null)
                 {
                     var policy = new CacheItemPolicy();
                     policy.Priority = CacheItemPriority.Default;
                     policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-                    _cache.Set(keyNew, value, policy);
+                    _cache.Set(key, value, policy);
                 }
             }
         }

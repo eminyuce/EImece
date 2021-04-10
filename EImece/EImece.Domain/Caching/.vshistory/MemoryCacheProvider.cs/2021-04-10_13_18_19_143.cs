@@ -15,19 +15,23 @@ namespace EImece.Domain.Caching
     public class MemoryCacheProvider : IEimeceCacheProvider 
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        MemoryCache _cache = MemoryCache.Default;
 
-        public bool Get<T>(string key, out T value)
+        protected override MemoryCache InitCache()
+        {
+            return MemoryCache.Default;
+        }
+
+        public override bool Get<T>(string key, out T value)
         {
             if (AppConfig.IsCacheActive)
             {
-                var keyNew = "Memory:" + key;
-                if (_cache[keyNew] == null)
+                key = "Memory:" + key;
+                if (_cache[key] == null)
                 {
                     value = default(T);
                     return false;
                 }
-                value = (T)_cache[keyNew];
+                value = (T)_cache[key];
                 return true;
             }
             else
@@ -37,27 +41,39 @@ namespace EImece.Domain.Caching
             }
         }
 
-        public  void Set<T>(string key, T value, int duration)
+        public override void Set<T>(string key, T value)
         {
             if (AppConfig.IsCacheActive)
             {
-                var keyNew = "Memory:" + key;
+                key = "Memory:" + key;
+                if (IsCacheProviderActive)
+                {
+                    Set<T>(key, value, CacheDuration);
+                }
+            }
+        }
+
+        public override void Set<T>(string key, T value, int duration)
+        {
+            if (AppConfig.IsCacheActive)
+            {
+                key = "Memory:" + key;
                 if (value != null)
                 {
                     var policy = new CacheItemPolicy();
                     policy.Priority = CacheItemPriority.Default;
                     policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
-                    _cache.Set(keyNew, value, policy);
+                    _cache.Set(key, value, policy);
                 }
             }
         }
 
-        public  void Clear(string key)
+        public override void Clear(string key)
         {
             _cache.Remove(key, CacheEntryRemovedReason.Removed);
         }
 
-        public IEnumerable<KeyValuePair<string, object>> GetAll()
+        public override IEnumerable<KeyValuePair<string, object>> GetAll()
         {
             List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
             foreach (String key in cacheKeys)
@@ -66,7 +82,7 @@ namespace EImece.Domain.Caching
             }
         }
 
-        public void ClearAll()
+        public override void ClearAll()
         {
             List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
             foreach (String key in cacheKeys)

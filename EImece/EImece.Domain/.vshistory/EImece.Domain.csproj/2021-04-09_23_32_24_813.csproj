@@ -263,7 +263,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\MemoryCacheProvider.cs" />
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
@@ -288,7 +287,7 @@
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="Caching\IEimeceCacheProvider.cs" />
-    <Compile Include="Caching\LazyCacheProvider.cs" />
+    <Compile Include="Caching\MemoryCacheProvider.cs" />
     <Compile Include="DbContext\ApplicationDbContext.cs" />
     <Compile Include="DbContext\DatabaseUtility.cs" />
     <Compile Include="DbContext\DbMigration.cs" />

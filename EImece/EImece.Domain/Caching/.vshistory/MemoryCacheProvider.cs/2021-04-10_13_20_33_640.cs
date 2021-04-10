@@ -16,6 +16,10 @@ namespace EImece.Domain.Caching
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         MemoryCache _cache = MemoryCache.Default;
+        protected MemoryCache InitCache()
+        {
+            return MemoryCache.Default;
+        }
 
         public bool Get<T>(string key, out T value)
         {
