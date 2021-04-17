@@ -57,7 +57,7 @@ namespace EImece.Domain.Caching
                 options.AbsoluteExpiration = DateTime.Now.AddSeconds(duration);
                 options.SlidingExpiration = TimeSpan.FromSeconds(duration);
                 _lazyCache.Add(keyNew, value, options);
-                allCacheKeys.Add(keyNew);
+                allCacheKeys.Add(key);
             }
         }
     }
