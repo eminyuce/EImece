@@ -31,10 +31,10 @@ namespace EImece.Domain.Services
             var cacheKey = "GetAllSettings";
             List<Setting> result = null;
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = SettingRepository.GetAllSettings();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }

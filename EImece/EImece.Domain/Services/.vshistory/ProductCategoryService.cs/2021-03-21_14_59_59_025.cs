@@ -43,10 +43,10 @@ namespace EImece.Domain.Services
             if (IsCachingActivated)
             {
                 var cacheKey = String.Format("BuildNavigation-{0}-{1}", isActive, language);
-                if (!DataCachingProvider.Get(cacheKey, out result))
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
                     result = ProductCategoryRepository.BuildNavigation(isActive, language);
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else
@@ -63,10 +63,10 @@ namespace EImece.Domain.Services
             if (IsCachingActivated)
             {
                 var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
-                if (!DataCachingProvider.Get(cacheKey, out result))
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
                     result = ProductCategoryRepository.BuildTree(isActive, language);
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else
@@ -134,10 +134,10 @@ namespace EImece.Domain.Services
         {
             List<ProductCategory> result;
             var cacheKey = string.Format("GetMainPageProductCategories-{0}", language);
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.GetMainPageProductCategories(language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
 
             return result;

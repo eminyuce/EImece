@@ -113,13 +113,13 @@ namespace EImece.Domain.Services
             StoryIndexViewModel result = null;
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
                 result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }

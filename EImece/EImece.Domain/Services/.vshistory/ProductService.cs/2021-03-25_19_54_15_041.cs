@@ -62,7 +62,7 @@ namespace EImece.Domain.Services
             ProductIndexViewModel result = null;
             var cacheKey = $"GetMainPageProducts-{page}-{language}";
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new ProductIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
@@ -73,7 +73,7 @@ namespace EImece.Domain.Services
                 var items = ProductRepository.GetActiveProducts(page, pageSize, language);
                 result.Products = items;
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }
@@ -289,10 +289,10 @@ namespace EImece.Domain.Services
         {
             List<Product> result = null;
             var cacheKey = $"GetActiveProducts-{language}";
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = ProductRepository.GetActiveProducts(language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;
         }

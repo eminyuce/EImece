@@ -40,10 +40,10 @@ namespace EImece.Domain.Services
         {
             List<MailTemplate> result;
             var cacheKey = "GetAllMailTemplatesWithCache";
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = this.GetAll();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
 
             return result;

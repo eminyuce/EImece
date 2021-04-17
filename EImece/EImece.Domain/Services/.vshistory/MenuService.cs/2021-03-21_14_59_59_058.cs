@@ -34,10 +34,10 @@ namespace EImece.Domain.Services
             if (IsCachingActivated)
             {
                 var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
-                if (!DataCachingProvider.Get(cacheKey, out result))
+                if (!MemoryCacheProvider.Get(cacheKey, out result))
                 {
                     result = MenuRepository.BuildTree(isActive, language);
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
                 }
             }
             else
@@ -63,10 +63,10 @@ namespace EImece.Domain.Services
         {
             var cacheKey = "GetMenus";
             List<Menu> result = null;
-            if (!DataCachingProvider.Get(cacheKey, out result) && IsCachingActivated)
+            if (!MemoryCacheProvider.Get(cacheKey, out result) && IsCachingActivated)
             {
                 result = MenuRepository.GetMenus();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             else
             {

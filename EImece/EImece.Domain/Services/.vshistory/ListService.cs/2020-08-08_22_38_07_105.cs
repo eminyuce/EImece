@@ -44,11 +44,11 @@ namespace EImece.Domain.Services
             List<List> result = null;
             var cacheKey = String.Format("GetListItems");
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = new List<List>();
                 result = ListRepository.GetAllListItems();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }

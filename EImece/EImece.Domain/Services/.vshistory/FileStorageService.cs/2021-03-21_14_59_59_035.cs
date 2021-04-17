@@ -46,10 +46,10 @@ namespace EImece.Domain.Services
         {
             var cacheKey = "GetFileStorages";
             List<FileStorage> result = null;
-            if (!DataCachingProvider.Get(cacheKey, out result) && IsCachingActivated)
+            if (!MemoryCacheProvider.Get(cacheKey, out result) && IsCachingActivated)
             {
                 result = FileStorageRepository.GetAll().ToList();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             else
             {

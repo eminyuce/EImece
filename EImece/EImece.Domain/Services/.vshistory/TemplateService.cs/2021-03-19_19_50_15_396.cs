@@ -23,10 +23,10 @@ namespace EImece.Domain.Services
         {
             var cacheKey = String.Format("GetAllActiveTemplates");
             List<Template> result = null;
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = TemplateRepository.GetAllActiveTemplates();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }

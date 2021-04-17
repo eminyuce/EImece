@@ -74,12 +74,12 @@ namespace EImece.Domain.Services
             List<T> result = null;
             String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseContentsFromCache-{0}-{1}", isActive, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = BaseContentRepository.GetActiveBaseContents(isActive, language);
                 if (result.IsNotEmpty())
                 {
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
                 }
                 else
                 {
@@ -114,7 +114,7 @@ namespace EImece.Domain.Services
                 entity.AddUserId = HttpContextFactory.GetCurrentUserId();
             }
             var tmp = BaseContentRepository.SaveOrEdit(entity);
-            this.DataCachingProvider.ClearAll();
+            this.MemoryCacheProvider.ClearAll();
             return entity;
         }
 

@@ -16,7 +16,7 @@ namespace EImece.Domain.Services
         [Inject]
         public IHttpContextFactory HttpContextFactory { get; set; }
 
-        private IEimeceCacheProvider _dataCacheProvider { get; set; }
+        private IEimeceCacheProvider _memoryCacheProvider { get; set; }
 
         public bool IsCachingActivated { get; set; } = true;
 
@@ -25,11 +25,11 @@ namespace EImece.Domain.Services
         {
             get
             {
-                return _dataCacheProvider;
+                return _memoryCacheProvider;
             }
             set
             {
-                _dataCacheProvider = value;
+                _memoryCacheProvider = value;
             }
         }
 

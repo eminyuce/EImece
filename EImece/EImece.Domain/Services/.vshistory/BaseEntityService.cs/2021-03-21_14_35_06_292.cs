@@ -38,10 +38,10 @@ namespace EImece.Domain.Services
             List<T> result = null;
             String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseEntitiesFromCache-{0}-{1}", isActive, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 result = baseEntityRepository.GetActiveBaseEntities(isActive, language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }
@@ -67,7 +67,7 @@ namespace EImece.Domain.Services
                 entity.CreatedDate = DateTime.Now;
             }
             var tmp = baseEntityRepository.SaveOrEdit(entity);
-            this.DataCachingProvider.ClearAll();
+            this.MemoryCacheProvider.ClearAll();
             return entity;
         }
 
