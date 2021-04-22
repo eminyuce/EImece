@@ -5,7 +5,7 @@ $('[data-add-product-cart]').each(function () {
     $(this).on("click", function (e) {
         e.preventDefault();
         var caller = e.target;
-        var productId = $(caller).attr('data-add-product-cart');
+        var productId = $(caller).attr('data-add-prodoct-cart');
         var postData = JSON.stringify({
             productId: productId,
             quantity: 1,

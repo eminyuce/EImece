@@ -167,7 +167,7 @@
                 {
                     <div class="form-group">
                         <div class="pb-2 text-right"></div>
-                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="color" name="@Resource.ProductSize" required>
+                        <select data-product-selected-specs="@product.Id" class="form-control custom-select" id="color" name="@Resource.ProductSize" required>
                             @foreach (var pSize in ProductSizeOptions)
                             {
                                 <option value="@pSize">@pSize</option>
@@ -179,7 +179,7 @@
                 {
                     <div class="form-group">
                         <div class="pb-2 text-right"></div>
-                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="color" name="@Resource.ProductColor" required>
+                        <select data-product-selected-specs="@product.Id" class="form-control custom-select" id="color" name="@Resource.ProductColor" required>
                             @foreach (var pColor in ProductColorOptions)
                             {
                                 <option value="@pColor">@pColor</option>
@@ -460,7 +460,7 @@
                 }
             </div>
             <h3 class="product-card-title">
-                <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button"
+                <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@product.Id" type="button"
                         data-toggle="toast" data-target="#cart-toast">
                     @Resource.AddToCart
                 </button>

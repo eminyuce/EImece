@@ -38,7 +38,7 @@
             <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
         </div>
         <div class="product-card-body body-hidden pt-2">
-            <button class="btn btn-primary btn-sm btn-block" data-add-prodoct-cart="@Model.Id" type="button"
+            <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@Model.ModifiedId" type="button"
                     data-toggle="toast" data-target="#cart-toast">
                 @Resource.AddToCart
             </button>
