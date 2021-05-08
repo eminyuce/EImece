@@ -275,7 +275,7 @@ namespace EImece.Controllers
             {
                 throw new NotSupportedException();
             }
-            bool isValidCustomer = customer.isValidCustomer();
+            bool isValidCustomer = customer != null && customer.isValidCustomer();
             if (isValidCustomer)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();

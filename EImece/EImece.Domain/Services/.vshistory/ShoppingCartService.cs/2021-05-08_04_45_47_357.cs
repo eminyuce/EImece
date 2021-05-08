@@ -35,7 +35,7 @@ namespace EImece.Domain.Services
             IAddressService addressService,
             IOrderProductService orderProductService) : base(repository)
         {
-            this.ShoppingCartRepository = repository;
+            ShoppingCartRepository = repository;
             this.UserManager = userManager;
             this.OrderService = orderService;
             this.CustomerService = customerService;
@@ -118,7 +118,7 @@ namespace EImece.Domain.Services
             item.OrderComments = shoppingCart.OrderComments;
             item.Name = shoppingCart.Customer.FullName;
             item.OrderGuid = shoppingCart.OrderGuid;
-            item.OrderType = (int)EImeceOrderType.NormalOrder;
+
             item.OrderNumber = GeneralHelper.RandomNumber(12);
             item.CargoPrice = shoppingCart.CargoPriceValue;
             item.UserId = userId;
@@ -179,7 +179,6 @@ namespace EImece.Domain.Services
             }
 
             Customer customer = buyNowSession.Customer;
-            customer.CustomerType = (int)EImeceCustomerType.BuyNow;
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);
@@ -210,8 +209,8 @@ namespace EImece.Domain.Services
             item.OrderComments = "";
             item.Name = buyNowSession.Customer.FullName;
             item.OrderGuid = buyNowSession.OrderGuid;
-            item.OrderType = (int)EImeceOrderType.BuyNow;
-            item.OrderNumber = GeneralHelper.RandomNumber(12);
+            item.OrderType = 
+          item.OrderNumber = GeneralHelper.RandomNumber(12);
             item.CargoPrice = buyNowSession.CargoPriceValue;
             item.UserId = userId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;

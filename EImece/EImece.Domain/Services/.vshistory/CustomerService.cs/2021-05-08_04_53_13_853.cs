@@ -84,8 +84,8 @@ namespace EImece.Domain.Services
         public List<Customer> GetCustomerServices(string search)
         {
             search = search.ToStr().Trim();
-            var result = CustomerRepository.GetAll().Where(r => r.CustomerType == (int)EImeceCustomerType.Normal).ToList();
-            var allOrders = OrderService.GetAll().Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder).ToList();
+            var result = CustomerRepository.GetAll();
+            var allOrders = OrderService.GetAll().Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder);
             var resultList = result.ToList();
             if (resultList.IsNotEmpty())
             {

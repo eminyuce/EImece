@@ -271,11 +271,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckoutBillingDetails(Customer customer)
         {
-            if (customer == null)
-            {
-                throw new NotSupportedException();
-            }
-            bool isValidCustomer = customer.isValidCustomer();
+            bool isValidCustomer = customer != null && customer.isValidCustomer();
             if (isValidCustomer)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();

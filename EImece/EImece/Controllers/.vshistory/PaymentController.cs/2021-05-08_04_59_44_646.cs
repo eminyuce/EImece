@@ -271,15 +271,10 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckoutBillingDetails(Customer customer)
         {
-            if (customer == null)
-            {
-                throw new NotSupportedException();
-            }
-            bool isValidCustomer = customer.isValidCustomer();
+            bool isValidCustomer = customer != null && customer.isValidCustomer();
             if (isValidCustomer)
             {
                 ShoppingCartSession shoppingCart = GetShoppingCart();
-                customer.CustomerType = (int)EImeceCustomerType.Normal;
                 shoppingCart.Customer = customer;
                 var user = UserManager.FindByName(User.Identity.GetUserName());
                 shoppingCart.Customer.UserId = user.Id;
@@ -496,18 +491,13 @@ namespace EImece.Controllers
         [HttpPost]
         public ActionResult BuyNow(String productId, Customer customer)
         {
-            if (customer == null)
-            {
-                throw new NotSupportedException();
-            }
-
-            bool isValidCustomer =  customer.isValidCustomer();
+            bool isValidCustomer = customer != null && customer.isValidCustomer();
             BuyNowModel buyNowModel = CreateBuyNowModel(GeneralHelper.RevertId(productId));
+            customer.CustomerType = (int)EImeceCustomerType.BuyNow;
             buyNowModel.Customer = customer;
 
             if (isValidCustomer)
             {
-                customer.CustomerType = (int)EImeceCustomerType.BuyNow;
                 buyNowModel.ShippingAddress = SetAddress(customer, buyNowModel.ShippingAddress);
                 buyNowModel.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 buyNowModel.OrderGuid = Guid.NewGuid().ToString();

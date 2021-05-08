@@ -179,7 +179,7 @@ namespace EImece.Domain.Services
             }
 
             Customer customer = buyNowSession.Customer;
-            customer.CustomerType = (int)EImeceCustomerType.BuyNow;
+            customer.CustomerType = EImeceCustomerType.BuyNow;
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);

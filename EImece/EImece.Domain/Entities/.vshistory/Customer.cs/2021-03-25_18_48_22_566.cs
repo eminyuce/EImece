@@ -73,8 +73,6 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Company))]
         public string Company { get; set; }
 
-        public int CustomerType { get; set; }
-
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
         [JsonIgnore]

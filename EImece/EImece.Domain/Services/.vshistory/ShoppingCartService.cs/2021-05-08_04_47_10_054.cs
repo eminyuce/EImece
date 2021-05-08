@@ -35,7 +35,7 @@ namespace EImece.Domain.Services
             IAddressService addressService,
             IOrderProductService orderProductService) : base(repository)
         {
-            this.ShoppingCartRepository = repository;
+            ShoppingCartRepository = repository;
             this.UserManager = userManager;
             this.OrderService = orderService;
             this.CustomerService = customerService;
@@ -179,7 +179,6 @@ namespace EImece.Domain.Services
             }
 
             Customer customer = buyNowSession.Customer;
-            customer.CustomerType = (int)EImeceCustomerType.BuyNow;
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = CustomerService.SaveOrEditEntity(customer);
