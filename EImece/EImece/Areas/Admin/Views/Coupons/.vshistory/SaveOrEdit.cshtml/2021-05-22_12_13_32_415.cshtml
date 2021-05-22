@@ -1,0 +1,77 @@
+﻿@model EImece.Domain.Entities.Coupon
+@using EImece.Domain.Models.Enums;
+@using Resources;
+
+@{
+    var saveButtonText = AdminResource.SaveButtonText;
+    ViewBag.Title = "SaveOrEdit";
+}
+
+<h2>@AdminResource.Coupon</h2>
+<hr class="adminLine" />
+
+@using (Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.UpdatedDate)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CouponCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (categories != null)
+                {
+            @Html.DropDownListFor(model => model.CouponCategoryId,
+                   categories,
+                   AdminResource.SelectCategory,
+                   new { @class = "form-control" })
+                }
+            @Html.ValidationMessageFor(model => model.CouponCategoryId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@saveButtonText" class="btn btn-success btn-block" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink(AdminResource.BackToList, "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

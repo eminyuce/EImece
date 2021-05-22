@@ -1155,10 +1155,4 @@
   <data name="CouponName" xml:space="preserve">
     <value>Kupon Adı</value>
   </data>
-  <data name="CouponEndDate" xml:space="preserve">
-    <value>Kupon Bitiş Tarihi</value>
-  </data>
-  <data name="CouponStartDate" xml:space="preserve">
-    <value>Kupon Başlangıç Tarihi</value>
-  </data>
 </root>

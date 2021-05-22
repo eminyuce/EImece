@@ -205,16 +205,6 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-        [HttpPost]
-        [DeleteAuthorize()]
-        public async Task<JsonResult> DeleteCouponsGridItem(List<String> values)
-        {
-            return await Task.Run(() =>
-            {
-                CouponService.DeleteBaseEntity(values);
-                return Json(values, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
-        }
 
         [HttpPost]
         [DeleteAuthorize()]
@@ -524,16 +514,6 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangeCouponGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
-        {
-            return await Task.Run(() =>
-            {
-                CouponService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
-                return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
-        }
-
-        [HttpPost]
         public async Task<JsonResult> ChangeTagCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             return await Task.Run(() =>
@@ -627,6 +607,5 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(html, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-       
     }
 }

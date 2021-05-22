@@ -321,7 +321,6 @@
     <Compile Include="Areas\Admin\Controllers\StoryCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscribersController.cs" />
     <Compile Include="Areas\Admin\Controllers\TagCategoriesController.cs" />
-    <Compile Include="Areas\Admin\Controllers\CouponsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
@@ -1395,8 +1394,6 @@
     <Content Include="Areas\Admin\Views\Shared\BaseContentSearchItem\ProductSearchItem.cshtml" />
     <Content Include="Areas\Admin\Views\Customers\CustomerBaskets.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Coupons\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Coupons\SaveOrEdit.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

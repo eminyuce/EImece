@@ -610,6 +610,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coupon.
+        /// </summary>
+        public static string Coupon {
+            get {
+                return ResourceManager.GetString("Coupon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon Bitiş Tarihi.
+        /// </summary>
+        public static string CouponEndDate {
+            get {
+                return ResourceManager.GetString("CouponEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon Adı.
+        /// </summary>
+        public static string CouponName {
+            get {
+                return ResourceManager.GetString("CouponName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kuponlar.
+        /// </summary>
+        public static string Coupons {
+            get {
+                return ResourceManager.GetString("Coupons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon Başlangıç Tarihi.
+        /// </summary>
+        public static string CouponStartDate {
+            get {
+                return ResourceManager.GetString("CouponStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oluşturma Tarihi.
         /// </summary>
         public static string CreatedDate {

@@ -147,7 +147,6 @@ namespace EImece.App_Start
 
         private static void BindServices(IKernel kernel)
         {
-           
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
             kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
             kernel.Bind<IListService>().To<ListService>().InRequestScope();
@@ -174,12 +173,10 @@ namespace EImece.App_Start
             kernel.Bind<IFaqService>().To<FaqService>().InRequestScope();
             kernel.Bind<IProductCommentService>().To<ProductCommentService>().InRequestScope();
             kernel.Bind<IBrandService>().To<BrandService>().InRequestScope();
-            kernel.Bind<ICouponService>().To<CouponService>().InRequestScope();
         }
 
         private static void BindRepositories(IKernel kernel)
         {
-            kernel.Bind<ICouponRepository>().To<CouponRepository>().InRequestScope();
             kernel.Bind<IFileStorageRepository>().To<FileStorageRepository>().InRequestScope();
             kernel.Bind<IFileStorageTagRepository>().To<FileStorageTagRepository>().InRequestScope();
             kernel.Bind<IListItemRepository>().To<ListItemRepository>().InRequestScope();

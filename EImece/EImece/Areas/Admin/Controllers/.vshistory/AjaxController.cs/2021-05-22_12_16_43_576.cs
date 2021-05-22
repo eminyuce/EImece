@@ -524,16 +524,6 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangeCouponGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
-        {
-            return await Task.Run(() =>
-            {
-                CouponService.ChangeGridBaseEntityOrderingOrState(values, checkbox);
-                return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
-        }
-
-        [HttpPost]
         public async Task<JsonResult> ChangeTagCategoriesGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
             return await Task.Run(() =>
@@ -627,6 +617,18 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(html, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-       
+        [HttpPost]
+        public async Task<JsonResult> GetCoupons(EImeceLanguage language)
+        {
+            return await Task.Run(() =>
+            {
+                var tags = CouponService.GetTagsByTagType(language);
+                var tempData = new TempDataDictionary();
+                var html = this.RenderPartialToString(
+                            @"~/Areas/Admin/Views/Shared/pImagesTag.cshtml",
+                            new ViewDataDictionary(tags), tempData);
+                return Json(html, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
     }
 }

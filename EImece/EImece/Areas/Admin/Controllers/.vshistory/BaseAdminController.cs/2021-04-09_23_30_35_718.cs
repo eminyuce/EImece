@@ -25,9 +25,6 @@ namespace EImece.Areas.Admin.Controllers
         public IEntityFactory EntityFactory { get; set; }
 
         [Inject]
-        public ICouponService CouponService { get; set; }
-
-        [Inject]
         public IMainPageImageService MainPageImageService { get; set; }
 
         [Inject]

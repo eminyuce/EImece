@@ -265,7 +265,6 @@
   <ItemGroup>
     <Compile Include="Caching\MemoryCacheProvider.cs" />
     <Compile Include="Entities\AppLog.cs" />
-    <Compile Include="Entities\Coupon.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
     <Compile Include="Helpers\BackupService.cs" />
@@ -471,9 +470,7 @@
     <Compile Include="Models\UserModels\SelectUserRolesViewModel.cs" />
     <Compile Include="Repositories\AppLogRepository.cs" />
     <Compile Include="Repositories\BrandRepository.cs" />
-    <Compile Include="Repositories\CouponRepository.cs" />
     <Compile Include="Repositories\IRepositories\IBrandRepository.cs" />
-    <Compile Include="Repositories\IRepositories\ICouponRepository.cs" />
     <Compile Include="Repositories\ProductCommentRepository.cs" />
     <Compile Include="Repositories\FaqRepository.cs" />
     <Compile Include="Repositories\IRepositories\IProductCommentRepository.cs" />
@@ -546,9 +543,7 @@
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\BrandService.cs" />
-    <Compile Include="Services\CouponService.cs" />
     <Compile Include="Services\IServices\IBrandService.cs" />
-    <Compile Include="Services\IServices\ICouponService.cs" />
     <Compile Include="Services\ProductCommentService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\FaqService.cs" />
