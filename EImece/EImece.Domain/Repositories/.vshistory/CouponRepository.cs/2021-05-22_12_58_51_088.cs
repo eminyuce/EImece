@@ -16,14 +16,14 @@ namespace EImece.Domain.Repositories
         }
         public Coupon GetCouponByCode(string code, int lang)
         {
-            var coupons = GetAll().Where(r => r.Lang == lang);
+            var brands = GetAll().Where(r => r.Lang == lang);
             if (!String.IsNullOrEmpty(code))
             {
-                coupons = coupons.Where(r => r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase));
+                brands = brands.Where(r => r.Code.Equals(code));
             }
-            coupons = coupons.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            brands = brands.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
-            return coupons.FirstOrDefault();
+            return brands.ToList();
         }
     }
 }

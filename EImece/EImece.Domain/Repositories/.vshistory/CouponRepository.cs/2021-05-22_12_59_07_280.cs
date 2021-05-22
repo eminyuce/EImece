@@ -19,7 +19,7 @@ namespace EImece.Domain.Repositories
             var coupons = GetAll().Where(r => r.Lang == lang);
             if (!String.IsNullOrEmpty(code))
             {
-                coupons = coupons.Where(r => r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase));
+                coupons = coupons.Where(r => r.Code.Equals(code));
             }
             coupons = coupons.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 

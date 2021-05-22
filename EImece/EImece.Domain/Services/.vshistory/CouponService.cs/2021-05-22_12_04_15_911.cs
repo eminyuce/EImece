@@ -23,10 +23,5 @@ namespace EImece.Domain.Services
         {
             CouponRepository = repository;
         }
-
-        public Coupon GetCouponByCode(string code, int lang)
-        {
-            return CouponRepository.GetCouponByCode(code, lang);
-        }
     }
 }
