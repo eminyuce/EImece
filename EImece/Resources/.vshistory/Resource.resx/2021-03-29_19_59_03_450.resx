@@ -1700,13 +1700,4 @@
   <data name="LastName2" xml:space="preserve">
     <value>Soy isim</value>
   </data>
-  <data name="ApplyCoupon" xml:space="preserve">
-    <value>Kupon Kodu Kullan</value>
-  </data>
-  <data name="CouponCode" xml:space="preserve">
-    <value>Kupon Kodu</value>
-  </data>
-  <data name="ValidPromoCode" xml:space="preserve">
-    <value>Lütfen geçerli bir kupon kodu girin!</value>
-  </data>
 </root>

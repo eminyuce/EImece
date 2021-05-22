@@ -8,9 +8,9 @@ namespace EImece.Domain.Entities
 {
     public class Coupon : BaseEntity
     {
-        public string Code { get; set; }
-        public int DiscountPercentage { get; set; }
-        public int Discount  { get; set; }
+        public   string Code { get; set; }
+        public string DiscountPercentage { get; set; }
+        public string Discount  { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

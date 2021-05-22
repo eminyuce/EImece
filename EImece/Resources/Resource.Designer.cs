@@ -340,6 +340,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kupon Kodu Kullan.
+        /// </summary>
+        public static string ApplyCoupon {
+            get {
+                return ResourceManager.GetString("ApplyCoupon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emin misiniz?.
         /// </summary>
         public static string AreYouSure {
@@ -903,6 +912,15 @@ namespace Resources {
         public static string Country {
             get {
                 return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon Kodu.
+        /// </summary>
+        public static string CouponCode {
+            get {
+                return ResourceManager.GetString("CouponCode", resourceCulture);
             }
         }
         
@@ -4530,6 +4548,15 @@ namespace Resources {
         public static string UsersManagement {
             get {
                 return ResourceManager.GetString("UsersManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen geçerli bir kupon kodu girin!.
+        /// </summary>
+        public static string ValidPromoCode {
+            get {
+                return ResourceManager.GetString("ValidPromoCode", resourceCulture);
             }
         }
         

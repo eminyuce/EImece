@@ -87,11 +87,11 @@ columns.Add()
    .Filterable(true);
 
     columns.Add(c => c.Discount)
-.Titled(AdminResource.DiscountQuantity)
+.Titled(AdminResource.CouponName)
 .Filterable(true);
 
     columns.Add(c => c.DiscountPercentage)
-.Titled(AdminResource.DiscountPercentage)
+.Titled(AdminResource.CouponName)
 .Filterable(true);
 
     columns.Add(o => o.StartDate)
@@ -105,7 +105,7 @@ columns.Add()
            .Titled(AdminResource.CouponEndDate)
        .Sortable(true)
        .Css("gridDateClass")
-       .RenderValueAs(o => o.EndDate != null ? String.Format("{0}", o.EndDate.ToShortDateString()) : null)
+       .RenderValueAs(o => o.CouponEndDate != null ? String.Format("{0}", o.CouponEndDate.ToShortDateString()) : null)
        .SortInitialDirection(GridSortDirection.Descending);
 
 

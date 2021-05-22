@@ -1147,7 +1147,7 @@
     <value>Bu Bölüm Yalnız Yöneticilere Açıktır</value>
   </data>
   <data name="Coupon" xml:space="preserve">
-    <value>Kupon</value>
+    <value>Coupon</value>
   </data>
   <data name="Coupons" xml:space="preserve">
     <value>Kuponlar</value>
@@ -1160,11 +1160,5 @@
   </data>
   <data name="CouponStartDate" xml:space="preserve">
     <value>Kupon Başlangıç Tarihi</value>
-  </data>
-  <data name="DiscountPercentage" xml:space="preserve">
-    <value>İndirim Yüzdesi</value>
-  </data>
-  <data name="DiscountQuantity" xml:space="preserve">
-    <value>İndirim miktar</value>
   </data>
 </root>

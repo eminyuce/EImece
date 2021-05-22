@@ -610,7 +610,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Coupon.
+        ///   Looks up a localized string similar to Kupon.
         /// </summary>
         public static string Coupon {
             get {
@@ -804,6 +804,24 @@ namespace Resources {
         public static string Discount {
             get {
                 return ResourceManager.GetString("Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İndirim Yüzdesi.
+        /// </summary>
+        public static string DiscountPercentage {
+            get {
+                return ResourceManager.GetString("DiscountPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İndirim miktar.
+        /// </summary>
+        public static string DiscountQuantity {
+            get {
+                return ResourceManager.GetString("DiscountQuantity", resourceCulture);
             }
         }
         

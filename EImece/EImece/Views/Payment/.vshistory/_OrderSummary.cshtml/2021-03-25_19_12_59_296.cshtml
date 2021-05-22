@@ -26,19 +26,19 @@
     <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
     <div class="font-size-sm border-bottom pt-2 pb-3">
         <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
-        <div id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
+        <div  id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
             @if (Model.BasketMinTotalPriceForCargoInt > 0)
             {
-                if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
-                {
+                    if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                    {
                     <span class="badge badge-pill badge-danger mr-2 mb-2">
                         @Resource.CargoFreeTextInfo
                     </span>
-                }
-                else
-                {
-                    <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
-                }
+                    }
+                    else
+                    {
+                        <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
+                    }
 
             }
             else
@@ -49,17 +49,9 @@
             }
         </div>
     </div>
-
     <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:  </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
     @if (IsAdditionalComment && anyProducts)
     {
-        <form class="needs-validation" novalidate="">
-            <div class="form-group">
-                <input class="form-control" type="text" id="cart-promocode" placeholder="@Resource.CouponCode" required="">
-                <div class="invalid-feedback">@Resource.ValidPromoCode</div>
-            </div>
-            <button class="btn btn-outline-primary btn-block" type="submit">@Resource.ApplyCoupon</button>
-        </form>
         <hr>
         <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
         <textarea class="form-control mb-3"

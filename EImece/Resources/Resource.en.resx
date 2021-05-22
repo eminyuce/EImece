@@ -1697,4 +1697,13 @@
   <data name="LastName2" xml:space="preserve">
     <value>Last Name</value>
   </data>
+  <data name="ApplyCoupon" xml:space="preserve">
+    <value>Apply Coupon Code</value>
+  </data>
+  <data name="CouponCode" xml:space="preserve">
+    <value>Coupon Code</value>
+  </data>
+  <data name="ValidPromoCode" xml:space="preserve">
+    <value>Please provide a valid coupon code!</value>
+  </data>
 </root>
