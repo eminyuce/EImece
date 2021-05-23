@@ -49,17 +49,17 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDateStr, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "1" } })
-                @Html.ValidationMessageFor(model => model.StartDateStr, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.EndDateStr, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "2" } })
-                @Html.ValidationMessageFor(model => model.EndDateStr, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -100,10 +100,10 @@
 
 <script>
     $(function () {
-        $('[data-date-picker]').datepicker({
-            dateFormat: 'dd/mm/yy',
-            defaultDate: ""
+        $('input[name="StartDate"]').datepicker({
+            dateFormat: 'dd-mm-yy',
+            defaultDate: "24-09-2019"
         });
-     
+        $('input[name="EndDate"]').datepicker();
     });
 </script>

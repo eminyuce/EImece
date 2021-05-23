@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -17,16 +16,12 @@ namespace EImece.Domain.Repositories
         }
         public Coupon GetCouponByCode(string code, int lang)
         {
-            if (String.IsNullOrEmpty(code))
+            var coupons = GetAll().Where(r => r.Lang == lang && r.StartDate > DateTime.Now && r.EndDate < DateTime.Now);
+            if (!String.IsNullOrEmpty(code))
             {
-                throw new ArgumentException("Coupon.Code cannot be empty or null");
+                coupons = coupons.Where(r => r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase));
             }
-
-            var coupons = FindBy(r => r.Lang == lang &&
-            r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase)
-            && r.StartDate > DateTime.Now && r.EndDate  <= DateTime.Now)
-                .OrderBy(r => r.Position)
-                .ThenByDescending(r => r.UpdatedDate);
+            coupons = coupons.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return coupons.FirstOrDefault();
         }

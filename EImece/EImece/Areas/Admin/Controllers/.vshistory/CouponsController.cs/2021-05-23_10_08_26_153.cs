@@ -50,9 +50,9 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = CouponService.GetSingle(id);
-                content.StartDateStr = content.StartDate.ToString("dd/MM/yyyy",
+                content.StartDateStr = content.StartDate.ToString("MM/dd/yyyy",
                                 CultureInfo.InvariantCulture);
-                content.EndDateStr = content.EndDate.ToString("dd/MM/yyyy",
+                content.EndDateStr = content.EndDate.ToString("MM/dd/yyyy",
                                 CultureInfo.InvariantCulture);
             }
 

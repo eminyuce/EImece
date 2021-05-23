@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -24,7 +23,7 @@ namespace EImece.Domain.Repositories
 
             var coupons = FindBy(r => r.Lang == lang &&
             r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase)
-            && r.StartDate > DateTime.Now && r.EndDate  <= DateTime.Now)
+            && r.StartDate > DateTime.Now && r.EndDate <= DateTime.Now)
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 

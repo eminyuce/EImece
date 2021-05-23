@@ -99,8 +99,7 @@ columns.Add(o => o.StartDate)
    .Titled(AdminResource.CouponStartDate)
 .Sortable(true)
 .Css("gridDateClass")
-.RenderValueAs(o => o.StartDate != null ? String.Format("{0}", o.StartDate.ToString("dd/MM/yyyy",
-                        CultureInfo.InvariantCulture)) : null)
+.RenderValueAs(o => o.StartDate != null ? String.Format("{0}", o.StartDate.ToShortDateString()) : null)
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add(o => o.EndDate)

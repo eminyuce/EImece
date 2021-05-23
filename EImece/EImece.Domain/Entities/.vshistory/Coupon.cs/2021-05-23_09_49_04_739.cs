@@ -18,22 +18,14 @@ namespace EImece.Domain.Entities
         public string Code { get; set; }
         public int DiscountPercentage { get; set; }
         public int Discount  { get; set; }
-      
+        [DisplayName("StartDate")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "StartDate is required")]
         public DateTime StartDate { get; set; }
-     
+        [DisplayName("EndDate")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "EndDate is required")]
         public DateTime EndDate { get; set; }
 
-        [DisplayName("StartDate")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "StartDate is required")]
-        [NotMapped]
-        public string StartDateStr { get; set; }
-
-
-        [DisplayName("EndDate")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "EndDate is required")]
-        [NotMapped]
-        public string EndDateStr { get; set; }
     }
 }

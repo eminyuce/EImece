@@ -23,7 +23,6 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Globalization;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -50,10 +49,9 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = CouponService.GetSingle(id);
-                content.StartDateStr = content.StartDate.ToString("dd/MM/yyyy",
+                content.StartDateStr = content.StartDate.ToString("MM/dd/yyyy",
                                 CultureInfo.InvariantCulture);
-                content.EndDateStr = content.EndDate.ToString("dd/MM/yyyy",
-                                CultureInfo.InvariantCulture);
+                content.EndDateStr = content.EndDate.ToString("MM/dd/yyyy");
             }
 
             return View(content);
