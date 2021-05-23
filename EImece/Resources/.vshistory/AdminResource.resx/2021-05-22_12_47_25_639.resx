@@ -1167,16 +1167,4 @@
   <data name="DiscountQuantity" xml:space="preserve">
     <value>İndirim miktar</value>
   </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Bitiş tarihi</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Başlangıç tarihi</value>
-  </data>
-  <data name="CouponCode" xml:space="preserve">
-    <value>Kupon Kodu</value>
-  </data>
-  <data name="EndDateBiggerThanStartDateText" xml:space="preserve">
-    <value>Bitiş tarihinin başlangıç tarihinden önce gelmediğinden emin olun</value>
-  </data>
 </root>

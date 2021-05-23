@@ -75,18 +75,9 @@ namespace EImece.Areas.Admin.Controllers
 
                 coupon.StartDate = coupon.StartDateStr.ToDateTime();
                 coupon.EndDate = coupon.EndDateStr.ToDateTime();
-                if(coupon.EndDate > coupon.StartDate)
-                {
-                    coupon.Lang = CurrentLanguage;
-                    CouponService.SaveOrEditEntity(coupon);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("EndDateStr",AdminResource.EndDateBiggerThanStartDateText);
-                    return View(coupon);
-                }
-               
+                coupon.Lang = CurrentLanguage;
+                CouponService.SaveOrEditEntity(coupon);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {

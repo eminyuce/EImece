@@ -15,28 +15,25 @@ namespace EImece.Domain.Entities
     public class Coupon : BaseEntity
     {
         [Required(ErrorMessage = "Code is required")]
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CouponCode))]
         public string Code { get; set; }
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.DiscountPercentage))]
         public int DiscountPercentage { get; set; }
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Discount))]
         public int Discount  { get; set; }
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.StartDate))]
+      
         public DateTime StartDate { get; set; }
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.EndDate))]
+     
         public DateTime EndDate { get; set; }
 
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.StartDate))]
+        [Display(AdminResource = typeof(AdminResource), Name = nameof(AdminResource.StartDate))]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Required(ErrorMessage = "StartDate is required")]
         [NotMapped]
         public string StartDateStr { get; set; }
 
 
-        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.EndDate))]
+        [DisplayName("EndDate")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Required(ErrorMessage = "EndDate is required")]
         [NotMapped]
         public string EndDateStr { get; set; }
     }

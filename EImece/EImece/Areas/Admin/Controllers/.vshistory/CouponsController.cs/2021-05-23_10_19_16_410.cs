@@ -83,7 +83,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("EndDateStr",AdminResource.EndDateBiggerThanStartDateText);
+                    ModelState.AddModelError("StartDateStr","");
                     return View(coupon);
                 }
                

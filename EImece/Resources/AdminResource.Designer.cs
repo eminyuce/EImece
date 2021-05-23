@@ -619,6 +619,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kupon Kodu.
+        /// </summary>
+        public static string CouponCode {
+            get {
+                return ResourceManager.GetString("CouponCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kupon Bitiş Tarihi.
         /// </summary>
         public static string CouponEndDate {
@@ -876,6 +885,24 @@ namespace Resources {
         public static string EmailSubject {
             get {
                 return ResourceManager.GetString("EmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bitiş tarihi.
+        /// </summary>
+        public static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bitiş tarihinin başlangıç tarihinden önce gelmediğinden emin olun.
+        /// </summary>
+        public static string EndDateBiggerThanStartDateText {
+            get {
+                return ResourceManager.GetString("EndDateBiggerThanStartDateText", resourceCulture);
             }
         }
         
@@ -2721,6 +2748,15 @@ namespace Resources {
         public static string SocialMediaSetttings {
             get {
                 return ResourceManager.GetString("SocialMediaSetttings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Başlangıç tarihi.
+        /// </summary>
+        public static string StartDate {
+            get {
+                return ResourceManager.GetString("StartDate", resourceCulture);
             }
         }
         
