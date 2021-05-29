@@ -165,14 +165,13 @@ namespace EImece.Controllers
             item.UpdatedDate = DateTime.Now;
             item.Name = shoppingCart.OrderGuid;
             item.IsActive = false;
+            shoppingCart.CurrentLanguage = CurrentLanguage;
             item.Lang = CurrentLanguage;
             item.Position = 0;
             item.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCart);
             item.OrderGuid = shoppingCart.OrderGuid;
             string userId = shoppingCart.Customer != null ? shoppingCart.Customer.UserId : "";
             item.UserId = string.IsNullOrEmpty(userId) ? getUserId() : userId;
-
-            shoppingCart.CurrentLanguage = CurrentLanguage;
             ShoppingCartService.SaveOrEditShoppingCart(item);
         }
 

@@ -171,8 +171,6 @@ namespace EImece.Controllers
             item.OrderGuid = shoppingCart.OrderGuid;
             string userId = shoppingCart.Customer != null ? shoppingCart.Customer.UserId : "";
             item.UserId = string.IsNullOrEmpty(userId) ? getUserId() : userId;
-
-            shoppingCart.CurrentLanguage = CurrentLanguage;
             ShoppingCartService.SaveOrEditShoppingCart(item);
         }
 

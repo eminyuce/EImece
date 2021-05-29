@@ -127,7 +127,7 @@ namespace EImece.Domain.Services
             item.UpdatedDate = DateTime.Now;
             item.IsActive = true;
             item.Position = 1;
-            item.Lang = shoppingCart.CurrentLanguage;
+            item.Lang = 1;
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = billingAddressId;

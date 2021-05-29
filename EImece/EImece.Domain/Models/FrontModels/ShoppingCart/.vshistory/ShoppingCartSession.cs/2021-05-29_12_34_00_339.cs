@@ -16,8 +16,6 @@ namespace EImece.Domain.Models.FrontModels
         private Customer _customer = new Customer();
         private Address _shippingAddress = new Address();
         private Address _billingAddress = new Address();
-        public int CurrentLanguage { get; set; }
-
         public string OrderGuid { get; set; }
         public Coupon Coupon { get; set; }
         public string UrlReferrer { get; set; }

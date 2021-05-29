@@ -19,7 +19,6 @@ namespace EImece.Domain.Entities
         public int BillingAddressId { get; set; }
         public string OrderGuid { get; set; }
         public string Coupon { get; set; }
-        public string CouponDiscount { get; set; }
         public string Token { get; set; }
         public string Price { get; set; }
         public string PaidPrice { get; set; }

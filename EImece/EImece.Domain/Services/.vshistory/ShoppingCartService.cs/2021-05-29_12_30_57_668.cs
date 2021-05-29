@@ -127,12 +127,12 @@ namespace EImece.Domain.Services
             item.UpdatedDate = DateTime.Now;
             item.IsActive = true;
             item.Position = 1;
-            item.Lang = shoppingCart.CurrentLanguage;
+            item.Lang = 1;
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = billingAddressId;
             item.Coupon = shoppingCart.Coupon.Name;
-            item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice)+"";
+            item.Coupon = shoppingCart.Coupon.Name;
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;
             item.PaidPrice = checkoutForm.PaidPrice;

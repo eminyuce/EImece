@@ -22,7 +22,7 @@ namespace EImece.Domain.Repositories
                 throw new ArgumentException("Coupon.Code cannot be empty or null");
             }
 
-            var coupons = FindBy(r => r.Lang == lang && r.IsActive &&
+            var coupons = FindBy(r => r.Lang == lang &&
             r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase)
             && DateTime.Now  > r.StartDate && DateTime.Now <= r.EndDate  )
                 .OrderBy(r => r.Position)

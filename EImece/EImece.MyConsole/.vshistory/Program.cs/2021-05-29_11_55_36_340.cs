@@ -22,7 +22,7 @@ namespace EImece.MyConsole
         {
 
           
-            Console.Write("Press any key to continue . . . ");
+            Console.Write("Press any key to continue . . . "+ per);
             Console.ReadKey(true);
         }
 

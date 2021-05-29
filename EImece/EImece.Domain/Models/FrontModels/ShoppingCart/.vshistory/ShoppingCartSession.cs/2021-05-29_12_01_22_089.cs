@@ -16,8 +16,6 @@ namespace EImece.Domain.Models.FrontModels
         private Customer _customer = new Customer();
         private Address _shippingAddress = new Address();
         private Address _billingAddress = new Address();
-        public int CurrentLanguage { get; set; }
-
         public string OrderGuid { get; set; }
         public Coupon Coupon { get; set; }
         public string UrlReferrer { get; set; }
@@ -189,31 +187,30 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return TotalPrice-CalculateCouponDiscount(TotalPrice);
+                return CalculateCouponDiscount(TotalPrice);
             }
         }
 
-        public decimal CalculateCouponDiscount(decimal result)
+        private decimal CalculateCouponDiscount(decimal result)
         {
             if (Coupon != null)
             {
                 if (Coupon.Discount > 0 && result > Coupon.Discount)
                 {
-                    return Coupon.Discount;
+                    result -= Coupon.Discount;
                 }
                 else if (Coupon.DiscountPercentage > 0)
                 {
                     decimal per = (decimal)Coupon.DiscountPercentage / 100;
-                    var couponDisc = result * per; 
-                    var result2 = result - couponDisc;
+                    var result2 = result - result * per;
                     if (result2 > 0)
                     {
-                        return result2;
+                        result -= result2;
                     }
                 }
             }
 
-            return 0;
+            return result;
         }
 
         public decimal SubTotalPrice
