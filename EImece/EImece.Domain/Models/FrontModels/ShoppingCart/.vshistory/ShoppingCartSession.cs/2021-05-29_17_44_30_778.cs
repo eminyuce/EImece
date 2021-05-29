@@ -211,7 +211,8 @@ namespace EImece.Domain.Models.FrontModels
                 else if (Coupon.DiscountPercentage > 0)
                 {
                     decimal per = (decimal)Coupon.DiscountPercentage / 100;
-                    return result * per;
+                    var couponDisc = result * per;
+                    return couponDisc;
                 }
             }
 

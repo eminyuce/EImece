@@ -45,16 +45,18 @@
                 }
 
             }
-            else if (Model.CargoPriceValue > 0)
-            {
-                <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
-            }
-            else
-            {
-                <span class="badge badge-pill badge-danger mr-2 mb-2">
-                    @Resource.CargoFreeTextInfo
-                </span>
-            }
+            else  if (Model.BasketMinTotalPriceForCargoInt > 0)
+       {
+        <span class="badge badge-pill badge-danger mr-2 mb-2">
+            @Resource.CargoFreeTextInfo
+        </span>
+    }
+    else  
+          {
+            <span class="badge badge-pill badge-danger mr-2 mb-2">
+                @Resource.CargoFreeTextInfo
+            </span>
+        }
         </div>
     </div>
 
