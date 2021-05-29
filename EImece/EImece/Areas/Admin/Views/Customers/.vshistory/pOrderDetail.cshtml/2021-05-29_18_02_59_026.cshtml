@@ -92,6 +92,7 @@
                         @order.OrderComments
                     </td>
                 </tr>
+
             }
 
             @if (!string.IsNullOrEmpty(order.Coupon))
@@ -108,20 +109,17 @@
                 </tr>
 
             }
-            @if (order.CargoPrice > 0)
-            {
-                <tr class="warning">
-                    <td colspan="3">
-                        <b class="Price-amount amount">
-                            @AdminResource.CargoPrice
-                        </b>
-                    </td>
-                    <td class="text-right">
-                        @order.CargoPrice.CurrencySign()
-                    </td>
-                </tr>
-            }
-            </tbody>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.CargoPrice
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.CargoPrice.CurrencySign()
+                </td>
+            </tr>
+        </tbody>
         <tfoot>
             <tr class="success">
                 <th colspan="2" scope="row">@AdminResource.TotalPrice</th>

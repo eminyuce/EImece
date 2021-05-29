@@ -45,8 +45,7 @@
                 <tr class="table__line-item order_item">
                     <td class="text-center">
                         <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl">
-                            <img src="@imgTag" style="max-width:180px;" alt="Product">
-                        </a>
+                        <img src="@imgTag" style="max-width:180px;" alt="Product"></a>
                     </td>
                     <td class="text-left">
                         @Html.ActionLink(orderProduct.Product.Name,
@@ -92,36 +91,19 @@
                         @order.OrderComments
                     </td>
                 </tr>
-            }
-
-            @if (!string.IsNullOrEmpty(order.Coupon))
-            {
-                <tr class="primary">
-                    <td>
-                        <b>
-                            @AdminResource.Coupon
-                        </b>
-                    </td>
-                    <td colspan="3">
-                        <strong class="product-quantity">@order.Coupon   @order.CouponDiscount</strong>
-                    </td>
-                </tr>
 
             }
-            @if (order.CargoPrice > 0)
-            {
-                <tr class="warning">
-                    <td colspan="3">
-                        <b class="Price-amount amount">
-                            @AdminResource.CargoPrice
-                        </b>
-                    </td>
-                    <td class="text-right">
-                        @order.CargoPrice.CurrencySign()
-                    </td>
-                </tr>
-            }
-            </tbody>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.CargoPrice
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.CargoPrice.CurrencySign()
+                </td>
+            </tr>
+        </tbody>
         <tfoot>
             <tr class="success">
                 <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
