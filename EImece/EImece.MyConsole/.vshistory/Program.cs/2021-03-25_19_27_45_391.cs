@@ -21,8 +21,8 @@ namespace EImece.MyConsole
         private static void Main(string[] args)
         {
 
-          
-            Console.Write("Press any key to continue . . . "+ per);
+            ReplaceFileContent();
+            Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }
 

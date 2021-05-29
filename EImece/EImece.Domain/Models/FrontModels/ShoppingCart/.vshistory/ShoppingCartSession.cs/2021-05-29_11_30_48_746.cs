@@ -17,7 +17,7 @@ namespace EImece.Domain.Models.FrontModels
         private Address _shippingAddress = new Address();
         private Address _billingAddress = new Address();
         public string OrderGuid { get; set; }
-        public Coupon Coupon { get; set; }
+        public string CouponCode { get; set; }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
 
@@ -29,22 +29,6 @@ namespace EImece.Domain.Models.FrontModels
 
         [JsonIgnore]
         public Setting CargoPrice { get; set; }
-
-        
-        public string CouponCode
-        {
-            get
-            {
-                return Coupon == null ? "" : Coupon.Code;
-            }
-        }
-        public string CouponName
-        {
-            get
-            {
-                return Coupon == null ? "" : Coupon.Name;
-            }
-        }
 
         public string ConversationId
         {
@@ -168,7 +152,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return TotalPriceWithDiscount + CargoPriceValue;
+                return TotalPrice + CargoPriceValue;
             }
         }
 
@@ -182,35 +166,6 @@ namespace EImece.Domain.Models.FrontModels
                 }
                 return ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
             }
-        }
-        public decimal TotalPriceWithDiscount
-        {
-            get
-            {
-                return CalculateCouponDiscount(TotalPrice);
-            }
-        }
-
-        private decimal CalculateCouponDiscount(decimal result)
-        {
-            if (Coupon != null)
-            {
-                if (Coupon.Discount > 0 && result > Coupon.Discount)
-                {
-                    result -= Coupon.Discount;
-                }
-                else if (Coupon.DiscountPercentage > 0)
-                {
-                    decimal per = (decimal)Coupon.DiscountPercentage / 100;
-                    var result2 = result - result * per;
-                    if (result2 > 0)
-                    {
-                        result -= result2;
-                    }
-                }
-            }
-
-            return result;
         }
 
         public decimal SubTotalPrice

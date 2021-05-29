@@ -37,9 +37,6 @@ namespace EImece.Controllers
         public IEmailSender EmailSender { get; set; }
 
         [Inject]
-        public ICouponService CouponService { get; set; }
-
-        [Inject]
         public RazorEngineHelper RazorEngineHelper { get; set; }
 
         [Inject]
@@ -385,10 +382,6 @@ namespace EImece.Controllers
             if (item != null)
             {
                 shoppingCart.ShoppingCartItems.Remove(item);
-                if (shoppingCart.ShoppingCartItems.IsEmpty())
-                {
-                    shoppingCart.Coupon = null;
-                }
                 SaveShoppingCart(shoppingCart);
                 return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
@@ -575,21 +568,9 @@ namespace EImece.Controllers
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }
-        [HttpPost]
-        public ActionResult ApplyCoupon(String couponCode)
+        public ActionResult ApplyCoupon(String couponCode, String orderGuid)
         {
-            var couponObj = CouponService.GetCouponByCode(couponCode,CurrentLanguage);
-            var shoppingCart = GetShoppingCartFromDataSource();
-            if (couponObj != null)
-            {
-                shoppingCart.Coupon = couponObj;
-            }
-            else
-            {
-                shoppingCart.Coupon = null;
-            }
-            SaveShoppingCart(shoppingCart);
-            return RedirectToAction("shoppingcart");
+
         }
         private void ClearBuyNow(BuyNowModel buyNowModel)
         {

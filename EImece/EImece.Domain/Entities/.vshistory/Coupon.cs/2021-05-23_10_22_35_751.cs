@@ -12,7 +12,6 @@ using System.ComponentModel;
 
 namespace EImece.Domain.Entities
 {
-    [Serializable]
     public class Coupon : BaseEntity
     {
         [Required(ErrorMessage = "Code is required")]

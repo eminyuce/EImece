@@ -387,7 +387,7 @@ namespace EImece.Controllers
                 shoppingCart.ShoppingCartItems.Remove(item);
                 if (shoppingCart.ShoppingCartItems.IsEmpty())
                 {
-                    shoppingCart.Coupon = null;
+
                 }
                 SaveShoppingCart(shoppingCart);
                 return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
@@ -579,16 +579,12 @@ namespace EImece.Controllers
         public ActionResult ApplyCoupon(String couponCode)
         {
             var couponObj = CouponService.GetCouponByCode(couponCode,CurrentLanguage);
-            var shoppingCart = GetShoppingCartFromDataSource();
-            if (couponObj != null)
+            if(couponObj != null)
             {
+                var shoppingCart = GetShoppingCartFromDataSource();
                 shoppingCart.Coupon = couponObj;
+                SaveShoppingCart(shoppingCart);
             }
-            else
-            {
-                shoppingCart.Coupon = null;
-            }
-            SaveShoppingCart(shoppingCart);
             return RedirectToAction("shoppingcart");
         }
         private void ClearBuyNow(BuyNowModel buyNowModel)

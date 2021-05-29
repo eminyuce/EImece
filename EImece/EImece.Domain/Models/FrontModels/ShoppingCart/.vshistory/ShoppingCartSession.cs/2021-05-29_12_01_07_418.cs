@@ -168,7 +168,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return TotalPriceWithDiscount + CargoPriceValue;
+                return TotalPrice + CargoPriceValue;
             }
         }
 

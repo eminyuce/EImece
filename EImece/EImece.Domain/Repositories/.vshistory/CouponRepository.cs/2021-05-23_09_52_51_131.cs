@@ -24,7 +24,7 @@ namespace EImece.Domain.Repositories
 
             var coupons = FindBy(r => r.Lang == lang &&
             r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase)
-            && DateTime.Now  > r.StartDate && DateTime.Now <= r.EndDate  )
+            && r.StartDate > DateTime.Now && r.EndDate  <= DateTime.Now)
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 

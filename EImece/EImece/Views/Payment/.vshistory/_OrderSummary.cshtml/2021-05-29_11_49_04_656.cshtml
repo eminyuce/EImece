@@ -25,10 +25,7 @@
 
     <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
     <div class="font-size-sm border-bottom pt-2 pb-3">
-        @if (Model.Coupon != null)
-        {
-            <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponName">@Model.CouponName</span></div>
-        }
+        <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponCode">@Model.CouponName</span></div>
         <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
         <div id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
             @if (Model.BasketMinTotalPriceForCargoInt > 0)

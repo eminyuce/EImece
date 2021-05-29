@@ -168,7 +168,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return TotalPriceWithDiscount + CargoPriceValue;
+                return TotalPrice + CargoPriceValue;
             }
         }
 
@@ -180,37 +180,21 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     return 0;
                 }
-                return ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
-            }
-        }
-        public decimal TotalPriceWithDiscount
-        {
-            get
-            {
-                return CalculateCouponDiscount(TotalPrice);
-            }
-        }
-
-        private decimal CalculateCouponDiscount(decimal result)
-        {
-            if (Coupon != null)
-            {
-                if (Coupon.Discount > 0 && result > Coupon.Discount)
+                var result = ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
+                if(Coupon != null)
                 {
-                    result -= Coupon.Discount;
-                }
-                else if (Coupon.DiscountPercentage > 0)
-                {
-                    decimal per = (decimal)Coupon.DiscountPercentage / 100;
-                    var result2 = result - result * per;
-                    if (result2 > 0)
+                    if (Coupon.Discount > 0)
                     {
-                        result -= result2;
+                        result -= Coupon.Discount;
+                    }
+                    else if (Coupon.DiscountPercentage > 0)
+                    {
+                        decimal per = (decimal)Coupon.DiscountPercentage / 100;
+                        result -= result * per;
                     }
                 }
+                return result;
             }
-
-            return result;
         }
 
         public decimal SubTotalPrice

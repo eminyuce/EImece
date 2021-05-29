@@ -168,7 +168,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return TotalPriceWithDiscount + CargoPriceValue;
+                return TotalPrice + CargoPriceValue;
             }
         }
 
@@ -180,14 +180,9 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     return 0;
                 }
-                return ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
-            }
-        }
-        public decimal TotalPriceWithDiscount
-        {
-            get
-            {
-                return CalculateCouponDiscount(TotalPrice);
+                var result = ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
+                result = CalculateCouponDiscount(result);
+                return result;
             }
         }
 

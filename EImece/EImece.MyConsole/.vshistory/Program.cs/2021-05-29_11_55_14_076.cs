@@ -21,7 +21,7 @@ namespace EImece.MyConsole
         private static void Main(string[] args)
         {
 
-          
+            decimal per = (decimal) 25 / 100;
             Console.Write("Press any key to continue . . . "+ per);
             Console.ReadKey(true);
         }
