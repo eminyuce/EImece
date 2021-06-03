@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
 
 namespace EImece.Domain.Helpers
 {
@@ -10,22 +9,19 @@ namespace EImece.Domain.Helpers
 
         public static string CurrencySign(this decimal price)
         {
+            var cultureInfo = new CultureInfo(CulturaInfoName);
             decimal v = RoundPriceNumber(price);
             if (v > 0)
             {
-                var result = v.ToString("#,##", new CultureInfo(Thread.CurrentThread.CurrentUICulture.ToString()));
-                return string.Format("{0} TL", result);
+                return string.Format("{0} TL", v.ToString("#,##", cultureInfo));
             }
             else
             {
                 return "0 TL";
             }
         }
-        public static string ToDecimalToStringConvert(decimal price)
-        {
-            return decimal.Round(price, 2, MidpointRounding.AwayFromZero).ToString("#,##", new CultureInfo(Thread.CurrentThread.CurrentUICulture.ToString())).Replace(",", ".");
-        }
-        public static decimal RoundPriceNumber(decimal price)
+
+        private static decimal RoundPriceNumber(decimal price)
         {
             var price2 = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
             return System.Convert.ToDecimal(price2);

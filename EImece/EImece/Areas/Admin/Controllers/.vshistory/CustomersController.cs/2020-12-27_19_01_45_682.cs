@@ -48,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
             var customer = CustomerService.GetUserId(id);
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
-            return View(orders.OrderByDescending(r=>r.UpdatedDate).ToList());
+            return View(orders);
         }
 
         [HttpPost, ActionName("Delete")]

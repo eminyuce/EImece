@@ -129,18 +129,21 @@ namespace EImece.Domain.Services
                 firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
 
-                firstBasketItem.Price = CurrencyHelper.ToDecimalToStringConvert(item.Price);
+                firstBasketItem.Price = ToDecimalToStringConvert(item.Price);
                 totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);
             }
             //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
-            request.Price = CurrencyHelper.ToDecimalToStringConvert(totalPrice);
-            request.PaidPrice = CurrencyHelper.ToDecimalToStringConvert(shoppingCart.TotalPriceWithCargoPrice);
+            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");  //totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            request.PaidPrice = decimal.Round(shoppingCart.TotalPriceWithCargoPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", "."); //shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
             request.BasketItems = basketItems;
             Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
             return CheckoutFormInitialize.Create(request, options);
         }
-      
+        public string ToDecimalToStringConvert(decimal price)
+        {
+            return decimal.Round(price, 2, MidpointRounding.AwayFromZero).ToString("#,##", new CultureInfo(Thread.CurrentThread.CurrentUICulture.ToString())).Replace(",", ".");
+        }
 
         public CheckoutFormInitialize CreateCheckoutFormInitializeBuyNow(BuyNowModel buyNowModel)
         {

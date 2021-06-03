@@ -16,7 +16,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Linq;
 using static EImece.Controllers.ManageController;
 
 namespace EImece.Areas.Customers.Controllers
@@ -197,7 +196,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
-            var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
+            var orders = OrderService.GetOrdersUserId(user.Id, search);
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 

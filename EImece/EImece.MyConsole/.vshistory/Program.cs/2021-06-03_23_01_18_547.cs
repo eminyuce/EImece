@@ -20,6 +20,10 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
+            decimal PriceWithDiscount = 10-(double)1/10;
+            Console.WriteLine(PriceWithDiscount);
+            Console.WriteLine(CurrencyHelper.RoundPriceNumber(PriceWithDiscount));
+
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }

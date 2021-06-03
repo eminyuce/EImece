@@ -197,7 +197,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
-            var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
+            var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate);
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 

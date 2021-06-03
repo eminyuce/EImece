@@ -21,10 +21,7 @@ namespace EImece.Domain.Helpers
                 return "0 TL";
             }
         }
-        public static string ToDecimalToStringConvert(decimal price)
-        {
-            return decimal.Round(price, 2, MidpointRounding.AwayFromZero).ToString("#,##", new CultureInfo(Thread.CurrentThread.CurrentUICulture.ToString())).Replace(",", ".");
-        }
+
         public static decimal RoundPriceNumber(decimal price)
         {
             var price2 = decimal.Round(price, 2, MidpointRounding.AwayFromZero);

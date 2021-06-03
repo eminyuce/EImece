@@ -20,6 +20,11 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
+            int number = 1234567890;
+            Console.Write(System.Convert.ToDecimal(number));
+
+            decimal PriceWithDiscount =  9,9;
+            CurrencyHelper.RoundPriceNumber(PriceWithDiscount)
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }

@@ -193,10 +193,11 @@ var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
                 <!-- Footer-->
                 <div class="modal-footer flex-wrap justify-content-between bg-secondary">
                     <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
+                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
                     <div class="px-2 py-1"><span class="text-muted">@AdminResource.CargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.CargoPrice.CurrencySign()</span></div>
-                    @if (!String.IsNullOrEmpty(order.Coupon))
+                    @if (String.IsNullOrEmpty(order.Coupon))
                     {
-                        <div class="px-2 py-1"><span class="text-muted"> @AdminResource.Coupon (@order.Coupon):&nbsp;</span><span class="text-lg font-weight-semibold">@order.CouponDiscount TL</span></div>
+                        <div class="px-2 py-1"><span class="text-muted">@AdminResource.Coupon:&nbsp;</span><span class="text-lg font-weight-semibold">@order.Coupon</span></div>
                     }
 
                     <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>

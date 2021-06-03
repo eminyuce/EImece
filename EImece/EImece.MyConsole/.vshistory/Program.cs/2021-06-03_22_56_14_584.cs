@@ -20,6 +20,10 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
+            int number = 1234567890;
+            Console.Write(System.Convert.ToDecimal(number));
+
+           
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }

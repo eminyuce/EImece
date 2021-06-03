@@ -47,7 +47,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         {
             this.Id = product.Id;
             this.Name = product.NameLong;
-            this.Price = product.PriceWithDiscount;
+            this.Price = CurrencyHelper.RoundPriceNumber(product.PriceWithDiscount);
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory.Name;
             this.DetailPageUrl = product.DetailPageRelativeUrl;

@@ -20,6 +20,8 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
+            decimal PriceWithDiscount =  9.9;
+            CurrencyHelper.RoundPriceNumber(PriceWithDiscount)
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }
