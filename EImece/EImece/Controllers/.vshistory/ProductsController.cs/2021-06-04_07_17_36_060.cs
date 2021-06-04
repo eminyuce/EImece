@@ -67,14 +67,14 @@ namespace EImece.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
-                return RedirectToAction("BadRequest", "Error");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             try
             {
                 var productId = id.GetId();
                 var product = ProductService.GetProductDetailViewModelById(productId);
                 if(!product.Product.IsActive)
-                    return RedirectToAction("NotFound", "Error");
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
                 ViewBag.SeoId = product.Product.GetSeoUrl();
                 return View(product);
