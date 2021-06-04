@@ -73,9 +73,6 @@ namespace EImece.Controllers
             {
                 var productId = id.GetId();
                 var product = ProductService.GetProductDetailViewModelById(productId);
-                if(!product.Product.IsActive)
-                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
                 ViewBag.SeoId = product.Product.GetSeoUrl();
                 return View(product);
             }

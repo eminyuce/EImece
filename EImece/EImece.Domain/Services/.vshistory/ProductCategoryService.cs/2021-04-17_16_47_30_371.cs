@@ -133,7 +133,7 @@ namespace EImece.Domain.Services
         public List<ProductCategory> GetMainPageProductCategories(int language)
         {
             List<ProductCategory> result;
-            var cacheKey = $"GetMainPageProductCategories-{language}";
+            var cacheKey = string.Format("GetMainPageProductCategories-{0}", language);
             if (!DataCachingProvider.Get(cacheKey, out result))
             {
                 result = ProductCategoryRepository.GetMainPageProductCategories(language);

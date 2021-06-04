@@ -115,8 +115,9 @@ namespace EImece.Domain.Services
 
         public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
+            ProductDetailViewModel result = null;
 
-            var  result = new ProductDetailViewModel();
+            result = new ProductDetailViewModel();
             var product = ProductRepository.GetProduct(id);
             if (product == null)
             {
@@ -124,8 +125,7 @@ namespace EImece.Domain.Services
             }
             if (!product.IsActive)
             {
-                result.Product = product;
-                return result;
+                throw new ArgumentNullException("Product is null for id:" + id);
             }
 
 
