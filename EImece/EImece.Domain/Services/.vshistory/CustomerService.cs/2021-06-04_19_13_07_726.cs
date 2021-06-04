@@ -109,7 +109,7 @@ namespace EImece.Domain.Services
                 }
             }
 
-             resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r=>r.CreatedDate).ToList();
+             resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ToList();
 
             return resultList;
         }

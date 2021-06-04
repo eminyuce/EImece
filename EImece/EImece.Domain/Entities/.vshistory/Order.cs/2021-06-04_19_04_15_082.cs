@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
-    public class Order : BaseEntity 
+    public class Order : BaseEntity,   IComparer<Order>
     {
         public DateTime DeliveryDate { get; set; }
         public string UserId { get; set; }
@@ -69,7 +69,5 @@ namespace EImece.Domain.Entities
                 return decimal.Round(PaidPrice.ToDecimal(), 3, MidpointRounding.AwayFromZero);
             }
         }
-
-      
     }
 }

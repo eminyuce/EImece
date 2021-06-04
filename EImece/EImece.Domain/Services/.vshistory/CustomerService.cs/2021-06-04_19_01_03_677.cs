@@ -92,15 +92,6 @@ namespace EImece.Domain.Services
                 foreach (var item in resultList)
                 {
                     item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                    if (item.Orders.IsNotEmpty())
-                    {
-                        item.OrderLatestDate = item.Orders.Max(T => T.CreatedDate);
-                    }
-                    else
-                    {
-                        item.OrderLatestDate = DateTime.Now.AddYears(-2);
-                    }
-
                     GetUserFields(item);
                 }
                 if (!String.IsNullOrEmpty(search))
@@ -109,9 +100,9 @@ namespace EImece.Domain.Services
                 }
             }
 
-             resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r=>r.CreatedDate).ToList();
+            var result = resultList.OrderByDescending(r => r.CreatedDate).ToList();
 
-            return resultList;
+            return result;
         }
 
         public void GetUserFields(Customer item)

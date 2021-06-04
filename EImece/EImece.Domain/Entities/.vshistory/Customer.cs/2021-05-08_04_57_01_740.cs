@@ -81,9 +81,6 @@ namespace EImece.Domain.Entities
         public String Captcha { get; set; }
 
         [NotMapped]
-        public DateTime OrderLatestDate { get; set; }
-
-        [NotMapped]
         public List<Order> Orders { get; set; }
 
         [NotMapped]

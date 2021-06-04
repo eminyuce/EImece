@@ -219,8 +219,8 @@ namespace EImece.Controllers
         {
             var rand = new Random((int)DateTime.Now.Ticks);
             //generate new question
-            int a = rand.Next(1, 5);
-            int b = rand.Next(1, 5);
+            int a = rand.Next(10, 99);
+            int b = rand.Next(0, 9);
             var captcha = string.Format("{0} + {1} = ?", a, b);
 
             //store answer

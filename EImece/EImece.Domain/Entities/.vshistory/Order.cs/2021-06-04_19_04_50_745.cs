@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EImece.Domain.Entities
 {
-    public class Order : BaseEntity 
+    public class Order : BaseEntity,   IComparer<Order>
     {
         public DateTime DeliveryDate { get; set; }
         public string UserId { get; set; }
@@ -70,6 +70,9 @@ namespace EImece.Domain.Entities
             }
         }
 
-      
+        public int Compare(Order x, Order y)
+        {
+            return (x.CreatedDate > y.CreatedDate) ? 1 : 0;
+        }
     }
 }
