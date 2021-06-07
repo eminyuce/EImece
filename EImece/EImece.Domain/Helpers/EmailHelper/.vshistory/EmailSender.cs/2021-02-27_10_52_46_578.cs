@@ -102,7 +102,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 }
                 message.Attachments.Add(attachment);
             }
-            if (AppConfig.IsSmtpClientEnabled)
+            if (Constants.IsSmtpClientEnabled)
             {
                 using (var smtpClient = new SmtpClient())
                 {

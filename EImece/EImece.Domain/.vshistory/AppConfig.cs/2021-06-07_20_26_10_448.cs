@@ -51,7 +51,7 @@ namespace EImece.Domain
         {
             get
             {
-               return GetConfigBool("IsSmtpClientEnabled", true);
+               return GetConfigBool("IsSmtpClientEnabled", false);
             }
         }
         public static string HttpProtocolForImages

@@ -47,11 +47,12 @@ namespace EImece.Domain
                 return GetConfigString("IyzicoApiKey", "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB");
             }
         }
-        public static bool IsSmtpClientEnabled
+        public const bool IsSmtpClientEnabled = true;
+        public static string IsSmtpClientEnabled
         {
             get
             {
-               return GetConfigBool("IsSmtpClientEnabled", true);
+               return GetConfigBool("IsSmtpClientEnabled", false);
             }
         }
         public static string HttpProtocolForImages
