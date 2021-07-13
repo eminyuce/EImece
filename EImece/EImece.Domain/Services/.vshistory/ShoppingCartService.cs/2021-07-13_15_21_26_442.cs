@@ -118,15 +118,6 @@ namespace EImece.Domain.Services
             int shippingAddressId,
            int billingAddressId)
         {
-            if (shippingAddressId == 0)
-            {
-                throw new ArgumentNullException("shippingAddressId", "shippingAddressId is 0");
-            }
-            if (billingAddressId == 0)
-            {
-                throw new ArgumentNullException("billingAddressId", "billingAddressId is 0");
-            }
-
             var item = new Order();
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
@@ -144,7 +135,7 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = shoppingCart.CurrentLanguage;
-            item.Coupon = shoppingCart.Coupon != null ?  shoppingCart.Coupon.Name : "";
+            item.Coupon = shoppingCart.Coupon.Name;
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice)+"";
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;

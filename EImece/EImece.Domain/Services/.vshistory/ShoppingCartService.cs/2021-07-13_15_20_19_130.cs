@@ -79,7 +79,7 @@ namespace EImece.Domain.Services
             }
             if (string.IsNullOrEmpty(userId))
             {
-                throw new ArgumentNullException("userId", "userId is null");
+                throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
             }
             int shippingAddressId = shoppingCart.ShippingAddress.Id;
             int billingAddressId = shoppingCart.BillingAddress.Id;
@@ -118,19 +118,7 @@ namespace EImece.Domain.Services
             int shippingAddressId,
            int billingAddressId)
         {
-            if (shippingAddressId == 0)
-            {
-                throw new ArgumentNullException("shippingAddressId", "shippingAddressId is 0");
-            }
-            if (billingAddressId == 0)
-            {
-                throw new ArgumentNullException("billingAddressId", "billingAddressId is 0");
-            }
-
             var item = new Order();
-            item.DeliveryDate = DateTime.Now;
-            item.ShippingAddressId = shippingAddressId;
-            item.BillingAddressId = billingAddressId;
             item.OrderComments = shoppingCart.OrderComments;
             item.Name = shoppingCart.Customer.FullName;
             item.OrderGuid = shoppingCart.OrderGuid;
@@ -144,7 +132,10 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = shoppingCart.CurrentLanguage;
-            item.Coupon = shoppingCart.Coupon != null ?  shoppingCart.Coupon.Name : "";
+            item.DeliveryDate = DateTime.Now;
+            item.ShippingAddressId = shippingAddressId;
+            item.BillingAddressId = billingAddressId;
+            item.Coupon = shoppingCart.Coupon.Name;
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice)+"";
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;

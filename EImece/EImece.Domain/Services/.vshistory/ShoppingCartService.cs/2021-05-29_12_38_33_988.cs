@@ -77,10 +77,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
             }
-            if (string.IsNullOrEmpty(userId))
-            {
-                throw new ArgumentNullException("userId", "userId is null");
-            }
+
             int shippingAddressId = shoppingCart.ShippingAddress.Id;
             int billingAddressId = shoppingCart.BillingAddress.Id;
             if (shippingAddressId == 0)
@@ -105,7 +102,6 @@ namespace EImece.Domain.Services
                 var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
                 billingAddressId = billingAddress.Id;
             }
-            Logger.Info("SaveOrder userId="+ userId+ " shippingAddressId="+ shippingAddressId+ " billingAddressId="+ billingAddressId);
 
             CustomerService.SaveShippingAddress(userId);
             Order savedOrder = SaveOrder(userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
@@ -118,19 +114,7 @@ namespace EImece.Domain.Services
             int shippingAddressId,
            int billingAddressId)
         {
-            if (shippingAddressId == 0)
-            {
-                throw new ArgumentNullException("shippingAddressId", "shippingAddressId is 0");
-            }
-            if (billingAddressId == 0)
-            {
-                throw new ArgumentNullException("billingAddressId", "billingAddressId is 0");
-            }
-
             var item = new Order();
-            item.DeliveryDate = DateTime.Now;
-            item.ShippingAddressId = shippingAddressId;
-            item.BillingAddressId = billingAddressId;
             item.OrderComments = shoppingCart.OrderComments;
             item.Name = shoppingCart.Customer.FullName;
             item.OrderGuid = shoppingCart.OrderGuid;
@@ -144,7 +128,10 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = shoppingCart.CurrentLanguage;
-            item.Coupon = shoppingCart.Coupon != null ?  shoppingCart.Coupon.Name : "";
+            item.DeliveryDate = DateTime.Now;
+            item.ShippingAddressId = shippingAddressId;
+            item.BillingAddressId = billingAddressId;
+            item.Coupon = shoppingCart.Coupon.Name;
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice)+"";
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;

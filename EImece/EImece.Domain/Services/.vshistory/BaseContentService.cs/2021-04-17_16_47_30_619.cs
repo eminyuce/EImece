@@ -114,6 +114,7 @@ namespace EImece.Domain.Services
                 entity.AddUserId = HttpContextFactory.GetCurrentUserId();
             }
             var tmp = BaseContentRepository.SaveOrEdit(entity);
+            this.DataCachingProvider.ClearAll();
             return entity;
         }
 

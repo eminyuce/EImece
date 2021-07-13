@@ -67,6 +67,7 @@ namespace EImece.Domain.Services
                 entity.CreatedDate = DateTime.Now;
             }
             var tmp = baseEntityRepository.SaveOrEdit(entity);
+            this.DataCachingProvider.ClearAll();
             return entity;
         }
 
