@@ -72,12 +72,11 @@ namespace EImece.Domain.Services
             }
         }
 
-        public void SaveCustomerTypeToNormal(string userId)
+        public void SaveShippingAddress(string userId)
         {
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
-                customer.CustomerType = (int) EImeceCustomerType.Normal;
                 SaveOrEditEntity(customer);
             }
         }

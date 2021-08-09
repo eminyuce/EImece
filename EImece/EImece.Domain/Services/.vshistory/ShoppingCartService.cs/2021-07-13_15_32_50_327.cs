@@ -107,7 +107,7 @@ namespace EImece.Domain.Services
             }
             Logger.Info("SaveOrder userId="+ userId+ " shippingAddressId="+ shippingAddressId+ " billingAddressId="+ billingAddressId);
 
-            CustomerService.SaveCustomerTypeToNormal(userId);
+            CustomerService.SaveShippingAddress(userId);
             Order savedOrder = SaveOrder(userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
             SaveOrderProduct(shoppingCart, savedOrder);
 

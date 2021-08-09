@@ -253,7 +253,6 @@ namespace EImece.Controllers
                     if (shoppingCart.Customer == null)
                     {
                         shoppingCart.Customer = new Customer();
-                        shoppingCart.Customer.CustomerType = (int)EImeceCustomerType.Normal;
                         shoppingCart.Customer.Country = "Türkiye";
                     }
                     if (shoppingCart.Customer.IsEmpty())

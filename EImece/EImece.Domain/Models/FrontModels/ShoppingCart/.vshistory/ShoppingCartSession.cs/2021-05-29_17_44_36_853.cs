@@ -10,7 +10,7 @@ using System.Linq;
 namespace EImece.Domain.Models.FrontModels
 {
     [Serializable]
-    public class ShoppingCartSession 
+    public class ShoppingCartSession
     {
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         private Customer _customer = new Customer();

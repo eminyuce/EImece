@@ -230,7 +230,6 @@ namespace EImece.Controllers
                     {
                         c = new Customer();
                         c.UserId = user.Id;
-                        c.CustomerType = (int)EImeceCustomerType.Normal;
                     }
                     result.Customer = c;
                     c.IsSameAsShippingAddress = true;
@@ -253,7 +252,6 @@ namespace EImece.Controllers
                     if (shoppingCart.Customer == null)
                     {
                         shoppingCart.Customer = new Customer();
-                        shoppingCart.Customer.CustomerType = (int)EImeceCustomerType.Normal;
                         shoppingCart.Customer.Country = "Türkiye";
                     }
                     if (shoppingCart.Customer.IsEmpty())

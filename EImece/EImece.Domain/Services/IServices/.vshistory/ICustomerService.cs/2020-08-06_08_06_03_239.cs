@@ -12,7 +12,7 @@ namespace EImece.Domain.Services.IServices
 
         void DeleteByUserId(string userId);
 
-        void SaveCustomerTypeToNormal(string userId);
+        void SaveShippingAddress(string userId);
 
         List<Customer> GetCustomerServices(string search);
 
