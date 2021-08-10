@@ -230,9 +230,7 @@ namespace EImece.Tests.Controllers
             cservice.DataCachingProvider = new MemoryCacheProvider();
             var opservice = new OrderProductService(new OrderProductRepository(db));
             opservice.DataCachingProvider = new MemoryCacheProvider();
-            var orderRepo = new OrderRepository(db);
-            var oservice = new OrderService(orderRepo, cservice, opservice);
-            Assert.IsNotNull(orderRepo.GetOrderById(12));
+            var oservice = new OrderService(new OrderRepository(db), cservice, opservice);
             oservice.DataCachingProvider = new MemoryCacheProvider();
             var cOrder = oservice.GetOrderById(12);
             Customer customer = cservice.GetUserId("44a72377-7a04-49ec-b8bb-40b9140deddc");

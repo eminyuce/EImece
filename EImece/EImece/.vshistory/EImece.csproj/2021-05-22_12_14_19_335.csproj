@@ -1619,7 +1619,6 @@
     <Content Include="Views\Payment\BuyNow.cshtml" />
     <Content Include="Views\Payment\BuyNowPayment.cshtml" />
     <Content Include="Views\Home\DisplayAllCache.cshtml" />
-    <Content Include="Views\Home\TestPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

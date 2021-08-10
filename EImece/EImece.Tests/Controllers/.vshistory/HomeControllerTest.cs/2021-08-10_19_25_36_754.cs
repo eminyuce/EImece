@@ -197,7 +197,14 @@ namespace EImece.Tests.Controllers
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
         }
-       
+        [TestMethod]
+        public void OrderServiceGetOrderById()
+        {
+            var db = new EImeceContext(ConnectionString);
+            var service = new OrderService(new OrderRepository(db));
+            var item = service.GetOrderById(175363);
+            Assert.IsTrue(item.Id > 0);
+        }
         [TestMethod]
         public void GetShoppingSession()
         {
@@ -220,21 +227,14 @@ namespace EImece.Tests.Controllers
         {
             var db = new EImeceContext(ConnectionString);
             var service = new MailTemplateService(new MailTemplateRepository(db));
-            service.DataCachingProvider = new MemoryCacheProvider();
             var orderConfirmationEmailTemplate = service.GetMailTemplateByName("OrderConfirmationEmail");
             Assert.IsNotNull(orderConfirmationEmailTemplate);
             String orderConfirmationEmailTemplateHtml = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\emailTemplates\OrderConfirmationEmail.html");
             var aservice = new AddressService(new AddressRepository(db));
-            aservice.DataCachingProvider = new MemoryCacheProvider();
             var cservice = new CustomerService(new CustomerRepository(db), aservice);
-            cservice.DataCachingProvider = new MemoryCacheProvider();
             var opservice = new OrderProductService(new OrderProductRepository(db));
-            opservice.DataCachingProvider = new MemoryCacheProvider();
-            var orderRepo = new OrderRepository(db);
-            var oservice = new OrderService(orderRepo, cservice, opservice);
-            Assert.IsNotNull(orderRepo.GetOrderById(12));
-            oservice.DataCachingProvider = new MemoryCacheProvider();
-            var cOrder = oservice.GetOrderById(12);
+            var oservice = new OrderService(new OrderRepository(db), cservice, opservice);
+            var cOrder = oservice.GetOrderById(1);
             Customer customer = cservice.GetUserId("44a72377-7a04-49ec-b8bb-40b9140deddc");
             var pp = new OrderConfirmationEmailRazorTemplate();
             pp.CompanyAddress = "3828 Mall Road  Los Angeles, California, 90017";

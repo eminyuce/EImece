@@ -69,12 +69,12 @@ namespace EImece.Controllers
 
             return View(mainPageModel);
         }
-      //  public ActionResult TestPage()
-      //  {
-      //      var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') ;
-      //      ViewBag.GetRawUrl = baseurl;
-      //      return View();
-      //  }
+        public ActionResult TestPage()
+        {
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            ViewBag.GetRawUrl = GetRawUrl(this.Request);
+            return View();
+        }
         
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)

@@ -29,8 +29,6 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
-            includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
-            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
             var item = GetSingleIncluding(id, includeProperties.ToArray());
 
             return item;

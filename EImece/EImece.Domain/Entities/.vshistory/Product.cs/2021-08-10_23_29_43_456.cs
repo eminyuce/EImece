@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
@@ -89,13 +88,8 @@ namespace EImece.Domain.Entities
 
         public string ImageFullPath(int width, int height)
         {
-            var request = HttpContext.Current.Request;
-            var baseurl = request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
             var result= this.GetCroppedImageUrl(this.MainImageId, width, height, true);
-            if (!result.Contains(baseurl))
-            {
-                result = baseurl + result;
-            }
+
             return result;
         }
 

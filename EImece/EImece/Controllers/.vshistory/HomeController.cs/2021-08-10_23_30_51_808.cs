@@ -69,13 +69,22 @@ namespace EImece.Controllers
 
             return View(mainPageModel);
         }
-      //  public ActionResult TestPage()
-      //  {
-      //      var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') ;
-      //      ViewBag.GetRawUrl = baseurl;
-      //      return View();
-      //  }
-        
+        public ActionResult TestPage()
+        {
+            return View();
+        }
+        public static Uri GetUri(HttpRequest request)
+        {
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = request.Scheme,
+                Host = request.Host.Host,
+                Port = request.Host.Port.GetValueOrDefault(80),
+                Path = request.Path.ToString(),
+                Query = request.QueryString.ToString()
+            };
+            return uriBuilder.Uri;
+        }
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
