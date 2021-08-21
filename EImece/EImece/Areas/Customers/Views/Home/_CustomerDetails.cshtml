@@ -36,7 +36,7 @@
     </div>
     <div class="pt-3 mr-3">
         <a class="btn btn-outline-primary btn-sm" href="javascript:document.getElementById('logoutForm').submit()">
-            <i class="mr-1" data-feather="log-out"></i>  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span>
+            <i class="mr-1" data-feather="log-out"></i>  @Resource.Logout <span class="glyphicon glyphicon-log-out"></span>
         </a>
         @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
@@ -45,10 +45,10 @@
     </div>
 </div>
 <ul class="list-unstyled border p-3 mb-4">
-    <li class="pb-1"><span class="opacity-80">&ndash; Katılım:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
-    <li class="pb-1"><span class="opacity-80">&ndash; Toplam sipariş:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>
+    <li class="pb-1"><span class="opacity-80">&ndash;@Resource.CreatedDate:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
+    <li class="pb-1"><span class="opacity-80">&ndash;@Resource.TotalOrderNumber:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>
     <li class="pb-1">
-        <span class="opacity-80">&ndash; Toplam harcama:</span><span class="font-weight-semibold ml-1">
+        <span class="opacity-80">&ndash; @Resource.TotalPrice:</span><span class="font-weight-semibold ml-1">
             @orders.Sum(r => r.PaidPriceDecimal).CurrencySign()
         </span>
     </li>
@@ -57,52 +57,52 @@
 <ul class="nav nav-tabs d-none d-sm-flex">
     <li class="nav-item">
         <a class="nav-link @String.Format("{0}",actionName.Equals("index",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("Index","Home")">
-            <i data-feather="settings"></i>&nbsp;@AdminResource.MyAccount
+            <i data-feather="settings"></i>&nbsp;@Resource.MyAccount
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link  @String.Format("{0}",actionName.Equals("ChangePassword",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("ChangePassword","Home")">
-            <i data-feather="lock"></i>&nbsp;@AdminResource.ChangePassword
+            <i data-feather="lock"></i>&nbsp;@Resource.ChangePassword
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @String.Format("{0}",actionName.Equals("CustomerOrders",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("CustomerOrders")">
-            <i data-feather="shopping-bag"></i>&nbsp;@AdminResource.MyOrder<span class="badge badge-pill badge-secondary bg-0 border ml-2">
+            <i data-feather="shopping-bag"></i>&nbsp;@Resource.MyOrder<span class="badge badge-pill badge-secondary bg-0 border ml-2">
                 <span class="text-primary">@orders.Count</span>
             </span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link  @String.Format("{0}",actionName.Equals("SendMessageToSeller",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("SendMessageToSeller")">
-            <i data-feather="phone"></i>&nbsp;@AdminResource.SendMessageToSeller
+            <i data-feather="phone"></i>&nbsp;@Resource.SendMessageToSeller
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link  @String.Format("{0}",actionName.Equals("Faq",StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("Faq")">
-            <i data-feather="info"></i>&nbsp;@AdminResource.Faq
+            <i data-feather="info"></i>&nbsp;@Resource.Faq
         </a>
     </li>
 </ul>
 <!-- Navigation (visible sm-down)-->
 <div class="d-sm-none pb-4">
     <button class="btn btn-primary btn-block mb-2" type="button" data-toggle="collapse" data-target="#account-menu">
-        <i class="mr-2" data-feather="menu"></i>Menu
+        <i class="mr-2" data-feather="menu"></i>@Resource.Menu
     </button>
     <div class="collapse" id="account-menu">
         <div class="list-group">
             <a class="list-group-item list-group-item-action" href="@Url.Action("Index","Home")">
-                <i data-feather="settings"></i>&nbsp;@AdminResource.MyAccount
+                <i data-feather="settings"></i>&nbsp;@Resource.MyAccount
             </a>
             <a class="list-group-item list-group-item-action" href="@Url.Action("ChangePassword","Home")">
-                <i data-feather="lock"></i>&nbsp;@AdminResource.ChangePassword
+                <i data-feather="lock"></i>&nbsp;@Resource.ChangePassword
             </a>
             <a class="list-group-item list-group-item-action" href="@Url.Action("CustomerOrders")">
-                <i data-feather="shopping-bag"></i>&nbsp;@AdminResource.MyOrder<span class="badge badge-pill badge-secondary bg-0 border ml-2">
+                <i data-feather="shopping-bag"></i>&nbsp;@Resource.MyOrder<span class="badge badge-pill badge-secondary bg-0 border ml-2">
                     <span class="text-primary">@orders.Count</span>
                 </span>
             </a>
             <a class="list-group-item list-group-item-action" href="@Url.Action("SendMessageToSeller")">
-                <i data-feather="phone"></i>&nbsp;@AdminResource.SendMessageToSeller
+                <i data-feather="phone"></i>&nbsp;@Resource.SendMessageToSeller
             </a>
         </div>
     </div>

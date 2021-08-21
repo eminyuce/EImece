@@ -412,7 +412,7 @@
     <value>Select reason</value>
   </data>
   <data name="SelectReasonsLabel" xml:space="preserve">
-    <value>Please select</value>
+    <value>Please select a reason</value>
   </data>
   <data name="ContactUsPhoneErrorMessage" xml:space="preserve">
     <value>Please Enter Your Phone Number</value>
@@ -1705,5 +1705,54 @@
   </data>
   <data name="ValidPromoCode" xml:space="preserve">
     <value>Please provide a valid coupon code!</value>
+  </data>
+  <data name="TotalOrderNumber" xml:space="preserve">
+    <value>Total Order Number</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="CustomerOpenAddressDescription" xml:space="preserve">
+    <value>In order for your order to reach you as quickly as possible, please write your address information as clear as possible. &lt;br /&gt;
+                             You can even write the recipe information of your address, if any, in the {0} section. &lt;br /&gt; (Example: When you enter from the post office, the third street etc.)</value>
+  </data>
+  <data name="Coupon" xml:space="preserve">
+    <value>Coupon</value>
+  </data>
+  <data name="EImeceOrderStatus_Cancelled" xml:space="preserve">
+    <value>Cancelled Order</value>
+  </data>
+  <data name="EImeceOrderStatus_Delivered" xml:space="preserve">
+    <value>Delivered Order</value>
+  </data>
+  <data name="EImeceOrderStatus_InProgress" xml:space="preserve">
+    <value>Order In Progress</value>
+  </data>
+  <data name="EImeceOrderStatus_NewlyOrder" xml:space="preserve">
+    <value>New Order</value>
+  </data>
+  <data name="EImeceOrderStatus_Returned" xml:space="preserve">
+    <value>Returned Order</value>
+  </data>
+  <data name="DeliveryInformation" xml:space="preserve">
+    <value>Delivery Information</value>
+  </data>
+  <data name="GetInformationAboutYourOrder" xml:space="preserve">
+    <value>Get information about your order</value>
+  </data>
+  <data name="IfProductAvailable" xml:space="preserve">
+    <value>Ask if a particular product is available</value>
+  </data>
+  <data name="ManagingMyAccount" xml:space="preserve">
+    <value>Managing My Account</value>
+  </data>
+  <data name="MessageAboutSizeorColorPreference" xml:space="preserve">
+    <value>Send a message about size or color preference</value>
+  </data>
+  <data name="OthersMessage" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="ReturnPolicy" xml:space="preserve">
+    <value>Cancellation, return, refund or replacement policy</value>
   </data>
 </root>

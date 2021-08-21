@@ -15,7 +15,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-
+    @{
+        var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon and Touch Icons-->
     <link rel="mask-icon" color="#111" href="~/Content/safari-pinned-tab.svg">
@@ -31,6 +33,7 @@
 </head>
 
 <body class="fullscreen-container">
+    <input type="hidden" name="lang" value="@countryCode" />
     <div class="navbar bg-dark py-2 px-0">
         <div class="container px-3">
             <!-- contact info-->

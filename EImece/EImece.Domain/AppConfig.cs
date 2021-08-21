@@ -158,14 +158,7 @@ namespace EImece.Domain
             }
             return configValue == -1 ? defaultValue : configValue;
         }
-
-        public static int SpecialFooterMenuLinkMenuId
-        {
-            get
-            {
-                return GetConfigInt("SpecialFooterMenuLinkMenuId", 3142);
-            }
-        }
+       
 
         public static int CacheTinySeconds
         {

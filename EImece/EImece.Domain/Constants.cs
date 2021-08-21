@@ -115,7 +115,7 @@ namespace EImece.Domain
         public const string DefaultImageText = "X";
         
         public const string BuyNowCustomerUserId = "BNC";
-
+        public const string LanguageSession="LanguageSession";
         public static object DeleteButtonHtmlAttribute
         {
             get

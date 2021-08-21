@@ -1,0 +1,59 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Services.IServices;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@{
+    var userName = User.Identity.GetUserName();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon and Touch Icons-->
+    <link rel="mask-icon" color="#111" href="~/Content/safari-pinned-tab.svg">
+    <meta name="msapplication-TileColor" content="#111">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
+    <link rel="stylesheet" media="screen" href="~/Content/mstore/css/vendor.min.css" />
+    <!-- Main Theme Styles + Bootstrap-->
+    <link rel="stylesheet" media="screen" id="main-styles" href="~/Content/mstore/css/theme.min.css" />
+    <!-- Customizer styles and scripts-->
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body class="fullscreen-container">
+    <div class="navbar bg-dark py-2 px-0">
+        <div class="container px-3">
+            <!-- contact info-->
+            <ul class="list-inline mb-0 d-none d-lg-inline-block">
+                <li class="list-inline-item opacity-75 mr-2">
+                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = false })
+                </li>
+            </ul>
+            <!-- links collapsed (moblie)-->
+            <div class="dropdown d-inline-block d-lg-none">
+                <a class="dropdown-toggle text-light opacity-75 font-size-sm py-1" href="#" data-toggle="dropdown">@Resource.UsefulLinks</a>
+                <div class="dropdown-menu">
+                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @RenderBody()
+    <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
+    <script src="~/Content/mstore/js/vendor.min.js"></script>
+    <script src="~/Content/mstore/js/theme.min.js"></script>
+    <script src="~/Scripts/cookie-consent.js?v=1"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

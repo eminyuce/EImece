@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Linq;
 using static EImece.Controllers.ManageController;
+using System.Threading;
+using System.Globalization;
 
 namespace EImece.Areas.Customers.Controllers
 {
@@ -25,7 +27,14 @@ namespace EImece.Areas.Customers.Controllers
     public class HomeController : Controller
     {
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
-
+        protected int CurrentLanguage
+        {
+            get
+            {
+                var lang = Thread.CurrentThread.CurrentCulture.ToString();
+                return EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
+            }
+        }
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
@@ -59,12 +68,21 @@ namespace EImece.Areas.Customers.Controllers
         {
             this.UserManager = userManager;
         }
-
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            var languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
+            if (languageCookie != null)
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(languageCookie.Value);
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(languageCookie.Value);
+            }
+            base.Initialize(requestContext);
+        }
         // GET: Customers/Home
         public ActionResult Index()
         {
             Customer customer = GetCustomer();
-
+            ViewBag.Title = Resource.CustomerAccount;
             return View(customer);
         }
 
@@ -169,6 +187,7 @@ namespace EImece.Areas.Customers.Controllers
 
         public ActionResult SendMessageToSeller()
         {
+            ViewBag.Title = Resource.SendMessageToSeller;
             var customer = GetCustomer();
             var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
@@ -188,19 +207,21 @@ namespace EImece.Areas.Customers.Controllers
 
         public ActionResult Faq()
         {
+            ViewBag.Title = Resource.Faq;
             var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
+            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
         public ActionResult CustomerOrders(string search = "")
         {
+            ViewBag.Title = Resource.CustomerDetail;
             var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
             var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
-
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -213,6 +234,7 @@ namespace EImece.Areas.Customers.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
+            ViewBag.Title = Resource.Password;
             ViewBag.Customer = GetCustomer();
             return View();
         }

@@ -409,7 +409,7 @@
     <value>Nedenler</value>
   </data>
   <data name="SelectReason" xml:space="preserve">
-    <value>Neden seçin</value>
+    <value>Bir neden seçiniz</value>
   </data>
   <data name="SelectReasonsLabel" xml:space="preserve">
     <value>Lütfen bir neden seçin.</value>
@@ -1708,5 +1708,54 @@
   </data>
   <data name="ValidPromoCode" xml:space="preserve">
     <value>Lütfen geçerli bir kupon kodu girin!</value>
+  </data>
+  <data name="TotalOrderNumber" xml:space="preserve">
+    <value>Toplam harcama</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Ara Toplam</value>
+  </data>
+  <data name="CustomerOpenAddressDescription" xml:space="preserve">
+    <value>Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. &lt;br /&gt;
+                            Hatta varsa adresinizin tarif bilgilerini de {0} bölümüne yazabilirsiniz. &lt;br /&gt; (Örnek: Postanenin yanından girince üçüncü sokak vs.)</value>
+  </data>
+  <data name="Coupon" xml:space="preserve">
+    <value>Coupon</value>
+  </data>
+  <data name="DeliveryInformation" xml:space="preserve">
+    <value>Teslimat Bilgisi</value>
+  </data>
+  <data name="EImeceOrderStatus_Cancelled" xml:space="preserve">
+    <value>İptal edilmis Sipariş</value>
+  </data>
+  <data name="EImeceOrderStatus_Delivered" xml:space="preserve">
+    <value>Teslim Edilen Siparişler</value>
+  </data>
+  <data name="EImeceOrderStatus_InProgress" xml:space="preserve">
+    <value>Hazırlanmakta Olan Sipariş</value>
+  </data>
+  <data name="EImeceOrderStatus_NewlyOrder" xml:space="preserve">
+    <value>Yeni Sipariş</value>
+  </data>
+  <data name="EImeceOrderStatus_Returned" xml:space="preserve">
+    <value>İade Sipariş</value>
+  </data>
+  <data name="GetInformationAboutYourOrder" xml:space="preserve">
+    <value>Siparişiniz hakkında bilgi alın</value>
+  </data>
+  <data name="IfProductAvailable" xml:space="preserve">
+    <value>Belirli bir ürün veya ürünün mevcut olup olmadığını sorun</value>
+  </data>
+  <data name="ManagingMyAccount" xml:space="preserve">
+    <value>Hesabımı Yönetme</value>
+  </data>
+  <data name="MessageAboutSizeorColorPreference" xml:space="preserve">
+    <value>Boyut veya renk tercihi ilgili bir mesaj gönderin</value>
+  </data>
+  <data name="OthersMessage" xml:space="preserve">
+    <value>Diğerleri</value>
+  </data>
+  <data name="ReturnPolicy" xml:space="preserve">
+    <value>İptal, iade, geri ödeme veya değiştirme politikası</value>
   </data>
 </root>

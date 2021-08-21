@@ -4,13 +4,16 @@
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
+@using System.Threading;
 @model FooterViewModel
 @{
     var footerModel = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
-    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == AppConfig.SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var SpecialFooterMenuLinkMenuId = countryCode.Equals("tr-TR") ? 3142 : 3164;
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
     var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 2114).OrderBy(r => r.Position).ToList();
 
     var productCategories = Model.ProductCategories;

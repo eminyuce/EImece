@@ -339,7 +339,6 @@ namespace EImece.Controllers
             languageCookie.Expires = DateTime.Now.AddDays(10);
 
             Response.SetCookie(languageCookie);
-
             return RedirectToAction("Index", "Home");
         }
 

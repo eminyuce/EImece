@@ -1,0 +1,123 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@using EImece.Domain.Models.FrontModels;
+@model ContactUsFormViewModel
+
+@{
+    var SendButtonText = Resource.SendButtonText;
+}
+
+@using (Html.BeginForm("SendSellerMessage", "Home", FormMethod.Post))
+{
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.ContactFormType)
+@Html.HiddenFor(model => model.ItemId)
+@Html.HiddenFor(model => model.ItemType)
+<div class="form-horizontal">
+
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Reasons, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Reasons,
+                     GetReasonsSelectList(),
+                     Resource.SelectReason,
+                     new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.OrderNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.OrderNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Message, new { @rows = "5", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@SendButtonText" class="btn btn-outline-info rounded mb-2 mr-1 btn-block" />
+        </div>
+    </div>
+</div>
+}
+
+@functions {
+    private List<SelectListItem> GetReasonsSelectList()
+    {
+        var reasons = new List<SelectListItem>();
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.ManagingMyAccount,
+            Value = Resource.ManagingMyAccount
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.DeliveryInformation,
+            Value = Resource.DeliveryInformation
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.GetInformationAboutYourOrder,
+            Value = Resource.GetInformationAboutYourOrder
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.ReturnPolicy,
+            Value = Resource.ReturnPolicy
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.MessageAboutSizeorColorPreference,
+            Value = Resource.MessageAboutSizeorColorPreference
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.MessageAboutSizeorColorPreference,
+            Value = Resource.MessageAboutSizeorColorPreference
+        });
+        reasons.Add(new SelectListItem()
+        {
+            Text = Resource.OthersMessage,
+            Value = Resource.OthersMessage
+        });
+        return reasons;
+    }
+}
