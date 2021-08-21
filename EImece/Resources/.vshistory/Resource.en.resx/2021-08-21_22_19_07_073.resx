@@ -778,7 +778,7 @@
     <value>Customer Address Registration</value>
   </data>
   <data name="CustomerRegistrationDate" xml:space="preserve">
-    <value>Customer Service Date</value>
+    <value>Customer Registration Date</value>
   </data>
   <data name="Customers" xml:space="preserve">
     <value>Customers</value>

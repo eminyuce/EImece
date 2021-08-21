@@ -778,7 +778,7 @@
     <value>Customer Address Registration</value>
   </data>
   <data name="CustomerRegistrationDate" xml:space="preserve">
-    <value>Customer Service Date</value>
+    <value>Customer Registration Date</value>
   </data>
   <data name="Customers" xml:space="preserve">
     <value>Customers</value>
@@ -1487,7 +1487,7 @@
     <value>No comments for this product yet. Do you want to write the first comment?</value>
   </data>
   <data name="CustomerRelationship" xml:space="preserve">
-    <value>Customer Service</value>
+    <value>Customer Relationship</value>
   </data>
   <data name="NoProductsFoundForSelectedFilters" xml:space="preserve">
     <value>No products found for the selected filters.</value>
