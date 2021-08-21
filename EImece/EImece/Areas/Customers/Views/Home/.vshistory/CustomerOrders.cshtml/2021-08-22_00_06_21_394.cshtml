@@ -125,8 +125,7 @@ switch (os)
 @helper createOrderDetailModal(Order order)
 {
 var os = (EImeceOrderStatus)order.OrderStatus;
-var rm = new ResourceManager(typeof(Resource));
-var orderStatusText = rm.GetString(os.GetType().Name + "_" + os);
+var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
     <!-- Order Details-->
     <div class="modal fade" id="@string.Format("order-details-{0}",order.OrderNumber)">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
