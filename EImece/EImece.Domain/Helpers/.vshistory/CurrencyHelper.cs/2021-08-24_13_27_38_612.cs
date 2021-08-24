@@ -9,7 +9,7 @@ namespace EImece.Domain.Helpers
         private const string CulturaInfoName = "tr-TR";
         public static string CurrencySignForIyizo(this decimal price)
         {
-            return CurrencySign(price).Replace(".", "").Replace("TL", "").Trim();
+
         }
         public static string CurrencySign(this decimal price)
         {

@@ -23,7 +23,6 @@ namespace EImece.MyConsole
             Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(4660M));
             Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
             Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
             Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(214.34M));
             Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(14.34M));
             Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(4.34M));

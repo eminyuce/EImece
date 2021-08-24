@@ -129,16 +129,13 @@ namespace EImece.Domain.Services
                 firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
 
-                firstBasketItem.Price = CurrencyHelper.CurrencySignForIyizo(item.Price);
+                firstBasketItem.Price = CurrencyHelper.ToDecimalToStringConvert(item.Price);
                 totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);
             }
             //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
-            //request.Price = CurrencyHelper.ToDecimalToStringConvert(totalPrice);
-            //PaidPrice = CurrencyHelper.ToDecimalToStringConvert(shoppingCart.TotalPriceWithCargoPrice);
-
-            request.Price = totalPrice.CurrencySignForIyizo();
-            request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.CurrencySignForIyizo();
+            request.Price = CurrencyHelper.ToDecimalToStringConvert(totalPrice);
+            request.PaidPrice = CurrencyHelper.ToDecimalToStringConvert(shoppingCart.TotalPriceWithCargoPrice);
             request.BasketItems = basketItems;
             Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
             return CheckoutFormInitialize.Create(request, options);

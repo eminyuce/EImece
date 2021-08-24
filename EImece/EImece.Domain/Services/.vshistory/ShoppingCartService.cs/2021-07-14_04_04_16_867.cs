@@ -145,7 +145,7 @@ namespace EImece.Domain.Services
             item.Position = 1;
             item.Lang = shoppingCart.CurrentLanguage;
             item.Coupon = shoppingCart.Coupon != null ?  shoppingCart.Coupon.Name : "";
-            item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
+            item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice)+"";
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;
             item.PaidPrice = checkoutForm.PaidPrice;

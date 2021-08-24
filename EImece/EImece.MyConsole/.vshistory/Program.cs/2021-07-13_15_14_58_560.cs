@@ -20,14 +20,9 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(4660M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(14.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(4.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1.34M));
+            string u = "O7r3e2VcTRXDHf8o5JVTvwnnw6bjmCRL8HY1fHy8ERLqpIGPDj0dLccML7cxly40q%252b%252fJmap0nNMjSoL8w4%252b5CQQ4fFWjENxp0iwlgvoZWPk%253d";
+            var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
+            Console.WriteLine(userId);
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }

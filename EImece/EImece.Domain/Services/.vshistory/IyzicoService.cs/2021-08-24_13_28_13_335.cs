@@ -129,7 +129,7 @@ namespace EImece.Domain.Services
                 firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
                 firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
 
-                firstBasketItem.Price = CurrencyHelper.CurrencySignForIyizo(item.Price);
+                firstBasketItem.Price = CurrencyHelper.ToDecimalToStringConvert(item.Price);
                 totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);
             }
@@ -138,7 +138,7 @@ namespace EImece.Domain.Services
             //PaidPrice = CurrencyHelper.ToDecimalToStringConvert(shoppingCart.TotalPriceWithCargoPrice);
 
             request.Price = totalPrice.CurrencySignForIyizo();
-            request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.CurrencySignForIyizo();
+            request.PaidPrice = totalPrice.CurrencySignForIyizo();
             request.BasketItems = basketItems;
             Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
             return CheckoutFormInitialize.Create(request, options);

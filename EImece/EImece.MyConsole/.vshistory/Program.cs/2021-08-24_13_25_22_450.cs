@@ -20,14 +20,13 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(4660M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(214.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(14.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(4.34M));
-            Console.WriteLine(CurrencyHelper.CurrencySignForIyizo(1.34M));
+            Console.WriteLine(CurrencyHelper.CurrencySign(4660M).Replace(".", ""));
+            Console.WriteLine(CurrencyHelper.CurrencySign(1214.34M).Replace(".", ""));
+            Console.WriteLine(CurrencyHelper.ToDecimalToStringConvert(1214.34M));
+            Console.WriteLine(CurrencyHelper.ToDecimalToStringConvert(214.34M));
+            Console.WriteLine(CurrencyHelper.ToDecimalToStringConvert(14.34M));
+            Console.WriteLine(CurrencyHelper.ToDecimalToStringConvert(4.34M));
+            Console.WriteLine(CurrencyHelper.ToDecimalToStringConvert(1.34M));
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }

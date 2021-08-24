@@ -7,17 +7,13 @@ namespace EImece.Domain.Helpers
     public static class CurrencyHelper
     {
         private const string CulturaInfoName = "tr-TR";
-        public static string CurrencySignForIyizo(this decimal price)
-        {
-            return CurrencySign(price).Replace(".", "").Replace("TL", "").Trim();
-        }
+
         public static string CurrencySign(this decimal price)
         {
             decimal v = RoundPriceNumber(price);
-            var culture = CultureInfo.CreateSpecificCulture(CulturaInfoName).ToString();
             if (v > 0)
             {
-                var result = v.ToString("#,##", new CultureInfo(culture));
+                var result = v.ToString("#,##", new CultureInfo(Thread.CurrentThread.CurrentUICulture.ToString()));
                 return string.Format("{0} TL", result);
             }
             else
@@ -29,8 +25,8 @@ namespace EImece.Domain.Helpers
         {
             var item = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
           //  var culture = Thread.CurrentThread.CurrentUICulture.ToString();
-            var culture = CultureInfo.CreateSpecificCulture(CulturaInfoName).ToString();
-            return item.ToString("#,##", new CultureInfo(culture));
+            var culture = CultureInfo.CreateSpecificCulture("tr-TR").ToString();
+            return item.ToString(new CultureInfo(culture)).Replace(",", ".");
         }
         public static decimal RoundPriceNumber(decimal price)
         {

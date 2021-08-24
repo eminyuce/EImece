@@ -138,7 +138,7 @@ namespace EImece.Domain.Services
             //PaidPrice = CurrencyHelper.ToDecimalToStringConvert(shoppingCart.TotalPriceWithCargoPrice);
 
             request.Price = totalPrice.CurrencySignForIyizo();
-            request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.CurrencySignForIyizo();
+            request.PaidPrice = totalPrice.CurrencySignForIyizo();
             request.BasketItems = basketItems;
             Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
             return CheckoutFormInitialize.Create(request, options);
