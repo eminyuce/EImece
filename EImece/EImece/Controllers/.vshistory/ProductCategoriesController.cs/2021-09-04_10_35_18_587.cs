@@ -70,7 +70,7 @@ namespace EImece.Controllers
                 List<Product> productsList = productCategory.ProductCategory.Products.ToList();
                 productsList.AddRange(productCategory.CategoryChildrenProducts);
                 productCategory.AllProducts = productsList;
-                SetCurrentCulture(productCategory.ProductCategory);
+                SetCurrentCulture(productCategory.ProductCategory.Lang);
                 return View(productCategory);
             }
             catch (Exception ex)

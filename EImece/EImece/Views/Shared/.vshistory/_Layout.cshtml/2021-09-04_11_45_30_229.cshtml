@@ -94,7 +94,7 @@
                 <!-- topbar menu-->
                 <ul class="list-inline mb-0 d-none d-lg-block">
                     <li class="list-inline-item mr-2">
-                        @Html.Action("Languages", "Home")
+                        @Html.Action("Languages", "Home", new { lang = countryCode })
                     </li>
                     <li class="list-inline-item mr-2">
                         <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light"

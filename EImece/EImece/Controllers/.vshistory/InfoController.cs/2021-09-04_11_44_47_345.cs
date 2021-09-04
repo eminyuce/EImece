@@ -1,27 +1,7 @@
 ﻿using EImece.Domain;
-using EImece.Domain.Caching;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
-using NLog;
-using Resources;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.Validation;
-using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Runtime.Caching;
-using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Controllers

@@ -1,6 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
@@ -61,45 +59,17 @@ namespace EImece.Controllers
 
             base.Initialize(requestContext);
         }
-        protected void SetCurrentCulture(BaseEntity entity)
-        {
-            if (entity == null)
-                return;
-            SetCurrentCulture(entity.Lang);
-        }
         protected void SetCurrentCulture(int language)
         {
-            if (language == 0)
+            EImeceLanguage eImeceLanguage = (EImeceLanguage) language;
+            if (eImeceLanguage == null)
                 return;
-            SetLanguage(language+"");
+            SetCurrentCulture(EnumHelper.GetEnumDescription(eImeceLanguage));
         }
         protected void SetCurrentCulture(String language)
         {
-            if (String.IsNullOrEmpty(language))
-                return;
             Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
-        }
-        protected void SetLanguage(string id)
-        {
-            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
-            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
-
-            CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
-
-            Response.Cookies.Remove("Language");
-
-            var languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
-
-            if (languageCookie == null) languageCookie = new HttpCookie("Language");
-
-            languageCookie.Value = cultureName;
-
-            languageCookie.Expires = DateTime.Now.AddDays(10);
-
-            Response.SetCookie(languageCookie);
         }
     }
 }

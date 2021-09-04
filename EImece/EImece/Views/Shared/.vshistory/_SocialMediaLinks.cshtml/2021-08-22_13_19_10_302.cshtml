@@ -30,14 +30,16 @@
     @if (ContainsValue(dic, Constants.InstagramWebSiteLink))
     {
         <a class="social-btn sb-instagram sb-light sb-sm ml-2" href="@dic[Constants.InstagramWebSiteLink]">
-            <i class="flaticon-instagram"></i><span class="sr-only">Instagram</span>
+            <i class="flaticon-instagram">
+            </i><span class="sr-only">Instagram</span>
         </a>
     }
     @if (ContainsValue(dic, Constants.PinterestWebSiteLink))
     {
 
         <a class="social-btn sb-pinterest sb-light sb-sm ml-2" href="@dic[Constants.PinterestWebSiteLink]">
-            <i class="flaticon-pinterest"></i><span class="sr-only">Pinterest</span>
+            <i class="flaticon-pinterest"></i>
+            <span class="sr-only">Pinterest</span>
         </a>
     }
 </div>

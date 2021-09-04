@@ -75,7 +75,7 @@ namespace EImece.Controllers
                 var product = ProductService.GetProductDetailViewModelById(productId);
                 if(!product.Product.IsActive)
                     return RedirectToAction("NotFound", "Error");
-                SetCurrentCulture(product.Product);
+                SetCurrentCulture(product.Product.Lang);
                 ViewBag.SeoId = product.Product.GetSeoUrl();
                 return View(product);
             }
@@ -102,7 +102,6 @@ namespace EImece.Controllers
             products.Sorting = (SortingType)sorting;
             products.TagId = id;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
-            SetCurrentCulture(products.Tag);
             return View(products);
         }
 

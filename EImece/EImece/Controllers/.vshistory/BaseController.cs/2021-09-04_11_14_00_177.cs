@@ -69,8 +69,6 @@ namespace EImece.Controllers
         }
         protected void SetCurrentCulture(int language)
         {
-            if (language == 0)
-                return;
             SetLanguage(language+"");
         }
         protected void SetCurrentCulture(String language)

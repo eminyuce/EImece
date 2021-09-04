@@ -162,11 +162,10 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Navigation(string lang)
+        public ActionResult Navigation()
         {
-            var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            var menus = MenuService.BuildTree(true, eImageLang);
-            var tree = ProductCategoryService.BuildNavigation(true, eImageLang);
+            var menus = MenuService.BuildTree(true, CurrentLanguage);
+            var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
             return PartialView("_Navigation", new NavigationModel(menus, tree));
         }
 
@@ -188,10 +187,9 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Footer(string lang)
+        public ActionResult Footer()
         {
-            var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            var footerViewModel = MainPageImageService.GetFooterViewModel(eImageLang);
+            var footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
 
@@ -323,8 +321,30 @@ namespace EImece.Controllers
         public ActionResult Language(string id)
         {
             SetLanguage(id);
-            MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home");
+        }
+
+        private void SetLanguage(string id)
+        {
+            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
+            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+
+            CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
+            MemoryCacheProvider.ClearAll();
+
+            Response.Cookies.Remove("Language");
+
+            var languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
+
+            if (languageCookie == null) languageCookie = new HttpCookie("Language");
+
+            languageCookie.Value = cultureName;
+
+            languageCookie.Expires = DateTime.Now.AddDays(10);
+
+            Response.SetCookie(languageCookie);
         }
 
         public ActionResult Language_OLD(string id)

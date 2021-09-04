@@ -162,11 +162,10 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Navigation(string lang)
+        public ActionResult Navigation()
         {
-            var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            var menus = MenuService.BuildTree(true, eImageLang);
-            var tree = ProductCategoryService.BuildNavigation(true, eImageLang);
+            var menus = MenuService.BuildTree(true, CurrentLanguage);
+            var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
             return PartialView("_Navigation", new NavigationModel(menus, tree));
         }
 
@@ -188,10 +187,9 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Footer(string lang)
+        public ActionResult Footer()
         {
-            var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            var footerViewModel = MainPageImageService.GetFooterViewModel(eImageLang);
+            var footerViewModel = MainPageImageService.GetFooterViewModel(CurrentLanguage);
             return PartialView("_Footer", footerViewModel);
         }
 
@@ -326,6 +324,8 @@ namespace EImece.Controllers
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home");
         }
+
+     
 
         public ActionResult Language_OLD(string id)
         {

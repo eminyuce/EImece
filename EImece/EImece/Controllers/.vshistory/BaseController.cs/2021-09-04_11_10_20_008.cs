@@ -1,5 +1,4 @@
-﻿using EImece.Domain;
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
@@ -69,9 +68,8 @@ namespace EImece.Controllers
         }
         protected void SetCurrentCulture(int language)
         {
-            if (language == 0)
-                return;
-            SetLanguage(language+"");
+            EImeceLanguage eImeceLanguage =  (EImeceLanguage) language;
+            SetCurrentCulture(EnumHelper.GetEnumDescription(eImeceLanguage));
         }
         protected void SetCurrentCulture(String language)
         {
@@ -88,6 +86,7 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
 
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
+            MemoryCacheProvider.ClearAll();
 
             Response.Cookies.Remove("Language");
 

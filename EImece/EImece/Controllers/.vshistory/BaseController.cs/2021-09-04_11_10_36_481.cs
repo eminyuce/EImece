@@ -69,16 +69,8 @@ namespace EImece.Controllers
         }
         protected void SetCurrentCulture(int language)
         {
-            if (language == 0)
-                return;
-            SetLanguage(language+"");
-        }
-        protected void SetCurrentCulture(String language)
-        {
-            if (String.IsNullOrEmpty(language))
-                return;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+            EImeceLanguage eImeceLanguage =  (EImeceLanguage) language;
+            SetLanguage(EnumHelper.GetEnumDescription(eImeceLanguage));
         }
         protected void SetLanguage(string id)
         {
@@ -88,6 +80,7 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
 
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
+     
 
             Response.Cookies.Remove("Language");
 

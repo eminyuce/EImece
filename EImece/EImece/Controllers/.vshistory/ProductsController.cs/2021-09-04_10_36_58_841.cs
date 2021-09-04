@@ -102,7 +102,6 @@ namespace EImece.Controllers
             products.Sorting = (SortingType)sorting;
             products.TagId = id;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
-            SetCurrentCulture(products.Tag);
             return View(products);
         }
 

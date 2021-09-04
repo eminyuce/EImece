@@ -21,10 +21,7 @@
         {
             continue;
         }
-        <a href="@Url.Action("Language", "Home",new { id = item.Value })">
-            <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
-        </a>
-        <a class="@(countryCode.Equals(currentLanguage) ? selectedClass : normalClass)" 
-           href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
+        <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
+        <a class="@(countryCode.Equals(currentLanguage) ? selectedClass : normalClass)" href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
     }
 }

@@ -164,9 +164,8 @@ namespace EImece.Controllers
         [ChildActionOnly]
         public ActionResult Navigation(string lang)
         {
-            var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            var menus = MenuService.BuildTree(true, eImageLang);
-            var tree = ProductCategoryService.BuildNavigation(true, eImageLang);
+            var menus = MenuService.BuildTree(true, CurrentLanguage);
+            var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
             return PartialView("_Navigation", new NavigationModel(menus, tree));
         }
 
