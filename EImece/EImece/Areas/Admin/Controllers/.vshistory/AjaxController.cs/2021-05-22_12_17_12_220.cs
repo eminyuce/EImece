@@ -270,16 +270,6 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-        [HttpPost]
-        [DeleteAuthorize()]
-        public async Task<JsonResult> DeleteCouponGridItem(List<String> values)
-        {
-            return await Task.Run(() =>
-            {
-                CouponService.DeleteBaseEntity(values);
-                return Json(values, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
-        }
 
         [HttpPost]
         [DeleteAuthorize()]

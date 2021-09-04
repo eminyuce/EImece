@@ -117,8 +117,11 @@ namespace EImece.Controllers
             resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
             resultList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
             resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
-           
-         
+            List<SelectListItem> listItems = EnumHelper.ToSelectList3("Language");
+            foreach(var lang in listItems)
+            {
+                resultList.Add(lang.Text,lang.Value);
+            }
 
             return PartialView("_SocialMediaLinks", resultList);
         }

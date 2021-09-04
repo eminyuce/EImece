@@ -1,0 +1,30 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.Enums;
+@using System.Threading;
+@model  List<SelectListItem>
+@{
+    var listItems = Model;
+    var normalClass = "text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light";
+    var selectedClass = "text-info font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light";
+    var currentLanguage = Thread.CurrentThread.CurrentCulture.ToString();
+}
+
+@if (listItems.Count() > 1)
+{
+    foreach (var item in listItems)
+    {
+        var selectedLanguage = (EImeceLanguage)item.Value.ToInt();
+        var countryCode = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
+        if (countryCode.Equals(currentLanguage))
+        {
+            continue;
+        }
+        <a href="@Url.Action("Language", "Home",new { id = item.Value })">
+            <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
+        </a>
+        <a class="@(countryCode.Equals(currentLanguage) ? selectedClass : normalClass)" 
+           href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
+    }
+}

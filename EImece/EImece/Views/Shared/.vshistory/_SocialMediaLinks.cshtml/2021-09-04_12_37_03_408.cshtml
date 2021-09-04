@@ -12,7 +12,7 @@
 
 @{
     var dic = Model;
-    var currentLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
     List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3("Language");
 }
 <!-- social bar  -->
@@ -47,21 +47,6 @@
         <a class="social-btn sb-pinterest sb-light sb-sm ml-2" href="@dic[Constants.PinterestWebSiteLink]">
             <i class="flaticon-pinterest"></i><span class="sr-only">Pinterest</span>
         </a>
-    }
-    @if (listItems.Count() > 1)
-    {
-        foreach (var item in listItems)
-        {
-            var selectedLanguage = (EImeceLanguage)item.Value.ToInt();
-            var countryCode = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
-            if (countryCode.Equals(currentLanguage))
-            {
-                continue;
-            }
-            <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })">
-                <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
-            </a>
-        }
     }
 </div>
 @functions {

@@ -1,19 +1,11 @@
 ﻿@using EImece.Domain;
-@using EImece.Domain.Caching;
-@using EImece.Domain.Entities;
-@using EImece.Domain.Helpers;
-@using EImece.Domain.Helpers.AttributeHelper;
-@using EImece.Domain.Helpers.EmailHelper;
-@using EImece.Domain.Models.Enums;
-@using EImece.Domain.Models.FrontModels;
-@using EImece.Domain.Services.IServices;
 @model Dictionary<String, String>
 @using System.Threading;
 
 @{
     var dic = Model;
-    var currentLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
-    List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3("Language");
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    List<SelectListItem> listItems = EnumHelper.ToSelectList3("Language");
 }
 <!-- social bar  -->
 <div class="d-flex flex-nowrap">
@@ -44,24 +36,10 @@
     }
     @if (ContainsValue(dic, Constants.PinterestWebSiteLink))
     {
+
         <a class="social-btn sb-pinterest sb-light sb-sm ml-2" href="@dic[Constants.PinterestWebSiteLink]">
             <i class="flaticon-pinterest"></i><span class="sr-only">Pinterest</span>
         </a>
-    }
-    @if (listItems.Count() > 1)
-    {
-        foreach (var item in listItems)
-        {
-            var selectedLanguage = (EImeceLanguage)item.Value.ToInt();
-            var countryCode = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
-            if (countryCode.Equals(currentLanguage))
-            {
-                continue;
-            }
-            <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })">
-                <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
-            </a>
-        }
     }
 </div>
 @functions {

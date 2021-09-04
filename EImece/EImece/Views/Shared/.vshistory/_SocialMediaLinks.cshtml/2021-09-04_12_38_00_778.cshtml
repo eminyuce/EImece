@@ -58,9 +58,11 @@
             {
                 continue;
             }
-            <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })">
+            <a href="@Url.Action("Language", "Home",new { id = item.Value })">
                 <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
             </a>
+            <a class="@(countryCode.Equals(currentLanguage) ? selectedClass : normalClass)"
+               href="@Url.Action("Language", "Home",new { id = item.Value })">@item.Text</a>
         }
     }
 </div>
