@@ -105,7 +105,7 @@ namespace EImece.Domain.Services
                 var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
                 billingAddressId = billingAddress.Id;
             }
-            //Logger.Info("SaveOrder userId="+ userId+ " shippingAddressId="+ shippingAddressId+ " billingAddressId="+ billingAddressId);
+            Logger.Info("SaveOrder userId="+ userId+ " shippingAddressId="+ shippingAddressId+ " billingAddressId="+ billingAddressId);
 
             CustomerService.SaveCustomerTypeToNormal(userId);
             Order savedOrder = SaveOrder(userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);

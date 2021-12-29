@@ -21,7 +21,7 @@ namespace EImece.MyConsole
         private static void Main(string[] args)
         {
             String s = "";
-            String a = "1112031584";
+            String a = '1112031584';
                 for (int i = 1; i < a.ToCharArray().Length; i++)
                 {
 
@@ -31,7 +31,6 @@ namespace EImece.MyConsole
                }
             }
             Console.WriteLine(s);
-            Console.Read();
         }
 
         private static void ReplaceFileContent()

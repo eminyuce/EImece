@@ -21,17 +21,15 @@ namespace EImece.MyConsole
         private static void Main(string[] args)
         {
             String s = "";
-            String a = "1112031584";
+            String a = '1112031584';
                 for (int i = 1; i < a.ToCharArray().Length; i++)
-                {
+            {
 
                 if (a.ToCharArray()[i] % 2 == a.ToCharArray()[i - 1] % 2) 
                 {
                     s += Math.Max(a.ToCharArray()[i], a.ToCharArray()[i - 1]);
-               }
-            }
-            Console.WriteLine(s);
-            Console.Read();
+                    }
+
         }
 
         private static void ReplaceFileContent()

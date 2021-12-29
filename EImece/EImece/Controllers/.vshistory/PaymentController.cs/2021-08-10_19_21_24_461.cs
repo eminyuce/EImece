@@ -119,7 +119,7 @@ namespace EImece.Controllers
                 item.ShoppingCartItemId = Guid.NewGuid().ToString();
                 shoppingCart.Add(item);
                 SaveShoppingCart(shoppingCart);
-                //PaymentLogger.Info(JsonConvert.SerializeObject(shoppingCart));
+                PaymentLogger.Info(JsonConvert.SerializeObject(shoppingCart));
                 return Json("success", JsonRequestBehavior.AllowGet);
             }
             else

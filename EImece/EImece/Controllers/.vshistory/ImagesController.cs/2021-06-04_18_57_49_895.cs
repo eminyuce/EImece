@@ -170,7 +170,7 @@ namespace EImece.Controllers
             timer.Start();
             byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
             timer.Stop();
-            //Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
+            Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
             return this.File(fileContents, ContentType);
         }

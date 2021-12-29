@@ -31,7 +31,6 @@ namespace EImece.MyConsole
                }
             }
             Console.WriteLine(s);
-            Console.Read();
         }
 
         private static void ReplaceFileContent()
