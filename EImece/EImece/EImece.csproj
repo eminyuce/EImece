@@ -362,6 +362,7 @@
     <Content Include="android-chrome-72x72.png" />
     <Content Include="android-chrome-96x96.png" />
     <Content Include="apple-touch-icon.png" />
+    <Content Include="App_Data\eimece.sql" />
     <Content Include="App_Data\notOffLineIpAddresses.txt" />
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\usefulSql.txt" />
@@ -816,6 +817,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="libs\GenericRepository.dll" />
+    <Content Include="libs\GenericRepository.EntityFramework.dll" />
     <Content Include="media\images\.pekyastık_kılıfı.beyaz-çalıntı_2045758585.jpg" />
     <Content Include="media\images\001_1029869830.jpg" />
     <Content Include="media\images\001_1035639635.jpg" />
