@@ -86,6 +86,7 @@ namespace EImece.Tests.Controllers
             SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "x2V8KkMx");
             SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
+            mail.Dispose();
         }
 
         [TestMethod]
@@ -110,9 +111,9 @@ namespace EImece.Tests.Controllers
             var selectedTotalSpecs = ooo.selectedTotalSpecs;
         }
 
-        private String ConnectionString { get { return Constants.DbConnectionKey; } }
+        private static String ConnectionString { get { return Constants.DbConnectionKey; } }
 
-        private int CurrentLanguage
+        private static int CurrentLanguage
         {
             get
             {
@@ -417,7 +418,6 @@ QUITE
                 cmd.CommandText = "select getdate() date";
                 cmd.ExecuteNonQuery();
                 cnn.Close();
-                Console.WriteLine("It is done.");
             }
             catch (Exception ex)
             {
@@ -474,6 +474,7 @@ QUITE
             productCategoryService.ProductService = productService;
             productCategoryService.FileStorageService = fileStorageService;
             productCategoryService.DeleteProductCategory(308);
+            dbContext.Dispose();
         }
 
         [TestMethod]
@@ -481,19 +482,20 @@ QUITE
         {
             var dbContext = new EImeceContext(ConnectionString);
 
-            Console.WriteLine(new FileStorageRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new MenuRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new ProductCategoryRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new ProductRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new ProductSpecificationRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new ProductTagRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new StoryCategoryRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new StoryFileRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new StoryRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new StoryTagRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new SubscriberRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new TagCategoryRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new TagRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new FileStorageRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new MenuRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new ProductCategoryRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new ProductRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new ProductSpecificationRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new ProductTagRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new StoryCategoryRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new StoryFileRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new StoryRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new StoryTagRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new SubscriberRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new TagCategoryRepository(dbContext).GetAll().Count());
+            Console.WriteLine(new TagRepository(dbContext).GetAll().Count());
+            dbContext.Dispose();
         }
 
         [TestMethod]
