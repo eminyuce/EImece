@@ -86,6 +86,7 @@ namespace EImece.Tests.Controllers
             SmtpServer.Credentials = new System.Net.NetworkCredential("test@websiteniz.com", "x2V8KkMx");
             SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
+            SmtpServer.Dispose();
             mail.Dispose();
         }
 
@@ -197,6 +198,7 @@ namespace EImece.Tests.Controllers
             var ProductService = new ProductService(new ProductRepository(db));
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
+            db.Dispose();
         }
        
         [TestMethod]
@@ -258,6 +260,7 @@ namespace EImece.Tests.Controllers
             {
                 Console.WriteLine(item.ProductCategory.Id);
             }
+            db.Dispose();
         }
 
         [TestMethod]

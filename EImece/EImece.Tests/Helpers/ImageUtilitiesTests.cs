@@ -28,6 +28,7 @@ namespace EImece.Tests.Helpers
             MemoryStream memstr = new MemoryStream(bytesArr);
             Image img = Image.FromStream(memstr);
             Console.WriteLine(img.Width + "  " + img.Height);
+            memstr.Dispose();
         }
 
         [TestMethod]

@@ -47,6 +47,7 @@ namespace EImece.Tests.Controllers
             {
                 Console.WriteLine(item.Name);
             }
+            context.Dispose();
         }
 
         [TestMethod]
