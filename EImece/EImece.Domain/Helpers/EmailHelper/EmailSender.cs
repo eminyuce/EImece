@@ -131,7 +131,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             var fromAddressDisplayName = emailAccount.DisplayName;
             if (string.IsNullOrEmpty(fromAddressDisplayName))
             {
-                throw new ArgumentException("from Address DisplayName cannot be null");
+                fromAddressDisplayName = fromAddress;
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(destination);

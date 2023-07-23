@@ -54,10 +54,10 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="GenericRepository">
-      <HintPath>D:\ProjectEY\dll\GenericRepository.dll</HintPath>
+      <HintPath>..\..\..\..\..\OneDrive\Masaüstü\E-Imece\bin\GenericRepository.dll</HintPath>
     </Reference>
     <Reference Include="GenericRepository.EntityFramework">
-      <HintPath>D:\ProjectEY\dll\GenericRepository.EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\..\..\OneDrive\Masaüstü\E-Imece\bin\GenericRepository.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.6.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.6.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
