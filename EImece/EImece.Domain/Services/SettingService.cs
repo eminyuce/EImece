@@ -4,6 +4,7 @@ using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace EImece.Domain.Services
 {
     public class SettingService : BaseEntityService<Setting>, ISettingService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private ISettingRepository SettingRepository { get; set; }
 
         public SettingService(ISettingRepository repository) : base(repository)
@@ -107,7 +109,7 @@ namespace EImece.Domain.Services
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            List<Setting> Settings = SettingRepository.GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -141,25 +143,22 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("SystemSettingModel cannot be null");
             }
-            List<Setting> Settings = GetAllSettings();
-            // Get type.
-            Type type = settingModel.GetType();
 
             // Loop over properties.
-            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            foreach (PropertyInfo propertyInfo in settingModel.GetType().GetProperties())
             {
                 // Get name.
                 string name = propertyInfo.Name;
-
+                var settingList = SettingRepository.GetAllSettings();
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = settingList.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting == null)
                 {
                     var newSetting = new Setting();
-                    newSetting.Name = name;
+                    newSetting.Name = name.ToStr();
                     newSetting.IsActive = true;
-                    newSetting.SettingKey = name;
+                    newSetting.SettingKey = name.ToStr();
                     newSetting.Description = Constants.SystemSettings;
                     newSetting.SettingValue = value.ToStr();
                     SaveOrEditEntity(newSetting);
@@ -178,7 +177,7 @@ namespace EImece.Domain.Services
             var result = new SettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = GetAllSettings().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            List<Setting> Settings = SettingRepository.GetAllSettings().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -194,13 +193,17 @@ namespace EImece.Domain.Services
                     {
                         propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
                     }
-                    if (propertyInfo.PropertyType == typeof(string))
+                    else if (propertyInfo.PropertyType == typeof(string))
                     {
                         propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
                     }
-                    if (propertyInfo.PropertyType == typeof(bool))
+                    else if (propertyInfo.PropertyType == typeof(bool))
                     {
                         propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                    }
+                    else
+                    {
+                        throw new Exception("NO Definition is done in SettingModel.SettingKey=" + propertyInfo.Name);
                     }
                 }
             }
@@ -214,7 +217,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("SettingModel cannot be null");
             }
-            List<Setting> Settings = GetAllSettings();
+            List<Setting> Settings = SettingRepository.GetAllSettings();
             // Get type.
             Type type = settingModel.GetType();
 
