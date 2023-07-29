@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Log in";
     Layout = null;
+    var sumText = @AdminResource.AdminPanelLoginPageSumTotal;
 }
 <script src="~/Scripts/jquery-3.5.1.min.js"></script>
 <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -83,7 +84,7 @@
                                     <img width="120" height="35" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
                                 </div>
                                 <div class="col-md-9">
-                                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Toplamın sonucunu buraya yazınız", @autocomplete = "false" })
+                                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = sumText, @autocomplete = "false" })
                                 </div>
                             </div>
                             <div class="row">

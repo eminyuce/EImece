@@ -1179,4 +1179,7 @@
   <data name="EndDateBiggerThanStartDateText" xml:space="preserve">
     <value>Bitiş tarihinin başlangıç tarihinden önce gelmediğinden emin olun</value>
   </data>
+  <data name="AdminPanelLoginPageSumTotal" xml:space="preserve">
+    <value>Toplamın sonucunu buraya yazınız</value>
+  </data>
 </root>
