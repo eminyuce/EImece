@@ -41,9 +41,14 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
+            if (!AppConfig.IsSmtpClientEnabled)
+            {
+                return;
+            }
             SendEmail(emailAccount, subject, body,
                 new MailAddress(fromAddress, fromName), new MailAddress(toAddress, toName),
                 bcc, cc, attachmentFilePath, attachmentFileName);
+            
         }
 
         /// <summary>
@@ -63,6 +68,11 @@ namespace EImece.Domain.Helpers.EmailHelper
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
         {
+            if (!AppConfig.IsSmtpClientEnabled)
+            {
+                return;
+            }
+
             if (emailAccount == null)
             {
                 throw new ArgumentException("No email account is defined.");
@@ -102,8 +112,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 }
                 message.Attachments.Add(attachment);
             }
-            if (AppConfig.IsSmtpClientEnabled)
-            {
+           
                 using (var smtpClient = new SmtpClient())
                 {
                     smtpClient.Host = emailAccount.Host;
@@ -111,36 +120,48 @@ namespace EImece.Domain.Helpers.EmailHelper
                     smtpClient.EnableSsl = emailAccount.EnableSsl;
                     smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
                     smtpClient.Send(message);
-                }
+                
             }
         }
 
         public void SendEmail(string destination, string subject, string body)
         {
+            if (!AppConfig.IsSmtpClientEnabled)
+            {
+                return;
+            }
             var emailAccount = SettingService.GetEmailAccount();
-            SendEmail(destination, subject, body, emailAccount);
+                SendEmail(destination, subject, body, emailAccount);
+            
         }
 
         public void SendEmail(string destination, string subject, string body, EmailAccount emailAccount)
         {
-            var fromAddress = emailAccount.Email;
-            if (string.IsNullOrEmpty(fromAddress))
+            if (AppConfig.IsSmtpClientEnabled)
             {
-                throw new ArgumentException("From Address cannot be null");
+                var fromAddress = emailAccount.Email;
+                if (string.IsNullOrEmpty(fromAddress))
+                {
+                    throw new ArgumentException("From Address cannot be null");
+                }
+                var fromAddressDisplayName = emailAccount.DisplayName;
+                if (string.IsNullOrEmpty(fromAddressDisplayName))
+                {
+                    fromAddressDisplayName = fromAddress;
+                }
+                var from = new MailAddress(fromAddress, fromAddressDisplayName);
+                var to = new MailAddress(destination);
+                SendEmail(emailAccount, subject, body, from, to);
             }
-            var fromAddressDisplayName = emailAccount.DisplayName;
-            if (string.IsNullOrEmpty(fromAddressDisplayName))
-            {
-                fromAddressDisplayName = fromAddress;
-            }
-            var from = new MailAddress(fromAddress, fromAddressDisplayName);
-            var to = new MailAddress(destination);
-            SendEmail(emailAccount, subject, body, from, to);
         }
 
         public void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
-            if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
+            if (!AppConfig.IsSmtpClientEnabled)
+            {
+                return;
+            }
+                if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");
                 return;
@@ -183,6 +204,10 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate)
         {
+            if (!AppConfig.IsSmtpClientEnabled)
+            {
+                return;
+            }
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
                 Logger.Error("renderedEmailTemplate cannot be empty");

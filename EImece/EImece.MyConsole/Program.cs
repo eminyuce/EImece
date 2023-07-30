@@ -1,7 +1,10 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,18 +23,51 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-            String s = "";
-            String a = "1112031584";
-                for (int i = 1; i < a.ToCharArray().Length; i++)
-                {
+            try
+            {
+                // Set your SQL Server connection string
+                //string connectionString = "Data Source=YUCE\\SQLEXPRESS;Initial Catalog=eimece_v2;User ID=sqluser; Password=sqluser";
+                string connectionString = "Data Source=YUCE\\SQLEXPRESS;Initial Catalog=master;Integrated Security=True";
 
-                if (a.ToCharArray()[i] % 2 == a.ToCharArray()[i - 1] % 2) 
+                // Set the path to the .bak file
+                string bakFilePath = @"C:\Users\eminy\Downloads\AdventureWorks2019.bak";
+
+                // Set the name for the new database
+                string newDatabaseName = "YourNewDatabaseName";
+
+                // Initialize a new connection to the server
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+                // Create a new server object
+                Server server = new Server(new ServerConnection(new SqlConnectionInfo(sqlConnection.DataSource)));
+
+                // Load the backup device
+                BackupDeviceItem backupDeviceItem = new BackupDeviceItem(bakFilePath, DeviceType.File);
+
+                // Initialize a new restore object
+                Restore restore = new Restore
                 {
-                    s += Math.Max(a.ToCharArray()[i], a.ToCharArray()[i - 1]);
-               }
+                    Database = newDatabaseName,
+                    Action = RestoreActionType.Database,
+                    ReplaceDatabase = true,
+                    NoRecovery = false
+                };
+
+                // Add the backup device to the restore object
+                restore.Devices.Add(backupDeviceItem);
+
+                // Perform the database restore
+                restore.SqlRestore(server);
+
+                // Success
+                Console.WriteLine("Database restore completed successfully.");
             }
-            Console.WriteLine(s);
-            Console.Read();
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine("Error: " + ex.StackTrace);
+            }
+            Console.ReadLine();
         }
 
         private static void ReplaceFileContent()
