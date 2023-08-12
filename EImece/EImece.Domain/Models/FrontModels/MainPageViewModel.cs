@@ -5,6 +5,8 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class MainPageViewModel
     {
+        public string DeliveryInfoExists { get; set; }
+
         public List<MainPageImage> MainPageImages { get; set; }
 
         public List<ProductCategory> MainPageProductCategories { set; get; }

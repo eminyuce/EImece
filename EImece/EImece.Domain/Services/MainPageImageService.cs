@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -49,6 +50,8 @@ namespace EImece.Domain.Services
             result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
 
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.DeliveryInfoExists = MenuService.GetActiveBaseContentsFromCache(true, language).Any(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication)) ? "PageThemeCommunication" : null;
+
             // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
             // result.LatestStories = StoryService.GetLatestStories(language, 4);
             result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
