@@ -63,23 +63,24 @@ else
 
         @if (products.IsNotEmpty())
         {
-            <!-- Toolbar-->
-            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
-                <div class="d-flex flex-wrap">
-                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                        <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
-                        <div class="button-group tabs">
+            <!-- Toolbar
+        <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+            <div class="d-flex flex-wrap">
+                <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                    <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">Resource.SortBy:</label>
+                    <div class="button-group tabs">
 
-                            <a href="@Model.ProductsListPageUrl(SortingType.Newest,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
-                            <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
-                            <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
-                        </div>
+                        <a href="Model.ProductsListPageUrl(SortingType.Newest,products)"
+                           rel="nofollow" class="activeButtonClass(SortingType.Newest, products)">Resource.NewestItems</a>
+                        <a href="Model.ProductsListPageUrl(SortingType.LowHighPrice,products)"
+                           rel="nofollow" class="activeButtonClass(SortingType.LowHighPrice, products)">Resource.LowHighPriceItems</a>
+                        <a href="Model.ProductsListPageUrl(SortingType.HighLowPrice,products)"
+                           rel="nofollow" class="activeButtonClass(SortingType.HighLowPrice, products)">Resource.HighLowPriceItems</a>
                     </div>
                 </div>
             </div>
+        </div>
+            -->
             <!-- Products grid-->
             <div class="row no-gutters">
                 @foreach (var p in products)

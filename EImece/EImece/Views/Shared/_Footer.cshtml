@@ -12,9 +12,11 @@
     Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
     var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
-    var SpecialFooterMenuLinkMenuId = countryCode.Equals("tr-TR") ? 3142 : 3164;
-    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
-    var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 2114).OrderBy(r => r.Position).ToList();
+    var menus = Model.Menus.OrderBy(r => r.Position).ToList();
+    if (communicationPageLink != null)
+    {
+        menus.Remove(communicationPageLink);
+    }
 
     var productCategories = Model.ProductCategories;
     var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
@@ -54,13 +56,7 @@
                                 communicationId = communicationPageLink.Id;
                                 <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
                             }
-                            @if (aboutUsChildrenLinks.IsNotEmpty())
-                            {
-                                foreach (var m in aboutUsChildrenLinks)
-                                {
-                                    <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
-                                }
-                            }
+                            
                         </ul>
                     </div>
                 </div>
@@ -68,9 +64,9 @@
                     <div class="widget widget-links pb-4">
                         <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
                         <ul>
-                            @if (musteriIliskileriChildren.IsNotEmpty())
+                            @if (menus.IsNotEmpty())
                             {
-                                foreach (var m in musteriIliskileriChildren)
+                                foreach (var m in menus)
                                 {
                                     <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
                                 }
@@ -84,7 +80,10 @@
                         <h3 class="widget-title text-white border-light">@Resource.StayInformed</h3>
                         @Html.Partial("_AddSubscriber", Model)
                     </div>
-                    <img src="~/Content/img/logo-footer-mastervisa.png" />
+                    <!---
+    <img src="~/Content/img/logo-footer-mastervisa.png" />
+
+        -->
                 </div>
             </div>
         </div>

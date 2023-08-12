@@ -52,7 +52,11 @@
 </section>
 
 @CreateProductCategorySection(@Resource.PopularProducts, mainPageProductCategories)
-@CreatePromoBanner(bannerLink)
+
+
+<!-- CreatePromoBanner(bannerLink) -->
+
+
 @helper CreatePromoBanner(String bannerLink)
 {
 
@@ -75,9 +79,9 @@
 <!-- Product widgets-->
 <section class="container px-1 pt-1 pb-1 mb-md-1">
     <div class="row">
-        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
-        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
-        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
+        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(5).ToList())
+        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(5).ToList())
+        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(5).ToList())
     </div>
 </section>
 
@@ -97,39 +101,39 @@
 
 @helper  CreateProductCategorySection(String title, List<ProductCategory> mainPageProductCategories)
 {if (mainPageProductCategories.IsNotEmpty())
-                    {
-                        var featuredItem = mainPageProductCategories.First();<!-- Featured products grid-->
-                        <section class="container px-1 pt-2">
-                            <div class="row no-gutters">
-                                @for (int i = 0; i < mainPageProductCategories.Count; i++)
-                                {
-                                    var p = mainPageProductCategories[i];
-            @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })}
-                            </div>
-                        </section>}
+    {
+        var featuredItem = mainPageProductCategories.First();<!-- Featured products grid-->
+        <section class="container px-1 pt-2">
+            <div class="row no-gutters">
+                @for (int i = 0; i < mainPageProductCategories.Count; i++)
+                {
+                    var p = mainPageProductCategories[i];
+                    @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })}
+            </div>
+        </section>}
 }
 
 
 
 @helper  CreateProductWidget(String title, List<Product> products)
 {if (products.IsNotEmpty())
-                    {
-    <div class="col-md-4 col-sm-6 mb-2 py-3">
-        <div class="widget widget-featured-entries">
-            <h3 class="widget-title font-size-lg">@title</h3>
+    {
+        <div class="col-md-4 col-sm-6 mb-2 py-3">
+            <div class="widget widget-featured-entries">
+                <h3 class="widget-title font-size-lg">@title</h3>
 
-            @for (int i = 0; i < products.Count; i++)
-            {
-                var p = products[i];
-@Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })}
-        </div>
-    </div>}
+                @for (int i = 0; i < products.Count; i++)
+                {
+                    var p = products[i];
+                    @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })}
+            </div>
+        </div>}
 }
 
 @helper CreateMainPageCategory(ProductCategory productCategory, List<ProductCategory> productCategories, bool isLast)
 {var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
-                    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
-                    var productCategoryLink = productCategory.ProductCategoryLink;
+    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
+    var productCategoryLink = productCategory.ProductCategoryLink;
 
     <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
         <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"

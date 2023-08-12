@@ -9,6 +9,7 @@
 
 @{
     var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    String deliveryInfoExists = null; //(String)ViewBag.DeliveryInfoExists;
 }
 
 <!DOCTYPE html>
@@ -77,7 +78,10 @@
                 <a class="dropdown-toggle text-light opacity-75 font-size-sm py-1" href="#" data-toggle="dropdown">@Resource.UsefulLinks</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
-                    <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
+                    @if (!String.IsNullOrEmpty(deliveryInfoExists))
+                    {
+                        <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
+                    }
                     <div class="dropdown-divider">
                     </div>
                     @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
@@ -93,11 +97,14 @@
                         <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light"
                            href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
                     </li>
-                    <li class="list-inline-item mr-2">
-                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2"
-                           href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
-                    </li>
-                </ul>
+                    @if (!String.IsNullOrEmpty(deliveryInfoExists))
+                    {
+                        <li class="list-inline-item mr-2">
+                            <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2"
+                               href="@Url.Action(Constants.DeliveryInfo, "info", new { lang = countryCode })">@Resource.DeliveryInfo</a>
+                        </li>
+                    }
+                    </ul>
 
                 @Html.Action("SocialMediaLinks", "Home")
             </div>
@@ -119,20 +126,22 @@
                     <i class="mx-auto mb-2" data-feather="menu">
                     </i>Menu
                 </div>
-                @if (Request.IsAuthenticated)
-                {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
-                    </a>
-                }
-                else
-                {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
-                    </a>
-                }
 
-                @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+                <!--
+     if (Request.IsAuthenticated)
+     {
+         <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+             <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
+         </a>
+     }
+     else
+     {
+         <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+             <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
+         </a>
+     }
+    Html.Raw(Html.Action("ShoppingCartLink", "Payment")) -->
+
             </div>
 
             @Html.Partial("_SearchProductForm")
