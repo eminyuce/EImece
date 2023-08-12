@@ -66,7 +66,7 @@ namespace EImece.Controllers
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle, CurrentLanguage).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
             ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords, CurrentLanguage).ToStr();
-
+            ViewBag.DeliveryInfoExists = mainPageModel.DeliveryInfoExists;
             return View(mainPageModel);
         }
       //  public ActionResult TestPage()
