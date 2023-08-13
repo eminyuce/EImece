@@ -13,6 +13,8 @@
     var mainImageThbImgSrc = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
     var productLink = product.DetailPageAbsoluteUrl;
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
+    bool IsProductPriceEnable = ViewData["IsProductPriceEnable"].ToBool(false);
+    bool IsProductCommentSectionEnable = ViewData["IsProductCommentSectionEnable"].ToBool(false);
 }
 
 <!-- Product-->
@@ -25,17 +27,22 @@
         <div class="product-card-body">
             <div class="d-flex flex-wrap justify-content-between pb-1">
                 <a class="product-meta" href="#">@product.ProductCategory.Name</a>
-                @if (product.Rating > 0)
+                @if (product.Rating > 0 && IsProductCommentSectionEnable)
                 {
-                <div class="star-rating">
-                    @for (int i = 0; i < product.Rating; i++)
+                    <div class="star-rating">
+                        @for (int i = 0; i < product.Rating; i++)
                         {
-                    <i class="sr-star active" data-feather="star"></i>
+                            <i class="sr-star active" data-feather="star"></i>
                         }
-                </div>
+                    </div>
                 }
             </div>
-            <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+            <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3>
+            @if (IsProductPriceEnable)
+            {
+                <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+            }
+
         </div>
         <div class="product-card-body body-hidden pt-2">
             <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@Model.ModifiedId" type="button"

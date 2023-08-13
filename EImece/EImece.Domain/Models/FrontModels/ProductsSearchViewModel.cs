@@ -44,7 +44,21 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
         }
-
+        public bool IsProductCommentSectionEnable
+        {
+            get
+            {
+                var item = GetSetting(Constants.IsProductCommentSectionEnable);
+                if(item == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return item.SettingValue.ToStr().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                }
+            }
+        }
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
             var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
