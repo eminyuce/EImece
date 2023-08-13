@@ -1,6 +1,11 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using GenericRepository;
+using Quartz.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,6 +18,32 @@ namespace EImece.Domain.Models.FrontModels
 
         public Menu ProductMenu { get; set; }
         public Menu MainPageMenu { get; set; }
+        public List<Setting> ApplicationSettings { get; set; }
+
+        private Setting GetSetting(string key)
+        {
+            if(ApplicationSettings == null)
+            {
+                return null;
+            }
+            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public bool IsProductPriceEnable
+        {
+            get
+            {
+                var item = GetSetting(Constants.IsProductPriceEnable);
+                if(item == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return item.SettingValue.ToStr().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                }
+            }
+        }
 
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {

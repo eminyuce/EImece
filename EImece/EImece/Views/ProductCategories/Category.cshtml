@@ -23,6 +23,7 @@
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    bool IsProductPriceEnable = Model.IsProductPriceEnable;
 }
 
 <div class="page-title-wrapper" aria-label="Page title">
@@ -163,7 +164,7 @@
                     foreach (var p in products.GetPagingResult())
                     {
 
-                        @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
+                        @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300, IsProductPriceEnable= IsProductPriceEnable })
                     }
                 }
                 else

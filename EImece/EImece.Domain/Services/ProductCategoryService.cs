@@ -215,6 +215,7 @@ namespace EImece.Domain.Services
             result.ProductCategoryTree = BuildTree(true, lang);
             result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();
             return result;
         }
     }

@@ -144,6 +144,7 @@ namespace EImece.Domain.Services
             {
                 product.MainImageSrc = new Tuple<string, string>("", "");
             }
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
@@ -273,7 +274,7 @@ namespace EImece.Domain.Services
 
             r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-
+            r.ApplicationSettings = SettingService.GetAllActiveSettings();
             return r;
         }
 

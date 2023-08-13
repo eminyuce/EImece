@@ -42,6 +42,7 @@
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
+    bool IsProductPriceEnable = Model.IsProductPriceEnable;
 }
 
 <!-- Page Title-->
@@ -146,23 +147,29 @@
                     </a>
                 }
 
-                <h2 class="h1 font-weight-light pt-3 pb-2">
-                    @if (product.HasDiscount)
-                    {
-                        <del class="lead text-muted mr-2">
-                            @product.Price.CurrencySign()
-                        </del>
-                    }
-                    <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
-                </h2>
-                @if (product.HasDiscount)
+                @if (IsProductPriceEnable)
                 {
-                    <h4>
-                        <span class="badge badge-pill badge-warning mr-2 mb-2">
-                            @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
-                        </span>
-                    </h4>
+                    <h2 class="h1 font-weight-light pt-3 pb-2">
+                        @if (product.HasDiscount)
+                        {
+                            <del class="lead text-muted mr-2">
+                                @product.Price.CurrencySign()
+                            </del>
+                        }
+                        <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                    </h2>
+
+                    if (product.HasDiscount)
+                    {
+                        <h4>
+                            <span class="badge badge-pill badge-warning mr-2 mb-2">
+                                @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
+                            </span>
+                        </h4>
+                    }
                 }
+
+
                 @if (ProductSizeOptions.IsNotEmpty())
                 {
                     <div class="form-group">

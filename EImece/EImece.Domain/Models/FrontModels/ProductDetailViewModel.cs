@@ -37,6 +37,33 @@ namespace EImece.Domain.Models.FrontModels
 
         public Dictionary<string, string> SocialMediaLinks { get; set; }
 
+        public List<Setting> ApplicationSettings { get; set; }
+
+        private Setting GetSetting(string key)
+        {
+            if (ApplicationSettings == null)
+            {
+                return null;
+            }
+            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public bool IsProductPriceEnable
+        {
+            get
+            {
+                var item = GetSetting(Constants.IsProductPriceEnable);
+                if (item == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return item.SettingValue.ToStr().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                }
+            }
+        }
+
         public string AverageRating
         {
             get
