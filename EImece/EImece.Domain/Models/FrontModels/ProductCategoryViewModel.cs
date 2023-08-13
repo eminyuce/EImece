@@ -47,6 +47,21 @@ namespace EImece.Domain.Models.FrontModels
                 }
             }
         }
+        public bool IsProductCommentSectionEnable
+        {
+            get
+            {
+                var item = GetSetting(Constants.IsProductCommentSectionEnable);
+                if (item == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return item.SettingValue.ToStr().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                }
+            }
+        }
 
         public List<Product> Products
         {
@@ -140,8 +155,14 @@ namespace EImece.Domain.Models.FrontModels
             {
                 var categoryFilterTypes = new List<CategoryFilterType>();
                 var categoryFilterHelper = new CategoryFilterHelper();
-                categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
-                categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
+                if (IsProductPriceEnable)
+                {
+                    categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
+                }
+                if (IsProductCommentSectionEnable)
+                {
+                    categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
+                }
 
                 var brandsWithProducts =
                 from t1 in ProductCategory.Products.ToList()
