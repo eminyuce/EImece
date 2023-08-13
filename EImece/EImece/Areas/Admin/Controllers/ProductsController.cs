@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
             var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingByKeyNoCache(Constants.IsProductPriceEnable);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             return View(products);
         }
@@ -81,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingByKeyNoCache(Constants.IsProductPriceEnable);
             return View(content);
         }
 

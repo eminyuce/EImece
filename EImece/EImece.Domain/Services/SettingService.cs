@@ -55,6 +55,23 @@ namespace EImece.Domain.Services
             }
         }
 
+        public Setting GetSettingByKeyNoCache(string key)
+        {
+            var allSettings = SettingRepository.GetAllSettings();
+            var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+                setting.SettingKey = key;
+                setting.SettingValue = key;
+                return setting;
+            }
+        }
+
         public string GetSettingByKey(string key, int language)
         {
             var allSettings = GetAllSettings();

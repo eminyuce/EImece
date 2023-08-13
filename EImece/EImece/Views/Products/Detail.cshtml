@@ -43,6 +43,7 @@
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
     bool IsProductPriceEnable = Model.IsProductPriceEnable;
+    bool IsProductCommentSectionEnable = Model.IsProductCommentSectionEnable;
 }
 
 <!-- Page Title-->
@@ -51,7 +52,7 @@
         <div class="alert alert-secondary" role="alert">
             @Html.Partial("_ProductBreadCrumb", Model)
         </div>
-        <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@product.ProductName</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
     </div>
 </div>
@@ -128,7 +129,7 @@
         <!-- Product details    -->
         <div class="col-lg-5 pt-4 pt-lg-0">
             <div class="pb-4">
-                @if (product.ProductComments.IsNotEmpty())
+                @if (IsProductCommentSectionEnable && product.ProductComments.IsNotEmpty())
                 {
                     <a class="d-inline-block scroll-to" href="#reviews">
                         <div class="star-rating">
@@ -201,92 +202,92 @@
                     </button>
                 </div>
                 <!--
-    <div  class="d-flex align-items-center pt-2">
-        <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
-    </div>
-                -->
+                <div  class="d-flex align-items-center pt-2">
+                    <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
+                </div>
+                            -->
             </div>
 
-    <!-- Product panels-->
-                <div class="accordion" id="productPanels">
+            <!-- Product panels-->
+            <div class="accordion" id="productPanels">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="accordion-heading">
+                            <a href="#productInfo" role="button"
+                               data-toggle="collapse" aria-expanded="true"
+                               aria-controls="productInfo">
+                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                    <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
+                                </span>@Resource.ProductInformation
+                                <span class="accordion-indicator">
+                                    <i data-feather="chevron-up"></i>
+                                </span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="card-body">
+                            @if (!String.IsNullOrEmpty(product.ProductCode))
+                            {
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
+                            }
+                            @Html.Raw(product.ShortDescription)
+                            <ul class="mb-0">
+                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.CargoDescription.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@Resource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        </div>
+                        <div class="collapse" id="shippingOptions" data-parent="#productPanels">
+                            <div class="card-body">
+                                @Html.Raw(Model.CargoDescription.SettingValue)
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (productTags.IsNotEmpty())
+                {
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a href="#productInfo" role="button"
-                                   data-toggle="collapse" aria-expanded="true"
-                                   aria-controls="productInfo">
+                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                                        <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
-                                    </span>@Resource.ProductInformation
-                                    <span class="accordion-indicator">
+                                        <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
+                                    </span>@Resource.Tags<span class="accordion-indicator">
                                         <i data-feather="chevron-up"></i>
                                     </span>
                                 </a>
                             </h3>
                         </div>
-                        <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="collapse" id="tagCloud" data-parent="#productPanels">
                             <div class="card-body">
-                                @if (!String.IsNullOrEmpty(product.ProductCode))
+                                @foreach (var t in productTags)
                                 {
-                                    <span class="product-code">
-                                        <i>
-                                            @Resource.ProductCodeNo @product.ProductCode
-                                        </i>
-                                    </span>
-                                    <br />
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
                                 }
-                                @Html.Raw(product.ShortDescription)
-                                <ul class="mb-0">
-                                    <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
-                    @if (Model.CargoDescription.IsNotEmpty())
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@Resource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
-                            </div>
-                            <div class="collapse" id="shippingOptions" data-parent="#productPanels">
-                                <div class="card-body">
-                                    @Html.Raw(Model.CargoDescription.SettingValue)
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                    @if (productTags.IsNotEmpty())
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="accordion-heading">
-                                    <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
-                                        <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                                            <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
-                                        </span>@Resource.Tags<span class="accordion-indicator">
-                                            <i data-feather="chevron-up"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                            </div>
-                            <div class="collapse" id="tagCloud" data-parent="#productPanels">
-                                <div class="card-body">
-                                    @foreach (var t in productTags)
-                                    {
-                                        <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-
-                @if (Model.SocialMediaLinks.IsNotEmpty())
-                {
-                    @CreateSocialMediaLinks(Model.SocialMediaLinks)
                 }
             </div>
+
+            @if (Model.SocialMediaLinks.IsNotEmpty())
+            {
+                @CreateSocialMediaLinks(Model.SocialMediaLinks)
+            }
+        </div>
     </div>
 </div>
 <!-- Product info-->
@@ -321,70 +322,73 @@
     </div>
 </div>
 
-<!-- Reviews-->
-<div class="container pt-1 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
-    <div class="row pt-sm-3">
-        <div class="col-md-4 pb-5">
-            <div class="card">
-                <div class="card-body">
-                    @if (productComments.IsNotEmpty())
-                    {
-                        <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
-                            <div class="display-4 mr-2">@Model.AverageRating</div>
-                            <div>
-                                <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
-                                <div class="star-rating">
-                                    @for (int i = 0; i < 5; i++)
-                                    {
-                                        if (i < product.Rating)
+@if (IsProductCommentSectionEnable)
+{
+
+    <!-- Reviews-->
+    <div class="container pt-1 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
+        <div class="row pt-sm-3">
+            <div class="col-md-4 pb-5">
+                <div class="card">
+                    <div class="card-body">
+                        @if (productComments.IsNotEmpty())
+                        {
+                            <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
+                                <div class="display-4 mr-2">@Model.AverageRating</div>
+                                <div>
+                                    <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
+                                    <div class="star-rating">
+                                        @for (int i = 0; i < 5; i++)
                                         {
-                                            <i class="sr-star active" data-feather="star"></i>
+                                            if (i < product.Rating)
+                                            {
+                                                <i class="sr-star active" data-feather="star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="sr-star" data-feather="star"></i>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <i class="sr-star" data-feather="star"></i>
-                                        }
-                                    }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        foreach (var item in Model.TotalRating)
-                        {
-                            <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
-                            <div class="progress mb-3" style="height: 2px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            foreach (var item in Model.TotalRating)
+                            {
+                                <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
+                                <div class="progress mb-3" style="height: 2px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            }
                         }
-                    }
 
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
-                </div>
-            </div>
-        </div>
-        @if (productComments.IsNotEmpty())
-        {
-            <div class="col-md-8 pb-5">
-                <h2 class="h3">@Resource.LatestReviews</h2>
-                @foreach (var productComment in productComments)
-                {
-                    @createReviewItem(productComment)
-                }
-            </div>
-        }
-        else
-        {
-            <div class="col-md-8 pb-5">
-                <div class="alert alert-secondary">
-                    <div class="pt-3 pb-2 text-center ">
-                        @Resource.NoCommentForProductYet
+                        <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
                     </div>
                 </div>
             </div>
+            @if (productComments.IsNotEmpty())
+            {
+                <div class="col-md-8 pb-5">
+                    <h2 class="h3">@Resource.LatestReviews</h2>
+                    @foreach (var productComment in productComments)
+                    {
+                        @createReviewItem(productComment)
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="col-md-8 pb-5">
+                    <div class="alert alert-secondary">
+                        <div class="pt-3 pb-2 text-center ">
+                            @Resource.NoCommentForProductYet
+                        </div>
+                    </div>
+                </div>
 
-        }
+            }
+        </div>
     </div>
-</div>
-
+}
 @if (relatedProducts.IsNotEmpty())
 {
 
@@ -394,7 +398,7 @@
         <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
             @foreach (var product2 in relatedProducts)
             {
-                @RelatedProductItem(product2)
+                @RelatedProductItem(product2,IsProductPriceEnable,IsProductCommentSectionEnable)
             }
         </div>
     </div>
@@ -416,19 +420,19 @@
         </span>
         @if (ContainsValue(sharedSocialLinks, Constants.InstagramWebSiteLink))
         {
-            <a class="social-btn sb-instagram mr-2 mb-2" target="_blank"  href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
+            <a class="social-btn sb-instagram mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
                 <i class="flaticon-instagram"></i>
             </a>
         }
         @if (ContainsValue(sharedSocialLinks, Constants.FacebookWebSiteLink))
         {
-            <a class="social-btn sb-facebook mr-2 mb-2" target="_blank"  href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
+            <a class="social-btn sb-facebook mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
                 <i class="flaticon-facebook"></i>
             </a>
         }
         @if (ContainsValue(sharedSocialLinks, Constants.TwitterWebSiteLink))
         {
-            <a class="social-btn sb-twitter mr-2 mb-2" target="_blank"  href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
+            <a class="social-btn sb-twitter mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
                 <i class="flaticon-twitter"></i>
             </a>
         }
@@ -441,7 +445,8 @@
     </div>
 
 }
-@helper RelatedProductItem(Product product)
+
+@helper RelatedProductItem(Product product, bool IsProductPriceEnable, bool IsProductCommentSectionEnable)
 {
     var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
@@ -455,7 +460,7 @@
         <div class="product-card-body box-shadow-0">
             <div class="d-flex flex-wrap justify-content-between pb-1">
                 <a class="product-meta" href="@product.DetailPageRelativeUrl">@product.Name </a>
-                @if (product.Rating > 0)
+                @if (product.Rating > 0 && IsProductCommentSectionEnable)
                 {
                     <div class="star-rating">
                         <span class="sr-label mr-1">@product.Rating</span>
@@ -474,7 +479,12 @@
                 <a href="@product.DetailPageRelativeUrl">
                     @shortDesc
                 </a>
-            </h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+
+            </h3>
+            @if (IsProductPriceEnable)
+            {
+                <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+            }
         </div>
     </div>
 

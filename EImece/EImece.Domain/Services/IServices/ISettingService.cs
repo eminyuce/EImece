@@ -28,5 +28,6 @@ namespace EImece.Domain.Services.IServices
         void SaveSystemSettingModel(SystemSettingModel settingModel);
 
         Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath);
+        Setting GetSettingByKeyNoCache(string key);
     }
 }

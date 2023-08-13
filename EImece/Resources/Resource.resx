@@ -1758,4 +1758,7 @@
   <data name="ReturnPolicy" xml:space="preserve">
     <value>İptal, iade, geri ödeme veya değiştirme politikası</value>
   </data>
+  <data name="IsProductCommentSectionEnable" xml:space="preserve">
+    <value>Ürün Yorum Bölümü Etkin mi?</value>
+  </data>
 </root>

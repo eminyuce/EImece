@@ -87,6 +87,31 @@ namespace EImece.Domain.Entities
             }
         }
 
+
+        [NotMapped]
+        public string ProductName
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(NameLong))
+                {
+                    return NameLong;
+                }
+                else if (!String.IsNullOrEmpty(NameShort))
+                {
+                    return NameShort;
+                }
+                else if (!String.IsNullOrEmpty(Name))
+                {
+                    return Name;
+                }
+                else
+                {
+                    return "[NO_PRODUCT_NAME]";
+                }
+            }
+        }
+
         public string ImageFullPath(int width, int height)
         {
             var request = HttpContext.Current.Request;

@@ -14,6 +14,7 @@
     var productLink = product.DetailPageAbsoluteUrl;
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
     bool IsProductPriceEnable = ViewData["IsProductPriceEnable"].ToBool(false);
+    bool IsProductCommentSectionEnable = ViewData["IsProductCommentSectionEnable"].ToBool(false);
 }
 
 <!-- Product-->
@@ -26,7 +27,7 @@
         <div class="product-card-body">
             <div class="d-flex flex-wrap justify-content-between pb-1">
                 <a class="product-meta" href="#">@product.ProductCategory.Name</a>
-                @if (product.Rating > 0)
+                @if (product.Rating > 0 && IsProductCommentSectionEnable)
                 {
                     <div class="star-rating">
                         @for (int i = 0; i < product.Rating; i++)

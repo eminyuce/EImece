@@ -13,22 +13,25 @@
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
     var productLink = product.DetailPageRelativeUrl;
     bool IsProductPriceEnable = ViewData["IsProductPriceEnable"].ToBool(false);
+    bool IsProductCommentSectionEnable = ViewData["IsProductCommentSectionEnable"].ToBool(false);
 }
 
 <div class="media">
     <a class="featured-entry-thumb" href="@productLink"><img src="@mainImageImgSrcUrl" alt="@product.Name" /></a>
     <div class="media-body">
         <h6 class="featured-entry-title"><a href="@productLink">@product.Name</a></h6>
-        <div class="star-rating">
-            @for (int i = 0; i < product.Rating; i++)
-            {
-                @:<i class="sr-star active" data-feather="star"></i>
-            }
-        </div>
+        @if (IsProductCommentSectionEnable)
+        {
+            <div class="star-rating">
+                @for (int i = 0; i < product.Rating; i++)
+                {
+                    @:<i class="sr-star active" data-feather="star"></i>
+                }
+            </div>
+        }
         @if (IsProductPriceEnable)
         {
             <p class="featured-entry-meta">@product.PriceWithDiscount.CurrencySign()</p>
         }
-
     </div>
 </div>
