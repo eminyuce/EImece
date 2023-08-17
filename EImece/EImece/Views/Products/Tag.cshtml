@@ -11,6 +11,7 @@
 @using Resources;
 @{
     PaginatedList<ProductTag> productTags = Model.ProductTags;
+    PaginatedList<StoryTag> storyTags = Model.StoryTags;
     var productsTagPaging = new PaginatedModelList<ProductTag>(productTags, Model.Page, Model.RecordPerPage, productTags.TotalCount);
     productsTagPaging.PageIndex = Model.Page;
     productsTagPaging.Sorting = (int)Model.Sorting;
@@ -77,6 +78,12 @@
     <div class="offset-md-4 col-md-8 pb-5">
         @Html.Partial("_PaginatedModelList", productsTagPaging, new ViewDataDictionary(ViewData){
                           {"actionName","Tag"}, {"controllerName","products" } })
+    </div>
+    <div class="row no-gutters">
+        @foreach (var p in storyTags)
+        {
+            @Html.DisplayFor(model => p.Story, "StoryShort", new { Width = 300, Height = 300 })
+        }
     </div>
 </div>
 @functions {
