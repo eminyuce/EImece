@@ -235,10 +235,10 @@ namespace EImece.Areas.Admin.Controllers
             {
                 menuLinks.Add(new SelectListItem() { Text = "Gizlilik Politikası", Value = "info-termsandconditions" });
             }
-            //if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
-            // {
-            //     menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
-            // }
+            if (!menus.Any(r => r.MenuLink.Equals("stories-index", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                 menuLinks.Add(new SelectListItem() { Text = "Blog Ana Sayfa", Value = "stories-index" });
+            }
             menuLinks.Add(new SelectListItem() { Text = "Farkli Sayfa Temalari", Value = "pages-index" });
 
             return menuLinks;

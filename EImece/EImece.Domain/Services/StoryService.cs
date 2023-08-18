@@ -119,6 +119,10 @@ namespace EImece.Domain.Services
                 int pageSize = AppConfig.RecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
                 result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
+                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                result.Tags = TagService.GetActiveBaseEntities(true, language);
+                result.ApplicationSettings = SettingService.GetAllActiveSettings();
+                result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
                 DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
             return result;

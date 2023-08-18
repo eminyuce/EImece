@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
-    [AuthorizeRoles(Constants.AdministratorRole)]  // NOT ALLOWED TO GET THAT PAGES
+    //[AuthorizeRoles(Constants.AdministratorRole)]  // NOT ALLOWED TO GET THAT PAGES
     [RoutePrefix(Constants.StoriesCategoriesControllerRoutingPrefix)]
     public class StoriesController : BaseController
     {
