@@ -1,10 +1,22 @@
-﻿using System;
+﻿using EImece.Domain.Entities;
+using GenericRepository;
+using NPOI.SS.Formula.Functions;
+using System;
+using System.Linq.Expressions;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace EImece.Domain.Helpers.HtmlHelpers
 {
     public static class HtmlHelperExtensions
     {
+        public static MvcHtmlString IntTextFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        {
+            return htmlHelper.TextBoxFor(expression, new { @class = "int-text" });
+        }
+       
+         
         public static MvcHtmlString BootstrapPager(this HtmlHelper helper, int currentPageIndex, Func<int, string> action, int totalItems, int pageSize = 10, int numberOfLinks = 5)
         {
             if (totalItems <= 0)

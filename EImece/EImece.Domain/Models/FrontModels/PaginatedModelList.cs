@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EImece.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Routing;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -58,5 +60,19 @@ namespace EImece.Domain.Models.FrontModels
             }
             return this.Skip((PageIndex - 1) * PageSize).Take(PageSize);
         }
+        public override string ToString()
+        {
+            return $"PageIndex: {PageIndex}, " +
+                   $"PageSize: {PageSize}, " +
+                   $"TotalCount: {TotalCount}, " +
+                   $"TotalPageCount: {TotalPageCount}, " +
+                   $"Search: {Search}, " +
+                   $"Filter: {Filter}, " +
+                   $"Sorting: {Sorting}, " +
+                   $"RouteId: {RouteId}, " +
+                   $"MinPrice: {MinPrice}, " +
+                   $"MaxPrice: {MaxPrice}";
+        }
     }
+  
 }

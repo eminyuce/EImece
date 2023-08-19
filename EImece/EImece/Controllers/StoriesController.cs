@@ -1,11 +1,14 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
 using System;
+using System.Drawing.Printing;
 using System.Net;
 using System.Web.Mvc;
 
@@ -25,7 +28,10 @@ namespace EImece.Controllers
         {
             try
             {
+                int pageSize = AppConfig.StoryDefaultRecordPerPage;
                 var stories = StoryService.GetMainPageStories(page, CurrentLanguage);
+                stories.RecordPerPage = pageSize;
+                stories.Page = page;
                 return View(stories);
             }
             catch (Exception ex)

@@ -113,7 +113,7 @@ namespace EImece.Domain.Services
             StoryIndexViewModel result = null;
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            //if (!DataCachingProvider.Get(cacheKey, out result))
             {
                 result = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;

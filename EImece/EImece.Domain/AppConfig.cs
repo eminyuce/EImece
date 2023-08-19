@@ -261,6 +261,10 @@ namespace EImece.Domain
         {
             get { return 24; }
         }
+        public static int StoryDefaultRecordPerPage
+        {
+            get { return 5; }
+        }
 
         public static List<int> IyzicoEnabledInstallments
         {
