@@ -116,7 +116,7 @@ namespace EImece.Domain.Services
             //if (!DataCachingProvider.Get(cacheKey, out result))
             {
                 result = new StoryIndexViewModel();
-                int pageSize = AppConfig.RecordPerPage;
+                int pageSize = AppConfig.StoryDefaultRecordPerPage;
                 result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
                 result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
