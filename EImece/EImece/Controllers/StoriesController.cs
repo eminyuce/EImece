@@ -28,9 +28,8 @@ namespace EImece.Controllers
         {
             try
             {
-                int pageSize = AppConfig.StoryDefaultRecordPerPage;
                 var stories = StoryService.GetMainPageStories(page, CurrentLanguage);
-                stories.RecordPerPage = pageSize;
+                stories.RecordPerPage = AppConfig.StoryDefaultRecordPerPage;
                 stories.Page = page;
                 return View(stories);
             }
@@ -75,6 +74,8 @@ namespace EImece.Controllers
 
                 var storyCategoryId = id.GetId();
                 var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
+                storyCategory.RecordPerPage = AppConfig.StoryDefaultRecordPerPage;
+                storyCategory.Page = page;
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
                 return View(storyCategory);
             }

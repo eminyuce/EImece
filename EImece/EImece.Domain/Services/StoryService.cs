@@ -162,7 +162,7 @@ namespace EImece.Domain.Services
             result.Tags = TagService.GetActiveBaseEntities(true, lang);
             result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();
             return result;
         }
 

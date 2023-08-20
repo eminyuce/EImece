@@ -1,10 +1,12 @@
 ﻿using EImece.Domain.Entities;
 using GenericRepository;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    public class StoryCategoryViewModel
+    public class StoryCategoryViewModel : ItemListing
     {
         public StoryCategory StoryCategory { get; set; }
 
@@ -13,5 +15,16 @@ namespace EImece.Domain.Models.FrontModels
         public List<StoryCategory> StoryCategories { get; set; }
         public List<Tag> Tags { get; set; }
         public PaginatedList<Story> Stories { get; set; }
+
+        public List<Setting> ApplicationSettings { get; set; }
+
+        private Setting GetSetting(string key)
+        {
+            if (ApplicationSettings == null)
+            {
+                return null;
+            }
+            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }

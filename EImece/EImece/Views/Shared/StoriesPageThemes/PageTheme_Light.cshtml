@@ -1,0 +1,109 @@
+﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using GenericRepository;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var category = Model.StoryCategory;
+    var storyCategories = Model.StoryCategories;
+    var storiesAll = Model.Stories;
+    var stories = new PaginatedModelList<Story>(storiesAll, Model.Page, Model.RecordPerPage, storiesAll.TotalCount);
+    stories.Search = "";
+    stories.PageIndex = Model.Page;
+    stories.Sorting = (int)Model.Sorting;
+    var storyTags = Model.Tags;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+
+}
+
+<!-- Page Title-->
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                <li class="breadcrumb-item">
+                    <a href="/">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Blog</a>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+<!-- Page Content-->
+<div class="container pb-5 mb-1">
+    <div class="row">
+        <div class="col-lg-3">
+            <!-- Blog sidebar-->
+            <div class="offcanvas-sidebar">
+                <div class="offcanvas-sidebar-toggle"><span class="toggle-knob"><i data-feather="chevrons-right"></i>Sidebar</span></div>
+                <div class="offcanvas-sidebar-body">
+                    <div class="offcanvas-sidebar-body-inner">
+                        <!-- Categories-->
+                        @if (storyCategories.IsNotEmpty())
+                        {
+                            <div class="widget widget-categories mb-4 py-1">
+                                <h3 class="widget-title">Categories</h3>
+                                <ul>
+                                    @foreach (var allStoryCategory in storyCategories)
+                                    {
+                                        <li>
+                                            <a href="@allStoryCategory.DetailPageRelativeUrl">
+                                                <i class="widget-categories-indicator" data-feather="chevron-right"></i>@allStoryCategory.Name
+                                                @if (allStoryCategory.Stories.IsNotEmpty())
+                                                {
+                                                    <span class="badge text-muted ml-1">(@allStoryCategory.Stories.Count)</span>
+                                                }
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        <!-- Tags      -->
+
+                        @if (storyTags.IsNotEmpty())
+                        {
+                            <div class="widget mb-4 pb-1">
+                                <h3 class="widget-title">Popular tags</h3>
+                                @for (int i = 0; i < storyTags.Count; i++)
+                                {
+                                    var pt = storyTags[i];
+                                    <a class="tag-link mr-2 mb-2" href="@pt.DetailPageRelativeUrlForStories">@string.Format("#{0}", pt.Name)</a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+
+
+            @foreach (var item in stories)
+            {
+                @Html.DisplayFor(modelItem => item, "StoryShort", new { Width = 300, Height = 300 })
+            }
+
+
+            <div class="offset-md-4 col-md-8 pb-5">
+                @Html.Partial("_PaginatedModelList", stories, new ViewDataDictionary(ViewData){
+                                  {"actionName","index"}, {"controllerName","stories" } })
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
