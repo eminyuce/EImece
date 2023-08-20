@@ -13,8 +13,8 @@
     stories.Search = "";
     stories.PageIndex = Model.Page;
     stories.Sorting = (int)Model.Sorting;
-    var storyCategories = Model.StoryCategories;
-    var storyTags = Model.Tags.OrderBy(x => Guid.NewGuid()).Take(25).ToList(); ;
+    var storyCategories = Model.StoryCategories.OrderBy(r => r.Position).OrderByDescending(r => r.CreatedDate).ToList(); ;
+    var storyTags = Model.Tags.Where(r => r.StoryTags.IsNotEmpty()).OrderBy(r => r.Position).OrderByDescending(r => r.CreatedDate).OrderBy(x => Guid.NewGuid()).Take(25).ToList(); 
 }
 
 

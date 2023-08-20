@@ -9,13 +9,13 @@
 @using Resources;
 @{
     var category = Model.StoryCategory;
-    var storyCategories = Model.StoryCategories;
+    var storyCategories = Model.StoryCategories.OrderBy(r => r.Position).OrderByDescending(r => r.CreatedDate).ToList();
     var storiesAll = Model.Stories;
     var stories = new PaginatedModelList<Story>(storiesAll, Model.Page, Model.RecordPerPage, storiesAll.TotalCount);
     stories.Search = "";
     stories.PageIndex = Model.Page;
     stories.Sorting = (int)Model.Sorting;
-    var storyTags = Model.Tags;
+    var storyTags = Model.Tags.Where(r => r.StoryTags.IsNotEmpty()).OrderBy(r => r.Position).OrderByDescending(r => r.CreatedDate).OrderBy(x => Guid.NewGuid()).Take(25).ToList();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 
 }

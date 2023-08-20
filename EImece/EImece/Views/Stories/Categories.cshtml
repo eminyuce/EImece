@@ -7,7 +7,7 @@
 @using Resources;
 @{
     var category = Model.StoryCategory;
-    var stories = Model.Stories;
+    var stories = Model.Stories.OrderBy(r => r.Position).OrderByDescending(r => r.CreatedDate).ToList(); ;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
