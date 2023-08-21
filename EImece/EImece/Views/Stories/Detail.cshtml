@@ -76,7 +76,7 @@
                             <div class="widget widget-featured-entries mb-4 pb-2">
 
                                 <h3 class="widget-title">Featured posts</h3>
-                                @foreach (var releatedStory in Model.RelatedStories)
+                                @foreach (var releatedStory in Model.FeaturedStories)
                                 {
                                     var imgTag = releatedStory.GetCroppedImageUrl(releatedStory.MainImageId, 64, 64);
 

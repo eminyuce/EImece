@@ -10,19 +10,37 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
+    var mainImageThbImgSrc = story.GetCroppedImageUrl(story.MainImageId, Width, Height);
+    var storyTags = story.StoryTags.Select(r => r.Tag).OrderBy(r => r.Position).OrderByDescending(r => r.CreatedDate).OrderBy(x => Guid.NewGuid()).Take(5).ToList();
+
 }
 
-<div class="story">
-    <h3>
-        @*@Html.Raw(story.GetThumpImageTag())*@
-        @Html.Raw(story.GetCroppedImageTag(Width, Height))
-
-        <a href="@story.DetailPageUrl">
-            @Html.DisplayFor(model => story.Name)
+<div class="row pb-5">
+    <div class="col-md-4 order-md-2">
+        <div class="post-meta d-flex flex-wrap justify-content-between pb-3">
+            <div class="mr-2">by&nbsp;<a href="#">@story.AuthorName</a>
+            <span class="meta-divider"></span><a href="#">@story.CreatedDate.ToString("MMM dd, yyyy")</a>
+                </div> 
+        </div>
+        <h3 class="h4 mb-4"><a class="post-title" href="@story.DetailPageUrl">@Html.DisplayFor(model => story.Name)</a></h3>
+    </div>
+    <div class="col-md-8 order-md-1">
+        <a class="d-block mb-3" href="@story.DetailPageUrl">
+            <img alt="Post thumb" class="d-block" src="@mainImageThbImgSrc" width="@Width" height="@Height" />
         </a>
-        <small>@story.CreatedDate</small>
-    </h3>
-    <p>
-        @story.GetSeoDescription(300)
-    </p>
+        <p class="font-size-sm">@story.GetSeoDescription(300)</p>
+        <div class="post-meta">
+            <div>
+                in&nbsp;<a href="@story.StoryCategory.DetailPageRelativeUrl">@story.StoryCategory.Name &nbsp;</a>
+                @if(storyTags.IsNotEmpty())
+                { 
+                    <span class="meta-divider"></span>
+                    foreach (var t in storyTags)
+                    {
+                        <a href="@t">@string.Format("#{0}",t.Name)</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
 </div>

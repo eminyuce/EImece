@@ -333,7 +333,7 @@ namespace EImece.Domain.Helpers.Extensions
                 string imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    imageTag = string.Format("<img src='{0}' alt='{1}'   />",
+                    imageTag = string.Format("<img src='{0}' alt='{1}' width='{2}'  height='{3}'  />",
                         imagePath, entity.Name, width, height).ToLower();
                 }
             }
@@ -367,6 +367,12 @@ namespace EImece.Domain.Helpers.Extensions
                 else if (isImageFullSrcUnderMediaFolder && entity is ProductFile)
                 {
                     var baseContentEntity = (ProductFile)entity;
+                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
+                    return GetImagePathOrDefaultImage(width, height, imagePath);
+                }
+                else if (isImageFullSrcUnderMediaFolder && entity is StoryFile)
+                {
+                    var baseContentEntity = (StoryFile)entity;
                     var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
