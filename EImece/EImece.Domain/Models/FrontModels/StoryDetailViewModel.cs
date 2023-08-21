@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -20,5 +22,18 @@ namespace EImece.Domain.Models.FrontModels
         public Menu MainPageMenu { get; set; }
 
         public List<Tag> Tags { get; set; }
+
+        public List<Setting> ApplicationSettings { get; set; }
+
+        private Setting GetSetting(string key)
+        {
+            if (ApplicationSettings == null)
+            {
+                return null;
+            }
+            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+
     }
 }

@@ -105,6 +105,7 @@ namespace EImece.Domain.Services
             result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             result.Tags = TagService.GetActiveBaseEntities(true, language);
             result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();
             return result;
         }
 

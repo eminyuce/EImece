@@ -122,42 +122,18 @@
         <div class="col-lg-9">
             <!-- Post meta-->
             <div class="post-meta d-flex flex-wrap justify-content-between pb-3">
-                <div class="mr-2">by&nbsp;<a href="#">Olivia Reyes</a><span class="meta-divider"></span>in&nbsp;<a href="#">Aerial photo</a><span class="meta-divider"></span><span>Apr 20</span></div><a href="#"><i class="mr-1" data-feather="message-square"></i>13</a>
-            </div>
-            <!-- Gallery-->
-            <div class="row pb-2">
-                <div class="col-sm-8">
-                    <a class="gallery-item mb-grid-gutter" href="img/blog/single/01.jpg" data-fancybox="blogGallery" data-options="{&quot;caption&quot;: &quot;Operating a drone&quot;}">
-                        <img src="img/blog/single/th01.jpg" alt="Gallery image">
-                        <div class="gallery-caption">
-                            <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>Operating a drone
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    <a class="gallery-item mb-grid-gutter" href="img/blog/single/02.jpg" data-fancybox="blogGallery" data-options="{&quot;caption&quot;: &quot;Drone shot #1&quot;}">
-                        <img src="img/blog/single/th02.jpg" alt="Gallery image">
-                        <div class="gallery-caption">
-                            <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>Drone shot #1
-                        </div>
-                    </a><a class="gallery-item mb-grid-gutter" href="img/blog/single/03.jpg" data-fancybox="blogGallery" data-options="{&quot;caption&quot;: &quot;Drone shot #2&quot;}">
-                        <img src="img/blog/single/th03.jpg" alt="Gallery image">
-                        <div class="gallery-caption">
-                            <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>Drone shot #2
-                        </div>
-                    </a>
+                <div class="mr-2">
+                    by&nbsp;<a href="@story.AuthorNamePageUrl">@story.AuthorName</a><span class="meta-divider"></span>in&nbsp;<a href="@story.StoryCategory.DetailPageRelativeUrl">@story.StoryCategory.Name</a>
+                    <span class="meta-divider"></span><span>@story.CreatedDate.ToString("MMM dd, yyyy")</span>
                 </div>
             </div>
-            @if (isUserAuthenticated)
-            {
-                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
-            }
+            <h1>@story.Name</h1>
             <!-- Post content-->
             @Html.Raw(story.Description)
-            <!-- Post tags + sharing-->
-            <div class="d-flex flex-wrap justify-content-between pt-2 pb-4 mb-1">
-                @if (story.StoryTags.IsNotEmpty())
-                {
+            @if (story.StoryTags.IsNotEmpty())
+            {
+                <!-- Post tags + sharing-->
+                <div class="d-flex flex-wrap justify-content-between pt-2 pb-4 mb-1">
                     <div class="mt-3 mr-3">
                         @foreach (var t in story.StoryTags)
                         {
@@ -165,32 +141,9 @@
                             <a class="tag-link mr-2 mb-2" href="@t.Tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", t.Tag.Name)</a>
                         }
                     </div>
-                }
-
-                <div class="mt-3">
-                    <span class="d-inline-block align-middle text-muted font-size-sm mr-2 mb-2">
-                        Share post:
-                    </span><a class="social-btn sb-facebook mr-2 mb-2" href="#">
-                        <i class="flaticon-facebook"></i>
-                    </a><a class="social-btn sb-twitter mr-2 mb-2" href="#">
-                        <i class="flaticon-twitter"></i>
-                    </a><a class="social-btn sb-pinterest mr-2 mb-2" href="#">
-                        <i class="flaticon-pinterest"></i>
-                    </a>
                 </div>
-            </div>
-            <!-- Post navigation-->
-            <nav class="entry-navigation" aria-label="Post navigation">
-                <a class="entry-navigation-link" href="#" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;img/blog/navigation/01.jpg&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6  class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;How to choose perfect shoes for running&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by Susan Mayer&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;"><i class="mr-1" data-feather="chevron-left"></i><span class="d-none d-sm-inline">Prev post</span></a>
-                <a class="entry-navigation-link" href="blog-rs.html">
-                    <i class="mr-1" data-feather="grid">
-                    </i><span class="d-none d-sm-inline">All posts</span>
-                </a>
-                <a class="entry-navigation-link" href="#" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;img/blog/navigation/02.jpg&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6  class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;Factors behind smart watches popularity&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by Logan Coleman&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
-                    <span class="d-none d-sm-inline">Next post</span>
-                    <i class="ml-1" data-feather="chevron-right"></i>
-                </a>
-            </nav>
+            }
+
             @if (Model.RelatedStories.IsNotEmpty())
             {
                 <!-- Related posts-->
@@ -224,10 +177,10 @@
                     }
                 </div>
             }
-            @if (RelatedProducts.Any())
+            @if (RelatedProducts.IsNotEmpty())
             {
                 <!-- Related posts-->
-                <h3 class="h4 pt-5 pb-4 mt-2 text-center">      @Resource.RelatedProductsForBlog</h3>
+                <h3 class="h4 pt-5 pb-4 mt-2 text-center">@Resource.RelatedProductsForBlog</h3>
                 <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
 
                     @foreach (var product in RelatedProducts)

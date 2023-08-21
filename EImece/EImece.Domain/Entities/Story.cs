@@ -35,5 +35,14 @@ namespace EImece.Domain.Entities
                 return this.GetDetailPageUrl("Detail", "Stories", StoryCategory.Name);
             }
         }
+
+        [NotMapped]
+        public string AuthorNamePageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Authors", "Stories", StoryCategory.Name);
+            }
+        }
     }
 }
