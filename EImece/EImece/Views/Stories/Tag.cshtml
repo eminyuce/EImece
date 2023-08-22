@@ -19,10 +19,6 @@
 
 <h2>
     @tag.Name
-@if (isUserAuthenticated)
-{
-    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
-}
 </h2>
 
 @Html.BootstrapPager(StoryTags.PageIndex,

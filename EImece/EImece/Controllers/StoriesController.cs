@@ -41,11 +41,11 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Detail(String id)
+        public ActionResult Detail(string id)
         {
             try
             {
-                if (String.IsNullOrEmpty(id))
+                if (string.IsNullOrEmpty(id))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
@@ -63,11 +63,11 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Categories(String id, int page = 1)
+        public ActionResult Categories(string id, int page = 1)
         {
             try
             {
-                if (String.IsNullOrEmpty(id))
+                if (string.IsNullOrEmpty(id))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
@@ -87,20 +87,44 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Tag(String id)
+        public ActionResult Tag(string id)
         {
             try
             {
-                if (String.IsNullOrEmpty(id))
+                if (string.IsNullOrEmpty(id))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 var tagId = id.GetId();
                 int pageIndex = 1;
-                int pageSize = 20;
+                int pageSize = AppConfig.StoryDefaultRecordPerPage;
                 var stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();
+                return View(stories);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " id:" + id);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        public ActionResult Author(string id, int page = 1)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                var authorName = id;
+                int pageSize = AppConfig.StoryDefaultRecordPerPage;
+                var stories = StoryService.GetStoriesByAuthorName(authorName, page, CurrentLanguage);
+                stories.RecordPerPage = AppConfig.StoryDefaultRecordPerPage;
+                stories.Page = page;
+                ViewBag.SeoId = authorName+" "+Resources.Resource.Stories;
                 return View(stories);
             }
             catch (Exception ex)

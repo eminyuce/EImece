@@ -4,6 +4,7 @@ using EImece.Domain.Repositories.IRepositories;
 using GenericRepository;
 using GenericRepository.EntityFramework.Enums;
 using NLog;
+using RazorEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,28 @@ namespace EImece.Domain.Repositories
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
 
             return result.ToList();
+        }
+
+        public PaginatedList<Story> GetStoriesByAuthorName(string authorName, int language, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var includeProperties = GetIncludePropertyExpressionList();
+                includeProperties.Add(r => r.MainImage);
+                includeProperties.Add(r => r.StoryFiles);
+                includeProperties.Add(r => r.StoryCategory);
+                includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+                Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.AuthorName.Equals(authorName,StringComparison.InvariantCultureIgnoreCase)  && r2.Lang == language;
+                Expression<Func<Story, int>> keySelector = t => t.Position;
+                var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+
+                return items;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
         }
 
         public PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)

@@ -41,7 +41,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return this.GetDetailPageUrl("Authors", "Stories", StoryCategory.Name);
+                return this.GetDetailPageUrl("Author", "Stories", null,null,this.AuthorName);
             }
         }
     }

@@ -81,12 +81,19 @@ namespace EImece
                );
 
             routes.MapRoute(
+          name: "StoryAuthors",
+          url: Constants.StoriesCategoriesControllerRoutingPrefix + "/author/{id}",
+          defaults: new { controller = "stories", action = "author", id = UrlParameter.Optional },
+          namespaces: new[] { "EImece.Controllers" }
+      );
+
+            routes.MapRoute(
                    name: "Storycategories",
                    url: Constants.StoriesCategoriesControllerRoutingPrefix + "/categories/{id}",
                    defaults: new { controller = "stories", action = "categories", id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
-
+         
             routes.MapRoute(
                    name: "StoryDetail",
                    url: Constants.StoriesCategoriesControllerRoutingPrefix + "/{categoryName}/{id}",

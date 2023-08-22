@@ -450,16 +450,20 @@ namespace EImece.Domain.Helpers.Extensions
             return "";
         }
 
-        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "")
+        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName="")
         {
             if (entity != null)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                if (String.IsNullOrEmpty(categoryName))
+                if (!String.IsNullOrEmpty(authorName))
+                {
+                    return urlHelper.Action(action, controller, new {  id = authorName, area = "" }, protocol);
+                }
+                else if (String.IsNullOrEmpty(categoryName))
                 {
                     return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" }, protocol);
                 }
-                else
+                else if (!String.IsNullOrEmpty(categoryName))
                 {
                     return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity), area = "" }, protocol);
                 }

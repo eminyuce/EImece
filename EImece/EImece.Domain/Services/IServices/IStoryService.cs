@@ -31,5 +31,6 @@ namespace EImece.Domain.Services.IServices
             int pageSize, int currentLanguage);
 
         Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams);
+        AuthorStoriesViewModel GetStoriesByAuthorName(string authorName,  int page , int currentLanguage);
     }
 }

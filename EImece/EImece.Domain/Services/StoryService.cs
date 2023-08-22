@@ -166,6 +166,25 @@ namespace EImece.Domain.Services
             result.ApplicationSettings = SettingService.GetAllActiveSettings();
             return result;
         }
+        public AuthorStoriesViewModel GetStoriesByAuthorName(string authorName, int page, int currentLanguage)
+        {
+            var lang = currentLanguage;
+            var result = new AuthorStoriesViewModel();
+            int pageSize = AppConfig.RecordPerPage;
+            result.Stories = StoryRepository.GetStoriesByAuthorName(authorName, lang, page, pageSize);
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();
+            if (result.Stories.IsNotEmpty())
+            {
+                result.AuthorName = result.Stories.First().AuthorName;
+            }
+            else
+            {
+                result.AuthorName = authorName;
+            }
+       
+
+            return result;
+        }
 
         public List<Story> GetLatestStories(int language, int take)
         {

@@ -287,6 +287,7 @@
     <Compile Include="Models\FrontModels\OrderConfirmationEmailRazorTemplate.cs" />
     <Compile Include="Models\FrontModels\ProductSpecItem.cs" />
     <Compile Include="Models\FrontModels\RazorTemplateModel.cs" />
+    <Compile Include="Models\FrontModels\AuthorStoriesViewModel.cs" />
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
     <Compile Include="AppConfig.cs" />
