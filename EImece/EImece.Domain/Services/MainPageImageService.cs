@@ -43,14 +43,14 @@ namespace EImece.Domain.Services
         public MainPageViewModel GetMainPageViewModel(int language)
         {
             var result = new MainPageViewModel();
-
+            int totalNumberForMainPageProducts = 50;
             var activeProducts = ProductService.GetActiveProducts(language);
-            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
-            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(8).ToList();
-            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(8).ToList();
+            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(totalNumberForMainPageProducts).ToList();
+            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(totalNumberForMainPageProducts).ToList();
+            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(totalNumberForMainPageProducts).ToList();
 
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.DeliveryInfoExists = MenuService.GetActiveBaseContentsFromCache(true, language).Any(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication)) ? "PageThemeCommunication" : null;
+            result.DeliveryInfoExists = MenuService.GetActiveBaseContentsFromCache(true, language).Any(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication,StringComparison.InvariantCultureIgnoreCase)) ? "PageThemeCommunication" : null;
 
             // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
             // result.LatestStories = StoryService.GetLatestStories(language, 4);

@@ -76,10 +76,13 @@
                                 <h3 class="widget-title">Popular tags</h3>
                                 @for (int i = 0; i < storyTags.Count; i++)
                                 {
-                                    foreach (var tag in storyTags)
+                                    foreach (var t in storyTags)
                                     {
-                                        Tag pt = tag.First();
-                                        <a class="tag-link mr-2 mb-2" href="@pt.DetailPageRelativeUrlForStories">@string.Format("#{0}", pt.Name)</a>
+                                        foreach (var tag in t)
+                                            {
+                                                Tag pt = tag;
+                                                <a class="tag-link mr-2 mb-2" href="@pt.DetailPageRelativeUrlForStories">@string.Format("#{0}", pt.Name)</a>
+                                            }
                                     }
                                 }
                                 </div>

@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services;
+using Iyzipay.Model;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Ninject;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -82,7 +84,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             var urlReferrer = Request.UrlReferrer;
             MemoryCacheProvider.ClearAll();
-            ExecuteWarmUpSql();
+            ExecuteWarmUpSqlAsync();
 
             if (urlReferrer != null)
             {
@@ -93,40 +95,44 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+        private async Task ExecuteWarmUpSqlAsync()
+        {
+            // Assuming your synchronous ExecuteWarmUpSql() method looks like this:
+            // ExecuteWarmUpSql();
 
+            // Modify the code inside ExecuteWarmUpSql to be asynchronous if needed
+            await Task.Run(() =>
+            {
+                // Your asynchronous warm-up SQL code here
+                // For example, if you're using Entity Framework, you might have something like:
+                // await dbContext.Database.ExecuteSqlRawAsync("SELECT 1");
+                ExecuteWarmUpSql();
+            });
+        }
         private void ExecuteWarmUpSql()
         {
             try
             {
+                Logger.Info("ExecuteWarmUpSql started");
                 FaqService.GetActiveBaseEntitiesFromCache(true, CurrentLanguage);
                 SettingService.GetEmailAccount();
                 SettingService.GetAllActiveSettings();
                 SiteMapService.GenerateSiteMap();
                 MainPageImageService.GetMainPageViewModel(CurrentLanguage);
                 MainPageImageService.GetFooterViewModel(CurrentLanguage);
-                var activeCategories = ProductCategoryService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                if (activeCategories.IsNotEmpty())
-                {
-                    foreach (var c in activeCategories)
-                    {
-                        ProductCategoryService.GetProductCategoryViewModel(c.Id);
-                    }
-                }
                 MenuService.GetMenus();
                 var menus = MenuService.BuildTree(true, CurrentLanguage);
                 var tree2 = ProductCategoryService.BuildTree(true, CurrentLanguage);
                 var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
                 MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                var products = ProductService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                MailTemplateService.GetAllMailTemplatesWithCache();
-                if (products.IsNotEmpty())
-                {
-                    foreach (var p in products)
-                    {
-                        ProductService.GetProductDetailViewModelById(p.Id);
-                    }
-                }
+            
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "ExecuteWarmUpSql error");
+            }
 
+            try {
                 var pppp = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
                 var buffer = GeneralHelper.GetImageFromUrl(pppp + "/sitemap.xml");
                 SiteMapService.ReadSiteMapXmlAndRequest(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
@@ -135,8 +141,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "ExecuteWarmUpSql error");
             }
-        }
-
+}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()

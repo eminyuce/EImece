@@ -76,9 +76,9 @@
 <!-- Product widgets-->
 <section class="container px-1 pt-1 pb-1 mb-md-1">
     <div class="row">
-        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(5).ToList(), IsProductPriceEnable, IsProductCommentSectionEnable)
-        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(5).ToList(), IsProductPriceEnable, IsProductCommentSectionEnable)
-        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(5).ToList(), IsProductPriceEnable, IsProductCommentSectionEnable)
+        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(15).ToList(), IsProductPriceEnable, IsProductCommentSectionEnable)
+        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(15).ToList(), IsProductPriceEnable, IsProductCommentSectionEnable)
+        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(15).ToList(), IsProductPriceEnable, IsProductCommentSectionEnable)
     </div>
 </section>
 
