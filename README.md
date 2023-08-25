@@ -31,7 +31,7 @@ EImece's admin panel equips you with an array of capabilities:
 
 **Frequently Asked Questions:** Proactively address customer queries.
 
-**Integrated Payment Solutions:** Seamlessly connect with iyzico API for effortless transactions.
+**Integrated Payment Solutions:** Seamlessly connect with iyzico API for effortless transactions. The iyzico API has been developed to support merchants with extended online payment services and can be easily integrated into existing platforms.
 
 **Customer Management:** Nurture customer relationships for long-term success.
 
