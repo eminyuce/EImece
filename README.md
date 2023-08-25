@@ -1,6 +1,6 @@
-**Introducing EImece: Your Premier Destination for Seamless Online Shopping**
+**Introducing E-Imece: Your Premier Destination for Seamless Online Shopping**
 
-Explore a new realm of online shopping with EImece, an exceptional e-commerce platform that seamlessly blends cutting-edge technology with user-friendly design. Our feature-rich website, accompanied by a robust admin panel, empowers both administrators and customers, ensuring an unparalleled shopping experience.
+Explore a new realm of online shopping with E-Imece, an exceptional e-commerce platform that seamlessly blends cutting-edge technology with user-friendly design. Our feature-rich website, accompanied by a robust admin panel, empowers both administrators and customers, ensuring an unparalleled shopping experience.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Admin Panel:**
