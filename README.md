@@ -15,26 +15,27 @@ EImece's admin panel equips you with an array of capabilities:
 
 Product Category Listings: Organize your offerings with ease.
 
-Product Listings: Showcase your products comprehensively.
+**Product Listings:** Showcase your products comprehensively.
 
-Blogs Listings: Engage your audience with captivating content.
+**Blogs Listings:** Engage your audience with captivating content.
 
-Main Menu: Craft a seamless navigation experience.
+**Main Menu:** Craft a seamless navigation experience.
 
-Main Page Sliding Images: Leave a lasting impression with dynamic visuals.
+**Main Page Sliding Images:** Leave a lasting impression with dynamic visuals.
 
-Tagging System: Establish connections between products and blogs effortlessly.
+**Tagging System:** Establish connections between products and blogs effortlessly.
 
-Image Galleries: Curate immersive galleries for products, blogs, and menu pages.
+**Image Galleries:** Curate immersive galleries for products, blogs, and menu pages.
 
-Settings Customization: Tailor the application according to your vision.
+**Settings Customization:** Tailor the application according to your vision.
 
-Frequently Asked Questions: Proactively address customer queries.
+**Frequently Asked Questions:** Proactively address customer queries.
 
-Integrated Payment Solutions: Seamlessly connect with iyzico API for effortless transactions.
+**Integrated Payment Solutions:** Seamlessly connect with iyzico API for effortless transactions.
 
-Customer Management: Nurture customer relationships for long-term success.
+**Customer Management:** Nurture customer relationships for long-term success.
 
+**Multi-Language Support:** Reach a global audience with correctly set up multi-language capabilities.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -44,21 +45,21 @@ Customer Management: Nurture customer relationships for long-term success.
 
 EImece is powered by a sophisticated technology stack, ensuring performance, scalability, and security.
 
-C#: The foundation of our robust programming.
+**C#**: The foundation of our robust programming.
 
-ASP.NET MVC 5.2: Delivering a seamless web experience.
+**ASP.NET MVC 5.2**: Delivering a seamless web experience.
 
-SQL Server 2008: Storing and managing data reliably.
+**SQL Server 2008**: Storing and managing data reliably.
 
-Entity Framework 6: Streamlining database interactions.
+**Entity Framework 6**: Streamlining database interactions.
 
-Generic Repository Pattern: Enhancing data access efficiency.
+**Generic Repository Pattern**: Enhancing data access efficiency.
 
-Ninject Dependency Injection: Managing dependencies effortlessly.
+**Ninject Dependency Injection**: Managing dependencies effortlessly.
 
-jQuery: Enriching user interactions.
+**jQuery**: Enriching user interactions.
 
-Bootstrap: Crafting responsive and visually appealing front-end experiences.
+**Bootstrap**: Crafting responsive and visually appealing front-end experiences.
 
 Experience online shopping like never before. Elevate your e-commerce venture with EImece today. Join us in reshaping the digital shopping landscape.
 
