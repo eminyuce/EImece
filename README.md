@@ -7,7 +7,7 @@ Effortlessly manage every facet of your e-commerce enterprise through our intuit
 
 Control every aspect of your application, from settings customization to a comprehensive Frequently Asked Questions section. Harness the power of customer data and email listings, shaping your marketing strategies with precision. With dedicated customer management tools, provide exceptional post-purchase support while enabling customers to conveniently track their orders.
 
-
+------------------------------------------------------------------------------------------------------------------
 
 **Explore Endless Possibilities:**
 EImece's admin panel equips you with an array of capabilities:
@@ -35,7 +35,7 @@ Integrated Payment Solutions: Seamlessly connect with iyzico API for effortless 
 Customer Management: Nurture customer relationships for long-term success.
 
 
-
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
