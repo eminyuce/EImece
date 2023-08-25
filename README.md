@@ -5,7 +5,7 @@ Explore a new realm of online shopping with EImece, an exceptional e-commerce pl
 **Admin Panel:**
 Effortlessly manage every facet of your e-commerce enterprise through our intuitive admin panel. Take charge of product categories, individual products, captivating main page images, and engaging image galleries for products, blogs, and menu pages. Seamlessly intertwine the worlds of products and blogs using tags, creating meaningful relationships that resonate with your customers. Control every aspect of your application, from settings customization to a comprehensive Frequently Asked Questions section. Harness the power of customer data and email listings, shaping your marketing strategies with precision. With dedicated customer management tools, provide exceptional post-purchase support while enabling customers to conveniently track their orders.
 
-Explore Endless Possibilities:
+**Explore Endless Possibilities:**
 EImece's admin panel equips you with an array of capabilities:
 
 Product Category Listings: Organize your offerings with ease.
@@ -30,10 +30,14 @@ Integrated Payment Solutions: Seamlessly connect with iyzico API for effortless 
 
 Customer Management: Nurture customer relationships for long-term success.
 
-Cutting-Edge Tech Stack:
+
+
+
+
+
+**Cutting-Edge Tech Stack:**
 
 EImece is powered by a sophisticated technology stack, ensuring performance, scalability, and security.
-
 
 C#: The foundation of our robust programming.
 
