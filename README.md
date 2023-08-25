@@ -11,6 +11,9 @@ Control every aspect of your application, from settings customization to a compr
 **Dynamic XML-based Customization:**
 Unleash the power of customization with EImece's dynamic XML-based field generator for products. Our platform allows you to define and modify product attributes on the fly using XML. Create product attributes, add dropdowns, checkboxes, textboxes, and more. For instance, tailor your product details with attributes like color, size, volume, and weight, all specified in a structured XML format.
 
+**Personalized Email Templates:**
+Elevate your communication with our built-in email template generator. Send Order Confirmation Emails that provide customers with all the information they need after making a purchase. Ensure smooth onboarding with Confirm Your Account emails, guiding new users through the account activation process. Customize the look and content of each email using HTML templates, providing a consistent and professional brand experience.
+
 ------------------------------------------------------------------------------------------------------------------
 
 **Explore Endless Possibilities:**
