@@ -13,7 +13,7 @@ Control every aspect of your application, from settings customization to a compr
 **Explore Endless Possibilities:**
 EImece's admin panel equips you with an array of capabilities:
 
-Product Category Listings: Organize your offerings with ease.
+**Product Category Listings:** Organize your offerings with ease.
 
 **Product Listings:** Showcase your products comprehensively.
 
