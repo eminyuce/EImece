@@ -3,7 +3,11 @@
 Explore a new realm of online shopping with EImece, an exceptional e-commerce platform that seamlessly blends cutting-edge technology with user-friendly design. Our feature-rich website, accompanied by a robust admin panel, empowers both administrators and customers, ensuring an unparalleled shopping experience.
 
 **Admin Panel:**
-Effortlessly manage every facet of your e-commerce enterprise through our intuitive admin panel. Take charge of product categories, individual products, captivating main page images, and engaging image galleries for products, blogs, and menu pages. Seamlessly intertwine the worlds of products and blogs using tags, creating meaningful relationships that resonate with your customers. Control every aspect of your application, from settings customization to a comprehensive Frequently Asked Questions section. Harness the power of customer data and email listings, shaping your marketing strategies with precision. With dedicated customer management tools, provide exceptional post-purchase support while enabling customers to conveniently track their orders.
+Effortlessly manage every facet of your e-commerce enterprise through our intuitive admin panel. Take charge of product categories, individual products, captivating main page images, and engaging image galleries for products, blogs, and menu pages. Seamlessly intertwine the worlds of products and blogs using tags, creating meaningful relationships that resonate with your customers. 
+
+Control every aspect of your application, from settings customization to a comprehensive Frequently Asked Questions section. Harness the power of customer data and email listings, shaping your marketing strategies with precision. With dedicated customer management tools, provide exceptional post-purchase support while enabling customers to conveniently track their orders.
+
+
 
 **Explore Endless Possibilities:**
 EImece's admin panel equips you with an array of capabilities:
