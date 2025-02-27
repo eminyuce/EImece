@@ -333,7 +333,7 @@ namespace EImece.Domain.Helpers.Extensions
                 string imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    imageTag = string.Format("<img src='{0}' alt='{1}'   />",
+                    imageTag = string.Format("<img src='{0}' alt='{1}' width='{2}'  height='{3}'  />",
                         imagePath, entity.Name, width, height).ToLower();
                 }
             }
@@ -370,6 +370,12 @@ namespace EImece.Domain.Helpers.Extensions
                     var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
+                else if (isImageFullSrcUnderMediaFolder && entity is StoryFile)
+                {
+                    var baseContentEntity = (StoryFile)entity;
+                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
+                    return GetImagePathOrDefaultImage(width, height, imagePath);
+                }
                 else if (isImageFullSrcUnderMediaFolder && entity is FileStorage)
                 {
                     var fileStorage = (FileStorage)entity;
@@ -378,11 +384,13 @@ namespace EImece.Domain.Helpers.Extensions
                 }
                 else
                 {
+                    if (HttpContext.Current == null)
+                        return "";
                     var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     var imageSize = $"w{width}h{height}";
                     if (isFullPathImageUrl)
                     {
-                        return urlHelper.Action(Constants.ImageActionName, 
+                        return urlHelper.Action(Constants.ImageActionName,
                             "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" },
                             AppConfig.HttpProtocolForImages);
                     }
@@ -434,6 +442,8 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
         {
+            if (HttpContext.Current == null)
+                return "";
             if (fileStorage != null)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
@@ -444,16 +454,22 @@ namespace EImece.Domain.Helpers.Extensions
             return "";
         }
 
-        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "")
+        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName = "")
         {
+            if (HttpContext.Current == null)
+                return "";
             if (entity != null)
             {
                 var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                if (String.IsNullOrEmpty(categoryName))
+                if (!String.IsNullOrEmpty(authorName))
+                {
+                    return urlHelper.Action(action, controller, new { id = authorName, area = "" }, protocol);
+                }
+                else if (String.IsNullOrEmpty(categoryName))
                 {
                     return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" }, protocol);
                 }
-                else
+                else if (!String.IsNullOrEmpty(categoryName))
                 {
                     return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity), area = "" }, protocol);
                 }

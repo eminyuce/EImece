@@ -227,6 +227,8 @@ namespace EImece.Domain.Services
         {
             try
             {
+                if (HttpContext.Current == null)
+                    return;
                 var requestContext = HttpContext.Current.Request.RequestContext;
 
                 var menus = MenuService.GetActiveBaseEntitiesFromCache(true, language);
