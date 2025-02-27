@@ -83,7 +83,7 @@
                                     <img width="120" height="35" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="Captcha" />
                                 </div>
                                 <div class="col-md-9">
-                                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = "Toplamın sonucunu buraya yazınız", @autocomplete = "false" })
+                                    @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = Html.Raw("Buraya Yaziniz"), @autocomplete = "false" })
                                 </div>
                             </div>
                             <div class="row">

@@ -132,6 +132,15 @@ namespace EImece.Areas.Admin.Controllers
                     return HttpNotFound();
                 }
 
+                if (menu != null && menu.MenuLink.Equals("-1"))
+                {
+                    ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
+                    ViewBag.MenuLinks = GetMenuPages();
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
+                    ModelState.AddModelError("MenuLink", "Menu Link secimi yapiniz  ");
+                    return View(menu);
+                }
+
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
