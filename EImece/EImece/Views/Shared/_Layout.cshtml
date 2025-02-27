@@ -28,7 +28,6 @@
     }
     @{
         String seoId = (String)ViewBag.SeoId;
-        String ustMenuLink = countryCode.Equals("tr-TR") ? "/i/kumaslarin-kralicesi-ipek-2d2d1b2d/" : "/i/queen-of-fabrics-4h3f1b2d/";
 
     }
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
@@ -64,14 +63,7 @@
 <body lang="@Html.Action("GetHtmlLangCode", "Home")">
     <input name="currentLang" type="hidden" value="@countryCode.ToString()" />
     <!-- Navbar Multilevel-->
-    <!-- First line: Topbar-->
-    <div class="">
-        <div class="" style="background-color:#A2EAF8">
-            <a href="@ustMenuLink">
-                <img src="~/Content/img/@string.Format("ustbant-{0}.png",countryCode)" alt="Info" class="responsive" />
-            </a>
-        </div>
-    </div>
+ 
 
     <!-- Navbar Multilevel-->
     <!-- First line: Topbar-->
