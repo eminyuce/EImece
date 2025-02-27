@@ -165,7 +165,7 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.Template);
-
+            includeProperties.Add(r => r.Products);
             Expression<Func<ProductCategory, bool>> match = r =>
              r.Lang == language;
             search = search.ToStr().Trim();

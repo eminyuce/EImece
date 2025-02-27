@@ -83,7 +83,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name, AppConfig.HttpProtocol);
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory !=null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol);
             }
         }
 
@@ -104,7 +104,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return this.GetDetailPageUrl("Detail", "Products", ProductCategory.Name);
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory != null ? ProductCategory.Name : "no_category");
             }
         }
 
@@ -113,7 +113,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory.Name);
+                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory != null ? ProductCategory.Name : "no_category");
             }
         }
 

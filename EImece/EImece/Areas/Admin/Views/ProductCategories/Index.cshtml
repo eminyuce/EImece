@@ -71,9 +71,9 @@
                       .Sanitized(false)
                       .SetWidth(30)
                       .RenderValueAs(d =>
-                        @<b>
-                            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white   " })
-                        </b>);
+                                @<b>
+                                    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white   " })
+                                </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -82,9 +82,9 @@ columns.Add()
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d =>
-                        @<b>
-                            @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
-                        </b>
+                                @<b>
+                                    @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
+                                </b>
 );
 }
 
@@ -175,7 +175,11 @@ columns.Add(r => r.ImageState)
 
 @helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
 {
-    if (productCategoryLeaves.Any(r => r.Id == d.Id))
+    if (d.Products!=null && d.Products.Any())
+    {
+        @String.Format("Products Exists")
+    }
+    else if (productCategoryLeaves.Any(r => r.Id == d.Id))
     {
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
             { "ItemId", d.Id },
@@ -183,10 +187,10 @@ columns.Add(r => r.ImageState)
             { "DeleteIcon", "gridBtn  btn btn-danger btn-xs   glyphicon  glyphicon-remove-circle" },
             { "ItemDescription", d.Name }
 
-   });
+    });
     }
     else
     {
-        @String.Format("No Delete")
+        @String.Format("No Deleted")
     }
 }
