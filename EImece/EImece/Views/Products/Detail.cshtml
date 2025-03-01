@@ -42,6 +42,8 @@
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
+
+    var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
 }
 
 <!-- Page Title-->
@@ -145,7 +147,7 @@
                         </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
                     </a>
                 }
-                @if (Model.IsProductPriceEnable.SettingValue.ToBool(true))
+                @if (productPriceEnabled)
                 {
                     <h2 class="h1 font-weight-light pt-3 pb-2">
                         @if (product.HasDiscount)
@@ -191,7 +193,7 @@
                         </select>
                     </div>
                 }
-                @if (Model.IsProductPriceEnable.SettingValue.ToBool(true))
+                @if (productPriceEnabled)
                 {
                     <div class="d-flex align-items-center pt-2">
                         <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
