@@ -44,7 +44,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                var result = ApplicationSettings.FirstOrDefault(r => r.SettingKey.Equals(Constants.GoogleMapScript, StringComparison.InvariantCultureIgnoreCase));
+                var result = GetSetting(Constants.GoogleMapScript);
                 if (result == null)
                 {
                     result = new Setting();
