@@ -202,93 +202,93 @@
                         </button>
                     </div>
                 }
-                    <!--
-        <div  class="d-flex align-items-center pt-2">
-            <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
-        </div>
-                    -->
+                <!--
+                <div  class="d-flex align-items-center pt-2">
+                    <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
                 </div>
+                            -->
+            </div>
 
-    <!-- Product panels-->
-                <div class="accordion" id="productPanels">
+            <!-- Product panels-->
+            <div class="accordion" id="productPanels">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="accordion-heading">
+                            <a href="#productInfo" role="button"
+                               data-toggle="collapse" aria-expanded="true"
+                               aria-controls="productInfo">
+                                <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
+                                    <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
+                                </span>@Resource.ProductInformation
+                                <span class="accordion-indicator">
+                                    <i data-feather="chevron-up"></i>
+                                </span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="card-body">
+                            @if (!String.IsNullOrEmpty(product.ProductCode))
+                            {
+                                <span class="product-code">
+                                    <i>
+                                        @Resource.ProductCodeNo @product.ProductCode
+                                    </i>
+                                </span>
+                                <br />
+                            }
+                            @Html.Raw(product.ShortDescription)
+                            <ul class="mb-0">
+                                <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.CargoDescription.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@Resource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+                        </div>
+                        <div class="collapse" id="shippingOptions" data-parent="#productPanels">
+                            <div class="card-body">
+                                @Html.Raw(Model.CargoDescription.SettingValue)
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (productTags.IsNotEmpty())
+                {
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a href="#productInfo" role="button"
-                                   data-toggle="collapse" aria-expanded="true"
-                                   aria-controls="productInfo">
+                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                                        <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
-                                    </span>@Resource.ProductInformation
-                                    <span class="accordion-indicator">
+                                        <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
+                                    </span>@Resource.Tags<span class="accordion-indicator">
                                         <i data-feather="chevron-up"></i>
                                     </span>
                                 </a>
                             </h3>
                         </div>
-                        <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="collapse" id="tagCloud" data-parent="#productPanels">
                             <div class="card-body">
-                                @if (!String.IsNullOrEmpty(product.ProductCode))
+                                @foreach (var t in productTags)
                                 {
-                                    <span class="product-code">
-                                        <i>
-                                            @Resource.ProductCodeNo @product.ProductCode
-                                        </i>
-                                    </span>
-                                    <br />
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
                                 }
-                                @Html.Raw(product.ShortDescription)
-                                <ul class="mb-0">
-                                    <li><a class="scroll-to font-weight-semibold" href="#product-details">@Resource.ShowMoreProductInfo</a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
-                    @if (Model.CargoDescription.IsNotEmpty())
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="accordion-heading"><a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1"><i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i></span>@Resource.ShippingOptions<span class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
-                            </div>
-                            <div class="collapse" id="shippingOptions" data-parent="#productPanels">
-                                <div class="card-body">
-                                    @Html.Raw(Model.CargoDescription.SettingValue)
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                    @if (productTags.IsNotEmpty())
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="accordion-heading">
-                                    <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="tagCloud">
-                                        <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
-                                            <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
-                                        </span>@Resource.Tags<span class="accordion-indicator">
-                                            <i data-feather="chevron-up"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                            </div>
-                            <div class="collapse" id="tagCloud" data-parent="#productPanels">
-                                <div class="card-body">
-                                    @foreach (var t in productTags)
-                                    {
-                                        <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-
-                @if (Model.SocialMediaLinks.IsNotEmpty())
-                {
-                    @CreateSocialMediaLinks(Model.SocialMediaLinks)
                 }
             </div>
+
+            @if (Model.SocialMediaLinks.IsNotEmpty())
+            {
+                @CreateSocialMediaLinks(Model.SocialMediaLinks)
+            }
+        </div>
     </div>
 </div>
 <!-- Product info-->
@@ -418,19 +418,19 @@
         </span>
         @if (ContainsValue(sharedSocialLinks, Constants.InstagramWebSiteLink))
         {
-            <a class="social-btn sb-instagram mr-2 mb-2" target="_blank"  href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
+            <a class="social-btn sb-instagram mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
                 <i class="flaticon-instagram"></i>
             </a>
         }
         @if (ContainsValue(sharedSocialLinks, Constants.FacebookWebSiteLink))
         {
-            <a class="social-btn sb-facebook mr-2 mb-2" target="_blank"  href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
+            <a class="social-btn sb-facebook mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
                 <i class="flaticon-facebook"></i>
             </a>
         }
         @if (ContainsValue(sharedSocialLinks, Constants.TwitterWebSiteLink))
         {
-            <a class="social-btn sb-twitter mr-2 mb-2" target="_blank"  href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
+            <a class="social-btn sb-twitter mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
                 <i class="flaticon-twitter"></i>
             </a>
         }
@@ -489,23 +489,22 @@
 
     <!-- Review-->
     <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
-        <div class="d-sm-flex align-items-center pb-2">
-            <h6 class="mb-0">@productComment.Subject</h6><span class="d-none d-sm-inline mx-2 text-muted opacity-50">|</span>
-            <div class="star-rating">
+        <div class="d-flex justify-content-between align-items-center pb-2">
+            <div class="d-flex align-items-center">
+                <h6 class="mb-0 small">@productComment.Name</h6>
+                <span class="d-none d-sm-inline mx-2 text-muted opacity-50 small">|</span>
+                <span class="text-muted small">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
+            </div>
+            <div class="star-rating small">
                 @for (int i = 0; i < productComment.Rating; i++)
                 {
                     <i class="sr-star active" data-feather="star"></i>
                 }
             </div>
         </div>
-        <p>@productComment.Review</p>
-        <div class="media align-items-center mb-2">
-            <div class="media-body">
-                <h6 class="font-size-sm mb-0">@productComment.Name</h6>
-                <span class="d-block font-size-sm text-muted">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
-            </div>
-        </div>
+        <p class="mb-0">@productComment.Review</p>
     </div>
+
 
 }
 
