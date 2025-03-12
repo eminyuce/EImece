@@ -148,6 +148,7 @@ namespace EImece.Domain.Services
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
             result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable, product.Lang);
+            result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable, product.Lang);
             List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, product.Lang);
             result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));

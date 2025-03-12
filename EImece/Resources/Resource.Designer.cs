@@ -1988,6 +1988,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Urun Yorumlari Etkin mi?.
+        /// </summary>
+        public static string IsProductReviewEnable {
+            get {
+                return ResourceManager.GetString("IsProductReviewEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teslimat adresiniz ile Fatura adresinizin aynı oldugunu bilmenizi isteriz..
         /// </summary>
         public static string IsSameAsShippingAddress {

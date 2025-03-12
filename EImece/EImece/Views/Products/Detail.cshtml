@@ -44,6 +44,7 @@
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 
     var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
+    var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
 }
 
 <!-- Page Title-->
@@ -129,7 +130,7 @@
         <!-- Product details    -->
         <div class="col-lg-5 pt-4 pt-lg-0">
             <div class="pb-4">
-                @if (product.ProductComments.IsNotEmpty())
+                @if (productReviewEnable && product.ProductComments.IsNotEmpty())
                 {
                     <a class="d-inline-block scroll-to" href="#reviews">
                         <div class="star-rating">
@@ -322,70 +323,77 @@
         </div>
     </div>
 </div>
-
-<!-- Reviews-->
-<div class="container pt-1 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
-    <div class="row pt-sm-3">
-        <div class="col-md-4 pb-5">
-            <div class="card">
-                <div class="card-body">
-                    @if (productComments.IsNotEmpty())
-                    {
-                        <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
-                            <div class="display-4 mr-2">@Model.AverageRating</div>
-                            <div>
-                                <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
-                                <div class="star-rating">
-                                    @for (int i = 0; i < 5; i++)
-                                    {
-                                        if (i < product.Rating)
+@if (productReviewEnable)
+{
+    <!-- Reviews-->
+    <div class="container pt-1 pb-1 pb-md-4" id="reviews" data-offset-top="-5">
+        <div class="row pt-sm-3">
+            <div class="col-md-4 pb-5">
+                <div class="card">
+                    <div class="card-body">
+                        @if (productComments.IsNotEmpty())
+                        {
+                            <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
+                                <div class="display-4 mr-2">@Model.AverageRating</div>
+                                <div>
+                                    <div class="text-muted font-size-xs mb-n1">@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</div>
+                                    <div class="star-rating">
+                                        @for (int i = 0; i < 5; i++)
                                         {
-                                            <i class="sr-star active" data-feather="star"></i>
+                                            if (i < product.Rating)
+                                            {
+                                                <i class="sr-star active" data-feather="star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="sr-star" data-feather="star"></i>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <i class="sr-star" data-feather="star"></i>
-                                        }
-                                    }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        foreach (var item in Model.TotalRating)
-                        {
-                            <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
-                            <div class="progress mb-3" style="height: 2px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            foreach (var item in Model.TotalRating)
+                            {
+                                <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
+                                <div class="progress mb-3" style="height: 2px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            }
                         }
-                    }
 
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
-                </div>
-            </div>
-        </div>
-        @if (productComments.IsNotEmpty())
-        {
-            <div class="col-md-8 pb-5">
-                <h2 class="h3">@Resource.LatestReviews</h2>
-                @foreach (var productComment in productComments)
-                {
-                    @createReviewItem(productComment)
-                }
-            </div>
-        }
-        else
-        {
-            <div class="col-md-8 pb-5">
-                <div class="alert alert-secondary">
-                    <div class="pt-3 pb-2 text-center ">
-                        @Resource.NoCommentForProductYet
+                        <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
                     </div>
                 </div>
             </div>
+            @if (productReviewEnable)
+            {
+                if (productComments.IsNotEmpty())
+                {
+                    <div class="col-md-8 pb-5">
+                        <h2 class="h3">@Resource.LatestReviews</h2>
+                        @foreach (var productComment in productComments)
+                        {
+                            @createReviewItem(productComment)
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-8 pb-5">
+                        <div class="alert alert-secondary">
+                            <div class="pt-3 pb-2 text-center ">
+                                @Resource.NoCommentForProductYet
+                            </div>
+                        </div>
+                    </div>
 
-        }
+                }
+            }
+
+        </div>
     </div>
-</div>
+
+}
 
 @if (relatedProducts.IsNotEmpty())
 {
@@ -482,7 +490,11 @@
 
 }
 
-@Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = product.Id })
+@if (productReviewEnable)
+{
+    @Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = product.Id })
+}
+
 
 @helper createReviewItem(ProductComment productComment)
 {
@@ -491,7 +503,7 @@
     <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
         <div class="d-flex justify-content-between align-items-center pb-2">
             <div class="d-flex align-items-center">
-                <h6 class="mb-0 small">@productComment.Name</h6>
+                <h6 class="mb-0 small"><b>@productComment.Name</b></h6>
                 <span class="d-none d-sm-inline mx-2 text-muted opacity-50 small">|</span>
                 <span class="text-muted small">@productComment.CreatedDate.ToString("MMMM dd, yyyy")</span>
             </div>
@@ -502,7 +514,7 @@
                 }
             </div>
         </div>
-        <p class="mb-0">@productComment.Review</p>
+        <p class="mb-0">@Html.Raw(productComment.Review)</p>
     </div>
 
 
