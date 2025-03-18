@@ -64,6 +64,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
                 }
             }
             catch (Exception ex)

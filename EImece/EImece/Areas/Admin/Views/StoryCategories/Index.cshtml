@@ -85,7 +85,11 @@ columns.Add()
            .Titled(AdminResource.Name)
            .Filterable(true);
 
-     columns.Add(o => o.Position).Titled(AdminResource.Position)
+    columns.Add(c => c.PageTheme)
+        .Titled(AdminResource.PageTheme)
+        .Filterable(true);
+
+    columns.Add(o => o.Position).Titled(AdminResource.Position)
        .Encoded(false).
             Sanitized(false).
             SetWidth(10).

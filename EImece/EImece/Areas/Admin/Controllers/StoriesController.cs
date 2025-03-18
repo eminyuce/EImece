@@ -59,6 +59,9 @@ namespace EImece.Areas.Admin.Controllers
                     return HttpNotFound();
                 }
 
+
+
+
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
@@ -82,6 +85,10 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
                 }
             }
             catch (Exception ex)

@@ -16,7 +16,10 @@
 @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    @{
+        var errorClass = ViewData.ModelState.IsValid ? "alert alert-success" : "alert alert-danger";
+    }
+    @Html.ValidationSummary(true, "", new { @class = errorClass })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.CreatedDate)
     @Html.HiddenFor(model => model.UpdatedDate)
@@ -25,12 +28,12 @@
         @Html.LabelFor(model => model.TagCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @if (categories != null)
-                {
-            @Html.DropDownListFor(model => model.TagCategoryId,
-                   categories,
-                   AdminResource.SelectCategory,
-                   new { @class = "form-control" })
-                }
+            {
+                @Html.DropDownListFor(model => model.TagCategoryId,
+                       categories,
+                       AdminResource.SelectCategory,
+                       new { @class = "form-control" })
+            }
             @Html.ValidationMessageFor(model => model.TagCategoryId, "", new { @class = "text-danger" })
         </div>
     </div>

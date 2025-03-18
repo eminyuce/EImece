@@ -71,6 +71,10 @@ namespace EImece.Areas.Admin.Controllers
                     TagService.SaveOrEditEntity(tag);
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
+                }
             }
             catch (Exception ex)
             {

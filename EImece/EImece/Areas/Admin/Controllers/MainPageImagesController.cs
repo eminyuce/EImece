@@ -68,6 +68,10 @@ namespace EImece.Areas.Admin.Controllers
                         return RedirectToAction("Index");
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
+                }
             }
             catch (Exception ex)
             {

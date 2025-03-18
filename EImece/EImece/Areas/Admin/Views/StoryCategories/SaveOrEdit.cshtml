@@ -20,7 +20,11 @@
     @Html.AntiForgeryToken()
 <div class="form-horizontal">
 
-    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+
+    @{
+        var errorClass = ViewData.ModelState.IsValid ? "alert alert-success" : "alert alert-danger";
+    }
+    @Html.ValidationSummary(true, "", new { @class = errorClass })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.AddUserId)
     @Html.HiddenFor(model => model.CreatedDate)

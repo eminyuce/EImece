@@ -57,6 +57,14 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                if (storyCategory != null && string.IsNullOrEmpty(storyCategory.PageTheme))
+                {
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
+                    ModelState.AddModelError("PageTheme", "Sayfa Teması secimi yapiniz");
+                    return View(storyCategory);
+                }
+
                 if (ModelState.IsValid)
                 {
                     FilesHelper.SaveFileFromHttpPostedFileBase(postedImage,
@@ -78,6 +86,10 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
                 }
             }
             catch (Exception ex)

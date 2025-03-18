@@ -13,8 +13,9 @@ namespace EImece.Domain.Entities
     {
         public ICollection<Story> Stories { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PageTheme))]
-        public String PageTheme { get; set; }
+        public string PageTheme { get; set; }
 
         [NotMapped]
         public string DetailPageAbsoluteUrl
