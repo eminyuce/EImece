@@ -55,8 +55,10 @@
         <div class="alert alert-secondary" role="alert">
             @Html.Partial("_ProductBreadCrumb", Model)
         </div>
-        <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@product.ProductNameStr</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
+        <span class="d-block mt-2 text-muted">@Resource.ProductCode : @product.ProductCode</span>
+        <span class="d-block mt-2 text-muted">@product.ShortDescription</span>
     </div>
 </div>
 <!-- Page Content-->
@@ -279,7 +281,7 @@
                             <div class="card-body">
                                 @foreach (var t in productTags)
                                 {
-                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@String.Format("#{0}",t.Name)</a>
                                 }
                             </div>
                         </div>

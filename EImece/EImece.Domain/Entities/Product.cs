@@ -177,6 +177,24 @@ namespace EImece.Domain.Entities
         public Tuple<string, string> MainImageSrc { get; set; }
 
         [NotMapped]
+        public string ProductNameStr
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(NameShort))
+                {
+                    return NameShort;
+                }
+                if (!string.IsNullOrEmpty(NameLong))
+                {
+                    return NameLong;
+                }
+                return Name;
+            }
+        }
+
+
+        [NotMapped]
         public decimal PriceWithDiscount
         {
             get
