@@ -1761,4 +1761,7 @@
   <data name="IsProductReviewEnable" xml:space="preserve">
     <value>Urun Yorumlari Etkin mi?</value>
   </data>
+  <data name="RootCategory" xml:space="preserve">
+    <value>Ana Kategori</value>
+  </data>
 </root>

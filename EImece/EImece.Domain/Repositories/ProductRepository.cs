@@ -80,8 +80,9 @@ namespace EImece.Domain.Repositories
         {
             Expression<Func<Product, object>> includeProperty4 = r => r.ProductComments;
             Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Product, object>> includeProperty5 = r => r.Brand;
             Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
-            Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3, includeProperty4 };
+            Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3, includeProperty4, includeProperty5 };
             var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))

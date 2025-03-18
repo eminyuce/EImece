@@ -15,7 +15,7 @@ namespace EImece.Domain.Services
     public class SettingService : BaseEntityService<Setting>, ISettingService
     {
         private ISettingRepository SettingRepository { get; set; }
-
+        private static string ALL_SETTING_CACHE_KEY = "ALL_SETTING_CACHE_KEY_V3";
         public SettingService(ISettingRepository repository) : base(repository)
         {
             SettingRepository = repository;
@@ -26,15 +26,18 @@ namespace EImece.Domain.Services
             return GetAllSettings().Where(t => t.IsActive).ToList();
         }
 
+        public void ClearCache()
+        {
+            DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);
+        }
+
         private List<Setting> GetAllSettings()
         {
-            var cacheKey = "GetAllSettings";
             List<Setting> result = null;
-
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            if (!DataCachingProvider.Get(ALL_SETTING_CACHE_KEY, out result))
             {
                 result = SettingRepository.GetAllSettings();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+                DataCachingProvider.Set(ALL_SETTING_CACHE_KEY, result, AppConfig.CacheLongSeconds);
             }
             return result;
         }
@@ -96,7 +99,7 @@ namespace EImece.Domain.Services
             {
                 var setting = EntityFactory.GetBaseEntityInstance<Setting>();
                 setting.SettingKey = key;
-                setting.SettingValue = key;
+                setting.SettingValue = "RETURN-NULL-VALUE";
                 setting.Lang = language;
                 return setting;
             }

@@ -70,6 +70,7 @@ namespace EImece.Domain.Entities
         public String ProductSizeOptions { get; set; }
 
         public ProductCategory ProductCategory { get; set; }
+        public Brand Brand { get; set; }
         public ICollection<ProductComment> ProductComments { get; set; }
         public ICollection<ProductFile> ProductFiles { get; set; }
         public ICollection<ProductTag> ProductTags { get; set; }

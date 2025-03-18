@@ -3671,6 +3671,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ana Kategori.
+        /// </summary>
+        public static string RootCategory {
+            get {
+                return ResourceManager.GetString("RootCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kayit Et ve Kapat.
         /// </summary>
         public static string SaveButtonAndCloseText {

@@ -60,7 +60,6 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (storyCategory != null && string.IsNullOrEmpty(storyCategory.PageTheme))
                 {
-                    ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
                     ModelState.AddModelError("PageTheme", "Sayfa Teması secimi yapiniz");
                     return View(storyCategory);
                 }

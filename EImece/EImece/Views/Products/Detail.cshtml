@@ -46,6 +46,8 @@
     var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
     var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
 }
+<input type="hidden" name="productReviewEnable" value="@productReviewEnable.ToString().ToLower()" />
+<input type="hidden" name="productPriceEnabled" value="@productPriceEnabled.ToString().ToLower()" />
 
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
