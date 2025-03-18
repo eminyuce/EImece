@@ -57,6 +57,11 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, search, lang);
         }
 
+        public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int lang)
+        {
+            return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang);
+        }
+
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
             ProductIndexViewModel result = null;

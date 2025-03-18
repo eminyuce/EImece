@@ -20,12 +20,13 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(int id = 0, String search = "")
+        public ActionResult Index(int id = 0,int brandId=0, String search = "")
         {
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            var products = ProductService.GetAdminPageList(id, search, CurrentLanguage);
+            var products = ProductService.GetAdminPageList(id, brandId, search, CurrentLanguage);
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
+            ViewBag.Brands = BrandService.GetActiveBaseContents(true, CurrentLanguage);
             return View(products);
         }
 

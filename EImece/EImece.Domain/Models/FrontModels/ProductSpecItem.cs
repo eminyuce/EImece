@@ -16,6 +16,11 @@ namespace EImece.Domain.Models.FrontModels
                 return false;
             return SpecsValue.Equals(p.SpecsValue, StringComparison.InvariantCultureIgnoreCase) && SpecsName.Equals(p.SpecsName, StringComparison.InvariantCultureIgnoreCase);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     [Serializable]

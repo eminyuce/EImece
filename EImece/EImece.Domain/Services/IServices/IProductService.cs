@@ -12,6 +12,7 @@ namespace EImece.Domain.Services.IServices
     public interface IProductService : IBaseContentService<Product>
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
+        List<Product> GetAdminPageList(int id, int brandId, string search, int lang);
 
         Rss20FeedFormatter GetProductsRss(RssParams rssParams);
 

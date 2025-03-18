@@ -75,8 +75,12 @@ namespace EImece.Domain.Repositories
                 throw;
             }
         }
-
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
+        {
+            return GetAdminPageList(categoryId, 0, search, language);
+        }
+
+        public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language)
         {
             Expression<Func<Product, object>> includeProperty4 = r => r.ProductComments;
             Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
@@ -102,6 +106,12 @@ namespace EImece.Domain.Repositories
                     products = products.Where(whereLamba);
                 }
             }
+
+            if (brandId > 0)
+            {
+                products = products.Where(r => r.BrandId == brandId);
+            }
+
             if (categoryId > 0)
             {
                 products = products.Where(r => r.ProductCategoryId == categoryId);
