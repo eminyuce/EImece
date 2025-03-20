@@ -24,5 +24,36 @@ namespace EImece.Domain.Entities
         public string ErrorMessage { get; set; }
         public string InnerErrorMessage { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public string ToLogStr()
+        {
+            string result = EventDateTime;
+
+            if (!string.IsNullOrEmpty(EventLevel))
+                result += " - " + EventLevel;
+
+            if (!string.IsNullOrEmpty(ErrorSource))
+                result += " - " + ErrorSource;
+
+            if (!string.IsNullOrEmpty(ErrorClass))
+                result += " - " + ErrorClass;
+
+            if (!string.IsNullOrEmpty(ErrorMethod))
+                result += " - " + ErrorMethod;
+
+            if (!string.IsNullOrEmpty(UserName))
+                result += " - " + UserName;
+
+            if (!string.IsNullOrEmpty(MachineName))
+                result += " - " + MachineName;
+
+            if (!string.IsNullOrEmpty(EventMessage))
+                result += " - " + EventMessage;
+
+            if (!string.IsNullOrEmpty(InnerErrorMessage))
+                result += " - " + InnerErrorMessage;
+
+            return result.Trim() + "\r\n";
+        }
     }
 }
