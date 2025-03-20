@@ -21,209 +21,247 @@ namespace EImece.Domain.Services
 
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
         {
+            Logger.Info("Retrieving checkout form with token: " + model.Token);
             Options options = GetOptions();
             var request = new RetrieveCheckoutFormRequest();
             request.Token = model.Token;
-            return CheckoutForm.Retrieve(request, options);
-        }
 
-        /****
-         * https://dev.iyzipay.com/tr/odeme-formu/odeme-formu-baslatma
-         *
-         */
+            Logger.Debug("CheckoutForm request prepared with Token: " + model.Token);
+            var response = CheckoutForm.Retrieve(request, options);
+            Logger.Info("CheckoutForm retrieved successfully with Token: " + model.Token);
+            return response;
+        }
 
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId)
         {
+            Logger.Info("Initializing CheckoutForm for user: " + userId);
+
             if (shoppingCart == null)
             {
+                Logger.Error("ShoppingCartSession cannot be null");
                 throw new ArgumentNullException("ShoppingCartSession cannot be null");
             }
             if (shoppingCart.ShoppingCartItems.IsEmpty())
             {
+                Logger.Error("ShoppingCartSession.ShoppingCartItems cannot be null");
                 throw new ArgumentNullException("ShoppingCartSession.ShoppingCartItems cannot be null");
             }
             if (shoppingCart.Customer == null)
             {
+                Logger.Error("ShoppingCartSession.Customer cannot be null");
                 throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
             }
 
+            Logger.Debug("Fetching Iyzico API options...");
             Options options = GetOptions();
             var customer = shoppingCart.Customer;
 
+            Logger.Debug("Building callback URL for Payment Result...");
             var requestContext = HttpContext.Current.Request.RequestContext;
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
             string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
-
             string callbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
                                                "Payment",
                                                new { o, u },
                                                AppConfig.HttpProtocol);
 
-            var request = new CreateCheckoutFormInitializeRequest();
-            request.Locale = Locale.TR.ToString();
-            //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
-            request.ConversationId = shoppingCart.ConversationId;
+            var request = new CreateCheckoutFormInitializeRequest
+            {
+                Locale = Locale.TR.ToString(),
+                ConversationId = shoppingCart.ConversationId,
+                Currency = Currency.TRY.ToString(),
+                BasketId = shoppingCart.OrderGuid,
+                PaymentGroup = PaymentGroup.PRODUCT.ToString(),
+                CallbackUrl = callbackUrl,
+                EnabledInstallments = AppConfig.IyzicoEnabledInstallments
+            };
 
-            request.Currency = Currency.TRY.ToString();
-            request.BasketId = shoppingCart.OrderGuid;
-            request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
-            request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
-            request.EnabledInstallments = AppConfig.IyzicoEnabledInstallments;
+            Logger.Debug("CheckoutFormInitializeRequest object populated");
 
-            Buyer buyer = new Buyer();
-            buyer.Id = customer.Id.ToString();
-            buyer.Name = customer.Name;
-            buyer.Surname = customer.Surname;
-            buyer.GsmNumber = customer.GsmNumber;
-            buyer.Email = customer.Email;
-            buyer.IdentityNumber = customer.IdentityNumber;
-            buyer.LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat);
-            buyer.RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat);
-            buyer.RegistrationAddress = customer.RegistrationAddress;
-            buyer.Ip = customer.Ip;
-            buyer.City = customer.City;
-            buyer.Country = customer.Country;
-            buyer.ZipCode = customer.ZipCode;
+            // Buyer details
+            Buyer buyer = new Buyer
+            {
+                Id = customer.Id.ToString(),
+                Name = customer.Name,
+                Surname = customer.Surname,
+                GsmNumber = customer.GsmNumber,
+                Email = customer.Email,
+                IdentityNumber = customer.IdentityNumber,
+                LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat),
+                RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat),
+                RegistrationAddress = customer.RegistrationAddress,
+                Ip = customer.Ip,
+                City = customer.City,
+                Country = customer.Country,
+                ZipCode = customer.ZipCode
+            };
             request.Buyer = buyer;
+
             if (shoppingCart.Customer.IsSameAsShippingAddress)
             {
-                Address shippingAddress = new Address();
-                shippingAddress.ContactName = shoppingCart.Customer.FullName;
-                Entities.Address shippingAddress1 = shoppingCart.ShippingAddress;
-                shippingAddress.City = shippingAddress1.City;
-                shippingAddress.Country = shippingAddress1.Country;
-                shippingAddress.Description = shippingAddress1.Description;
-                shippingAddress.ZipCode = shippingAddress1.ZipCode;
+                Address shippingAddress = new Address
+                {
+                    ContactName = shoppingCart.Customer.FullName,
+                    City = shoppingCart.ShippingAddress.City,
+                    Country = shoppingCart.ShippingAddress.Country,
+                    Description = shoppingCart.ShippingAddress.Description,
+                    ZipCode = shoppingCart.ShippingAddress.ZipCode
+                };
                 request.ShippingAddress = shippingAddress;
                 request.BillingAddress = shippingAddress;
             }
             else
             {
-                Address shippingAddress = new Address();
-                shippingAddress.ContactName = shoppingCart.Customer.FullName;
-                shippingAddress.City = shoppingCart.ShippingAddress.City;
-                shippingAddress.Country = shoppingCart.ShippingAddress.Country;
-                shippingAddress.Description = shoppingCart.ShippingAddress.Description;
-                shippingAddress.ZipCode = shoppingCart.ShippingAddress.ZipCode;
+                Address shippingAddress = new Address
+                {
+                    ContactName = shoppingCart.Customer.FullName,
+                    City = shoppingCart.ShippingAddress.City,
+                    Country = shoppingCart.ShippingAddress.Country,
+                    Description = shoppingCart.ShippingAddress.Description,
+                    ZipCode = shoppingCart.ShippingAddress.ZipCode
+                };
                 request.ShippingAddress = shippingAddress;
 
-                Address billingAddress = new Address();
-                billingAddress.ContactName = shoppingCart.Customer.FullName;
-                Entities.Address billingAddress1 = shoppingCart.BillingAddress;
-                billingAddress.City = billingAddress1.City;
-                billingAddress.Country = billingAddress1.Country;
-                billingAddress.Description = billingAddress1.Description;
-                billingAddress.ZipCode = billingAddress1.ZipCode;
+                Address billingAddress = new Address
+                {
+                    ContactName = shoppingCart.Customer.FullName,
+                    City = shoppingCart.BillingAddress.City,
+                    Country = shoppingCart.BillingAddress.Country,
+                    Description = shoppingCart.BillingAddress.Description,
+                    ZipCode = shoppingCart.BillingAddress.ZipCode
+                };
                 request.BillingAddress = billingAddress;
             }
 
             List<BasketItem> basketItems = new List<BasketItem>();
             decimal totalPrice = 0;
-            foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems) //Session'da tutmuş oldugum sepette bulunan ürünler
+
+            foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems)
             {
                 var item = shoppingCartItem.Product;
-                BasketItem firstBasketItem = new BasketItem();
-                firstBasketItem.Id = item.ProductCode;
-                firstBasketItem.Name = item.Name;
-                firstBasketItem.Category1 = item.CategoryName;
-                firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
-                firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-
-                firstBasketItem.Price = CurrencyHelper.CurrencySignForIyizo(item.Price);
+                BasketItem firstBasketItem = new BasketItem
+                {
+                    Id = item.ProductCode,
+                    Name = item.Name,
+                    Category1 = item.CategoryName,
+                    Category2 = AppConfig.ShoppingCartItemCategory2,
+                    ItemType = BasketItemType.PHYSICAL.ToString(),
+                    Price = CurrencyHelper.CurrencySignForIyizo(item.Price)
+                };
                 totalPrice += item.Price;
                 basketItems.Add(firstBasketItem);
             }
-            //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
-            //request.Price = CurrencyHelper.ToDecimalToStringConvert(totalPrice);
-            //PaidPrice = CurrencyHelper.ToDecimalToStringConvert(shoppingCart.TotalPriceWithCargoPrice);
+
+            // Log prices in a readable format
+            Logger.Debug("Total Price: " + totalPrice);
+            Logger.Debug("Shipping & Paid Price: " + shoppingCart.TotalPriceWithCargoPrice);
 
             request.Price = totalPrice.CurrencySignForIyizo();
             request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.CurrencySignForIyizo();
             request.BasketItems = basketItems;
-            Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
+
+            Logger.Info("Iyzico Request prepared for CheckoutFormInitialization: " + JsonConvert.SerializeObject(request));
+
             return CheckoutFormInitialize.Create(request, options);
         }
-      
 
         public CheckoutFormInitialize CreateCheckoutFormInitializeBuyNow(BuyNowModel buyNowModel)
         {
+            Logger.Info("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
+
             Options options = GetOptions();
             var customer = buyNowModel.Customer;
 
+            Logger.Debug("Building callback URL for BuyNow Payment Result...");
             var requestContext = HttpContext.Current.Request.RequestContext;
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
-
             string callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
                                                "Payment",
                                                new { o },
                                                AppConfig.HttpProtocol);
 
-            var request = new CreateCheckoutFormInitializeRequest();
-            request.Locale = Locale.TR.ToString();
-            //İstek esnasında gönderip, sonuçta alabileceğiniz bir değer, request/response eşleşmesi yapmak için kullanılabilir.
-            request.ConversationId = buyNowModel.ConversationId;
+            var request = new CreateCheckoutFormInitializeRequest
+            {
+                Locale = Locale.TR.ToString(),
+                ConversationId = buyNowModel.ConversationId,
+                Currency = Currency.TRY.ToString(),
+                BasketId = buyNowModel.OrderGuid,
+                PaymentGroup = PaymentGroup.PRODUCT.ToString(),
+                CallbackUrl = callbackUrl,
+                EnabledInstallments = AppConfig.IyzicoEnabledInstallments
+            };
 
-            request.Currency = Currency.TRY.ToString();
-            request.BasketId = buyNowModel.OrderGuid;
-            request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
-            request.CallbackUrl = callbackUrl; /// Geri Dönüş Urlsi
-            request.EnabledInstallments = AppConfig.IyzicoEnabledInstallments;
+            Logger.Debug("CheckoutFormInitializeRequest object populated");
 
-            Buyer buyer = new Buyer();
-            buyer.Id = customer.Id.ToString();
-            buyer.Name = customer.Name;
-            buyer.Surname = customer.Surname;
-            buyer.GsmNumber = customer.GsmNumber;
-            buyer.Email = customer.Email;
-            buyer.IdentityNumber = customer.IdentityNumber;
-            buyer.LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat);
-            buyer.RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat);
-            buyer.RegistrationAddress = customer.RegistrationAddress;
-            buyer.Ip = customer.Ip;
-            buyer.City = customer.City;
-            buyer.Country = customer.Country;
-            buyer.ZipCode = customer.ZipCode;
+            // Buyer details
+            Buyer buyer = new Buyer
+            {
+                Id = customer.Id.ToString(),
+                Name = customer.Name,
+                Surname = customer.Surname,
+                GsmNumber = customer.GsmNumber,
+                Email = customer.Email,
+                IdentityNumber = customer.IdentityNumber,
+                LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat),
+                RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat),
+                RegistrationAddress = customer.RegistrationAddress,
+                Ip = customer.Ip,
+                City = customer.City,
+                Country = customer.Country,
+                ZipCode = customer.ZipCode
+            };
             request.Buyer = buyer;
 
-            Address shippingAddress = new Address();
-            shippingAddress.ContactName = customer.FullName;
-            Entities.Address shippingAddress1 = buyNowModel.ShippingAddress;
-            shippingAddress.City = shippingAddress1.City;
-            shippingAddress.Country = shippingAddress1.Country;
-            shippingAddress.Description = shippingAddress1.Description;
-            shippingAddress.ZipCode = shippingAddress1.ZipCode;
+            // Shipping & Billing address
+            Address shippingAddress = new Address
+            {
+                ContactName = customer.FullName,
+                City = buyNowModel.ShippingAddress.City,
+                Country = buyNowModel.ShippingAddress.Country,
+                Description = buyNowModel.ShippingAddress.Description,
+                ZipCode = buyNowModel.ShippingAddress.ZipCode
+            };
             request.ShippingAddress = shippingAddress;
             request.BillingAddress = shippingAddress;
 
+            // Basket item
             List<BasketItem> basketItems = new List<BasketItem>();
             decimal totalPrice = 0;
 
             var item = buyNowModel.ProductDetailViewModel.Product;
-            BasketItem firstBasketItem = new BasketItem();
-            firstBasketItem.Id = item.ProductCode;
-            firstBasketItem.Name = item.NameLong;
-            firstBasketItem.Category1 = item.ProductCategory.Name;
-            firstBasketItem.Category2 = AppConfig.ShoppingCartItemCategory2;
-            firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-
-            firstBasketItem.Price = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");
+            BasketItem firstBasketItem = new BasketItem
+            {
+                Id = item.ProductCode,
+                Name = item.NameLong,
+                Category1 = item.ProductCategory.Name,
+                Category2 = AppConfig.ShoppingCartItemCategory2,
+                ItemType = BasketItemType.PHYSICAL.ToString(),
+                Price = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".")
+            };
             totalPrice += item.Price;
             basketItems.Add(firstBasketItem);
 
-            //Client'a fiyat bilgisi olarak noktalı yollamanız gerekir. Virgüllü yollarsanız hata alırsınız. Bu yüzden fiyat bilgisinde client kullanırken noktalı yollamanız gerekir.
-            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");  //totalPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
-            request.PaidPrice = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", "."); //shoppingCart.TotalPriceWithCargoPrice.ToString("0.0", CultureInfo.GetCultureInfo(Constants.EN_US_CULTURE_INFO)); // Tutar
+            Logger.Debug("Total Price for BuyNow: " + totalPrice);
+            request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");
+            request.PaidPrice = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");
+
             request.BasketItems = basketItems;
-            Logger.Info("Iyizco Request:" + JsonConvert.SerializeObject(request));
+
+            Logger.Info("Iyzico Request prepared for BuyNow CheckoutFormInitialization: " + JsonConvert.SerializeObject(request));
+
             return CheckoutFormInitialize.Create(request, options);
         }
 
         private Options GetOptions()
         {
-            Options options = new Options();
-            options.ApiKey = AppConfig.IyzicoApiKey;
-            options.SecretKey = AppConfig.IyzicoSecretKey;
-            options.BaseUrl = AppConfig.IyzicoBaseUrl;
+            Logger.Debug("Fetching Iyzico API options...");
+            Options options = new Options
+            {
+                ApiKey = AppConfig.IyzicoApiKey,
+                SecretKey = AppConfig.IyzicoSecretKey,
+                BaseUrl = AppConfig.IyzicoBaseUrl
+            };
+            Logger.Debug("Iyzico API options fetched successfully.");
             return options;
         }
     }

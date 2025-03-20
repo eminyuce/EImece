@@ -29,35 +29,49 @@ namespace EImece.Domain.Services
 
         public CustomerService(ICustomerRepository repository, IAddressService addressService) : base(repository)
         {
+            Logger.Info("CustomerService initialized.");
             CustomerRepository = repository;
             AddressService = addressService;
         }
 
         public void SaveRegisterViewModel(string userId, RegisterViewModel model)
         {
-            var item = new Customer();
+            Logger.Info($"Saving RegisterViewModel for user: {userId}");
+            try
+            {
+                var item = new Customer
+                {
+                    UserId = userId,
+                    Name = model.FirstName,
+                    GsmNumber = model.PhoneNumber,
+                    IdentityNumber = "",
+                    Ip = GeneralHelper.GetIpAddress(),
+                    IsActive = true,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                    Position = 1,
+                    Lang = 1,
+                    IsPermissionGranted = model.IsPermissionGranted,
+                    Street = "",
+                    District = "",
+                    City = "",
+                    Country = "",
+                    ZipCode = ""
+                };
 
-            item.UserId = userId;
-            item.Name = model.FirstName;
-            item.GsmNumber = model.PhoneNumber;
-            item.IdentityNumber = "";
-            item.Ip = GeneralHelper.GetIpAddress();
-            item.IsActive = true;
-            item.CreatedDate = DateTime.Now;
-            item.UpdatedDate = DateTime.Now;
-            item.Position = 1;
-            item.Lang = 1;
-            item.IsPermissionGranted = model.IsPermissionGranted;
-            item.Street = "";
-            item.District = "";
-            item.City = "";
-            item.Country = "";
-            item.ZipCode = "";
-            CustomerRepository.SaveOrEdit(item);
+                CustomerRepository.SaveOrEdit(item);
+                Logger.Info("Customer successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error saving RegisterViewModel.");
+                throw;
+            }
         }
 
         public Customer GetUserId(string userId)
         {
+            Logger.Info($"Retrieving customer by userId: {userId}");
             var item = CustomerRepository.GetUserId(userId);
             GetUserFields(item);
             return item;
@@ -65,66 +79,84 @@ namespace EImece.Domain.Services
 
         public void DeleteByUserId(string userId)
         {
+            Logger.Info($"Deleting customer by userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
                 DeleteEntity(customer);
+                Logger.Info("Customer successfully deleted.");
+            }
+            else
+            {
+                Logger.Warn("Customer not found.");
             }
         }
 
         public void SaveCustomerTypeToNormal(string userId)
         {
+            Logger.Info($"Updating customer type to Normal for userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
-                customer.CustomerType = (int) EImeceCustomerType.Normal;
+                customer.CustomerType = (int)EImeceCustomerType.Normal;
                 SaveOrEditEntity(customer);
+                Logger.Info("Customer type updated successfully.");
+            }
+            else
+            {
+                Logger.Warn("Customer not found.");
             }
         }
 
         public List<Customer> GetCustomerServices(string search)
         {
+            Logger.Info($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
             var result = CustomerRepository.GetAll().Where(r => r.CustomerType == (int)EImeceCustomerType.Normal).ToList();
             var allOrders = OrderService.GetAll().Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder).ToList();
             var resultList = result.ToList();
+
             if (resultList.IsNotEmpty())
             {
                 foreach (var item in resultList)
                 {
                     item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                    if (item.Orders.IsNotEmpty())
-                    {
-                        item.OrderLatestDate = item.Orders.Max(T => T.CreatedDate);
-                    }
-                    else
-                    {
-                        item.OrderLatestDate = DateTime.Now.AddYears(-2);
-                    }
-
+                    item.OrderLatestDate = item.Orders.IsNotEmpty() ? item.Orders.Max(T => T.CreatedDate) : DateTime.Now.AddYears(-2);
                     GetUserFields(item);
                 }
-                if (!String.IsNullOrEmpty(search))
+
+                if (!string.IsNullOrEmpty(search))
                 {
-                    resultList = resultList.Where(r => r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 || string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                    resultList = resultList.Where(r => r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                                       string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                                           .ToList();
                 }
             }
 
-             resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r=>r.CreatedDate).ToList();
-
+            resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+            Logger.Info("Customer services retrieved successfully.");
             return resultList;
         }
 
         public void GetUserFields(Customer item)
         {
-            if (item != null)
+            if (item == null)
             {
-                var user = UsersService.GetUser(item.UserId);
-                if (user == null)
-                    return;
+                Logger.Warn("GetUserFields called with a null item.");
+                return;
+            }
+            Logger.Info($"Fetching user fields for userId: {item.UserId}");
+            var user = UsersService.GetUser(item.UserId);
+            if (user != null)
+            {
                 item.Email = user.Email;
                 item.Name = user.FirstName;
                 item.Surname = user.LastName;
+                Logger.Info("User fields populated successfully.");
+            }
+            else
+            {
+                Logger.Warn("User not found in UsersService.");
             }
         }
     }

@@ -49,6 +49,7 @@ namespace EImece.Controllers
         public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ICustomerService customerService)
         {
+            Logger.Info("AccountController constructor called. Initializing UserManager, SignInManager, and CustomerService.");
             UserManager = userManager;
             SignInManager = signInManager;
             CustomerService = customerService;
@@ -57,9 +58,12 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult AdminLogin(string returnUrl = "")
         {
+            Logger.Info($"Entering AdminLogin with returnUrl: {returnUrl}");
             ViewBag.ReturnUrl = returnUrl;
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
+            Logger.Info("Set culture to Turkish (TR).");
+            Logger.Info("Returning AdminLogin view.");
             return View();
         }
 
@@ -68,51 +72,61 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
         {
+            Logger.Info($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
             if (model == null)
             {
+                Logger.Error("Model is null. Throwing ArgumentException.");
                 throw new ArgumentException();
             }
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
+                Logger.Info("Model state is invalid. Adding error.");
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
+                Logger.Info("Returning AdminLogin view with errors.");
                 return View(model);
             }
 
-            //validate the captcha through the session variable stored from GetCaptcha
             if (Session[CaptchaAdminLogin] == null || !Session[CaptchaAdminLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
+                Logger.Error($"Captcha validation failed. Session: {Session[CaptchaAdminLogin]}, Input: {model.Captcha}");
                 ModelState.AddModelError("Captcha", AdminResource.WrongSum);
                 ModelState.AddModelError("", AdminResource.WrongSum);
+                Logger.Info("Returning AdminLogin view with captcha error.");
                 return View(model);
             }
             else
             {
                 bool isCustomer = this.isUserAsCustomerRole(model);
+                Logger.Info($"User role check: isCustomer = {isCustomer}");
                 if (isCustomer)
                 {
+                    Logger.Info("Customer role detected for admin login. Adding error.");
                     ModelState.AddModelError("", AdminResource.WrongAccountLoginAttempt);
+                    Logger.Info("Returning AdminLogin view with role error.");
                     return View(model);
                 }
 
-                //ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                Logger.Info($"Attempting sign-in for email: {model.Email}");
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                Logger.Info($"Sign-in result: {result}");
 
                 switch (result)
                 {
                     case SignInStatus.Success:
+                        Logger.Info("Sign-in successful. Redirecting to Dashboard.");
                         return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
 
                     case SignInStatus.LockedOut:
-                        Logger.Debug(string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
+                        Logger.Debug($"Account locked out for email: {model.Email}");
                         ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
+                        Logger.Info("Returning Lockout view.");
                         return View("Lockout");
 
                     case SignInStatus.RequiresVerification:
-                        Logger.Debug("The account  " + model.Email + " RequiresVerification ");
-                        ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                        Logger.Debug($"Account requires verification for email: {model.Email}");
+                        ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
+                        Logger.Info("Redirecting to SendCode.");
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                     case SignInStatus.Failure:
@@ -120,6 +134,7 @@ namespace EImece.Controllers
                         if (user != null)
                         {
                             bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                            Logger.Info($"Password check for {model.Email}: {checkPassword}");
                             if (!checkPassword)
                             {
                                 ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
@@ -131,14 +146,16 @@ namespace EImece.Controllers
                         }
                         else
                         {
+                            Logger.Info($"No user found for email: {model.Email}");
                             ModelState.AddModelError("", Resource.NoUserFound);
                         }
-
+                        Logger.Info("Returning AdminLogin view with failure error.");
                         return View(model);
 
                     default:
-                        Logger.Debug(string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
+                        Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
                         ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
+                        Logger.Info("Returning AdminLogin view with default error.");
                         return View(model);
                 }
             }
@@ -146,86 +163,86 @@ namespace EImece.Controllers
 
         private bool isUserAsCustomerRole(LoginViewModel model)
         {
-            var users = ApplicationDbContext.Users.AsQueryable();
+            Logger.Info($"Entering isUserAsCustomerRole for email: {model.Email}");
             var usersRoles = from u in ApplicationDbContext.Users
                              from ur in u.Roles
                              join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
                              where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
-                             select new
-                             {
-                                 Role = r.Name
-                             };
-
+                             select new { Role = r.Name };
             bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase));
+            Logger.Info($"User role check result: isCustomer = {isCustomer}");
             return isCustomer;
         }
 
-        //
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl = "")
         {
-            //if (Request.IsAuthenticated)
-            //{
-            //    return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
-            //}
-            // AuthenticationManager.User.Identity.GetUserId();
+            Logger.Info($"Entering Login with returnUrl: {returnUrl}");
             ViewBag.ReturnUrl = returnUrl;
+            Logger.Info("Returning Login view.");
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
+            Logger.Info($"Entering Login POST with email: {model?.Email}, returnUrl: {returnUrl}");
             if (model == null)
             {
+                Logger.Error("Model is null. Throwing ArgumentException.");
                 throw new ArgumentException();
             }
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
+                Logger.Info("Model state is invalid. Adding error.");
                 ModelState.AddModelError("", "Model is not correct.");
+                Logger.Info("Returning Login view with errors.");
                 return View(model);
             }
 
-            //validate the captcha through the session variable stored from GetCaptcha
             if (Session[CaptchaCustomerLogin] == null || !Session[CaptchaCustomerLogin].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
+                Logger.Error($"Captcha validation failed. Session: {Session[CaptchaCustomerLogin]}, Input: {model.Captcha}");
                 ModelState.AddModelError("Captcha", AdminResource.WrongSum);
                 ModelState.AddModelError("", AdminResource.WrongSum);
+                Logger.Info("Returning Login view with captcha error.");
                 return View(model);
             }
             else
             {
                 bool isCustomer = this.isUserAsCustomerRole(model);
+                Logger.Info($"User role check: isCustomer = {isCustomer}");
                 if (!isCustomer)
                 {
+                    Logger.Info("Non-customer role detected for customer login. Adding error.");
                     ModelState.AddModelError("", AdminResource.WrongAccountLoginAttempt);
+                    Logger.Info("Returning Login view with role error.");
                     return View(model);
                 }
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                Logger.Info($"Attempting sign-in for email: {model.Email}");
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                Logger.Info($"Sign-in result: {result}");
 
-               // Logger.Debug("The account " + model.Email + "   " + result.ToString());
                 switch (result)
                 {
                     case SignInStatus.Success:
+                        Logger.Info("Sign-in successful. Redirecting to Customer Home.");
                         return RedirectToAction("Index", "Home", new { @area = "customers" });
 
                     case SignInStatus.LockedOut:
-                        Logger.Debug("The account  " + model.Email + " LockedOut ");
-                        ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
+                        Logger.Debug($"Account locked out for email: {model.Email}");
+                        ModelState.AddModelError("", $"The account {model.Email} LockedOut");
+                        Logger.Info("Returning Lockout view.");
                         return View("Lockout");
 
                     case SignInStatus.RequiresVerification:
-                        Logger.Debug("The account  " + model.Email + " RequiresVerification ");
-                        ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                        Logger.Debug($"Account requires verification for email: {model.Email}");
+                        ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
+                        Logger.Info("Redirecting to SendCode.");
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                     case SignInStatus.Failure:
@@ -233,6 +250,7 @@ namespace EImece.Controllers
                         if (user != null)
                         {
                             bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                            Logger.Info($"Password check for {model.Email}: {checkPassword}");
                             if (!checkPassword)
                             {
                                 ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
@@ -244,413 +262,454 @@ namespace EImece.Controllers
                         }
                         else
                         {
+                            Logger.Info($"No user found for email: {model.Email}");
                             ModelState.AddModelError("", Resource.NoUserFound);
                         }
+                        Logger.Info("Returning Login view with failure error.");
                         return View(model);
 
                     default:
-                        Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                        Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
                         ModelState.AddModelError("", Resource.InvalidLoginAttempt);
+                        Logger.Info("Returning Login view with default error.");
                         return View(model);
                 }
             }
         }
 
-        //
-        // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // Require that the user has already logged in via username/password or external login
+            Logger.Info($"Entering VerifyCode with provider: {provider}, returnUrl: {returnUrl}, rememberMe: {rememberMe}");
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
+                Logger.Error("User has not been verified.");
+                Logger.Info("Returning Error view.");
                 return View("Error");
             }
+            Logger.Info("User verified. Returning VerifyCode view.");
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
-        // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+            Logger.Info($"Entering VerifyCode POST with provider: {model.Provider}");
             if (!ModelState.IsValid)
             {
+                Logger.Info("Model state is invalid. Returning view with errors.");
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes.
-            // If a user enters incorrect codes for a specified amount of time then the user account
-            // will be locked out for a specified amount of time.
-            // You can configure the account lockout settings in IdentityConfig
+            Logger.Info($"Attempting two-factor sign-in with code: {model.Code}");
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            Logger.Info($"Two-factor sign-in result: {result}");
+
             switch (result)
             {
                 case SignInStatus.Success:
+                    Logger.Info("Two-factor sign-in successful. Redirecting to local URL.");
                     return RedirectToLocal(model.ReturnUrl);
 
                 case SignInStatus.LockedOut:
+                    Logger.Info("Account locked out. Returning Lockout view.");
                     return View("Lockout");
 
                 case SignInStatus.Failure:
                 default:
+                    Logger.Info("Two-factor sign-in failed. Adding error.");
                     ModelState.AddModelError("", "Invalid code.");
+                    Logger.Info("Returning VerifyCode view with error.");
                     return View(model);
             }
         }
 
-        //
-        // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
+            Logger.Info("Entering Register action.");
             var model = new RegisterViewModel();
             model.IsPermissionGranted = true;
+            Logger.Info("Returning Register view with default model.");
             return View(model);
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            Logger.Info($"Entering Register POST with email: {model.Email}");
             if (ModelState.IsValid)
             {
                 if (Session[CaptchaCustomerRegister] == null || !Session[CaptchaCustomerRegister].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))
                 {
+                    Logger.Error($"Captcha validation failed. Session: {Session[CaptchaCustomerRegister]}, Input: {model.Captcha}");
                     ModelState.AddModelError("Captcha", AdminResource.WrongSum);
                     ModelState.AddModelError("", AdminResource.WrongSum);
+                    Logger.Info("Returning Register view with captcha error.");
                     return View(model);
                 }
                 else
                 {
-                    // var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                     var user = model.GetUser();
+                    Logger.Info($"Creating user with email: {user.Email}");
                     var result = await UserManager.CreateAsync(user, model.Password);
+                    Logger.Info($"User creation result: {result.Succeeded}");
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        Logger.Info("User signed in after registration.");
 
-                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                        // Send an email with this link
                         string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        Logger.Info($"Generated email confirmation token. Callback URL: {callbackUrl}");
                         var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
                         await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
+                        Logger.Info("Confirmation email sent.");
+
                         IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
                         CustomerService.SaveRegisterViewModel(user.Id, model);
+                        Logger.Info($"Assigned Customer role and saved customer data for user ID: {user.Id}");
+
                         IdentitySignout();
+                        Logger.Info("Signed out after registration setup.");
+
                         var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
+                        Logger.Info($"Post-registration sign-in result: {result2}");
                         switch (result2)
                         {
                             case SignInStatus.Success:
+                                Logger.Info("Post-registration sign-in successful. Redirecting to Customer Home.");
                                 return RedirectToAction("Index", "Home", new { @area = "customers" });
 
                             case SignInStatus.LockedOut:
-                                Logger.Debug("The account  " + model.Email + " LockedOut ");
-                                ModelState.AddModelError("", "The account  " + model.Email + " LockedOut ");
+                                Logger.Debug($"Account locked out for email: {model.Email}");
+                                ModelState.AddModelError("", $"The account {model.Email} LockedOut");
+                                Logger.Info("Returning Lockout view.");
                                 return View("Lockout");
 
                             case SignInStatus.RequiresVerification:
-                                Logger.Debug("The account  " + model.Email + " RequiresVerification ");
-                                ModelState.AddModelError("", "The account  " + model.Email + " RequiresVerification ");
+                                Logger.Debug($"Account requires verification for email: {model.Email}");
+                                ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
+                                Logger.Info("Returning Register view with verification error.");
                                 return View(model);
 
                             case SignInStatus.Failure:
-                                user = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
-                                bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                                var user2 = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                                bool checkPassword = SignInManager.UserManager.CheckPassword(user2, model.Password);
+                                Logger.Info($"Password check for {model.Email}: {checkPassword}");
                                 if (!checkPassword)
-                                {
-                                    ModelState.AddModelError("", "Invalid login attempt.Password is not correct");
-                                }
+                                    ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
                                 else
-                                {
-                                    ModelState.AddModelError("", "Invalid login attempt." + result.ToString());
-                                }
+                                    ModelState.AddModelError("", "Invalid login attempt." + result2.ToString());
+                                Logger.Info("Returning Register view with failure error.");
                                 return View(model);
 
                             default:
-                                Logger.Debug("Invalid login attempt " + model.Email + " LockedOut ");
+                                Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
                                 ModelState.AddModelError("", "Invalid login attempt.");
+                                Logger.Info("Returning Register view with default error.");
                                 return View(model);
                         }
                     }
                     else
                     {
-                        Logger.Error("No Successful Register:" + model);
+                        Logger.Error($"User registration failed for email: {model.Email}. Errors: {string.Join(", ", result.Errors)}");
+                        AddErrors(result);
                     }
-                    AddErrors(result);
                 }
             }
             else
             {
+                Logger.Info("Model state is invalid. Adding error.");
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
             }
-            // If we got this far, something failed, redisplay form
+            Logger.Info("Returning Register view with errors.");
             return View(model);
         }
 
         public void IdentitySignout()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
-            DefaultAuthenticationTypes.ExternalCookie);
+            Logger.Info("Entering IdentitySignout.");
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalCookie);
+            Logger.Info("Signed out user.");
         }
 
-        //
-        // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
+            Logger.Info($"Entering ConfirmEmail with userId: {userId}, code: {code}");
             if (userId == null || code == null)
             {
+                Logger.Error("UserId or code is null.");
+                Logger.Info("Returning Error view.");
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+            Logger.Info($"Email confirmation result: {result.Succeeded}");
+            Logger.Info($"Returning {(result.Succeeded ? "ConfirmEmail" : "Error")} view.");
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
-        // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            Logger.Info("Entering ForgotPassword action.");
+            Logger.Info("Returning ForgotPassword view.");
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            Logger.Info($"Entering ForgotPassword POST with email: {model.Email}");
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null)
                 {
+                    Logger.Info($"No user found for email: {model.Email}");
                     ModelState.AddModelError("", Resource.NoUserFound);
+                    Logger.Info("Returning ForgotPassword view with error.");
                     return View("ForgotPassword");
                 }
                 if (!(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
+                    Logger.Info($"Email not confirmed for user ID: {user.Id}");
                     ModelState.AddModelError("", Resource.UserEmailNotConfirmed);
-                    // Don't reveal that the user does not exist or is not confirmed
+                    Logger.Info("Returning ForgotPassword view with confirmation error.");
                     return View("ForgotPassword");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account",
-                    new { userId = user.Id, code = code },
-                    protocol: Request.Url.Scheme);
-
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                Logger.Info($"Generated password reset token. Callback URL: {callbackUrl}");
                 var emailTemplate = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
                 await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
-
+                Logger.Info("Password reset email sent.");
+                Logger.Info("Redirecting to ForgotPasswordConfirmation.");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
-
-            // If we got this far, something failed, redisplay form
+            Logger.Info("Model state is invalid. Returning ForgotPassword view.");
             return View(model);
         }
 
-        //
-        // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            Logger.Info("Entering ForgotPasswordConfirmation action.");
+            Logger.Info("Returning ForgotPasswordConfirmation view.");
             return View();
         }
 
-        //
-        // GET: /Account/ResetPassword
         [AllowAnonymous]
         public async Task<ActionResult> ResetPassword(string userId, string code)
         {
+            Logger.Info($"Entering ResetPassword with userId: {userId}, code: {code}");
             if (code == null)
             {
+                Logger.Error("Code is null.");
+                Logger.Info("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var user = await UserManager.FindByIdAsync(userId);
             ResetPasswordViewModel model = new ResetPasswordViewModel();
             model.Email = user.Email;
             model.Code = code;
+            Logger.Info($"Retrieved user email: {user.Email} for reset.");
+            Logger.Info("Returning ResetPassword view.");
             return View(model);
         }
 
-        //
-        // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            Logger.Info($"Entering ResetPassword POST with email: {model.Email}");
             if (!ModelState.IsValid)
             {
+                Logger.Info("Model state is invalid. Returning view with errors.");
                 return View(model);
             }
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
+                Logger.Info($"No user found for email: {model.Email}. Redirecting to confirmation.");
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            Logger.Info($"Password reset result: {result.Succeeded}");
             if (result.Succeeded)
             {
+                Logger.Info("Password reset successful. Redirecting to confirmation.");
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);
+            Logger.Info("Password reset failed. Returning view with errors.");
             return View();
         }
 
-        //
-        // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            Logger.Info("Entering ResetPasswordConfirmation action.");
+            Logger.Info("Returning ResetPasswordConfirmation view.");
             return View();
         }
 
-        //
-        // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Request a redirect to the external login provider
+            Logger.Info($"Entering ExternalLogin with provider: {provider}, returnUrl: {returnUrl}");
+            Logger.Info("Initiating external login challenge.");
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
-        //
-        // GET: /Account/SendCode
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
+            Logger.Info($"Entering SendCode with returnUrl: {returnUrl}, rememberMe: {rememberMe}");
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
+                Logger.Error("No verified user ID found.");
+                Logger.Info("Returning Error view.");
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+            Logger.Info($"Retrieved {factorOptions.Count} two-factor providers for user ID: {userId}");
+            Logger.Info("Returning SendCode view.");
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
-        // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
+            Logger.Info($"Entering SendCode POST with provider: {model.SelectedProvider}");
             if (!ModelState.IsValid)
             {
+                Logger.Info("Model state is invalid. Returning view.");
                 return View();
             }
 
-            // Generate the token and send it
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
+                Logger.Error($"Failed to send two-factor code for provider: {model.SelectedProvider}");
+                Logger.Info("Returning Error view.");
                 return View("Error");
             }
+            Logger.Info("Two-factor code sent successfully. Redirecting to VerifyCode.");
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        //
-        // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            Logger.Info($"Entering ExternalLoginCallback with returnUrl: {returnUrl}");
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
+                Logger.Error("No external login info found.");
+                Logger.Info("Redirecting to Login.");
                 return RedirectToAction("Login");
             }
 
-            // Sign in the user with this external login provider if the user already has a login
+            Logger.Info($"Attempting external sign-in for provider: {loginInfo.Login.LoginProvider}");
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            Logger.Info($"External sign-in result: {result}");
+
             switch (result)
             {
                 case SignInStatus.Success:
+                    Logger.Info("External sign-in successful. Redirecting to local URL.");
                     return RedirectToLocal(returnUrl);
 
                 case SignInStatus.LockedOut:
+                    Logger.Info("Account locked out. Returning Lockout view.");
                     return View("Lockout");
 
                 case SignInStatus.RequiresVerification:
+                    Logger.Info("Requires verification. Redirecting to SendCode.");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
 
                 case SignInStatus.Failure:
-
                 default:
-                    // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                    Logger.Info("External sign-in failed. Returning ExternalLoginConfirmation view.");
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
-        //
-        // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
+            Logger.Info($"Entering ExternalLoginConfirmation POST with email: {model.Email}");
             if (User.Identity.IsAuthenticated)
             {
+                Logger.Info("User already authenticated. Redirecting to Manage Index.");
                 return RedirectToAction("Index", "Manage");
             }
 
             if (ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
+                    Logger.Error("No external login info found.");
+                    Logger.Info("Returning ExternalLoginFailure view.");
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
+                Logger.Info($"User creation result: {result.Succeeded}");
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    Logger.Info($"Add login result: {result.Succeeded}");
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        Logger.Info("User signed in with external login. Redirecting to local URL.");
                         return RedirectToLocal(returnUrl);
                     }
                 }
                 AddErrors(result);
+                Logger.Info("External login confirmation failed. Adding errors.");
             }
-
             ViewBag.ReturnUrl = returnUrl;
+            Logger.Info("Returning ExternalLoginConfirmation view with errors.");
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Logger.Info("Entering LogOff action.");
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Logger.Info("User signed out. Redirecting to Home Index.");
             return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
+            Logger.Info("Entering ExternalLoginFailure action.");
+            Logger.Info("Returning ExternalLoginFailure view.");
             return View();
         }
 
@@ -661,23 +720,30 @@ namespace EImece.Controllers
 
         private void AddErrors(IdentityResult result)
         {
+            Logger.Info("Entering AddErrors method.");
             foreach (var error in result.Errors)
             {
+                Logger.Info($"Adding error: {error}");
                 ModelState.AddModelError("", error);
             }
         }
 
         private ActionResult RedirectToLocal(string returnUrl = "")
         {
+            Logger.Info($"Entering RedirectToLocal with returnUrl: {returnUrl}");
             bool isAdmin = User.IsInRole(Domain.Constants.AdministratorRole) || User.IsInRole(Domain.Constants.EditorRole);
+            Logger.Info($"User isAdmin: {isAdmin}");
             if (isAdmin)
             {
+                Logger.Info("Admin role detected. Redirecting to Admin Dashboard.");
                 return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
             }
             else if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
+                Logger.Info($"Valid local returnUrl. Redirecting to: {returnUrl}");
                 return Redirect(returnUrl);
             }
+            Logger.Info("Default redirect to Admin Dashboard.");
             return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
         }
 
@@ -690,6 +756,7 @@ namespace EImece.Controllers
 
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
+                Logger.Info($"Creating ChallengeResult with provider: {provider}, redirectUri: {redirectUri}, userId: {userId}");
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
                 UserId = userId;
@@ -701,12 +768,19 @@ namespace EImece.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
+                Logger.Info($"Executing ChallengeResult for provider: {LoginProvider}");
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
+                    Logger.Info($"Added XsrfKey '{XsrfKey}' with UserId: {UserId} to properties.");
+                }
+                else
+                {
+                    Logger.Info($"No UserId provided; XsrfKey '{XsrfKey}' not added to properties.");
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+                Logger.Info("Authentication challenge issued.");
             }
         }
 
