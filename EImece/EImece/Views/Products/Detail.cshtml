@@ -38,6 +38,9 @@
     Model.ProductComment.ProductId = product.Id;
     Model.ProductComment.SeoUrl = product.GetSeoUrl();
     var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var productCommentsPaging = new PaginatedModelList<ProductComment>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
+    productCommentsPaging.RouteId = Model.SeoId;
+
     var mainImageImgSrc = product.MainImageSrc.Item1;
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
@@ -45,6 +48,9 @@
 
     var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
     var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
+
+
+
 }
 <input type="hidden" name="productReviewEnable" value="@productReviewEnable.ToString().ToLower()" />
 <input type="hidden" name="productPriceEnabled" value="@productPriceEnabled.ToString().ToLower()" />
@@ -371,14 +377,21 @@
             </div>
             @if (productReviewEnable)
             {
-                if (productComments.IsNotEmpty())
+                if (productCommentsPaging.IsNotEmpty())
                 {
                     <div class="col-md-8 pb-5">
                         <h2 class="h3">@Resource.LatestReviews</h2>
-                        @foreach (var productComment in productComments)
+                        @foreach (var productComment in productCommentsPaging.GetPagingResult())
                         {
                             @createReviewItem(productComment)
                         }
+                    </div>
+                    <div class="offset-md-5 col-md-8 pb-5">
+                        @Html.Partial("_PaginatedModelList", productCommentsPaging, new ViewDataDictionary
+                            {
+                                { "actionName", "Detail" },
+                                { "controllerName", "Products" }
+                            })
                     </div>
                 }
                 else

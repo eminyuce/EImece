@@ -262,6 +262,11 @@ namespace EImece.Domain
             get { return 24; }
         }
 
+        public static int ProductCommentsRecordPerPage
+        {
+            get { return 8; }
+        }
+
         public static List<int> IyzicoEnabledInstallments
         {
             get

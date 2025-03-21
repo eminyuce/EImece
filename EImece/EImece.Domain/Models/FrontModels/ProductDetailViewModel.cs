@@ -31,6 +31,7 @@ namespace EImece.Domain.Models.FrontModels
         public Setting CargoDescription { get; set; }      
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
+        public string SeoId { get; set; }
 
         public ProductDetailViewModel()
         {

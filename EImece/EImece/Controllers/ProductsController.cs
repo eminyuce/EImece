@@ -73,7 +73,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Detail(String id)
+        public ActionResult Detail(String id, int page = 0)
         {
             Logger.Info($"Entering Detail action with id: '{id}'");
             if (String.IsNullOrEmpty(id))
@@ -87,6 +87,8 @@ namespace EImece.Controllers
                 var productId = id.GetId();
                 Logger.Info($"Parsed product ID: {productId}");
                 var product = ProductService.GetProductDetailViewModelById(productId);
+                string fullPath = Request.Path;
+             
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
 
                 if (!product.Product.IsActive)
@@ -94,9 +96,12 @@ namespace EImece.Controllers
                     Logger.Info($"Product with ID: {productId} is inactive. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", "Error");
                 }
-
-                SetCurrentCulture(product.Product);
                 ViewBag.SeoId = product.Product.GetSeoUrl();
+                product.Page = page;
+                product.RecordPerPage = AppConfig.ProductCommentsRecordPerPage;
+                product.SeoId = product.Product.GetSeoUrl();
+                SetCurrentCulture(product.Product);
+           
                 Logger.Info($"Set culture and SEO ID: {ViewBag.SeoId} for product ID: {productId}");
                 Logger.Info("Returning Detail view.");
                 return View(product);
