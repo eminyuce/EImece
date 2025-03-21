@@ -280,17 +280,26 @@ namespace EImece.Domain.Helpers.Extensions
             }
             else
             {
-                string imagePath = Constants.UrlBase + mainImage.FileName;
-                String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
-
-                if (isThump)
+                if (mainImage.FileName.Equals(FilesHelper.EXTERNAL_IMAGE))
                 {
-                    string fileName = mainImage.FileName;
-                    string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                    imagePath = Path.Combine(partThumb1, "thb" + fileName);
+                    return mainImage.FileUrl;
                 }
-                return imagePath;
+                else
+                {
+                    string imagePath = Constants.UrlBase + mainImage.FileName;
+                    String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
+
+                    if (isThump)
+                    {
+                        string fileName = mainImage.FileName;
+                        string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                        imagePath = Path.Combine(partThumb1, "thb" + fileName);
+                    }
+                    return imagePath;
+                }
             }
+                
+              
         }
 
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)

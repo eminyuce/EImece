@@ -29,6 +29,7 @@ namespace EImece.Domain.Helpers
 
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
+        public const string EXTERNAL_IMAGE = "external-image";
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         public int CurrentLanguage { get; set; }
@@ -368,7 +369,11 @@ namespace EImece.Domain.Helpers
 
         public static bool IsMainImageExists(int? MainImageId, FileStorage MainImage)
         {
-            if (MainImageId.HasValue && MainImage != null)
+            if (MainImage.FileName.Equals(EXTERNAL_IMAGE))
+            {
+                return !string.IsNullOrEmpty(MainImage.FileUrl);
+            }
+            else  if (MainImageId.HasValue && MainImage != null)
             {
                 String fullPath = Path.Combine(AppConfig.StorageRoot, MainImage.FileName);
                 return File.Exists(fullPath);
