@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace EImece.MyConsole
 {
@@ -20,14 +23,83 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
+            generateImagesForAndroidAndFaviconWithDifferentSize();
+
             decimal productPrice = 120m;
             Console.WriteLine(productPrice.CurrencySign());
             productPrice = 133.5m;
             Console.WriteLine(productPrice.CurrencySign());
             Console.Read();
+
+           
         }
 
-        private static void ReplaceFileContent()
+        private static void generateImagesForAndroidAndFaviconWithDifferentSize()
+        {
+            // Path to your input JPEG file (update this to your actual file path)
+            string inputImagePath = @"C:\Users\YUCE\Downloads\zeytinHanim\kudretNari.jpeg"; // Replace with your image path
+            string outputDirectory = @"C:\Users\YUCE\Downloads\zeytinHanim\kudretNariIcons\";
+            // string outputDirectory = Path.GetDirectoryName(inputImagePath) ?? Directory.GetCurrentDirectory();
+
+            // Ensure the input file exists
+            if (!File.Exists(inputImagePath))
+            {
+                Console.WriteLine("Input image not found. Please provide a valid JPEG file path.");
+                return;
+            }
+
+            // List of sizes and corresponding filenames
+            var imageSizes = new[]
+            {
+                ("android-chrome-36x36.png", 36, 36),
+                ("android-chrome-48x48.png", 48, 48),
+                ("android-chrome-72x72.png", 72, 72),
+                ("android-chrome-96x96.png", 96, 96),
+                ("android-chrome-144x144.png", 144, 144),
+                ("android-chrome-192x192.png", 192, 192),
+                ("android-chrome-256x256.png", 256, 256),
+                ("android-chrome-384x384.png", 384, 384),
+                ("android-chrome-512x512.png", 512, 512),
+                ("apple-touch-icon.png", 180, 180), // Common size for apple-touch-icon
+                ("favicon-16x16.png", 16, 16),
+                ("favicon-32x32.png", 32, 32),
+                ("favicon.ico", 32, 32) // ICO typically 32x32, though can support multiple sizes
+            };
+
+            try
+            {
+                // Load the original image
+                using (Image originalImage = Image.FromFile(inputImagePath))
+                {
+                    foreach (var (fileName, width, height) in imageSizes)
+                    {
+                        string outputPath = Path.Combine(outputDirectory, fileName);
+
+                        // Create a new bitmap with the specified size
+                        using (Bitmap resizedImage = new Bitmap(originalImage, new Size(width, height)))
+                        {
+                            // For .ico files, save in ICO format; otherwise, use PNG
+                            if (fileName.EndsWith(".ico"))
+                            {
+                                resizedImage.Save(outputPath, ImageFormat.Icon);
+                            }
+                            else
+                            {
+                                resizedImage.Save(outputPath, ImageFormat.Png);
+                            }
+                            Console.WriteLine($"Generated: {fileName} ({width}x{height})");
+                        }
+                    }
+                }
+                Console.WriteLine("All images generated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error generating images: {ex.Message}");
+            }
+    }
+
+    private static void ReplaceFileContent()
         {
             var parent = new DirectoryInfo(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\Views");
 
