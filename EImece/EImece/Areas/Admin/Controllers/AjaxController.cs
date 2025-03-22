@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using EImece.Domain.Models.AdminModels;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -27,6 +28,26 @@ namespace EImece.Areas.Admin.Controllers
         public AjaxController(AppLogRepository AppLogRepository)
         {
             this.AppLogRepository = AppLogRepository;
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePrices(UpdatePriceRequest request)
+        {
+            try
+            {
+                if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+                {
+                    return Json(new { success = false, message = "Yüzde değeri gerekli." }, JsonRequestBehavior.AllowGet);
+                }
+                var affectedRows = ProductService.UpdatePrices(request);
+                // Başarılı yanıt döndür
+                return Json(new { success = true, affectedRows = affectedRows }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda yanıt
+                return Json(new { success = false, message = $"Hata: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)

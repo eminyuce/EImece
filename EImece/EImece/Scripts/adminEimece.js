@@ -276,6 +276,37 @@ $(document).ready(function () {
     });
 });
 
+function fiyatlariGuncelle(e) {
+    var caller = e.target; // The button that was clicked
+    var productCategoryId = $(caller).attr('data-product-category-button');
+    const yuzde = $('[data-product-category-percantage="' + productCategoryId + '"]').val();
+    const sonucDiv = $('[data-product-category-result="' + productCategoryId + '"]');
+
+    sonucDiv.html("Fiyatlar güncelleniyor...");
+
+    var payloadData = JSON.stringify({
+        percentageOfIncreaseOrDecrease: parseFloat(yuzde),
+        categoryId: parseInt(productCategoryId) // Ensure CategoryId is an integer
+    });
+    console.log("Fiyat Güncelle: " + payloadData);
+
+    $.ajax({
+        url: '/Admin/Ajax/UpdatePrices', // Default MVC URL for Admin/AjaxController/UpdatePrices
+        type: 'POST',
+        data: payloadData,
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.success) {
+                sonucDiv.html(`Başarılı! ${response.affectedRows} satır güncellendi.`);
+            } else {
+                sonucDiv.html(`Hata: ${response.message || 'Bilinmeyen bir hata oluştu.'}`);
+            }
+        },
+        error: function (xhr, status, error) {
+            sonucDiv.html(`Hata: ${xhr.responseText || 'Fiyatlar güncellenemedi.'}`);
+        }
+    });
+}
 function GetSelectedCheckBoxValues() {
     var stringArray = GetSelectedCheckBoxValuesArray();
     var jsonRequest = JSON.stringify({ "values": stringArray });

@@ -37,7 +37,7 @@ namespace EImece.Domain.Services.IServices
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
 
         void SaveProductSpecifications(List<ProductSpecification> specifications, int productId);
-
+        String UpdatePrices(UpdatePriceRequest request);
         List<Product> GetActiveProducts(int? language);
 
         ProductsSearchResult GetProductsSearchResult(

@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
@@ -10,7 +11,9 @@ using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Validation;
+using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web;
@@ -61,7 +64,21 @@ namespace EImece.Domain.Services
         {
             return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang);
         }
-
+        public string UpdatePrices(UpdatePriceRequest request)
+        {
+            if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+            {
+                return "hata";
+            }
+            var connectionString = this.ProductRepository.GetDbContext().Database.Connection.ConnectionString;
+            var commandText = @"[dbo].[UpdateProductPrices]";
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
+            var commandType = CommandType.StoredProcedure;
+            return DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
+        }
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
             ProductIndexViewModel result = null;

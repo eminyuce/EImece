@@ -71,9 +71,9 @@
                       .Sanitized(false)
                       .SetWidth(30)
                       .RenderValueAs(d =>
-                                @<b>
-                                    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white   " })
-                                </b>);
+                                                @<b>
+                                                    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white   " })
+                                                </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -82,9 +82,9 @@ columns.Add()
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d =>
-                                @<b>
-                                    @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
-                                </b>
+                                                @<b>
+                                                    @GridToolsDeleteColumn(productCategoryLeaves, d, controllerName)
+                                                </b>
 );
            }
 
@@ -132,10 +132,52 @@ columns.Add()
            .Css("smallGridColumn")
            .RenderValueAs(o => GridImageColumn(o, controllerName));
 
+           columns.Add()
+       .Titled("Fiyat Guncelleme")
+       .Encoded(false)
+       .Sanitized(false)
+       .Css("smallGridColumn")
+       .RenderValueAs(o => PriceUpdates(o, controllerName));
+
        }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>
     </div>
 </div>
+
+@helper PriceUpdates(ProductCategory o, String controllerName)
+{
+
+    <div class="container">
+        <!-- Example button for a specific category -->
+        <button class="btn btn-outline btn-success btn-xs" data-product-category-button="@o.Id" onclick="fiyatlariGuncelle(event)">Güncelle</button>
+        <select data-product-category-percantage="@o.Id">
+            <option value="50.00">%50 Artır</option>
+            <option value="45.00">%45 Artır</option>
+            <option value="40.00">%40 Artır</option>
+            <option value="35.00">%35 Artır</option>
+            <option value="30.00">%30 Artır</option>
+            <option value="25.00">%25 Artır</option>
+            <option value="20.00">%20 Artır</option>
+            <option value="15.00">%15 Artır</option>
+            <option value="10.00">%10 Artır</option>
+            <option value="5.00">%5 Artır</option>
+            <option value="0.00" selected>Değişiklik Yok</option>
+            <option value="-5.00">%5 Azalt</option>
+            <option value="-10.00">%10 Azalt</option>
+            <option value="-15.00">%15 Azalt</option>
+            <option value="-20.00">%20 Azalt</option>
+            <option value="-25.00">%25 Azalt</option>
+            <option value="-30.00">%30 Azalt</option>
+            <option value="-35.00">%35 Azalt</option>
+            <option value="-40.00">%40 Azalt</option>
+            <option value="-45.00">%45 Azalt</option>
+            <option value="-50.00">%50 Azalt</option>
+        </select>
+        <div data-product-category-result="@o.Id"></div>
+    </div>
+
+}
+
 @helper GridImageActiveColumn(ProductCategory o, String controllerName)
 {
     <ul>
@@ -182,7 +224,7 @@ columns.Add()
 
 @helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
 {
-    if (d.Products!=null && d.Products.Any())
+    if (d.Products != null && d.Products.Any())
     {
         @String.Format("Products Exists")
     }
@@ -201,3 +243,4 @@ columns.Add()
         @String.Format("No Deleted")
     }
 }
+

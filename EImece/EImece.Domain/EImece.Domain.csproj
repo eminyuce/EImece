@@ -276,6 +276,7 @@
     <Compile Include="Models\AdminHelperModels\MoveMenuCategory.cs" />
     <Compile Include="Models\AdminHelperModels\MoveProductCategory.cs" />
     <Compile Include="Models\AdminModels\SystemSettingModel.cs" />
+    <Compile Include="Models\AdminModels\UpdatePriceRequest.cs" />
     <Compile Include="Models\Enums\EImeceCustomerType.cs" />
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />
     <Compile Include="Models\Enums\EImeceOrderType.cs" />
