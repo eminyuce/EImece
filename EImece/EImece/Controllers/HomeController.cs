@@ -23,6 +23,7 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Domain.Repositories;
 
 namespace EImece.Controllers
 {
@@ -58,9 +59,14 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
+        [Inject]
+        public MigrationRepository MigrationRepository { get; set; }
+        
+
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public ActionResult Index()
         {
+            // MigrationRepository.GetProductImages();
             HomeLogger.Info("Entering Index action.");
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
             HomeLogger.Info($"Retrieved MainPageViewModel for language: {CurrentLanguage}");
