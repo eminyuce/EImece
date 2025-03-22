@@ -89,7 +89,20 @@ namespace EImece.Domain
                 return GetConfigInt("GridPageSizeNumber", 100);
             }
         }
-
+        public static int HomePageMainProductCountRandomLimit
+        {
+            get
+            {
+                return HomePageMainProductCountLimit / 3;
+            }
+        }
+        public static int HomePageMainProductCountLimit
+        {
+            get
+            {
+                return GetConfigInt("HomePageMainProductCountLimit", 15);
+            }
+        }
         //en-US,tr-TR
         public static string ApplicationLanguages
         {

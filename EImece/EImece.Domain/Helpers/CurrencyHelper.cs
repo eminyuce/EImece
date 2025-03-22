@@ -14,11 +14,12 @@ namespace EImece.Domain.Helpers
         public static string CurrencySign(this decimal price)
         {
             decimal v = RoundPriceNumber(price);
-            var culture = CultureInfo.CreateSpecificCulture(CulturaInfoName).ToString();
+            var culture = new CultureInfo(CulturaInfoName);
+
             if (v > 0)
             {
-                var result = v.ToString("#,##", new CultureInfo(culture));
-                return string.Format("{0} TL", result);
+                var result = v.ToString("N2", culture); // N2: Sayıyı her zaman iki ondalıklı olarak gösterir.
+                return $"{result} TL";
             }
             else
             {
@@ -37,6 +38,7 @@ namespace EImece.Domain.Helpers
             var price2 = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
             return System.Convert.ToDecimal(price2);
         }
+     
 
         public static string CurrencySign(this double price)
         {

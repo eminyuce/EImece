@@ -52,6 +52,32 @@ namespace EImece.Domain.Repositories
         {
         }
 
+        public void GetProductImages()
+        {
+            var currentLanguage = 1;
+            var connectionString = "";
+            connectionString = this.ProductRepository.GetDbContext().Database.Connection.ConnectionString;
+            var images = DbMigration.GetProductImages(connectionString);
+            this.FilesHelper.CurrentLanguage = currentLanguage;
+            foreach (var entityMainImage in images)
+            {
+                try
+                {
+                    FileStorage image = InsertImageByFullPath(entityMainImage);
+                    if (image != null)
+                    {
+                        object[] parameters = { currentLanguage, entityMainImage.ProductId, entityMainImage.EntityImageType, image.Id, };
+                        DbMigration.InsertProductImages(connectionString, entityMainImage, image);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, ex.Message + " entityMainImage:" + entityMainImage);
+                }
+            }
+
+        }
+
         public EntityImage GetImages()
         {
             return DbMigration.GetImages(this.ProductRepository.GetDbContext().Database.Connection.ConnectionString);
@@ -133,6 +159,40 @@ namespace EImece.Domain.Repositories
             catch (Exception ex)
             {
                 Logger.Error(ex, ex.Message + " imageFullPath: " + imageFullPath + " name:" + name);
+                return null;
+            }
+        }
+
+        private FileStorage InsertImageByFullPath(ProductImageExternalUrl productImageExternalUrl)
+        {
+            try
+            {
+                var imageDictionary = new Dictionary<String, String>();
+                var imageBytes = DownloadHelper.GetImageFromUrl(productImageExternalUrl.ImageFullPath, imageDictionary);
+                var imageBitmap = this.FilesHelper.ByteArrayToBitmap(imageBytes);
+                string cleanUrl = productImageExternalUrl.ImageFullPath.Split('?')[0];
+
+                // Get file extension
+                // Find the last dot after the last slash
+                int lastDotIndex = cleanUrl.LastIndexOf('.');
+                int lastSlashIndex = cleanUrl.LastIndexOf('/');
+
+                // Extract extension if found
+                string extension = (lastDotIndex > lastSlashIndex) ? cleanUrl.Substring(lastDotIndex) : string.Empty;
+
+                string fileName = GeneralHelper.GetUrlSeoString(productImageExternalUrl.ProductName) + extension;
+                string mimeType = MimeMapping.GetMimeMapping(fileName);
+                FileStorage image = this.FilesHelper.SaveFileFromByteArray(imageBytes,
+                    fileName,
+                    mimeType,
+                    imageBitmap.Width,
+                    imageBitmap.Height,
+                  productImageExternalUrl.Equals("ProductMainImage") ?   EImeceImageType.ProductMainImage : EImeceImageType.ProductGallery, null);
+                return image;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message + " imageFullPath: name:");
                 return null;
             }
         }

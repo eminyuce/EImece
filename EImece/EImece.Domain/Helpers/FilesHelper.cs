@@ -369,7 +369,7 @@ namespace EImece.Domain.Helpers
 
         public static bool IsMainImageExists(int? MainImageId, FileStorage MainImage)
         {
-            if (MainImage.FileName.Equals(EXTERNAL_IMAGE))
+            if (MainImageId.HasValue && MainImage != null && MainImage.FileName.Equals(EXTERNAL_IMAGE))
             {
                 return !string.IsNullOrEmpty(MainImage.FileUrl);
             }

@@ -76,7 +76,13 @@
                              .Sanitized(false)
                        .RenderValueAs(d => GridDetailLink(d, controllerName));
 
-            columns.Add(o => o.Position).Titled(AdminResource.Position)
+           columns.Add(c => c.ParentId)
+.Titled(AdminResource.ProductCategoryParentId)
+.Encoded(false)
+.Filterable(true)
+.RenderValueAs(o => o.ParentId == 0 ? string.Format("{0}", Resource.RootCategory) : "");
+
+           columns.Add(o => o.Position).Titled(AdminResource.Position)
               .Encoded(false).
                    Sanitized(false).
                    SetWidth(10).

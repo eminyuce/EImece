@@ -9,6 +9,41 @@ namespace EImece.Domain.DbContext
 {
     public class DbMigration
     {
+        public static List<ProductImageExternalUrl> GetProductImages(string connectionString)
+        {
+            var result = new List<ProductImageExternalUrl>();
+            string commandText = "[ewsiste].[ProductImageExternalUrl]";
+            var parameterList = new List<SqlParameter>();
+            var commandType = CommandType.StoredProcedure;
+
+            DataSet dataSet = DatabaseUtility.ExecuteDataSet(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
+
+            if (dataSet.Tables.Count > 0)
+            {
+                using (DataTable dt = dataSet.Tables[0])
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        var productImage = GetProductImageFromDataRow(dr);
+                        result.Add(productImage);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static ProductImageExternalUrl GetProductImageFromDataRow(DataRow dr)
+        {
+            return new ProductImageExternalUrl
+            {
+                ProductId = dr["ProductId"].ToInt(),
+                ProductName = dr["ProductName"].ToStr(),
+                ImageFullPath = dr["ImageFullPath"].ToStr(),
+                EntityImageType = dr["EntityImageType"].ToStr()
+            };
+        }
+
         public static EntityImage GetImages(String connectionString)
         {
             var result = new EntityImage();
@@ -38,6 +73,18 @@ namespace EImece.Domain.DbContext
                 }
             }
             return result;
+        }
+
+        public static void InsertProductImages(string connectionString, ProductImageExternalUrl entityMainImage, Entities.FileStorage image)
+        {
+            var commandText = @"[ewsiste].[InsertProductImage]";
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", entityMainImage.ProductId, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductName", entityMainImage.ProductName, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("EntityImageType", entityMainImage.EntityImageType, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ImageId", image.Id, SqlDbType.Int));
+            var commandType = CommandType.StoredProcedure;
+            DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray());
         }
 
         private static EntityMediaFile GetEntityMediaFileFromDataRow(DataRow dr)

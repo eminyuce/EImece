@@ -52,7 +52,7 @@
 </section>
 
 @CreateProductCategorySection(@Resource.PopularProducts, mainPageProductCategories)
-@CreatePromoBanner(bannerLink)
+
 @helper CreatePromoBanner(String bannerLink)
 {
 
@@ -75,9 +75,9 @@
 <!-- Product widgets-->
 <section class="container px-1 pt-1 pb-1 mb-md-1">
     <div class="row">
-        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
-        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
-        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(3).ToList())
+        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
     </div>
 </section>
 
