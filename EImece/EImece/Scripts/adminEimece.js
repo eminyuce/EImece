@@ -275,7 +275,68 @@ $(document).ready(function () {
         handle1.text(parseInt(value));
     });
 });
+function fiyatlariGuncelleTag(e) {
+    var caller = e.target; // The button that was clicked
+    var tagId = $(caller).attr('data-product-tag-Id');
+    const yuzde = $('[data-product-tag-percantage="' + tagId + '"]').val();
+    const sonucDiv = $('[data-product-tag-result="' + tagId + '"]');
 
+    sonucDiv.html("Fiyatlar güncelleniyor...");
+
+    var payloadData = JSON.stringify({
+        percentageOfIncreaseOrDecrease: parseFloat(yuzde),
+        tagId: parseInt(tagId)
+    });
+    console.log("Fiyat Güncelle: " + payloadData);
+
+    $.ajax({
+        url: '/Admin/Ajax/UpdatePrices', // Default MVC URL for Admin/AjaxController/UpdatePrices
+        type: 'POST',
+        data: payloadData,
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.success) {
+                sonucDiv.html(`Başarılı! ${response.affectedRows} satır güncellendi.`);
+            } else {
+                sonucDiv.html(`Hata: ${response.message || 'Bilinmeyen bir hata oluştu.'}`);
+            }
+        },
+        error: function (xhr, status, error) {
+            sonucDiv.html(`Hata: ${xhr.responseText || 'Fiyatlar güncellenemedi.'}`);
+        }
+    });
+}
+function fiyatlariGuncelleBrand(e) {
+    var caller = e.target; // The button that was clicked
+    var brandId = $(caller).attr('data-product-brand-Id');
+    const yuzde = $('[data-product-brand-percantage="' + brandId + '"]').val();
+    const sonucDiv = $('[data-product-brand-result="' + brandId + '"]');
+
+    sonucDiv.html("Fiyatlar güncelleniyor...");
+
+    var payloadData = JSON.stringify({
+        percentageOfIncreaseOrDecrease: parseFloat(yuzde),
+        brandId: parseInt(brandId)
+    });
+    console.log("Fiyat Güncelle: " + payloadData);
+
+    $.ajax({
+        url: '/Admin/Ajax/UpdatePrices', // Default MVC URL for Admin/AjaxController/UpdatePrices
+        type: 'POST',
+        data: payloadData,
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.success) {
+                sonucDiv.html(`Başarılı! ${response.affectedRows} satır güncellendi.`);
+            } else {
+                sonucDiv.html(`Hata: ${response.message || 'Bilinmeyen bir hata oluştu.'}`);
+            }
+        },
+        error: function (xhr, status, error) {
+            sonucDiv.html(`Hata: ${xhr.responseText || 'Fiyatlar güncellenemedi.'}`);
+        }
+    });
+}
 function fiyatlariGuncelle(e) {
     var caller = e.target; // The button that was clicked
     var productCategoryId = $(caller).attr('data-product-category-button');

@@ -76,6 +76,8 @@ namespace EImece.Domain.Services
             parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
             parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
             parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
             var commandType = CommandType.StoredProcedure;
             return DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
         }
