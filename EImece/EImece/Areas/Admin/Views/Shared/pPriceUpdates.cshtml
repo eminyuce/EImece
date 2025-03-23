@@ -1,0 +1,54 @@
+﻿@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+
+@{
+    string ItemId = ViewData["ItemId"].ToStr();
+    string ItemType = ViewData["ItemType"].ToStr();
+
+}
+
+
+<div class="container">
+    <button class="btn btn-outline btn-success btn-xs"
+            data-product-item-type="@ItemType"
+            data-product-item-id="@ItemId"
+            onclick="fiyatlariGuncelleGeneric(event)">
+        Güncelle
+    </button>
+    <select data-product-item-percentage="@ItemType-@ItemId">
+        <option value="50.00">%50 Artır</option>
+        <option value="45.00">%45 Artır</option>
+        <option value="40.00">%40 Artır</option>
+        <option value="35.00">%35 Artır</option>
+        <option value="30.00">%30 Artır</option>
+        <option value="25.00">%25 Artır</option>
+        <option value="20.00">%20 Artır</option>
+        <option value="15.00">%15 Artır</option>
+        <option value="10.00">%10 Artır</option>
+        <option value="5.00">%5 Artır</option>
+        <option value="4.00">%4 Artır</option>
+        <option value="3.00">%3 Artır</option>
+        <option value="2.00">%2 Artır</option>
+        <option value="1.00">%1 Artır</option>
+        <option value="0.00" selected>Değişiklik Yok</option>
+        <option value="-1.00">%1 Azalt</option>
+        <option value="-2.00">%2 Azalt</option>
+        <option value="-3.00">%3 Azalt</option>
+        <option value="-4.00">%4 Azalt</option>
+        <option value="-5.00">%5 Azalt</option>
+        <option value="-10.00">%10 Azalt</option>
+        <option value="-15.00">%15 Azalt</option>
+        <option value="-20.00">%20 Azalt</option>
+        <option value="-25.00">%25 Azalt</option>
+        <option value="-30.00">%30 Azalt</option>
+        <option value="-35.00">%35 Azalt</option>
+        <option value="-40.00">%40 Azalt</option>
+        <option value="-45.00">%45 Azalt</option>
+        <option value="-50.00">%50 Azalt</option>
+    </select>
+    <div data-product-item-result="@ItemType-@ItemId"></div>
+</div>

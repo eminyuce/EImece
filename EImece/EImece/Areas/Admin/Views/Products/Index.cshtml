@@ -128,48 +128,55 @@
 
                   );
 
-     columns.Add(c => c.BrandId)
+
+           columns.Add(c => c.ProductCategory)
+                .Titled(AdminResource.ProductCategory)
+                .Encoded(false)
+                .Filterable(true)
+                .RenderValueAs(o => o.ProductCategory.Name);
+
+           columns.Add(c => c.BrandId)
           .Titled(AdminResource.Brands)
           .Encoded(false)
           .Filterable(true)
           .RenderValueAs(o => o.BrandId.HasValue ? string.Format("{0}", o.Brand.Name) : "");
 
-     if (isProductPriceEnable.SettingValue.ToBool(true))
-     {
-         columns.Add(c => c.Price).
-         Titled(AdminResource.Price).
-         Sanitized(false).
-         Sortable(true).
-         Encoded(false).
-         RenderValueAs(o => DisplayPriceColumn(o));
+           if (isProductPriceEnable.SettingValue.ToBool(true))
+           {
+               columns.Add(c => c.Price).
+               Titled(AdminResource.Price).
+               Sanitized(false).
+               Sortable(true).
+               Encoded(false).
+               RenderValueAs(o => DisplayPriceColumn(o));
 
-     }
+           }
 
-     columns.Add(c => c.ProductCode)
-     .Titled(AdminResource.ProductCode);
+           columns.Add(c => c.ProductCode)
+           .Titled(AdminResource.ProductCode);
 
-     columns.Add(o => o.Position).Titled(AdminResource.Position)
-     .Encoded(false).
-     Sanitized(false).
-     Css("smallGridColumn").
-RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+           columns.Add(o => o.Position).Titled(AdminResource.Position)
+           .Encoded(false).
+           Sanitized(false).
+           Css("smallGridColumn").
+      RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-     columns.Add(o => o.IsActive)
-     .Titled(AdminResource.State)
-     .Sortable(true)
-     .Css("smallGridColumn")
-     .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-     Sanitized(false)
-     .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
+           columns.Add(o => o.IsActive)
+           .Titled(AdminResource.State)
+           .Sortable(true)
+           .Css("smallGridColumn")
+           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+           Sanitized(false)
+           .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
 
-     columns.Add(r => r.ImageState)
-     .Titled(AdminResource.Images)
-     .Encoded(false)
-     .Sanitized(false)
-     .Css("smallGridColumn")
-     .RenderValueAs(o => GridImageColumn(o, controllerName));
+           columns.Add(r => r.ImageState)
+           .Titled(AdminResource.Images)
+           .Encoded(false)
+           .Sanitized(false)
+           .Css("smallGridColumn")
+           .RenderValueAs(o => GridImageColumn(o, controllerName));
 
- }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+       }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>
     </div>
 </div>

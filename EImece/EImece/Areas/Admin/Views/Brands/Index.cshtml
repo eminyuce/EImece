@@ -58,111 +58,88 @@ columns.Add()
     @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white    " })
 </b>);
 
-    if (UserRoleHelper.IsDeletedEnableRoles())
-    {
-        columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .SetWidth(30)
-        .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+if (UserRoleHelper.IsDeletedEnableRoles())
+{
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
 { "ItemId", d.Id },
 {"controllerName",controllerName},
 { "DeleteText", gridDeleteText },
 { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
 { "ItemDescription", d.Name } }));
 
-    }
+}
 
-    columns.Add(c => c.Name)
-    .Titled(AdminResource.Name);
+columns.Add(c => c.Name)
+.Titled(AdminResource.Name);
 
-    columns.Add(o => o.Position).Titled(AdminResource.Position)
-    .Encoded(false).
-    Sanitized(false).
-    SetWidth(10).
-    RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+columns.Add(o => o.Position).Titled(AdminResource.Position)
+.Encoded(false).
+Sanitized(false).
+SetWidth(10).
+RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-    columns.Add(o => o.IsActive)
-    .Titled(AdminResource.IsActive)
-    .Sortable(true)
-    .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-    Sanitized(false)
-    .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-             o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+columns.Add(o => o.IsActive)
+.Titled(AdminResource.IsActive)
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
+         o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
-    columns.Add(o => o.ImageState)
-    .Titled(AdminResource.ImageState)
-    .Sortable(true)
-    .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-    Sanitized(false)
-    .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
-             o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState));
+columns.Add(o => o.ImageState)
+.Titled(AdminResource.ImageState)
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}'  {1}  name='spanImageState'></span>",
+         o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState));
 
-    columns.Add(o => o.MainPage)
-    .Titled(AdminResource.MainPage)
-    .Sortable(true)
-    .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-    Sanitized(false)
-    .RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
-                  o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage));
+columns.Add(o => o.MainPage)
+.Titled(AdminResource.MainPage)
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => String.Format("<span  gridkey-id='{0}'  grid-data-value='{2}' {1} name='spanMainPage' ></span>",
+              o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage));
 
-    columns.Add(o => o.UpdatedDate)
-    .Titled(AdminResource.UpdatedDate)
-    .Sortable(true)
-    .Css("gridDateClass")
-    .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
-    .SortInitialDirection(GridSortDirection.Descending);
+columns.Add(o => o.UpdatedDate)
+.Titled(AdminResource.UpdatedDate)
+.Sortable(true)
+.Css("gridDateClass")
+.RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
+.SortInitialDirection(GridSortDirection.Descending);
 
-    columns.Add()
-    .Titled(AdminResource.Images)
-    .Encoded(false)
-    .Sanitized(false)
+columns.Add()
+.Titled(AdminResource.Images)
+.Encoded(false)
+.Sanitized(false)
 
-    .SetWidth(30)
-    .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
+.SetWidth(30)
+.RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
-    columns.Add()
-     .Titled("Fiyat Guncelleme")
-     .Encoded(false)
-     .Sanitized(false)
-     .Css("smallGridColumn")
-     .RenderValueAs(o => PriceUpdates(o, controllerName));
+columns.Add()
+ .Titled("Fiyat Guncelleme")
+ .Encoded(false)
+ .Sanitized(false)
+ .Css("smallGridColumn")
+ .RenderValueAs(o => PriceUpdates(o, controllerName));
 
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
 
 
-@helper PriceUpdates(Brand o, String controllerName)
+@helper PriceUpdates(Brand d)
 {
 
-    <div class="container">
-        <!-- Example button for a specific category -->
-        <button class="btn btn-outline btn-success btn-xs" data-product-brand-Id="@o.Id" onclick="fiyatlariGuncelleBrand(event)">Güncelle</button>
-        <select data-product-brand-percantage="@o.Id">
-            <option value="50.00">%50 Artır</option>
-            <option value="45.00">%45 Artır</option>
-            <option value="40.00">%40 Artır</option>
-            <option value="35.00">%35 Artır</option>
-            <option value="30.00">%30 Artır</option>
-            <option value="25.00">%25 Artır</option>
-            <option value="20.00">%20 Artır</option>
-            <option value="15.00">%15 Artır</option>
-            <option value="10.00">%10 Artır</option>
-            <option value="5.00">%5 Artır</option>
-            <option value="0.00" selected>Değişiklik Yok</option>
-            <option value="-5.00">%5 Azalt</option>
-            <option value="-10.00">%10 Azalt</option>
-            <option value="-15.00">%15 Azalt</option>
-            <option value="-20.00">%20 Azalt</option>
-            <option value="-25.00">%25 Azalt</option>
-            <option value="-30.00">%30 Azalt</option>
-            <option value="-35.00">%35 Azalt</option>
-            <option value="-40.00">%40 Azalt</option>
-            <option value="-45.00">%45 Azalt</option>
-            <option value="-50.00">%50 Azalt</option>
-        </select>
-        <div data-product-brand-result="@o.Id"></div>
-    </div>
+    @Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) {
+        { "ItemId", d.Id },
+        { "ItemType", "Brand" }
+
+    });
 
 }

@@ -275,22 +275,38 @@ $(document).ready(function () {
         handle1.text(parseInt(value));
     });
 });
-function fiyatlariGuncelleTag(e) {
+
+
+function fiyatlariGuncelleGeneric(e) {
     var caller = e.target; // The button that was clicked
-    var tagId = $(caller).attr('data-product-tag-Id');
-    const yuzde = $('[data-product-tag-percantage="' + tagId + '"]').val();
-    const sonucDiv = $('[data-product-tag-result="' + tagId + '"]');
+    var itemType = $(caller).attr('data-product-item-type');
+    var itemId = $(caller).attr('data-product-item-id');
+    var uniqueKey = itemType + '-' + itemId;
+
+    const yuzde = $('[data-product-item-percentage="' + uniqueKey + '"]').val();
+    const sonucDiv = $('[data-product-item-result="' + uniqueKey + '"]');
 
     sonucDiv.html("Fiyatlar güncelleniyor...");
 
-    var payloadData = JSON.stringify({
-        percentageOfIncreaseOrDecrease: parseFloat(yuzde),
-        tagId: parseInt(tagId)
-    });
+    // Build payload based on item type
+    var payload = {
+        percentageOfIncreaseOrDecrease: parseFloat(yuzde)
+    };
+
+    // Add the appropriate ID property based on type
+    if (itemType === 'ProductCategory') {
+        payload.categoryId = parseInt(itemId);
+    } else if (itemType === 'Brand') {
+        payload.brandId = parseInt(itemId);
+    } else if (itemType === 'Tag') {
+        payload.tagId = parseInt(itemId);
+    }
+
+    var payloadData = JSON.stringify(payload);
     console.log("Fiyat Güncelle: " + payloadData);
 
     $.ajax({
-        url: '/Admin/Ajax/UpdatePrices', // Default MVC URL for Admin/AjaxController/UpdatePrices
+        url: '/Admin/Ajax/UpdatePrices',
         type: 'POST',
         data: payloadData,
         contentType: 'application/json',
@@ -306,68 +322,9 @@ function fiyatlariGuncelleTag(e) {
         }
     });
 }
-function fiyatlariGuncelleBrand(e) {
-    var caller = e.target; // The button that was clicked
-    var brandId = $(caller).attr('data-product-brand-Id');
-    const yuzde = $('[data-product-brand-percantage="' + brandId + '"]').val();
-    const sonucDiv = $('[data-product-brand-result="' + brandId + '"]');
 
-    sonucDiv.html("Fiyatlar güncelleniyor...");
 
-    var payloadData = JSON.stringify({
-        percentageOfIncreaseOrDecrease: parseFloat(yuzde),
-        brandId: parseInt(brandId)
-    });
-    console.log("Fiyat Güncelle: " + payloadData);
-
-    $.ajax({
-        url: '/Admin/Ajax/UpdatePrices', // Default MVC URL for Admin/AjaxController/UpdatePrices
-        type: 'POST',
-        data: payloadData,
-        contentType: 'application/json',
-        success: function (response) {
-            if (response.success) {
-                sonucDiv.html(`Başarılı! ${response.affectedRows} satır güncellendi.`);
-            } else {
-                sonucDiv.html(`Hata: ${response.message || 'Bilinmeyen bir hata oluştu.'}`);
-            }
-        },
-        error: function (xhr, status, error) {
-            sonucDiv.html(`Hata: ${xhr.responseText || 'Fiyatlar güncellenemedi.'}`);
-        }
-    });
-}
-function fiyatlariGuncelle(e) {
-    var caller = e.target; // The button that was clicked
-    var productCategoryId = $(caller).attr('data-product-category-button');
-    const yuzde = $('[data-product-category-percantage="' + productCategoryId + '"]').val();
-    const sonucDiv = $('[data-product-category-result="' + productCategoryId + '"]');
-
-    sonucDiv.html("Fiyatlar güncelleniyor...");
-
-    var payloadData = JSON.stringify({
-        percentageOfIncreaseOrDecrease: parseFloat(yuzde),
-        categoryId: parseInt(productCategoryId) // Ensure CategoryId is an integer
-    });
-    console.log("Fiyat Güncelle: " + payloadData);
-
-    $.ajax({
-        url: '/Admin/Ajax/UpdatePrices', // Default MVC URL for Admin/AjaxController/UpdatePrices
-        type: 'POST',
-        data: payloadData,
-        contentType: 'application/json',
-        success: function (response) {
-            if (response.success) {
-                sonucDiv.html(`Başarılı! ${response.affectedRows} satır güncellendi.`);
-            } else {
-                sonucDiv.html(`Hata: ${response.message || 'Bilinmeyen bir hata oluştu.'}`);
-            }
-        },
-        error: function (xhr, status, error) {
-            sonucDiv.html(`Hata: ${xhr.responseText || 'Fiyatlar güncellenemedi.'}`);
-        }
-    });
-}
+ 
 function GetSelectedCheckBoxValues() {
     var stringArray = GetSelectedCheckBoxValuesArray();
     var jsonRequest = JSON.stringify({ "values": stringArray });
