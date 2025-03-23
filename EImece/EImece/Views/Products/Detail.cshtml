@@ -90,7 +90,7 @@
 
                         <li class="active">
                             <a href="#one">
-                                <img alt="Product thumb" src="@mainImageThbImgSrc" width="95" height="105" />
+                                <img alt="@product.Name" src="@mainImageThbImgSrc" width="95" height="105" />
                             </a>
                         </li>
                     }
@@ -101,7 +101,7 @@
                         var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
                         <li class="">
                             <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img alt="Product thumb" src="@imgTag" />
+                                <img alt="@f.Name" src="@imgTag" />
                             </a>
                         </li>
                     }
@@ -112,7 +112,7 @@
                     {
 
                         <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@mainImageImgSrc" width="610" height="610" alt="Product">
+                            <img src="@mainImageImgSrc" width="610" height="610" alt="@product.Name">
                         </a>
 
                     }
@@ -130,7 +130,7 @@
                         if (!string.IsNullOrEmpty(imgTag))
                         {
                             <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img src="@imgTag" alt="Product">
+                                <img src="@imgTag" alt="@f.Name">
                             </a>
                         }
                     }
