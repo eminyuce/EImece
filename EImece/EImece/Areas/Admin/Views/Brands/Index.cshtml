@@ -126,7 +126,7 @@ columns.Add()
  .Encoded(false)
  .Sanitized(false)
  .Css("smallGridColumn")
- .RenderValueAs(o => PriceUpdates(o, controllerName));
+ .RenderValueAs(o => PriceUpdates(o));
 
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
