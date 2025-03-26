@@ -212,7 +212,13 @@ namespace EImece.Domain
                 return GetConfigInt("CacheVeryLongSeconds", 180000);
             }
         }
-
+        public static int MusteriIliskileriChildrenIdTurkce
+        {
+            get
+            {
+                return GetConfigInt("MusteriIliskileriChildrenIdTurkce", 6149);
+            }
+        }
         public static bool IsEditLinkEnable
         {
             get

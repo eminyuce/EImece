@@ -66,62 +66,47 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public ActionResult Index()
         {
-            // MigrationRepository.GetProductImages();
-            HomeLogger.Info("Entering Index action.");
             MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
-            HomeLogger.Info($"Retrieved MainPageViewModel for language: {CurrentLanguage}");
             mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle, CurrentLanguage).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
             ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords, CurrentLanguage).ToStr();
-            HomeLogger.Info("Set ViewBag with meta title, description, and keywords.");
-            HomeLogger.Info("Returning Index view.");
             return View(mainPageModel);
         }
 
         [HttpPost]
         public ActionResult AddSubscriber(Subscriber subscriber)
         {
-            HomeLogger.Info("Entering AddSubscriber POST action.");
             var emailChecker = new EmailAddressAttribute();
             if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()) || !emailChecker.IsValid(subscriber.Email.ToStr().Trim()))
             {
-                HomeLogger.Error($"Invalid subscriber data. Subscriber: {subscriber?.Email ?? "null"}");
-                HomeLogger.Info("Returning BadRequest status.");
+                HomeLogger.Error($"Invalid subscriber data.BadRequest status. Subscriber: {subscriber?.Email ?? "null"}");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             else
             {
-                HomeLogger.Info($"Valid subscriber email: {subscriber.Email}");
                 subscriber.Name = subscriber.Email;
                 subscriber.IsActive = true;
                 SubsciberService.SaveOrEditEntity(subscriber);
-                HomeLogger.Info($"Subscriber saved with ID: {subscriber.Id}");
-                HomeLogger.Info($"Redirecting to ThanksForSubscription with ID: {subscriber.Id}");
                 return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
             }
         }
 
         public ActionResult ThanksForSubscription(int? id)
         {
-            HomeLogger.Info($"Entering ThanksForSubscription with id: {id}");
             if (!id.HasValue)
             {
-                HomeLogger.Error("ID is null.");
-                HomeLogger.Info("Returning BadRequest status.");
+                HomeLogger.Error("ID is null ThanksForSubscription.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             var s = SubsciberService.GetSingle(id.Value);
-            HomeLogger.Info($"Retrieved subscriber with ID: {id}");
-            HomeLogger.Info("Returning ThanksForSubscription view.");
             return View(s);
         }
 
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
-            HomeLogger.Info("Entering SocialMediaLinks action.");
             var resultList = new Dictionary<String, String>();
             resultList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
             resultList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));
@@ -129,8 +114,6 @@ namespace EImece.Controllers
             resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
             resultList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
             resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
-            HomeLogger.Info("Populated social media links dictionary.");
-            HomeLogger.Info("Returning _SocialMediaLinks partial view.");
             return PartialView("_SocialMediaLinks", resultList);
         }
 
@@ -138,10 +121,7 @@ namespace EImece.Controllers
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GoogleAnalyticsTrackingScript()
         {
-            HomeLogger.Info("Entering GoogleAnalyticsTrackingScript action.");
             var GoogleAnalyticsTrackingScript = SettingService.GetSettingByKey(Constants.GoogleAnalyticsTrackingScript).ToStr();
-            HomeLogger.Info("Retrieved Google Analytics tracking script.");
-            HomeLogger.Info("Returning script content.");
             return Content(GoogleAnalyticsTrackingScript);
         }
 
@@ -149,25 +129,18 @@ namespace EImece.Controllers
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult WhatsAppCommunicationScript()
         {
-            HomeLogger.Info("Entering WhatsAppCommunicationScript action.");
             var script = SettingService.GetSettingByKey(Constants.WhatsAppCommunicationScript).ToStr();
-            HomeLogger.Info("Retrieved WhatsApp communication script.");
-            HomeLogger.Info("Returning script content.");
             return Content(script);
         }
 
         public ActionResult Languages()
         {
-            HomeLogger.Info("Entering Languages action.");
             List<SelectListItem> listItems = EnumHelper.ToSelectList3("Language");
-            HomeLogger.Info("Generated language select list.");
-            HomeLogger.Info("Returning _Languages partial view.");
             return PartialView("_Languages", listItems);
         }
 
         public ActionResult GetHtmlLangCode()
         {
-            HomeLogger.Info("Entering GetHtmlLangCode action.");
             switch ((EImeceLanguage)CurrentLanguage)
             {
                 case EImeceLanguage.Turkish:
@@ -190,23 +163,16 @@ namespace EImece.Controllers
         [ChildActionOnly]
         public ActionResult Navigation(string lang)
         {
-            HomeLogger.Info($"Entering Navigation action with lang: {lang}");
             var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            HomeLogger.Info($"Converted lang to EImeceLanguage: {eImageLang}");
             var menus = MenuService.BuildTree(true, eImageLang);
             var tree = ProductCategoryService.BuildNavigation(true, eImageLang);
-            HomeLogger.Info("Built menu and navigation trees.");
-            HomeLogger.Info("Returning _Navigation partial view.");
             return PartialView("_Navigation", new NavigationModel(menus, tree));
         }
 
         [ChildActionOnly]
         public ActionResult ProductCategoryTree()
         {
-            HomeLogger.Info("Entering ProductCategoryTree action.");
             var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
-            HomeLogger.Info($"Built product category tree for language: {CurrentLanguage}");
-            HomeLogger.Info("Returning _ProductCategoryTree partial view.");
             return PartialView("_ProductCategoryTree", tree);
         }
 
@@ -214,45 +180,34 @@ namespace EImece.Controllers
         [ChildActionOnly]
         public ActionResult WebSiteLogo()
         {
-            HomeLogger.Info("Entering WebSiteLogo action.");
             var item = new SettingLayoutViewModel();
             item.WebSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
             item.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
-            HomeLogger.Info("Set website logo and company name in model.");
-            HomeLogger.Info("Returning _WebSiteLogo partial view.");
             return PartialView("_WebSiteLogo", item);
         }
 
         [ChildActionOnly]
         public ActionResult Footer(string lang)
         {
-            HomeLogger.Info($"Entering Footer action with lang: {lang}");
             var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            HomeLogger.Info($"Converted lang to EImeceLanguage: {eImageLang}");
             var footerViewModel = MainPageImageService.GetFooterViewModel(eImageLang);
-            HomeLogger.Info("Retrieved footer view model.");
-            HomeLogger.Info("Returning _Footer partial view.");
             return PartialView("_Footer", footerViewModel);
         }
 
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GetCompanyName()
         {
-            HomeLogger.Info("Entering GetCompanyName action.");
             string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
             HomeLogger.Info($"Retrieved company name: {companyName}");
-            HomeLogger.Info("Returning company name content.");
             return Content(companyName);
         }
 
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
-            HomeLogger.Info($"Entering WebSiteAddressInfo action with isMobilePage: {isMobilePage}");
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
             item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation);
             item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
-            HomeLogger.Info("Set website address info in model.");
             HomeLogger.Info("Returning _WebSiteAddressInfo partial view.");
             return PartialView("_WebSiteAddressInfo", item);
         }

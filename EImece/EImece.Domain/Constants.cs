@@ -50,6 +50,7 @@ namespace EImece.Domain
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
         public const string IsProductPriceEnable = "IsProductPriceEnable";        
         public const string IsProductReviewEnable = "IsProductReviewEnable";
+        public const string WhatsAppCommunicationLink = "WhatsAppCommunicationLink";
         public const string GoogleMapScript = "GoogleMapScript";
         public const string SiteIndexMetaDescription = "SiteIndexMetaDescription";
         public const string SiteIndexMetaKeywords = "SiteIndexMetaKeywords";

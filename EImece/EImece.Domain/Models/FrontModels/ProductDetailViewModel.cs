@@ -31,12 +31,58 @@ namespace EImece.Domain.Models.FrontModels
         public Setting CargoDescription { get; set; }      
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
+        public Setting WhatsAppCommunicationLink { get; set; }
+
         public string SeoId { get; set; }
+
 
         public ProductDetailViewModel()
         {
             ProductComment = new ProductComment();
         }
+
+        public string WhatsAppCommunicationLinkGenerateScript
+        {
+            get
+            {
+                // Null kontrolü: Eğer temel verilerden biri null ise boş string dön
+                if (WhatsAppCommunicationLink == null || WhatsAppCommunicationLink.SettingValue == null || Product == null)
+                {
+                    return string.Empty; // ""
+                }
+
+                // Şablon
+                string whatsAppLinkTemplate = WhatsAppCommunicationLink.SettingValue.ToStr();
+                if (string.IsNullOrEmpty(whatsAppLinkTemplate))
+                {
+                    return string.Empty; // ""
+                }
+                // Ürün adı (null kontrolü zaten Product için yapıldı, burada sadece ProductNameStr için)
+                string detailPageAbsoluteUrl = Product.DetailPageAbsoluteUrl;
+
+                // {product.Name} ile değiştir
+                string linkWithProduct = whatsAppLinkTemplate.Replace("{Product.DetailPageAbsoluteUrl}", detailPageAbsoluteUrl);
+
+                // text= kısmını ayır ve escape et
+                int textIndex = linkWithProduct.IndexOf("?text=");
+                if (textIndex == -1)
+                {
+                    // Eğer ?text= yoksa, varsayılan bir mesajla devam et
+                    string defaultMessage = Uri.EscapeDataString($"Merhaba {detailPageAbsoluteUrl} ile ilgili bilgi almak istiyorum");
+                    return $"https://wa.me/905322739101?text={defaultMessage}";
+                }
+
+                textIndex += 6; // "?text=" sonrasını al
+                string message = linkWithProduct.Substring(textIndex);
+                string escapedMessage = Uri.EscapeDataString(message);
+
+                // Nihai linki oluştur
+                string finalLink = linkWithProduct.Substring(0, textIndex) + escapedMessage;
+
+                return finalLink;
+            }
+        }
+
 
         public Dictionary<string, string> SocialMediaLinks { get; set; }
 

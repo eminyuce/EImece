@@ -4796,6 +4796,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WhatsApp Iletisim Linki.
+        /// </summary>
+        public static string WhatsAppCommunicationLink {
+            get {
+                return ResourceManager.GetString("WhatsAppCommunicationLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WhatsApp Script.
         /// </summary>
         public static string WhatsAppCommunicationScript {
