@@ -38,10 +38,20 @@
 </div>
 @Html.Raw(HttpUtility.HtmlDecode(desc))
 <!-- Split section: Map + Contact form-->
+<!-- Split section: Map + Contact form-->
 <div class="container-fluid" id="map" data-offset-top="30">
     <div class="row no-gutters">
         <div class="col-lg-6 iframe-full-height-wrap">
+            <!-- Google Map Script -->
             @Html.Raw(Model.GoogleMapScript.SettingValue)
+
+            <!-- Company Info Section -->
+            <div class="company-info mt-3 text-muted">
+                <h4>@Model.CompanyName.SettingValue.ToStr()</h4>
+                <p>@Resource.CompanyAddress : @Model.CompanyAddress.SettingValue.ToStr()</p>
+                <p>@Resource.WebSiteCompanyPhoneAndLocation : @Model.WebSiteCompanyPhoneAndLocation.SettingValue.ToStr()</p>
+                <p>@Resource.WebSiteCompanyEmailAddress : @Model.WebSiteCompanyEmailAddress.SettingValue.ToStr()</p>
+            </div>
         </div>
         <div class="col-lg-6 px-4 px-xl-5 py-5 border-top">
             <h2 class="h4 mb-4">@Resource.DropUsALine</h2>
@@ -49,6 +59,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

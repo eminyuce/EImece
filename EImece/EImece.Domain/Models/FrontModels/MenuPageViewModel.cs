@@ -16,7 +16,27 @@ namespace EImece.Domain.Models.FrontModels
                 return GetSetting(Constants.CompanyName);
             }
         }
-
+        public Setting CompanyAddress
+        {
+            get
+            {
+                return GetSetting(Constants.CompanyAddress);
+            }
+        }
+        public Setting WebSiteCompanyPhoneAndLocation
+        {
+            get
+            {
+                return GetSetting(Constants.WebSiteCompanyPhoneAndLocation);
+            }
+        }
+        public Setting WebSiteCompanyEmailAddress
+        {
+            get
+            {
+                return GetSetting(Constants.WebSiteCompanyEmailAddress);
+            }
+        }
         private Setting GetSetting(string key)
         {
             return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
