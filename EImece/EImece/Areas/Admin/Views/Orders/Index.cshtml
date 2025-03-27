@@ -1,13 +1,15 @@
 ﻿@using EImece.Models;
-@using GridMvc.Html
-@using GridMvc.Sorting
+@using GridMvc.Html;
+@using GridMvc.Sorting;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
+
 @model List<Order>
+
 @{
     var orders = Model;
 
@@ -22,11 +24,10 @@
     var gridName = "OrdersGrid";
     var contents = Model;
 
-    var gridImagesText = AdminResource.GridImagesText;
-
     var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
     var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
 }
+
 <h2>@AdminResource.Orders</h2>
 <hr class="adminLine" />
 
@@ -37,12 +38,13 @@
         </span>
     </div>
 </div>
+
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
             <span class="col-md-6">
-                <span class="label ">
-                    <span class="badge text-danger text-large">@contents.Count() </span>
+                <span class="label">
+                    <span class="badge text-danger text-large">@contents.Count()</span>
                     @GridResultRecordNumber
                 </span>
             </span>
@@ -51,15 +53,40 @@
             </span>
         </div>
     </div>
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
-    {
 
-        columns.Add(o => o.CreatedDate)
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+    // Order Number (with link to details)
+    columns.Add(o => o.OrderNumber)
+        .Titled(AdminResource.OrderNumber)
+        .Sortable(true)
+        .RenderValueAs(o => @Html.ActionLink(o.OrderNumber, "Details", new { id = o.Id }, new { @class = "grid-link" }));
+
+
+    // Order Status
+    columns.Add(o => o.OrderStatus)
+        .Titled(AdminResource.OrderStatus)
+        .Sortable(true)
+        .RenderValueAs(o => o.OrderStatus.ToString()); // Replace with enum description if available
+
+    // Created Date
+    columns.Add(o => o.CreatedDate)
         .Titled(AdminResource.CustomerRegistrationDate)
         .Sortable(true)
         .Css("gridDateClass")
-        .RenderValueAs(o => o.CreatedDate != null ? String.Format("{0}", o.CreatedDate.ToShortDateString()) : null)
+        .RenderValueAs(o => o.CreatedDate != null ? o.CreatedDate.ToShortDateString() : "-")
         .SortInitialDirection(GridSortDirection.Descending);
 
-    }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+    // Paid Price
+    columns.Add(o => o.PaidPrice)
+        .Sortable(true)
+        .RenderValueAs(o => o.PaidPrice +" "+ o.Currency);
+
+    columns.Add(o => o.PaymentStatus)
+        .Sortable(true);
+
+    columns.Add(o => o.Status)
+      .Sortable(true);
+
+}).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

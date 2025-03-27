@@ -1,0 +1,197 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+
+@model Order
+
+@{
+    ViewBag.Title = $"Order Details - {Model.OrderNumber}";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@AdminResource.OrderDetails</h2>
+<hr class="adminLine" />
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Order #@Model.OrderNumber</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>@AdminResource.OrderNumber</dt>
+            <dd>@Model.OrderNumber</dd>
+
+            <!-- Assuming this is inside the panel-body of your Details view -->
+            <h3>@Customer Details</h3>
+            <dl class="dl-horizontal">
+                <!-- BaseEntity Properties -->
+                <dt>@AdminResource.Id</dt>
+                <dd>@Model.Customer.Id</dd>
+
+                <dt>@AdminResource.Name</dt>
+                <dd>@Model.Customer.Name</dd>
+
+                <dt>@AdminResource.CreatedDate</dt>
+                <dd>@Model.Customer.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+                <dt>@AdminResource.UpdatedDate</dt>
+                <dd>@Model.Customer.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+                <dt>@AdminResource.IsActive</dt>
+                <dd>@Model.Customer.IsActive.ToString()</dd>
+
+                <dt>@AdminResource.Position</dt>
+                <dd>@Model.Customer.Position</dd>
+
+                <dt>@AdminResource.Lang</dt>
+                <dd>@Model.Customer.Lang</dd>
+
+                <!-- Customer-Specific Properties -->
+                <dt>@Resource.LastName</dt>
+                <dd>@Model.Customer.Surname</dd>
+
+                <dt>@Resource.PhoneNumber</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.GsmNumber) ? "-" : Model.Customer.GsmNumber)</dd>
+
+                <dt>@Resource.Email</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Email) ? "-" : Model.Customer.Email)</dd>
+
+                <dt>@Resource.IdentityNumber</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.IdentityNumber) ? "-" : Model.Customer.IdentityNumber)</dd>
+
+                <dt>@AdminResource.IpAddress</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Ip) ? "-" : Model.Customer.Ip)</dd>
+
+                <dt>@Resource.IsSameAsShippingAddress</dt>
+                <dd>@Model.Customer.IsSameAsShippingAddress.ToString()</dd>
+
+                <dt>@AdminResource.UserId</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.UserId) ? "-" : Model.Customer.UserId)</dd>
+
+                <dt>@AdminResource.IsPermissionGranted</dt>
+                <dd>@Model.Customer.IsPermissionGranted.ToString()</dd>
+
+                <dt>@Resource.Gender</dt>
+                <dd>@Model.Customer.Gender.ToString()</dd> <!-- Replace with enum description if applicable -->
+
+                <dt>@Resource.Street</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Street) ? "-" : Model.Customer.Street)</dd>
+
+                <dt>@Resource.Town</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Town) ? "-" : Model.Customer.Town)</dd>
+
+                <dt>@Resource.District</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.District) ? "-" : Model.Customer.District)</dd>
+
+                <dt>@Resource.City</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.City) ? "-" : Model.Customer.City)</dd>
+
+                <dt>@Resource.Country</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Country) ? "-" : Model.Customer.Country)</dd>
+
+                <dt>@Resource.ZipCode</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.ZipCode) ? "-" : Model.Customer.ZipCode)</dd>
+
+                <dt>@Resource.CustomerOpenAddress</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Description) ? "-" : Model.Customer.Description)</dd>
+
+                <dt>@Resource.Company</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Company) ? "-" : Model.Customer.Company)</dd>
+
+                <dt>@AdminResource.CustomerType</dt>
+                <dd>@Model.Customer.CustomerType.ToString()</dd> <!-- Replace with enum description if applicable -->
+                <!-- NotMapped Properties -->
+                <dt>@Resource.AnswerSecurityQuestion</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Customer.Captcha) ? "-" : Model.Customer.Captcha)</dd>
+
+                <dt>@AdminResource.OrderLatestDate</dt>
+                <dd>@(Model.Customer.OrderLatestDate == default(DateTime) ? "-" : Model.Customer.OrderLatestDate.ToString("yyyy-MM-dd HH:mm:ss"))</dd>
+
+                <dt>@AdminResource.OrderCount</dt>
+                <dd>@(Model.Customer.Orders != null ? Model.Customer.Orders.Count.ToString() : "0")</dd>
+
+                <dt>@AdminResource.FullName</dt>
+                <dd>@Model.Customer.FullName</dd>
+
+                <dt>@AdminResource.Address</dt>
+                <dd>@Model.Customer.Address.Replace(Environment.NewLine, "<br/>")</dd>
+
+                <dt>@AdminResource.RegistrationAddress</dt>
+                <dd>@Model.Customer.RegistrationAddress</dd>
+            </dl>
+
+
+            <dt>OrderStatus</dt>
+            <dd>@Model.OrderStatus.ToString()</dd> <!-- Replace with enum description if available -->
+
+            <dt>CreatedDate</dt>
+            <dd>@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+            <dt>DeliveryDate</dt>
+            <dd>@Model.DeliveryDate.ToString("yyyy-MM-dd")</dd>
+
+            <dt>PaidPrice</dt>
+            <dd>@Model.PaidPrice @Model.Currency</dd>
+
+            <dt>CargoPrice</dt>
+            <dd>@Model.CargoPrice.ToString("C")</dd>
+
+            <dt>ShippingAddress</dt>
+            <dd>@(Model.ShippingAddress != null ? Model.ShippingAddress.ToString() : "-")</dd>
+
+            <dt>BillingAddress</dt>
+            <dd>@(Model.BillingAddress != null ? Model.BillingAddress.ToString() : "-")</dd>
+
+            <dt>OrderComments</dt>
+            <dd>@(string.IsNullOrEmpty(Model.OrderComments) ? "-" : Model.OrderComments)</dd>
+
+            <dt>AdminOrderNote</dt>
+            <dd>@(string.IsNullOrEmpty(Model.AdminOrderNote) ? "-" : Model.AdminOrderNote)</dd>
+
+            <dt>ShipmentTrackingNumber</dt>
+            <dd>@(string.IsNullOrEmpty(Model.ShipmentTrackingNumber) ? "-" : Model.ShipmentTrackingNumber)</dd>
+
+            <dt>ShipmentCompanyName</dt>
+            <dd>@(string.IsNullOrEmpty(Model.ShipmentCompanyName) ? "-" : Model.ShipmentCompanyName)</dd>
+
+            <dt>PaymentStatus</dt>
+            <dd>@Model.PaymentStatus</dd>
+
+            <dt>CardType</dt>
+            <dd>@(string.IsNullOrEmpty(Model.CardType) ? "-" : Model.CardType)</dd>
+
+            <dt>LastFourDigits</dt>
+            <dd>@(string.IsNullOrEmpty(Model.LastFourDigits) ? "-" : $"****-****-****-{Model.LastFourDigits}")</dd>
+        </dl>
+
+        <!-- Order Products (if available) -->
+        @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+        {
+            <h4>Order Products</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ProductName</th>
+                        <th>CategoryName</th>
+                        <th>@AdminResource.Quantity</th>
+                        <th>@AdminResource.Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.OrderProducts)
+                    {
+                    <tr>
+                        <td>@product.ProductName</td>
+                        <td>@product.CategoryName</td>
+                        <td>@product.Quantity</td>
+                        <td>@product.Price</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="panel-footer">
+        <a href="@Url.Action("Index")" class="btn btn-default">@AdminResource.BackToList</a>
+    </div>
+</div>
