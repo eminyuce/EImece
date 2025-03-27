@@ -197,9 +197,8 @@ namespace EImece.Controllers
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
-                Logger.Info("Model state is invalid. Adding error.");
+              
                 ModelState.AddModelError("", "Model is not correct.");
-                Logger.Info("Returning Login view with errors.");
                 return View(model);
             }
 
@@ -424,6 +423,16 @@ namespace EImece.Controllers
             }
             else
             {
+                if (!model.Password.Any(char.IsLower))
+                    ModelState.AddModelError("Password", "Şifre en az bir küçük harf içermelidir.");
+                if (!model.Password.Any(char.IsUpper))
+                    ModelState.AddModelError("Password", "Şifre en az bir büyük harf içermelidir.");
+                if (!model.Password.Any(char.IsDigit))
+                    ModelState.AddModelError("Password", "Şifre en az bir sayı içermelidir.");
+                if (model.Password.Length < 6)
+                    ModelState.AddModelError("Password", "Şifre en az 6 karakter olmalıdır.");
+
+
                 Logger.Info("Model state is invalid. Adding error.");
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
             }
@@ -724,7 +733,29 @@ namespace EImece.Controllers
             foreach (var error in result.Errors)
             {
                 Logger.Info($"Adding error: {error}");
-                ModelState.AddModelError("", error);
+                string errorMessage = error.ToLower(); // Büyük/küçük harf duyarlılığını kaldırmak için
+
+                if (errorMessage.Contains("passwords must have at least one lowercase"))
+                {
+                    ModelState.AddModelError("", "Şifrelerde en az bir küçük harf ('a'-'z') bulunmalıdır.");
+                }
+                else if (errorMessage.Contains("passwords must have at least one uppercase"))
+                {
+                    ModelState.AddModelError("", "Şifrelerde en az bir büyük harf ('A'-'Z') bulunmalıdır.");
+                }
+                else if (errorMessage.Contains("passwords must be at least"))
+                {
+                    ModelState.AddModelError("", "Şifre en az 6 karakter olmalıdır.");
+                }
+                else if (errorMessage.Contains("passwords must have at least one digit"))
+                {
+                    ModelState.AddModelError("", "Şifrelerde en az bir sayı bulunmalıdır.");
+                }
+                else
+                {
+                    // Bilinmeyen hata mesajlarını olduğu gibi ekle
+                    ModelState.AddModelError("", error);
+                }
             }
         }
 
