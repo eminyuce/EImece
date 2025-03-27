@@ -3,10 +3,12 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
 @using EImece.Domain.Helpers;
+@using System.Linq;
 @using Resources;
 @{
     var menu = Model.Menu;
-    var files = menu.MenuFiles.ToList();
+    var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
+
     ViewBag.Title = string.Format("{0} {1}", Model.CompanyName.SettingValue, menu.GetSeoTitle());
     ViewBag.Description = menu.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
@@ -39,10 +41,10 @@ else
                     </ol>
                 </nav>
             </div>
-                <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
-                <hr class="mt-4">
-            </div>
+            <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
+            <hr class="mt-4">
         </div>
+    </div>
 
     <div class="container pb-5 mb-4">
         <div class="row">
@@ -98,7 +100,7 @@ else
                         for (int i = 0; i < files.Count; i++)
                         {
                             var f = files[i].FileStorage;
-                            <div class="col-md-4">
+                            <div class="col-md-4" data-file-position="@f.Position">
                                 @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
                             </div>
                         }

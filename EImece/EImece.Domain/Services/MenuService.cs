@@ -79,7 +79,7 @@ namespace EImece.Domain.Services
         {
             var result = new MenuPageViewModel();
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-            result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
+            result.Menu = MenuRepository.GetMenuById(menuId);
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
             return result;
