@@ -104,13 +104,16 @@ namespace EImece.Domain.Services
                 return setting;
             }
         }
-
+        private List<Setting> GetAllSettingsNoCache()
+        {
+            return SettingRepository.GetAllSettings();
+        }
         public SystemSettingModel GetSystemSettingModel()
         {
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = GetAllSettings().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            List<Setting> Settings = GetAllSettingsNoCache().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {

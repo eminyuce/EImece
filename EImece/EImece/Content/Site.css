@@ -174,3 +174,22 @@ ul.footer-links {
     padding: 0 7px 0 0;
     color: #fff;
 }
+
+.urun-detay-whatsapp {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #25D366; /* WhatsApp yeşili */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .urun-detay-whatsapp:hover {
+        background-color: #1ebe57; /* Hover için daha koyu yeşil */
+    }
+
+.whatsapp-icon {
+    margin-right: 10px;
+}

@@ -1,4 +1,4 @@
-@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -48,8 +48,6 @@
 
     var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
     var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
-
-
 
 }
 <input type="hidden" name="productReviewEnable" value="@productReviewEnable.ToString().ToLower()" />
@@ -179,6 +177,9 @@
                         </h4>
                     }
 
+
+
+
                 }
                 @if (ProductSizeOptions.IsNotEmpty())
                 {
@@ -212,12 +213,27 @@
                             <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
                         </button>
                     </div>
+
+                    <div class="d-flex align-items-center pt-2">
+                        <a href="@Model.WhatsAppCommunicationLinkGenerateScript"
+                           target="_blank"
+                           class="col-auto button urun-detay-whatsapp hstack"
+                           aria-label="WhatsApp ile sipariş ver">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                 alt="WhatsApp simgesi"
+                                 width="20"
+                                 class="whatsapp-icon">
+                            <span>WhatsApp İle Sipariş</span>
+                        </a>
+                    </div>
+
+
                 }
                 <!--
-                <div  class="d-flex align-items-center pt-2">
-                    <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
-                </div>
-                            -->
+    <div  class="d-flex align-items-center pt-2">
+        <a class="btn btn-success btn-block" href="@product.BuyNowRelativeUrl" type="button">@Resource.BuyNow</a>
+    </div>
+                -->
             </div>
 
             <!-- Product panels-->
