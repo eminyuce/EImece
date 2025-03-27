@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Reports Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="navbar-header">
+        @Html.ActionLink("Reports Dashboard", "Index", "Report", new { area = "Admin" }, new { @class = "navbar-brand" })
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Coupon Usage", "CouponUsage", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+            <li>@Html.ActionLink("Fraud Analysis", "FraudAnalysis", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+            <li>@Html.ActionLink("Payment Methods", "PaymentMethod", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+            <li>@Html.ActionLink("Payment Status", "PaymentStatus", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+            <li>@Html.ActionLink("Regional Sales", "RegionalSales", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+            <li>@Html.ActionLink("Sales by Date", "SalesByDateRange", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+            <li>@Html.ActionLink("Shipment Companies", "ShipmentCompany", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
+        </ul>
+    </div>
+</div>
+
+<div class="container body-content">
+    <h2>@ViewBag.Title</h2>
+    <p>Select a report from the navigation above to view detailed analytics.</p>
+
+    <!-- You can add dashboard widgets or summary information here -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Quick Links</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            @Html.ActionLink("Today's Sales", "SalesByDateRange", "Report",
+                        new
+                                 {
+                            area = "Admin",
+                            startDate = DateTime.Today.ToString("yyyy-MM-dd"),
+                            endDate = DateTime.Today.ToString("yyyy-MM-dd")
+                        }, new { @class = "nav-link" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("This Month's Sales", "SalesByDateRange", "Report",
+                        new
+                                 {
+                            area = "Admin",
+                            startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("yyyy-MM-dd"),
+                            endDate = DateTime.Today.ToString("yyyy-MM-dd")
+                        }, new { @class = "nav-link" })
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

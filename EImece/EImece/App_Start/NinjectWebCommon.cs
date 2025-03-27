@@ -96,7 +96,8 @@ namespace EImece.App_Start
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
             kernel.Bind<AdresService>().ToSelf().InRequestScope();
-            kernel.Bind<IyzicoService>().ToSelf().InRequestScope();
+            kernel.Bind<IyzicoService>().ToSelf().InRequestScope();        
+            kernel.Bind<ReportService>().ToSelf().InRequestScope();
             kernel.Bind<MigrationRepository>().ToSelf().InRequestScope();
             kernel.Bind<SiteMapService>().ToSelf().InRequestScope();
             kernel.Bind<XmlEditorHelper>().ToSelf().InRequestScope();

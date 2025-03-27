@@ -316,6 +316,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCommentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoryCategoriesController.cs" />
@@ -1140,6 +1141,14 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Areas\Admin\Views\Shared\pPriceUpdates.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\SalesByDateRange.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\CouponUsage.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\FraudAnalysis.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\PaymentMethod.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\PaymentStatus.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\RegionalSales.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\ShipmentCompany.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

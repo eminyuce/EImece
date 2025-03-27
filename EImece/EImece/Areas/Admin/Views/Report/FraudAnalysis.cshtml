@@ -1,0 +1,37 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Fraud Analysis Report";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Date</th>
+                    <th>User ID</th>
+                    <th>Amount</th>
+                    <th>Fraud Status</th>
+                    <th>Error Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr>
+                        <td>@row["OrderNumber"]</td>
+                        <td>@string.Format("{0:d}", row["CreatedDate"])</td>
+                        <td>@row["UserId"]</td>
+                        <td>@string.Format("{0:C}", row["PaidPrice"])</td>
+                        <td>@row["FraudStatus"]</td>
+                        <td>@row["ErrorMessage"]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

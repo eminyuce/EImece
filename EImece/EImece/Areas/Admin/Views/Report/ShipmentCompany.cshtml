@@ -1,0 +1,31 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Shipment Company Report";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Shipment Company</th>
+                    <th>Order Count</th>
+                    <th>Total Cargo Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr>
+                        <td>@row["ShipmentCompanyName"]</td>
+                        <td>@row["OrderCount"]</td>
+                        <td>@string.Format("{0:C}", row["TotalCargoCost"])</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

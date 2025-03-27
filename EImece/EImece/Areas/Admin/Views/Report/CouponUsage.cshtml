@@ -1,0 +1,32 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Coupon Usage Report";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@ViewBag.Title</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Coupon Code</th>
+                        <th>Usage Count</th>
+                        <th>Total Discount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (System.Data.DataRow row in Model.Rows)
+                    {
+                        <tr>
+                            <td>@row["Coupon"]</td>
+                            <td>@row["UsageCount"]</td>
+                            <td>@row["TotalDiscount"]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

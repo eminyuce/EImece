@@ -1,0 +1,33 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Payment Status Report";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Payment Status</th>
+                    <th>Order Count</th>
+                    <th>Total Amount</th>
+                    <th>Currency</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr>
+                        <td>@row["PaymentStatus"]</td>
+                        <td>@row["OrderCount"]</td>
+                        <td>@string.Format("{0:C}", row["TotalAmount"])</td>
+                        <td>@row["Currency"]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

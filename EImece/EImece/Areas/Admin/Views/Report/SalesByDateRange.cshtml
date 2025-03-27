@@ -1,0 +1,63 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Sales Report by Date Range";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@ViewBag.Title</h2>
+
+        @using (Html.BeginForm("SalesByDateRange", "Report", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Start Date</label>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" name="startDate" value="@ViewBag.StartDate" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">End Date</label>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" name="endDate" value="@ViewBag.EndDate" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary">Generate Report</button>
+                </div>
+            </div>
+        }
+
+        @if (Model != null)
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Currency</th>
+                            <th>Order Count</th>
+                            <th>Total Revenue</th>
+                            <th>Average Order Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (System.Data.DataRow row in Model.Rows)
+                        {
+                            <tr>
+                                <td>@row["Currency"]</td>
+                                <td>@row["OrderCount"]</td>
+                                <td>@row["TotalRevenue"]</td>
+                                <td>@row["AverageOrderValue"]</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

@@ -562,6 +562,7 @@
     <Compile Include="Services\IServices\IShoppingCartService.cs" />
     <Compile Include="Services\OrderProductService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\ReportService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\AdresService.cs" />
