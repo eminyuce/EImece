@@ -2274,7 +2274,9 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string commandText, CommandType commandType, params SqlParameter[] parameters) { return ExecuteDataTable(defaultConnection, defaultDatabase, commandText, commandType, parameters); }
+        public static DataTable ExecuteDataTable(string commandText, CommandType commandType, params SqlParameter[] parameters) {
+            return ExecuteDataTable(defaultConnection, defaultDatabase, commandText, commandType, parameters); 
+        }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2591,7 +2593,10 @@ namespace EImece.Domain.DbContext
 
             return value;
         }
-
+        public static DataSet ExecuteDataSet(string commandText, CommandType commandType, params SqlParameter[] parameters)
+        {
+            return ExecuteDataSet(defaultConnection, defaultDatabase, commandText, commandType, parameters);
+        }
         public static DataSet ExecuteDataSet(SqlConnection connection, string database, string commandText, CommandType commandType, params SqlParameter[] parameters)
         {
             if (connection == null) throw new Exception("Connection must be established before query can be run.");

@@ -98,6 +98,12 @@ namespace EImece.Domain.Services
 
         public DataTable GetSalesReportByDateRange(DateTime startDate, DateTime endDate)
         {
+            if (startDate == null ||
+              endDate == null)
+            {
+                return null;
+            }
+
             SqlParameter[] parameters = {
                 new SqlParameter("@StartDate", startDate),
                 new SqlParameter("@EndDate", endDate)
@@ -110,7 +116,109 @@ namespace EImece.Domain.Services
             );
         }
 
+
         #endregion
+
+        public DataSet GetPerformanceSystemReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null ||
+                   endDate == null)
+            {
+                return null;
+            }
+
+                SqlParameter[] parameters = {
+                new SqlParameter("@StartDate", startDate),
+                new SqlParameter("@EndDate", endDate)
+            };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetPerformanceSystemReport",
+                CommandType.StoredProcedure,
+                parameters
+            );
+        }
+
+        public DataSet GetFinancialReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null ||
+              endDate == null)
+            {
+                return null;
+            }
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@StartDate", startDate),
+                new SqlParameter("@EndDate", endDate)
+            };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetFinancialReport",
+                CommandType.StoredProcedure,
+                parameters
+            );
+        }
+
+        public DataSet GetFraudRiskReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null ||
+              endDate == null)
+            {
+                return null;
+            }
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@StartDate", startDate),
+                new SqlParameter("@EndDate", endDate)
+            };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetFraudRiskReport",
+                CommandType.StoredProcedure,
+                parameters
+            );
+        }
+
+        public DataSet GetOrderVolumeReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null ||
+              endDate == null)
+            {
+                return null;
+            }
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@StartDate", startDate),
+                new SqlParameter("@EndDate", endDate)
+            };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetOrderVolumeReport",
+                CommandType.StoredProcedure,
+                parameters
+            );
+        }
+
+        public DataSet GetPaymentTransactionReport(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == null ||
+              endDate == null)
+            {
+                return null;
+            }
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@StartDate", startDate),
+                new SqlParameter("@EndDate", endDate)
+            };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetPaymentTransactionReport",
+                CommandType.StoredProcedure,
+                parameters
+            );
+        }
+
 
         #region Shipment Company Report
 

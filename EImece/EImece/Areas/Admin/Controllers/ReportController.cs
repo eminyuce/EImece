@@ -43,6 +43,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using EImece.Domain.Models.AdminModels;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -192,6 +193,221 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Error in ShipmentCompany report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult PerformanceSystemReport(DataSetReportViewModel dataSetReportViewModel)
+        {
+            
+                if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
+                {
+
+                if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View("DataSetReportView", new DataSetReportViewModel
+                    {
+                        ReportData = new DataSet(),
+                        ReportActionName = "PerformanceSystemReport",
+                        ReportTitle = "Performance System Report",
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today
+                    });
+                }
+
+                DataSet report = _reportService.GetPerformanceSystemReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                var model = new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "PerformanceSystemReport",
+                    ReportTitle = "Performance System Report",
+                    StartDate = dataSetReportViewModel.StartDate,
+                    EndDate = dataSetReportViewModel.EndDate
+                };
+                return View("DataSetReportView", model);
+
+            }
+            else
+            {
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = new DataSet(),
+                    ReportActionName = "PerformanceSystemReport",
+                    ReportTitle = "Performance System Report",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                });
+            }
+               
+          
+        }
+
+        [HttpPost]
+        public ActionResult FinancialReport(DataSetReportViewModel dataSetReportViewModel)
+        {
+            if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
+            {
+                if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View("DataSetReportView", new DataSetReportViewModel
+                    {
+                        ReportData = new DataSet(),
+                        ReportActionName = "FinancialReport",
+                        ReportTitle = "Financial Report",
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today
+                    });
+                }
+
+                DataSet report = _reportService.GetFinancialReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                var model = new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "FinancialReport",
+                    ReportTitle = "Financial Report",
+                    StartDate = dataSetReportViewModel.StartDate,
+                    EndDate = dataSetReportViewModel.EndDate
+                };
+                return View("DataSetReportView", model);
+            }
+            else
+            {
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = new DataSet(),
+                    ReportActionName = "FinancialReport",
+                    ReportTitle = "Financial Report",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult FraudRiskReport(DataSetReportViewModel dataSetReportViewModel)
+        {
+            if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
+            {
+                if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View("DataSetReportView", new DataSetReportViewModel
+                    {
+                        ReportData = new DataSet(),
+                        ReportActionName = "FraudRiskReport",
+                        ReportTitle = "Fraud Risk Report",
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today
+                    });
+                }
+
+                DataSet report = _reportService.GetFraudRiskReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                var model = new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "FraudRiskReport",
+                    ReportTitle = "Fraud Risk Report",
+                    StartDate = dataSetReportViewModel.StartDate,
+                    EndDate = dataSetReportViewModel.EndDate
+                };
+                return View("DataSetReportView", model);
+            }
+            else
+            {
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = new DataSet(),
+                    ReportActionName = "FraudRiskReport",
+                    ReportTitle = "Fraud Risk Report",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult OrderVolumeReport(DataSetReportViewModel dataSetReportViewModel)
+        {
+            if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
+            {
+                if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View("DataSetReportView", new DataSetReportViewModel
+                    {
+                        ReportData = new DataSet(),
+                        ReportActionName = "OrderVolumeReport",
+                        ReportTitle = "Order Volume Report",
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today
+                    });
+                }
+
+                DataSet report = _reportService.GetOrderVolumeReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                var model = new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "OrderVolumeReport",
+                    ReportTitle = "Order Volume Report",
+                    StartDate = dataSetReportViewModel.StartDate,
+                    EndDate = dataSetReportViewModel.EndDate
+                };
+                return View("DataSetReportView", model);
+            }
+            else
+            {
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = new DataSet(),
+                    ReportActionName = "OrderVolumeReport",
+                    ReportTitle = "Order Volume Report",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult PaymentTransactionReport(DataSetReportViewModel dataSetReportViewModel)
+        {
+            if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
+            {
+                if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View("DataSetReportView", new DataSetReportViewModel
+                    {
+                        ReportData = new DataSet(),
+                        ReportActionName = "PaymentTransactionReport",
+                        ReportTitle = "Payment Transaction Report",
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today
+                    });
+                }
+
+                DataSet report = _reportService.GetPaymentTransactionReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                var model = new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "PaymentTransactionReport",
+                    ReportTitle = "Payment Transaction Report",
+                    StartDate = dataSetReportViewModel.StartDate,
+                    EndDate = dataSetReportViewModel.EndDate
+                };
+                return View("DataSetReportView", model);
+            }
+            else
+            {
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = new DataSet(),
+                    ReportActionName = "PaymentTransactionReport",
+                    ReportTitle = "Payment Transaction Report",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                });
             }
         }
 

@@ -1149,6 +1149,7 @@
     <Content Include="Areas\Admin\Views\Report\PaymentStatus.cshtml" />
     <Content Include="Areas\Admin\Views\Report\RegionalSales.cshtml" />
     <Content Include="Areas\Admin\Views\Report\ShipmentCompany.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\DataSetReportView.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

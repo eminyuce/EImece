@@ -1,0 +1,78 @@
+﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+@{
+    ViewBag.Title = Model.ReportTitle;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>@Model.ReportTitle</h2>
+
+ 
+    <p>
+        Report Date Range: @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("yyyy-MM-dd") : "N/A")
+        to @(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : "N/A")
+    </p>
+
+        @using (Html.BeginForm(Model.ReportActionName, "Report", FormMethod.Post, new { @class = "form-inline mb-3" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ReportActionName)
+
+            <div class="form-group mr-2">
+                @Html.LabelFor(m => m.StartDate, "Start Date:")
+                @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            </div>
+
+            <div class="form-group mr-2">
+                @Html.LabelFor(m => m.EndDate, "End Date:")
+                @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Date Range</button>
+    }
+
+    @if (Model.ReportData != null && Model.ReportData.Tables.Count > 0)
+    {
+        for (int i = 0; i < Model.ReportData.Tables.Count; i++)
+        {
+            var table = Model.ReportData.Tables[i];
+
+            if (Model.ReportData.Tables.Count > 1)
+            {
+                <h3>@table.TableName</h3>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            @foreach (System.Data.DataColumn column in table.Columns)
+                            {
+                                <th>@column.ColumnName</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (System.Data.DataRow row in table.Rows)
+                        {
+                            <tr>
+                                @foreach (var item in row.ItemArray)
+                                {
+                                    <td>@(item != null ? item.ToString() : string.Empty)</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">No data available for the selected criteria.</div>
+    }
+
+    <div class="mt-3">
+        @Html.ActionLink("Back to Reports Dashboard", "Index", "Report", new { area = "Admin" }, new { @class = "btn btn-secondary" })
+    </div>
+</div>
