@@ -176,7 +176,7 @@ namespace EImece.Domain.Services
             item.UpdatedDate = DateTime.Now;
             item.IsActive = true;
             item.Position = 1;
-            item.Lang = shoppingCart.Customer.Lang;
+            item.Lang = AppConfig.MainLanguage;
             item.Coupon = shoppingCart.Coupon != null ? shoppingCart.Coupon.Name : "";
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
             item.Token = checkoutForm.Token;
