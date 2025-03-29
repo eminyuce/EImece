@@ -176,14 +176,14 @@ namespace EImece.Domain.Services
             item.UpdatedDate = DateTime.Now;
             item.IsActive = true;
             item.Position = 1;
-            item.Lang = shoppingCart.CurrentLanguage;
+            item.Lang = shoppingCart.Customer.Lang;
             item.Coupon = shoppingCart.Coupon != null ? shoppingCart.Coupon.Name : "";
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;
             item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.PaidPrice;
-            item.Currency = checkoutForm.PaidPrice;
+            item.Installment = checkoutForm.Installment.HasValue?checkoutForm.Installment.Value.ToStr():"";
+            item.Currency = checkoutForm.Currency;
             item.PaymentId = checkoutForm.PaymentId;
             item.PaymentStatus = checkoutForm.PaymentStatus;
             item.FraudStatus = checkoutForm.FraudStatus;

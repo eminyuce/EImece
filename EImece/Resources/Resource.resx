@@ -1806,4 +1806,7 @@
   <data name="TotalPaid" xml:space="preserve">
     <value>Toplam Ödenen</value>
   </data>
+  <data name="InstallmentCount" xml:space="preserve">
+    <value>Taksit Sayısı</value>
+  </data>
 </root>

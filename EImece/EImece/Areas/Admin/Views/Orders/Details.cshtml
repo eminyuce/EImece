@@ -1,196 +1,363 @@
-﻿@using EImece.Domain.Entities;
+﻿@using Iyzipay.Model;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @using Resources;
+@using EImece.Domain.Models.FrontModels;
 
 @model Order
 
 @{
-    ViewBag.Title = $"Order Details - {Model.OrderNumber}";
+    ViewBag.Title = AdminResource.OrderDetails;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@AdminResource.OrderDetails</h2>
-<hr class="adminLine" />
-
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">Order #@Model.OrderNumber</h3>
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="my-4">@AdminResource.OrderDetails - #@Model.OrderNumber</h2>
+            <hr class="adminLine" />
+        </div>
     </div>
-    <div class="panel-body">
-        <dl class="dl-horizontal">
-            <dt>@AdminResource.OrderNumber</dt>
-            <dd>@Model.OrderNumber</dd>
 
-            <!-- Assuming this is inside the panel-body of your Details view -->
-            <h3>@Customer Details</h3>
-            <dl class="dl-horizontal">
-                <!-- BaseEntity Properties -->
-                <dt>@AdminResource.Id</dt>
-                <dd>@Model.Customer.Id</dd>
+    <!-- Main Content -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Order Overview</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">OrderNumber</dt>
+                        <dd class="col-sm-9">@Model.OrderNumber</dd>
 
-                <dt>@AdminResource.Name</dt>
-                <dd>@Model.Customer.Name</dd>
+                        <dt class="col-sm-3">Order Type</dt>
+                        <dd class="col-sm-9">@Model.OrderType.ToString()</dd>
 
-                <dt>@AdminResource.CreatedDate</dt>
-                <dd>@Model.Customer.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                        <dt class="col-sm-3">OrderStatus</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge @((Model.OrderStatus == 1 ? "badge-success" : "badge-warning"))">
+                                @Model.OrderStatus.ToString()
+                            </span>
+                        </dd>
 
-                <dt>@AdminResource.UpdatedDate</dt>
-                <dd>@Model.Customer.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                        <dt class="col-sm-3">User ID</dt>
+                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.UserId) ? "-" : Model.UserId)</dd>
 
-                <dt>@AdminResource.IsActive</dt>
-                <dd>@Model.Customer.IsActive.ToString()</dd>
+                        <dt class="col-sm-3">CreatedDate</dt>
+                        <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
 
-                <dt>@AdminResource.Position</dt>
-                <dd>@Model.Customer.Position</dd>
+                        <dt class="col-sm-3">Updated Date</dt>
+                        <dd class="col-sm-9">@Model.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
 
-                <dt>@AdminResource.Lang</dt>
-                <dd>@Model.Customer.Lang</dd>
+                        <dt class="col-sm-3">Is Active</dt>
+                        <dd class="col-sm-9">@Model.IsActive.ToString()</dd>
 
-                <!-- Customer-Specific Properties -->
-                <dt>@Resource.LastName</dt>
-                <dd>@Model.Customer.Surname</dd>
+                        <dt class="col-sm-3">Position</dt>
+                        <dd class="col-sm-9">@Model.Position</dd>
 
-                <dt>@Resource.PhoneNumber</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.GsmNumber) ? "-" : Model.Customer.GsmNumber)</dd>
+                        <dt class="col-sm-3">Language</dt>
+                        <dd class="col-sm-9">@Model.Lang</dd>
 
-                <dt>@Resource.Email</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Email) ? "-" : Model.Customer.Email)</dd>
+                        <dt class="col-sm-3">DeliveryDate</dt>
+                        <dd class="col-sm-9">@Model.DeliveryDate.ToString("yyyy-MM-dd")</dd>
 
-                <dt>@Resource.IdentityNumber</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.IdentityNumber) ? "-" : Model.Customer.IdentityNumber)</dd>
+                        <dt class="col-sm-3">Order GUID</dt>
+                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.OrderGuid) ? "-" : Model.OrderGuid)</dd>
+                    </dl>
 
-                <dt>@AdminResource.IpAddress</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Ip) ? "-" : Model.Customer.Ip)</dd>
+                    <!-- Accordion for Additional Details -->
+                    <div class="accordion" id="orderAccordion">
+                        <!-- Customer Details -->
+                        <div class="card">
+                            <div class="card-header" id="customerHeading">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#customerCollapse" aria-expanded="true" aria-controls="customerCollapse">
+                                        CustomerDetails
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="customerCollapse" class="collapse show" aria-labelledby="customerHeading" data-parent="#orderAccordion">
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-3">Name</dt>
+                                        <dd class="col-sm-9">@Model.Customer.FullName</dd>
 
-                <dt>@Resource.IsSameAsShippingAddress</dt>
-                <dd>@Model.Customer.IsSameAsShippingAddress.ToString()</dd>
+                                        <dt class="col-sm-3">Email</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Email) ? "-" : Model.Customer.Email)</dd>
 
-                <dt>@AdminResource.UserId</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.UserId) ? "-" : Model.Customer.UserId)</dd>
+                                        <dt class="col-sm-3">PhoneNumber</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.GsmNumber) ? "-" : Model.Customer.GsmNumber)</dd>
 
-                <dt>@AdminResource.IsPermissionGranted</dt>
-                <dd>@Model.Customer.IsPermissionGranted.ToString()</dd>
+                                        <dt class="col-sm-3">IdentityNumber</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.IdentityNumber) ? "-" : Model.Customer.IdentityNumber)</dd>
 
-                <dt>@Resource.Gender</dt>
-                <dd>@Model.Customer.Gender.ToString()</dd> <!-- Replace with enum description if applicable -->
+                                        <dt class="col-sm-3">IP Address</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Ip) ? "-" : Model.Customer.Ip)</dd>
 
-                <dt>@Resource.Street</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Street) ? "-" : Model.Customer.Street)</dd>
+                                        <dt class="col-sm-3">IsSameAsShippingAddress</dt>
+                                        <dd class="col-sm-9">@Model.Customer.IsSameAsShippingAddress.ToString()</dd>
 
-                <dt>@Resource.Town</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Town) ? "-" : Model.Customer.Town)</dd>
+                                        <dt class="col-sm-3">User ID</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.UserId) ? "-" : Model.Customer.UserId)</dd>
 
-                <dt>@Resource.District</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.District) ? "-" : Model.Customer.District)</dd>
+                                        <dt class="col-sm-3">Permission Granted</dt>
+                                        <dd class="col-sm-9">@Model.Customer.IsPermissionGranted.ToString()</dd>
 
-                <dt>@Resource.City</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.City) ? "-" : Model.Customer.City)</dd>
+                                        <dt class="col-sm-3">Gender</dt>
+                                        <dd class="col-sm-9">@Model.Customer.Gender.ToString()</dd>
 
-                <dt>@Resource.Country</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Country) ? "-" : Model.Customer.Country)</dd>
+                                        <dt class="col-sm-3">Street</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Street) ? "-" : Model.Customer.Street)</dd>
 
-                <dt>@Resource.ZipCode</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.ZipCode) ? "-" : Model.Customer.ZipCode)</dd>
+                                        <dt class="col-sm-3">Town</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Town) ? "-" : Model.Customer.Town)</dd>
 
-                <dt>@Resource.CustomerOpenAddress</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Description) ? "-" : Model.Customer.Description)</dd>
+                                        <dt class="col-sm-3">District</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.District) ? "-" : Model.Customer.District)</dd>
 
-                <dt>@Resource.Company</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Company) ? "-" : Model.Customer.Company)</dd>
+                                        <dt class="col-sm-3">City</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.City) ? "-" : Model.Customer.City)</dd>
 
-                <dt>@AdminResource.CustomerType</dt>
-                <dd>@Model.Customer.CustomerType.ToString()</dd> <!-- Replace with enum description if applicable -->
-                <!-- NotMapped Properties -->
-                <dt>@Resource.AnswerSecurityQuestion</dt>
-                <dd>@(string.IsNullOrEmpty(Model.Customer.Captcha) ? "-" : Model.Customer.Captcha)</dd>
+                                        <dt class="col-sm-3">Country</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Country) ? "-" : Model.Customer.Country)</dd>
 
-                <dt>@AdminResource.OrderLatestDate</dt>
-                <dd>@(Model.Customer.OrderLatestDate == default(DateTime) ? "-" : Model.Customer.OrderLatestDate.ToString("yyyy-MM-dd HH:mm:ss"))</dd>
+                                        <dt class="col-sm-3">ZipCode</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.ZipCode) ? "-" : Model.Customer.ZipCode)</dd>
 
-                <dt>@AdminResource.OrderCount</dt>
-                <dd>@(Model.Customer.Orders != null ? Model.Customer.Orders.Count.ToString() : "0")</dd>
+                                        <dt class="col-sm-3">CustomerOpenAddress</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Description) ? "-" : Model.Customer.Description)</dd>
 
-                <dt>@AdminResource.FullName</dt>
-                <dd>@Model.Customer.FullName</dd>
+                                        <dt class="col-sm-3">Company</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Company) ? "-" : Model.Customer.Company)</dd>
 
-                <dt>@AdminResource.Address</dt>
-                <dd>@Model.Customer.Address.Replace(Environment.NewLine, "<br />")</dd>
+                                        <dt class="col-sm-3">Customer Type</dt>
+                                        <dd class="col-sm-9">@Model.Customer.CustomerType.ToString()</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
 
-                <dt>@AdminResource.RegistrationAddress</dt>
-                <dd>@Model.Customer.RegistrationAddress</dd>
-            </dl>
+                        <!-- Shipping & Billing -->
+                        <div class="card">
+                            <div class="card-header" id="addressHeading">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="false" aria-controls="addressCollapse">
+                                        ShippingAndBilling
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="addressCollapse" class="collapse" aria-labelledby="addressHeading" data-parent="#orderAccordion">
+                                <div class="card-body">
+                                    <h5>ShippingAddress</h5>
+                                    <p>@(Model.ShippingAddress != null ? string.Format("{0}<br>{1}<br>{2}, {3} {4}", Model.ShippingAddress.Name, Model.ShippingAddress.Description, Model.ShippingAddress.City, Model.ShippingAddress.Country, Model.ShippingAddress.ZipCode) : "-")</p>
+                                    <dl class="row">
+                                        <dt class="col-sm-3">Shipping Address ID</dt>
+                                        <dd class="col-sm-9">@Model.ShippingAddressId</dd>
 
-            <dt>OrderStatus</dt>
-            <dd>@Model.OrderStatus.ToString()</dd> <!-- Replace with enum description if available -->
+                                        <dt class="col-sm-3">ShipmentCompany</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ShipmentCompanyName) ? "-" : Model.ShipmentCompanyName)</dd>
 
-            <dt>CreatedDate</dt>
-            <dd>@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                                        <dt class="col-sm-3">TrackingNumber</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ShipmentTrackingNumber) ? "-" : Model.ShipmentTrackingNumber)</dd>
+                                    </dl>
 
-            <dt>DeliveryDate</dt>
-            <dd>@Model.DeliveryDate.ToString("yyyy-MM-dd")</dd>
+                                    <h5>BillingAddress</h5>
+                                    <p>@(Model.BillingAddress != null ? string.Format("{0}<br>{1}<br>{2}, {3} {4}", Model.BillingAddress.Name, Model.BillingAddress.Description, Model.BillingAddress.City, Model.BillingAddress.Country, Model.BillingAddress.ZipCode) : "-")</p>
+                                    <dl class="row">
+                                        <dt class="col-sm-3">Billing Address ID</dt>
+                                        <dd class="col-sm-9">@Model.BillingAddressId</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
 
-            <dt>PaidPrice</dt>
-            <dd>@Model.PaidPrice @Model.Currency</dd>
+                        <!-- Payment Details -->
+                        <div class="card">
+                            <div class="card-header" id="paymentHeading">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#paymentCollapse" aria-expanded="false" aria-controls="paymentCollapse">
+                                        PaymentDetails
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="paymentCollapse" class="collapse" aria-labelledby="paymentHeading" data-parent="#orderAccordion">
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-3">Price</dt>
+                                        <dd class="col-sm-9">@Model.Price.ToDecimal().CurrencySign()</dd>
 
-            <dt>CargoPrice</dt>
-            <dd>@Model.CargoPrice.ToString("C")</dd>
+                                        <dt class="col-sm-3">PaidPrice</dt>
+                                        <dd class="col-sm-9">@Model.PaidPriceDecimal.CurrencySign()</dd>
 
-            <dt>ShippingAddress</dt>
-            <dd>@(Model.ShippingAddress != null ? Model.ShippingAddress.ToString() : "-")</dd>
+                                        <dt class="col-sm-3">CargoPrice</dt>
+                                        <dd class="col-sm-9">@Model.CargoPrice.CurrencySign()</dd>
 
-            <dt>BillingAddress</dt>
-            <dd>@(Model.BillingAddress != null ? Model.BillingAddress.ToString() : "-")</dd>
+                                        <dt class="col-sm-3">Coupon</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Coupon) ? "-" : Model.Coupon)</dd>
 
-            <dt>OrderComments</dt>
-            <dd>@(string.IsNullOrEmpty(Model.OrderComments) ? "-" : Model.OrderComments)</dd>
+                                        <dt class="col-sm-3">Coupon Discount</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CouponDiscount) ? "-" : Model.CouponDiscount.ToDecimal().CurrencySign())</dd>
 
-            <dt>AdminOrderNote</dt>
-            <dd>@(string.IsNullOrEmpty(Model.AdminOrderNote) ? "-" : Model.AdminOrderNote)</dd>
+                                        <dt class="col-sm-3">Installment</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Installment) ? "-" : Model.Installment)</dd>
 
-            <dt>ShipmentTrackingNumber</dt>
-            <dd>@(string.IsNullOrEmpty(Model.ShipmentTrackingNumber) ? "-" : Model.ShipmentTrackingNumber)</dd>
+                                        <dt class="col-sm-3">Currency</dt>
+                                        <dd class="col-sm-9">@Model.Currency</dd>
 
-            <dt>ShipmentCompanyName</dt>
-            <dd>@(string.IsNullOrEmpty(Model.ShipmentCompanyName) ? "-" : Model.ShipmentCompanyName)</dd>
+                                        <dt class="col-sm-3">Payment ID</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.PaymentId) ? "-" : Model.PaymentId)</dd>
 
-            <dt>PaymentStatus</dt>
-            <dd>@Model.PaymentStatus</dd>
+                                        <dt class="col-sm-3">PaymentStatus</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.PaymentStatus) ? "-" : Model.PaymentStatus)</dd>
 
-            <dt>CardType</dt>
-            <dd>@(string.IsNullOrEmpty(Model.CardType) ? "-" : Model.CardType)</dd>
+                                        <dt class="col-sm-3">Fraud Status</dt>
+                                        <dd class="col-sm-9">@(Model.FraudStatus.HasValue ? Model.FraudStatus.Value.ToString() : "-")</dd>
 
-            <dt>LastFourDigits</dt>
-            <dd>@(string.IsNullOrEmpty(Model.LastFourDigits) ? "-" : $"****-****-****-{Model.LastFourDigits}")</dd>
-        </dl>
+                                        <dt class="col-sm-3">Merchant Commission Rate</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.MerchantCommissionRate) ? "-" : Model.MerchantCommissionRate)</dd>
 
-        <!-- Order Products (if available) -->
-        @if (Model.OrderProducts != null && Model.OrderProducts.Any())
-        {
-        <h4>Order Products</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ProductName</th>
-                    <th>CategoryName</th>
-                    <th>@AdminResource.Quantity</th>
-                    <th>@AdminResource.Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in Model.OrderProducts)
+                                        <dt class="col-sm-3">Merchant Commission Rate Amount</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.MerchantCommissionRateAmount) ? "-" : Model.MerchantCommissionRateAmount.ToDecimal().CurrencySign())</dd>
+
+                                        <dt class="col-sm-3">Iyzico Commission Rate Amount</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.IyziCommissionRateAmount) ? "-" : Model.IyziCommissionRateAmount.ToDecimal().CurrencySign())</dd>
+
+                                        <dt class="col-sm-3">Iyzico Commission Fee</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.IyziCommissionFee) ? "-" : Model.IyziCommissionFee.ToDecimal().CurrencySign())</dd>
+
+                                        <dt class="col-sm-3">CardType</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardType) ? "-" : Model.CardType)</dd>
+
+                                        <dt class="col-sm-3">Card Association</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardAssociation) ? "-" : Model.CardAssociation)</dd>
+
+                                        <dt class="col-sm-3">Card Family</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardFamily) ? "-" : Model.CardFamily)</dd>
+
+                                        <dt class="col-sm-3">Card Token</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardToken) ? "-" : Model.CardToken)</dd>
+
+                                        <dt class="col-sm-3">Card User Key</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardUserKey) ? "-" : Model.CardUserKey)</dd>
+
+                                        <dt class="col-sm-3">BIN Number</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.BinNumber) ? "-" : Model.BinNumber)</dd>
+
+                                        <dt class="col-sm-3">LastFourDigits</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.LastFourDigits) ? "-" : Model.LastFourDigits)</dd>
+
+                                        <dt class="col-sm-3">Basket ID</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.BasketId) ? "-" : Model.BasketId)</dd>
+
+                                        <dt class="col-sm-3">Conversation ID</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ConversationId) ? "-" : Model.ConversationId)</dd>
+
+                                        <dt class="col-sm-3">Connector Name</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ConnectorName) ? "-" : Model.ConnectorName)</dd>
+
+                                        <dt class="col-sm-3">Auth Code</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.AuthCode) ? "-" : Model.AuthCode)</dd>
+
+                                        <dt class="col-sm-3">Host Reference</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.HostReference) ? "-" : Model.HostReference)</dd>
+
+                                        <dt class="col-sm-3">Phase</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Phase) ? "-" : Model.Phase)</dd>
+
+                                        <dt class="col-sm-3">Status</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Status) ? "-" : Model.Status)</dd>
+
+                                        <dt class="col-sm-3">Error Code</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ErrorCode) ? "-" : Model.ErrorCode)</dd>
+
+                                        <dt class="col-sm-3">Error Message</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ErrorMessage) ? "-" : Model.ErrorMessage)</dd>
+
+                                        <dt class="col-sm-3">Locale</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Locale) ? "-" : Model.Locale)</dd>
+
+                                        <dt class="col-sm-3">System Time</dt>
+                                        <dd class="col-sm-9">@Model.SystemTime</dd>
+
+                                        <dt class="col-sm-3">Token</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Token) ? "-" : Model.Token)</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="card">
+                            <div class="card-header" id="notesHeading">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#notesCollapse" aria-expanded="false" aria-controls="notesCollapse">
+                                        Notes
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="notesCollapse" class="collapse" aria-labelledby="notesHeading" data-parent="#orderAccordion">
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-3">OrderComments</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.OrderComments) ? "-" : Model.OrderComments)</dd>
+
+                                        <dt class="col-sm-3">AdminOrderNote</dt>
+                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.AdminOrderNote) ? "-" : Model.AdminOrderNote)</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Products -->
+                    @if (Model.OrderProducts != null && Model.OrderProducts.Any())
                     {
-                <tr>
-                    <td>@product.ProductName</td>
-                    <td>@product.CategoryName</td>
-                    <td>@product.Quantity</td>
-                    <td>@product.Price</td>
-                </tr>
+                        <h4 class="mt-4">OrderProducts</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>ProductName</th>
+                                        <th>ProductCode</th>
+                                        <th>CategoryName</th>
+                                        <th>Specifications</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var product in Model.OrderProducts)
+                                    {
+                                        <tr>
+                                            <td>@product.ProductName</td>
+                                            <td>@product.ProductCode</td>
+                                            <td>@product.CategoryName</td>
+                                            <td>@product.Quantity</td>
+                                            <td>@product.ProductSalePrice.CurrencySign()</td>
+                                            <td>@product.TotalPrice.CurrencySign()</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
-            </tbody>
-        </table>
-        }
-    </div>
-    <div class="panel-footer">
-        <a href="@Url.Action("Index")" class="btn btn-default">@AdminResource.BackToList</a>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">BackToList</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+            // Optional: Add interactivity if needed (e.g., tooltips, collapse state persistence)
+    </script>
+}

@@ -79,9 +79,9 @@
 
                 <!-- Order Items -->
                 <h3 class="h5 mt-4">@Resource.OrderItems</h3>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-sm table-striped">
                     <thead>
-                        <tr>
+                        <tr class="text-info">
                             <th>@Resource.ProductName</th>
                             <th>@Resource.Quantity</th>
                             <th>@Resource.UnitPrice</th>
@@ -98,6 +98,12 @@
                                 <td>@product.TotalPrice.CurrencySign()</td>
                             </tr>
                         }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><strong>@Resource.TotalPaid:</strong></td>
+                        <td><strong>@item.PaidPriceDecimal.CurrencySign()</strong></td>
+                    </tr>
                     </tbody>
                 </table>
 
@@ -105,12 +111,18 @@
                 <h3 class="h5 mt-4">@Resource.PaymentDetails</h3>
                 <ul class="list-unstyled">
                     <li><strong>@Resource.Subtotal:</strong> @item.Price.ToDecimal().CurrencySign()</li>
-                    <li><strong>@Resource.ShippingCost:</strong> @item.CargoPrice.CurrencySign()</li>
+                    @if (item.CargoPrice > 0)
+                    {
+                        <li><strong>@Resource.ShippingCost:</strong> @item.CargoPrice.CurrencySign()</li>
+                    }
                     @if (!string.IsNullOrEmpty(item.Coupon))
                     {
                         <li><strong>@Resource.CouponDiscount (@item.Coupon):</strong> -@item.CouponDiscount.ToDecimal().CurrencySign()</li>
                     }
-                    <li><strong>@Resource.TotalPaid:</strong> @item.PaidPriceDecimal.CurrencySign()</li>
+                    @if (!string.IsNullOrEmpty(item.Installment))
+                    {
+                        <li><strong>@Resource.InstallmentCount:</strong> @item.Installment</li>
+                    }
                     <li><strong>@Resource.PaymentMethod:</strong> @item.CardType (@item.CardAssociation) - @Resource.EndingIn @item.LastFourDigits</li>
                 </ul>
 

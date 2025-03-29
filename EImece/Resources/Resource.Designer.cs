@@ -1943,6 +1943,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taksit Sayısı.
+        /// </summary>
+        public static string InstallmentCount {
+            get {
+                return ResourceManager.GetString("InstallmentCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bu garip bir olay. İşleminiz gerçekleştirilirken bir hata oluştu. İçiniz rahat olsun, bu sorun günlüğe kaydedildi ve sorunu çözmek için hamsterlar serbest bırakıldı..
         /// </summary>
         public static string InternalServererrorText {

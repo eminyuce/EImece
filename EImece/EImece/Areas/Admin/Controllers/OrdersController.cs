@@ -13,7 +13,6 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<Order, bool>> whereLambda = r =>
             r.Name.Contains(search)
             || r.OrderNumber.Contains(search)
-            || r.OrderNumber.Contains(search)
               || r.Token.Contains(search);
             var orders = OrderService.SearchEntities(whereLambda, search, CurrentLanguage);
             return View(orders);
