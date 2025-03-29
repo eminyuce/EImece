@@ -4688,7 +4688,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kullanıcı E-postası Onaylama surecini bitirmedi.
+        ///   Looks up a localized string similar to Sevgili Müşteri, lütfen e-posta adresinizin doğrulama sürecini tamamlayın. Size bir e-posta göndereceğiz, hesabınızı onaylamayı unutmayın..
         /// </summary>
         public static string UserEmailNotConfirmed {
             get {

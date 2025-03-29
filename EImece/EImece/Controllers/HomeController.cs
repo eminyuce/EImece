@@ -222,7 +222,12 @@ namespace EImece.Controllers
                 HomeLogger.Info("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
+            string ipAddress = Request.Headers["X-Forwarded-For"];
+            if (string.IsNullOrEmpty(ipAddress))
+            {
+                ipAddress = Request.UserHostAddress;
+            }
+            contact.IPAddress = ipAddress;
             if (Session[CaptchaContactUsLogin] == null || !Session[CaptchaContactUsLogin].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
             {
                 HomeLogger.Error($"Captcha validation failed. Session: {Session[CaptchaContactUsLogin]}, Input: {contact.Captcha}");

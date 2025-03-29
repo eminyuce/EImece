@@ -550,7 +550,7 @@
     <value>Satın Alınan Tarih</value>
   </data>
   <data name="UserEmailNotConfirmed" xml:space="preserve">
-    <value>Kullanıcı E-postası Onaylama surecini bitirmedi</value>
+    <value>Sevgili Müşteri, lütfen e-posta adresinizin doğrulama sürecini tamamlayın. Size bir e-posta göndereceğiz, hesabınızı onaylamayı unutmayın.</value>
   </data>
   <data name="Filtrele" xml:space="preserve">
     <value>Filtrele</value>

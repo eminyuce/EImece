@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
 using Ninject;
+using NLog;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -9,7 +10,7 @@ namespace EImece.Domain.Services
     {
         [Inject]
         public IEmailSender EmailSender { get; set; }
-
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.

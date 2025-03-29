@@ -40,18 +40,20 @@ namespace EImece.Domain.Helpers.EmailHelper
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ConfirmYourAccountMailTemplate);
             if (emailTemplate == null)
             {
-                throw new ArgumentException("ConfirmYourAccount email template does not exists");
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ConfirmYourAccountMailTemplate}");
             }
+
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
-            var Request = HttpContext.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            string baseurl = GetSiteBaseUrl();
 
             var model = new
             {
+                WebSiteIconUrl = baseurl + "/images/logo.jpg",
                 Email = email,
                 callbackUrl = callbackUrl,
-                Name = name
+                Name = name,
+                companyname = companyname
             };
 
             string template = emailTemplate.Body;
@@ -61,20 +63,27 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
+        private string GetSiteBaseUrl()
+        {
+            var Request = HttpContext.Create().Request;
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
+            return baseurl;
+        }
+
         public Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ForgotPasswordMailTemplate);
             if (emailTemplate == null)
             {
-                return new Tuple<string, string>("", "");
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ForgotPasswordMailTemplate}");
             }
+
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
 
-            var Request = HttpContext.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
-
+            string baseurl = GetSiteBaseUrl();
             var model = new
             {
+                WebSiteIconUrl = baseurl+ "/images/logo.jpg",
                 Email = email,
                 ForgotPasswordLink = callbackUrl,
                 CompanyName = companyname,
@@ -93,7 +102,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.CompanyGotNewOrderEmailMailTemplate);
             if (emailTemplate == null)
             {
-                return new Tuple<string, RazorRenderResult, Customer>("", null, null);
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.CompanyGotNewOrderEmailMailTemplate}");
             }
 
             var model = MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplate(orderId);
@@ -115,7 +124,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.OrderConfirmationEmailMailTemplate);
             if (emailTemplate == null)
             {
-                return new Tuple<string, RazorRenderResult, Customer>("", null, null);
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.OrderConfirmationEmailMailTemplate}");
             }
 
             var model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
@@ -153,78 +162,102 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
-            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsAboutProductInfoMailTemplate);
+            // E-posta şablonunu al
+            var emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsAboutProductInfoMailTemplate);
             if (emailTemplate == null)
             {
-                throw new ArgumentException("NO email template is defined for " + Constants.ContactUsAboutProductInfoMailTemplate);
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ContactUsAboutProductInfoMailTemplate}");
             }
-            string groupName = string.Format("{0} | {1} | {2}", "ContactUsFormViewModel", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
-            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
-            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
-            var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            // E-posta Takibi için Güncelleme
+            string groupName = $"ContactUsFormViewModel | {emailTemplate.Name} | {DateTime.Now:yyyy-MM-dd HH:mm}";
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(
+                emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
+                emailTemplate.Body, emailTemplate.Name, groupName
+            );
 
-            var Request = HttpContext.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            // Şirket ve Yönetici bilgileri
+            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
+            string adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
 
-            dynamic model = new ExpandoObject();
-            model.ContactUs = contact;
-            model.CompanyName = companyname;
-            model.ProductPageLink = baseurl;
+            // Web sitesi URL'sini al
+            string baseurl = GetSiteBaseUrl();
 
-            string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
-            string body = Engine.Razor.RunCompile(template, templateKey, null, (object)model);
-            EmailSender.SendEmail(SettingService.GetEmailAccount(),
+            // Razor Template için model oluştur
+            var model = new
+            {
+                ContactUs = contact,
+                CompanyName = companyName,
+                ProductPageLink = baseurl,
+                WebSiteIconUrl = $"{baseurl}/images/logo.jpg"
+            };
+
+            // Şablonu işle
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
+            string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
+
+            // E-posta gönder
+            EmailSender.SendEmail(
+                SettingService.GetEmailAccount(),
                 emailTemplate.Subject,
                 body,
                 adminUserName,
-                companyname,
+                companyName,
                 adminUserName,
-                companyname);
+                companyName
+            );
         }
+
 
         public void SendContactUsForCommunication(ContactUsFormViewModel contact)
         {
-            MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsForCommunication);
+            // E-posta şablonunu al
+            var emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsForCommunication);
             if (emailTemplate == null)
             {
-                throw new ArgumentException("NO email template is defined for " + Constants.ContactUsForCommunication);
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ContactUsForCommunication}");
             }
-            string groupName = string.Format("{0} | {1} | {2}", "ContactUsForCommunication", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
-            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
-                emailTemplate.Body,
-                emailTemplate.Name,
-                groupName);
 
-            String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
-            var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
-            var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
+            // E-posta Takibi için Güncelleme
+            string groupName = $"ContactUsForCommunication | {emailTemplate.Name} | {DateTime.Now:yyyy-MM-dd HH:mm}";
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(
+                emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
+                emailTemplate.Body, emailTemplate.Name, groupName
+            );
 
-            var Request = HttpContext.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            // Şirket ve Yönetici bilgileri
+            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
+            string adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            string webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
-            dynamic model = contact;
+            // Web sitesi URL'sini al
+            string baseurl = GetSiteBaseUrl();
 
-            string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
-            string body = Engine.Razor.RunCompile(template, templateKey, null, contact);
-            var settingEmailAccount = SettingService.GetEmailAccount();
+            // Razor Template için model oluştur
+            var model = new
+            {
+                ContactUs = contact,
+                CompanyName = companyName,
+                WebSiteIconUrl = $"{baseurl}/images/logo.jpg",
+                AdminPageUrl = $"{baseurl}/account/adminlogin/"
+            };
 
-            RazorEngineLogger.Info("settingEmailAccount:" +
-                settingEmailAccount +
-                " body" + body +
-                " subject:" + emailTemplate.Subject +
-                " adminUserName:" + adminUserName +
-                " companyname:" + companyname);
-            EmailSender.SendEmail(settingEmailAccount,
+            // Şablonu işle
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
+            string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
+
+            // E-posta gönder
+            EmailSender.SendEmail(
+                SettingService.GetEmailAccount(),
                 emailTemplate.Subject,
                 body,
                 adminUserName,
-                companyname,
+                companyName,
                 webSiteCompanyEmailAddress,
-                companyname);
+                companyName
+            );
         }
+
 
         public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel
         {
