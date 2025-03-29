@@ -41,6 +41,8 @@ namespace EImece.Controllers
                 content += "Disallow: /Error/ " + Environment.NewLine;
                 content += "Disallow: /Manage/ " + Environment.NewLine;
                 content += "Disallow: /Account/ " + Environment.NewLine;
+                content += "Disallow: /Admin/ " + Environment.NewLine;
+                content += "Disallow: /Customer/ " + Environment.NewLine;
                 content += "# Allow Robots (Release)" + Environment.NewLine;
             }
             else
