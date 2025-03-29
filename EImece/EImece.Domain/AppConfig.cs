@@ -35,7 +35,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigString("IyzicoSecretKey", "sandbox-xi3ZmT9EVV0AcwaV4mzT4TlOmWr5YGgL");
+                return GetConfigString("IyzicoSecretKey", "lvpx3JoZMoUF9f0RNDoEsxDSMQUUlpWH");
             }
         }
 

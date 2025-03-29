@@ -55,5 +55,21 @@ namespace EImece.Domain.Entities
         {
             this.AddressType = (int)addressType;
         }
+
+        public bool EqualsAddress(Address other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return string.Equals(this.Street, other.Street, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.District, other.District, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.ZipCode, other.ZipCode, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.City, other.City, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.Country, other.Country, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.Description, other.Description, StringComparison.OrdinalIgnoreCase);
+        }
+
     }
 }

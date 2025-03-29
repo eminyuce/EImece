@@ -14,13 +14,13 @@
     ViewBag.Title = Resources.Resource.PlaceOrder;
     var products = Model.ShoppingCartItems;
     var customer = Model.Customer;
-    CheckoutFormInitialize checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
+    var checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
 }
 @*
     İyzico Ödeme Ekranı
 
 *@
-@Html.DisplayFor(model => checkoutFormInitialize)
+<!--  Html.DisplayFor(model => checkoutFormInitialize) -->
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">

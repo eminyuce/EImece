@@ -99,8 +99,6 @@ namespace EImece.Controllers
         [ChildActionOnly]
         public ActionResult HomePageShoppingCart()
         {
-            PaymentLogger.Info("Entering HomePageShoppingCart partial action.");
-            PaymentLogger.Info("Rendering _HomePageShoppingCart partial view.");
             return PartialView("ShoppingCartTemplates/_HomePageShoppingCart", GetShoppingCart());
         }
 
@@ -502,7 +500,6 @@ namespace EImece.Controllers
                 return Json(new { status = Domain.Constants.FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
-
         public ActionResult PlaceOrder()
         {
             PaymentLogger.Info("Entering PlaceOrder action.");
@@ -528,11 +525,12 @@ namespace EImece.Controllers
                 return Content("RegisterCustomer");
             }
         }
+         
 
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
         {
             PaymentLogger.Info("Entering PaymentResult action.");
-            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            var checkoutForm = IyzicoService.GetCheckoutForm(model);
             PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -543,7 +541,7 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Decrypted userId: {userId}");
                 var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm, userId);
                 PaymentLogger.Info($"Order saved with ID: {order.Id}");
-                SendEmails(OrderService.GetOrderById(order.Id));
+                SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
                 ClearCart(shoppingCart);
                 PaymentLogger.Info("Cart cleared. Redirecting to ThankYouForYourOrder.");
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
@@ -559,7 +557,8 @@ namespace EImece.Controllers
         public ActionResult ThankYouForYourOrder(int orderId)
         {
             PaymentLogger.Info($"Entering ThankYouForYourOrder with orderId: {orderId}");
-            var order = OrderService.GetSingle(orderId);
+            var order = OrderService.GetOrderById(orderId);
+            //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             PaymentLogger.Info("Returning ThankYouForYourOrder view.");
             return View(order);
         }
@@ -853,12 +852,16 @@ namespace EImece.Controllers
             return address;
         }
 
-        protected void SendEmails(Order order)
+        protected void SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(Order order)
         {
             PaymentLogger.Info($"Entering SendEmails for order ID: {order.Id}");
             try
             {
                 var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
+                if(emailTemplate.Item2.Result == null)
+                {
+                    PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:"+ order.Id);
+                }
                 PaymentLogger.Info("Generated order confirmation email template.");
                 EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
                 PaymentLogger.Info("Order confirmation email sent to customer.");
@@ -871,6 +874,10 @@ namespace EImece.Controllers
             try
             {
                 var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
+                if (emailTemplate.Item2.Result == null)
+                {
+                    PaymentLogger.Error("RazorEngineHelper CompanyGotNewOrderEmail template Is NULL.order.Id:" + order.Id);
+                }
                 PaymentLogger.Info("Generated company new order email template.");
                 EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
                 PaymentLogger.Info("New order email sent to admin users.");

@@ -105,19 +105,29 @@ namespace EImece.Domain.Helpers.EmailHelper
                 throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.CompanyGotNewOrderEmailMailTemplate}");
             }
 
-            var model = MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplate(orderId);
+            // Mail template modelini hazırlıyoruz
+            CompanyGotNewOrderEmailRazorTemplate model = MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplate(orderId);
 
+            // Konu başlığını dinamik olarak ayarlıyoruz
             var modelSubject = new
             {
                 OrderNumber = model.FinishedOrder.OrderNumber
             };
 
+            // Şablonun kendisi
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(template);
+
+            // RazorEngine kullanarak template'i render ediyoruz
             var result = GetRenderOutputByRazorEngineModel(template, model);
+
+            // Konu başlığını Razor ile render ediyoruz
             string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, modelSubject);
+
+            // Sonuç olarak: Konu, şablonun render edilmiş sonucu ve müşteri bilgisi döndürülüyor
             return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
         }
+
 
         public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
@@ -127,7 +137,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.OrderConfirmationEmailMailTemplate}");
             }
 
-            var model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
+            OrderConfirmationEmailRazorTemplate model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template, model);

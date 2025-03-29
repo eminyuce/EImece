@@ -772,7 +772,7 @@
     <value>Giriş Yap Veya Üye Ol</value>
   </data>
   <data name="CustomerOpenAddress" xml:space="preserve">
-    <value>Kargo Firmasina Notunuz</value>
+    <value>Kargo firmasına notunuz: Örneğin, site adı veya blok adı belirterek kargo firmasına yardımcı olabilirsiniz.</value>
   </data>
   <data name="CustomerRegistrationAddress" xml:space="preserve">
     <value>Müşteri Kayıt Adresi</value>
@@ -1766,5 +1766,44 @@
   </data>
   <data name="WhatsAppCommunicationLink" xml:space="preserve">
     <value>WhatsApp Iletisim Linki</value>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>Teslimat Tarihi</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Sipariş Tarihi</value>
+  </data>
+  <data name="EstimatedDelivery" xml:space="preserve">
+    <value>Tahmini Teslimat</value>
+  </data>
+  <data name="CustomerDetails" xml:space="preserve">
+    <value>Müşteri Detayları</value>
+  </data>
+  <data name="ShipmentCompany" xml:space="preserve">
+    <value>Sevkiyat Şirketi</value>
+  </data>
+  <data name="TrackingNumber" xml:space="preserve">
+    <value>Takip Numarası</value>
+  </data>
+  <data name="OrderItems" xml:space="preserve">
+    <value>Sipariş Öğeleri</value>
+  </data>
+  <data name="CouponDiscount" xml:space="preserve">
+    <value>Kupon İndirimi</value>
+  </data>
+  <data name="EndingIn" xml:space="preserve">
+    <value>Son 4 hane</value>
+  </data>
+  <data name="PaymentDetails" xml:space="preserve">
+    <value>Ödeme Ayrıntıları</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>Ödeme yöntemi</value>
+  </data>
+  <data name="ShippingCost" xml:space="preserve">
+    <value>Kargo Ücreti</value>
+  </data>
+  <data name="TotalPaid" xml:space="preserve">
+    <value>Toplam Ödenen</value>
   </data>
 </root>

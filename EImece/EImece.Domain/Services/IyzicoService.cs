@@ -19,21 +19,111 @@ namespace EImece.Domain.Services
 
         public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
         {
-            Logger.Info("Retrieving checkout form with token: " + model.Token);
             Options options = GetOptions();
             var request = new RetrieveCheckoutFormRequest();
             request.Token = model.Token;
 
-            Logger.Debug("CheckoutForm request prepared with Token: " + model.Token);
             var response = CheckoutForm.Retrieve(request, options);
-            Logger.Info("CheckoutForm retrieved successfully with Token: " + model.Token);
-            return response;
+            return response.Result;
         }
 
+        public CheckoutFormInitialize CreateCheckoutFormInitialize_Working_Code(ShoppingCartSession shoppingCart, string userId)
+        {
+            Logger.Info("Payment.Create static request is ongoing: " + userId);
+
+            Options options = new Options();
+            options.ApiKey = AppConfig.IyzicoApiKey;
+            options.SecretKey = AppConfig.IyzicoSecretKey;
+            options.BaseUrl = AppConfig.IyzicoBaseUrl;
+
+
+            CreateCheckoutFormInitializeRequest request = new CreateCheckoutFormInitializeRequest();
+            request.Locale = Locale.TR.ToString();
+            request.ConversationId = "123456789";
+            request.Price = "1";
+            request.PaidPrice = "1.2";
+            request.Currency = Currency.TRY.ToString();
+            request.BasketId = "B67832";
+            request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
+            request.CallbackUrl = "https://www.merchant.com/callback";
+
+            List<int> enabledInstallments = new List<int>();
+            enabledInstallments.Add(2);
+            enabledInstallments.Add(3);
+            enabledInstallments.Add(6);
+            enabledInstallments.Add(9);
+            request.EnabledInstallments = enabledInstallments;
+
+            Buyer buyer = new Buyer();
+            buyer.Id = "BY789";
+            buyer.Name = "John";
+            buyer.Surname = "Doe";
+            buyer.GsmNumber = "+905350000000";
+            buyer.Email = "email@email.com";
+            buyer.IdentityNumber = "74300864791";
+            buyer.LastLoginDate = "2015-10-05 12:43:35";
+            buyer.RegistrationDate = "2013-04-21 15:12:09";
+            buyer.RegistrationAddress = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
+            buyer.Ip = "85.34.78.112";
+            buyer.City = "Istanbul";
+            buyer.Country = "Turkey";
+            buyer.ZipCode = "34732";
+            request.Buyer = buyer;
+
+            Address shippingAddress = new Address();
+            shippingAddress.ContactName = "Jane Doe";
+            shippingAddress.City = "Istanbul";
+            shippingAddress.Country = "Turkey";
+            shippingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
+            shippingAddress.ZipCode = "34742";
+            request.ShippingAddress = shippingAddress;
+
+            Address billingAddress = new Address();
+            billingAddress.ContactName = "Jane Doe";
+            billingAddress.City = "Istanbul";
+            billingAddress.Country = "Turkey";
+            billingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
+            billingAddress.ZipCode = "34742";
+            request.BillingAddress = billingAddress;
+
+            List<BasketItem> basketItems = new List<BasketItem>();
+            BasketItem firstBasketItem = new BasketItem();
+            firstBasketItem.Id = "BI101";
+            firstBasketItem.Name = "Binocular";
+            firstBasketItem.Category1 = "Collectibles";
+            firstBasketItem.Category2 = "Accessories";
+            firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
+            firstBasketItem.Price = "0.3";
+            basketItems.Add(firstBasketItem);
+
+            BasketItem secondBasketItem = new BasketItem();
+            secondBasketItem.Id = "BI102";
+            secondBasketItem.Name = "Game code";
+            secondBasketItem.Category1 = "Game";
+            secondBasketItem.Category2 = "Online Game Items";
+            secondBasketItem.ItemType = BasketItemType.VIRTUAL.ToString();
+            secondBasketItem.Price = "0.5";
+            basketItems.Add(secondBasketItem);
+
+            BasketItem thirdBasketItem = new BasketItem();
+            thirdBasketItem.Id = "BI103";
+            thirdBasketItem.Name = "Usb";
+            thirdBasketItem.Category1 = "Electronics";
+            thirdBasketItem.Category2 = "Usb / Cable";
+            thirdBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
+            thirdBasketItem.Price = "0.2";
+            basketItems.Add(thirdBasketItem);
+            request.BasketItems = basketItems;
+
+            Logger.Info("Initializing CheckoutFormInitialize.Create for user: " + userId);
+            System.Threading.Tasks.Task<CheckoutFormInitialize> checkoutFormInitialize = CheckoutFormInitialize.Create(request, options);
+            return checkoutFormInitialize.Result;
+        }
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId)
         {
             Logger.Info("Initializing CheckoutForm for user: " + userId);
 
+            // Validation checks
             if (shoppingCart == null)
             {
                 Logger.Error("ShoppingCartSession cannot be null");
@@ -50,10 +140,16 @@ namespace EImece.Domain.Services
                 throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
             }
 
+            // Configure iyzico options
             Logger.Debug("Fetching Iyzico API options...");
-            Options options = GetOptions();
-            var customer = shoppingCart.Customer;
+            Options options = new Options
+            {
+                ApiKey = AppConfig.IyzicoApiKey,
+                SecretKey = AppConfig.IyzicoSecretKey,
+                BaseUrl = AppConfig.IyzicoBaseUrl
+            };
 
+            // Build callback URL
             Logger.Debug("Building callback URL for Payment Result...");
             var requestContext = HttpContext.Current.Request.RequestContext;
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
@@ -63,7 +159,8 @@ namespace EImece.Domain.Services
                                                new { o, u },
                                                AppConfig.HttpProtocol);
 
-            var request = new CreateCheckoutFormInitializeRequest
+            // Initialize request
+            CreateCheckoutFormInitializeRequest request = new CreateCheckoutFormInitializeRequest
             {
                 Locale = Locale.TR.ToString(),
                 ConversationId = shoppingCart.ConversationId,
@@ -74,12 +171,11 @@ namespace EImece.Domain.Services
                 EnabledInstallments = AppConfig.IyzicoEnabledInstallments
             };
 
-            Logger.Debug("CheckoutFormInitializeRequest object populated");
-
-            // Buyer details
-            Buyer buyer = new Buyer
+            // Populate buyer details
+            var customer = shoppingCart.Customer;
+            request.Buyer = new Buyer
             {
-                Id = customer.Id.ToString(),
+                Id = customer.Id.ToStr(),
                 Name = customer.Name,
                 Surname = customer.Surname,
                 GsmNumber = customer.GsmNumber,
@@ -93,11 +189,11 @@ namespace EImece.Domain.Services
                 Country = customer.Country,
                 ZipCode = customer.ZipCode
             };
-            request.Buyer = buyer;
 
+            // Populate shipping and billing addresses
             if (shoppingCart.Customer.IsSameAsShippingAddress)
             {
-                Address shippingAddress = new Address
+                Address sharedAddress = new Address
                 {
                     ContactName = shoppingCart.Customer.FullName,
                     City = shoppingCart.ShippingAddress.City,
@@ -105,12 +201,12 @@ namespace EImece.Domain.Services
                     Description = shoppingCart.ShippingAddress.Description,
                     ZipCode = shoppingCart.ShippingAddress.ZipCode
                 };
-                request.ShippingAddress = shippingAddress;
-                request.BillingAddress = shippingAddress;
+                request.ShippingAddress = sharedAddress;
+                request.BillingAddress = sharedAddress;
             }
             else
             {
-                Address shippingAddress = new Address
+                request.ShippingAddress = new Address
                 {
                     ContactName = shoppingCart.Customer.FullName,
                     City = shoppingCart.ShippingAddress.City,
@@ -118,9 +214,8 @@ namespace EImece.Domain.Services
                     Description = shoppingCart.ShippingAddress.Description,
                     ZipCode = shoppingCart.ShippingAddress.ZipCode
                 };
-                request.ShippingAddress = shippingAddress;
 
-                Address billingAddress = new Address
+                request.BillingAddress = new Address
                 {
                     ContactName = shoppingCart.Customer.FullName,
                     City = shoppingCart.BillingAddress.City,
@@ -128,16 +223,16 @@ namespace EImece.Domain.Services
                     Description = shoppingCart.BillingAddress.Description,
                     ZipCode = shoppingCart.BillingAddress.ZipCode
                 };
-                request.BillingAddress = billingAddress;
             }
 
+            // Populate basket items and calculate total price
             List<BasketItem> basketItems = new List<BasketItem>();
             decimal totalPrice = 0;
 
             foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems)
             {
                 var item = shoppingCartItem.Product;
-                BasketItem firstBasketItem = new BasketItem
+                BasketItem basketItem = new BasketItem
                 {
                     Id = item.ProductCode,
                     Name = item.Name,
@@ -147,20 +242,26 @@ namespace EImece.Domain.Services
                     Price = CurrencyHelper.CurrencySignForIyizo(item.Price)
                 };
                 totalPrice += item.Price;
-                basketItems.Add(firstBasketItem);
+                basketItems.Add(basketItem);
             }
 
-            // Log prices in a readable format
             Logger.Debug("Total Price: " + totalPrice);
-            Logger.Debug("Shipping & Paid Price: " + shoppingCart.TotalPriceWithCargoPrice);
+            Logger.Debug("TotalPriceWithCargoPrice: " + shoppingCart.TotalPriceWithCargoPrice);
 
-            request.Price = totalPrice.CurrencySignForIyizo();
-            request.PaidPrice = shoppingCart.TotalPriceWithCargoPrice.CurrencySignForIyizo();
+            // Set price fields
+            request.Price = CurrencyHelper.CurrencySignForIyizo(totalPrice);
+            request.PaidPrice = CurrencyHelper.CurrencySignForIyizo(shoppingCart.TotalPriceWithCargoPrice);
             request.BasketItems = basketItems;
 
+            // Log prices and request details
+            Logger.Debug("Total Price after CurrencySignForIyizo: " + request.Price);
+            Logger.Debug("Shipping & Paid Price after CurrencySignForIyizo: " + request.PaidPrice);
             Logger.Info("Iyzico Request prepared for CheckoutFormInitialization: " + JsonConvert.SerializeObject(request));
 
-            return CheckoutFormInitialize.Create(request, options);
+            // Execute the request
+            Logger.Info("Initializing CheckoutFormInitialize.Create for user: " + userId);
+            System.Threading.Tasks.Task<CheckoutFormInitialize> checkoutFormInitialize = CheckoutFormInitialize.Create(request, options);
+            return checkoutFormInitialize.Result;
         }
 
         public CheckoutFormInitialize CreateCheckoutFormInitializeBuyNow(BuyNowModel buyNowModel)
@@ -247,7 +348,9 @@ namespace EImece.Domain.Services
 
             Logger.Info("Iyzico Request prepared for BuyNow CheckoutFormInitialization: " + JsonConvert.SerializeObject(request));
 
-            return CheckoutFormInitialize.Create(request, options);
+            var result = CheckoutFormInitialize.Create(request, options);
+            
+            return result.Result;
         }
 
         private Options GetOptions()

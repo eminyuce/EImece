@@ -9,7 +9,7 @@ namespace EImece.Domain.Helpers
 
         public static string CurrencySignForIyizo(this decimal price)
         {
-            return CurrencySign(price).Replace(".", "").Replace("TL", "").Trim();
+           return CurrencySign(price).Replace(".", "").Replace("₺", "").Replace(",", ".").Trim();
         }
 
         public static string CurrencySign(this decimal price)
@@ -20,11 +20,11 @@ namespace EImece.Domain.Helpers
             if (v > 0)
             {
                 var result = v.ToString("N2", culture); // N2: Sayıyı her zaman iki ondalıklı olarak gösterir.
-                return $"{result} TL";
+                return $"{result} ₺";
             }
             else
             {
-                return "0 TL";
+                return "0 ₺";
             }
         }
 

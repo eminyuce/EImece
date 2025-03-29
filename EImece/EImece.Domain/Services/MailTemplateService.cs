@@ -60,11 +60,19 @@ namespace EImece.Domain.Services
             pp.CompanyPhoneNumber = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation).SettingValue.Trim();
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
+            string baseurl = GetSiteBaseUrl();
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
             pp.CompanyWebSiteUrl = url;
-            pp.ImgLogoSrc = url + Constants.LogoImagePath;
+            pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
+            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
             return pp;
+        }
+        private string GetSiteBaseUrl()
+        {
+            var Request = HttpContext.Current.Request;
+            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
+            return baseurl;
         }
 
         public OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId)
@@ -80,8 +88,10 @@ namespace EImece.Domain.Services
             pp.OrderProducts = cOrder.OrderProducts.ToList();
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
+            string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
-            pp.ImgLogoSrc = url + Constants.LogoImagePath;
+           
+            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
             return pp;
         }
     }
