@@ -1,0 +1,85 @@
+﻿@model ProductComment
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+
+@{
+    var ratingDropDown = new SelectList(
+  new List<SelectListItem>
+  {
+        new SelectListItem { Selected = false, Text =  string.Format("5 {0}", Resource.Star), Value = "5"},
+        new SelectListItem { Selected = false, Text =  string.Format("4 {0}", Resource.Star), Value = "4"},
+        new SelectListItem { Selected = false, Text =  string.Format("3 {0}", Resource.Star), Value = "3"},
+        new SelectListItem { Selected = false, Text =  string.Format("2 {0}", Resource.Star), Value = "2"},
+        new SelectListItem { Selected = false, Text =  string.Format("1 {0}", Resource.Star), Value = "1"}
+ }, "Value", "Text", "5");
+}
+<!-- Leave a Review-->
+
+@using (Html.BeginForm("Review", "Products", FormMethod.Post, new { @class = "needs-validation modal fade", @id = "leaveReview", @tabindex = "-1" }))
+{
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Resource.LeaveReview</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ProductId)
+                @Html.HiddenFor(model => model.SeoUrl)
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "invalid-feedback" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "invalid-feedback" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "invalid-feedback" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownListFor(
+                            model => model.Rating,
+                                ratingDropDown,
+                                new
+                                     {
+                                         @class = "form-control custom-select",
+                                    @id = "review-rating"
+                                     })
+                            @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "invalid-feedback" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Review, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.Review, 8, 0, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Review, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">@Resource.SubmitReview</button>
+            </div>
+        </div>
+    </div>
+}

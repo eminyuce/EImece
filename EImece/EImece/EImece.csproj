@@ -363,7 +363,6 @@
     <Content Include="android-chrome-72x72.png" />
     <Content Include="android-chrome-96x96.png" />
     <Content Include="apple-touch-icon.png" />
-    <Content Include="App_Data\eimece.sql" />
     <Content Include="App_Data\notOffLineIpAddresses.txt" />
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\usefulSql.txt" />

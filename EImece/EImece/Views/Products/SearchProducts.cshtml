@@ -25,84 +25,84 @@
 
 @if (String.IsNullOrEmpty(Model.Search))
 {
-    <div class="alert alert-secondary">
-        <div class="pt-3 pb-2 text-center ">
-            @Html.Raw(@Resource.NOSearchResult)
-        </div>
+<div class="alert alert-secondary">
+    <div class="pt-3 pb-2 text-center ">
+        @Html.Raw(@Resource.NOSearchResult)
     </div>
+</div>
 }
 else
 {
 
-    <div class="page-title-wrapper" aria-label="Page title">
-        <div class="container">
-            <div class="alert alert-secondary" role="alert">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                        <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            @Resource.SearchResults
-                        </li>
-                    </ol>
-                </nav>
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        @Resource.SearchResults
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@Model.Search</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+        <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
+            <div class="d-flex flex-wrap">
+                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount))</span>
             </div>
-                <h1 class="page-title">@Model.Search</h1><span class="d-block mt-2 text-muted"></span>
-                <hr class="mt-4">
-                <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
-                    <div class="d-flex flex-wrap">
-                        <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount))</span>
-                    </div>
+        </div>
+    </div>
+</div>
+
+<div class="container potrfolio-container">
+
+    @if (products.IsNotEmpty())
+        {
+            <!-- Toolbar-->
+    <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
+        <div class="d-flex flex-wrap">
+            <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
+                <div class="button-group tabs">
+
+                    <a href="@Model.ProductsListPageUrl(SortingType.Newest,products)"
+                       rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
+                    <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,products)"
+                       rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
+                    <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,products)"
+                       rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
                 </div>
             </div>
         </div>
-
-    <div class="container potrfolio-container">
-
-        @if (products.IsNotEmpty())
-        {
-            <!-- Toolbar-->
-            <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-3">
-                <div class="d-flex flex-wrap">
-                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                        <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
-                        <div class="button-group tabs">
-
-                            <a href="@Model.ProductsListPageUrl(SortingType.Newest,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
-                            <a href="@Model.ProductsListPageUrl(SortingType.LowHighPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
-                            <a href="@Model.ProductsListPageUrl(SortingType.HighLowPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Products grid-->
-            <div class="row no-gutters">
-                @foreach (var p in products)
+    </div>
+ <!-- Products grid-->
+    <div class="row no-gutters">
+        @foreach (var p in products)
                 {
-                    @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
+        @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
                 }
-            </div>
-            <div class="offset-md-4 col-md-8 pb-5">
-                @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
-                                  {"actionName","searchproducts"}, {"controllerName","products" } })
-            </div>
+    </div>
+    <div class="offset-md-4 col-md-8 pb-5">
+        @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
+                          {"actionName","searchproducts"}, {"controllerName","products" } })
+    </div>
 
         }
         else
         {
 
-            <div class="alert alert-secondary alert-with-icon" role="alert">
-                <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-                @Html.Raw(@Resource.NOSearchResult)
-            </div>
+    <div class="alert alert-secondary alert-with-icon" role="alert">
+        <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
+        @Html.Raw(@Resource.NOSearchResult)
+    </div>
 
         }
-    </div>
+</div>
 }
 @functions {
 

@@ -18,12 +18,12 @@
 
 @if (fileStorage.IsActive)
 {
-    <a href="@imgSrcLarge" class="gallery-item mb-grid-gutter" data-fancybox=@string.Format("gallery{0}",fileStorage.Id) data-options='{"caption": "Gallery image caption #1"}'>
-        <img src="@imgSrc" class="img-thumbnail rounded" style="max-height:@Height; max-width:@Width" alt="Gallery image">
-        <div class="gallery-caption">
-            <div class="gallery-indicator">
-                <i class="gallery-indicator-icon" data-feather="zoom-in"></i>
-            </div>
+<a href="@imgSrcLarge" class="gallery-item mb-grid-gutter" data-fancybox=@string.Format("gallery{0}",fileStorage.Id) data-options='{"caption": "Gallery image caption #1"}'>
+    <img src="@imgSrc" class="img-thumbnail rounded" style="max-height:@Height; max-width:@Width" alt="Gallery image">
+    <div class="gallery-caption">
+        <div class="gallery-indicator">
+            <i class="gallery-indicator-icon" data-feather="zoom-in"></i>
         </div>
-    </a>
+    </div>
+</a>
 }

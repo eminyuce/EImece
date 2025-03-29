@@ -19,12 +19,12 @@
     <title>@Html.Raw(ViewBag.Title)</title>
     @if (!string.IsNullOrEmpty(ViewBag.Description))
     {
-        <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+    <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
     }
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {
-        <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
+    <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
     }
     @{
         String seoId = (String)ViewBag.SeoId;
@@ -35,12 +35,12 @@
 
     @if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
     {
-        <meta name="robots" content="noindex">
-        <meta name="googlebot" content="noindex">
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
     }
     else
     {
-        <meta name="Robots" content="index,follow" />
+    <meta name="Robots" content="index,follow" />
     }
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,8 +63,6 @@
 <body lang="@Html.Action("GetHtmlLangCode", "Home")">
     <input name="currentLang" type="hidden" value="@countryCode.ToString()" />
     <!-- Navbar Multilevel-->
- 
-
     <!-- Navbar Multilevel-->
     <!-- First line: Topbar-->
     <div class="navbar bg-dark py-2 px-0">
@@ -120,15 +118,15 @@
                 </div>
                 @if (Request.IsAuthenticated)
                 {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
-                    </a>
+                <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                    <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
+                </a>
                 }
                 else
                 {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
-                    </a>
+                <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                    <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
+                </a>
                 }
 
                 @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
@@ -151,9 +149,5 @@
     @Scripts.Render("~/bundles/mstore")
     @Scripts.Render("~/bundles/eimeceScripts")
     @RenderSection("scripts", required: false)
-
-    
-   
-
 </body>
 </html>

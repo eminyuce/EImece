@@ -31,14 +31,15 @@
         <a href="@product.DetailPageRelativeUrl">
             <section class="item-description">
 
-                <span>@product.Name
-                    @if (isUserAuthenticated)
+                <span>
+                    @product.Name
+                @if (isUserAuthenticated)
                     {
-                        @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
+                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
                     }
-                </span>
-                <h5>@categoryName</h5>
-            </section>
-        </a>
-    </figure>
+            </span>
+            <h5>@categoryName</h5>
+        </section>
+    </a>
+</figure>
 </div>

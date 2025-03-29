@@ -36,15 +36,15 @@
                     </li>
                     @if (category.Parent != null && category.Parent.Parent != null)
                     {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
-                    </li>
+                        <li class="breadcrumb-item">
+                            <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
+                        </li>
                     }
                     @if (category.Parent != null)
                     {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
-                    </li>
+                        <li class="breadcrumb-item">
+                            <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
+                        </li>
                     }
                     <li class="breadcrumb-item active">
                         @category.Name
@@ -58,24 +58,24 @@
 
             if (string.IsNullOrEmpty(category.Description))
             {
-        <p class="text-muted mb-2">
-            @Html.Raw(category.ShortDescription)
-        </p>
+                <p class="text-muted mb-2">
+                    @Html.Raw(category.ShortDescription)
+                </p>
             }
             else
             {
 
-        <p class="text-muted mb-2">
-            @Html.Raw(category.ShortDescription)
-            <!-- Link with href -->
-            <a href="#collapseExample" id="ClickHereForMoreDetails" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
-                @Resource.ClickHereForMoreDetails
-            </a>
-        </p>
- <!-- Collapse -->
-        <div class="collapse" id="collapseExample">
-            @Html.Raw(category.Description)
-        </div>
+                <p class="text-muted mb-2">
+                    @Html.Raw(category.ShortDescription)
+                    <!-- Link with href -->
+                    <a href="#collapseExample" id="ClickHereForMoreDetails" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        @Resource.ClickHereForMoreDetails
+                    </a>
+                </p>
+                <!-- Collapse -->
+                <div class="collapse" id="collapseExample">
+                        @Html.Raw(category.Description)
+                </div>
             }
 
         }
@@ -102,7 +102,7 @@
                         </div>
                         @foreach (var filterType in Model.CategoryFilterTypes.OrderBy(r=>r.Position))
                         {
-                        @CreateFilterTypeList(filterType, Model);
+                            @CreateFilterTypeList(filterType, Model);
                         }
                     </div>
                 </div>
@@ -119,16 +119,16 @@
                                 foreach (var selectedFilterType in Model.SelectedFilterTypes)
                                 {
 
-                            <a href="@selectedFilterType.RemoveSelectedFilter(Model.SelectedFilterTypes,products)"
-                               rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
-                                @string.Format("{0}: {1}", selectedFilterType.Parent.FilterTypeName.Text, selectedFilterType.name)
-                                <span class="badge badge-pill badge-light">X</span>
-                            </a>
+                                    <a href="@selectedFilterType.RemoveSelectedFilter(Model.SelectedFilterTypes,products)"
+                                       rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
+                                        @string.Format("{0}: {1}", selectedFilterType.Parent.FilterTypeName.Text, selectedFilterType.name)
+                                        <span class="badge badge-pill badge-light">X</span>
+                                    </a>
                                 }
-                            <a href="@Url.Action("Category", "ProductCategories", new { filtreler = ""})"
-                               rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
-                                @Resource.RemoveAllFilter
-                            </a>
+                                <a href="@Url.Action("Category", "ProductCategories", new { filtreler = ""})"
+                                   rel="nofollow" class="btn btn-pill btn-outline-dark btn-sm">
+                                    @Resource.RemoveAllFilter
+                                </a>
 
                             }
                         </div>
@@ -163,22 +163,22 @@
                     foreach (var p in products.GetPagingResult())
                     {
 
-                @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
+                        @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
                     }
                 }
                 else
                 {
-                <div class="alert alert-secondary alert-with-icon" role="alert">
-                    <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-                    @if (Model.SelectedFilterTypes.IsNotEmpty())
+                    <div class="alert alert-secondary alert-with-icon" role="alert">
+                        <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
+                        @if (Model.SelectedFilterTypes.IsNotEmpty())
                         {
-                    @Html.Raw(@Resource.NoProductsFoundForSelectedFilters)
+                            @Html.Raw(@Resource.NoProductsFoundForSelectedFilters)
                         }
                         else
                         {
-                    @Html.Raw(@Resource.NoProductsFoundForCategory)
+                            @Html.Raw(@Resource.NoProductsFoundForCategory)
                         }
-                </div>
+                    </div>
                 }
             </div>
             <div class="offset-md-4 col-md-8 pb-5">
@@ -204,64 +204,64 @@
     {
 
         <!-- Price filter    -->
-<div class="widget mb-4 pb-1">
-    <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
-    @foreach (var filter in categoryFilter.CategoryFilters)
+        <div class="widget mb-4 pb-1">
+            <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+            @foreach (var filter in categoryFilter.CategoryFilters)
             {
                 var filterId = @String.Format("filter-{0}", filter.CategoryFilterId);
-    <div class="custom-control custom-checkbox mb-1">
-        <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
-        <label class="custom-control-label" for="@filterId">
-            @for (int i = 0; i < filter.rating; i++)
+                <div class="custom-control custom-checkbox mb-1">
+                    <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
+                    <label class="custom-control-label" for="@filterId">
+                        @for (int i = 0; i < filter.rating; i++)
                         {
-            @:<i class="sr-star active" data-feather="star"></i>
+                            @:<i class="sr-star active" data-feather="star"></i>
                         }
-            <span class="badge text-muted ml-1">(@filter.name)</span>
-        </label>
-    </div>
+                        <span class="badge text-muted ml-1">(@filter.name)</span>
+                    </label>
+                </div>
             }
-</div>
+        </div>
 
     }
     else
     {
- <!-- Price filter    -->
-<div class="widget mb-4 pb-1">
-    <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
-    @foreach (var filter in categoryFilter.CategoryFilters)
+        <!-- Price filter    -->
+        <div class="widget mb-4 pb-1">
+            <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+            @foreach (var filter in categoryFilter.CategoryFilters)
             {
                 var filterId = @String.Format("filter-{0}", filter.CategoryFilterId);
-    <div class="custom-control custom-checkbox mb-1">
-        <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
-        <label class="custom-control-label" for="@filterId">
-            @filter.name
-            @if (filter.count > 0)
+                <div class="custom-control custom-checkbox mb-1">
+                    <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
+                    <label class="custom-control-label" for="@filterId">
+                        @filter.name
+                        @if (filter.count > 0)
                         {
-            <span class="text-muted ml-1">(@filter.count)</span>
+                            <span class="text-muted ml-1">(@filter.count)</span>
                         }
-        </label>
-    </div>
+                    </label>
+                </div>
             }
-</div>
+        </div>
         if (categoryFilter.FilterTypeName.FilterType == FilterType.Price)
         {
 
-<div class="widget mb-4 pb-1">
-    <h3 class="widget-title">@Resource.FilterByPrice</h3>
-    <div class="d-flex align-items-center">
-        <div>
-            <div class="input-group">
-                <input class="form-control" type="text" id="minPriceOrginal" placeholder="Min TL" value="@Model.MinPrice" title="Lütfen bir tam sayı giriniz">
+            <div class="widget mb-4 pb-1">
+                <h3 class="widget-title">@Resource.FilterByPrice</h3>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="minPriceOrginal" placeholder="Min TL" value="@Model.MinPrice" title="Lütfen bir tam sayı giriniz">
+                        </div>
+                    </div>
+                    <div class="mx-1 pt-12">&ndash;</div>
+                    <div>
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="maxPriceOrginal" placeholder="Max TL" value="@Model.MaxPrice" title="Lütfen bir tam sayı giriniz">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="mx-1 pt-12">&ndash;</div>
-        <div>
-            <div class="input-group">
-                <input class="form-control" type="text" id="maxPriceOrginal" placeholder="Max TL" value="@Model.MaxPrice" title="Lütfen bir tam sayı giriniz">
-            </div>
-        </div>
-    </div>
-</div>
 
         }
     }

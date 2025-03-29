@@ -14,19 +14,19 @@
 
         if (p.Childrens.Any())
         {
-            <li class="dropdown">
-                @Html.ActionLink(p.Text, "Category", "ProductCategories",
-               new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
-                @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
-            </li>
+    <li class="dropdown">
+        @Html.ActionLink(p.Text, "Category", "ProductCategories",
+       new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
+        @Html.Partial("_ProductCategoryTreeChildren", p.Childrens)
+    </li>
 
         }
         else
         {
 
-            <li>
-                @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
-            </li>
+    <li>
+        @Html.ActionLink(p.Text, "Category", "ProductCategories", new { id = p.ProductCategory.GetSeoUrl() }, new { @class = "btn btn-default" })
+    </li>
         }
 
     }

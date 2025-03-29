@@ -33,12 +33,12 @@
                             {
                                 foreach (var m in productRootCategories)
                                 {
-                                    <li>
-                                        <a class="nav-link-inline nav-link-light" href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">
-                                            <i class="widget-categories-indicator" data-feather="chevron-right">
-                                            </i><span class="font-size-sm">@m.Name</span>
-                                        </a>
-                                    </li>
+                            <li>
+                                <a class="nav-link-inline nav-link-light" href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">
+                                    <i class="widget-categories-indicator" data-feather="chevron-right">
+                                    </i><span class="font-size-sm">@m.Name</span>
+                                </a>
+                            </li>
                                 }
                             }
                         </ul>
@@ -52,13 +52,13 @@
                             @if (communicationPageLink != null)
                             {
                                 communicationId = communicationPageLink.Id;
-                                <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
+                            <li><a class="nav-link-inline nav-link-light" href="@communicationPageLink.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@communicationPageLink.Name</span></a></li>
                             }
                             @if (aboutUsChildrenLinks.IsNotEmpty())
                             {
                                 foreach (var m in aboutUsChildrenLinks)
                                 {
-                                    <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
+                            <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
                                 }
                             }
                         </ul>
@@ -72,7 +72,7 @@
                             {
                                 foreach (var m in musteriIliskileriChildren)
                                 {
-                                    <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
+                            <li><a class="nav-link-inline nav-link-light" href="@m.DetailPageLink"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@m.Name</span></a></li>
                                 }
                             }
                         </ul>
@@ -91,9 +91,9 @@
     </div>
     @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
     {
-        <div class="py-3" style="background-color: #1a1a1a;">
-            @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
-        </div>
+    <div class="py-3" style="background-color: #1a1a1a;">
+        @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
+    </div>
     }
     <div class="py-3" style="background-color: #1a1a1a;">
         <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>

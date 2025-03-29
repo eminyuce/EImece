@@ -50,67 +50,67 @@
                         <!-- Categories-->
                         @if (Model.StoryCategories.IsNotEmpty())
                         {
-                            <div class="widget widget-categories mb-4 py-1">
-                                <h3 class="widget-title">Categories</h3>
-                                <ul>
-                                    @foreach (var allStoryCategory in Model.StoryCategories)
+                        <div class="widget widget-categories mb-4 py-1">
+                            <h3 class="widget-title">Categories</h3>
+                            <ul>
+                                @foreach (var allStoryCategory in Model.StoryCategories)
                                     {
-                                        <li>
-                                            <a href="@allStoryCategory.DetailPageRelativeUrl">
-                                                <i class="widget-categories-indicator" data-feather="chevron-right"></i>@allStoryCategory.Name
-                                                <span class="badge text-muted ml-1">(@allStoryCategory.Stories.Count)</span>
-                                            </a>
-                                        </li>
+                                <li>
+                                    <a href="@allStoryCategory.DetailPageRelativeUrl">
+                                        <i class="widget-categories-indicator" data-feather="chevron-right"></i>@allStoryCategory.Name
+                                        <span class="badge text-muted ml-1">(@allStoryCategory.Stories.Count)</span>
+                                    </a>
+                                </li>
                                     }
-                                </ul>
-                            </div>
+                            </ul>
+                        </div>
                         }
 
                         <!-- Featured posts-->
 
                         @if (Model.FeaturedStories.IsNotEmpty())
                         {
-                            <div class="widget widget-featured-entries mb-4 pb-2">
+                        <div class="widget widget-featured-entries mb-4 pb-2">
 
-                                <h3 class="widget-title">Featured posts</h3>
-                                @foreach (var releatedStory in Model.RelatedStories)
+                            <h3 class="widget-title">Featured posts</h3>
+                            @foreach (var releatedStory in Model.RelatedStories)
                                 {
                                     var imgTag = releatedStory.GetCroppedImageUrl(releatedStory.MainImageId, 64, 64);
 
-                                    <div class="media">
+                            <div class="media">
 
-                                        @if (!string.IsNullOrEmpty(imgTag))
+                                @if (!string.IsNullOrEmpty(imgTag))
                                         {
-                                            <a class="featured-entry-thumb" href="@releatedStory.DetailPageUrl">
-                                                <img src="@imgTag" width="64" alt="Post thumb">
-                                            </a>
+                                <a class="featured-entry-thumb" href="@releatedStory.DetailPageUrl">
+                                    <img src="@imgTag" width="64" alt="Post thumb">
+                                </a>
                                         }
 
-                                        <div class="media-body">
-                                            <h6 class="featured-entry-title"><a href="@releatedStory.DetailPageUrl">@releatedStory.Name</a></h6>
-                                            @if (!string.IsNullOrEmpty(releatedStory.AuthorName))
+                                <div class="media-body">
+                                    <h6 class="featured-entry-title"><a href="@releatedStory.DetailPageUrl">@releatedStory.Name</a></h6>
+                                    @if (!string.IsNullOrEmpty(releatedStory.AuthorName))
                                             {
-                                                <p class="featured-entry-meta text-muted">by @releatedStory.AuthorName</p>
+                                    <p class="featured-entry-meta text-muted">by @releatedStory.AuthorName</p>
                                             }
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
 
                                 }
-                            </div>
+                        </div>
                         }
 
                         <!-- Tags      -->
 
                         @if (storyTags.IsNotEmpty())
                         {
-                            <div class="widget mb-4 pb-1">
-                                <h3 class="widget-title">Popular tags</h3>
-                                @for (int i = 0; i < storyTags.Count; i++)
+                        <div class="widget mb-4 pb-1">
+                            <h3 class="widget-title">Popular tags</h3>
+                            @for (int i = 0; i < storyTags.Count; i++)
                                 {
                                     var pt = storyTags[i];
-                                    <a class="tag-link mr-2 mb-2" href="@pt.DetailPageRelativeUrlForStories">@string.Format("#{0}", pt.Name)</a>
+                            <a class="tag-link mr-2 mb-2" href="@pt.DetailPageRelativeUrlForStories">@string.Format("#{0}", pt.Name)</a>
                                 }
-                            </div>
+                        </div>
                         }
                     </div>
                 </div>
@@ -147,7 +147,7 @@
             </div>
             @if (isUserAuthenticated)
             {
-                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
+            @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
             }
             <!-- Post content-->
             @Html.Raw(story.Description)
@@ -155,13 +155,13 @@
             <div class="d-flex flex-wrap justify-content-between pt-2 pb-4 mb-1">
                 @if (story.StoryTags.IsNotEmpty())
                 {
-                    <div class="mt-3 mr-3">
-                        @foreach (var t in story.StoryTags)
+                <div class="mt-3 mr-3">
+                    @foreach (var t in story.StoryTags)
                         {
 
-                            <a class="tag-link mr-2 mb-2" href="@t.Tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", t.Tag.Name)</a>
+                    <a class="tag-link mr-2 mb-2" href="@t.Tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", t.Tag.Name)</a>
                         }
-                    </div>
+                </div>
                 }
 
                 <div class="mt-3">
@@ -191,53 +191,53 @@
             @if (Model.RelatedStories.IsNotEmpty())
             {
                 <!-- Related posts-->
-                <h3 class="h4 pt-5 pb-4 mt-2 text-center">You may also like</h3>
-                <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
-                    @foreach (var releatedStory in Model.RelatedStories)
+            <h3 class="h4 pt-5 pb-4 mt-2 text-center">You may also like</h3>
+            <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
+                @foreach (var releatedStory in Model.RelatedStories)
                     {
                         var imgTag = releatedStory.GetCroppedImageUrl(releatedStory.MainImageId, 278, 0);
-                        <div>
-                            @if (!string.IsNullOrEmpty(imgTag))
+                <div>
+                    @if (!string.IsNullOrEmpty(imgTag))
                             {
-                                <a class="d-block mb-3" href="@releatedStory.DetailPageUrl">
-                                    <img class="d-block w-100" src="@imgTag" alt="Related post">
-                                </a>
+                    <a class="d-block mb-3" href="@releatedStory.DetailPageUrl">
+                        <img class="d-block w-100" src="@imgTag" alt="Related post">
+                    </a>
                             }
 
-                            @if (!string.IsNullOrEmpty(releatedStory.AuthorName))
+                    @if (!string.IsNullOrEmpty(releatedStory.AuthorName))
                             {
-                                <div class="post-meta pb-2">
-                                    by&nbsp;@releatedStory.AuthorName
-                                </div>
+                    <div class="post-meta pb-2">
+                        by&nbsp;@releatedStory.AuthorName
+                    </div>
                             }
 
-                            <section class="date">
-                                <span class="day">@story.CreatedDate.Day</span>
-                                <span class="month">@story.CreatedDate.ToString("MMM")</span>
-                            </section>
+                    <section class="date">
+                        <span class="day">@story.CreatedDate.Day</span>
+                        <span class="month">@story.CreatedDate.ToString("MMM")</span>
+                    </section>
 
-                            <h4 class="h6"><a class="post-title" href="@releatedStory.DetailPageUrl">@releatedStory.Name</a></h4>
-                        </div>
-                    }
+                    <h4 class="h6"><a class="post-title" href="@releatedStory.DetailPageUrl">@releatedStory.Name</a></h4>
                 </div>
+                    }
+            </div>
             }
             @if (RelatedProducts.Any())
             {
                 <!-- Related posts-->
-                <h3 class="h4 pt-5 pb-4 mt-2 text-center">      @Resource.RelatedProductsForBlog</h3>
-                <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
+            <h3 class="h4 pt-5 pb-4 mt-2 text-center">      @Resource.RelatedProductsForBlog</h3>
+            <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
 
-                    @foreach (var product in RelatedProducts)
+                @foreach (var product in RelatedProducts)
                     {
 
                         var imgTag = product.GetCroppedImageUrl(product.MainImageId, 278, 0);
-                        <div>
-                            <a class="d-block mb-3" href="@product.DetailPageRelativeUrl"><img class="d-block w-100" src="@imgTag" alt="Related post"></a>
-                            <h4 class="h6"><a class="post-title" href="#">@product.Name</a></h4>
-                        </div>
+                <div>
+                    <a class="d-block mb-3" href="@product.DetailPageRelativeUrl"><img class="d-block w-100" src="@imgTag" alt="Related post"></a>
+                    <h4 class="h6"><a class="post-title" href="#">@product.Name</a></h4>
+                </div>
 
                     }
-                </div>
+            </div>
             }
         </div>
     </div>

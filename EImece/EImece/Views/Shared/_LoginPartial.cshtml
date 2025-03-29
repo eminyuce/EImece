@@ -4,22 +4,22 @@
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-        @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
-        <ul>
-            <li>
-                @Html.ActionLink(Resource.Hello + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resource.Logout</a></li>
-            <li>@Html.ActionLink("Admin Dashboard", "Index", "Dashboard", routeValues: new { area = "admin" }, htmlAttributes: new { id = "registerLink" })</li>
-        </ul>
+<ul>
+    <li>
+        @Html.ActionLink(Resource.Hello + User.Identity.GetUserName() + "!", "changepassword", "Users", routeValues: new { @area = "admin" }, htmlAttributes: new { title = "Manage" })
+    </li>
+    <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resource.Logout</a></li>
+    <li>@Html.ActionLink("Admin Dashboard", "Index", "Dashboard", routeValues: new { area = "admin" }, htmlAttributes: new { id = "registerLink" })</li>
+</ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right">
 
-        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+</ul>
 }

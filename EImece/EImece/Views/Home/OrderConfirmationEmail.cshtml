@@ -11,41 +11,41 @@
 <dl>
     @if (!string.IsNullOrEmpty(razorResult.Result))
     {
-        <dt>
-            razorResult.Result
-        </dt>
-        <dd>
-            @Html.Raw(razorResult.Result)
-        </dd>
-        <hr class="adminLine" />
+    <dt>
+        razorResult.Result
+    </dt>
+    <dd>
+        @Html.Raw(razorResult.Result)
+    </dd>
+    <hr class="adminLine" />
     }
     <br />
     <br />
     <br />
     @if (!string.IsNullOrEmpty(razorResult.Source))
     {
-        <dt>
-            razorResult.Source
-        </dt>
-        <dd>
-            @Html.Raw(razorResult.Source)
-        </dd>
-        <hr class="adminLine" />
+    <dt>
+        razorResult.Source
+    </dt>
+    <dd>
+        @Html.Raw(razorResult.Source)
+    </dd>
+    <hr class="adminLine" />
     }
     <br />
     <br />
     <br />
     @if (razorErrors.Any())
     {
-        <dt>
-            razorResult.Source
-        </dt>
-        <dd>
-            @foreach (var er in razorErrors)
+    <dt>
+        razorResult.Source
+    </dt>
+    <dd>
+        @foreach (var er in razorErrors)
             {
-                @Html.DisplayFor(t => er)
+        @Html.DisplayFor(t => er)
             }
-        </dd>
-        <hr class="adminLine" />
+    </dd>
+    <hr class="adminLine" />
     }
 </dl>

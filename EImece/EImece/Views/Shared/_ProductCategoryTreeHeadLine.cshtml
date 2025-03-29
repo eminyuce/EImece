@@ -19,38 +19,38 @@
 @if (productCategories.IsNotEmpty())
 {
     <!-- Categories-->
-    <div class="widget widget-categories mb-4 py-1">
-        <h3 class="widget-title">@Resource.ProductCategories</h3>
-        <ul id="shopCategories">
-            @foreach (var p in productCategories)
+<div class="widget widget-categories mb-4 py-1">
+    <h3 class="widget-title">@Resource.ProductCategories</h3>
+    <ul id="shopCategories">
+        @foreach (var p in productCategories)
             {
                 var productCategory = p.ProductCategory;
                 if (p.Childrens.IsNotEmpty())
                 {
-                    <li class="@String.Format("has-children")">
-                        <a data-toggle="collapse" class="collapsed"
-                           id="@string.Format("productCategory{0}",productCategory.Id)"
-                           href="@string.Format("#shopCategories{0}",productCategory.Id)">
-                            <i class="widget-categories-indicator" data-feather="chevron-down"></i>
-                            @badgeProductNumber(p, selectedProductCategory)
-                        </a>
-                        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
-                    </li>
+        <li class="@String.Format("has-children")">
+            <a data-toggle="collapse" class="collapsed"
+               id="@string.Format("productCategory{0}",productCategory.Id)"
+               href="@string.Format("#shopCategories{0}",productCategory.Id)">
+                <i class="widget-categories-indicator" data-feather="chevron-down"></i>
+                @badgeProductNumber(p, selectedProductCategory)
+            </a>
+            @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+        </li>
 
                 }
                 else
                 {
 
-                    <li>
-                        <a id="@string.Format("productCategory{0}",productCategory.Id)"
-                           href="@productCategory.DetailPageUrl">
-                            @badgeProductNumber(p, selectedProductCategory)
-                        </a>
-                    </li>
+        <li>
+            <a id="@string.Format("productCategory{0}",productCategory.Id)"
+               href="@productCategory.DetailPageUrl">
+                @badgeProductNumber(p, selectedProductCategory)
+            </a>
+        </li>
                 }
             }
-        </ul>
-    </div>
+    </ul>
+</div>
 }
 
 @helper badgeProductNumber(ProductCategoryTreeModel p, ProductCategory selectedProductCategory)
@@ -60,22 +60,22 @@ if (p.ProductCount > 0)
 {
     if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
     {
-            <b  class="text-dark">@p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span></b>
+<b class="text-dark">@p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span></b>
         }
         else
         {
-            @p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span>
+@p.ProductCategoryName  <span class="badge text-muted">(@p.ProductCount)</span>
     }
 }
 else
 {
     if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
     {
-            <b class="text-dark">@p.ProductCategoryName</b>
+<b class="text-dark">@p.ProductCategoryName</b>
         }
         else
         {
-            @p.ProductCategoryName
+@p.ProductCategoryName
         }
     }
 }

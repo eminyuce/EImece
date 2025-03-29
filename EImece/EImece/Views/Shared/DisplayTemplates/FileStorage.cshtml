@@ -16,14 +16,14 @@
 
 @if (fileStorage.IsActive)
 {
-   <div class="one-third column portfolio-item media post-@fileStorage.Id portfolio type-portfolio
+<div class="one-third column portfolio-item media post-@fileStorage.Id portfolio type-portfolio
      status-publish has-post-thumbnail hentry
      @filters @tagsText" id="post-@fileStorage.Id" style="position: absolute; left: 320px; top: 0px;">
-        <figure>
-            <div class="portfolio-holder">
-                @Html.Raw(imageUrl)
-                <div class="hover-icon"></div>
-            </div>
-        </figure>
-    </div>
+    <figure>
+        <div class="portfolio-holder">
+            @Html.Raw(imageUrl)
+            <div class="hover-icon"></div>
+        </div>
+    </figure>
+</div>
 }

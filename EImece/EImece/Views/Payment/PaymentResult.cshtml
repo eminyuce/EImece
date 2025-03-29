@@ -17,22 +17,22 @@
 @if (checkoutForm.PaymentStatus.Equals(EImece.Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
 {
     <!-- Page Content-->
-    <div class="container pb-5 mb-sm-4">
-        <div class="pt-5">
-            <div class="card py-3 mt-sm-3">
-                @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.Order.OrderNumber, urlActionLink))
-            </div>
+<div class="container pb-5 mb-sm-4">
+    <div class="pt-5">
+        <div class="card py-3 mt-sm-3">
+            @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.Order.OrderNumber, urlActionLink))
         </div>
     </div>
+</div>
 }
 else
 {
-    <div class="container pb-5 mb-sm-4">
-        <div class="pt-5">
-            <div class="card py-3 mt-sm-3">
-                <p>NOT SUCCESS</p>
-                @checkoutForm.ErrorMessage
-            </div>
+<div class="container pb-5 mb-sm-4">
+    <div class="pt-5">
+        <div class="card py-3 mt-sm-3">
+            <p>NOT SUCCESS</p>
+            @checkoutForm.ErrorMessage
         </div>
     </div>
+</div>
 }

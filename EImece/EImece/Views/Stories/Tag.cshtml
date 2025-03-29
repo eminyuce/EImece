@@ -19,7 +19,7 @@
 
 <h2>
     @tag.Name
-@if (isUserAuthenticated)
+    @if (isUserAuthenticated)
 {
     @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
 }
@@ -32,8 +32,8 @@
 <div class="row">
     @foreach (var item in StoryTags)
     {
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            @Html.DisplayFor(modelItem => item.Story, "MainPageStory")
-        </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        @Html.DisplayFor(modelItem => item.Story, "MainPageStory")
+    </div>
     }
 </div>

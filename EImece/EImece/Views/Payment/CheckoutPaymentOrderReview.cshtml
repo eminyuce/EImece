@@ -28,9 +28,9 @@
                 </ol>
             </nav>
         </div>
-            <h1 class="page-title">@Resource.OrderFinalReview</h1><span class="d-block mt-2 text-muted"></span>
-        </div>
+        <h1 class="page-title">@Resource.OrderFinalReview</h1><span class="d-block mt-2 text-muted"></span>
     </div>
+</div>
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <!-- Steps (wizard)-->
@@ -45,7 +45,7 @@
             {
                 for (int i = 0; i < products.Count; i++)
                 {
-                    @CreateShoppingCartItem(products[i], i)
+            @CreateShoppingCartItem(products[i], i)
                 }
             }
 
@@ -79,15 +79,15 @@
     var totalPricePerItem = product.Price * item.Quantity;
 
     <!-- Item-->
-    <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
-        <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
-        <div class="media d-block d-sm-flex text-center text-sm-left">
-            @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
+<div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+    <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
+    <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
+    <div class="media d-block d-sm-flex text-center text-sm-left">
+        @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
-                <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-                    <img src="@product.CroppedImageUrl" alt="Product">
-                </a>
+        <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
+            <img src="@product.CroppedImageUrl" alt="Product">
+        </a>
             }
         <div class="media-body pt-3">
             <h3 class="product-card-title font-weight-semibold border-0 pb-0">
@@ -99,15 +99,15 @@
             {
                 foreach (var productSpecs in product.ProductSpecItems)
                 {
-                    <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+            <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
                 }
             }
         </div>
-        </div>
-        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.Quantity</span></div>
-            <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Total:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
-        </div>
     </div>
+    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+        <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.Quantity</span></div>
+        <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Total:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
+    </div>
+</div>
 
 }

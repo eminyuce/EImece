@@ -24,7 +24,7 @@
 
             @foreach (var story in stories)
             {
-                @Html.DisplayFor(modelItem => story, "Stories")
+            @Html.DisplayFor(modelItem => story, "Stories")
             }
         </div>
     </div>
@@ -49,10 +49,10 @@
 
                     @foreach (var cstory in Model.StoryCategories)
             {
-                        <li>
+                    <li>
 
-                            @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
-                        </li>
+                        @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
+                    </li>
                     }
                 </ul>
             </nav>
@@ -65,7 +65,7 @@
             <nav class="tags">
                 @foreach (var t in Model.Tags)
                 {
-                    @Html.ActionLink(t.Name, "Tag", new { id = t.GetSeoUrl() })
+                @Html.ActionLink(t.Name, "Tag", new { id = t.GetSeoUrl() })
                 }
             </nav>
         </div>

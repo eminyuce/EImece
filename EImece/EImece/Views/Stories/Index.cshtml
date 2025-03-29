@@ -17,11 +17,11 @@
 
 @foreach (var item in storyCategories)
 {
-   <div>
-       @Html.ActionLink(item.Name, "Categories", new { id = item.GetSeoUrl() })
-   </div>
+<div>
+    @Html.ActionLink(item.Name, "Categories", new { id = item.GetSeoUrl() })
+</div>
  if (item.MainImageId.HasValue && item.MainImageId.Value > 0) {
-      @item.MainImage.Name
+@item.MainImage.Name
 
    }
 
@@ -33,5 +33,5 @@
 
 @foreach (var item in stories)
 {
-    @Html.DisplayFor(modelItem => item,"StoryShort", new { Width = 300, Height = 300 })
+@Html.DisplayFor(modelItem => item,"StoryShort", new { Width = 300, Height = 300 })
 }

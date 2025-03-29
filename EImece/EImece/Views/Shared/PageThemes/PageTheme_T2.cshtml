@@ -44,11 +44,11 @@
     <div class="row">
         @if (!string.IsNullOrEmpty(imgMenuUrl))
         {
-            <div class="col-md-4">
-                <div>
-                    <img src="@imgMenuUrl" class="img-thumbnail rounded" alt="Rounded image">
-                </div>
+        <div class="col-md-4">
+            <div>
+                <img src="@imgMenuUrl" class="img-thumbnail rounded" alt="Rounded image">
             </div>
+        </div>
         }
 
         <div class="col-md-8">
@@ -58,15 +58,15 @@
             @if (files.IsNotEmpty())
             {
                 <!-- Row-->
-        <div class="row">
-            @for (int i = 0; i < files.Count; i++)
+            <div class="row">
+                @for (int i = 0; i < files.Count; i++)
             {
                 var f = files[i].FileStorage;
-            <div class="col-md-4">
-                @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
-            </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+                </div>
             }
-        </div>
+            </div>
             }
         </div>
     </div>

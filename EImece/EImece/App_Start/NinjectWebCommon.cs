@@ -96,7 +96,7 @@ namespace EImece.App_Start
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
             kernel.Bind<AdresService>().ToSelf().InRequestScope();
-            kernel.Bind<IyzicoService>().ToSelf().InRequestScope();        
+            kernel.Bind<IyzicoService>().ToSelf().InRequestScope();
             kernel.Bind<ReportService>().ToSelf().InRequestScope();
             kernel.Bind<MigrationRepository>().ToSelf().InRequestScope();
             kernel.Bind<SiteMapService>().ToSelf().InRequestScope();
@@ -148,7 +148,6 @@ namespace EImece.App_Start
 
         private static void BindServices(IKernel kernel)
         {
-           
             kernel.Bind<IFileStorageService>().To<FileStorageService>().InRequestScope();
             kernel.Bind<IListItemService>().To<ListItemService>().InRequestScope();
             kernel.Bind<IListService>().To<ListService>().InRequestScope();

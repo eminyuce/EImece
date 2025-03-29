@@ -15,29 +15,29 @@
     {
         if (pager.HasPreviousPage)
         {
-            @Html.ActionLink("Previous", action, controller, new { search = search, page = (pager.PageIndex - 1) }, new { @class = "btn btn-success btn-xs" })
+    @Html.ActionLink("Previous", action, controller, new { search = search, page = (pager.PageIndex - 1) }, new { @class = "btn btn-success btn-xs" })
         }
         else
         {
-            <span>[Previous]</span>
+    <span>[Previous]</span>
         }
 
         for (int i = 1; i < pager.TotalPageCount+1; i++)
         {
-            @:&nbsp;
+    @:&nbsp;
 
             var style = (pager.PageIndex == i) ? "background-color:red; " : "";
-            @Html.ActionLink((i).ToStr(), action, controller, new { search = search, page = i }, new { @class = "btn btn-warning btn-xs", style = style })
+    @Html.ActionLink((i).ToStr(), action, controller, new { search = search, page = i }, new { @class = "btn btn-warning btn-xs", style = style })
         }
 
         if (pager.HasNextPage)
         {
-            @:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            @Html.ActionLink("Next", action, controller, new { search = search, page = (pager.PageIndex + 1) }, new { @class = "btn btn-success btn-xs" })
+    @:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    @Html.ActionLink("Next", action, controller, new { search = search, page = (pager.PageIndex + 1) }, new { @class = "btn btn-success btn-xs" })
         }
         else
         {
-            <span>[Next]</span>
+    <span>[Next]</span>
         }
 
     }

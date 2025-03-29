@@ -14,41 +14,41 @@
 }
 @if (mainPageImages.Any())
 {
-    <div id="carousel-main-page-image" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            @foreach (var mainPageImage in mainPageImages)
+<div id="carousel-main-page-image" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        @foreach (var mainPageImage in mainPageImages)
             {
                 var cssClass = cnt1 == 0 ? "active" : "";
-                <li class="@cssClass" data-target="#carousel-main-page-image" data-slide-to="@cnt1"></li>
+        <li class="@cssClass" data-target="#carousel-main-page-image" data-slide-to="@cnt1"></li>
                 cnt1++;
             }
-        </ol>
+    </ol>
 
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-            @foreach (var mainPageImage in mainPageImages)
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        @foreach (var mainPageImage in mainPageImages)
             {
                 var cssClass = cnt2 == 0 ? "item active" : "item";
-                <div class="@cssClass">
-                    @Html.Raw(mainPageImage.GetCroppedImageTag(Width, Height))
-                    <div class="carousel-caption">
-                        <h3>@mainPageImage.Name</h3>
-                        @Html.Raw(@mainPageImage.Description)
-                    </div>
-                </div>
+        <div class="@cssClass">
+            @Html.Raw(mainPageImage.GetCroppedImageTag(Width, Height))
+            <div class="carousel-caption">
+                <h3>@mainPageImage.Name</h3>
+                @Html.Raw(@mainPageImage.Description)
+            </div>
+        </div>
                 cnt2++;
             }
-        </div>
-
-        <!-- Controls -->
-        <a class="left carousel-control" href="#carousel-main-page-image" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#carousel-main-page-image" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
     </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-main-page-image" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-main-page-image" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
 }

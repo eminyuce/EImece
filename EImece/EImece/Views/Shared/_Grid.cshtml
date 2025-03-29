@@ -3,59 +3,59 @@
 @if (Model == null) { return; }
 @if (Model.RenderOptions.RenderRowsOnly)
 {
-    @RenderGridBody();
+@RenderGridBody();
 }
 else
 {
-    <div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
-        <div class="grid-wrap">
-            <table class="table table-striped grid-table">
-                @* Draw grid header *@
-                <thead>
-                    @RenderGridHeader()
-                </thead>
-                <tbody>
-                    @RenderGridBody()
-                </tbody>
-            </table>
-            @RenderGridPager()
-        </div>
+<div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
+    <div class="grid-wrap">
+        <table class="table table-striped grid-table">
+            @* Draw grid header *@
+            <thead>
+                @RenderGridHeader()
+            </thead>
+            <tbody>
+                @RenderGridBody()
+            </tbody>
+        </table>
+        @RenderGridPager()
     </div>
+</div>
 }
 @helper RenderGridBody()
 {
     if (!Model.ItemsToDisplay.Any())
     {
-        <tr class="grid-empty-text">
-            <td colspan="@Model.Columns.Count()">
-                @Model.EmptyGridText
-            </td>
-        </tr>
+<tr class="grid-empty-text">
+    <td colspan="@Model.Columns.Count()">
+        @Model.EmptyGridText
+    </td>
+</tr>
     }
     else
     {
         foreach (object item in Model.ItemsToDisplay)
         {
-            <tr class="grid-row @Model.GetRowCssClasses(item)">
-                @foreach (IGridColumn column in Model.Columns)
+<tr class="grid-row @Model.GetRowCssClasses(item)">
+    @foreach (IGridColumn column in Model.Columns)
                 {
 
                     var c = column.GetCell(item);
-                    @column.CellRenderer.Render(column, c)
+    @column.CellRenderer.Render(column, c)
 
                 }
-            </tr>
+</tr>
         }
     }
 }
 @helper RenderGridHeader()
 {
-    <tr>
-        @foreach (IGridColumn column in Model.Columns)
+<tr>
+    @foreach (IGridColumn column in Model.Columns)
         {
-            @column.HeaderRenderer.Render(column)
+    @column.HeaderRenderer.Render(column)
         }
-    </tr>
+</tr>
 }
 @helper RenderGridPager()
 {
@@ -67,6 +67,6 @@ else
             @Html.Partial(Model.Pager.TemplateName, Model.Pager)
         </div>
     </div>
-    </div>
+</div>
     }
-    }
+}

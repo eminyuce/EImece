@@ -13,11 +13,11 @@
     string urlActionLink = Url.Action("index", "home");
 }
 
-    <!-- Page Content-->
-    <div class="container pb-5 mb-sm-4">
-        <div class="pt-5">
-            <div class="card py-3 mt-sm-3">
-                @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.OrderNumber, urlActionLink))
-            </div>
+<!-- Page Content-->
+<div class="container pb-5 mb-sm-4">
+    <div class="pt-5">
+        <div class="card py-3 mt-sm-3">
+            @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.OrderNumber, urlActionLink))
         </div>
     </div>
+</div>

@@ -19,34 +19,34 @@
 <div class="d-flex flex-nowrap">
     @if (ContainsValue(dic, Constants.LinkedinWebSiteLink))
     {
-        <a class="social-btn sb-linkedin sb-light sb-sm ml-2" href="@dic[Constants.LinkedinWebSiteLink]">
-            <i class="flaticon-linkedin"></i><span class="sr-only">Linkedin</span>
-        </a>
+    <a class="social-btn sb-linkedin sb-light sb-sm ml-2" href="@dic[Constants.LinkedinWebSiteLink]">
+        <i class="flaticon-linkedin"></i><span class="sr-only">Linkedin</span>
+    </a>
     }
     @if (ContainsValue(dic, Constants.FacebookWebSiteLink))
     {
-        <a class="social-btn sb-facebook sb-light sb-sm ml-2" href="@dic[Constants.FacebookWebSiteLink]">
-            <i class="flaticon-facebook"></i><span class="sr-only">Facebook</span>
-        </a>
+    <a class="social-btn sb-facebook sb-light sb-sm ml-2" href="@dic[Constants.FacebookWebSiteLink]">
+        <i class="flaticon-facebook"></i><span class="sr-only">Facebook</span>
+    </a>
     }
     @if (ContainsValue(dic, Constants.TwitterWebSiteLink))
     {
-        <a class="social-btn sb-twitter sb-light sb-sm ml-2" href="@dic[Constants.TwitterWebSiteLink]">
-            <i class="flaticon-twitter"></i><span class="sr-only">Twitter</span>
-        </a>
+    <a class="social-btn sb-twitter sb-light sb-sm ml-2" href="@dic[Constants.TwitterWebSiteLink]">
+        <i class="flaticon-twitter"></i><span class="sr-only">Twitter</span>
+    </a>
     }
 
     @if (ContainsValue(dic, Constants.InstagramWebSiteLink))
     {
-        <a class="social-btn sb-instagram sb-light sb-sm ml-2" href="@dic[Constants.InstagramWebSiteLink]">
-            <i class="flaticon-instagram"></i><span class="sr-only">Instagram</span>
-        </a>
+    <a class="social-btn sb-instagram sb-light sb-sm ml-2" href="@dic[Constants.InstagramWebSiteLink]">
+        <i class="flaticon-instagram"></i><span class="sr-only">Instagram</span>
+    </a>
     }
     @if (ContainsValue(dic, Constants.PinterestWebSiteLink))
     {
-        <a class="social-btn sb-pinterest sb-light sb-sm ml-2" href="@dic[Constants.PinterestWebSiteLink]">
-            <i class="flaticon-pinterest"></i><span class="sr-only">Pinterest</span>
-        </a>
+    <a class="social-btn sb-pinterest sb-light sb-sm ml-2" href="@dic[Constants.PinterestWebSiteLink]">
+        <i class="flaticon-pinterest"></i><span class="sr-only">Pinterest</span>
+    </a>
     }
     @if (listItems.Count() > 1)
     {
@@ -58,9 +58,9 @@
             {
                 continue;
             }
-            <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })">
-                <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
-            </a>
+    <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })">
+        <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
+    </a>
         }
     }
 </div>

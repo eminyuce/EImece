@@ -22,28 +22,28 @@
 
 @if (productCategories.IsNotEmpty())
 {
-    <ul class="@className" id="@string.Format("shopCategories{0}",parentProductCategory.Id)" data-parent="#shopCategories">
-        @foreach (var p in productCategories)
+<ul class="@className" id="@string.Format("shopCategories{0}",parentProductCategory.Id)" data-parent="#shopCategories">
+    @foreach (var p in productCategories)
         {
             var productCategory = p.ProductCategory;
             if (p.Childrens.IsNotEmpty())
             {
-                <li class="@string.Format("child-{0} has-sublist",p.TreeLevel)">
-                    <a id="@string.Format("productCategory{0}",productCategory.Id)"
-                       href="@productCategory.DetailPageUrl">
-                        @badgeProductNumber(p, selectedProductCategory)
-                    </a>
-                    @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
-                </li>
+    <li class="@string.Format("child-{0} has-sublist",p.TreeLevel)">
+        <a id="@string.Format("productCategory{0}",productCategory.Id)"
+           href="@productCategory.DetailPageUrl">
+            @badgeProductNumber(p, selectedProductCategory)
+        </a>
+        @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+    </li>
             }
             else
             {
-                <li>
-                    <a id="@string.Format("productCategory{0}",productCategory.Id)" href="@productCategory.DetailPageUrl">@badgeProductNumber(p, selectedProductCategory)</a>
-                </li>
+    <li>
+        <a id="@string.Format("productCategory{0}",productCategory.Id)" href="@productCategory.DetailPageUrl">@badgeProductNumber(p, selectedProductCategory)</a>
+    </li>
             }
         }
-    </ul>
+</ul>
 }
 
 @helper badgeProductNumber(ProductCategoryTreeModel p, ProductCategory selectedProductCategory)
@@ -53,22 +53,22 @@
     {
         if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
         {
-            <b class="text-dark">@p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span></b>
+<b class="text-dark">@p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span></b>
         }
         else
         {
-            @p.ProductCategoryName <span class="badge text-muted">(@p.ProductCount)</span>
+@p.ProductCategoryName  <span class="badge text-muted">(@p.ProductCount)</span>
         }
     }
     else
     {
         if (selectedProductCategory.Id.Equals(p.ProductCategory.Id))
         {
-            <b class="text-dark">@p.ProductCategoryName</b>
+<b class="text-dark">@p.ProductCategoryName</b>
         }
         else
         {
-            @p.ProductCategoryName
+@p.ProductCategoryName
         }
     }
 }

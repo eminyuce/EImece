@@ -25,21 +25,22 @@
         </figure>
         <section class="from-the-blog-content">
             <a href="@storyDetailUrl">
-            <h5>@story.Name
+                <h5>
+                    @story.Name
                 @if (isUserAuthenticated)
             {
-                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
                 }
-                </h5>
-                <i>
-                    @story.StoryCategory.Name
-                </i>
-            </a>
-            <i>@story.UpdatedDate</i>
-            <span>@story.GetSeoDescription(350) </span>
-            <a class="button gray" href="@storyDetailUrl">
-                Read More
-            </a>
-        </section>
-    </article>
+            </h5>
+            <i>
+                @story.StoryCategory.Name
+            </i>
+        </a>
+        <i>@story.UpdatedDate</i>
+        <span>@story.GetSeoDescription(350) </span>
+        <a class="button gray" href="@storyDetailUrl">
+            Read More
+        </a>
+    </section>
+</article>
 </div>

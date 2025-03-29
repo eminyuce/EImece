@@ -22,13 +22,13 @@
 
             <nav id="breadcrumbs">
 
-                    <ul>
-                        @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                <ul>
+                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
                         {
-                            <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                    <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
                         }
-                        <li>@category.Name</li>
-                    </ul>
+                    <li>@category.Name</li>
+                </ul>
             </nav>
         </div>
     </div>
@@ -42,7 +42,7 @@
 
             @foreach (var story in stories)
             {
-                @Html.DisplayFor(modelItem => story, "Story")
+            @Html.DisplayFor(modelItem => story, "Story")
             }
         </div>
     </div>
@@ -73,10 +73,10 @@
 
                     @foreach (var cstory in Model.StoryCategories)
             {
-                        <li>
+                    <li>
 
-                            @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
-                        </li>
+                        @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
+                    </li>
                     }
                 </ul>
             </nav>
@@ -93,7 +93,7 @@
             <nav class="tags">
                 @foreach (var t in Model.Tags)
                 {
-                    @Html.ActionLink(t.Name, "Tag", new { id = t.GetSeoUrl() })
+                @Html.ActionLink(t.Name, "Tag", new { id = t.GetSeoUrl() })
                 }
             </nav>
         </div>
