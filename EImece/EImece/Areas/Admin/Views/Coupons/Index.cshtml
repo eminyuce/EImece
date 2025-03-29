@@ -59,9 +59,9 @@ columns.Add()
    .Sanitized(false)
    .SetWidth(30)
    .RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white  " })
-</b>);
+    @<b>
+        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white  " })
+    </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -110,7 +110,6 @@ columns.Add(o => o.EndDate)
 .RenderValueAs(o => o.EndDate != null ? String.Format("{0}", o.EndDate.ToString("dd/MM/yyyy",
                         CultureInfo.InvariantCulture)) : null)
 .SortInitialDirection(GridSortDirection.Descending);
-
 
 columns.Add(o => o.Position).Titled(AdminResource.Position)
 .Encoded(false).

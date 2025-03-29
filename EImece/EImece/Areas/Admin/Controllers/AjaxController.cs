@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories;
@@ -14,7 +15,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using EImece.Domain.Models.AdminModels;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -226,6 +226,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteCouponsGridItem(List<String> values)
@@ -291,6 +292,7 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteCouponGridItem(List<String> values)
@@ -658,6 +660,5 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(html, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-       
     }
 }

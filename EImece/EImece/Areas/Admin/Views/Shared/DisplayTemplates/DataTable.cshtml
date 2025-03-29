@@ -8,19 +8,19 @@
         <tr>
             @foreach (System.Data.DataColumn col in Model.Columns)
             {
-                <th>&nbsp;&nbsp;&nbsp;@col.Caption&nbsp;&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;&nbsp;@col.Caption&nbsp;&nbsp;&nbsp;</th>
             }
         </tr>
     </thead>
     <tbody>
         @foreach (System.Data.DataRow row in Model.Rows)
         {
-            <tr>
-                @foreach (var cell in row.ItemArray)
+        <tr>
+            @foreach (var cell in row.ItemArray)
                 {
-                    <td>&nbsp;&nbsp;&nbsp; @cell.ToString()&nbsp;&nbsp;&nbsp;</td>
+            <td>&nbsp;&nbsp;&nbsp; @cell.ToString()&nbsp;&nbsp;&nbsp;</td>
                 }
-            </tr>
+        </tr>
         }
     </tbody>
 </table>

@@ -62,7 +62,6 @@
         .Sortable(true)
         .RenderValueAs(o => @Html.ActionLink(o.OrderNumber, "Details", new { id = o.Id }, new { @class = "grid-link" }));
 
-
     // Order Status
     columns.Add(o => o.OrderStatus)
         .Titled(AdminResource.OrderStatus)

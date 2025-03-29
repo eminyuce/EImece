@@ -128,10 +128,8 @@ columns.Add()
  .Css("smallGridColumn")
  .RenderValueAs(o => PriceUpdates(o));
 
-
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
-
 
 @helper PriceUpdates(Brand d)
 {

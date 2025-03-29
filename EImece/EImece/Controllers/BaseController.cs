@@ -61,18 +61,21 @@ namespace EImece.Controllers
 
             base.Initialize(requestContext);
         }
+
         protected void SetCurrentCulture(BaseEntity entity)
         {
             if (entity == null)
                 return;
             SetCurrentCulture(entity.Lang);
         }
+
         protected void SetCurrentCulture(int language)
         {
             if (language == 0)
                 return;
-            SetLanguage(language+"");
+            SetLanguage(language + "");
         }
+
         protected void SetCurrentCulture(String language)
         {
             if (String.IsNullOrEmpty(language))
@@ -80,6 +83,7 @@ namespace EImece.Controllers
             Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
         }
+
         protected void SetLanguage(string id)
         {
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();

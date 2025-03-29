@@ -8,25 +8,25 @@
 }
 @foreach (TagCategory tagCategory in tagCategories)
 {
-    <h4>@tagCategory.Name</h4>
-    <hr class="adminLine" />
-    @: <div class="container">
+<h4>@tagCategory.Name</h4>
+<hr class="adminLine" />
+@: <div class="container">
         for (int i = 0; i < tagCategory.Tags.Count; i += splitterNumber)
         {
-            @: <div class="row">
+    @: <div class="row">
                 var items = tagCategory.Tags.Skip(i).Take(splitterNumber).ToList();
                 for (int j = 0; j < items.Count; j++)
                 {
                     var tag = items.ElementAt(j);
                     String id = String.Format("checkbox{0}", tag.Id);
-                    <div class=@String.Format("col-md-{0}",12/splitterNumber)>
-                        <input id="@id" name="tags" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
-                        <label for="@id">
-                            @tag.Name
-                        </label>
-                    </div>
+        <div class=@String.Format("col-md-{0}",12/splitterNumber)>
+            <input id="@id" name="tags" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
+            <label for="@id">
+                @tag.Name
+            </label>
+        </div>
                 }
-            @:             </div>
+    @:             </div>
         }
-    @: </div>
+@: </div>
 }

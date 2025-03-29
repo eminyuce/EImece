@@ -1,21 +1,7 @@
-﻿using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using Microsoft.AspNet.Identity;
-using NLog;
-using Resources;
+﻿using EImece.Domain.Entities;
 using System;
-using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Globalization;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -24,8 +10,8 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/BuyNowOrders
         public ActionResult Index(String search = "")
         {
-            Expression<Func<Order, bool>> whereLambda = r => 
-            r.Name.Contains(search) 
+            Expression<Func<Order, bool>> whereLambda = r =>
+            r.Name.Contains(search)
             || r.OrderNumber.Contains(search)
             || r.OrderNumber.Contains(search)
               || r.Token.Contains(search);

@@ -13,38 +13,38 @@
 <dl>
     @if (!string.IsNullOrEmpty(baseContent.Name))
     {
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => baseContent.Name)
-        </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => baseContent.Name)
+    </dd>
     }
     @if (baseContent.ProductCategory!=null && !string.IsNullOrEmpty(baseContent.ProductCategory.Name))
     {
-        <dt>
-            @AdminResource.ProductCategory
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => baseContent.ProductCategory.Name)
-        </dd>
+    <dt>
+        @AdminResource.ProductCategory
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => baseContent.ProductCategory.Name)
+    </dd>
     }
     @if (!string.IsNullOrEmpty(baseContent.NameLong))
     {
-        <dt>
-            @Html.DisplayNameFor(model => model.NameLong)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => baseContent.NameLong)
-        </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.NameLong)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => baseContent.NameLong)
+    </dd>
     }
     @if (!string.IsNullOrEmpty(baseContent.ProductCode))
     {
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductCode)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => baseContent.ProductCode)
-        </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.ProductCode)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => baseContent.ProductCode)
+    </dd>
     }
 </dl>

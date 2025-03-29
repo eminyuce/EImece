@@ -42,86 +42,86 @@
             {
                 var ProductSpecItems = orderProduct.ProductSpecObjItems;
                 var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
-                <tr class="table__line-item order_item">
-                    <td class="text-center">
-                        <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl">
-                            <img src="@imgTag" style="max-width:180px;" alt="Product">
-                        </a>
-                    </td>
-                    <td class="text-left">
-                        @Html.ActionLink(orderProduct.Product.Name,
-                       "Detail",
-                       "Products",
-                       new
-                            {
-                                area = "",
-                                categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
-                           id = orderProduct.Product.GetSeoUrl()
-                            }, new { @class = "btn btn-xl btn-link", @target = "_blank" })
-                        <br />
-                        <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
-                        @if (ProductSpecItems.IsNotEmpty())
+            <tr class="table__line-item order_item">
+                <td class="text-center">
+                    <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl">
+                        <img src="@imgTag" style="max-width:180px;" alt="Product">
+                    </a>
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink(orderProduct.Product.Name,
+                   "Detail",
+                   "Products",
+                   new
+                        {
+                            area = "",
+                            categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
+                       id = orderProduct.Product.GetSeoUrl()
+                        }, new { @class = "btn btn-xl btn-link", @target = "_blank" })
+                    <br />
+                    <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
+                    @if (ProductSpecItems.IsNotEmpty())
                         {
                             foreach (var psi in ProductSpecItems)
                             {
-                                <div> <strong class="product-specs">@psi.SpecsName &#8594; @psi.SpecsValue  </strong></div>
+                    <div> <strong class="product-specs">@psi.SpecsName &#8594; @psi.SpecsValue  </strong></div>
                             }
                         }
-                    </td>
-                    <td class="table__product-name product-name">
-                        <strong class="product-quantity">@orderProduct.Price.CurrencySign() × @orderProduct.Quantity</strong>
-                    </td>
+                </td>
+                <td class="table__product-name product-name">
+                    <strong class="product-quantity">@orderProduct.Price.CurrencySign() × @orderProduct.Quantity</strong>
+                </td>
 
-                    <td class="text-right">
-                        <span>
-                            @orderProduct.TotalPrice.CurrencySign()
-                        </span>
-                    </td>
-                </tr>
+                <td class="text-right">
+                    <span>
+                        @orderProduct.TotalPrice.CurrencySign()
+                    </span>
+                </td>
+            </tr>
             }
 
             @if (!string.IsNullOrEmpty(order.OrderComments))
             {
-                <tr class="primary">
-                    <td>
-                        <b>
-                            @AdminResource.OrderComments
-                        </b>
-                    </td>
-                    <td colspan="3">
-                        @order.OrderComments
-                    </td>
-                </tr>
+            <tr class="primary">
+                <td>
+                    <b>
+                        @AdminResource.OrderComments
+                    </b>
+                </td>
+                <td colspan="3">
+                    @order.OrderComments
+                </td>
+            </tr>
             }
 
             @if (!string.IsNullOrEmpty(order.Coupon))
             {
-                <tr class="primary">
-                    <td>
-                        <b>
-                            @AdminResource.Coupon (@order.Coupon)
-                        </b>
-                    </td>
-                    <td colspan="3">
-                        <strong class="product-quantity"> @order.CouponDiscount TL</strong>
-                    </td>
-                </tr>
+            <tr class="primary">
+                <td>
+                    <b>
+                        @AdminResource.Coupon (@order.Coupon)
+                    </b>
+                </td>
+                <td colspan="3">
+                    <strong class="product-quantity"> @order.CouponDiscount TL</strong>
+                </td>
+            </tr>
 
             }
             @if (order.CargoPrice > 0)
             {
-                <tr class="warning">
-                    <td colspan="3">
-                        <b class="Price-amount amount">
-                            @AdminResource.CargoPrice
-                        </b>
-                    </td>
-                    <td class="text-right">
-                        @order.CargoPrice.CurrencySign()
-                    </td>
-                </tr>
+            <tr class="warning">
+                <td colspan="3">
+                    <b class="Price-amount amount">
+                        @AdminResource.CargoPrice
+                    </b>
+                </td>
+                <td class="text-right">
+                    @order.CargoPrice.CurrencySign()
+                </td>
+            </tr>
             }
-            </tbody>
+        </tbody>
         <tfoot>
             <tr class="success">
                 <th colspan="2" scope="row">@AdminResource.TotalPrice</th>

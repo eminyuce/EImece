@@ -196,44 +196,44 @@
 @helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
 {
     var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
-    <div class="row">
-        <div class="col-md-6">
-            <img src=@fileStorage.GetAdminCroppedImageUrl(150,0)>
-            <a href=@String.Format("/media/images/{0}", fileStorage.FileName)
-               title="@fileStorage.FileName"
-               download="@fileStorage.FileName"
-               data-gallery="">
-            </a>
-            <div>
-                @fileStorage.FileName
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div>
-                @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-                <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Full Image</a>
-            </div>
-            <div>
-                @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
-                <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Thumps Image</a>
-            </div>
+<div class="row">
+    <div class="col-md-6">
+        <img src=@fileStorage.GetAdminCroppedImageUrl(150,0)>
+        <a href=@String.Format("/media/images/{0}", fileStorage.FileName)
+           title="@fileStorage.FileName"
+           download="@fileStorage.FileName"
+           data-gallery="">
+        </a>
+        <div>
+            @fileStorage.FileName
         </div>
     </div>
+    <div class="col-md-6">
+        <div>
+            @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
+            <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Full Image</a>
+        </div>
+        <div>
+            @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
+            <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Thumps Image</a>
+        </div>
+    </div>
+</div>
 }
 
 @helper GridToolsColumn(FileStorage d, String controllerName)
 {
 
-    <div class="gridToolBox">
-        @if (UserRoleHelper.IsDeletedEnableRoles())
+<div class="gridToolBox">
+    @if (UserRoleHelper.IsDeletedEnableRoles())
         {
-        <span>
-            @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-             { "ItemId", d.Id },
-             {"controllerName",controllerName},
-            {"gridDeleteText","Fotoğrafı Sil"},
-             { "ItemDescription", d.Name } })
-        </span>
+    <span>
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+         { "ItemId", d.Id },
+         {"controllerName",controllerName},
+        {"gridDeleteText","Fotoğrafı Sil"},
+         { "ItemDescription", d.Name } })
+    </span>
         }
-    </div>
+</div>
 }

@@ -4,26 +4,13 @@ using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using Resources;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using Microsoft.AspNet.Identity;
-using NLog;
-using Resources;
-using System;
-using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Globalization;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -75,7 +62,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 coupon.StartDate = coupon.StartDateStr.ToDateTime();
                 coupon.EndDate = coupon.EndDateStr.ToDateTime();
-                if(coupon.EndDate > coupon.StartDate)
+                if (coupon.EndDate > coupon.StartDate)
                 {
                     coupon.Lang = CurrentLanguage;
                     CouponService.SaveOrEditEntity(coupon);
@@ -83,10 +70,9 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("EndDateStr",AdminResource.EndDateBiggerThanStartDateText);
+                    ModelState.AddModelError("EndDateStr", AdminResource.EndDateBiggerThanStartDateText);
                     return View(coupon);
                 }
-               
             }
             catch (Exception ex)
             {

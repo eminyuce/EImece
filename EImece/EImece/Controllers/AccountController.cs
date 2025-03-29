@@ -197,7 +197,6 @@ namespace EImece.Controllers
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
             {
-              
                 ModelState.AddModelError("", "Model is not correct.");
                 return View(model);
             }
@@ -431,7 +430,6 @@ namespace EImece.Controllers
                     ModelState.AddModelError("Password", "Şifre en az bir sayı içermelidir.");
                 if (model.Password.Length < 6)
                     ModelState.AddModelError("Password", "Şifre en az 6 karakter olmalıdır.");
-
 
                 Logger.Info("Model state is invalid. Adding error.");
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);

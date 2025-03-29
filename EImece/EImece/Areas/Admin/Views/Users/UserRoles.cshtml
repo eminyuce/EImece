@@ -12,7 +12,7 @@
 
 @using (Html.BeginForm("UserRoles", "Users", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     @Html.ValidationSummary(true)

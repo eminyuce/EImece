@@ -10,7 +10,7 @@
 @foreach (var m in Model)
 {
 
-    <div>
-@Html.ActionLink(m.Replace(pathName, ""), "DisplayTable", new { id=m.Replace(pathName,"") })
-    </div>
+<div>
+    @Html.ActionLink(m.Replace(pathName, ""), "DisplayTable", new { id=m.Replace(pathName,"") })
+</div>
 }

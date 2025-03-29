@@ -32,8 +32,8 @@
     <div class="col-md-5">
         @if (values != null)
         {
-            <select class="form-control" name="@name.Value">
-                @{
+        <select class="form-control" name="@name.Value">
+            @{
                     var listService = DependencyResolver.Current.GetService<IListService>();
                     var list = listService.GetListByName(values.Value);
                     if (list != null)
@@ -42,11 +42,11 @@
                         {
                             if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(item.Value.Trim(), StringComparison.InvariantCultureIgnoreCase))
                             {
-                                <option value="@item.Value" selected="selected">@item.Name</option>
+                <option value="@item.Value" selected="selected">@item.Name</option>
                             }
                             else
                             {
-                                <option value="@item.Value">@item.Name</option>
+                <option value="@item.Value">@item.Name</option>
                             }
                         }
                     }
@@ -57,24 +57,24 @@
                         {
                             if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(v))
                             {
-                                <option selected="selected">@v</option>
+                <option selected="selected">@v</option>
                             }
                             else
                             {
-                                <option>@v</option>
+                <option>@v</option>
                             }
                         }
 
                     }
-                }
-            </select>
+            }
+        </select>
 
                     }
     </div>
     <div class="col-md-1">
         @if (unit != null)
             {
-            @unit.Value
+        @unit.Value
         }
     </div>
 </div>

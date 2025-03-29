@@ -1,49 +1,11 @@
-﻿using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+﻿using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
-using Microsoft.AspNet.Identity;
-using NLog;
-using Resources;
-using System;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using EImece.Domain;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Models.Enums;
-using NLog;
-using Resources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using EImece.Domain;
-using EImece.Domain.Caching;
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Models.Enums;
-using EImece.Domain.Services.IServices;
 using Ninject;
+using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
+using System.Net;
 using System.Web.Mvc;
-using System.Web.Routing;
-using EImece.Domain.Models.AdminModels;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -53,7 +15,6 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public ReportService _reportService { get; set; }
-
 
         [HttpGet]
         public ActionResult Index()
@@ -199,10 +160,8 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult PerformanceSystemReport(DataSetReportViewModel dataSetReportViewModel)
         {
-            
-                if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
-                {
-
+            if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
+            {
                 if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
                 {
                     ModelState.AddModelError("", "Start date cannot be after end date");
@@ -226,7 +185,6 @@ namespace EImece.Areas.Admin.Controllers
                     EndDate = dataSetReportViewModel.EndDate
                 };
                 return View("DataSetReportView", model);
-
             }
             else
             {
@@ -239,8 +197,6 @@ namespace EImece.Areas.Admin.Controllers
                     EndDate = DateTime.Today
                 });
             }
-               
-          
         }
 
         [HttpPost]
@@ -410,6 +366,5 @@ namespace EImece.Areas.Admin.Controllers
                 });
             }
         }
-
     }
 }

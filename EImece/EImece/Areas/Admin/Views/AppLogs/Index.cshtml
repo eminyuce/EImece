@@ -38,7 +38,6 @@
 @Html.ActionLink("Info Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "INFO" }, new { @class = "btn btn-info btn-sm" })
 @Html.ActionLink("Bütün Loglari Sil", "RemoveAll", null, new { @class = "btn btn-link btn-sm" })
 
-
 <div class="accordion" id="logAccordion">
 
     <!-- Textarea Section -->
@@ -110,11 +109,9 @@
                              .SortInitialDirection(GridSortDirection.Descending);
 
                   }).SetRowCssClasses(item => item.Id % 2 == 0 ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-
             </div>
         </div>
     </div>
-
 </div>
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

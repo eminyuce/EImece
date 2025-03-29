@@ -19,11 +19,11 @@
             <tbody>
                 @foreach (System.Data.DataRow row in Model.Rows)
                 {
-                    <tr>
-                        <td>@row["ShipmentCompanyName"]</td>
-                        <td>@row["OrderCount"]</td>
-                        <td>@string.Format("{0:C}", row["TotalCargoCost"])</td>
-                    </tr>
+                <tr>
+                    <td>@row["ShipmentCompanyName"]</td>
+                    <td>@row["OrderCount"]</td>
+                    <td>@string.Format("{0:C}", row["TotalCargoCost"])</td>
+                </tr>
                 }
             </tbody>
         </table>

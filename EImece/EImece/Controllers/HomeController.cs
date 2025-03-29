@@ -6,6 +6,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Repositories;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
@@ -15,15 +16,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Repositories;
 
 namespace EImece.Controllers
 {
@@ -61,7 +59,6 @@ namespace EImece.Controllers
 
         [Inject]
         public MigrationRepository MigrationRepository { get; set; }
-        
 
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public ActionResult Index()
@@ -146,12 +143,15 @@ namespace EImece.Controllers
                 case EImeceLanguage.Turkish:
                     HomeLogger.Info("Current language is Turkish. Returning 'tr'.");
                     return Content("tr");
+
                 case EImeceLanguage.English:
                     HomeLogger.Info("Current language is English. Returning 'en'.");
                     return Content("en");
+
                 case EImeceLanguage.Russian:
                     HomeLogger.Info("Current language is Russian. Returning 'ru'.");
                     return Content("ru");
+
                 case EImeceLanguage.German:
                     HomeLogger.Info("Current language is German. Returning 'de'.");
                     return Content("de");

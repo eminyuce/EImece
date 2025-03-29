@@ -88,7 +88,7 @@ namespace EImece.Controllers
                 Logger.Info($"Parsed product ID: {productId}");
                 var product = ProductService.GetProductDetailViewModelById(productId);
                 string fullPath = Request.Path;
-             
+
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
 
                 if (!product.Product.IsActive)
@@ -101,7 +101,7 @@ namespace EImece.Controllers
                 product.RecordPerPage = AppConfig.ProductCommentsRecordPerPage;
                 product.SeoId = product.Product.GetSeoUrl();
                 SetCurrentCulture(product.Product);
-           
+
                 Logger.Info($"Set culture and SEO ID: {ViewBag.SeoId} for product ID: {productId}");
                 Logger.Info("Returning Detail view.");
                 return View(product);

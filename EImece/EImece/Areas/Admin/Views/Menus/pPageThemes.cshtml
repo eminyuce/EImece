@@ -68,22 +68,22 @@
             </td>
             <td>
                 <a href="~/Areas/Admin/Content/PageThemes/tema-07.gif" rel="prettyPhoto">
-                        <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-07.gif" />
-                    </a>
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-07.gif" />
+                </a>
                 <br />
                 <input id="@Constants.PageThemeImageGallery"
                        @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeImageGallery) ? "checked='checked'" : "")
                        type="radio" name="PageTheme" value="@Constants.PageThemeImageGallery" /><label for="T7"> @AdminResource.ImageGallery</label>
-            </td>
-            <td>
-                <a href="~/Areas/Admin/Content/PageThemes/tema-08.gif" rel="prettyPhoto">
+                </td>
+                <td>
+                    <a href="~/Areas/Admin/Content/PageThemes/tema-08.gif" rel="prettyPhoto">
                         <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-08.gif" />
                     </a>
-                <br />
-                <input id="@Constants.PageThemeCommunication"
-                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeCommunication) ? "checked='checked'" : "")
-                       type="radio" name="PageTheme" value="@Constants.PageThemeCommunication" /><label for="T8">@AdminResource.ContactForm</label>
-            </td>
-        </tr>
-    </table>
-</div>
+                    <br />
+                    <input id="@Constants.PageThemeCommunication"
+                           @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeCommunication) ? "checked='checked'" : "")
+                           type="radio" name="PageTheme" value="@Constants.PageThemeCommunication" /><label for="T8">@AdminResource.ContactForm</label>
+                    </td>
+                </tr>
+            </table>
+        </div>

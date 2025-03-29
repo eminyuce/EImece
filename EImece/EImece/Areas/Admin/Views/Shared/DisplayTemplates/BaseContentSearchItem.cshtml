@@ -54,11 +54,11 @@
 
         @if (baseContent.MainImageId > 0)
         {
-            <img src="@Html.Raw(baseContent.MainImage.GetAdminCroppedImageUrl(Width, Height))" />
+        <img src="@Html.Raw(baseContent.MainImage.GetAdminCroppedImageUrl(Width, Height))" />
         }
         else
         {
-            @AdminResource.GridNoMainPageImageText
+        @AdminResource.GridNoMainPageImageText
 
         }
     </div>
@@ -77,22 +77,22 @@ new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
             @if (baseContent is Product)
             {
                 var p = (Product)baseContent;
-                @Html.Partial("BaseContentSearchItem/ProductSearchItem", p)
+            @Html.Partial("BaseContentSearchItem/ProductSearchItem", p)
             }
             else
             {
-                @Html.DisplayFor(model => baseContent.Name)
+            @Html.DisplayFor(model => baseContent.Name)
             }
         </span>
         <dl>
             @if (!string.IsNullOrEmpty(baseContent.Description))
             {
-                <dt>
-                    @Html.DisplayNameFor(model => baseContent.Description)
-                </dt>
-                <dd>
-                    @GeneralHelper.GetDescription(baseContent.Description, 300)
-                </dd>
+            <dt>
+                @Html.DisplayNameFor(model => baseContent.Description)
+            </dt>
+            <dd>
+                @GeneralHelper.GetDescription(baseContent.Description, 300)
+            </dd>
             }
         </dl>
     </div>

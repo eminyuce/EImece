@@ -11,7 +11,7 @@
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     @{
@@ -57,7 +57,7 @@
 }
 
 <div>
-       @Html.ActionLink(AdminResource.BackToList, "Index")
+    @Html.ActionLink(AdminResource.BackToList, "Index")
 </div>
 
 @section Scripts {

@@ -3,7 +3,6 @@ using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using NLog; // Include the NLog namespace
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;

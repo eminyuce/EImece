@@ -22,14 +22,14 @@
             <tbody>
                 @foreach (System.Data.DataRow row in Model.Rows)
                 {
-                    <tr>
-                        <td>@row["CardType"]</td>
-                        <td>@row["CardAssociation"]</td>
-                        <td>@row["Installment"]</td>
-                        <td>@row["OrderCount"]</td>
-                        <td>@string.Format("{0:C}", row["TotalAmount"])</td>
-                        <td>@row["Currency"]</td>
-                    </tr>
+                <tr>
+                    <td>@row["CardType"]</td>
+                    <td>@row["CardAssociation"]</td>
+                    <td>@row["Installment"]</td>
+                    <td>@row["OrderCount"]</td>
+                    <td>@string.Format("{0:C}", row["TotalAmount"])</td>
+                    <td>@row["Currency"]</td>
+                </tr>
                 }
             </tbody>
         </table>

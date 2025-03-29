@@ -16,30 +16,30 @@
     <hgroup class="mb20">
         @if (Model.Any())
         {
-            <h1>@AdminResource.SearchResults</h1>
-            <h2 class="lead">
-                <strong class="text-danger">@searchList.Count</strong>
-                @AdminResource.SearchResultsText
-                <strong class="text-danger">@searchKey</strong>
-            </h2>
+        <h1>@AdminResource.SearchResults</h1>
+        <h2 class="lead">
+            <strong class="text-danger">@searchList.Count</strong>
+            @AdminResource.SearchResultsText
+            <strong class="text-danger">@searchKey</strong>
+        </h2>
         }
         else
         {
-            <h2 class="lead">
-                @AdminResource.NoSearchResultsText
-                <strong class="text-danger">@searchKey</strong>
-            </h2>
+        <h2 class="lead">
+            @AdminResource.NoSearchResultsText
+            <strong class="text-danger">@searchKey</strong>
+        </h2>
         }
     </hgroup>
     @if (Model.Any())
     {
-        <section class="col-xs-12 col-sm-6 col-md-12">
-            @for (int i = 0; i < searchList.Count; i++)
+    <section class="col-xs-12 col-sm-6 col-md-12">
+        @for (int i = 0; i < searchList.Count; i++)
             {
                 var baseContent = searchList[i];
-                @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
+        @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
 
             }
-        </section>
+    </section>
     }
 </div>

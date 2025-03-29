@@ -10,12 +10,12 @@
 @foreach (TagCategory tagCategory in tagCategories)
 {
 
-    <span class="tags-checkboxes-flow">
-        @foreach (var tag in tagCategory.Tags)
+<span class="tags-checkboxes-flow">
+    @foreach (var tag in tagCategory.Tags)
         {
-            <span>
-                <input  type="checkbox" @String.Format("{0}", selectedTags.Any(t => t.TagId == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" /> @tag.Name
-            </span>
-        }
+    <span>
+        <input type="checkbox" @String.Format("{0}", selectedTags.Any(t => t.TagId == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" /> @tag.Name
     </span>
+        }
+</span>
 }

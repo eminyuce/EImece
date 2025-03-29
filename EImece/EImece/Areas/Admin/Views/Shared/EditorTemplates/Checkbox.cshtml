@@ -30,17 +30,17 @@
     <div class="col-md-5">
         @if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals("on"))
         {
-            <input name="@name.Value" class="form-control" checked="checked" type="checkbox" />
+        <input name="@name.Value" class="form-control" checked="checked" type="checkbox" />
         }
         else
         {
-            <input name="@name.Value" class="form-control" type="checkbox" />
+        <input name="@name.Value" class="form-control" type="checkbox" />
         }
     </div>
     <div class="col-md-1">
         @if (unit != null)
             {
-            @unit.Value
+        @unit.Value
         }
     </div>
 </div>

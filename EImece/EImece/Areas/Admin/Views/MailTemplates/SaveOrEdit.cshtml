@@ -13,7 +13,7 @@
 <hr class="adminLine" />
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editor-form" }))
 {
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     @{
@@ -50,14 +50,14 @@
                         <div class="col-md-10">
                             @if (Model.Id > 0)
                             {
-                                <b>
-                                    @Model.Name
-                                </b>
-                                @Html.HiddenFor(model => model.Name)
+                            <b>
+                                @Model.Name
+                            </b>
+                            @Html.HiddenFor(model => model.Name)
                             }
                             else
                             {
-                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                             }
 
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -101,6 +101,6 @@
 </div>
         }
 
-        <div>
-            @Html.ActionLink(AdminResource.BackToList, "Index")
-        </div>
+<div>
+    @Html.ActionLink(AdminResource.BackToList, "Index")
+</div>

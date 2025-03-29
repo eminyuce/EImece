@@ -7,7 +7,6 @@ namespace EImece.Areas.Admin.Controllers
     public class ImagesController : BaseAdminController
     {
         [AcceptVerbs(HttpVerbs.Get)]
-        //[CustomOutputCache(CacheProfile = "CustomerImages")]
         public ActionResult Index(String id, int width = 0, int height = 0)
         {
             var fileStorageId = id.Replace(".jpg", "").ToInt();

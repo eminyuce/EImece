@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -27,7 +26,6 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public SiteMapService SiteMapService { get; set; }
-
 
         // GET: Admin/Dashboard
         public ActionResult Index()

@@ -29,10 +29,10 @@
         <div class="col-md-10">
             @if (categories != null)
             {
-                @Html.DropDownListFor(model => model.TagCategoryId,
-                       categories,
-                       AdminResource.SelectCategory,
-                       new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.TagCategoryId,
+                   categories,
+                   AdminResource.SelectCategory,
+                   new { @class = "form-control" })
             }
             @Html.ValidationMessageFor(model => model.TagCategoryId, "", new { @class = "text-danger" })
         </div>

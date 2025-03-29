@@ -24,11 +24,11 @@
     <li class="dropdown">
         @if (String.IsNullOrEmpty(urlPattern))
         {
-            <a onclick="productTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.AdminText</a>
+        <a onclick="productTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.AdminText</a>
         }
         else
         {
-            <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.AdminText</a>
+        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.AdminText</a>
         }
 
         @Html.Partial("_ProductCategoryTreeChildren", p.Childrens, viewData)
@@ -38,8 +38,8 @@
         else
         {
 
-<li>
-    @if (String.IsNullOrEmpty(urlPattern))
+    <li>
+        @if (String.IsNullOrEmpty(urlPattern))
     {
         <a onclick="productTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.AdminText</a>
     }
@@ -47,7 +47,7 @@
     {
         <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.AdminText</a>
     }
-</li>
+    </li>
         }
     }
 </ul>

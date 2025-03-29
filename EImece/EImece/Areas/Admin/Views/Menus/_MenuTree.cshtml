@@ -20,33 +20,33 @@
         var productCategory = p;
         if (p.Childrens.IsNotEmpty())
         {
-            <li class="dropdown">
-                @if (String.IsNullOrEmpty(urlPattern))
+    <li class="dropdown">
+        @if (String.IsNullOrEmpty(urlPattern))
                 {
-                    <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
+        <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
                 }
                 else
                 {
-                    <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
+        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
                 }
 
-                @Html.Partial("_MenuTreeChildren", p.Childrens, viewData)
-            </li>
+        @Html.Partial("_MenuTreeChildren", p.Childrens, viewData)
+    </li>
 
         }
         else
         {
 
-            <li>
-                @if (String.IsNullOrEmpty(urlPattern))
+    <li>
+        @if (String.IsNullOrEmpty(urlPattern))
                 {
-                    <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
+        <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
                 }
                 else
                 {
-                    <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
+        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
                 }
-            </li>
+    </li>
         }
     }
 </ul>

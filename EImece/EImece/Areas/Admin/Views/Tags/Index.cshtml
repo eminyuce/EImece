@@ -58,9 +58,9 @@ columns.Add()
    .Sanitized(false)
    .SetWidth(30)
    .RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white  " })
-</b>);
+    @<b>
+        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white  " })
+    </b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -88,9 +88,9 @@ columns.Add(c => c.TagCategory.Name)
 .Filterable(true)
 .Encoded(false)
 .RenderValueAs(d =>
-        @<span>
-            @String.Format("{0}", d.TagCategory.Name)
-        </span>);
+    @<span>
+        @String.Format("{0}", d.TagCategory.Name)
+    </span>);
 
 columns.Add(o => o.Position).Titled(AdminResource.Position)
 .Encoded(false).
@@ -99,38 +99,37 @@ SetWidth(10).
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
- .Titled(AdminResource.IsActive)
+.Titled(AdminResource.IsActive)
 .Sortable(true)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                               o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
 columns.Add(o => o.UpdatedDate)
- .Titled(AdminResource.UpdatedDate)
+.Titled(AdminResource.UpdatedDate)
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add()
-  .Titled("Fiyat Guncelleme")
-  .Encoded(false)
-  .Sanitized(false)
-  .Css("smallGridColumn")
-  .RenderValueAs(o => PriceUpdates(o));
+.Titled("Fiyat Guncelleme")
+.Encoded(false)
+.Sanitized(false)
+.Css("smallGridColumn")
+.RenderValueAs(o => PriceUpdates(o));
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
 
-
 @helper PriceUpdates(Tag d)
 {
 
-    @Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) {
-         { "ItemId", d.Id },
-         { "ItemType", "Tag" }
+@Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) {
+     { "ItemId", d.Id },
+     { "ItemType", "Tag" }
 
-    });
+});
 
 }

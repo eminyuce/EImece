@@ -114,12 +114,11 @@
                 <dd>@Model.Customer.FullName</dd>
 
                 <dt>@AdminResource.Address</dt>
-                <dd>@Model.Customer.Address.Replace(Environment.NewLine, "<br/>")</dd>
+                <dd>@Model.Customer.Address.Replace(Environment.NewLine, "<br />")</dd>
 
                 <dt>@AdminResource.RegistrationAddress</dt>
                 <dd>@Model.Customer.RegistrationAddress</dd>
             </dl>
-
 
             <dt>OrderStatus</dt>
             <dd>@Model.OrderStatus.ToString()</dd> <!-- Replace with enum description if available -->
@@ -167,28 +166,28 @@
         <!-- Order Products (if available) -->
         @if (Model.OrderProducts != null && Model.OrderProducts.Any())
         {
-            <h4>Order Products</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ProductName</th>
-                        <th>CategoryName</th>
-                        <th>@AdminResource.Quantity</th>
-                        <th>@AdminResource.Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var product in Model.OrderProducts)
+        <h4>Order Products</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ProductName</th>
+                    <th>CategoryName</th>
+                    <th>@AdminResource.Quantity</th>
+                    <th>@AdminResource.Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.OrderProducts)
                     {
-                    <tr>
-                        <td>@product.ProductName</td>
-                        <td>@product.CategoryName</td>
-                        <td>@product.Quantity</td>
-                        <td>@product.Price</td>
-                    </tr>
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.CategoryName</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.Price</td>
+                </tr>
                     }
-                </tbody>
-            </table>
+            </tbody>
+        </table>
         }
     </div>
     <div class="panel-footer">

@@ -20,12 +20,12 @@
             <tbody>
                 @foreach (System.Data.DataRow row in Model.Rows)
                 {
-                    <tr>
-                        <td>@row["City"]</td>
-                        <td>@row["OrderCount"]</td>
-                        <td>@string.Format("{0:C}", row["TotalRevenue"])</td>
-                        <td>@row["Currency"]</td>
-                    </tr>
+                <tr>
+                    <td>@row["City"]</td>
+                    <td>@row["OrderCount"]</td>
+                    <td>@string.Format("{0:C}", row["TotalRevenue"])</td>
+                    <td>@row["Currency"]</td>
+                </tr>
                 }
             </tbody>
         </table>

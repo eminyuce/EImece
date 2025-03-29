@@ -46,38 +46,38 @@
 
         @if (selectedCategory != null)
         {
-            <span>
-                @{
-                    <span>
-                        @AdminResource.SelectedCategory
-                    </span>
-                    <b style="color:red;">
-                        @String.Format("{0}", selectedCategory.Name)
-                    </b>
-                }
+        <span>
+            @{
+                <span>
+                    @AdminResource.SelectedCategory
+                </span>
+                <b style="color:red;">
+                    @String.Format("{0}", selectedCategory.Name)
+                </b>
+            }
 
-                <a href="@Url.Action("Index", "Products",new { id=0 })">
-                    <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
-                </a>
-            </span>
-            <hr />
+            <a href="@Url.Action("Index", "Products",new { id=0 })">
+                <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
+            </a>
+        </span>
+        <hr />
 
         }
 
         @if (brands != null)
         {
-            <span>
-                @AdminResource.Brands
-            </span>
+        <span>
+            @AdminResource.Brands
+        </span>
             var index = 1;
             foreach (var b in brands)
             {
-                <a href="@Url.Action("Index", "Products", new { id = (selectedCategory == null ? 0 : selectedCategory.Id), brandId = b.Id })">
-                    <b style="color:red;">
-                        @(index + ". " + b.Name)
-                    </b>
-                </a>
-                <span>&nbsp;</span> <!-- Adds space between brand names -->
+        <a href="@Url.Action("Index", "Products", new { id = (selectedCategory == null ? 0 : selectedCategory.Id), brandId = b.Id })">
+            <b style="color:red;">
+                @(index + ". " + b.Name)
+            </b>
+        </a>
+        <span>&nbsp;</span>  <!-- Adds space between brand names -->
                 index++;
             }
         }
@@ -112,71 +112,70 @@
            .Encoded(false)
             .Sanitized(false)
       .RenderValueAs(d =>
-                                                @<div>
+            @<div>
 
-                                                    @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
-                                                    @if (!string.IsNullOrEmpty(d.NameLong))
+                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
+                @if (!string.IsNullOrEmpty(d.NameLong))
                                                          {
-                                                        <div style="max-width:220px">
-                                                            @string.Format("{0}", d.NameLong)
-                                                        </div>
+                <div style="max-width:220px">
+                    @string.Format("{0}", d.NameLong)
+                </div>
                                                          }
-                                                    <div>
-                                                        @GridToolsColumnAlt(d, controllerName)
-                                                    </div>
-                                                </div>
+                <div>
+                    @GridToolsColumnAlt(d, controllerName)
+                </div>
+            </div>
 
-                  );
+);
 
+columns.Add(c => c.ProductCategory)
+.Titled(AdminResource.ProductCategory)
+.Encoded(false)
+.Filterable(true)
+.RenderValueAs(o => o.ProductCategory.Name);
 
-           columns.Add(c => c.ProductCategory)
-                .Titled(AdminResource.ProductCategory)
-                .Encoded(false)
-                .Filterable(true)
-                .RenderValueAs(o => o.ProductCategory.Name);
+columns.Add(c => c.BrandId)
+.Titled(AdminResource.Brands)
+.Encoded(false)
+.Filterable(true)
+.RenderValueAs(o => o.BrandId.HasValue ? string.Format("{0}", o.Brand.Name) : "");
 
-           columns.Add(c => c.BrandId)
-          .Titled(AdminResource.Brands)
-          .Encoded(false)
-          .Filterable(true)
-          .RenderValueAs(o => o.BrandId.HasValue ? string.Format("{0}", o.Brand.Name) : "");
+if (isProductPriceEnable.SettingValue.ToBool(true))
+{
+columns.Add(c => c.Price).
+Titled(AdminResource.Price).
+Sanitized(false).
+Sortable(true).
+Encoded(false).
+RenderValueAs(o => DisplayPriceColumn(o));
 
-           if (isProductPriceEnable.SettingValue.ToBool(true))
-           {
-               columns.Add(c => c.Price).
-               Titled(AdminResource.Price).
-               Sanitized(false).
-               Sortable(true).
-               Encoded(false).
-               RenderValueAs(o => DisplayPriceColumn(o));
+}
 
-           }
+columns.Add(c => c.ProductCode)
+.Titled(AdminResource.ProductCode);
 
-           columns.Add(c => c.ProductCode)
-           .Titled(AdminResource.ProductCode);
+columns.Add(o => o.Position).Titled(AdminResource.Position)
+.Encoded(false).
+Sanitized(false).
+Css("smallGridColumn").
+RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
-           columns.Add(o => o.Position).Titled(AdminResource.Position)
-           .Encoded(false).
-           Sanitized(false).
-           Css("smallGridColumn").
-      RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+columns.Add(o => o.IsActive)
+.Titled(AdminResource.State)
+.Sortable(true)
+.Css("smallGridColumn")
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
+Sanitized(false)
+.RenderValueAs(o => GridImageActiveColumn(o, controllerName));
 
-           columns.Add(o => o.IsActive)
-           .Titled(AdminResource.State)
-           .Sortable(true)
-           .Css("smallGridColumn")
-           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-           Sanitized(false)
-           .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
+columns.Add(r => r.ImageState)
+.Titled(AdminResource.Images)
+.Encoded(false)
+.Sanitized(false)
+.Css("smallGridColumn")
+.RenderValueAs(o => GridImageColumn(o, controllerName));
 
-           columns.Add(r => r.ImageState)
-           .Titled(AdminResource.Images)
-           .Encoded(false)
-           .Sanitized(false)
-           .Css("smallGridColumn")
-           .RenderValueAs(o => GridImageColumn(o, controllerName));
-
-       }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>
     </div>
 </div>
@@ -184,39 +183,39 @@
 {
     if (o.HasDiscount)
     {
-        <span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
-        <br />
-        <span class="badge badge-pill badge-warning mr-2 mb-2">
-            @string.Format("%{0} {1}", o.DiscountPercentage, Resource.Discount)
-        </span>
-        <br />
-        <del class="lead text-muted mr-2">
-            @o.Price.CurrencySign()
-        </del>
+<span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
+<br />
+<span class="badge badge-pill badge-warning mr-2 mb-2">
+    @string.Format("%{0} {1}", o.DiscountPercentage, Resource.Discount)
+</span>
+<br />
+<del class="lead text-muted mr-2">
+    @o.Price.CurrencySign()
+</del>
 
     }
     else
     {
-        <span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
+<span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
     }
 
 }
 @helper GridImageActiveColumn(Product o, String controllerName)
 {
-    <ul>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
-                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
-        </li>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
-                                                    o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
-        </li>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
-                                                    o.Id, (o.IsCampaign ? Constants.OkStyle : Constants.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
-        </li>
-    </ul>
+<ul>
+    <li>
+        @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
+                                                o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
+    </li>
+    <li>
+        @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
+                                                o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
+    </li>
+    <li>
+        @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
+                                                o.Id, (o.IsCampaign ? Constants.OkStyle : Constants.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
+    </li>
+</ul>
 
 }
 
@@ -225,26 +224,26 @@
     Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
     if (IsMainImageExists)
     {
-        <ul>
-            <li>
-                @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                        o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
-            </li>
-            <li>
-                @Html.Partial("pGridImageMainPage", o)
-            </li>
-        </ul>
+<ul>
+    <li>
+        @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+                                                o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
+    </li>
+    <li>
+        @Html.Partial("pGridImageMainPage", o)
+    </li>
+</ul>
     }
     else
     {
-        <ul>
-            <li>
-                <b style="font-size:0.8em;">
+<ul>
+    <li>
+        <b style="font-size:0.8em;">
 
-                    @AdminResource.NoImage
-                </b>
-            </li>
-        </ul>
+            @AdminResource.NoImage
+        </b>
+    </li>
+</ul>
 
     }
 
@@ -253,39 +252,39 @@
 @helper GridToolsColumnAlt(Product d, String controllerName)
 {
 
-    <div class="gridToolBox">
+<div class="gridToolBox">
 
-        <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
-        </span>
-        <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
-        </span>
-        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
+    <span>
+        @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
+    </span>
+    <span>
+        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
+    </span>
+    @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
         {
-            <span>
-                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
-            </span>
+    <span>
+        @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
+    </span>
         }
-        @if (UserRoleHelper.IsDeletedEnableRoles())
+    @if (UserRoleHelper.IsDeletedEnableRoles())
         {
-            <span>
-                @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-           { "ItemId", d.Id },
-           {"controllerName",controllerName},
-           { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
-           { "ItemDescription", d.Name }
+    <span>
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+   { "ItemId", d.Id },
+   {"controllerName",controllerName},
+   { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
+   { "ItemDescription", d.Name }
 
-           })
-            </span>
+   })
+    </span>
         }
-        @if (d.ProductComments.IsNotEmpty())
+    @if (d.ProductComments.IsNotEmpty())
         {
-            <span>
-                @Html.ActionLink(" ", "Index", "ProductComments", new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-user glyphicon-white " })
-            </span>
+    <span>
+        @Html.ActionLink(" ", "Index", "ProductComments", new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-user glyphicon-white " })
+    </span>
         }
-    </div>
+</div>
 
 }
 
