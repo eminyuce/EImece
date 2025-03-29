@@ -57,44 +57,72 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
     // Order Number (with link to details)
+    columns.Add(c => c.OrderNumber)
+        .Titled("Siparis Numarasi")
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(d =>
+                @<b>
+                    @Html.ActionLink(d.OrderNumber, "Details", "Orders", new { id = d.Id }, new { @class = "btn btn-primary btn-xs glyphicon glyphicon-pencil glyphicon-white " })
+                </b>);
 
+    // Order Status
+    columns.Add(o => o.OrderStatus)
+        .Titled("Siparis Durumu")
+        .Sortable(true)
+        .RenderValueAs(o => o.OrderStatus.ToString());
 
-columns.Add(c => c.OrderNumber)
-      .Titled(AdminResource.OrderNumber)
-            .Encoded(false)
-            .Sanitized(false)
-            .SetWidth(30)
-            .RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink("Detay", "Details", "Orders", new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white   " })
-    </b>);
+    // Created Date
+    columns.Add(o => o.CreatedDate)
+        .Titled("Olusturulma Tarihi")
+        .Sortable(true)
+        .Css("gridDateClass")
+        .RenderValueAs(o => o.CreatedDate != null ? o.CreatedDate.ToShortDateString() : "-")
+        .SortInitialDirection(GridSortDirection.Descending);
 
+    // Paid Price
+    columns.Add(o => o.PaidPrice)
+        .Sortable(true)
+        .RenderValueAs(o => o.PaidPrice + " " + o.Currency);
 
+    // Payment Status
+    columns.Add(o => o.PaymentStatus)
+        .Titled("Odeme Durumu")
+        .Sortable(true);
 
-// Order Status
-columns.Add(o => o.OrderStatus)
-.Titled(AdminResource.OrderStatus)
-.Sortable(true)
-.RenderValueAs(o => o.OrderStatus.ToString()); // Replace with enum description if available
+    // Kargo Şirketi
+    columns.Add(o => o.ShipmentCompanyName)
+        .Titled("Kargo Sirketi")
+        .Sortable(true);
 
-// Created Date
-columns.Add(o => o.CreatedDate)
-.Titled(AdminResource.CustomerRegistrationDate)
-.Sortable(true)
-.Css("gridDateClass")
-.RenderValueAs(o => o.CreatedDate != null ? o.CreatedDate.ToShortDateString() : "-")
-.SortInitialDirection(GridSortDirection.Descending);
+    // Takip Numarası
+    columns.Add(o => o.ShipmentTrackingNumber)
+        .Titled("Takip Numarasi")
+        .Sortable(true);
 
-// Paid Price
-columns.Add(o => o.PaidPrice)
-.Sortable(true)
-.RenderValueAs(o => o.PaidPrice + " " + o.Currency);
+    // Admin Notu
+    columns.Add(o => o.AdminOrderNote)
+        .Titled("Admin Notu")
+        .Sortable(true);
 
-columns.Add(o => o.PaymentStatus)
-.Sortable(true);
+    // Teslimat Tarihi
+    columns.Add(o => o.DeliveryDate)
+        .Titled("Teslimat Tarihi")
+        .Sortable(true)
+        .Css("gridDateClass")
+        .RenderValueAs(o => o.DeliveryDate != null ? o.DeliveryDate.ToShortDateString() : "-");
 
-columns.Add(o => o.Status)
-.Sortable(true);
+    // Kargo Fiyatı
+    columns.Add(o => o.CargoPrice)
+        .Titled("Kargo Fiyati")
+        .Sortable(true)
+        .RenderValueAs(o => o.CargoPrice.ToString() + " " + o.Currency);
+
+    // Ödeme Yöntemi (Kart Tipi)
+    columns.Add(o => o.CardType)
+        .Titled("Odeme Yontemi")
+        .Sortable(true);
 
 }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
