@@ -13,7 +13,8 @@ namespace EImece.Domain.Models.FrontModels
 
         public String FieldName { get; set; }
         private string _valueFirst = "";
-        public String ValueFirst { get { return _valueFirst; } set { _valueFirst = value; } }
+        public String ValueFirst
+        { get { return _valueFirst; } set { _valueFirst = value; } }
 
         public String ValueLast { get; set; }
 
@@ -83,7 +84,8 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         private ItemType _ownerType;
-        public ItemType OwnerType { get { return _ownerType; } set { _ownerType = value; } }
+        public ItemType OwnerType
+        { get { return _ownerType; } set { _ownerType = value; } }
 
         public string Link(HttpRequestBase httpRequestBase)
         {

@@ -16,7 +16,8 @@ namespace EImece.Domain.Models.FrontModels
         public int rating { get; set; }
         public int minPrice { get; set; }
         public int maxPrice { get; set; }
-        public int ItemId { get { return CategoryFilterId.Substring(1).ToInt(); } }
+        public int ItemId
+        { get { return CategoryFilterId.Substring(1).ToInt(); } }
 
         public CategoryFilterType Parent { get; set; }
 

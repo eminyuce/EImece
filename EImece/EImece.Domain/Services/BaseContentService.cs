@@ -94,7 +94,7 @@ namespace EImece.Domain.Services
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
         }
 
-        public new virtual T SaveOrEditEntity(T entity)
+        public virtual new T SaveOrEditEntity(T entity)
         {
             if (entity == null)
             {

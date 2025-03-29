@@ -40,6 +40,6 @@ namespace EImece.Domain.DbContext
         IDbSet<ProductComment> ProductComments { get; set; }
 
         IDbSet<Brand> Brands { get; set; }
-          IDbSet<Coupon> Coupons { get; set; }
+        IDbSet<Coupon> Coupons { get; set; }
     }
 }

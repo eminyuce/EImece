@@ -1,9 +1,9 @@
-﻿using System;
+﻿using EImece.Domain.DbContext;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections.Generic;
-using EImece.Domain.DbContext;
-using System.Configuration;
 
 namespace EImece.Domain.Services
 {
@@ -14,8 +14,8 @@ namespace EImece.Domain.Services
 
         public ReportService() : this(GetConnectionStringFromConfig())
         {
-
         }
+
         // Helper method to get connection string from configuration
         private static string GetConnectionStringFromConfig()
         {
@@ -25,6 +25,7 @@ namespace EImece.Domain.Services
 
             return connectionString;
         }
+
         private ReportService(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
@@ -44,7 +45,7 @@ namespace EImece.Domain.Services
             );
         }
 
-        #endregion
+        #endregion Coupon Usage Report
 
         #region Fraud Analysis Report
 
@@ -56,7 +57,7 @@ namespace EImece.Domain.Services
             );
         }
 
-        #endregion
+        #endregion Fraud Analysis Report
 
         #region Payment Method Report
 
@@ -68,7 +69,7 @@ namespace EImece.Domain.Services
             );
         }
 
-        #endregion
+        #endregion Payment Method Report
 
         #region Payment Status Report
 
@@ -80,7 +81,7 @@ namespace EImece.Domain.Services
             );
         }
 
-        #endregion
+        #endregion Payment Status Report
 
         #region Regional Sales Report
 
@@ -92,7 +93,7 @@ namespace EImece.Domain.Services
             );
         }
 
-        #endregion
+        #endregion Regional Sales Report
 
         #region Sales Report by Date Range
 
@@ -116,8 +117,7 @@ namespace EImece.Domain.Services
             );
         }
 
-
-        #endregion
+        #endregion Sales Report by Date Range
 
         public DataSet GetPerformanceSystemReport(DateTime startDate, DateTime endDate)
         {
@@ -127,7 +127,7 @@ namespace EImece.Domain.Services
                 return null;
             }
 
-                SqlParameter[] parameters = {
+            SqlParameter[] parameters = {
                 new SqlParameter("@StartDate", startDate),
                 new SqlParameter("@EndDate", endDate)
             };
@@ -219,7 +219,6 @@ namespace EImece.Domain.Services
             );
         }
 
-
         #region Shipment Company Report
 
         public DataTable GetShipmentCompanyReport()
@@ -230,7 +229,7 @@ namespace EImece.Domain.Services
             );
         }
 
-        #endregion
+        #endregion Shipment Company Report
 
         #region Helper Methods
 
@@ -251,7 +250,7 @@ namespace EImece.Domain.Services
             return list;
         }
 
-        #endregion
+        #endregion Helper Methods
 
         #region IDisposable Implementation
 
@@ -283,6 +282,6 @@ namespace EImece.Domain.Services
             Dispose(false);
         }
 
-        #endregion
+        #endregion IDisposable Implementation
     }
 }

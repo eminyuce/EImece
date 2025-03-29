@@ -15,7 +15,6 @@ namespace EImece.Domain
         public const string ProductTagPrefix = "t/{id}"; // tags
         public const string StoryTagPrefix = "t/{id}"; // tags
         public const string CategoryPrefix = "pc/{id}"; //
-        
 
         public const string LogoImagePath = "/images/logo.jpg";
 
@@ -48,7 +47,7 @@ namespace EImece.Domain
         public const string FooterDescription = "FooterDescription";
 
         public const string SiteIndexMetaTitle = "SiteIndexMetaTitle";
-        public const string IsProductPriceEnable = "IsProductPriceEnable";        
+        public const string IsProductPriceEnable = "IsProductPriceEnable";
         public const string IsProductReviewEnable = "IsProductReviewEnable";
         public const string WhatsAppCommunicationLink = "WhatsAppCommunicationLink";
         public const string GoogleMapScript = "GoogleMapScript";
@@ -115,9 +114,10 @@ namespace EImece.Domain
         public const string PageThemeT2 = "T2";
         public const string PageThemeT1 = "T1";
         public const string DefaultImageText = "X";
-        
+
         public const string BuyNowCustomerUserId = "BNC";
-        public const string LanguageSession="LanguageSession";
+        public const string LanguageSession = "LanguageSession";
+
         public static object DeleteButtonHtmlAttribute
         {
             get

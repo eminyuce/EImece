@@ -12,6 +12,7 @@ namespace EImece.Domain.Services.IServices
     public interface IProductService : IBaseContentService<Product>
     {
         List<Product> GetAdminPageList(int id, string search, int lang);
+
         List<Product> GetAdminPageList(int id, int brandId, string search, int lang);
 
         Rss20FeedFormatter GetProductsRss(RssParams rssParams);
@@ -37,7 +38,9 @@ namespace EImece.Domain.Services.IServices
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
 
         void SaveProductSpecifications(List<ProductSpecification> specifications, int productId);
+
         String UpdatePrices(UpdatePriceRequest request);
+
         List<Product> GetActiveProducts(int? language);
 
         ProductsSearchResult GetProductsSearchResult(

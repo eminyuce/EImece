@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace EImece.Domain.Caching
+﻿namespace EImece.Domain.Caching
 {
-    public interface IEimeceCacheProvider 
+    public interface IEimeceCacheProvider
     {
         /// <summary>
         /// Retrieve cached item
@@ -31,6 +29,5 @@ namespace EImece.Domain.Caching
         void Clear(string key);
 
         void ClearAll();
-
     }
 }

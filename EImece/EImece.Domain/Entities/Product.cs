@@ -84,7 +84,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                return this.GetDetailPageUrl("Detail", "Products", ProductCategory !=null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol);
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory != null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol);
             }
         }
 
@@ -92,7 +92,7 @@ namespace EImece.Domain.Entities
         {
             var request = HttpContext.Current.Request;
             var baseurl = request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
-            var result= this.GetCroppedImageUrl(this.MainImageId, width, height, true);
+            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true);
             if (!result.Contains(baseurl))
             {
                 result = baseurl + result;
@@ -168,7 +168,8 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public string ModifiedId { get { return GeneralHelper.ModifyId(Id); } }
+        public string ModifiedId
+        { get { return GeneralHelper.ModifyId(Id); } }
 
         [NotMapped]
         public byte[] MainImageBytes { get; set; }
@@ -192,7 +193,6 @@ namespace EImece.Domain.Entities
                 return Name;
             }
         }
-
 
         [NotMapped]
         public decimal PriceWithDiscount

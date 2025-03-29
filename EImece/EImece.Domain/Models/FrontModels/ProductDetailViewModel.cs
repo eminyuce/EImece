@@ -28,13 +28,12 @@ namespace EImece.Domain.Models.FrontModels
 
         public ContactUsFormViewModel Contact { get; set; }
 
-        public Setting CargoDescription { get; set; }      
+        public Setting CargoDescription { get; set; }
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
         public Setting WhatsAppCommunicationLink { get; set; }
 
         public string SeoId { get; set; }
-
 
         public ProductDetailViewModel()
         {
@@ -82,7 +81,6 @@ namespace EImece.Domain.Models.FrontModels
                 return finalLink;
             }
         }
-
 
         public Dictionary<string, string> SocialMediaLinks { get; set; }
 

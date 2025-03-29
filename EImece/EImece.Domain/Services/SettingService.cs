@@ -16,6 +16,7 @@ namespace EImece.Domain.Services
     {
         private ISettingRepository SettingRepository { get; set; }
         private static string ALL_SETTING_CACHE_KEY = "ALL_SETTING_CACHE_KEY_V3";
+
         public SettingService(ISettingRepository repository) : base(repository)
         {
             SettingRepository = repository;
@@ -104,10 +105,12 @@ namespace EImece.Domain.Services
                 return setting;
             }
         }
+
         private List<Setting> GetAllSettingsNoCache()
         {
             return SettingRepository.GetAllSettings();
         }
+
         public SystemSettingModel GetSystemSettingModel()
         {
             var result = new SystemSettingModel();

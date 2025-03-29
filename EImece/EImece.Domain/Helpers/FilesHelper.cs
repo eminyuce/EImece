@@ -373,7 +373,7 @@ namespace EImece.Domain.Helpers
             {
                 return !string.IsNullOrEmpty(MainImage.FileUrl);
             }
-            else  if (MainImageId.HasValue && MainImage != null)
+            else if (MainImageId.HasValue && MainImage != null)
             {
                 String fullPath = Path.Combine(AppConfig.StorageRoot, MainImage.FileName);
                 return File.Exists(fullPath);

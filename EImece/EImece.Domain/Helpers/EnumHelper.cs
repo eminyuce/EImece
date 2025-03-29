@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -103,7 +102,7 @@ namespace EImece.Domain.Helpers
                         }).ToList();
             }
             else
-            { 
+            {
                 // Son kullanici ekrani Dil secenekleri icin Dil ENUM Description (ulke kodu) kullanmisiz.
                 return (from EImeceLanguage e in values
                         select new SelectListItem
@@ -113,7 +112,6 @@ namespace EImece.Domain.Helpers
                             Value = ((int)e).ToStr()
                         }).ToList();
             }
-           
         }
 
         private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs()
@@ -213,7 +211,7 @@ namespace EImece.Domain.Helpers
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
-         
+
             var languagesText = AppConfig.ApplicationLanguages;
             if (String.IsNullOrEmpty(languagesText))
             {

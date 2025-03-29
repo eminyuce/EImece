@@ -9,7 +9,8 @@ namespace EImece.Domain.Entities
         public int BrowserType { get; set; }
 
         [NotMapped]
-        public BrowserType BrowserTypeEnum { get { return (BrowserType)BrowserType; } set { BrowserType = (int)value; } }
+        public BrowserType BrowserTypeEnum
+        { get { return (BrowserType)BrowserType; } set { BrowserType = (int)value; } }
 
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }

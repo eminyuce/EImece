@@ -51,7 +51,7 @@ namespace EImece.Domain.Services
             return baseEntityRepository.SearchEntities(whereLambda, search, language);
         }
 
-        public new virtual T SaveOrEditEntity(T entity)
+        public virtual new T SaveOrEditEntity(T entity)
         {
             if (entity == null)
             {

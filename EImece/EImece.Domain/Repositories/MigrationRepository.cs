@@ -75,7 +75,6 @@ namespace EImece.Domain.Repositories
                     Logger.Error(ex, ex.Message + " entityMainImage:" + entityMainImage);
                 }
             }
-
         }
 
         public EntityImage GetImages()
@@ -187,7 +186,7 @@ namespace EImece.Domain.Repositories
                     mimeType,
                     imageBitmap.Width,
                     imageBitmap.Height,
-                  productImageExternalUrl.Equals("ProductMainImage") ?   EImeceImageType.ProductMainImage : EImeceImageType.ProductGallery, null);
+                  productImageExternalUrl.Equals("ProductMainImage") ? EImeceImageType.ProductMainImage : EImeceImageType.ProductGallery, null);
                 return image;
             }
             catch (Exception ex)

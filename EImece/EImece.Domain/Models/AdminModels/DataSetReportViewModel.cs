@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Models.AdminModels
 {
@@ -17,7 +13,7 @@ namespace EImece.Domain.Models.AdminModels
 
         public bool IsNotEmpty()
         {
-            return StartDate!=null && StartDate.HasValue && EndDate != null && EndDate.HasValue;
+            return StartDate != null && StartDate.HasValue && EndDate != null && EndDate.HasValue;
         }
     }
 }

@@ -39,8 +39,8 @@ namespace EImece.Domain.Models.AdminModels
 
         [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.WhatsAppCommunicationScript))]
-        public string WhatsAppCommunicationScript { get; set; }     
-        
+        public string WhatsAppCommunicationScript { get; set; }
+
         [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.WhatsAppCommunicationLink))]
         public string WhatsAppCommunicationLink { get; set; }

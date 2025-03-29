@@ -82,7 +82,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static int ExecuteNonQuery(string commandText) { return ExecuteNonQuery(defaultConnection, defaultDatabase, commandText, defaultCommandType, null); }
+        public static int ExecuteNonQuery(string commandText)
+        { return ExecuteNonQuery(defaultConnection, defaultDatabase, commandText, defaultCommandType, null); }
 
         ///Executes a Transact-SQL statement against the connection and returns the number of rows affected.
 
@@ -108,7 +109,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static int ExecuteNonQuery(string commandText, CommandType commandType) { return ExecuteNonQuery(defaultConnection, defaultDatabase, commandText, commandType, null); }
+        public static int ExecuteNonQuery(string commandText, CommandType commandType)
+        { return ExecuteNonQuery(defaultConnection, defaultDatabase, commandText, commandType, null); }
 
         ///Executes a Transact-SQL statement against the connection and returns the number of rows affected.
 
@@ -140,7 +142,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static int ExecuteNonQuery(string commandText, params SqlParameter[] parameters) { return ExecuteNonQuery(defaultConnection, defaultDatabase, commandText, defaultCommandType, parameters); }
+        public static int ExecuteNonQuery(string commandText, params SqlParameter[] parameters)
+        { return ExecuteNonQuery(defaultConnection, defaultDatabase, commandText, defaultCommandType, parameters); }
 
         ///Executes a Transact-SQL statement against the connection and returns the number of rows affected.
 
@@ -999,7 +1002,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static SqlDataReader ExecuteReader(string database, string commandText, CommandType commandType, params SqlParameter[] parameters) { return ExecuteReader(defaultConnection, database, commandText, commandType, parameters); }
+        public static SqlDataReader ExecuteReader(string database, string commandText, CommandType commandType, params SqlParameter[] parameters)
+        { return ExecuteReader(defaultConnection, database, commandText, commandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.SqlClient.SqlDataReader.
 
@@ -1077,7 +1081,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static SqlDataReader ExecuteReader(SqlConnection connection, string commandText, CommandType commandType) { return ExecuteReader(connection, defaultDatabase, commandText, commandType, null); }
+        public static SqlDataReader ExecuteReader(SqlConnection connection, string commandText, CommandType commandType)
+        { return ExecuteReader(connection, defaultDatabase, commandText, commandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.SqlClient.SqlDataReader.
 
@@ -1180,7 +1185,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static SqlDataReader ExecuteReader(SqlConnection connection, string commandText, CommandType commandType, params SqlParameter[] parameters) { return ExecuteReader(connection, defaultDatabase, commandText, commandType, parameters); }
+        public static SqlDataReader ExecuteReader(SqlConnection connection, string commandText, CommandType commandType, params SqlParameter[] parameters)
+        { return ExecuteReader(connection, defaultDatabase, commandText, commandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.SqlClient.SqlDataReader.
 
@@ -1220,7 +1226,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static SqlDataReader ExecuteReader(SqlConnection connection, string database, string commandText) { return ExecuteReader(connection, database, commandText, defaultCommandType, null); }
+        public static SqlDataReader ExecuteReader(SqlConnection connection, string database, string commandText)
+        { return ExecuteReader(connection, database, commandText, defaultCommandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.SqlClient.SqlDataReader.
 
@@ -1261,7 +1268,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static SqlDataReader ExecuteReader(SqlConnection connection, string database, string commandText, CommandType commandType) { return ExecuteReader(connection, database, commandText, commandType, null); }
+        public static SqlDataReader ExecuteReader(SqlConnection connection, string database, string commandText, CommandType commandType)
+        { return ExecuteReader(connection, database, commandText, commandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.SqlClient.SqlDataReader.
 
@@ -1312,7 +1320,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static SqlDataReader ExecuteReader(SqlConnection connection, string database, string commandText, params SqlParameter[] parameters) { return ExecuteReader(connection, database, commandText, defaultCommandType, parameters); }
+        public static SqlDataReader ExecuteReader(SqlConnection connection, string database, string commandText, params SqlParameter[] parameters)
+        { return ExecuteReader(connection, database, commandText, defaultCommandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.SqlClient.SqlDataReader.
 
@@ -1423,7 +1432,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(string commandText) { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, defaultCommandType, null); }
+        public static object ExecuteScalar(string commandText)
+        { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, defaultCommandType, null); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -1453,7 +1463,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(string commandText, CommandType commandType) { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, commandType, null); }
+        public static object ExecuteScalar(string commandText, CommandType commandType)
+        { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, commandType, null); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -1489,7 +1500,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(string commandText, params SqlParameter[] parameters) { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, defaultCommandType, parameters); }
+        public static object ExecuteScalar(string commandText, params SqlParameter[] parameters)
+        { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, defaultCommandType, parameters); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -1528,7 +1540,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(string commandText, CommandType commandType, params SqlParameter[] parameters) { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, commandType, parameters); }
+        public static object ExecuteScalar(string commandText, CommandType commandType, params SqlParameter[] parameters)
+        { return ExecuteScalar(defaultConnection, defaultDatabase, commandText, commandType, parameters); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -1558,7 +1571,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(string database, string commandText) { return ExecuteScalar(defaultConnection, database, commandText, defaultCommandType, null); }
+        public static object ExecuteScalar(string database, string commandText)
+        { return ExecuteScalar(defaultConnection, database, commandText, defaultCommandType, null); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -1899,7 +1913,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(SqlConnection connection, string database, string commandText, CommandType commandType) { return ExecuteScalar(connection, database, commandText, commandType, null); }
+        public static object ExecuteScalar(SqlConnection connection, string database, string commandText, CommandType commandType)
+        { return ExecuteScalar(connection, database, commandText, commandType, null); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -1931,7 +1946,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static object ExecuteScalar(SqlConnection connection, string database, string commandText, params SqlParameter[] parameters) { return ExecuteScalar(connection, database, commandText, defaultCommandType, parameters); }
+        public static object ExecuteScalar(SqlConnection connection, string database, string commandText, params SqlParameter[] parameters)
+        { return ExecuteScalar(connection, database, commandText, defaultCommandType, parameters); }
 
         ///Executes the query, and returns the first column of the first row in the result set returned by the query. Extra columns or rows are ignored.
 
@@ -2094,7 +2110,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string database, string commandText, params SqlParameter[] parameters) { return ExecuteDataTable(defaultConnection, database, commandText, defaultCommandType, parameters); }
+        public static DataTable ExecuteDataTable(string database, string commandText, params SqlParameter[] parameters)
+        { return ExecuteDataTable(defaultConnection, database, commandText, defaultCommandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2134,7 +2151,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string database, string commandText, CommandType commandType, params SqlParameter[] parameters) { return ExecuteDataTable(defaultConnection, database, commandText, commandType, parameters); }
+        public static DataTable ExecuteDataTable(string database, string commandText, CommandType commandType, params SqlParameter[] parameters)
+        { return ExecuteDataTable(defaultConnection, database, commandText, commandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2164,7 +2182,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string database, string commandText) { return ExecuteDataTable(defaultConnection, database, commandText, defaultCommandType, null); }
+        public static DataTable ExecuteDataTable(string database, string commandText)
+        { return ExecuteDataTable(defaultConnection, database, commandText, defaultCommandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2195,7 +2214,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string database, string commandText, CommandType commandType) { return ExecuteDataTable(defaultConnection, database, commandText, commandType, null); }
+        public static DataTable ExecuteDataTable(string database, string commandText, CommandType commandType)
+        { return ExecuteDataTable(defaultConnection, database, commandText, commandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2233,7 +2253,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string commandText, params SqlParameter[] parameters) { return ExecuteDataTable(defaultConnection, defaultDatabase, commandText, defaultCommandType, parameters); }
+        public static DataTable ExecuteDataTable(string commandText, params SqlParameter[] parameters)
+        { return ExecuteDataTable(defaultConnection, defaultDatabase, commandText, defaultCommandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2274,8 +2295,9 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(string commandText, CommandType commandType, params SqlParameter[] parameters) {
-            return ExecuteDataTable(defaultConnection, defaultDatabase, commandText, commandType, parameters); 
+        public static DataTable ExecuteDataTable(string commandText, CommandType commandType, params SqlParameter[] parameters)
+        {
+            return ExecuteDataTable(defaultConnection, defaultDatabase, commandText, commandType, parameters);
         }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
@@ -2306,7 +2328,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText) { return ExecuteDataTable(connection, defaultDatabase, commandText, defaultCommandType, null); }
+        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText)
+        { return ExecuteDataTable(connection, defaultDatabase, commandText, defaultCommandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2336,7 +2359,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText, CommandType commandType) { return ExecuteDataTable(connection, defaultDatabase, commandText, commandType, null); }
+        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText, CommandType commandType)
+        { return ExecuteDataTable(connection, defaultDatabase, commandText, commandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2375,7 +2399,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText, params SqlParameter[] parameters) { return ExecuteDataTable(connection, defaultDatabase, commandText, defaultCommandType, parameters); }
+        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText, params SqlParameter[] parameters)
+        { return ExecuteDataTable(connection, defaultDatabase, commandText, defaultCommandType, parameters); }
 
         ///ends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2417,7 +2442,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText, CommandType commandType, params SqlParameter[] parameters) { return ExecuteDataTable(connection, defaultDatabase, commandText, commandType, parameters); }
+        public static DataTable ExecuteDataTable(SqlConnection connection, string commandText, CommandType commandType, params SqlParameter[] parameters)
+        { return ExecuteDataTable(connection, defaultDatabase, commandText, commandType, parameters); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2448,7 +2474,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(SqlConnection connection, string database, string commandText) { return ExecuteDataTable(connection, database, commandText, defaultCommandType, null); }
+        public static DataTable ExecuteDataTable(SqlConnection connection, string database, string commandText)
+        { return ExecuteDataTable(connection, database, commandText, defaultCommandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2480,7 +2507,8 @@ namespace EImece.Domain.DbContext
         ///
 
         ///
-        public static DataTable ExecuteDataTable(SqlConnection connection, string database, CommandType commandType, string commandText) { return ExecuteDataTable(connection, database, commandText, commandType, null); }
+        public static DataTable ExecuteDataTable(SqlConnection connection, string database, CommandType commandType, string commandText)
+        { return ExecuteDataTable(connection, database, commandText, commandType, null); }
 
         ///Sends the System.Data.SqlClient.SqlCommand.CommandText to the System.Data.SqlClient.SqlCommand.Connection, and builds a System.Data.DataTable.
 
@@ -2593,10 +2621,12 @@ namespace EImece.Domain.DbContext
 
             return value;
         }
+
         public static DataSet ExecuteDataSet(string commandText, CommandType commandType, params SqlParameter[] parameters)
         {
             return ExecuteDataSet(defaultConnection, defaultDatabase, commandText, commandType, parameters);
         }
+
         public static DataSet ExecuteDataSet(SqlConnection connection, string database, string commandText, CommandType commandType, params SqlParameter[] parameters)
         {
             if (connection == null) throw new Exception("Connection must be established before query can be run.");

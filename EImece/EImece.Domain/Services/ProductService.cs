@@ -64,6 +64,7 @@ namespace EImece.Domain.Services
         {
             return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang);
         }
+
         public string UpdatePrices(UpdatePriceRequest request)
         {
             if (request == null || request.PercentageOfIncreaseOrDecrease == null)
@@ -81,6 +82,7 @@ namespace EImece.Domain.Services
             var commandType = CommandType.StoredProcedure;
             return DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
         }
+
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
             ProductIndexViewModel result = null;
@@ -139,8 +141,7 @@ namespace EImece.Domain.Services
 
         public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
-
-            var  result = new ProductDetailViewModel();
+            var result = new ProductDetailViewModel();
             var product = ProductRepository.GetProduct(id);
 
             if (product == null)

@@ -16,6 +16,7 @@ namespace EImece.Domain.Models.FrontModels
                 return GetSetting(Constants.CompanyName);
             }
         }
+
         public Setting CompanyAddress
         {
             get
@@ -23,6 +24,7 @@ namespace EImece.Domain.Models.FrontModels
                 return GetSetting(Constants.CompanyAddress);
             }
         }
+
         public Setting WebSiteCompanyPhoneAndLocation
         {
             get
@@ -30,6 +32,7 @@ namespace EImece.Domain.Models.FrontModels
                 return GetSetting(Constants.WebSiteCompanyPhoneAndLocation);
             }
         }
+
         public Setting WebSiteCompanyEmailAddress
         {
             get
@@ -37,6 +40,7 @@ namespace EImece.Domain.Models.FrontModels
                 return GetSetting(Constants.WebSiteCompanyEmailAddress);
             }
         }
+
         private Setting GetSetting(string key)
         {
             return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));

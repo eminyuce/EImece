@@ -57,6 +57,7 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         private ItemType _ownerType;
-        public ItemType OwnerType { get { return _ownerType; } set { _ownerType = value; } }
+        public ItemType OwnerType
+        { get { return _ownerType; } set { _ownerType = value; } }
     }
 }

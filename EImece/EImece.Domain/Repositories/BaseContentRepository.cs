@@ -52,7 +52,7 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public new virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
+        public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;

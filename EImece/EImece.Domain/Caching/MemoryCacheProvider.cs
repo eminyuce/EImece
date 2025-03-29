@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,10 +7,10 @@ using System.Runtime.Caching;
 
 namespace EImece.Domain.Caching
 {
-    public class MemoryCacheProvider : IEimeceCacheProvider 
+    public class MemoryCacheProvider : IEimeceCacheProvider
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        MemoryCache _cache = MemoryCache.Default;
+        private MemoryCache _cache = MemoryCache.Default;
 
         public bool Get<T>(string key, out T value)
         {
@@ -37,7 +32,7 @@ namespace EImece.Domain.Caching
             }
         }
 
-        public  void Set<T>(string key, T value, int duration)
+        public void Set<T>(string key, T value, int duration)
         {
             if (AppConfig.IsCacheActive)
             {
@@ -52,7 +47,7 @@ namespace EImece.Domain.Caching
             }
         }
 
-        public  void Clear(string key)
+        public void Clear(string key)
         {
             _cache.Remove(key, CacheEntryRemovedReason.Removed);
         }

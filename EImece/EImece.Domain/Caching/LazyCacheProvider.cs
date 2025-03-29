@@ -2,18 +2,16 @@
 using Microsoft.Extensions.Caching.Memory;
 using NLog;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
 
 namespace EImece.Domain.Caching
 {
-    public class LazyCacheProvider  : IEimeceCacheProvider
+    public class LazyCacheProvider : IEimeceCacheProvider
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IAppCache _lazyCache = new CachingService();
         private static List<string> allCacheKeys = new List<string>();
+
         public void Clear(string key)
         {
             _lazyCache.Remove(key);
@@ -47,7 +45,7 @@ namespace EImece.Domain.Caching
                 return false;
             }
         }
-       
+
         public void Set<T>(string key, T value, int duration)
         {
             if (AppConfig.IsCacheActive)

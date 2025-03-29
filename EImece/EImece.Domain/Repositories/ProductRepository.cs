@@ -75,6 +75,7 @@ namespace EImece.Domain.Repositories
                 throw;
             }
         }
+
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
             return GetAdminPageList(categoryId, 0, search, language);

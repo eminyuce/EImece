@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Hosting;
 
 namespace EImece.Domain
@@ -47,13 +46,15 @@ namespace EImece.Domain
                 return GetConfigString("IyzicoApiKey", "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB");
             }
         }
+
         public static bool IsSmtpClientEnabled
         {
             get
             {
-               return GetConfigBool("IsSmtpClientEnabled", true);
+                return GetConfigBool("IsSmtpClientEnabled", true);
             }
         }
+
         public static string HttpProtocolForImages
         {
             get
@@ -68,9 +69,9 @@ namespace EImece.Domain
         {
             get
             {
-                 var useSll = GetConfigBool("UseSSL", false);
-                 return string.Format("http{0}", useSll ? "s" : "");
-               // return AppConfig.HttpProtocol;
+                var useSll = GetConfigBool("UseSSL", false);
+                return string.Format("http{0}", useSll ? "s" : "");
+                // return AppConfig.HttpProtocol;
             }
         }
 
@@ -89,6 +90,7 @@ namespace EImece.Domain
                 return GetConfigInt("GridPageSizeNumber", 100);
             }
         }
+
         public static int HomePageMainProductCountRandomLimit
         {
             get
@@ -96,6 +98,7 @@ namespace EImece.Domain
                 return HomePageMainProductCountLimit / 3;
             }
         }
+
         public static int HomePageMainProductCountLimit
         {
             get
@@ -103,6 +106,7 @@ namespace EImece.Domain
                 return GetConfigInt("HomePageMainProductCountLimit", 15);
             }
         }
+
         //en-US,tr-TR
         public static string ApplicationLanguages
         {
@@ -171,7 +175,6 @@ namespace EImece.Domain
             }
             return configValue == -1 ? defaultValue : configValue;
         }
-       
 
         public static int CacheTinySeconds
         {
@@ -212,6 +215,7 @@ namespace EImece.Domain
                 return GetConfigInt("CacheVeryLongSeconds", 180000);
             }
         }
+
         public static int MusteriIliskileriChildrenIdTurkce
         {
             get
@@ -219,6 +223,7 @@ namespace EImece.Domain
                 return GetConfigInt("MusteriIliskileriChildrenIdTurkce", 6149);
             }
         }
+
         public static bool IsEditLinkEnable
         {
             get
@@ -324,6 +329,7 @@ namespace EImece.Domain
                 return string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase);
             }
         }
+
         public static bool IsSiteUnderDevelopment
         {
             get

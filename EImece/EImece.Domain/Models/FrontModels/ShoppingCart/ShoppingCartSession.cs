@@ -10,7 +10,7 @@ using System.Linq;
 namespace EImece.Domain.Models.FrontModels
 {
     [Serializable]
-    public class ShoppingCartSession 
+    public class ShoppingCartSession
     {
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         private Customer _customer = new Customer();
@@ -32,7 +32,6 @@ namespace EImece.Domain.Models.FrontModels
         [JsonIgnore]
         public Setting CargoPrice { get; set; }
 
-        
         public string CouponCode
         {
             get
@@ -40,6 +39,7 @@ namespace EImece.Domain.Models.FrontModels
                 return Coupon == null ? "" : Coupon.Code;
             }
         }
+
         public string CouponName
         {
             get
@@ -170,8 +170,8 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                var result = TotalPrice  + CargoPriceValue;
-                result -=  CalculateCouponDiscount(result);
+                var result = TotalPrice + CargoPriceValue;
+                result -= CalculateCouponDiscount(result);
                 if (result < 0)
                 {
                     return 0;
@@ -191,7 +191,6 @@ namespace EImece.Domain.Models.FrontModels
                 return ShoppingCartItems.Sum(r => r.Product.Price * r.Quantity);
             }
         }
-       
 
         public decimal CalculateCouponDiscount(decimal result)
         {
@@ -199,7 +198,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 if (Coupon.Discount > 0)
                 {
-                    if(result >= Coupon.Discount)
+                    if (result >= Coupon.Discount)
                     {
                         return Coupon.Discount;
                     }
