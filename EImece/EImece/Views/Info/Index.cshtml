@@ -14,10 +14,6 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
-@if (isUserAuthenticated)
-{
-@Html.ActionLink(Resource.AdminEdit, "saveoredit", "Menus", new { @id = menu.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
-}
 @if (!string.IsNullOrEmpty(menu.PageTheme))
 {
     string pageTheme = String.IsNullOrEmpty(menu.PageTheme) ? "T1" : menu.PageTheme;
