@@ -25,7 +25,7 @@ namespace EImece.Controllers
         public IStoryCategoryService StoryCategoryService { get; set; }
 
         // GET: Rss
-        ///
+        /// rss/products/?Take=10&Description=1&CategoryId=2&Language=1&Width=300&Height=250&utm_source=google&utm_medium=cpc&utm_campaign=spring_sale&utm_term=shoes&utm_content=ad1
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Products(RssParams rssParams)
         {
