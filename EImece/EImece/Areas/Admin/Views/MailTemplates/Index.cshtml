@@ -58,9 +58,9 @@ columns.Add()
                        .Sanitized(false)
                        .SetWidth(30)
                        .RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white    " })
-    </b>);
+@<b>
+    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white    " })
+</b>);
 
 if (UserRoleHelper.IsDeletedEnableRoles())
 {
@@ -97,7 +97,7 @@ columns.Add(o => o.IsActive)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
 .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                 o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+         o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
 columns.Add(o => o.CreatedDate)
 .Titled("CreatedDate")
@@ -112,6 +112,15 @@ columns.Add(o => o.UpdatedDate)
 .Css("gridDateClass")
 .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()))
 .SortInitialDirection(GridSortDirection.Descending);
+
+columns.Add()
+               .Encoded(false)
+               .Sanitized(false)
+               .SetWidth(30)
+               .RenderValueAs(d =>
+        @<b>
+            @Html.ActionLink("Backup", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs" })
+        </b>);
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

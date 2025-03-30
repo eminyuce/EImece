@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using NLog;
 using Resources;
 using System;
@@ -26,7 +27,16 @@ namespace EImece.Areas.Admin.Controllers
 
         //
         // GET: /MailTemplate/Create
-
+        public ActionResult CreateBackup(int id = 0)
+        {
+            var item = MailTemplateService.GetSingle(id);
+            var itemCopy = JsonConvert.DeserializeObject<MailTemplate>(JsonConvert.SerializeObject(item));
+            itemCopy.Name += "-BACKUP";
+            itemCopy.Id = 0;
+            itemCopy.Body = item.Body;
+            MailTemplateService.SaveOrEditEntity(itemCopy);
+            return RedirectToAction("Index");
+        }
         public ActionResult SaveOrEdit(int id = 0)
         {
             var item = EntityFactory.GetBaseEntityInstance<MailTemplate>();
