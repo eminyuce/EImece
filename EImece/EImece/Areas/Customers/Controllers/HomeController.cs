@@ -193,16 +193,29 @@ namespace EImece.Areas.Customers.Controllers
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
+        [HttpPost]
         public ActionResult SendSellerMessage(ContactUsFormViewModel contact)
         {
             if (contact == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            // Sending email.
-            contact.ItemType = EImeceItemType.Ticket;
-            RazorEngineHelper.SendMessageToSeller(contact);
-            return RedirectToAction("SendMessageToSeller");
+
+            try
+            {
+                // Sending email.
+                contact.ItemType = EImeceItemType.Ticket;
+                contact.IPAddress = HttpContext.Request.UserHostAddress;
+                RazorEngineHelper.SendMessageToSeller(contact);
+                TempData["SuccessMessage"] = Resource.YourMessageHasBeenSentToSeller;
+                return RedirectToAction("SendMessageToSeller");
+            }
+            catch(Exception ex)
+            {
+                // Handle any errors (e.g., email sending failure)
+                TempData["ErrorMessage"] = Resource.EmailSendingFailed; // Add this to your Resource file
+                return RedirectToAction("SendMessageToSeller");
+            }
         }
 
         public ActionResult Faq()

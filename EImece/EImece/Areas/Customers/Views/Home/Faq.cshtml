@@ -17,13 +17,12 @@
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
                 <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">@Resource.Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
         </div>
     </div>
     <div class="row pt-1">
-        <!-- Main content-->
         <!-- Main content-->
         <div class="col-lg-12">
             @Html.Partial("_CustomerDetails", Model.Customer)
@@ -36,20 +35,35 @@
                             <h3 class="text-center pb-2">@Resource.FrequentlyAskedQuestions</h3>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <ul class="list-unstyled">
+                                    <div class="accordion" id="faqAccordion">
                                         @foreach (Faq faq in Model.Faqs)
                                         {
-                                            <li class="d-flex align-items-center border-bottom pb-3 mb-3">
-                                                <i class="text-muted mr-2" data-feather="file-text" style="width: 1.2rem; height: 1.2rem;">
-                                                </i>
-                                                <a href="#" class="nav-link-inline" data-toggle="modal" data-target="@string.Format("#modalScroll{0}",faq.Id)">
-                                                    @faq.Question
-                                                </a>
-                                                @FaqDetailModal(faq)
-                                            </li>
-
+                                            <div class="card mb-3">
+                                                <div class="card-header" id="heading-@faq.Id">
+                                                    <h5 class="mb-0 d-flex align-items-center">
+                                                        <button class="btn btn-link text-decoration-none flex-grow-1 text-left collapsed"
+                                                                type="button"
+                                                                data-toggle="collapse"
+                                                                data-target="#collapse-@faq.Id"
+                                                                aria-expanded="false"
+                                                                aria-controls="collapse-@faq.Id">
+                                                            <i class="text-muted mr-2" data-feather="file-text" style="width: 1.2rem; height: 1.2rem;"></i>
+                                                            @faq.Question
+                                                        </button>
+                                                        <span class="toggle-indicator mr-2" style="font-size: 1.5rem; line-height: 1;">
+                                                            <span class="plus">+</span>
+                                                            <span class="minus" style="display: none;">-</span>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapse-@faq.Id" class="collapse" aria-labelledby="heading-@faq.Id" data-parent="#faqAccordion">
+                                                    <div class="card-body">
+                                                        @Html.Raw(faq.Answer)
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
-                                    </ul>
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -62,28 +76,17 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
-@helper FaqDetailModal(Faq faq)
-{
-    var modalId = string.Format("modalScroll{0}", faq.Id);
-    <!-- Modal markup -->
-    <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="@modalId" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">@faq.Question</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @Html.Raw(faq.Answer)
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger rounded mb-2 mr-1 btn-block" data-dismiss="modal">@Resource.Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        $(document).ready(function() {
+            $('.collapse').on('show.bs.collapse', function() {
+                $(this).closest('.card').find('.toggle-indicator .plus').hide();
+                $(this).closest('.card').find('.toggle-indicator .minus').show();
+            });
 
+            $('.collapse').on('hide.bs.collapse', function() {
+                $(this).closest('.card').find('.toggle-indicator .minus').hide();
+                $(this).closest('.card').find('.toggle-indicator .plus').show();
+            });
+        });
+    </script>
 }

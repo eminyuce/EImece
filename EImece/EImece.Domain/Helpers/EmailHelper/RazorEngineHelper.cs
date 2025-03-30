@@ -18,7 +18,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 {
     public class RazorEngineHelper
     {
-        private static readonly Logger RazorEngineLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
@@ -57,7 +56,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
@@ -91,7 +90,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
@@ -116,7 +115,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             // Şablonun kendisi
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(template);
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
 
             // RazorEngine kullanarak template'i render ediyoruz
             var result = GetRenderOutputByRazorEngineModel(template, model);
@@ -139,7 +138,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             OrderConfirmationEmailRazorTemplate model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
             var result = GetRenderOutputByRazorEngineModel(template, model);
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
@@ -151,6 +150,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             {
                 throw new ArgumentException("NO email template is defined for " + Constants.SendMessageToSellerMailTemplate);
             }
+
             string groupName = string.Format("{0} | {1} | {2}", "SendMessageToSeller", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
             emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
 
@@ -158,9 +158,11 @@ namespace EImece.Domain.Helpers.EmailHelper
             var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
+
             string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
-            string body = Engine.Razor.RunCompile(template, subject + "" + GeneralHelper.GetHashString(template), null, contact);
+            string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact); // Use different key for body
+
             EmailSender.SendEmail(SettingService.GetEmailAccount(),
                 subject,
                 body,
@@ -168,6 +170,13 @@ namespace EImece.Domain.Helpers.EmailHelper
                 companyname,
                 adminUserName,
                 companyname);
+        }
+
+        private static string GetUniqueId()
+        {
+            // Generate a unique key by adding a timestamp or random identifier
+            return DateTime.Now.Ticks.ToString();
+            // or use Guid.NewGuid().ToString() for even more uniqueness
         }
 
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
@@ -203,7 +212,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             // Şablonu işle
-            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body) + "_" + GetUniqueId();
             string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
 
             // E-posta gönder
@@ -253,7 +262,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             // Şablonu işle
-            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body) + "_" + GetUniqueId();
             string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
 
             // E-posta gönder

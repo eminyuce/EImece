@@ -1340,6 +1340,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Üzgünüz, şu anda mesajınızı satıcıya gönderemedik. Lütfen daha sonra tekrar deneyin veya sorun devam ederse destek ile iletişime geçin..
+        /// </summary>
+        public static string EmailSendingFailed {
+            get {
+                return ResourceManager.GetString("EmailSendingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-posta Başlık.
         /// </summary>
         public static string EmailSubject {
@@ -4999,6 +5008,15 @@ namespace Resources {
         public static string YourCartTotalAmount {
             get {
                 return ResourceManager.GetString("YourCartTotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesajınız satıcıya başarıyla e-postayla gönderildi. En kısa sürede size cevap verecekler..
+        /// </summary>
+        public static string YourMessageHasBeenSentToSeller {
+            get {
+                return ResourceManager.GetString("YourMessageHasBeenSentToSeller", resourceCulture);
             }
         }
         

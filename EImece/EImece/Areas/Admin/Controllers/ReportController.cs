@@ -83,7 +83,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult RegionalSales()
+        public ActionResult GetRegionalSalesReport()
         {
             try
             {

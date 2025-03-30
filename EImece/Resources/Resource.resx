@@ -1818,4 +1818,10 @@
   <data name="YourPaymentAmountinInstallments" xml:space="preserve">
     <value>Taksitli Ödeme Tutarınız</value>
   </data>
+  <data name="EmailSendingFailed" xml:space="preserve">
+    <value>Üzgünüz, şu anda mesajınızı satıcıya gönderemedik. Lütfen daha sonra tekrar deneyin veya sorun devam ederse destek ile iletişime geçin.</value>
+  </data>
+  <data name="YourMessageHasBeenSentToSeller" xml:space="preserve">
+    <value>Mesajınız satıcıya başarıyla e-postayla gönderildi. En kısa sürede size cevap verecekler.</value>
+  </data>
 </root>
