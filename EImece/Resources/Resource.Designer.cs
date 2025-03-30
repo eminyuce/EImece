@@ -556,6 +556,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CardFamily {
+            get {
+                return ResourceManager.GetString("CardFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kargo Şirketi.
         /// </summary>
         public static string CargoCompany {
@@ -4981,6 +4990,24 @@ namespace Resources {
         public static string WrongSum {
             get {
                 return ResourceManager.GetString("WrongSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sepetiniz Toplam Miktarı.
+        /// </summary>
+        public static string YourCartTotalAmount {
+            get {
+                return ResourceManager.GetString("YourCartTotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taksitli Ödeme Tutarınız.
+        /// </summary>
+        public static string YourPaymentAmountinInstallments {
+            get {
+                return ResourceManager.GetString("YourPaymentAmountinInstallments", resourceCulture);
             }
         }
         

@@ -11,7 +11,7 @@
     ViewBag.Title = Resources.Resource.ThanksForYourOrder;
     var item = Model;
     string urlActionLink = Url.Action("index", "home");
- 
+
 }
 
 <!-- Page Content -->
@@ -98,19 +98,18 @@
                                 <td>@product.TotalPrice.CurrencySign()</td>
                             </tr>
                         }
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><strong>@Resource.TotalPaid:</strong></td>
-                        <td><strong>@item.PaidPriceDecimal.CurrencySign()</strong></td>
-                    </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>@Resource.TotalPaid:</strong></td>
+                            <td><strong>@item.PaidPriceDecimal.CurrencySign()</strong></td>
+                        </tr>
                     </tbody>
                 </table>
 
                 <!-- Payment Summary -->
                 <h3 class="h5 mt-4">@Resource.PaymentDetails</h3>
                 <ul class="list-unstyled">
-                    <li><strong>@Resource.Subtotal:</strong> @item.Price.ToDecimal().CurrencySign()</li>
                     @if (item.CargoPrice > 0)
                     {
                         <li><strong>@Resource.ShippingCost:</strong> @item.CargoPrice.CurrencySign()</li>
@@ -119,11 +118,17 @@
                     {
                         <li><strong>@Resource.CouponDiscount (@item.Coupon):</strong> -@item.CouponDiscount.ToDecimal().CurrencySign()</li>
                     }
-                    @if (!string.IsNullOrEmpty(item.Installment))
+                    @if (string.IsNullOrEmpty(item.Installment) || item.Installment.Equals("1"))
+                    {
+                        <li><strong>@Resource.YourCartTotalAmount:</strong> @item.PaidPriceDecimal.CurrencySign()</li>
+                    }
+                    else
                     {
                         <li><strong>@Resource.InstallmentCount:</strong> @item.Installment</li>
+                        <li><strong>@Resource.YourCartTotalAmount:</strong> @item.Price.ToDecimal().CurrencySign()</li>
+                        <li><strong>@Resource.YourPaymentAmountinInstallments:</strong> @item.PaidPriceDecimal.CurrencySign()</li>
                     }
-                    <li><strong>@Resource.PaymentMethod:</strong> @item.CardType (@item.CardAssociation) - @Resource.EndingIn @item.LastFourDigits</li>
+                    <li><strong>@Resource.PaymentMethod:</strong>@item.CardFamily - @item.CardType (@item.CardAssociation) - @Resource.EndingIn @item.LastFourDigits</li>
                 </ul>
 
                 <!-- Back to Home Button -->

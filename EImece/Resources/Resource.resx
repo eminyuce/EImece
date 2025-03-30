@@ -1809,4 +1809,13 @@
   <data name="InstallmentCount" xml:space="preserve">
     <value>Taksit Sayısı</value>
   </data>
+  <data name="CardFamily" xml:space="preserve">
+    <value />
+  </data>
+  <data name="YourCartTotalAmount" xml:space="preserve">
+    <value>Sepetiniz Toplam Miktarı</value>
+  </data>
+  <data name="YourPaymentAmountinInstallments" xml:space="preserve">
+    <value>Taksitli Ödeme Tutarınız</value>
+  </data>
 </root>
