@@ -10,6 +10,9 @@
     var SendButtonText = Resource.SendButtonText;
 }
 
+<!-- Add Bootstrap Icons CDN at the top of the view -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <!-- Page Content-->
 <div class="container pt-lg-3 pb-5 mb-sm-3">
     <!-- Toast notifications-->
@@ -36,24 +39,24 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="accordion" id="faqAccordion">
+                                        @{ int index = 1; }
                                         @foreach (Faq faq in Model.Faqs)
                                         {
                                             <div class="card mb-3">
                                                 <div class="card-header" id="heading-@faq.Id">
                                                     <h5 class="mb-0 d-flex align-items-center">
+                                                        <span class="toggle-indicator mr-2">
+                                                            <span class="plus"><i class="bi bi-plus-circle" style="font-size: 1.5rem;"></i></span>
+                                                            <span class="minus" style="display: none;"><i class="bi bi-dash-circle" style="font-size: 1.5rem;"></i></span>
+                                                        </span>
                                                         <button class="btn btn-link text-decoration-none flex-grow-1 text-left collapsed"
                                                                 type="button"
                                                                 data-toggle="collapse"
                                                                 data-target="#collapse-@faq.Id"
                                                                 aria-expanded="false"
                                                                 aria-controls="collapse-@faq.Id">
-                                                            <i class="text-muted mr-2" data-feather="file-text" style="width: 1.2rem; height: 1.2rem;"></i>
-                                                            @faq.Question
+                                                            @String.Format("{0}) {1}", index, faq.Question)
                                                         </button>
-                                                        <span class="toggle-indicator mr-2" style="font-size: 1.5rem; line-height: 1;">
-                                                            <span class="plus">+</span>
-                                                            <span class="minus" style="display: none;">-</span>
-                                                        </span>
                                                     </h5>
                                                 </div>
                                                 <div id="collapse-@faq.Id" class="collapse" aria-labelledby="heading-@faq.Id" data-parent="#faqAccordion">
@@ -62,6 +65,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            index++;
                                         }
                                     </div>
                                 </div>
@@ -77,13 +81,13 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(function() {
-            $('.collapse').on('show.bs.collapse', function() {
+        $(document).ready(function () {
+            $('.collapse').on('show.bs.collapse', function () {
                 $(this).closest('.card').find('.toggle-indicator .plus').hide();
                 $(this).closest('.card').find('.toggle-indicator .minus').show();
             });
 
-            $('.collapse').on('hide.bs.collapse', function() {
+            $('.collapse').on('hide.bs.collapse', function () {
                 $(this).closest('.card').find('.toggle-indicator .minus').hide();
                 $(this).closest('.card').find('.toggle-indicator .plus').show();
             });
