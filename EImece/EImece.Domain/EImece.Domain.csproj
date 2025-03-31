@@ -284,6 +284,7 @@
     <Compile Include="Models\Enums\IyzicoPaymentStatus.cs" />
     <Compile Include="Models\FrontModels\BuyNowModel.cs" />
     <Compile Include="Models\FrontModels\CompanyGotNewOrderEmailRazorTemplate.cs" />
+    <Compile Include="Models\FrontModels\CustomerOrderDetailViewModel.cs" />
     <Compile Include="Models\FrontModels\MenuTreeModel.cs" />
     <Compile Include="Models\FrontModels\OfflineFileData.cs" />
     <Compile Include="Models\FrontModels\OrderConfirmationEmailRazorTemplate.cs" />

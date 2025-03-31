@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,46 @@ namespace EImece.Domain.Models.FrontModels
         {
             ProductComment = new ProductComment();
         }
+        public string GoogleProductSchemaJson
+        {
+            get
+            {
+                // Strip HTML from description
+                string plainDescription = GeneralHelper.StripHtml(Product.Description ?? "No description available");
+                
+                var schema = new
+            {
+                @context = "https://schema.org/",
+                @type = "Product",
+                name = Product.ProductNameStr,
+                image = Product.ImageFullPath(200, 200),
+                description = plainDescription,
+                brand = new
+                {
+                    @type = "Brand",
+                    name = Product.Brand.Name
+                },
+                sku = Product.ProductCode,
+                offers = new
+                {
+                    @type = "Offer",
+                    url = Product.DetailPageAbsoluteUrl,
+                    priceCurrency = "TRY", // Para birimini gerektiği gibi ayarla
+                    price = Product.PriceWithDiscount.CurrencySignForIyizo(),
+                    availability = "https://schema.org/InStock", //Product.IsInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    itemCondition = "https://schema.org/NewCondition"
+                }
+            };
 
+        
+                return JsonConvert.SerializeObject(schema, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Formatting= Formatting.Indented
+                });
+
+            }
+        }
         public string WhatsAppCommunicationLinkGenerateScript
         {
             get
@@ -169,6 +209,8 @@ namespace EImece.Domain.Models.FrontModels
                 return result;
             }
         }
+
+        
     }
 
     public class TotalRating

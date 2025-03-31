@@ -64,14 +64,15 @@
                         {
                         <tr>
                             <td>
-                                <a class="btn btn-pill btn-outline-success" href="@string.Format("#order-details-{0}",o.OrderNumber)" data-toggle="modal">@Resource.OrderSummary</a>
+                                @Html.ActionLink(Resource.OrderSummary,                
+                                    "CustomerOrderDetail", "Home",new { id = o.Id },  
+                                    new { @class = "btn btn-pill btn-outline-success", area="customers" })
                             </td>
                             <td>
                                 <h5>@createOrderStatus(o)</h5>
                             </td>
                             <td>
                                 @o.OrderNumber
-                                @createOrderDetailModal(o)
                             </td>
                             <td>
                                 @o.ShipmentCompanyName
@@ -121,91 +122,4 @@ switch (os)
     }
 
 }
-
-@helper createOrderDetailModal(Order order)
-{
-var os = (EImeceOrderStatus)order.OrderStatus;
-var rm = new ResourceManager(typeof(Resource));
-var orderStatusText = rm.GetString(os.GetType().Name + "_" + os);
-    <!-- Order Details-->
-    <div class="modal fade" id="@string.Format("order-details-{0}",order.OrderNumber)">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">@string.Format("{0} - {1} - {2}",Resource.OrderSummary,order.OrderNumber,orderStatusText)</h4>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body pb-0">
-                    <div class="text-center">
-                        <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</b>
-                    </div>
-                    @if (order.ShippingAddress != null)
-                    {
-                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="alert alert-primary">@Resource.ShippingAddress <br /> @order.ShippingAddress.AddressInfo</div>
-                            </div>
-                        </div>
-                    }
-                    @foreach (var orderProduct in order.OrderProducts)
-                    {
-                        var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
-                        var product = orderProduct.Product;
-                        var imgTag = product.GetCroppedImageUrl(product.MainImageId, 160, 0);
-                        <!-- Item-->
-                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                            <div class="media d-block d-sm-flex text-center text-sm-left">
-                                <a class="cart-item-thumb mx-auto mr-sm-4"  target="_blank"  href="@product.DetailPageAbsoluteUrl"><img src="@imgTag" alt="Product"></a>
-                                <div class="media-body pt-3">
-                                    <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a target="_blank" href="@product.DetailPageAbsoluteUrl">@product.Name</a></h3>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.ProductCategory.Name</div>
-                                    @if (ProductSpecItems.IsNotEmpty())
-                                    {
-                                        foreach (var psi in ProductSpecItems)
-                                        {
-                                            <div class="font-size-sm"><span class="text-muted mr-2">@psi.SpecsName:</span>@psi.SpecsValue</div>
-                                        }
-                                    }
-                                </div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@Resource.Quantity</div>
-                                <div class="font-weight-semibold">@orderProduct.Quantity</div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@Resource.Subtotal:</div>
-                                <div class="font-weight-semibold">@orderProduct.TotalPrice.CurrencySign()</div>
-                            </div>
-                        </div>
-                    }
-                    <!-- Item-->
-                    <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                        <div class="media d-block d-sm-flex text-center text-sm-left">
-                            <div class="media-body pt-3">
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="font-weight-semibold">@order.OrderProducts.Sum(r => r.Quantity) @Resource.PieceOfProductPurchased</div>
-                        </div>
-                        <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="font-weight-semibold">@Resource.Total: @order.OrderProducts.Sum(r => r.Price).CurrencySign()</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Footer-->
-                <div class="modal-footer flex-wrap justify-content-between bg-secondary">
-                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.CargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.CargoPrice.CurrencySign()</span></div>
-                    @if (!String.IsNullOrEmpty(order.Coupon))
-                    {
-                        <div class="px-2 py-1"><span class="text-muted"> @Resource.Coupon (@order.Coupon):&nbsp;</span><span class="text-lg font-weight-semibold">@order.CouponDiscount TL</span></div>
-                    }
-
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-}
+ 

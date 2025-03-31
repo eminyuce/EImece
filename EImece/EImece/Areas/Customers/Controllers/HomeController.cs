@@ -234,7 +234,15 @@ namespace EImece.Areas.Customers.Controllers
             var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
-      
+
+        public ActionResult CustomerOrderDetail(int id)
+        {
+            ViewBag.Title = Resource.CustomerDetail;
+            var customer = GetCustomer();
+            var order = OrderService.GetOrderById(id);
+            return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = order });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()

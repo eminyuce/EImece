@@ -135,6 +135,7 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductComments);
+            includeProperties.Add(r => r.Brand);
             includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
