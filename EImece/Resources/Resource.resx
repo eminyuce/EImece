@@ -1824,4 +1824,7 @@
   <data name="YourMessageHasBeenSentToSeller" xml:space="preserve">
     <value>Mesajınız satıcıya başarıyla e-postayla gönderildi. En kısa sürede size cevap verecekler.</value>
   </data>
+  <data name="SelectProductState" xml:space="preserve">
+    <value>Ürün Durumunu Seçin</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,17 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductColorOptions))]
         public String ProductColorOptions { get; set; }
+
+        [NotMapped] // Prevents EF from mapping directly
+        public ProductState StateEnum
+        {
+            get => Enum.TryParse(State, out ProductState result) ? result : ProductState.NONE;
+            set => State = value.ToString();
+        }
+
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SelectProductState))]
+        public string State { get; set; } // Store as VARCHAR(50)
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductSizeOptions))]
         public String ProductSizeOptions { get; set; }

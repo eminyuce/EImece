@@ -282,6 +282,7 @@
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />
     <Compile Include="Models\Enums\EImeceOrderType.cs" />
     <Compile Include="Models\Enums\IyzicoPaymentStatus.cs" />
+    <Compile Include="Models\Enums\ProductState.cs" />
     <Compile Include="Models\FrontModels\BuyNowModel.cs" />
     <Compile Include="Models\FrontModels\CompanyGotNewOrderEmailRazorTemplate.cs" />
     <Compile Include="Models\FrontModels\CustomerOrderDetailViewModel.cs" />

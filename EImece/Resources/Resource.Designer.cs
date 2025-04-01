@@ -3941,6 +3941,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Durumunu Seçin.
+        /// </summary>
+        public static string SelectProductState {
+            get {
+                return ResourceManager.GetString("SelectProductState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bir neden seçiniz.
         /// </summary>
         public static string SelectReason {
