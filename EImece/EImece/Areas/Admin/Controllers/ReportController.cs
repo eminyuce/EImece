@@ -366,5 +366,227 @@ namespace EImece.Areas.Admin.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        public ActionResult ProductSummary()
+        {
+            try
+            {
+                var report = _reportService.GetProductSummaryReport();
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "ProductSummary",
+                    ReportTitle = "Product Summary"
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductSummary report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProductSummary(DateTime? startDate, DateTime? endDate, bool? isActive, int? productCategoryId)
+        {
+            try
+            {
+                if (startDate.HasValue && endDate.HasValue && startDate > endDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View();
+                }
+
+                var report = _reportService.GetProductSummaryReport(startDate, endDate, isActive, productCategoryId);
+                ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+                ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+                ViewBag.IsActive = isActive;
+                ViewBag.ProductCategoryId = productCategoryId;
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "ProductSummary",
+                    ReportTitle = "Product Summary"
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductSummary report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult PriceAnalysis()
+        {
+            try
+            {
+                var report = _reportService.GetPriceAnalysisReport();
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "PriceAnalysis",
+                    ReportTitle = "Price Analysis"
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in PriceAnalysis report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PriceAnalysis(decimal? minPrice, decimal? maxPrice, int? productCategoryId)
+        {
+            try
+            {
+                if (minPrice.HasValue && maxPrice.HasValue && minPrice > maxPrice)
+                {
+                    ModelState.AddModelError("", "Minimum price cannot be greater than maximum price");
+                    return View();
+                }
+
+                var report = _reportService.GetPriceAnalysisReport(minPrice, maxPrice, productCategoryId);
+                ViewBag.MinPrice = minPrice;
+                ViewBag.MaxPrice = maxPrice;
+                ViewBag.ProductCategoryId = productCategoryId;
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "PriceAnalysis",
+                    ReportTitle = "Price Analysis"
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in PriceAnalysis report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ProductInventory()
+        {
+            try
+            {
+                var report = _reportService.GetProductInventoryReport();
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = new DataSet(),
+                    ReportActionName = "PriceAnalysis",
+                    ReportTitle = "Price Analysis"
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductInventory report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProductInventory(string state, bool? isCampaign, bool? mainPage)
+        {
+            try
+            {
+                var report = _reportService.GetProductInventoryReport(state, isCampaign, mainPage);
+                ViewBag.State = state;
+                ViewBag.IsCampaign = isCampaign;
+                ViewBag.MainPage = mainPage;
+                return View("DataSetReportView", new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    ReportActionName = "PriceAnalysis",
+                    ReportTitle = "Price Analysis"
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductInventory report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ProductDetails()
+        {
+            try
+            {
+                var report = _reportService.GetProductDetailsReport();
+                return View(report);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductDetails report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProductDetails(int? productId, string productCode, int? lang)
+        {
+            try
+            {
+                var report = _reportService.GetProductDetailsReport(productId, productCode, lang);
+                ViewBag.ProductId = productId;
+                ViewBag.ProductCode = productCode;
+                ViewBag.Lang = lang;
+                return View(report);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductDetails report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ProductStatsByDateRange()
+        {
+            try
+            {
+                var endDate = DateTime.Today;
+                var startDate = endDate.AddMonths(-1);
+
+                ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
+                ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error loading ProductStatsByDateRange view");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProductStatsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                if (startDate > endDate)
+                {
+                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    return View();
+                }
+
+                var report = _reportService.GetProductStatsByDateRange(startDate, endDate);
+                ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
+                ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+                return View(report);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in ProductStatsByDateRange report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

@@ -1,6 +1,50 @@
 ﻿@{
     ViewBag.Title = "Reports Dashboard";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    // Group actions by category for better organization
+    var reportCategories = new Dictionary<string, List<string>>
+{
+        { "Sales Reports", new List<string> {
+            "SalesByDateRange",
+            "GetRegionalSalesReport",
+            "OrderVolumeReport"
+        }},
+        { "Payment Reports", new List<string> {
+            "PaymentMethod",
+            "PaymentStatus",
+            "PaymentTransactionReport"
+        }},
+        { "Product Reports", new List<string> {
+            "ProductSummary",
+            "ProductDetails",
+            "ProductStatsByDateRange",
+            "PriceAnalysis",
+            "ProductInventory"
+        }},
+        { "Risk & Analysis", new List<string> {
+            "FraudAnalysis",
+            "FraudRiskReport",
+            "PerformanceSystemReport"
+        }},
+        { "Marketing Reports", new List<string> {
+            "CouponUsage",
+            "ShipmentCompany"
+        }},
+        { "Financial Reports", new List<string> {
+            "FinancialReport"
+        }}
+    };
+
+    // Get all action names from the controller (for fallback)
+    var allActions = new List<string> {
+        "CouponUsage", "FraudAnalysis", "PaymentMethod", "PaymentStatus",
+        "GetRegionalSalesReport", "SalesByDateRange", "ShipmentCompany",
+        "PerformanceSystemReport", "FinancialReport", "FraudRiskReport",
+        "OrderVolumeReport", "PaymentTransactionReport", "ProductSummary",
+        "PriceAnalysis", "ProductInventory", "ProductDetails",
+        "ProductStatsByDateRange"
+    };
 }
 <style>
     .nav-form {
@@ -32,93 +76,225 @@
         padding-bottom: 15px;
         line-height: 20px;
     }
+
+    .dropdown-menu > li > .nav-form > .btn-link {
+        padding: 3px 20px;
+    }
+
+    .report-category {
+        margin-bottom: 30px;
+    }
+
+        .report-category h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+    .report-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 15px;
+    }
+
+    .report-card {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        transition: all 0.3s ease;
+    }
+
+        .report-card:hover {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .report-card h4 {
+            margin-top: 0;
+        }
+
+        .report-card p {
+            color: #666;
+        }
 </style>
 
 <div class="container">
     <div class="navbar-header">
         @Html.ActionLink("Reports Dashboard", "Index", "Report", new { area = "Admin" }, new { @class = "navbar-brand" })
     </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Coupon Usage", "CouponUsage", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Fraud Analysis", "FraudAnalysis", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Payment Methods", "PaymentMethod", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Payment Status", "PaymentStatus", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Regional Sales", "GetRegionalSalesReport", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Sales by Date", "SalesByDateRange", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Shipment Companies", "ShipmentCompany", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-        </ul>
-        <ul class="nav navbar-nav">
-            <!-- Existing GET links -->
-            <li>@Html.ActionLink("Coupon Usage", "CouponUsage", "Report", new { area = "Admin" }, new { @class = "nav-link" })</li>
-            <!-- Other existing GET links... -->
-            <!-- Converted to POST forms -->
-            <li>
-                @using (Html.BeginForm("PerformanceSystemReport", "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
-                {
-                <button type="submit" class="nav-link btn btn-link">Performance System</button>
-                }
-            </li>
-            <li>
-                @using (Html.BeginForm("FinancialReport", "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
-                {
-                <button type="submit" class="nav-link btn btn-link">Financial Report</button>
-                }
-            </li>
-            <li>
-                @using (Html.BeginForm("FraudRiskReport", "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
-                {
-                <button type="submit" class="nav-link btn btn-link">Fraud Risk</button>
-                }
-            </li>
-            <li>
-                @using (Html.BeginForm("OrderVolumeReport", "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
-                {
-                <button type="submit" class="nav-link btn btn-link">Order Volume</button>
-                }
-            </li>
-            <li>
-                @using (Html.BeginForm("PaymentTransactionReport", "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
-                {
-                <button type="submit" class="nav-link btn btn-link">Payment Transactions</button>
-                }
-            </li>
-        </ul>
-    </div>
 </div>
 
 <div class="container body-content">
     <h2>@ViewBag.Title</h2>
-    <p>Select a report from the navigation above to view detailed analytics.</p>
+    <p>Select a report from the categories below to view detailed analytics.</p>
 
-    <!-- You can add dashboard widgets or summary information here -->
-    <div class="row">
-        <div class="col-md-4">
+    <!-- Responsive navigation for smaller screens -->
+    <div class="visible-xs">
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="mobileReportMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Select Report
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="mobileReportMenu">
+                @foreach (var category in reportCategories)
+                {
+                    <li class="dropdown-header">@category.Key</li>
+                    foreach (var action in category.Value)
+                    {
+                        <li>
+                            @if (allActions.Contains(action))
+                            {
+                                if(action.EndsWith("Report")) // POST actions
+                                {
+                                    using (Html.BeginForm(action, "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
+                                    {
+                                        <button type="submit" class="btn btn-link">@(SeparatePascalCase(action.Replace("Report", "")))</button>
+                                    }
+                                }
+                                else // GET actions
+                                {
+                                    @Html.ActionLink(SeparatePascalCase(action), action, "Report", new { area = "Admin" }, new { @class = "nav-link" })
+                                        }
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- Desktop view with categorized reports -->
+    <div class="hidden-xs">
+        @foreach (var category in reportCategories)
+        {
+            <div class="report-category">
+                <h3>@category.Key</h3>
+                <div class="report-grid">
+                    @foreach (var action in category.Value)
+                    {
+                        if (allActions.Contains(action))
+                        {
+                            <div class="report-card">
+                                @if (action.EndsWith("Report")) // POST actions
+                                {
+                                    using (Html.BeginForm(action, "Report", new { area = "Admin" }, FormMethod.Post, new { @class = "nav-form" }))
+                                    {
+                                        <h4>@(SeparatePascalCase(action.Replace("Report", "")))</h4>
+                                        <p>View detailed @(action.Replace("Report", "").ToLower()) metrics and analysis</p>
+                                        <button type="submit" class="btn btn-primary">View Report</button>
+                                    }
+                                }
+                                else // GET actions
+                                {
+                                    <h4>@SeparatePascalCase(action)</h4>
+                                    <p>View detailed @action.ToLower() metrics and analysis</p>
+                                    @Html.ActionLink("View Report", action, "Report", new { area = "Admin" }, new { @class = "btn btn-primary" })
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Quick Reports Section -->
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Quick Links</div>
+                <div class="panel-heading">Quick Reports</div>
                 <div class="panel-body">
-                    <ul class="list-unstyled">
-                        <li>
-                            @Html.ActionLink("Today's Sales", "SalesByDateRange", "Report",
-                        new
-                                 {
-                            area = "Admin",
-                            startDate = DateTime.Today.ToString("yyyy-MM-dd"),
-                            endDate = DateTime.Today.ToString("yyyy-MM-dd")
-                        }, new { @class = "nav-link" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("This Month's Sales", "SalesByDateRange", "Report",
-                        new
-                                 {
-                            area = "Admin",
-                            startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("yyyy-MM-dd"),
-                            endDate = DateTime.Today.ToString("yyyy-MM-dd")
-                        }, new { @class = "nav-link" })
-                        </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4>Time-based Sales</h4>
+                            <ul class="list-unstyled">
+                                <li>
+                                    @Html.ActionLink("Today's Sales", "SalesByDateRange", "Report",
+                                    new
+                                         {
+                                        area = "Admin",
+                                        startDate = DateTime.Today.ToString("yyyy-MM-dd"),
+                                        endDate = DateTime.Today.ToString("yyyy-MM-dd")
+                                    }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Yesterday's Sales", "SalesByDateRange", "Report",
+                                    new
+                                         {
+                                        area = "Admin",
+                                        startDate = DateTime.Today.AddDays(-1).ToString("yyyy-MM-dd"),
+                                        endDate = DateTime.Today.AddDays(-1).ToString("yyyy-MM-dd")
+                                    }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("This Week", "SalesByDateRange", "Report",
+                                    new
+                                         {
+                                        area = "Admin",
+                                        startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).ToString("yyyy-MM-dd"),
+                                        endDate = DateTime.Today.ToString("yyyy-MM-dd")
+                                    }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("This Month", "SalesByDateRange", "Report",
+                                    new
+                                         {
+                                        area = "Admin",
+                                        startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("yyyy-MM-dd"),
+                                        endDate = DateTime.Today.ToString("yyyy-MM-dd")
+                                    }, null)
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Product Quick Views</h4>
+                            <ul class="list-unstyled">
+                                <li>@Html.ActionLink("Low Inventory", "ProductInventory", "Report", new { area = "Admin", state = "Low" }, null)</li>
+                                <li>@Html.ActionLink("Out of Stock", "ProductInventory", "Report", new { area = "Admin", state = "Out" }, null)</li>
+                                <li>@Html.ActionLink("Campaign Products", "ProductInventory", "Report", new { area = "Admin", isCampaign = true }, null)</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Financial Quick Views</h4>
+                            <ul class="list-unstyled">
+                                <li>
+                                    @using (Html.BeginForm("FinancialReport", "Report", new { area = "Admin" }, FormMethod.Post))
+                                    {
+                                        @Html.Hidden("startDate", new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("yyyy-MM-dd"))
+                                        @Html.Hidden("endDate", DateTime.Today.ToString("yyyy-MM-dd"))
+                                        <button type="submit" class="btn btn-link" style="padding: 0;">Month-to-Date Financials</button>
+                                    }
+                                </li>
+                                <li>
+                                    @using (Html.BeginForm("PerformanceSystemReport", "Report", new { area = "Admin" }, FormMethod.Post))
+                                    {
+                                        @Html.Hidden("startDate", DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd"))
+                                        @Html.Hidden("endDate", DateTime.Today.ToString("yyyy-MM-dd"))
+                                        <button type="submit" class="btn btn-link" style="padding: 0;">Last 30 Days Performance</button>
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@functions
+{
+    private static string SeparatePascalCase(string str)
+    {
+        if (string.IsNullOrEmpty(str))
+        {
+            return str;
+        }
+        else
+        {
+            var result = System.Text.RegularExpressions.Regex.Replace(str, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
+            return result;
+        }
+    }
+
+}
