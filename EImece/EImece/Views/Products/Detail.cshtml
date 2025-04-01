@@ -174,44 +174,44 @@
                 }
 
                 <!-- Display Product State Message -->
-                <div class="mb-3">
-                    @switch (productState)
-                    {
-                        case ProductState.ProductInStock:
-                            <span class="badge badge-success">@Resource.ProductInStock</span>
-                            break;
-                        case ProductState.ProductOutOfStock:
-                            <span class="badge badge-danger">@Resource.ProductOutOfStock</span>
-                            break;
-                        case ProductState.PreOrder:
-                            <span class="badge badge-info">@Resource.PreOrderAvailable</span>
-                            break;
-                        case ProductState.Discontinued:
-                            <span class="badge badge-dark">@Resource.Discontinued</span>
-                            break;
-                        case ProductState.Backorder:
-                            <span class="badge badge-warning">@Resource.BackorderAvailable</span>
-                            break;
-                        case ProductState.ComingSoon:
-                            <span class="badge badge-primary">@Resource.ComingSoon</span>
-                            break;
-                        case ProductState.LimitedStock:
-                            <span class="badge badge-success">@Resource.LimitedStockAvailable</span>
-                            break;
-                        case ProductState.Reserved:
-                            <span class="badge badge-secondary">@Resource.ReservedForCustomers</span>
-                            break;
-                        case ProductState.AwaitingRestock:
-                            <span class="badge badge-warning">@Resource.AwaitingRestock</span>
-                            break;
-                        case ProductState.NotForSale:
-                            <span class="badge badge-dark">@Resource.NotForSale</span>
-                            break;
-                        default:
-                            <span class="badge badge-secondary">@Resource.NONE</span>
-                            break;
-                    }
-                </div>
+            <div class="mb-3">
+                @switch (productState)
+                {
+                    case ProductState.ProductInStock:
+                        <span class="badge badge-success badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ProductInStock</span>
+                        break;
+                    case ProductState.ProductOutOfStock:
+                        <span class="badge badge-danger badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ProductOutOfStock</span>
+                        break;
+                    case ProductState.PreOrder:
+                        <span class="badge badge-info badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.PreOrderAvailable</span>
+                        break;
+                    case ProductState.Discontinued:
+                        <span class="badge badge-dark badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.Discontinued</span>
+                        break;
+                    case ProductState.Backorder:
+                        <span class="badge badge-warning badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.BackorderAvailable</span>
+                        break;
+                    case ProductState.ComingSoon:
+                        <span class="badge badge-primary badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ComingSoon</span>
+                        break;
+                    case ProductState.LimitedStock:
+                        <span class="badge badge-success badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.LimitedStockAvailable</span>
+                        break;
+                    case ProductState.Reserved:
+                        <span class="badge badge-secondary badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ReservedForCustomers</span>
+                        break;
+                    case ProductState.AwaitingRestock:
+                        <span class="badge badge-warning badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.AwaitingRestock</span>
+                        break;
+                    case ProductState.NotForSale:
+                        <span class="badge badge-dark badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.NotForSale</span>
+                        break;
+                    default:
+                        <span class="badge badge-secondary badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.NONE</span>
+                        break;
+                }
+            </div>
 
                 @if (ProductSizeOptions.IsNotEmpty())
                 {

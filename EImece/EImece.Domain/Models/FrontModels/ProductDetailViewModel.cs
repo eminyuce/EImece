@@ -66,7 +66,7 @@ namespace EImece.Domain.Models.FrontModels
                     url = Product.DetailPageAbsoluteUrl,
                     priceCurrency = "TRY", // Para birimini gerektiği gibi ayarla
                     price = Product.PriceWithDiscount.CurrencySignForIyizo(),
-                    availability = "https://schema.org/InStock", //Product.IsInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    availability = Product.StateEnum == Enums.ProductState.ProductInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
                     itemCondition = "https://schema.org/NewCondition"
                 }
             };
