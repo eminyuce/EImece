@@ -1179,4 +1179,7 @@
   <data name="EndDateBiggerThanStartDateText" xml:space="preserve">
     <value>Bitiş tarihinin başlangıç tarihinden önce gelmediğinden emin olun</value>
   </data>
+  <data name="ProductState" xml:space="preserve">
+    <value>Urun Durum</value>
+  </data>
 </root>

@@ -1827,4 +1827,53 @@
   <data name="SelectProductState" xml:space="preserve">
     <value>Ürün Durumunu Seçin</value>
   </data>
+  <data name="AwaitingRestock" xml:space="preserve">
+    <value>Yeniden Stok Bekleniyor</value>
+  </data>
+  <data name="Backorder" xml:space="preserve">
+    <value>Geri Sipariş</value>
+  </data>
+  <data name="BackorderAvailable" xml:space="preserve">
+    <value>Geri Sipariş Mevcut</value>
+  </data>
+  <data name="ComingSoon" xml:space="preserve">
+    <value>Yakında Geliyor</value>
+  </data>
+  <data name="Discontinued" xml:space="preserve">
+    <value>Üretimden Kaldırıldı</value>
+  </data>
+  <data name="LimitedStockAvailable" xml:space="preserve">
+    <value>Sınırlı Stok Mevcut</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>YOK</value>
+  </data>
+  <data name="NotForSale" xml:space="preserve">
+    <value>Satılık Değil</value>
+  </data>
+  <data name="PreOrder" xml:space="preserve">
+    <value>Ön Sipariş</value>
+  </data>
+  <data name="PreOrderAvailable" xml:space="preserve">
+    <value>Ön Sipariş Mevcut</value>
+  </data>
+  <data name="ProductInStock" xml:space="preserve">
+    <value>Ürün 
+Stokta</value>
+  </data>
+  <data name="ProductOutOfStock" xml:space="preserve">
+    <value>Ürün Stokta Yok</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>Ayrılmış</value>
+  </data>
+  <data name="ReservedForCustomers" xml:space="preserve">
+    <value>Müşteriler İçin Ayrılmış</value>
+  </data>
+  <data name="Unavailable" xml:space="preserve">
+    <value>Kullanılamaz</value>
+  </data>
+  <data name="UnknownState" xml:space="preserve">
+    <value>Bilinmeyen Durum</value>
+  </data>
 </root>

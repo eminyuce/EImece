@@ -306,36 +306,37 @@
 
 @helper GridToolsDeleteColumn(Product d, String controllerName)
 {
-    if (d.Id > 0)
-    {
+if (d.Id > 0)
+{
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
                    { "ItemId", d.Id },
                    {"controllerName",controllerName},
                     {"gridDeleteText",string.Format("'{0}' ürünü silmek istiyorum",d.Name)},
                    { "ItemDescription", d.Name }
              });
-    }
-
 }
 
+}
 
 @functions {
     private List<SelectListItem> GetProductStateSelectList()
     {
         var states = new List<SelectListItem>
     {
-            new SelectListItem { Text = "Yok", Value = ProductState.NONE.ToString() },
-            new SelectListItem { Text = "Ürün Stokta", Value = ProductState.ProductInStock.ToString() },
-            new SelectListItem { Text = "Ürün Stokta Yok", Value = ProductState.ProductOutOfStock.ToString() },
-            new SelectListItem { Text = "Ön Sipariş Mevcut", Value = ProductState.PreOrder.ToString() },
-            new SelectListItem { Text = "Üretimden Kaldırıldı", Value = ProductState.Discontinued.ToString() },
-            new SelectListItem { Text = "Yedek Sipariş Mevcut", Value = ProductState.Backorder.ToString() },
-            new SelectListItem { Text = "Yakında Geliyor", Value = ProductState.ComingSoon.ToString() },
-            new SelectListItem { Text = "Sınırlı Stok Mevcut", Value = ProductState.LimitedStock.ToString() },
-            new SelectListItem { Text = "Müşteriler İçin Ayrıldı", Value = ProductState.Reserved.ToString() },
-            new SelectListItem { Text = "Stok Bekleniyor", Value = ProductState.AwaitingRestock.ToString() },
-            new SelectListItem { Text = "Satılık Değil", Value = ProductState.NotForSale.ToString() }
+            new SelectListItem { Text = Resource.NONE, Value = ProductState.NONE.ToString() },
+            new SelectListItem { Text = Resource.ProductInStock, Value = ProductState.ProductInStock.ToString() },
+            new SelectListItem { Text = Resource.ProductOutOfStock, Value = ProductState.ProductOutOfStock.ToString() },
+            new SelectListItem { Text = Resource.PreOrderAvailable, Value = ProductState.PreOrder.ToString() },
+            new SelectListItem { Text = Resource.Discontinued, Value = ProductState.Discontinued.ToString() },
+            new SelectListItem { Text = Resource.BackorderAvailable, Value = ProductState.Backorder.ToString() },
+            new SelectListItem { Text = Resource.ComingSoon, Value = ProductState.ComingSoon.ToString() },
+            new SelectListItem { Text = Resource.LimitedStockAvailable, Value = ProductState.LimitedStock.ToString() },
+            new SelectListItem { Text = Resource.ReservedForCustomers, Value = ProductState.Reserved.ToString() },
+            new SelectListItem { Text = Resource.AwaitingRestock, Value = ProductState.AwaitingRestock.ToString() },
+            new SelectListItem { Text = Resource.NotForSale, Value = ProductState.NotForSale.ToString() }
         };
         return states;
     }
+
+
 }

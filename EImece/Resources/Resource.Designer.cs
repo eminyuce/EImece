@@ -367,11 +367,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yeniden Stok Bekleniyor.
+        /// </summary>
+        public static string AwaitingRestock {
+            get {
+                return ResourceManager.GetString("AwaitingRestock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geri.
         /// </summary>
         public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geri Sipariş.
+        /// </summary>
+        public static string Backorder {
+            get {
+                return ResourceManager.GetString("Backorder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geri Sipariş Mevcut.
+        /// </summary>
+        public static string BackorderAvailable {
+            get {
+                return ResourceManager.GetString("BackorderAvailable", resourceCulture);
             }
         }
         
@@ -723,6 +750,15 @@ namespace Resources {
         public static string Code {
             get {
                 return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yakında Geliyor.
+        /// </summary>
+        public static string ComingSoon {
+            get {
+                return ResourceManager.GetString("ComingSoon", resourceCulture);
             }
         }
         
@@ -1192,6 +1228,15 @@ namespace Resources {
         public static string Description1 {
             get {
                 return ResourceManager.GetString("Description1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Üretimden Kaldırıldı.
+        /// </summary>
+        public static string Discontinued {
+            get {
+                return ResourceManager.GetString("Discontinued", resourceCulture);
             }
         }
         
@@ -2186,6 +2231,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sınırlı Stok Mevcut.
+        /// </summary>
+        public static string LimitedStockAvailable {
+            get {
+                return ResourceManager.GetString("LimitedStockAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link.
         /// </summary>
         public static string Link {
@@ -2645,6 +2699,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to YOK.
+        /// </summary>
+        public static string NONE {
+            get {
+                return ResourceManager.GetString("NONE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;h1 class=&quot;h2&quot;&gt; Alışveriş sepetinizde ürün bulunmuyor!&lt;/h1&gt;
         ///                                &lt;p class=&quot;text-muted&quot;&gt;
         ///                                    Beğendiğiniz ürünleri sepetinize ekleyerek sipariş verebilirsiniz. Alışveriş yapmak için
@@ -2708,6 +2771,15 @@ namespace Resources {
         public static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Satılık Değil.
+        /// </summary>
+        public static string NotForSale {
+            get {
+                return ResourceManager.GetString("NotForSale", resourceCulture);
             }
         }
         
@@ -3168,6 +3240,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ön Sipariş.
+        /// </summary>
+        public static string PreOrder {
+            get {
+                return ResourceManager.GetString("PreOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ön Sipariş Mevcut.
+        /// </summary>
+        public static string PreOrderAvailable {
+            get {
+                return ResourceManager.GetString("PreOrderAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fiyat.
         /// </summary>
         public static string Price {
@@ -3366,6 +3456,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün 
+        ///Stokta.
+        /// </summary>
+        public static string ProductInStock {
+            get {
+                return ResourceManager.GetString("ProductInStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Adı.
         /// </summary>
         public static string ProductName {
@@ -3380,6 +3480,15 @@ namespace Resources {
         public static string ProductNameLong {
             get {
                 return ResourceManager.GetString("ProductNameLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Stokta Yok.
+        /// </summary>
+        public static string ProductOutOfStock {
+            get {
+                return ResourceManager.GetString("ProductOutOfStock", resourceCulture);
             }
         }
         
@@ -3684,6 +3793,24 @@ namespace Resources {
         public static string RequestIsNotValid {
             get {
                 return ResourceManager.GetString("RequestIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ayrılmış.
+        /// </summary>
+        public static string Reserved {
+            get {
+                return ResourceManager.GetString("Reserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteriler İçin Ayrılmış.
+        /// </summary>
+        public static string ReservedForCustomers {
+            get {
+                return ResourceManager.GetString("ReservedForCustomers", resourceCulture);
             }
         }
         
@@ -4778,6 +4905,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kullanılamaz.
+        /// </summary>
+        public static string Unavailable {
+            get {
+                return ResourceManager.GetString("Unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beklenmeyen hata.
         /// </summary>
         public static string UnexpectedErrorText {
@@ -4792,6 +4928,15 @@ namespace Resources {
         public static string UnitPrice {
             get {
                 return ResourceManager.GetString("UnitPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bilinmeyen Durum.
+        /// </summary>
+        public static string UnknownState {
+            get {
+                return ResourceManager.GetString("UnknownState", resourceCulture);
             }
         }
         
