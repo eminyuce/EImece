@@ -9,6 +9,14 @@ using Newtonsoft.Json;
 using NLog;
 using Resources;
 using System;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -216,7 +224,59 @@ namespace EImece.Domain.Services
 
             return savedOrder;
         }
+        public Order SaveBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm)
+        {
+            Logger.Info($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
+            if (buyWithNoAccountCreation == null)
+            {
+                Logger.Error("buyWithNoAccountCreation failed: buyWithNoAccountCreation is null");
+                throw new ArgumentNullException("buyWithNoAccountCreation", "buyWithNoAccountCreation is null");
+            }
+            if (checkoutForm == null)
+            {
+                Logger.Error("SaveBuyNow failed: checkoutForm is null");
+                throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
+            }
+
+            Logger.Info("Saving customer information");
+            Customer customer = buyWithNoAccountCreation.Customer;
+            customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
+            customer.CreatedDate = DateTime.Now;
+            customer.UpdatedDate = DateTime.Now;
+            customer = CustomerService.SaveOrEditEntity(customer);
+            Logger.Info($"Customer saved with Id: {customer.Id}");
+
+            buyWithNoAccountCreation.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.ShoppingWithoutAccountUserId + "-" + buyWithNoAccountCreation.Customer.Id;
+            Logger.Info($"Generated UserId for BuyNow customer: {buyWithNoAccountCreation.Customer.UserId}");
+
+            Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
+            int shippingAddressId = shippingAddress.Id;
+            if (shippingAddressId == 0)
+            {
+                Logger.Info("Creating new shipping address for BuyNow order");
+                shippingAddress.Name = Resource.ShippingAddress;
+                shippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                shippingAddress.Description = customer.RegistrationAddress;
+                shippingAddress.City = customer.City;
+                shippingAddress.Country = customer.Country;
+                shippingAddress.ZipCode = customer.ZipCode;
+                shippingAddress = AddressService.SaveOrEditEntity(buyWithNoAccountCreation.ShippingAddress);
+                shippingAddressId = shippingAddress.Id;
+                Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+            }
+
+            Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+            Order savedOrder = SaveOrder(buyWithNoAccountCreation.Customer.UserId, buyWithNoAccountCreation, checkoutForm, shippingAddressId);
+            Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+            Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+            SaveOrderProduct(buyWithNoAccountCreation.ShoppingCartItems, savedOrder);
+            Logger.Info($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+
+            Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+            return savedOrder;
+        }
         public Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
         {
             Logger.Info($"SaveBuyNow started - OrderGuid: {buyNowSession?.OrderGuid}");
@@ -270,7 +330,67 @@ namespace EImece.Domain.Services
             Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
             return savedOrder;
         }
+        private Order SaveOrder(String userId, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm,
+          int shippingAddressId)
+        {
+            Logger.Info($"SaveOrder (buyWithNoAccountCreation) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
 
+            var item = new Order();
+
+            item.OrderComments = buyWithNoAccountCreation.OrderComments;
+            item.Name = buyWithNoAccountCreation.Customer.FullName;
+            item.OrderGuid = buyWithNoAccountCreation.OrderGuid;
+            item.OrderType = (int)EImeceOrderType.BuyWithNoAccountCreation;
+            item.OrderNumber = GeneralHelper.RandomNumber(12);
+            item.CargoPrice = buyWithNoAccountCreation.CargoPriceValue;
+            item.UserId = userId;
+            item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
+            item.CreatedDate = DateTime.Now;
+            item.UpdatedDate = DateTime.Now;
+            item.IsActive = true;
+            item.Position = 1;
+            item.Lang = 1;
+            item.DeliveryDate = DateTime.Now;
+            item.ShippingAddressId = shippingAddressId;
+            item.BillingAddressId = shippingAddressId; // TODO: SOMETHING IS WRONG HERE
+            item.Coupon = buyWithNoAccountCreation.CouponStr;
+            item.Token = checkoutForm.Token;
+            item.Price = checkoutForm.Price;
+            item.PaidPrice = checkoutForm.PaidPrice;
+            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
+            item.Currency = checkoutForm.Currency;
+            item.PaymentId = checkoutForm.PaymentId;
+            item.PaymentStatus = checkoutForm.PaymentStatus;
+            item.FraudStatus = checkoutForm.FraudStatus;
+            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
+            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
+            item.CardType = checkoutForm.CardType;
+            item.CardAssociation = checkoutForm.CardAssociation;
+            item.CardFamily = checkoutForm.CardFamily;
+            item.CardToken = checkoutForm.CardToken;
+            item.CardUserKey = checkoutForm.CardUserKey;
+            item.BinNumber = checkoutForm.BinNumber;
+            item.LastFourDigits = checkoutForm.LastFourDigits;
+            item.BasketId = checkoutForm.BasketId;
+            item.ConversationId = checkoutForm.ConversationId;
+            item.ConnectorName = checkoutForm.ConnectorName;
+            item.AuthCode = checkoutForm.AuthCode;
+            item.HostReference = checkoutForm.HostReference;
+            item.Phase = checkoutForm.Phase;
+            item.Status = checkoutForm.Status;
+            item.ErrorCode = checkoutForm.ErrorCode;
+            item.ErrorMessage = checkoutForm.ErrorMessage;
+            item.Locale = checkoutForm.Locale;
+            item.SystemTime = checkoutForm.SystemTime;
+
+            Logger.Info($"Saving buyWithNoAccountCreation order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
+            Order savedOrder = OrderService.SaveOrEditEntity(item);
+            Logger.Info($"buyWithNoAccountCreation order saved successfully with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+            return savedOrder;
+        }
         private Order SaveOrder(String userId, BuyNowModel buyNowSession, CheckoutForm checkoutForm,
           int shippingAddressId)
         {
@@ -293,12 +413,13 @@ namespace EImece.Domain.Services
             item.Lang = 1;
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
+            item.BillingAddressId = shippingAddressId;
             item.Coupon = "";
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;
             item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.PaidPrice;
-            item.Currency = checkoutForm.PaidPrice;
+            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
+            item.Currency = checkoutForm.Currency;
             item.PaymentId = checkoutForm.PaymentId;
             item.PaymentStatus = checkoutForm.PaymentStatus;
             item.FraudStatus = checkoutForm.FraudStatus;
@@ -331,12 +452,15 @@ namespace EImece.Domain.Services
 
             return savedOrder;
         }
-
         private void SaveOrderProduct(ShoppingCartSession shoppingCart, Order savedOrder)
         {
-            Logger.Info($"SaveOrderProduct started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCart.ShoppingCartItems.Count}");
+            SaveOrderProduct(shoppingCart.ShoppingCartItems, savedOrder);
+        }
+        private void SaveOrderProduct(List<ShoppingCartItem> shoppingCartItems, Order savedOrder)
+        {
+            Logger.Info($"SaveOrderProduct started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCartItems.Count}");
 
-            foreach (var shoppingCartItem in shoppingCart.ShoppingCartItems)
+            foreach (var shoppingCartItem in shoppingCartItems)
             {
                 var product = shoppingCartItem.Product;
                 Logger.Info($"Saving order product - OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}, Quantity: {shoppingCartItem.Quantity}");
@@ -381,5 +505,6 @@ namespace EImece.Domain.Services
             var savedOrderProduct = OrderProductService.SaveOrEditEntity(entity);
             Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
+
     }
 }

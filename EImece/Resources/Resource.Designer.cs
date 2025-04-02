@@ -952,6 +952,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Üyelikle Devam Et.
+        /// </summary>
+        public static string ContinueWithMembership {
+            get {
+                return ResourceManager.GetString("ContinueWithMembership", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Üyeliksiz Devam Et.
+        /// </summary>
+        public static string ContinueWithoutMembership {
+            get {
+                return ResourceManager.GetString("ContinueWithoutMembership", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ülke.
         /// </summary>
         public static string Country {

@@ -1365,6 +1365,8 @@
     <Content Include="Views\Payment\BuyNowPayment.cshtml" />
     <Content Include="Views\Home\DisplayAllCache.cshtml" />
     <Content Include="Views\Home\TestPage.cshtml" />
+    <Content Include="Views\Payment\ShoppingWithoutAccount.cshtml" />
+    <Content Include="Views\Payment\ShoppingWithoutAccountPayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

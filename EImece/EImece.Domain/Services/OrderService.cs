@@ -46,7 +46,10 @@ namespace EImece.Domain.Services
         public Order GetOrderById(int id)
         {
             var item = OrderRepository.GetOrderById(id);
-            item.Customer = CustomerService.GetUserId(item.UserId);
+            if (item !=null && !string.IsNullOrEmpty(item.UserId))
+            {
+                item.Customer = CustomerService.GetUserId(item.UserId);
+            }
             return item;
         }
 

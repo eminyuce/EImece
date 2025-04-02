@@ -115,7 +115,8 @@ namespace EImece.Domain
         public const string PageThemeT1 = "T1";
         public const string DefaultImageText = "X";
 
-        public const string BuyNowCustomerUserId = "BNC";
+        public const string BuyNowCustomerUserId = "BNC";     
+        public const string ShoppingWithoutAccountUserId = "SWA";
         public const string LanguageSession = "LanguageSession";
 
         public static object DeleteButtonHtmlAttribute

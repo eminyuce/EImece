@@ -119,7 +119,7 @@ namespace EImece.Domain.Services
             return checkoutFormInitialize.Result;
         }
 
-        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId)
+        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId, String actionName= "PaymentResult")
         {
             Logger.Info("Initializing CheckoutForm for user: " + userId);
 
@@ -154,7 +154,7 @@ namespace EImece.Domain.Services
             var requestContext = HttpContext.Current.Request.RequestContext;
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
             string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
-            string callbackUrl = new UrlHelper(requestContext).Action("PaymentResult",
+            string callbackUrl = new UrlHelper(requestContext).Action(actionName,
                                                "Payment",
                                                new { o, u },
                                                AppConfig.HttpProtocol);
@@ -365,5 +365,7 @@ namespace EImece.Domain.Services
             Logger.Debug("Iyzico API options fetched successfully.");
             return options;
         }
+
+        
     }
 }

@@ -3,6 +3,7 @@
     public enum EImeceCustomerType
     {
         Normal = 1,
-        BuyNow = 2
+        BuyNow = 2,
+        ShoppingWithoutAccount = 3
     }
 }

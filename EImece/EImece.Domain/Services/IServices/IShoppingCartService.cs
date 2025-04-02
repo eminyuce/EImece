@@ -15,5 +15,6 @@ namespace EImece.Domain.Services.IServices
         void DeleteByOrderGuid(string orderGuid);
 
         Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm);
+        Order SaveBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
     }
 }

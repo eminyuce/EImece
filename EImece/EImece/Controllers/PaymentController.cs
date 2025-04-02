@@ -27,6 +27,7 @@ namespace EImece.Controllers
 {
     public class PaymentController : BaseController
     {
+        private const string CUSTOMER_COUNTRY = "Türkiye";
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
@@ -314,7 +315,8 @@ namespace EImece.Controllers
                         PaymentLogger.Info("No customer in shopping cart. Creating new customer.");
                         shoppingCart.Customer = new Customer();
                         shoppingCart.Customer.CustomerType = (int)EImeceCustomerType.Normal;
-                        shoppingCart.Customer.Country = "Türkiye";
+                        shoppingCart.Customer.Country = CUSTOMER_COUNTRY;
+                        shoppingCart.Customer.Ip = GeneralHelper.GetIpAddress();
                     }
                     if (shoppingCart.Customer.IsEmpty())
                     {
@@ -384,7 +386,7 @@ namespace EImece.Controllers
                 return View(shoppingCart);
             }
         }
-
+  
         public ActionResult CheckoutDelivery()
         {
             PaymentLogger.Info("Entering CheckoutDelivery action.");
@@ -411,7 +413,6 @@ namespace EImece.Controllers
 
         public ActionResult renderShoppingCartPrice()
         {
-            PaymentLogger.Info("Entering renderShoppingCartPrice action.");
             ShoppingCartSession shoppingCart = GetShoppingCart();
             String cargoPriceHtml = "";
             if (shoppingCart.CargoPriceValue == 0)
@@ -424,7 +425,6 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Cargo price is {shoppingCart.CargoPriceValue}. Formatting HTML.");
                 cargoPriceHtml = string.Format("<span>{0}:</span><span>{1}</span>", AdminResource.CargoPrice, shoppingCart.CargoPriceValue.CurrencySign());
             }
-            PaymentLogger.Info("Returning JSON response with price details.");
             return Json(new
             {
                 status = Domain.Constants.SUCCESS,
@@ -886,6 +886,121 @@ namespace EImece.Controllers
             {
                 PaymentLogger.Error($"Failed to send company new order email: {e.Message}", e);
             }
+        }
+       
+        public ActionResult ShoppingWithoutAccount()
+        {
+            ShoppingCartSession shoppingCart = GetShoppingCart();
+            var p = new BuyWithNoAccountCreation();
+            p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
+            PaymentLogger.Info("Returning ShoppingWithoutAccount view.");
+            return View(p);
+        }
+
+        [HttpPost]
+        public ActionResult ShoppingWithoutAccount(Customer customer)
+        {
+            PaymentLogger.Info("Entering ContinueShoppingWithoutAccount POST action.");
+            if (customer == null)
+            {
+                PaymentLogger.Error("Customer is null. Throwing exception.");
+                throw new NotSupportedException();
+            }
+            ShoppingCartSession shoppingCart = GetShoppingCart();
+            var p = new BuyWithNoAccountCreation();
+            p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
+            bool isValidCustomer = customer.isValidCustomer();
+            PaymentLogger.Info($"Customer validation result: {isValidCustomer}");
+            if (isValidCustomer)
+            {
+                customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
+                shoppingCart.Customer = customer;
+                shoppingCart.Customer.Country = CUSTOMER_COUNTRY;
+                shoppingCart.Customer.Ip = GeneralHelper.GetIpAddress();
+
+                shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
+                shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
+                shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
+                PaymentLogger.Info("Set shipping and billing addresses.");
+
+                SaveShoppingCart(shoppingCart);
+
+                p.OrderGuid = Guid.NewGuid().ToString();
+                PaymentLogger.Info($"Set shipping address and OrderGuid: {p.OrderGuid}");
+
+                var item = new ShoppingCart();
+                item.CreatedDate = DateTime.Now;
+                item.UpdatedDate = DateTime.Now;
+                item.Name = p.OrderGuid;
+                item.IsActive = false;
+                item.Lang = CurrentLanguage;
+                item.Position = 0;
+                item.ShoppingCartJson = JsonConvert.SerializeObject(p);
+                item.OrderGuid = p.OrderGuid;
+                item.UserId = Domain.Constants.ShoppingWithoutAccountUserId;
+                ShoppingCartService.SaveOrEditShoppingCart(item);
+                PaymentLogger.Info("Saved ShoppingWithoutAccount shopping cart.");
+           
+                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
+                return View("ShoppingWithoutAccountPayment", p);
+            }
+            else
+            {
+                InformCustomerToFillOutForm(customer);
+                shoppingCart.Customer = customer;
+                PaymentLogger.Info("Returning view with validation errors.");
+                return View(p);
+            }
+        }
+
+        public ActionResult ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o)
+        {
+            PaymentLogger.Info("Entering BuyNowPaymentResult action.");
+            var checkoutForm = IyzicoService.GetCheckoutForm(model);
+            PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
+            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
+                PaymentLogger.Info($"Decrypted orderGuid: {orderGuid}");
+                var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
+                BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);
+                PaymentLogger.Info("Deserialized BuyWithNoAccountCreation model from shopping cart.");
+                if (buyWithNoAccountCreation.ShoppingCartItems.IsEmpty())
+                {
+                    PaymentLogger.Error("ShoppingCartItem or Product is null in buyWithNoAccountCreation model.");
+                    throw new ArgumentException("buyWithNoAccountCreation.ShoppingCartItem.ShoppingCartItems cannot be empty");
+                }
+                if (buyWithNoAccountCreation.Customer == null)
+                {
+                    PaymentLogger.Error("Customer is null in BuyNow model.");
+                    throw new ArgumentException("buyWithNoAccountCreation.Customer cannot be null");
+                }
+                buyWithNoAccountCreation.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+                buyWithNoAccountCreation.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+                buyWithNoAccountCreation.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
+                buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
+                PaymentLogger.Info("Updated buyWithNoAccountCreation model with cargo and language details.");
+
+                var order = ShoppingCartService.SaveBuyWithNoAccountCreation(buyWithNoAccountCreation, checkoutForm);
+                PaymentLogger.Info($"Order saved with ID: {order.Id}");
+                ClearBuyWithNoAccountCreation(buyWithNoAccountCreation);
+                PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
+                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
+            }
+            else
+            {
+                PaymentLogger.Error($"BuyWithNoAccountCreation payment failed. CheckoutForm: {JsonConvert.SerializeObject(checkoutForm)}");
+                PaymentLogger.Info("Redirecting to NoSuccessForYourOrder.");
+                return RedirectToAction("NoSuccessForYourOrder");
+            }
+        }
+
+        private void ClearBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation)
+        {
+            PaymentLogger.Info($"Entering ClearBuyWithNoAccountCreation with OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
+            ShoppingCartService.DeleteByOrderGuid(buyWithNoAccountCreation.OrderGuid);
+            PaymentLogger.Info("BuyNow cart deleted from data source.");
         }
     }
 }

@@ -11,6 +11,7 @@
     ViewBag.Title = Resources.Resource.MyBasket;
     var products = Model.ShoppingCartItems;
     string continueShoppingLink = String.IsNullOrEmpty(Model.UrlReferrer) ? Url.Action("category", "ProductCategories") : Model.UrlReferrer;
+
 }
 
 <!-- Page Title-->
@@ -45,29 +46,31 @@
                 <div class="col-xl-9 col-md-8">
                     @if (products.IsNotEmpty())
                     {
-                    <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
-                        <span>@Resource.Products</span><a class="font-size-sm" href="@continueShoppingLink">
-                            <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>@Resource.ContinueShopping
-                        </a>
-                    </h2>
+                        <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
+                            <span>@Resource.Products</span>
+                            <a class="font-size-sm" href="@continueShoppingLink">
+                                <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>@Resource.ContinueShopping
+                            </a>
+
+                        </h2>
 
                         for (int i = 0; i < products.Count; i++)
                         {
-                    @CreateShoppingCartItem(products[i], i)
+                            @CreateShoppingCartItem(products[i], i)
                         }
                     }
                     else
                     {
-                    <div class="alert alert-secondary">
-                        <div class="pt-3 pb-2 text-center ">
-                            @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, Url.Action("Index", "Home")))
+                        <div class="alert alert-secondary">
+                            <div class="pt-3 pb-2 text-center ">
+                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, Url.Action("Index", "Home")))
+                            </div>
                         </div>
-                    </div>
                     }
                 </div>
 
                 <input type="hidden" id="OrderGuid" value="@Model.OrderGuid" />
-
+           
                 <!-- Sidebar-->
                 @Html.Partial("_OrderSummary", Model, new ViewDataDictionary(ViewData){
        {"IsAdditionalComment",true},
