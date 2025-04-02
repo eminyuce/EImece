@@ -2,7 +2,7 @@
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
-using GenericRepository;
+using EImece.Domain.GenericRepository;
 using Ninject;
 using System;
 using System.Collections.Generic;

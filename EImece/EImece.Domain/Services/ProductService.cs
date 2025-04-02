@@ -7,6 +7,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.GenericRepository;
 using Ninject;
 using NLog;
 using System;
@@ -294,7 +295,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                r.Products = new GenericRepository.PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
+                r.Products = new PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
             }
 
             r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));

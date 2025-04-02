@@ -1,6 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
-using GenericRepository;
+using EImece.Domain.GenericRepository;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Repositories.IRepositories

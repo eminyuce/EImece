@@ -1,5 +1,5 @@
 ﻿using EImece.Domain.Entities;
-using GenericRepository;
+using EImece.Domain.GenericRepository;
 
 namespace EImece.Domain.Models.FrontModels
 {

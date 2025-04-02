@@ -1,5 +1,5 @@
 ﻿using EImece.Domain.Entities;
-using GenericRepository.EntityFramework;
+using EImece.Domain.GenericRepository.EntityFramework;
 using System;
 using System.Data.Entity;
 

@@ -1,4 +1,4 @@
-﻿using GenericRepository;
+﻿using EImece.Domain.GenericRepository;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

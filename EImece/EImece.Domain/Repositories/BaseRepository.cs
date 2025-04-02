@@ -1,8 +1,8 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
-using GenericRepository;
-using GenericRepository.EntityFramework;
+using EImece.Domain.GenericRepository;
+using EImece.Domain.GenericRepository.EntityFramework;
 using NLog;
 using System;
 using System.Collections.Generic;

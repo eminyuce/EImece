@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using Ninject;
 using NLog;
 using System;
@@ -52,7 +53,7 @@ namespace EImece.Domain.Services
 
         public List<Order> GetOrdersByUserId(string userId)
         {
-            return OrderRepository.FindAll(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase), r => r.CreatedDate, GenericRepository.EntityFramework.Enums.OrderByType.Descending, null, null);
+            return OrderRepository.FindAll(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase), r => r.CreatedDate, OrderByType.Descending, null, null).ToList();
         }
 
         public List<Order> GetOrdersUserId(string userId, string search = "")

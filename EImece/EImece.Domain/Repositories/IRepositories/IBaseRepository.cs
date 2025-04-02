@@ -1,5 +1,5 @@
-﻿using GenericRepository;
-using GenericRepository.EntityFramework;
+﻿using EImece.Domain.GenericRepository;
+using EImece.Domain.GenericRepository.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

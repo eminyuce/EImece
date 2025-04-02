@@ -4,7 +4,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using GenericRepository.EntityFramework.Enums;
+using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -125,8 +125,15 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
             if (isOnlyActive)
             {
-                Expression<Func<ProductCategory, bool>> match = r => r.IsActive;
-                return GetSingleIncluding(categoryId, includeProperties.ToArray(), match);
+                var result = GetSingleIncluding(categoryId, includeProperties.ToArray());
+                if (result.IsActive)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {

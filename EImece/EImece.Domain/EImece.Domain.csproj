@@ -53,12 +53,6 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="GenericRepository">
-      <HintPath>..\EImece\libs\GenericRepository.dll</HintPath>
-    </Reference>
-    <Reference Include="GenericRepository.EntityFramework">
-      <HintPath>..\EImece\libs\GenericRepository.EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.6.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.6.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
@@ -190,6 +184,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
@@ -266,6 +262,20 @@
     <Compile Include="Caching\MemoryCacheProvider.cs" />
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Entities\Coupon.cs" />
+    <Compile Include="GenericRepository.EntityFramework\DbContextFactory.cs" />
+    <Compile Include="GenericRepository.EntityFramework\EntitiesContext.cs" />
+    <Compile Include="GenericRepository.EntityFramework\EntityRepository%271.cs" />
+    <Compile Include="GenericRepository.EntityFramework\EntityRepository%272.cs" />
+    <Compile Include="GenericRepository.EntityFramework\Enums\OrderByType.cs" />
+    <Compile Include="GenericRepository.EntityFramework\IEntitiesContext.cs" />
+    <Compile Include="GenericRepository.EntityFramework\IEntityRepository%271.cs" />
+    <Compile Include="GenericRepository.EntityFramework\IEntityRepository%272.cs" />
+    <Compile Include="GenericRepository\IEntity%271.cs" />
+    <Compile Include="GenericRepository\IEntity.cs" />
+    <Compile Include="GenericRepository\IRepository%271.cs" />
+    <Compile Include="GenericRepository\IRepository%272.cs" />
+    <Compile Include="GenericRepository\PaginatedList.cs" />
+    <Compile Include="GenericRepository\QueryableExtensions.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
     <Compile Include="Helpers\BackupService.cs" />

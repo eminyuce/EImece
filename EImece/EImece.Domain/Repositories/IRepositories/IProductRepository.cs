@@ -1,7 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
-using GenericRepository;
+using EImece.Domain.GenericRepository;
 using System;
 using System.Collections.Generic;
 

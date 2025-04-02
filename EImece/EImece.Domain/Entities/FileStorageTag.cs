@@ -1,4 +1,4 @@
-﻿using GenericRepository;
+﻿using EImece.Domain.GenericRepository;
 
 namespace EImece.Domain.Entities
 {

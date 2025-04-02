@@ -1,8 +1,8 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
-using GenericRepository;
-using GenericRepository.EntityFramework.Enums;
+using EImece.Domain.GenericRepository;
+using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
