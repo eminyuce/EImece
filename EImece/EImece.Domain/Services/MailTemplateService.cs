@@ -68,6 +68,7 @@ namespace EImece.Domain.Services
             pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
             return pp;
         }
+
         private string GetSiteBaseUrl()
         {
             var Request = HttpContext.Current.Request;
@@ -90,7 +91,7 @@ namespace EImece.Domain.Services
             var url = builder.Uri.ToString().TrimEnd('/');
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
-           
+
             pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
             return pp;
         }

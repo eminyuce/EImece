@@ -6,19 +6,16 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Ninject;
-using NLog;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using System;
-using System.Dynamic;
 using System.IO;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
     public class RazorEngineHelper
     {
-
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
@@ -82,7 +79,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string baseurl = GetSiteBaseUrl();
             var model = new
             {
-                WebSiteIconUrl = baseurl+ "/images/logo.jpg",
+                WebSiteIconUrl = baseurl + "/images/logo.jpg",
                 Email = email,
                 ForgotPasswordLink = callbackUrl,
                 CompanyName = companyname,
@@ -126,7 +123,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             // Sonuç olarak: Konu, şablonun render edilmiş sonucu ve müşteri bilgisi döndürülüyor
             return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
         }
-
 
         public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
@@ -227,7 +223,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             );
         }
 
-
         public void SendContactUsForCommunication(ContactUsFormViewModel contact)
         {
             // E-posta şablonunu al
@@ -276,7 +271,6 @@ namespace EImece.Domain.Helpers.EmailHelper
                 companyName
             );
         }
-
 
         public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel
         {

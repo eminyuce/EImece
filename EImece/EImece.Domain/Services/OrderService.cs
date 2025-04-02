@@ -1,7 +1,7 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using Ninject;
 using NLog;
 using System;
@@ -48,8 +48,7 @@ namespace EImece.Domain.Services
             var item = OrderRepository.GetOrderById(id);
             item.Customer = CustomerService.GetUserId(item.UserId);
             return item;
-        } 
-        
+        }
 
         public List<Order> GetOrdersByUserId(string userId)
         {

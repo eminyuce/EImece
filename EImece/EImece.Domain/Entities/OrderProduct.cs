@@ -1,6 +1,6 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain.GenericRepository;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
-using EImece.Domain.GenericRepository;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

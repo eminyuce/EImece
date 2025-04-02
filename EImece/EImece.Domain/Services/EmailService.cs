@@ -10,7 +10,9 @@ namespace EImece.Domain.Services
     {
         [Inject]
         public IEmailSender EmailSender { get; set; }
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.

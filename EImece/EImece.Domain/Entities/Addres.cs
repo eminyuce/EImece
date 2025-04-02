@@ -70,6 +70,5 @@ namespace EImece.Domain.Entities
                    string.Equals(this.Country, other.Country, StringComparison.OrdinalIgnoreCase) &&
                    string.Equals(this.Description, other.Description, StringComparison.OrdinalIgnoreCase);
         }
-
     }
 }

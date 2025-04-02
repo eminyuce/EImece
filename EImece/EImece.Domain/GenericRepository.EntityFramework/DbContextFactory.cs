@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.GenericRepository.EntityFramework
 {
@@ -11,9 +6,9 @@ namespace EImece.Domain.GenericRepository.EntityFramework
     {
         T CreateDbContext<T>(String nameOrConnectionString) where T : System.Data.Entity.DbContext, new();
     }
+
     public class DbContextFactory : IDbContextFactory
     {
-
         #region Implementation of IDbContextFactory
 
         public T CreateDbContext<T>(String nameOrConnectionString) where T : System.Data.Entity.DbContext, new()
@@ -22,6 +17,6 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             return new T();
         }
 
-        #endregion
+        #endregion Implementation of IDbContextFactory
     }
 }

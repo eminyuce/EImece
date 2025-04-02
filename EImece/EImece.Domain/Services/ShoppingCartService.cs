@@ -182,7 +182,7 @@ namespace EImece.Domain.Services
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;
             item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue?checkoutForm.Installment.Value.ToStr():"";
+            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
             item.Currency = checkoutForm.Currency;
             item.PaymentId = checkoutForm.PaymentId;
             item.PaymentStatus = checkoutForm.PaymentStatus;

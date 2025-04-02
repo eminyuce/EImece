@@ -1,10 +1,10 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using Ninject;
 using System;
 using System.Collections.Generic;

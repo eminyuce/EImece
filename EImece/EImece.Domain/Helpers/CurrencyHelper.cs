@@ -9,7 +9,7 @@ namespace EImece.Domain.Helpers
 
         public static string CurrencySignForIyizo(this decimal price)
         {
-           return CurrencySign(price).Replace(".", "").Replace("₺", "").Replace(",", ".").Trim();
+            return CurrencySign(price).Replace(".", "").Replace("₺", "").Replace(",", ".").Trim();
         }
 
         public static string CurrencySign(this decimal price)

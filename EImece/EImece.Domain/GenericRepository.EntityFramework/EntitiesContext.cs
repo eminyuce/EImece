@@ -3,21 +3,19 @@ using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
-using System.Data.Linq;
 
-namespace EImece.Domain.GenericRepository.EntityFramework {
-
+namespace EImece.Domain.GenericRepository.EntityFramework
+{
     /// <summary>
     /// Thin wrapper around the DbContext.
     /// </summary>
     public abstract class EntitiesContext : System.Data.Entity.DbContext, IEntitiesContext
     {
-
         /// <summary>
         /// Constructs a new context instance using conventions to create the name of
         /// the database to which a connection will be made. The by-convention name is
         /// the full name (namespace + class name) of the derived context class.  See
-        /// the class remarks for how this is used to create a connection. 
+        /// the class remarks for how this is used to create a connection.
         /// </summary>
         protected EntitiesContext()
             : base()
@@ -110,8 +108,6 @@ namespace EImece.Domain.GenericRepository.EntityFramework {
         {
         }
 
-
-
         /// <summary>
         /// Returns a DbSet instance for access to entities of the given type in the context.
         /// </summary>
@@ -120,8 +116,8 @@ namespace EImece.Domain.GenericRepository.EntityFramework {
         /// </remarks>
         /// <typeparam name="TEntity">The type entity for which a set should be returned.</typeparam>
         /// <returns>A set for the given entity type.</returns>
-        public new IDbSet<TEntity> Set<TEntity>() where TEntity : class {
-          
+        public new IDbSet<TEntity> Set<TEntity>() where TEntity : class
+        {
             return base.Set<TEntity>();
         }
 
@@ -130,8 +126,8 @@ namespace EImece.Domain.GenericRepository.EntityFramework {
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity</typeparam>
         /// <param name="entity">The entity whose state needs to be set as <see cref="EntityState.Added"/>.</param>
-        public void SetAsAdded<TEntity>(TEntity entity) where TEntity : class {
-
+        public void SetAsAdded<TEntity>(TEntity entity) where TEntity : class
+        {
             DbEntityEntry dbEntityEntry = GetDbEntityEntrySafely(entity);
             dbEntityEntry.State = System.Data.Entity.EntityState.Added;
         }
@@ -141,8 +137,8 @@ namespace EImece.Domain.GenericRepository.EntityFramework {
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity</typeparam>
         /// <param name="entity">The entity whose state needs to be set as <see cref="EntityState.Modified"/>.</param>
-        public void SetAsModified<TEntity>(TEntity entity) where TEntity : class {
-
+        public void SetAsModified<TEntity>(TEntity entity) where TEntity : class
+        {
             DbEntityEntry dbEntityEntry = GetDbEntityEntrySafely(entity);
             dbEntityEntry.State = System.Data.Entity.EntityState.Modified;
         }
@@ -152,21 +148,18 @@ namespace EImece.Domain.GenericRepository.EntityFramework {
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity</typeparam>
         /// <param name="entity">The entity whose state needs to be set as <see cref="EntityState.Deleted"/>.</param>
-        public void SetAsDeleted<TEntity>(TEntity entity) where TEntity : class {
-
+        public void SetAsDeleted<TEntity>(TEntity entity) where TEntity : class
+        {
             DbEntityEntry dbEntityEntry = GetDbEntityEntrySafely(entity);
             dbEntityEntry.State = System.Data.Entity.EntityState.Deleted;
         }
 
-         
-
-
         // privates
-        private DbEntityEntry GetDbEntityEntrySafely<TEntity>(TEntity entity) where TEntity : class {
-
+        private DbEntityEntry GetDbEntityEntrySafely<TEntity>(TEntity entity) where TEntity : class
+        {
             DbEntityEntry dbEntityEntry = base.Entry<TEntity>(entity);
-            if (dbEntityEntry.State == System.Data.Entity.EntityState.Detached) {
-
+            if (dbEntityEntry.State == System.Data.Entity.EntityState.Detached)
+            {
                 Set<TEntity>().Attach(entity);
             }
 

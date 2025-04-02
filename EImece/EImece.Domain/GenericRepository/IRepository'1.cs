@@ -1,11 +1,11 @@
-﻿
-namespace EImece.Domain.GenericRepository {
-    
+﻿namespace EImece.Domain.GenericRepository
+{
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public interface IRepository<TEntity> : IRepository<TEntity, int>
-        where TEntity : class, IEntity<int> {
+        where TEntity : class, IEntity<int>
+    {
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
@@ -7,7 +8,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.GenericRepository;
 using Ninject;
 using NLog;
 using System;

@@ -1,10 +1,9 @@
-﻿
-namespace EImece.Domain.GenericRepository {
-    
+﻿namespace EImece.Domain.GenericRepository
+{
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public interface IEntity : IEntity<int> {
-
+    public interface IEntity : IEntity<int>
+    {
     }
 }

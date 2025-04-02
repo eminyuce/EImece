@@ -36,7 +36,6 @@ namespace EImece.Domain.Services
             options.SecretKey = AppConfig.IyzicoSecretKey;
             options.BaseUrl = AppConfig.IyzicoBaseUrl;
 
-
             CreateCheckoutFormInitializeRequest request = new CreateCheckoutFormInitializeRequest();
             request.Locale = Locale.TR.ToString();
             request.ConversationId = "123456789";
@@ -119,6 +118,7 @@ namespace EImece.Domain.Services
             System.Threading.Tasks.Task<CheckoutFormInitialize> checkoutFormInitialize = CheckoutFormInitialize.Create(request, options);
             return checkoutFormInitialize.Result;
         }
+
         public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId)
         {
             Logger.Info("Initializing CheckoutForm for user: " + userId);
@@ -349,7 +349,7 @@ namespace EImece.Domain.Services
             Logger.Info("Iyzico Request prepared for BuyNow CheckoutFormInitialization: " + JsonConvert.SerializeObject(request));
 
             var result = CheckoutFormInitialize.Create(request, options);
-            
+
             return result.Result;
         }
 

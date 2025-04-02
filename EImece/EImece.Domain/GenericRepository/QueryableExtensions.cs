@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 
-namespace EImece.Domain.GenericRepository {
-    
+namespace EImece.Domain.GenericRepository
+{
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class QueryableExtensions {
-
+    public static class QueryableExtensions
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
@@ -15,8 +15,8 @@ namespace EImece.Domain.GenericRepository {
         /// <param name="pageSize"></param>
         /// <returns></returns>
         public static PaginatedList<T> ToPaginatedList<T>(
-            this IQueryable<T> query, int pageIndex, int pageSize) {
-
+            this IQueryable<T> query, int pageIndex, int pageSize)
+        {
             int totalCount = query.Count();
             IQueryable<T> collection = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
