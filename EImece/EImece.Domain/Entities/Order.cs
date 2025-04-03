@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Helpers;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -68,6 +69,15 @@ namespace EImece.Domain.Entities
             get
             {
                 return decimal.Round(PaidPrice.ToDecimal(), 3, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        [NotMapped]
+        public string InstallmentDescription
+        {
+            get
+            {
+                return string.Format("{0} X {1}", string.Format("{0} {1}", this.Installment, Resource.Installment), (this.PaidPriceDecimal / this.Installment.ToInt()).CurrencySign());
             }
         }
     }

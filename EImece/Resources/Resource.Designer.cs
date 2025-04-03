@@ -2726,6 +2726,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tek Çekim.
+        /// </summary>
+        public static string NoInstallment {
+            get {
+                return ResourceManager.GetString("NoInstallment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to YOK.
         /// </summary>
         public static string NONE {

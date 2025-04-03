@@ -100,8 +100,21 @@
                         }
                     <tr>
                         <td></td>
-                        <td></td>
                         <td><strong>@Resource.TotalPaid:</strong></td>
+                        <td>
+                            <strong>
+                                @if (!string.IsNullOrEmpty(item.Installment) && !item.Installment.Equals("1"))
+                                {
+                                    @item.InstallmentDescription
+                                }
+                                else
+                                {
+                                    @Resource.NoInstallment
+                                }
+                            </strong>
+
+
+                        </td>
                         <td><strong>@item.PaidPriceDecimal.CurrencySign()</strong></td>
                     </tr>
                     </tbody>

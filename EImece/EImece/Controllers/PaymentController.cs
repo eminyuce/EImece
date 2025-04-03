@@ -558,7 +558,7 @@ namespace EImece.Controllers
         {
             PaymentLogger.Info($"Entering ThankYouForYourOrder with orderId: {orderId}");
             var order = OrderService.GetOrderById(orderId);
-            //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
+            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             PaymentLogger.Info("Returning ThankYouForYourOrder view.");
             return View(order);
         }
@@ -887,6 +887,7 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = GetShoppingCart();
             var p = new BuyWithNoAccountCreation();
             p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
+            p.Coupon = shoppingCart.Coupon;
             PaymentLogger.Info("Returning ShoppingWithoutAccount view.");
             return View(p);
         }
@@ -903,6 +904,7 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = GetShoppingCart();
             var p = new BuyWithNoAccountCreation();
             p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
+            p.Coupon = shoppingCart.Coupon;
             bool isValidCustomer = customer.isValidCustomer();
             PaymentLogger.Info($"Customer validation result: {isValidCustomer}");
             if (isValidCustomer)

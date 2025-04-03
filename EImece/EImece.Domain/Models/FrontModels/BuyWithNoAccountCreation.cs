@@ -21,6 +21,14 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderComments { get; set; }
         public Address ShippingAddress { get; set; }
 
+        public string CouponName
+        {
+            get
+            {
+                return Coupon == null ? "" : Coupon.Name;
+            }
+        }
+
         public string ConversationId
         {
             get
@@ -92,7 +100,13 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return TotalPrice + CargoPriceValue;
+                var result = TotalPrice + CargoPriceValue;
+                result -= CalculateCouponDiscount(result);
+                if (result < 0)
+                {
+                    return 0;
+                }
+                return result;
             }
         }
 

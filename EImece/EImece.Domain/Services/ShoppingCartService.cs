@@ -349,11 +349,12 @@ namespace EImece.Domain.Services
             item.UpdatedDate = DateTime.Now;
             item.IsActive = true;
             item.Position = 1;
-            item.Lang = 1;
+            item.Lang = AppConfig.MainLanguage;
+            item.Coupon = buyWithNoAccountCreation.CouponStr;
+            item.CouponDiscount = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice).CurrencySignForIyizo();
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId; // TODO: SOMETHING IS WRONG HERE
-            item.Coupon = buyWithNoAccountCreation.CouponStr;
             item.Token = checkoutForm.Token;
             item.Price = checkoutForm.Price;
             item.PaidPrice = checkoutForm.PaidPrice;

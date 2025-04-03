@@ -179,12 +179,50 @@
         </div>
         <!-- Sidebar-->
         <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
+            @if (Model.BasketMinTotalPriceForCargoInt > 0)
+            {
+                <span class="badge badge-pill badge-danger mr-2 mb-2">
+                    @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
+                </span>
+            }
+
             <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
             <div class="font-size-sm border-bottom pt-2 pb-3">
-                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@BuyWithNoAccountCreation.TotalPrice.CurrencySign()</div>
-                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Quantity :</span>@BuyWithNoAccountCreation.TotalItemCount</div>
+                <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
+                @if (Model.Coupon != null)
+                {
+                    <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponName">@Model.CouponName</span></div>
+                }
+                <div id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
+                    @if (Model.BasketMinTotalPriceForCargoInt > 0)
+                    {
+                        if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                        {
+                            <span class="badge badge-pill badge-danger mr-2 mb-2">
+                                @Resource.CargoFreeTextInfo
+                            </span>
+                        }
+                        else
+                        {
+                            <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
+                        }
+
+                    }
+                    else if (Model.CargoPriceValue > 0)
+                    {
+                        <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-danger mr-2 mb-2">
+                            @Resource.CargoFreeTextInfo
+                        </span>
+                    }
+                </div>
             </div>
-            <div class="h3 font-weight-semibold text-center py-3">@BuyWithNoAccountCreation.TotalPriceWithCargoPrice.CurrencySign()</div>
+
+            <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:  </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
+            
         </div>
     </div>
 </div>

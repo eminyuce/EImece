@@ -1885,4 +1885,7 @@ Stokta</value>
   <data name="ContinueShoppingWithoutAccount" xml:space="preserve">
     <value>Hesap Olmadan Alışverişe Devam Et</value>
   </data>
+  <data name="NoInstallment" xml:space="preserve">
+    <value>Tek Çekim</value>
+  </data>
 </root>
