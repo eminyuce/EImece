@@ -574,7 +574,7 @@ namespace EImece.Controllers
         {
             PaymentLogger.Info($"Entering ThankYouForYourOrder with orderId: {orderId}");
             var order = OrderService.GetOrderById(orderId);
-            //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
+            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             PaymentLogger.Info("Returning ThankYouForYourOrder view.");
             return View(order);
         }

@@ -203,6 +203,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             {
                 ContactUs = contact,
                 CompanyName = companyName,
+                BaseUrl = baseurl,
                 ProductPageLink = baseurl,
                 WebSiteIconUrl = $"{baseurl}/images/logo.jpg"
             };
@@ -252,6 +253,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             {
                 ContactUs = contact,
                 CompanyName = companyName,
+                BaseUrl= baseurl,
                 WebSiteIconUrl = $"{baseurl}/images/logo.jpg",
                 AdminPageUrl = $"{baseurl}/account/adminlogin/"
             };

@@ -64,6 +64,7 @@ namespace EImece.Domain.Services
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
             pp.CompanyWebSiteUrl = url;
+            pp.BaseUrl = baseurl;
             pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
             pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
             return pp;
@@ -91,7 +92,7 @@ namespace EImece.Domain.Services
             var url = builder.Uri.ToString().TrimEnd('/');
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
-
+            pp.BaseUrl = baseurl;
             pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
             return pp;
         }

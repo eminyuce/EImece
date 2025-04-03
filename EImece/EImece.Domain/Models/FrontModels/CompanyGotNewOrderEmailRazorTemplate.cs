@@ -13,6 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         public string CompanyWebSiteUrl { get; set; }
         public string ImgLogoSrc { get; set; }
         public string AdminPanelUrl { get; set; }
+        public string BaseUrl { get; set; }
         public Order FinishedOrder { get; set; }
         public List<OrderProduct> OrderProducts { get; set; }
     }
