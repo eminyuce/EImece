@@ -25,7 +25,10 @@
             <div class="card-body">
                 <h2 class="h4">@Resource.OrderSummary</h2>
                 <ul class="list-unstyled">
-                    <li><strong>@Resource.OrderNumber:</strong> @item.OrderNumber</li>
+                    <li>
+                        <strong>@Resource.OrderNumber:</strong>
+                        <a href="@Url.Action("CargoTracking", "Payment", new { id = item.OrderNumber })">@item.OrderNumber</a>
+                    </li>
                     <li><strong>@Resource.OrderDate:</strong> @item.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</li>
                     <li><strong>@Resource.OrderStatus:</strong> @item.OrderStatus.ToString()</li>
                     <li><strong>@Resource.EstimatedDelivery:</strong> @item.CreatedDate.AddDays(3).ToString("dd MMMM yyyy, HH:mm")-@item.CreatedDate.AddDays(14).ToString("dd MMMM yyyy, HH:mm")</li>

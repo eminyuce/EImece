@@ -387,8 +387,9 @@ namespace EImece.Controllers
                 return View(shoppingCart);
             }
         }
-        public ActionResult CargoTracking()
+        public ActionResult CargoTracking(string id)
         {
+            ViewBag.OrderNumber = id;
             return View();
         }
 
