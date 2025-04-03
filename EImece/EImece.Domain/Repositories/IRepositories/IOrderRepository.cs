@@ -8,5 +8,6 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Order> GetOrdersUserId(string userId, string search);
 
         Order GetOrderById(int id);
+        Order GetByOrderNumber(string orderNumber);
     }
 }

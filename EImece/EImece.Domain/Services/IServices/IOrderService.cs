@@ -7,6 +7,8 @@ namespace EImece.Domain.Services.IServices
     {
         Order GetByOrderGuid(string orderGuid);
 
+        Order GetByOrderNumber(string orderNumber);
+
         List<Order> GetOrdersUserId(string userId, string search = "");
 
         Order GetOrderById(int id);

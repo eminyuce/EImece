@@ -31,6 +31,7 @@ function getOrderGuid() {
 }
  
 
+
 $("#AddToCart").click(function () {
     var nProductId = $("#productId").val();
    

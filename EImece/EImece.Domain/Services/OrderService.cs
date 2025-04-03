@@ -43,6 +43,11 @@ namespace EImece.Domain.Services
             return OrderRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         }
 
+        public Order GetByOrderNumber(string orderNumber)
+        {
+            return OrderRepository.GetByOrderNumber(orderNumber); 
+        }
+
         public Order GetOrderById(int id)
         {
             var item = OrderRepository.GetOrderById(id);

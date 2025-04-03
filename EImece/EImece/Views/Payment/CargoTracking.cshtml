@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "CargoTracking";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Track Your Cargo</h4>
+                </div>
+                <div class="card-body">
+                 
+                        <div class="form-group">
+                            <label for="trackingNumber">Enter Tracking Number</label>
+                            <input type="text" class="form-control" id="TrackingNumberText" placeholder="Enter your cargo tracking number" />
+                        </div>
+                        <button   id="TrackingNumberButton" class="btn btn-primary">Track</button>
+                   
+                </div>
+            </div>
+
+            <div id="trackingResult">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        jQuery(function () {
+            $("#TrackingNumberButton").click(function () {
+                var trackingNumberText = $("#TrackingNumberText").val();
+                var postData = JSON.stringify({
+                    orderNumber: trackingNumberText
+                });
+                console.log(postData);
+                ajaxMethodCall(postData, "/Payment/CargoTrackingResult", function (data) {
+                    console.log("result");
+                    $("#trackingResult").html(data);
+                });
+            });
+        });
+    </script>
+}

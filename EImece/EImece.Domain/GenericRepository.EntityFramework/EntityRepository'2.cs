@@ -188,21 +188,6 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             return FindBy(match).Count();
         }
 
-        public TEntity GetSingleIncluding_v2(TId id, Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
-        {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
-
-            if (includeProperties != null)
-            {
-                foreach (var includeProperty in includeProperties)
-                {
-                    query = query.Include(includeProperty);
-                }
-            }
-
-            return query.Where(predicate).FirstOrDefault(e => e.Id.Equals(id));
-        }
-
         public IQueryable<TEntity> FindAllIncluding<TKey>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TKey>> keySelector, OrderByType orderByType,
                                          int? take, int? skip, params Expression<Func<TEntity, object>>[] includeProperties)
         {

@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Helpers;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
+using Ninject;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,6 +12,9 @@ namespace EImece.Controllers
     {
         private AdresService adresService { get; set; }
 
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
         [HttpPost]
         public JsonResult HomePageShoppingCart()
         {
@@ -19,6 +24,8 @@ namespace EImece.Controllers
                         new ViewDataDictionary(), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
+
+
 
         public AjaxController(AdresService adresService)
         {

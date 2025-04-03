@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -386,7 +387,21 @@ namespace EImece.Controllers
                 return View(shoppingCart);
             }
         }
-  
+        public ActionResult CargoTracking()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CargoTrackingResult(string orderNumber)
+        {
+            var order = OrderService.GetByOrderNumber(orderNumber);
+            var tempData = new TempDataDictionary();
+            var html = this.RenderPartialToString(
+                        @"~\Views\Shared\CargoTrackingResult.cshtml",
+                        new ViewDataDictionary(order), tempData);
+            return Json(html, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult CheckoutDelivery()
         {
             PaymentLogger.Info("Entering CheckoutDelivery action.");
@@ -558,7 +573,7 @@ namespace EImece.Controllers
         {
             PaymentLogger.Info($"Entering ThankYouForYourOrder with orderId: {orderId}");
             var order = OrderService.GetOrderById(orderId);
-            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
+            //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             PaymentLogger.Info("Returning ThankYouForYourOrder view.");
             return View(order);
         }

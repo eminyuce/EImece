@@ -35,7 +35,19 @@ namespace EImece.Domain.Repositories
 
             return item;
         }
-
+        public Order GetByOrderNumber(string orderNumber)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ShippingAddress);
+            includeProperties.Add(r => r.BillingAddress);
+            includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
+            includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
+            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
+            Expression<Func<Order, bool>> match = r2 => r2.OrderNumber.Equals(orderNumber, StringComparison.InvariantCultureIgnoreCase);
+            Expression<Func<Order, int>> keySelector = t => t.Position;
+            var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            return orders.FirstOrDefault();
+        }
         public List<Order> GetOrdersUserId(string userId, string search)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -61,5 +73,7 @@ namespace EImece.Domain.Repositories
 
             return orders.ToList();
         }
+
+      
     }
 }
