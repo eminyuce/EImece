@@ -40,12 +40,22 @@ namespace EImece.Domain.Services
 
         public Order GetByOrderGuid(string orderGuid)
         {
-            return OrderRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            var item = OrderRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            if (item != null && !string.IsNullOrEmpty(item.UserId))
+            {
+                item.Customer = CustomerService.GetUserId(item.UserId);
+            }
+            return item;
         }
 
         public Order GetByOrderNumber(string orderNumber)
         {
-            return OrderRepository.GetByOrderNumber(orderNumber); 
+            var item = OrderRepository.GetByOrderNumber(orderNumber);
+            if (item != null && !string.IsNullOrEmpty(item.UserId))
+            {
+                item.Customer = CustomerService.GetUserId(item.UserId);
+            }
+            return item;
         }
 
         public Order GetOrderById(int id)
