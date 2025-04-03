@@ -1,28 +1,39 @@
-﻿@{
-    ViewBag.Title = "CargoTracking";
+﻿@using Iyzipay.Model;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@using EImece.Domain.Models.FrontModels;
+@{
+    ViewBag.Title = Resource.TrackYourCargo;
 }
+<br>
+<br>
+<br>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-6 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Track Your Cargo</h4>
+                    <h4 class="card-title">@Resource.OrderNumber</h4>
                 </div>
                 <div class="card-body">
-                 
-                        <div class="form-group">
-                            <label for="trackingNumber">Enter Tracking Number</label>
-                            <input type="text" class="form-control" id="TrackingNumberText" placeholder="Enter your cargo tracking number" />
-                        </div>
-                        <button   id="TrackingNumberButton" class="btn btn-info btn-block">Track</button>
-                   
+                    <div class="form-group">
+                        <label for="trackingNumber">@Resource.EnterOrderNumber</label>
+                        <input type="text" class="form-control" id="TrackingNumberText" placeholder="Enter your cargo tracking number" />
+                    </div>
+                    <button id="TrackingNumberButton" class="btn btn-info btn-block">@Resource.QueryOrderNumber</button>
                 </div>
             </div>
 
-            <div id="trackingResult">
-               
-            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="trackingResult">
+
         </div>
     </div>
 </div>

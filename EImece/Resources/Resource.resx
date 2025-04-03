@@ -1888,4 +1888,13 @@ Stokta</value>
   <data name="NoInstallment" xml:space="preserve">
     <value>Tek Çekim</value>
   </data>
+  <data name="EnterOrderNumber" xml:space="preserve">
+    <value>Sipariş Numarasını Girin</value>
+  </data>
+  <data name="QueryOrderNumber" xml:space="preserve">
+    <value>Sorgula</value>
+  </data>
+  <data name="TrackYourCargo" xml:space="preserve">
+    <value>Kargonuzu Takip Edin</value>
+  </data>
 </root>

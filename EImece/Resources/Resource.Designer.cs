@@ -1439,6 +1439,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş Numarasını Girin.
+        /// </summary>
+        public static string EnterOrderNumber {
+            get {
+                return ResourceManager.GetString("EnterOrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kurtarmak için E-postanızı Girin.
         /// </summary>
         public static string EnterYourEmailToRecover {
@@ -3649,6 +3658,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorgula.
+        /// </summary>
+        public static string QueryOrderNumber {
+            get {
+                return ResourceManager.GetString("QueryOrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Soru.
         /// </summary>
         public static string Question {
@@ -4910,6 +4928,15 @@ namespace Resources {
         public static string TrackingNumber {
             get {
                 return ResourceManager.GetString("TrackingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargonuzu Takip Edin.
+        /// </summary>
+        public static string TrackYourCargo {
+            get {
+                return ResourceManager.GetString("TrackYourCargo", resourceCulture);
             }
         }
         
