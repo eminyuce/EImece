@@ -1,0 +1,130 @@
+﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+
+@{
+    ViewBag.Title = Model.ReportTitle;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml"; // Adjust layout path as needed
+}
+
+<div class="container-fluid">
+    <h2>@Model.ReportTitle</h2>
+
+    <!-- Report Parameters Section -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Filter Parameters
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("PriceAnalysis", "Report", FormMethod.Post, new { @class = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ReportActionName)
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(m => m.MinPrice, "Minimum Price:")
+                                @Html.TextBoxFor(m => m.MinPrice, new { @class = "form-control", type = "number", step = "0.01" })
+                                @Html.ValidationMessageFor(m => m.MinPrice, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(m => m.MaxPrice, "Maximum Price:")
+                                @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control", type = "number", step = "0.01" })
+                                @Html.ValidationMessageFor(m => m.MaxPrice, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(m => m.ProductCategoryId, "Product Category ID:")
+                                @Html.TextBoxFor(m => m.ProductCategoryId, new { @class = "form-control", type = "number" })
+                                @Html.ValidationMessageFor(m => m.ProductCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                            <div class="alert alert-danger" role="alert">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <button type="submit" class="btn btn-primary">Generate Report</button>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.MinPrice.HasValue || Model.MaxPrice.HasValue || Model.ProductCategoryId.HasValue)
+                    {
+                        <div class="row mt-2">
+                            <div class="col-md-4">
+                                <strong>Current Min Price:</strong> @(Model.MinPrice.HasValue ? Model.MinPrice.Value.ToString("C") : "Not specified")
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Current Max Price:</strong> @(Model.MaxPrice.HasValue ? Model.MaxPrice.Value.ToString("C") : "Not specified")
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Current Category ID:</strong> @(Model.ProductCategoryId.HasValue ? Model.ProductCategoryId.ToString() : "Not specified")
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Results Section -->
+    @if (Model.ReportData != null && Model.ReportData.Tables.Count > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Report Results
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        @foreach (System.Data.DataColumn column in Model.ReportData.Tables[0].Columns)
+                                        {
+                                            <th>@column.ColumnName</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow row in Model.ReportData.Tables[0].Rows)
+                                    {
+                                        <tr>
+                                            @foreach (var item in row.ItemArray)
+                                            {
+                                                <td>@item.ToString()</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No data available for the specified parameters.
+        </div>
+    }
+
+    <!-- Navigation -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <a href="@Url.Action("Index", "Reports")" class="btn btn-primary">Back to Reports</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Add any client-side functionality here if needed
+        });
+    </script>
+}

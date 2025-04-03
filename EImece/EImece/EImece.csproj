@@ -1142,6 +1142,10 @@
     <Content Include="Areas\Admin\Views\Report\ShipmentCompany.cshtml" />
     <Content Include="Areas\Admin\Views\Report\DataSetReportView.cshtml" />
     <Content Include="Areas\Customers\Views\Home\CustomerOrderDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\PriceAnalysis.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\ProductSummary.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\ProductInventory.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\ProductStatsByDateRange.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

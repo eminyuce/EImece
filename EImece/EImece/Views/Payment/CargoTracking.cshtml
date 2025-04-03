@@ -43,6 +43,10 @@
         jQuery(function () {
             $("#TrackingNumberButton").click(function () {
                 var trackingNumberText = $("#TrackingNumberText").val();
+                if (!trackingNumberText) {
+                    alert("Zorunlu Alan");
+                    return;
+                }
                 var postData = JSON.stringify({
                     orderNumber: trackingNumberText
                 });

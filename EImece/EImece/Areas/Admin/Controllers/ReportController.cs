@@ -367,13 +367,13 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult ProductSummary()
         {
             try
             {
                 var report = _reportService.GetProductSummaryReport();
-                return View("DataSetReportView", new DataSetReportViewModel
+                return View(new DataSetReportViewModel
                 {
                     ReportData = report,
                     ReportActionName = "ProductSummary",
@@ -400,13 +400,14 @@ namespace EImece.Areas.Admin.Controllers
                 }
 
                 var report = _reportService.GetProductSummaryReport(startDate, endDate, isActive, productCategoryId);
-                ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
-                ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
-                ViewBag.IsActive = isActive;
-                ViewBag.ProductCategoryId = productCategoryId;
-                return View("DataSetReportView", new DataSetReportViewModel
+   
+                return View(new DataSetReportViewModel
                 {
                     ReportData = report,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    IsActive = isActive,
+                    ProductCategoryId = productCategoryId,
                     ReportActionName = "ProductSummary",
                     ReportTitle = "Product Summary"
                 });
@@ -418,13 +419,13 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult PriceAnalysis()
         {
             try
             {
                 var report = _reportService.GetPriceAnalysisReport();
-                return View("DataSetReportView", new DataSetReportViewModel
+                return View(new DataSetReportViewModel
                 {
                     ReportData = report,
                     ReportActionName = "PriceAnalysis",
@@ -447,16 +448,24 @@ namespace EImece.Areas.Admin.Controllers
                 if (minPrice.HasValue && maxPrice.HasValue && minPrice > maxPrice)
                 {
                     ModelState.AddModelError("", "Minimum price cannot be greater than maximum price");
-                    return View();
+                    return View(new DataSetReportViewModel
+                    {
+                        ReportData = new DataSet(), // Empty dataset for invalid input
+                        MinPrice = minPrice,
+                        MaxPrice = maxPrice,
+                        ProductCategoryId = productCategoryId,
+                        ReportActionName = "PriceAnalysis",
+                        ReportTitle = "Price Analysis"
+                    });
                 }
 
                 var report = _reportService.GetPriceAnalysisReport(minPrice, maxPrice, productCategoryId);
-                ViewBag.MinPrice = minPrice;
-                ViewBag.MaxPrice = maxPrice;
-                ViewBag.ProductCategoryId = productCategoryId;
-                return View("DataSetReportView", new DataSetReportViewModel
+                return View(new DataSetReportViewModel
                 {
                     ReportData = report,
+                    MinPrice = minPrice,
+                    MaxPrice = maxPrice,
+                    ProductCategoryId = productCategoryId,
                     ReportActionName = "PriceAnalysis",
                     ReportTitle = "Price Analysis"
                 });
@@ -468,17 +477,17 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult ProductInventory()
         {
             try
             {
                 var report = _reportService.GetProductInventoryReport();
-                return View("DataSetReportView", new DataSetReportViewModel
+                return View(new DataSetReportViewModel
                 {
-                    ReportData = new DataSet(),
-                    ReportActionName = "PriceAnalysis",
-                    ReportTitle = "Price Analysis"
+                    ReportData = report,
+                    ReportActionName = "ProductInventory",
+                    ReportTitle = "Product Inventory"
                 });
             }
             catch (Exception ex)
@@ -498,11 +507,14 @@ namespace EImece.Areas.Admin.Controllers
                 ViewBag.State = state;
                 ViewBag.IsCampaign = isCampaign;
                 ViewBag.MainPage = mainPage;
-                return View("DataSetReportView", new DataSetReportViewModel
+                return View(new DataSetReportViewModel
                 {
                     ReportData = report,
-                    ReportActionName = "PriceAnalysis",
-                    ReportTitle = "Price Analysis"
+                    State = state,
+                    IsCampaign = isCampaign,
+                    MainPage = mainPage,
+                    ReportActionName = "ProductInventory",
+                    ReportTitle = "Product Inventory"
                 });
             }
             catch (Exception ex)
@@ -511,42 +523,9 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
+        
 
-        [HttpPost]
-        public ActionResult ProductDetails()
-        {
-            try
-            {
-                var report = _reportService.GetProductDetailsReport();
-                return View(report);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Error in ProductDetails report");
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ProductDetails(int? productId, string productCode, int? lang)
-        {
-            try
-            {
-                var report = _reportService.GetProductDetailsReport(productId, productCode, lang);
-                ViewBag.ProductId = productId;
-                ViewBag.ProductCode = productCode;
-                ViewBag.Lang = lang;
-                return View(report);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Error in ProductDetails report");
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpPost]
+        [HttpGet]
         public ActionResult ProductStatsByDateRange()
         {
             try
@@ -556,7 +535,15 @@ namespace EImece.Areas.Admin.Controllers
 
                 ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
                 ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
-                return View();
+                var report = _reportService.GetProductStatsByDateRange(startDate, endDate);
+                return View(new DataSetReportViewModel
+                {
+                    ReportData = report,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    ReportActionName = "ProductStatsByDateRange",
+                    ReportTitle = "Product Stats By DateRange"
+                });
             }
             catch (Exception ex)
             {
@@ -567,24 +554,42 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ProductStatsByDateRange(DateTime startDate, DateTime endDate)
+        public ActionResult ProductStatsByDateRange(DataSetReportViewModel model)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    // Return the view with validation errors if dates are invalid
+                    model.ReportActionName = "ProductStatsByDateRange";
+                    model.ReportTitle = "Product Stats By DateRange";
+                    return View(model);
+                }
+
+                var startDate = model.StartDate.Value;
+                var endDate = model.EndDate.Value;
+
                 if (startDate > endDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    return View();
+                    ModelState.AddModelError("StartDate", "Start date must be before end date.");
+                    model.ReportActionName = "ProductStatsByDateRange";
+                    model.ReportTitle = "Product Stats By DateRange";
+                    return View(model);
                 }
 
                 var report = _reportService.GetProductStatsByDateRange(startDate, endDate);
+                model.ReportData = report;
+                model.ReportActionName = "ProductStatsByDateRange";
+                model.ReportTitle = "Product Stats By DateRange";
+
                 ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
                 ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
-                return View(report);
+
+                return View(model);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in ProductStatsByDateRange report");
+                Logger.Error(ex, "Error processing ProductStatsByDateRange POST");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }

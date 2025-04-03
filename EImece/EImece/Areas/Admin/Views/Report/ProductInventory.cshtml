@@ -1,0 +1,141 @@
+﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+ 
+@{
+    ViewBag.Title = Model.ReportTitle ?? "Report";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2>@(Model.ReportTitle ?? "Untitled Report")</h2>
+
+    <!-- Report Parameters Section -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Filter Parameters
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("ProductInventory", "Report", FormMethod.Post, new { @class = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ReportActionName)
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(m => m.State, "State:")
+                                @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="form-check">
+                                    @Html.LabelFor(m => m.IsCampaign, "Is Campaign:", new { @class = "form-check-label" })
+                                    <input type="checkbox" class="form-check-input" name="IsCampaign"
+                                           @(Model.IsCampaign.HasValue && Model.IsCampaign.Value ? "checked" : "") />
+                                    @Html.ValidationMessageFor(m => m.IsCampaign, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="form-check">
+                                    @Html.LabelFor(m => m.MainPage, "Main Page:", new { @class = "form-check-label" })
+                                    <input type="checkbox" class="form-check-input" name="MainPage"
+                                           @(Model.MainPage.HasValue && Model.MainPage.Value ? "checked" : "") />
+                                    @Html.ValidationMessageFor(m => m.MainPage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        }
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <button type="submit" class="btn btn-primary">Generate Report</button>
+                            </div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.State) || Model.IsCampaign.HasValue || Model.MainPage.HasValue)
+                    {
+                        <div class="row mt-2">
+                            <div class="col-md-4">
+                                <strong>Current State:</strong> @(Model.State ?? "Not specified")
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Current Is Campaign:</strong> @(Model.IsCampaign.HasValue ? (Model.IsCampaign.Value ? "Yes" : "No") : "Not specified")
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Current Main Page:</strong> @(Model.MainPage.HasValue ? (Model.MainPage.Value ? "Yes" : "No") : "Not specified")
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Results Section -->
+    @if (Model.ReportData != null && Model.ReportData.Tables.Count > 0 && Model.ReportData.Tables[0].Rows.Count > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Report Results
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        @foreach (System.Data.DataColumn column in Model.ReportData.Tables[0].Columns)
+                                        {
+                                            <th>@column.ColumnName</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow row in Model.ReportData.Tables[0].Rows)
+                                    {
+                                    <tr>
+                                        @foreach (var item in row.ItemArray)
+                                        {
+                                            <td>@(item != null ? item.ToString() : string.Empty)</td>
+                                        }
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No data available for the specified parameters.
+        </div>
+    }
+
+    <!-- Navigation -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <a href="@Url.Action("Index", "Reports")" class="btn btn-primary">Back to Reports</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Add any client-side functionality here if needed
+        });
+    </script>
+}

@@ -396,7 +396,15 @@ namespace EImece.Controllers
         [HttpPost]
         public async Task<JsonResult> CargoTrackingResult(string orderNumber)
         {
+            if (string.IsNullOrEmpty(orderNumber))
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
             var order = OrderService.GetByOrderNumber(orderNumber);
+            if (order == null)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~\Views\Shared\CargoTrackingResult.cshtml",
@@ -574,7 +582,7 @@ namespace EImece.Controllers
         {
             PaymentLogger.Info($"Entering ThankYouForYourOrder with orderId: {orderId}");
             var order = OrderService.GetOrderById(orderId);
-            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
+            //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             PaymentLogger.Info("Returning ThankYouForYourOrder view.");
             return View(order);
         }

@@ -99,125 +99,23 @@ namespace EImece.Domain.Services
 
         public DataTable GetSalesReportByDateRange(DateTime startDate, DateTime endDate)
         {
-            if (startDate == null ||
-              endDate == null)
+            if (startDate == null || endDate == null)
             {
                 return null;
             }
 
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
 
             return DatabaseUtility.ExecuteDataTable(
                 "GetSalesReportByDateRange",
                 CommandType.StoredProcedure,
-                parameters
+                parameterList.ToArray()
             );
         }
 
         #endregion Sales Report by Date Range
-
-        public DataSet GetPerformanceSystemReport(DateTime startDate, DateTime endDate)
-        {
-            if (startDate == null ||
-                   endDate == null)
-            {
-                return null;
-            }
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
-
-            return DatabaseUtility.ExecuteDataSet(
-                "sp_GetPerformanceSystemReport",
-                CommandType.StoredProcedure,
-                parameters
-            );
-        }
-
-        public DataSet GetFinancialReport(DateTime startDate, DateTime endDate)
-        {
-            if (startDate == null ||
-              endDate == null)
-            {
-                return null;
-            }
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
-
-            return DatabaseUtility.ExecuteDataSet(
-                "sp_GetFinancialReport",
-                CommandType.StoredProcedure,
-                parameters
-            );
-        }
-
-        public DataSet GetFraudRiskReport(DateTime startDate, DateTime endDate)
-        {
-            if (startDate == null ||
-              endDate == null)
-            {
-                return null;
-            }
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
-
-            return DatabaseUtility.ExecuteDataSet(
-                "sp_GetFraudRiskReport",
-                CommandType.StoredProcedure,
-                parameters
-            );
-        }
-
-        public DataSet GetOrderVolumeReport(DateTime startDate, DateTime endDate)
-        {
-            if (startDate == null ||
-              endDate == null)
-            {
-                return null;
-            }
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
-
-            return DatabaseUtility.ExecuteDataSet(
-                "sp_GetOrderVolumeReport",
-                CommandType.StoredProcedure,
-                parameters
-            );
-        }
-
-        public DataSet GetPaymentTransactionReport(DateTime startDate, DateTime endDate)
-        {
-            if (startDate == null ||
-              endDate == null)
-            {
-                return null;
-            }
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
-
-            return DatabaseUtility.ExecuteDataSet(
-                "sp_GetPaymentTransactionReport",
-                CommandType.StoredProcedure,
-                parameters
-            );
-        }
 
         #region Shipment Company Report
 
@@ -252,40 +150,113 @@ namespace EImece.Domain.Services
 
         #endregion Helper Methods
 
-        #region Product Summary Report
-
-        public DataSet GetProductSummaryReport(DateTime? startDate = null, DateTime? endDate = null, bool? isActive = null, int? productCategoryId = null)
-        {
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", (object)startDate ?? DBNull.Value),
-                new SqlParameter("@EndDate", (object)endDate ?? DBNull.Value),
-                new SqlParameter("@IsActive", (object)isActive ?? DBNull.Value),
-                new SqlParameter("@ProductCategoryId", (object)productCategoryId ?? DBNull.Value)
-            };
-
-            return DatabaseUtility.ExecuteDataSet(
-                "GetProductSummaryReport",
-                CommandType.StoredProcedure,
-                parameters
-            );
-        }
-
-        #endregion Product Summary Report
-
         #region Price Analysis Report
 
         public DataSet GetPriceAnalysisReport(decimal? minPrice = null, decimal? maxPrice = null, int? productCategoryId = null)
         {
-            SqlParameter[] parameters = {
-                new SqlParameter("@MinPrice", (object)minPrice ?? DBNull.Value),
-                new SqlParameter("@MaxPrice", (object)maxPrice ?? DBNull.Value),
-                new SqlParameter("@ProductCategoryId", (object)productCategoryId ?? DBNull.Value)
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Decimal),
+                DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Decimal),
+                DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
             };
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetPriceAnalysisReport",
                 CommandType.StoredProcedure,
-                parameters
+                parameterList.ToArray()
+            );
+        }
+
+        public DataSet GetPerformanceSystemReport(DateTime startDate, DateTime endDate)
+        {
+            var parameterList = new List<SqlParameter>
+                {
+                    DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                    DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetPerformanceSystemReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public DataSet GetFinancialReport(DateTime startDate, DateTime endDate)
+        {
+            var parameterList = new List<SqlParameter>
+    {
+        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+    };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetFinancialReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public DataSet GetFraudRiskReport(DateTime startDate, DateTime endDate)
+        {
+            var parameterList = new List<SqlParameter>
+    {
+        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+    };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetFraudRiskReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public DataSet GetOrderVolumeReport(DateTime startDate, DateTime endDate)
+        {
+            var parameterList = new List<SqlParameter>
+    {
+        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+    };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetOrderVolumeReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public DataSet GetPaymentTransactionReport(DateTime startDate, DateTime endDate)
+        {
+            var parameterList = new List<SqlParameter>
+    {
+        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+    };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "sp_GetPaymentTransactionReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public DataSet GetProductSummaryReport(DateTime? startDate = null, DateTime? endDate = null, bool? isActive = null, int? productCategoryId = null)
+        {
+            var parameterList = new List<SqlParameter>
+    {
+        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter("@IsActive", isActive, SqlDbType.Bit),
+        DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+    };
+
+            return DatabaseUtility.ExecuteDataSet(
+                "GetProductSummaryReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
             );
         }
 
@@ -295,16 +266,15 @@ namespace EImece.Domain.Services
 
         public DataSet GetProductInventoryReport(string state = null, bool? isCampaign = null, bool? mainPage = null)
         {
-            SqlParameter[] parameters = {
-                new SqlParameter("@State", (object)state ?? DBNull.Value),
-                new SqlParameter("@IsCampaign", (object)isCampaign ?? DBNull.Value),
-                new SqlParameter("@MainPage", (object)mainPage ?? DBNull.Value)
-            };
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("State", state, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("IsCampaign", isCampaign, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("MainPage", mainPage, SqlDbType.Bit));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductInventoryReport",
                 CommandType.StoredProcedure,
-                parameters
+                parameterList.ToArray()
             );
         }
 
@@ -314,16 +284,15 @@ namespace EImece.Domain.Services
 
         public DataSet GetProductDetailsReport(int? productId = null, string productCode = null, int? lang = null)
         {
-            SqlParameter[] parameters = {
-                new SqlParameter("@ProductId", (object)productId ?? DBNull.Value),
-                new SqlParameter("@ProductCode", (object)productCode ?? DBNull.Value),
-                new SqlParameter("@Lang", (object)lang ?? DBNull.Value)
-            };
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", productId, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductCode", productCode, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("Lang", lang, SqlDbType.Int));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductDetailsReport",
                 CommandType.StoredProcedure,
-                parameters
+                parameterList.ToArray()
             );
         }
 
@@ -338,15 +307,14 @@ namespace EImece.Domain.Services
                 return null;
             }
 
-            SqlParameter[] parameters = {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductStatsByDateRange",
                 CommandType.StoredProcedure,
-                parameters
+                parameterList.ToArray()
             );
         }
 
