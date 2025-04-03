@@ -98,6 +98,35 @@ namespace EImece.Domain.Helpers
                  HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
         }
 
+        public static string CheckIdentityNumber(string identityNumber)
+        {
+            if (string.IsNullOrEmpty(identityNumber) || identityNumber.Length != 11 || !identityNumber.All(char.IsDigit))
+            {
+                return AppConfig.DummyIdentityNumber;
+            }
+
+            int[] digits = identityNumber.Select(c => c - '0').ToArray();
+
+            if (digits[0] == 0) // First digit cannot be 0
+            {
+                return AppConfig.DummyIdentityNumber;
+            }
+
+            int sumOdd = digits[0] + digits[2] + digits[4] + digits[6] + digits[8];
+            int sumEven = digits[1] + digits[3] + digits[5] + digits[7];
+
+            int tenthDigit = ((7 * sumOdd) - sumEven) % 10;
+            int eleventhDigit = (digits.Take(10).Sum()) % 10;
+
+            if (digits[9] != tenthDigit || digits[10] != eleventhDigit)
+            {
+                return AppConfig.DummyIdentityNumber;
+            }
+
+            return identityNumber;
+        }
+
+
         /// <summary>
         /// Generates a Random Password
         /// respecting the given strength requirements.

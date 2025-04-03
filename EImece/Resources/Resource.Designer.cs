@@ -952,6 +952,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hesap Olmadan Alışverişe Devam Et.
+        /// </summary>
+        public static string ContinueShoppingWithoutAccount {
+            get {
+                return ResourceManager.GetString("ContinueShoppingWithoutAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Üyelikle Devam Et.
         /// </summary>
         public static string ContinueWithMembership {
@@ -5139,7 +5148,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fatura kesimi icin TC Kimlik Numarası gerekiyor, Lütfen TC NO Giriniz.
+        ///   Looks up a localized string similar to Fatura kesimi icin lütfen TC Kimlik Numaranızı giriniz. (Zorunlu değildir.).
         /// </summary>
         public static string WhyNeedIdentityNumber {
             get {

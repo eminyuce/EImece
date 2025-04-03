@@ -27,7 +27,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+       // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IdentityNumber))]
         public string IdentityNumber { get; set; }
 
@@ -133,7 +133,6 @@ namespace EImece.Domain.Entities
             return !string.IsNullOrEmpty(Name)
                             && !string.IsNullOrEmpty(Surname)
                             && !string.IsNullOrEmpty(GsmNumber)
-                            && !string.IsNullOrEmpty(IdentityNumber)
                             && !string.IsNullOrEmpty(Email)
                             && !string.IsNullOrEmpty(City)
                             && !string.IsNullOrEmpty(Town)

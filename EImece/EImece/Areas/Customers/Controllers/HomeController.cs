@@ -178,10 +178,7 @@ namespace EImece.Areas.Customers.Controllers
             {
                 ModelState.AddModelError("Street", Resource.MandatoryField);
             }
-            if (string.IsNullOrEmpty(customer.IdentityNumber))
-            {
-                ModelState.AddModelError("IdentityNumber", Resource.WhyNeedIdentityNumber);
-            }
+           
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 

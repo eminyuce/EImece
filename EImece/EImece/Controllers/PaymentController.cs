@@ -735,22 +735,17 @@ namespace EImece.Controllers
         [HttpPost]
         public ActionResult ApplyCoupon(String couponCode)
         {
-            PaymentLogger.Info($"Entering ApplyCoupon with couponCode: {couponCode}");
             var couponObj = CouponService.GetCouponByCode(couponCode, CurrentLanguage);
             var shoppingCart = GetShoppingCartFromDataSource();
             if (couponObj != null)
             {
-                PaymentLogger.Info($"Coupon found: {couponObj.Code}");
                 shoppingCart.Coupon = couponObj;
             }
             else
             {
-                PaymentLogger.Info("No coupon found. Clearing existing coupon.");
                 shoppingCart.Coupon = null;
             }
             SaveShoppingCart(shoppingCart);
-            PaymentLogger.Info("Shopping cart saved with coupon update.");
-            PaymentLogger.Info("Redirecting to shoppingcart.");
             return RedirectToAction("shoppingcart");
         }
 
@@ -814,12 +809,11 @@ namespace EImece.Controllers
                 PaymentLogger.Info("Street is empty. Adding model error.");
                 ModelState.AddModelError("customer.Street", Resource.PleaseEnterYourStreet);
             }
-            if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
-            {
-                PaymentLogger.Info("IdentityNumber is empty. Adding model error.");
-                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
-            }
-            PaymentLogger.Info("Adding general error for mandatory fields.");
+           // if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
+           // {
+           //     PaymentLogger.Info("IdentityNumber is empty. Adding model error.");
+           //     ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
+           // }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 

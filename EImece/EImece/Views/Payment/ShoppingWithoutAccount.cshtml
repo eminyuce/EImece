@@ -1,4 +1,4 @@
-@model EImece.Domain.Models.FrontModels.BuyWithNoAccountCreation
+﻿@model EImece.Domain.Models.FrontModels.BuyWithNoAccountCreation
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -22,149 +22,147 @@
     BuyWithNoAccountCreation BuyWithNoAccountCreation = Model;
     List<ShoppingCartItem> products = BuyWithNoAccountCreation.ShoppingCartItems;
 }
- 
+
+<br />
+<br />
+<br />
 
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <div class="row">
-  
-        <div class="col-md-12">
-            <div class="alert alert-secondary">
-                <div class="text-center">
-                    <b class="text-dark">
-                        <h2 class="h6 px-4 py-3 bg-secondary mb-4">Continue Shopping without Account</h2>
-                        @Resource.CustomerBillingDetailsNotFilledOut
-                    </b>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-12 col-md-12">
-            <h6 class="mb-3 pt-2 pb-3 border-bottom">@Resource.ShippingAddress</h6>
-            @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="row">
-                    @Html.AntiForgeryToken()
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Name)
-                            @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Surname)
-                            @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Email)
-                            @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.IdentityNumber)
-                            @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
-                            @Html.ValidationMessageFor(model => customer.IdentityNumber, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.GsmNumber)
-                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
-                            @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.City)
-                            @Html.EditorFor(model => customer.City, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Town)
-                            @Html.EditorFor(model => customer.Town, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.District)
-                            @Html.EditorFor(model => customer.District, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Street)
-                            @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.ZipCode)
-                            @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+        <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center">
+                        <div>@Resource.CustomerBillingDetailsNotFilledOut</div>
+                        <div>@Resource.ContinueShoppingWithoutAccount</div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12 col-md-12">
+                    <h6 class="mb-3 pt-2 pb-3 border-bottom">@Resource.ShippingAddress</h6>
+                    @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> @Html.LabelFor(model => customer.Name)</label>
+                                    @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> @Html.LabelFor(model => customer.Surname)</label>
+                                    @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Country)
-                            @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-envelope"></i> @Html.LabelFor(model => customer.Email)</label>
+                                    @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-id-card"></i> @Html.LabelFor(model => customer.IdentityNumber)</label>
+                                    @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    <span class="badge badge-info">@Resource.WhyNeedIdentityNumber</span>
+                                    @Html.ValidationMessageFor(model => customer.IdentityNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Company)
-                            @Html.EditorFor(model => customer.Company, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Company, "", new { @class = "text-danger" })
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><i class="fas fa-phone"></i> @Html.LabelFor(model => customer.GsmNumber)</label>
+                                    @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    <span class="badge badge-info">@Resource.WhyNeedGsmNumber</span>
+                                    @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => customer.Description)
-                            @Html.EditorFor(model => customer.Description, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-city"></i> @Html.LabelFor(model => customer.City)</label>
+                                    @Html.EditorFor(model => customer.City, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-map-marker-alt"></i> @Html.LabelFor(model => customer.Town)</label>
+                                    @Html.EditorFor(model => customer.Town, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <h6 class="mb-3 pt-4 pb-3 border-bottom">@Resource.BillingAdress</h6>
-                <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" type="checkbox" checked="">
-                    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
-                </div>
-                <!-- Navigation-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <input type="submit" class="btn btn-outline-info btn-block" id="ReviewYourOrder" value="@Resource.GoToPayment" />
-                    </div>
-                </div>
-            }
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-globe"></i> @Html.LabelFor(model => customer.Country)</label>
+                                    @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-map-pin"></i> @Html.LabelFor(model => customer.ZipCode)</label>
+                                    @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div>@Html.LabelFor(model => customer.Description, htmlAttributes: new { @class = "control-label" }) </div> 
+                                    @Html.TextAreaFor(model => customer.Description, new { @class = "form-control", placeholder = "", rows = "3" })
+                                    @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="alert alert-secondary" role="alert">
+                                        @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                     
+                        <!--
+        <h6 class="mb-3 pt-4 pb-3 border-bottom">Resource.BillingAdress</h6>
+        <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="sameAsShipping">
+            <label class="custom-control-label" for="sameAsShipping">Resource.SameAsShippingAddress</label>
         </div>
+            -->
+                        <div class="row mt-4">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-info btn-block"><i class="fas fa-credit-card"></i> @Resource.GoToPayment</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                    </div>
+        </div>
+
+
         <!-- Content-->
         <div class="col-xl-9 col-md-8">
 

@@ -337,5 +337,13 @@ namespace EImece.Domain
                 return !IsSiteLive;
             }
         }
+
+        public static string DummyIdentityNumber
+        {
+            get
+            {
+                return GetConfigString("DummyIdentityNumber", "83312007240");
+            }
+        }
     }
 }

@@ -568,7 +568,7 @@
             &lt;/div&gt;</value>
   </data>
   <data name="WhyNeedIdentityNumber" xml:space="preserve">
-    <value>Fatura kesimi icin TC Kimlik Numarası gerekiyor, Lütfen TC NO Giriniz</value>
+    <value>Fatura kesimi icin lütfen TC Kimlik Numaranızı giriniz. (Zorunlu değildir.)</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Kapat</value>
@@ -1881,5 +1881,8 @@ Stokta</value>
   </data>
   <data name="ContinueWithoutMembership" xml:space="preserve">
     <value>Üyeliksiz Devam Et</value>
+  </data>
+  <data name="ContinueShoppingWithoutAccount" xml:space="preserve">
+    <value>Hesap Olmadan Alışverişe Devam Et</value>
   </data>
 </root>
