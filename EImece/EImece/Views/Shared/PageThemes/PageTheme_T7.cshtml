@@ -11,6 +11,7 @@
     var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
+    ViewBag.Keywords = menu.GetSeoKeywords();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
 

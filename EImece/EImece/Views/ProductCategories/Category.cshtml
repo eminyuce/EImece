@@ -21,6 +21,7 @@
     var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
 
     ViewBag.Title = category.GetSeoTitle();
+    ViewBag.Keywords = category.GetSeoKeywords();
     ViewBag.Description = category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
