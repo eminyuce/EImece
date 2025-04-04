@@ -223,5 +223,14 @@ namespace EImece.Domain.Entities
                 }
             }
         }
+
+        [NotMapped]
+        public bool IsBuyableState
+        {
+            get
+            {
+                return this.StateEnum == ProductState.ProductInStock && this.Price > 0;
+            }
+        }
     }
 }

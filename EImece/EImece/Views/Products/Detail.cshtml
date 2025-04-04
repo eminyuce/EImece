@@ -47,7 +47,7 @@
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 
-    var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true) && productState == ProductState.ProductInStock;
+    var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true) && product.IsBuyableState;
     var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
 
     var productSchemaJson = Model.GoogleProductSchemaJson;
@@ -408,10 +408,6 @@
             {
                 <div class="col-md-6">
                     <h3 class="h5 mb-3">@Resource.Specifications</h3>
-                    @if (isUserAuthenticated)
-                    {
-                        @Html.ActionLink("edit specs", "saveoreditproductspecs", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
-                    }
                     <ul class="list-unstyled mb-2 pb-2">
                         @foreach (var specs in Model.ProdSpecs)
                         {
@@ -578,15 +574,28 @@
                     </div>
                 }
             </div>
-            <h3 class="product-card-title">
-                <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button"
-                        data-toggle="toast" data-target="#cart-toast">
-                    @Resource.AddToCart
-                </button>
-                <a href="@product.DetailPageRelativeUrl">
-                    @shortDesc
-                </a>
-            </h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+            @if (product.IsBuyableState)
+            {
+                <h3 class="product-card-title">
+                    <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button"
+                            data-toggle="toast" data-target="#cart-toast">
+                        @Resource.AddToCart
+                    </button>
+                    <a href="@product.DetailPageRelativeUrl">
+                        @shortDesc
+                    </a>
+                </h3><span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+            }
+            else
+            {
+                <h3 class="product-card-title">
+                    <a href="@product.DetailPageRelativeUrl">
+                        @shortDesc
+                    </a>
+                </h3>
+            }
+
+
         </div>
     </div>
 }
