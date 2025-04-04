@@ -1897,4 +1897,10 @@ Stokta</value>
   <data name="TrackYourCargo" xml:space="preserve">
     <value>Kargonuzu Takip Edin</value>
   </data>
+  <data name="CommentSection" xml:space="preserve">
+    <value>Yorumlar</value>
+  </data>
+  <data name="PaymentSection" xml:space="preserve">
+    <value>Ödeme Bilgisi</value>
+  </data>
 </root>

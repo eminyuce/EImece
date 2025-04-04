@@ -194,7 +194,6 @@ ul.footer-links {
     margin-right: 10px;
 }
 
-
 /* Enhanced Tab Styles */
 :root {
     --primary-color: #4a6bff;
@@ -242,7 +241,8 @@ ul.footer-links {
         transition: var(--transition);
         position: relative;
         border-bottom: 3px solid transparent;
-        margin-right: 4px;
+        margin-right: 8px; /* Increased margin for spacing */
+        margin-left: 8px; /* Added left margin for better spacing */
     }
 
         /* Style for the active tab */
@@ -329,6 +329,8 @@ ul.footer-links {
     .nav-tabs .nav-link {
         padding: 10px 15px;
         font-size: 14px;
+        margin-right: 12px; /* Added more space on mobile */
+        margin-left: 12px; /* Added more space on mobile */
     }
 
     .tab-content {

@@ -763,6 +763,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yorumlar.
+        /// </summary>
+        public static string CommentSection {
+            get {
+                return ResourceManager.GetString("CommentSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şirket.
         /// </summary>
         public static string Company {
@@ -3101,6 +3110,15 @@ namespace Resources {
         public static string PaymentResultSuccessHtml {
             get {
                 return ResourceManager.GetString("PaymentResultSuccessHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ödeme Bilgisi.
+        /// </summary>
+        public static string PaymentSection {
+            get {
+                return ResourceManager.GetString("PaymentSection", resourceCulture);
             }
         }
         
