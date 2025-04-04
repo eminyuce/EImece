@@ -151,7 +151,10 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
-            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.Name.Contains(search.Trim());
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang 
+            && r2.Name.Contains(search.Trim()) 
+            || r2.NameLong.Contains(search.Trim())
+            || r2.NameShort.Contains(search.Trim());
 
             if (sorting == SortingType.LowHighPrice)
             {
