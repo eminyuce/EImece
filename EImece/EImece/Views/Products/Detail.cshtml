@@ -47,7 +47,7 @@
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 
-    var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true) && product.IsBuyableState;
+    var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
     var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
 
     var productSchemaJson = Model.GoogleProductSchemaJson;

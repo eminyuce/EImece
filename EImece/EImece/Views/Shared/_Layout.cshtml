@@ -26,7 +26,7 @@
         .header-text {
             font-size: 2.5rem;
             font-weight: bold;
-            color: #d9534f; /* A vibrant red color */
+            color: #ff7f00; /* A vibrant red color */
             text-align: center;
             margin-top: 10px;
             text-transform: uppercase;
@@ -40,7 +40,7 @@
         .timer-box {
             display: inline-block;
             background-color: #fff;
-            border: 2px solid #d9534f;
+            border: 2px solid #ff7f00;
             border-radius: 10px;
             padding: 10px;
             margin: 5px;
@@ -51,12 +51,12 @@
                 display: block;
                 font-size: 2rem;
                 font-weight: bold;
-                color: #d9534f;
+                color: #ff7f00;
             }
 
             .timer-box small {
                 font-size: 1rem;
-                color: #6c757d;
+                color: #ff7f00;
             }
     </style>
     @if (!string.IsNullOrEmpty(ViewBag.Description))
@@ -216,8 +216,8 @@
 
     <script>
         $(document).ready(function () {
-            // Set a specific target date (e.g., May 3, 2025)
-            const targetDate = new Date(2025, 4, 3); // Note: Month is 0-based (4 = May)
+            // Set a specific target date (e.g., May 31, 2025)
+            const targetDate = new Date(2025, 4, 31); // Note: Month is 0-based (4 = May)
 
             // Rest of the code remains the same...
             const countdown = setInterval(function () {
