@@ -22,7 +22,7 @@ using System.Web.Hosting;
 
 namespace EImece.Domain.Helpers
 {
-    public class FilesHelper
+    public class FilesHelper : IDisposable
     {
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
@@ -30,6 +30,8 @@ namespace EImece.Domain.Helpers
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
         public const string EXTERNAL_IMAGE = "external-image";
+        private const string MEDIA_FILE_LOCATION = "/media/images/";
+        private const string MEDIA_FILE_LOCATION_THUMBS = "/media/images/thumbs/";
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         public int CurrentLanguage { get; set; }
@@ -92,18 +94,19 @@ namespace EImece.Domain.Helpers
             String partThumb2 = Path.Combine(partThumb1, THB + fileName);
             if (File.Exists(partThumb2))
             {
-                Bitmap thumpBitmap = new Bitmap(partThumb2);
-
-                thumpBitmapWidth = thumpBitmap.Width;
-                thumpBitmapHeight = thumpBitmap.Height;
-                thumpBitmap.Dispose();
-
-                if (File.Exists(partThumb2))
+                using (Bitmap thumpBitmap = new Bitmap(partThumb2))
                 {
-                    Bitmap fullBitmap = new Bitmap(fullPath);
-                    originalWidth = fullBitmap.Width;
-                    originalHeight = fullBitmap.Height;
-                    fullBitmap.Dispose();
+                    thumpBitmapWidth = thumpBitmap.Width;
+                    thumpBitmapHeight = thumpBitmap.Height;
+                    thumpBitmap.Dispose();
+
+                    if (File.Exists(partThumb2))
+                    {
+                        Bitmap fullBitmap = new Bitmap(fullPath);
+                        originalWidth = fullBitmap.Width;
+                        originalHeight = fullBitmap.Height;
+                        fullBitmap.Dispose();
+                    }
                 }
             }
 
@@ -115,14 +118,12 @@ namespace EImece.Domain.Helpers
         {
             string path = HostingEnvironment.MapPath(pathToDelete);
 
-            System.Diagnostics.Debug.WriteLine(path);
             if (Directory.Exists(path))
             {
                 DirectoryInfo di = new DirectoryInfo(path);
                 foreach (FileInfo fi in di.GetFiles())
                 {
-                    System.IO.File.Delete(fi.FullName);
-                    System.Diagnostics.Debug.WriteLine(fi.Name);
+                    File.Delete(fi.FullName);
                 }
 
                 di.Delete(true);
@@ -141,22 +142,33 @@ namespace EImece.Domain.Helpers
             return "OK";
         }
 
-        public String DeleteThumbFile(String file)
+        public string DeleteThumbFile(string file)
         {
-            String partThumb1 = Path.Combine(StorageRoot, THUMBS);
-            String partThumb2 = Path.Combine(partThumb1, THB + file);
+            string partThumb1 = Path.Combine(StorageRoot, THUMBS);
+            string partThumb2 = Path.Combine(partThumb1, THB + file);
+            string successMessage = "Error Delete";
 
-            String succesMessage = "Error Delete";
-            //delete thumb
-            if (File.Exists(partThumb2))
+            try
             {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                File.Delete(partThumb2);
-                Thread.Sleep(100);
-                succesMessage = "Ok";
+                if (File.Exists(partThumb2))
+                {
+                    File.Delete(partThumb2);
+                    successMessage = "Ok";
+                }
             }
-            return succesMessage;
+            catch (IOException ex)
+            {
+                // Log the error for debugging purposes
+                Logger.Error($"Failed to delete thumbnail file {partThumb2}: {ex.Message}");
+                successMessage = "Error Delete:" + ex.Message;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Logger.Error($"Access denied when deleting {partThumb2}: {ex.Message}");
+                successMessage = $"Error Delete: Access Denied";
+            }
+
+            return successMessage;
         }
 
         public bool NormalFileExists(String file)
@@ -168,18 +180,16 @@ namespace EImece.Domain.Helpers
         public String DeleteNormalFile(String file)
         {
             String fullPath = Path.Combine(StorageRoot, file);
-            String succesMessage = "Error Delete";
             if (File.Exists(fullPath))
             {
-                //delete thumb
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.Delete))
+                {
+                    fs.Close(); // Ensure file handle is released
+                }
                 File.Delete(fullPath);
-                Thread.Sleep(100);
-                succesMessage = "Ok";
-                return succesMessage;
+                return "Ok";
             }
-            return succesMessage;
+            return "Error Delete for file:" + file;
         }
 
         public String DeleteFile(String file)
@@ -242,8 +252,23 @@ namespace EImece.Domain.Helpers
 
         private SavedImage GetFileImageSize(int width, int height, byte[] fileByte)
         {
-            Bitmap img = ByteArrayToBitmap(fileByte);
-            return GetFileImageSize(width, height, img);
+            if (fileByte == null || fileByte.Length == 0)
+            {
+                throw new ArgumentException("File byte array cannot be null or empty.", nameof(fileByte));
+            }
+
+            try
+            {
+                using (Bitmap img = ByteArrayToBitmap(fileByte))
+                {
+                    return GetFileImageSize(width, height, img);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed to process image size from byte array: {ex.Message}");
+                throw; // Or return a default SavedImage, depending on requirements
+            }
         }
 
         private SavedImage GetFileImageSize(int width, int height, Bitmap img)
@@ -302,6 +327,8 @@ namespace EImece.Domain.Helpers
             String patchOnServer = Path.Combine(StorageRoot);
             var fullName = Path.Combine(patchOnServer, Path.GetFileName(FileName));
             Bitmap img = LoadImage(fullName);
+
+
             var result = new ViewDataUploadFilesResult()
             {
                 name = FileName,
@@ -361,7 +388,6 @@ namespace EImece.Domain.Helpers
                 foreach (FileInfo fi in di.GetFiles())
                 {
                     Filess.Add(fi.Name);
-                    System.Diagnostics.Debug.WriteLine(fi.Name);
                 }
             }
             return Filess;
@@ -503,7 +529,8 @@ namespace EImece.Domain.Helpers
             String fileHash = "";
 
             fileName = Path.GetFileName(fileName);
-            var ext = Path.GetExtension(fileName);
+            var ext = Path.GetExtension(fileName).ToLower();
+            ImageFormat imgFormat = GetImageFormat(ext) ?? ImageFormat.Png; // Ensure valid format
 
             if (IsImage(ext))
             {
@@ -520,31 +547,49 @@ namespace EImece.Domain.Helpers
 
                 fileHash = HashHelpers.GetSha256Hash(fileByte);
 
-                var fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, GetImageFormat(ext));
+                byte[] fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, imgFormat);
+                if (fileByteCropped == null || fileByteCropped.Length == 0)
+                {
+                    throw new Exception("Thumbnail creation failed!");
+                }
 
                 imageSize = fileByteCropped.Length;
 
-                using (Image thumbnail = ByteArrayToImage(fileByteCropped))
+                using (Image thumbnail = ByteArrayToImage(fileByteCropped))  // Clone the image
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        thumbnail.Save(ms, GetImageFormat(ext));
-                        thumbnail.Save(fullPath, GetImageFormat(ext));
+                        ms.Seek(0, SeekOrigin.Begin);
+                        thumbnail.Save(ms, imgFormat);
+                        if (File.Exists(fullPath))
+                        {
+                            File.SetAttributes(fullPath, FileAttributes.Normal);
+                            File.Delete(fullPath);
+                        }
+                        thumbnail.Save(fullPath, imgFormat);
                     }
                 }
 
-                var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, GetImageFormat(ext));
+                byte[] byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, imgFormat);
+                if (byteArrayIn == null || byteArrayIn.Length == 0)
+                {
+                    throw new Exception("Thumbnail creation failed for resized image!");
+                }
 
-                using (Image thumbnail = ByteArrayToImage(byteArrayIn))
+                using (Image thumbnail = (Image)ByteArrayToImage(byteArrayIn).Clone())  // Clone again
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        thumbnail.Save(ms, GetImageFormat(ext));
-                        thumbnail.Save(candidatePathThb, GetImageFormat(ext));
+                        ms.Seek(0, SeekOrigin.Begin);
+                        thumbnail.Save(ms, imgFormat);
+                        if (File.Exists(candidatePathThb))
+                        {
+                            File.SetAttributes(candidatePathThb, FileAttributes.Normal);
+                            File.Delete(candidatePathThb);
+                        }
+                        thumbnail.Save(candidatePathThb, imgFormat);
                     }
                 }
-
-                //saveWebPformat(fullPath, byteArrayIn);
             }
             else
             {
@@ -554,6 +599,7 @@ namespace EImece.Domain.Helpers
 
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
         }
+
 
         private void saveWebPformat(string fullPath, byte[] byteArrayIn)
         {
@@ -637,8 +683,8 @@ namespace EImece.Domain.Helpers
                 String fullPath = Path.Combine(AppConfig.StorageRoot, fileName);
                 if (File.Exists(fullPath))
                 {
-                    var fullPathImgSrc = "/media/images/" + fileName;
-                    var candidatePathThb = "/media/images/thumbs/" + fileName;
+                    var fullPathImgSrc = MEDIA_FILE_LOCATION + fileName;
+                    var candidatePathThb = MEDIA_FILE_LOCATION_THUMBS + fileName;
                     return new Tuple<string, string>(fullPathImgSrc, candidatePathThb);
                 }
             }
@@ -735,21 +781,14 @@ namespace EImece.Domain.Helpers
             return ReturnedThumbnail;
         }
 
-        public void CreateThumbnail(Bitmap startBitmap, int Width, int Height, String imageFullPath, ImageFormat format)
+        public void CreateThumbnail(Bitmap startBitmap, int width, int height, string imageFullPath, ImageFormat format)
         {
-            // create a new Bitmap with dimensions for the thumbnail.
-            System.Drawing.Bitmap newBitmap = new System.Drawing.Bitmap(Width, Height);
-
-            // Copy the image from the START Bitmap into the NEW Bitmap.
-            // This will create a thumnail size of the same image.
-            newBitmap = ResizeImage(startBitmap, Width, Height);
-
-            ConvertAndSaveBitmap(newBitmap, imageFullPath, format, 100);
-
-            //var fs1 = new BinaryWriter(new FileStream(imageFullPath, FileMode.Append, FileAccess.Write));
-            //fs1.Write(GetBitmapBytes(newBitmap));
-            //fs1.Close();
+            using (Bitmap newBitmap = ResizeImage(startBitmap, width, height))  // Ensure proper disposal
+            {
+                ConvertAndSaveBitmap(newBitmap, imageFullPath, format, 100);
+            }
         }
+
 
         public byte[] ImageToByteArray(Image imageIn)
         {
@@ -980,9 +1019,16 @@ namespace EImece.Domain.Helpers
 
         public static Bitmap LoadImage(string path)
         {
-            var ms = new MemoryStream(File.ReadAllBytes(path));
-            GC.KeepAlive(ms);
-            return (Bitmap)Image.FromStream(ms);
+            //  var ms = new MemoryStream(File.ReadAllBytes(path));
+            //  GC.KeepAlive(ms);
+            // return (Bitmap)Image.FromStream(ms);
+            // Use File.ReadAllBytes to load bytes, then create a bitmap from them
+            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (var ms = new MemoryStream())
+            {
+                fs.CopyTo(ms);
+                return new Bitmap(ms);
+            }
         }
 
         public static Size GetThumbnailSize(Image original)
@@ -1082,6 +1128,53 @@ namespace EImece.Domain.Helpers
 
                 return mem.GetBuffer();
             }
+        }
+
+        // Existing fields and properties
+
+        private bool _disposed = false;
+        private List<IDisposable> _disposableResources = new List<IDisposable>();
+
+        // Track resources created by this class that need disposal
+        private void TrackResource(IDisposable resource)
+        {
+            if (resource != null)
+            {
+                _disposableResources.Add(resource);
+            }
+        }
+
+        // Implement IDisposable pattern
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources
+                    foreach (var resource in _disposableResources)
+                    {
+                        resource?.Dispose();
+                    }
+                    _disposableResources.Clear();
+                }
+
+                // No unmanaged resources to dispose directly
+
+                _disposed = true;
+            }
+        }
+
+        // Add finalizer
+        ~FilesHelper()
+        {
+            Dispose(false);
         }
     }
 

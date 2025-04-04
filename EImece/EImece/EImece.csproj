@@ -1377,7 +1377,6 @@
   <ItemGroup>
     <Folder Include="App_Data\logs\" />
     <Folder Include="Areas\Customers\Data\" />
-    <Folder Include="media\images\thumbs\" />
     <Folder Include="Scripts\codemirror\addon\" />
   </ItemGroup>
   <ItemGroup>

@@ -39,7 +39,7 @@
 <body class="fullscreen-container">
 
     <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
-
+    <input type="hidden" id="CookieLanguage" value="@AppConfig.MainLanguage" />
     <nav class="navbar navbar-default" id="nav-1">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -81,7 +81,7 @@
                         <a href="javascript:document.getElementById('logoutForm').submit()">  @AdminResource.Logout <span class="glyphicon glyphicon-log-out"></span></a>
                         @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                         {
-                        @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
                         }
                     </li>
                 </ul>
@@ -144,24 +144,24 @@
                 @if (UserRoleHelper.IsAdminManagementRoles())
                 {
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Settings <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
 
-                        <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink(AdminResource.WebSiteLogo, "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
-                        <li>@Html.ActionLink(AdminResource.SystemSettings, "SystemSettings", "AdminSettings", new { area = "admin" }, null)</li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.UsersManagement <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>      @Html.ActionLink(AdminResource.UsersManagement, "Index", "Users", new { area = "admin" }, null) </li>
+                            <li>@Html.ActionLink(AdminResource.MailTemplates, "Index", "MailTemplates", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.WebSiteLogo, "AddWebSiteLogo", "Settings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.AdminSettings, "Index", "AdminSettings", new { area = "admin" }, null)</li>
+                            <li>@Html.ActionLink(AdminResource.SystemSettings, "SystemSettings", "AdminSettings", new { area = "admin" }, null)</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@AdminResource.UsersManagement <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>      @Html.ActionLink(AdminResource.UsersManagement, "Index", "Users", new { area = "admin" }, null) </li>
 
-                        <li>    @Html.ActionLink(AdminResource.ChangePassword, "changepassword", "users", new { area = "admin" }, null)   </li>
-                    </ul>
-                </li>
+                            <li>    @Html.ActionLink(AdminResource.ChangePassword, "changepassword", "users", new { area = "admin" }, null)   </li>
+                        </ul>
+                    </li>
                 }
             </ul>
         </div>
