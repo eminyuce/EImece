@@ -193,3 +193,183 @@ ul.footer-links {
 .whatsapp-icon {
     margin-right: 10px;
 }
+
+
+/* Enhanced Tab Styles */
+:root {
+    --primary-color: #4a6bff;
+    --secondary-color: #6c757d;
+    --hover-color: #3a56d4;
+    --active-color: #3a56d4;
+    --border-color: #e0e0e0;
+    --bg-color: #f8f9fa;
+    --text-color: #333;
+    --light-text: #6c757d;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Base styles for the tabs */
+.nav-tabs {
+    border-bottom: 2px solid var(--border-color);
+    position: relative;
+}
+
+    .nav-tabs::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--border-color);
+        z-index: 0;
+    }
+
+    .nav-tabs .nav-item {
+        margin-bottom: -2px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        border-radius: 0;
+        padding: 12px 24px;
+        color: var(--secondary-color);
+        background-color: transparent;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+        border-bottom: 3px solid transparent;
+        margin-right: 4px;
+    }
+
+        /* Style for the active tab */
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: transparent;
+            border-color: transparent;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+            .nav-tabs .nav-link.active::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 100%;
+                background-color: rgba(74, 107, 255, 0.05);
+                z-index: -1;
+            }
+
+        /* Style for hover effect */
+        .nav-tabs .nav-link:hover:not(.active) {
+            color: var(--hover-color);
+            background-color: rgba(74, 107, 255, 0.05);
+            border-bottom: 3px solid rgba(74, 107, 255, 0.2);
+        }
+
+/* Style for tab content */
+.tab-content {
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+    box-shadow: var(--shadow);
+    margin-top: -1px;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+    .tab-pane.active {
+        display: block;
+    }
+
+    /* Tab content headings */
+    .tab-pane h3 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+        .tab-pane h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+/* Animation for tab content */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .nav-tabs .nav-link {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .tab-content {
+        padding: 15px;
+    }
+}
+
+/* Special styling for Iyzico info tab */
+#contact .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    padding: 12px 0;
+}
+
+#contact .alert-info {
+    background-color: #f0f7ff;
+    border-color: #cce5ff;
+    color: #004085;
+}
+
+/* Review section styling */
+#profile .card {
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+#profile .progress {
+    height: 4px;
+    border-radius: 2px;
+}
+
+/* Product description section */
+#home .list-unstyled li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    #home .list-unstyled li:last-child {
+        border-bottom: none;
+    }
+
+    #home .list-unstyled li strong {
+        color: var(--primary-color);
+    }
