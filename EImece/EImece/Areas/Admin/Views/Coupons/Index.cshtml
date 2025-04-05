@@ -12,22 +12,23 @@
 
 @{
     ViewBag.Title = "Index";
-Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
-var controllerName = "Coupons";
-var title = "Coupons";
-var gridName = "CouponGrid";
-var contents = Model;
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    var controllerName = "Coupons";
+    var title = "Coupons";
+    var gridName = "CouponGrid";
+    var contents = Model;
 
-var baseList = contents.DownCasting();
+    var baseList = contents.DownCasting();
 
-var gridImagesText = AdminResource.GridImagesText;
-var gridEditText = AdminResource.GridEditText;
-var gridDeleteText = AdminResource.GridDeleteText;
-var gridDetailText = AdminResource.GridDetailText;
-var gridMainPageImageText = AdminResource.GridMainPageImageText;
+    var gridImagesText = AdminResource.GridImagesText;
+    var gridEditText = AdminResource.GridEditText;
+    var gridDeleteText = AdminResource.GridDeleteText;
+    var gridDetailText = AdminResource.GridDetailText;
+    var gridMainPageImageText = AdminResource.GridMainPageImageText;
+    var rowIndex = 0;
 }
 
 <h2>@AdminResource.Coupons</h2>
@@ -44,6 +45,11 @@ var gridMainPageImageText = AdminResource.GridMainPageImageText;
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
+
+columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
 
 columns.Add(o => o.Id, true);
 

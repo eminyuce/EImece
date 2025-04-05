@@ -21,7 +21,7 @@
 
 <div class="row">
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         @if (MenuTree != null)
         {
         @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
@@ -30,7 +30,7 @@
 
         }
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.MenuSameSelectionErrorMessage" />
         @using (Html.BeginForm("SaveOrEdit", "Menus", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

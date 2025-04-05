@@ -25,7 +25,7 @@
 
 <div class="row">
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         @if (ProductCategoryTree.IsNotEmpty())
         {
             @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
@@ -33,7 +33,7 @@
                  ,{"IsExcelButtonEnabled",true}})
         }
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
 
         @using (Html.BeginForm("SaveOrEdit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

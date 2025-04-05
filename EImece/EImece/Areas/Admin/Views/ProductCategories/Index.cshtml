@@ -27,7 +27,7 @@
     var gridDetailText = AdminResource.GridDetailText;
 
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
-
+    var rowIndex = 0;
 }
 
 <h2>@AdminResource.ProductCategory</h2>
@@ -35,7 +35,7 @@
 
 <div class="row">
 
-    <div class="col-md-3">
+    <div class="col-md-2">
 
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                     {"UrlPattern","/admin/productcategories/saveoredit/"}
@@ -43,7 +43,7 @@
 
         <span id="treeClickContainer"></span>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
@@ -57,6 +57,10 @@
             @Html.Partial("pGridDropDown", baseList)
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {
+       columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
 
        columns.Add(o => o.Id, true);
        columns.Add()

@@ -26,6 +26,7 @@
 
     var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
     var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
+    var rowIndex = 0;
 }
 <h2>@AdminResource.Customers</h2>
 <hr class="adminLine" />
@@ -53,6 +54,10 @@
     </div>
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
+    columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
 
     columns.Add()
     .Encoded(false)
