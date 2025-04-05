@@ -1,28 +1,27 @@
 ﻿@using EImece.Domain.Entities;
-@model  List<TagCategory>
+@model List<TagCategory>
+
 @{
     var tagCategories = Model;
 }
 
-@foreach (TagCategory tagCategory in tagCategories)
+@foreach (var tagCategory in tagCategories)
 {
-<h3>
-    @tagCategory.Name
-</h3>
-<div>
-    @foreach (var tag in tagCategory.Tags)
+    <h3>@tagCategory.Name</h3>
+    <div class="tag-checkbox-group">
+        @foreach (var tag in tagCategory.Tags)
         {
+            <div class="checkbox checkbox-danger">
+                <input id="checkbox@tag.Id"
+                       class="styled"
+                       data-image-tag="@tag.Id"
+                       value="@tag.Id"
+                       type="checkbox" />
 
-    <div class="checkbox checkbox-danger">
-
-        <input id="@String.Format("checkbox{0}",tag.Id)" class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
-
-        <label for="@String.Format("checkbox{0}",tag.Id)">
-
-            @tag.Name
-        </label>
-    </div>
-
+                <label for="checkbox@tag.Id">
+                    @tag.Name
+                </label>
+            </div>
         }
-</div>
+    </div>
 }

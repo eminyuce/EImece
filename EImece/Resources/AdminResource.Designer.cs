@@ -3139,6 +3139,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dikkat! 5&apos;ten fazla resim tasarımınızı kötüleştirebilir..
+        /// </summary>
+        public static string WarningForDesign {
+            get {
+                return ResourceManager.GetString("WarningForDesign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sitenizin Ana Sayfasi.
         /// </summary>
         public static string WebSite {
