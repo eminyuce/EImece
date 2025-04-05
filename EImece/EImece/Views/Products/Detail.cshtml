@@ -52,7 +52,7 @@
 
     var productSchemaJson = Model.GoogleProductSchemaJson;
 }
- 
+
 
 <!-- Add this to your head section -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -428,6 +428,14 @@
                 </button>
             </li>
         }
+        @if (!string.IsNullOrEmpty(product.VideoUrl))
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <i class="fas fa-comments me-2"></i> @Resource.VideoUrl
+                </button>
+            </li>
+        }
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
                 <i class="fas fa-credit-card me-2"></i> @Resource.PaymentSection
@@ -444,6 +452,12 @@
         {
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 @ProductCommentsHelper(Model)
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(product.VideoUrl))
+        {
+            <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
+                @ProductVideoHelper(Model)
             </div>
         }
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -473,6 +487,85 @@
                             <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @Html.Raw(specs.value) @specs.unit</li>
                         }
                     </ul>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@helper ProductVideoHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    var product = model.Product;
+    var videoUrl = product.VideoUrl;
+
+    var videoUrls = SplitByCommaOrSemicolonOrNewline(videoUrl);
+
+    <div class="container pt-sm-3 pb-sm-3">
+        <div class="row">
+            @if (videoUrls.Any())
+            {
+                if (videoUrls.Count == 1)
+                {
+                    // If there is only one video URL, take up the full width
+                    var videoId = ExtractYouTubeVideoId(videoUrls.First());
+
+                    if (!string.IsNullOrEmpty(videoId))
+                    {
+                        var embedUrl = string.Format("https://www.youtube.com/embed/{0}", videoId);
+                        <div class="col-12 mb-4">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="@embedUrl"
+                                        title="YouTube video player"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        // If the URL isn't a valid YouTube link, display it as text
+                        <div class="col-12 mb-4">
+                            <span>@videoUrls.First()</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    // If there are multiple video URLs, display them in grid format
+                    foreach (var url in videoUrls)
+                    {
+                        var videoId = ExtractYouTubeVideoId(url);
+
+                        if (!string.IsNullOrEmpty(videoId))
+                        {
+                            var embedUrl = string.Format("https://www.youtube.com/embed/{0}", videoId);
+                            <div class="col-md-6 mb-4">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="@embedUrl"
+                                            title="YouTube video player"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            // If the URL isn't a valid YouTube link, display it as text
+                            <div class="col-md-6 mb-4">
+                                <span>@url</span>
+                            </div>
+                        }
+                    }
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <span>No valid video URLs provided.</span>
                 </div>
             }
         </div>
@@ -605,6 +698,41 @@
     {
         return dic.ContainsKey(key) && !string.IsNullOrEmpty(dic[key]);
     }
+    // Split the videoUrl by common delimiters (e.g., comma, semicolon, or newline)
+    public static List<string> SplitByCommaOrSemicolonOrNewline(string videoUrl)
+    {
+        return Regex.Split(videoUrl ?? "", @"[,\s;\n]+")
+                  .Select(url => url.Trim())
+                  .Where(url => !string.IsNullOrEmpty(url))
+                  .ToList();
+    }
+    public static string ExtractYouTubeVideoId(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+            return "";
+
+        try
+        {
+            var uri = new Uri(url);
+
+            if (uri.Host.Contains("youtu.be"))
+            {
+                return uri.AbsolutePath.Trim('/');
+            }
+
+            if (uri.Host.Contains("youtube.com"))
+            {
+                var query = HttpUtility.ParseQueryString(uri.Query);
+                return query["v"];
+            }
+        }
+        catch
+        {
+            // Log or handle malformed URLs if needed
+        }
+
+        return "";
+    }
 }
 
 @helper CreateSocialMediaLinks(Dictionary<string, string> sharedSocialLinks)
@@ -713,4 +841,5 @@
     <script type="application/ld+json">
         @Html.Raw(productSchemaJson)
     </script>
+
 }
