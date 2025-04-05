@@ -13,8 +13,10 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int gridPage = Request.QueryString["grid-page"].ToInt();
+    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);  
+
     var controllerName = "TagCategories";
     var title = "TagCategories";
     var gridName = "TagCategoriesGrid";
@@ -27,7 +29,6 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
-    var rowIndex = 0;
 }
 
 <h2>@AdminResource.TagCategory</h2>
