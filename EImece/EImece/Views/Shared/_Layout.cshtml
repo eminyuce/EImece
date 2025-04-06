@@ -118,6 +118,7 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
                     <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
+                    <a class="dropdown-item" href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a>
                     <div class="dropdown-divider">
                     </div>
                     @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
@@ -136,6 +137,10 @@
                     <li class="list-inline-item mr-2">
                         <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2"
                            href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
+                    </li>
+                    <li class="list-inline-item mr-2">
+                        <a class="text-light font-size-sm opacity-75 py-1 pl-0 pr-2"
+                           href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a>
                     </li>
                 </ul>
 

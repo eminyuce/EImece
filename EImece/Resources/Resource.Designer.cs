@@ -4959,7 +4959,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kargonuzu Takip Edin.
+        ///   Looks up a localized string similar to Kargo Takibi.
         /// </summary>
         public static string TrackYourCargo {
             get {

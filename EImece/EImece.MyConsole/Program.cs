@@ -23,7 +23,10 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-            generateImagesForAndroidAndFaviconWithDifferentSize();
+            CompressImagesInDirectory();
+
+
+            //generateImagesForAndroidAndFaviconWithDifferentSize();
 
             decimal productPrice = 120m;
             Console.WriteLine(productPrice.CurrencySign());
@@ -31,7 +34,27 @@ namespace EImece.MyConsole
             Console.WriteLine(productPrice.CurrencySign());
             Console.Read();
 
-           
+
+        }
+
+        private static void CompressImagesInDirectory()
+        {
+            // Compress and resize all images in the specified directory.
+            // Output images will:
+            // - Be saved in JPG format
+            // - Be renamed to "product-name-1.jpg", "product-name-2.jpg", etc.
+            // - Have a width of 300px, with height automatically calculated to preserve aspect ratio
+            // - Be saved to the "output" folder
+            // - Use JPEG compression with quality level 40 (lower = smaller size, but lower quality)
+            ImageCompressor.CompressImagesInDirectory(
+                inputImageDirectoryPath: @"C:\Users\YUCE\Downloads\test",
+                outputDirectory: @"C:\Users\YUCE\Downloads\test\output",
+                quality: 40L,
+                newExtension: ".jpg",
+                baseFileName: "product-name",
+                newWidth: 300,
+                newHeight: null
+            );
         }
 
         private static void generateImagesForAndroidAndFaviconWithDifferentSize()
