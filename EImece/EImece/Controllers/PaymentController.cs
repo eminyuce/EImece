@@ -537,11 +537,18 @@ namespace EImece.Controllers
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
                 PaymentLogger.Info("Customer is valid and cart has items.");
-                var user = UserManager.FindByName(User.Identity.GetUserName());
-                PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id}");
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
-                PaymentLogger.Info("Returning PlaceOrder view.");
-                return View(shoppingCart);
+                if (User?.Identity == null || !User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Login", "Account"); // or the appropriate controller/action
+                }
+                else
+                {
+                    var user = UserManager.FindByName(User.Identity.GetUserName());
+                    PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id}");
+                    ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
+                    PaymentLogger.Info("Returning PlaceOrder view.");
+                    return View(shoppingCart);
+                }
             }
             else
             {
