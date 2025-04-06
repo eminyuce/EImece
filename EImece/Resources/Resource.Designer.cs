@@ -1457,6 +1457,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş numaranızı girerek ilgili siparişe ait detaylı bilgilere ulaşabilirsiniz..
+        /// </summary>
+        public static string EnterOrderNumberInfo {
+            get {
+                return ResourceManager.GetString("EnterOrderNumberInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kurtarmak için E-postanızı Girin.
         /// </summary>
         public static string EnterYourEmailToRecover {

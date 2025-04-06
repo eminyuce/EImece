@@ -1903,4 +1903,7 @@ Stokta</value>
   <data name="PaymentSection" xml:space="preserve">
     <value>Ödeme Bilgisi</value>
   </data>
+  <data name="EnterOrderNumberInfo" xml:space="preserve">
+    <value>Sipariş numaranızı girerek ilgili siparişe ait detaylı bilgilere ulaşabilirsiniz.</value>
+  </data>
 </root>
