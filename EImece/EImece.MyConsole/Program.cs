@@ -50,7 +50,7 @@ namespace EImece.MyConsole
                 inputImageDirectoryPath: @"C:\Users\YUCE\Downloads\WhatsApp Unknown 2025-04-04 at 5.38.45 PM",
                 outputDirectory: @"C:\Users\YUCE\Downloads\WhatsApp Unknown 2025-04-04 at 5.38.45 PM\output2",
                 quality: 40L,
-                newExtension: null,
+                newExtension: ".jpg",
                 baseFileName: null,
                 newWidth: 1024,
                 newHeight: null

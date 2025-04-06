@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace EImece.MyConsole
+namespace EImece.Domain.Helpers
 {
     public static class ImageCompressor
     {
@@ -39,16 +40,19 @@ namespace EImece.MyConsole
         /// If both <paramref name="newWidth"/> and <paramref name="newHeight"/> are null, the image will retain its original dimensions.
         /// Supported input formats: .jpg, .jpeg, .png, .bmp, .gif
         /// </remarks>
-        public static void CompressImagesInDirectory(
-            string inputImageDirectoryPath,
-            string outputDirectory,
-            long quality,
-            string newExtension,    // Pass null to keep original extension
-            string baseFileName = null,    // e.g., "photo" → photo-1.jpg
-            int? newWidth = null,
-            int? newHeight = null
-        )
+        public static List<string> CompressImagesInDirectory(
+    string inputImageDirectoryPath,
+    string outputDirectory,
+    long quality,
+    string newExtension,    // Pass null to keep original extension
+    string baseFileName = null,    // e.g., "photo" → photo-1.jpg
+    int? newWidth = null,
+    int? newHeight = null
+)
         {
+            EnsureDotPrefix(newExtension);
+            List<string> messages = new List<string>();
+
             if (!Directory.Exists(outputDirectory))
             {
                 Directory.CreateDirectory(outputDirectory);
@@ -119,7 +123,7 @@ namespace EImece.MyConsole
                                 resizedImage.Save(outputPath, format);
                             }
 
-                            Console.WriteLine("Saved: " + outputPath);
+                            messages.Add(outputPath);
                         }
                     }
 
@@ -127,11 +131,18 @@ namespace EImece.MyConsole
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Failed to process " + inputImagePath + ": " + ex.Message);
+                    messages.Add($"Failed to process {inputImagePath}: {ex.Message}");
                 }
             }
-        }
 
+            return messages;
+        }
+        private static string EnsureDotPrefix(string extension)
+        {
+            if (string.IsNullOrEmpty(extension) || extension.StartsWith("."))
+                return extension;
+            return "." + extension;
+        }
         private static ImageFormat GetImageFormatByExtension(string ext)
         {
             switch (ext)

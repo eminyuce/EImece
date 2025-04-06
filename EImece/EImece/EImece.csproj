@@ -167,6 +167,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
       <Private>True</Private>
@@ -1146,6 +1147,7 @@
     <Content Include="Areas\Admin\Views\Report\ProductSummary.cshtml" />
     <Content Include="Areas\Admin\Views\Report\ProductInventory.cshtml" />
     <Content Include="Areas\Admin\Views\Report\ProductStatsByDateRange.cshtml" />
+    <Content Include="Areas\Admin\Views\Images\CompressImages.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
