@@ -64,7 +64,11 @@ namespace EImece.Domain.Services
                 var town = city.Towns.FirstOrDefault(t => t.Name.Equals(townName, StringComparison.OrdinalIgnoreCase));
                 if (town != null)
                 {
-                    return town.Districts.Select(d => d.Name).ToList();
+                    return town.Districts
+                               .SelectMany(d => d.Quarters)
+                               .Select(q => q.Name)
+                               .OrderBy(q => q)
+                               .ToList();
                 }
             }
 
