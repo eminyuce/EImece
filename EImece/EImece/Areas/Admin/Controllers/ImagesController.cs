@@ -64,8 +64,14 @@ namespace EImece.Areas.Admin.Controllers
                 // Set the position to the beginning of the memory stream before returning it
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
-                // Return the memory stream as a file download
-                return File(memoryStream.ToArray(), "application/zip", "compressed_images.zip");
+                // Get the current timestamp in a suitable format (e.g., "yyyyMMdd_HHmmss")
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+                // Generate the filename with the timestamp
+                string fileName = $"compressed_images_{timestamp}.zip";
+
+                // Return the memory stream as a file download with the dynamic filename
+                return File(memoryStream.ToArray(), "application/zip", fileName);
             }
         }
 
