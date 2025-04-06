@@ -3081,6 +3081,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;span&gt;Bu sitede &lt;strong&gt;iyzico güvencesiyle&lt;/strong&gt; güvenli ödeme yapabilirsiniz.&lt;/span&gt;.
+        /// </summary>
+        public static string PaymentIyzicoHtml {
+            get {
+                return ResourceManager.GetString("PaymentIyzicoHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to İşyeri Sepet Numarası.
         /// </summary>
         public static string PaymentIyzicoMerchantBasketId {

@@ -10,7 +10,8 @@
 @using Resources;
 @model  BuyWithNoAccountCreation
 @{
-
+    ShoppingCartSession shoppingCartSession = (ShoppingCartSession)ViewBag.ShoppingCartSession;
+    var products = Model.ShoppingCartItems;
     ViewBag.Title = Resources.Resource.PlaceOrder;
     BuyWithNoAccountCreation buyWithNoAccountCreation = Model;
     var customer = buyWithNoAccountCreation.Customer;
@@ -24,29 +25,27 @@
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
-        <div class="alert alert-secondary" role="alert">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        @Resource.Payment
-                    </li>
-                </ol>
-            </nav>
-        </div>
         <h1 class="page-title">@Resource.Payment</h1><span class="d-block mt-2 text-muted"></span>
     </div>
 </div>
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <div class="col-12 mb-4">
+        <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+            <img src="~/Content/img/logo-footer-mastervisa.png" alt="iyzico" style="height: 22px; margin-right: 10px;">
+            @Html.Raw(@Resource.PaymentIyzicoHtml)
+        </div>
+    </div>
     <!-- Steps (wizard)-->
     <div class="row pt-4 mt-2">
-        <div class="col-md-12">
+        <div class="col-md-8">
+            @Html.Partial("_OrderSummaryBeforePayment", shoppingCartSession)
+        </div>
+        <div class="col-md-4">
             <div id="iyzipay-checkout-form" class="responsive"></div>
             @Html.Raw(checkoutFormInitialize.CheckoutFormContent)
         </div>
     </div>
 </div>
+
+

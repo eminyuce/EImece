@@ -964,8 +964,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="libs\GenericRepository.dll" />
-    <Content Include="libs\GenericRepository.EntityFramework.dll" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.js" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.min.js" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.js" />
@@ -1148,6 +1146,7 @@
     <Content Include="Areas\Admin\Views\Report\ProductInventory.cshtml" />
     <Content Include="Areas\Admin\Views\Report\ProductStatsByDateRange.cshtml" />
     <Content Include="Areas\Admin\Views\Images\CompressImages.cshtml" />
+    <Content Include="App_Data\data.json" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
@@ -1375,6 +1374,7 @@
     <Content Include="Views\Payment\ShoppingWithoutAccountPayment.cshtml" />
     <Content Include="Views\Payment\CargoTracking.cshtml" />
     <Content Include="Views\Shared\CargoTrackingResult.cshtml" />
+    <Content Include="Views\Payment\_OrderSummaryBeforePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

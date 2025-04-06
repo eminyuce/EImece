@@ -105,22 +105,25 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <input type="hidden" id="SelectedCity" value="@Model.City" />
                         @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
                         @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <input type="hidden" id="SelectedTown" value="@Model.Town" />
                         @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Town, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
                         @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <input type="hidden" id="SelectedDistrict" value="@Model.District" />
                         @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
                         @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -179,6 +182,7 @@
     @Scripts.Render("~/bundles/jqueryui")
     <script>
         $(function () {
+            GetIller();
             $("#datepicker").datepicker({
                 minDate: -20,
                 maxDate: "+1M +15D",

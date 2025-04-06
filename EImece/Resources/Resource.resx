@@ -1906,4 +1906,7 @@ Stokta</value>
   <data name="EnterOrderNumberInfo" xml:space="preserve">
     <value>Sipariş numaranızı girerek ilgili siparişe ait detaylı bilgilere ulaşabilirsiniz.</value>
   </data>
+  <data name="PaymentIyzicoHtml" xml:space="preserve">
+    <value>&lt;span&gt;Bu sitede &lt;strong&gt;iyzico güvencesiyle&lt;/strong&gt; güvenli ödeme yapabilirsiniz.&lt;/span&gt;</value>
+  </data>
 </root>

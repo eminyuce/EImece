@@ -15,6 +15,8 @@ namespace EImece.Controllers
         [Inject]
         public IOrderService OrderService { get; set; }
 
+        public TurkishRegionService turkishRegionService;
+
         [HttpPost]
         public JsonResult HomePageShoppingCart()
         {
@@ -30,6 +32,36 @@ namespace EImece.Controllers
         public AjaxController(AdresService adresService)
         {
             this.adresService = adresService;
+            turkishRegionService = new TurkishRegionService();
+        }
+
+        public async Task<JsonResult> GetAllCities()
+        {
+            return await Task.Run(() =>
+            {
+                var allIller = turkishRegionService.GetAllCities().OrderBy(r=>r).ToList();
+                return Json(allIller, JsonRequestBehavior.AllowGet);  // Return the list directly
+            }).ConfigureAwait(true);
+        }
+
+        public async Task<JsonResult> GetTownsByCity(string cityName)
+        {
+            return await Task.Run(() =>
+            {
+                var ilceler = turkishRegionService.GetTownsByCity(cityName).OrderBy(r => r).ToList();  
+
+                return Json(ilceler, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
+
+        public async Task<JsonResult> GetDistrictsByTown(string cityName, string townName)
+        {
+            return await Task.Run(() =>
+            {
+                var districts = turkishRegionService.GetDistrictsByTown(cityName, townName).OrderBy(r => r).ToList();  
+
+                return Json(districts, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
         }
 
         // GET: Ajax

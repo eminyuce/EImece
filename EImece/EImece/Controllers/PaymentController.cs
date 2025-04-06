@@ -909,6 +909,7 @@ namespace EImece.Controllers
         public ActionResult ShoppingWithoutAccount()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
+            ViewBag.ShoppingCartSession = shoppingCart;
             var p = new BuyWithNoAccountCreation();
             p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
             p.Coupon = shoppingCart.Coupon;
@@ -926,6 +927,7 @@ namespace EImece.Controllers
                 throw new NotSupportedException();
             }
             ShoppingCartSession shoppingCart = GetShoppingCart();
+            ViewBag.ShoppingCartSession = shoppingCart;
             var p = new BuyWithNoAccountCreation();
             p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
             p.Coupon = shoppingCart.Coupon;

@@ -270,3 +270,93 @@ function randomString(length, chars) {
     for (var i = length; i > 0; --i) result += mask[Math.floor(Math.random() * mask.length)];
     return result;
 }
+
+
+// Event handler when the user selects a city
+$("#Cities").change(function (e) {
+    var cityName = e.target.value;
+    GetTownsByCity(cityName, null, null);
+    $("#SelectedCity").val(cityName);  // Selected city
+});
+// Event handler when the user selects a town
+$("#Towns").change(function (e) {
+    var townName = e.target.value;
+    var cityName = $("#Cities").val();
+    GetDistrictsByTown(cityName, townName);
+    $("#SelectedCity").val(cityName);  // Selected city
+    $("#SelectedTown").val(townName);  // Selected town
+});
+$("#Districts").change(function (e) {
+    var districtName = e.target.value;
+    $("#SelectedDistrict").val(districtName);
+});
+
+// Initially fetch cities, towns, and districts
+GetIller();
+
+// Function to get all cities
+function GetIller() {
+    var selectedCity = $("#SelectedCity").val();  // Selected city
+    var selectedTown = $("#SelectedTown").val();  // Selected town
+    var selectedDistrict = $("#SelectedDistrict").val();  // Selected district
+
+    var postData = JSON.stringify({});  // No parameters needed to get all cities
+    console.log(postData);
+
+    // Fetch the list of cities
+    ajaxMethodCall(postData, "/Ajax/GetAllCities", function (data) {
+        $("#Cities").empty();  // Clear existing options
+        $.each(data, function (key, cityName) {
+            // Add city to dropdown and check if it matches the selected city
+            var option = new Option(cityName, cityName);
+            if (cityName === selectedCity) {
+                option.selected = true;
+            }
+            $("#Cities").append(option);
+        });
+    
+        GetTownsByCity(selectedCity);
+    });
+}
+
+// Function to get towns based on selected city
+function GetTownsByCity(cityName) {
+    var selectedTown = $("#SelectedTown").val();  // Selected town
+
+    var postData = JSON.stringify({ cityName: cityName });
+    console.log(postData);
+
+    ajaxMethodCall(postData, "/Ajax/GetTownsByCity", function (data) {
+        $("#Towns").empty();  // Clear existing options
+        $.each(data, function (key, townName) {
+            var option = new Option(townName, townName);
+            if (townName === selectedTown) {
+                option.selected = true;
+            }
+            $("#Towns").append(option); // Add town to dropdown
+        });
+
+        var townName = $("#Towns").val();
+        var cityName = $("#Cities").val();
+        GetDistrictsByTown(cityName, townName);
+    });
+}
+
+// Function to get districts based on selected town
+function GetDistrictsByTown(cityName, townName) {
+    var selectedDistrict = $("#SelectedDistrict").val();  // Selected district
+
+    var postData = JSON.stringify({ cityName: cityName, townName: townName });
+    console.log(postData);
+
+    ajaxMethodCall(postData, "/Ajax/GetDistrictsByTown", function (data) {
+        $("#Districts").empty();  // Clear existing options
+        $.each(data, function (key, district) {
+            var option = new Option(district, district);
+            if (district === selectedDistrict) {
+                option.selected = true;
+            }
+            $("#Districts").append(option); // Add district to dropdown
+        });
+    });
+}

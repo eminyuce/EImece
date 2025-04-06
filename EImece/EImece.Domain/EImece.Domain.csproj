@@ -303,6 +303,7 @@
     <Compile Include="Models\FrontModels\OrderConfirmationEmailRazorTemplate.cs" />
     <Compile Include="Models\FrontModels\ProductSpecItem.cs" />
     <Compile Include="Models\FrontModels\RazorTemplateModel.cs" />
+    <Compile Include="Models\FrontModels\TurkishRegions.cs" />
     <Compile Include="Models\MigrationModels\ProductImageExternalUrl.cs" />
     <Compile Include="Repositories\AddressRepository.cs" />
     <Compile Include="ApiRepositories\BitlyRepository.cs" />
@@ -624,6 +625,7 @@
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\TemplateService.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Services\TurkishRegionService.cs" />
     <Compile Include="Services\UsersService.cs" />
   </ItemGroup>
   <ItemGroup>

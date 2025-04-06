@@ -48,10 +48,10 @@ namespace EImece.Areas.Admin.Controllers
                     foreach (string filePath in Directory.GetFiles(outputDirectory))
                     {
                         // Get the file name from the path
-                        string fileName = Path.GetFileName(filePath);
+                        string fileName1 = Path.GetFileName(filePath);
 
                         // Add the file to the zip
-                        ZipArchiveEntry zipEntry = zipArchive.CreateEntry(fileName);
+                        ZipArchiveEntry zipEntry = zipArchive.CreateEntry(fileName1);
 
                         using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                         using (Stream zipStream = zipEntry.Open())
