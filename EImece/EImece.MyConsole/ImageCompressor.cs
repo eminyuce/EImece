@@ -7,16 +7,6 @@ namespace EImece.MyConsole
 {
     public static class ImageCompressor
     {
-        //     ImageCompressor.CompressImagesInDirectory(
-        //  inputImageDirectoryPath: @"C:\Users\YUCE\Downloads\test",
-        //         outputDirectory: @"C:\Users\YUCE\Downloads\test\output",
-        //         quality: 40L,
-        //         newExtension: ".jpg",
-        //         baseFileName: "product-name",
-        //         newWidth: 300,           // Resize by width, height auto-calculated
-        //         newHeight: null
-        //      );
-
         /// <summary>
         /// Compresses and optionally resizes all image files in a given directory.
         /// Supports changing file names and extensions, and preserves aspect ratio if only width or height is provided.
@@ -35,6 +25,7 @@ namespace EImece.MyConsole
         /// <param name="baseFileName">
         /// The base name for all output files. 
         /// Files will be saved as baseFileName-1.jpg, baseFileName-2.jpg, etc.
+        /// If <c>null</c>, original file names will be used.
         /// </param>
         /// <param name="newWidth">
         /// Optional new width for resizing.
@@ -48,13 +39,12 @@ namespace EImece.MyConsole
         /// If both <paramref name="newWidth"/> and <paramref name="newHeight"/> are null, the image will retain its original dimensions.
         /// Supported input formats: .jpg, .jpeg, .png, .bmp, .gif
         /// </remarks>
-
         public static void CompressImagesInDirectory(
             string inputImageDirectoryPath,
             string outputDirectory,
             long quality,
             string newExtension,    // Pass null to keep original extension
-            string baseFileName,    // e.g., "photo" → photo-1.jpg
+            string baseFileName = null,    // e.g., "photo" → photo-1.jpg
             int? newWidth = null,
             int? newHeight = null
         )
@@ -109,8 +99,12 @@ namespace EImece.MyConsole
                                 ? ext
                                 : newExtension.ToLowerInvariant();
 
-                            string outputFileName = string.Format("{0}-{1}{2}", baseFileName, index, targetExtension);
-                            string outputPath = Path.Combine(outputDirectory, outputFileName);
+                            // Use original file name if baseFileName is null
+                            string outputFileName = string.IsNullOrEmpty(baseFileName)
+                                ? Path.GetFileNameWithoutExtension(inputImagePath) + "-" + index
+                                : string.Format("{0}-{1}{2}", baseFileName, index, targetExtension);
+
+                            string outputPath = Path.Combine(outputDirectory, outputFileName + targetExtension);
                             ImageFormat format = GetImageFormatByExtension(targetExtension);
 
                             if (format.Guid == ImageFormat.Jpeg.Guid)
@@ -154,7 +148,7 @@ namespace EImece.MyConsole
                 case ".ico":
                     return ImageFormat.Icon;
                 default:
-                    return ImageFormat.Jpeg;
+                    return ImageFormat.Jpeg; // Default fallback
             }
         }
 

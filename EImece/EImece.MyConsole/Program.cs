@@ -47,14 +47,15 @@ namespace EImece.MyConsole
             // - Be saved to the "output" folder
             // - Use JPEG compression with quality level 40 (lower = smaller size, but lower quality)
             ImageCompressor.CompressImagesInDirectory(
-                inputImageDirectoryPath: @"C:\Users\YUCE\Downloads\test",
-                outputDirectory: @"C:\Users\YUCE\Downloads\test\output",
+                inputImageDirectoryPath: @"C:\Users\YUCE\Downloads\WhatsApp Unknown 2025-04-04 at 5.38.45 PM",
+                outputDirectory: @"C:\Users\YUCE\Downloads\WhatsApp Unknown 2025-04-04 at 5.38.45 PM\output2",
                 quality: 40L,
-                newExtension: ".jpg",
-                baseFileName: "product-name",
-                newWidth: 300,
+                newExtension: null,
+                baseFileName: null,
+                newWidth: 1024,
                 newHeight: null
             );
+            Console.Read();
         }
 
         private static void generateImagesForAndroidAndFaviconWithDifferentSize()
