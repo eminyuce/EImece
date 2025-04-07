@@ -30,7 +30,7 @@ namespace EImece
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme.css",
-                   //   "~/Content/bootstrap-theme.css.map",
+                       "~/Content/bootstrap-theme.css.map",
                    "~/Content/site.css"
                       ));
 

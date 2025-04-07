@@ -659,3 +659,82 @@ input[name='checkboxGrid'] {
     .checkbox label::before {
         border: 1px solid #000000;
     }
+
+
+/* Proper spacing between rows and inside inputs */
+.form-horizontal .form-group {
+    margin-bottom: 20px;
+}
+
+/* Fix for label alignment inside Bootstrap grid */
+.control-label {
+    padding-top: 7px;
+    font-weight: bold;
+}
+
+/* Tabs area spacing */
+.panel-heading .nav-tabs {
+    margin-bottom: -1px;
+}
+
+.panel-heading .Tools {
+    float: right;
+    margin-left: 10px;
+    padding-top: 5px;
+}
+
+/* Buttons inside tab headers */
+.panel-heading .btn {
+    margin-right: 5px;
+}
+
+/* Style for validation message */
+.text-danger {
+    font-size: 0.875em;
+}
+
+/* Style for horizontal line under H2 */
+.adminLine {
+    border-top: 2px solid #ccc;
+    margin-bottom: 25px;
+}
+
+/* Ensure inner panels don't look cluttered */
+.panel-body {
+    padding-top: 25px;
+}
+
+/* Responsive fix for inputs (especially when inside col-md-3) */
+input[type="file"],
+textarea,
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+}
+
+/* Override tab-pane fade transition for cleaner UX */
+.tab-pane {
+    transition: none !important;
+}
+
+/* Consistent margin for checkboxes/radios in grid */
+
+input[type="radio"] {
+    margin-top: 8px;
+}
+
+/* Button width for uniform appearance */
+.panel-heading input[type="submit"],
+.panel-heading input[type="button"] {
+    min-width: 110px;
+}
+
+/* Fix for checkbox label alignment */
+label[for^="IsActive"],
+label[for^="MainPage"],
+label[for^="ImageState"] {
+    display: inline-block;
+    margin-right: 5px;
+    font-weight: normal;
+}
