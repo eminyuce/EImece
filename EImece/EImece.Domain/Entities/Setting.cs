@@ -1,4 +1,5 @@
-﻿using Resources;
+﻿using EImece.Domain.Services;
+using Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -21,7 +22,7 @@ namespace EImece.Domain.Entities
 
         public bool IsEmpty()
         {
-            return this == null || string.IsNullOrEmpty(SettingValue);
+            return this == null || string.IsNullOrEmpty(SettingValue) || SettingService.NULL_VALUE.Equals(SettingValue, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public bool IsNotEmpty()

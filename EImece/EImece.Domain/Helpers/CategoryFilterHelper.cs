@@ -5,6 +5,7 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace EImece.Domain.Helpers
 {
@@ -12,9 +13,11 @@ namespace EImece.Domain.Helpers
     {
         private List<CategoryFilterType> categoryFilterTypes;
         private List<string> selectedFilters;
+        private Setting priceFilterSetting;
 
-        public CategoryFilterHelper()
+        public CategoryFilterHelper(Setting priceFilterSetting)
         {
+            this.priceFilterSetting = priceFilterSetting;
         }
 
         public CategoryFilterHelper(List<CategoryFilterType> categoryFilterTypes, List<string> selectedFilters)
@@ -113,95 +116,136 @@ namespace EImece.Domain.Helpers
 
         public void AddBrandFilter(List<CategoryFilterType> categoryFilterTypes, List<Brand> brands)
         {
-            if (brands.IsNotEmpty())
+            if (brands.IsEmpty()) return;
+
+            var item = new CategoryFilterType
             {
-                var item = new CategoryFilterType();
-                item.Position = 0;
-                item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Brand, Text = Resource.Brands };
-                for (int i = 0; i < brands.Count; i++)
+                Position = 0,
+                FilterTypeName = new FilterTypeName
                 {
-                    var brand = brands[i];
-                    item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("b{0}", brand.Id), name = brand.Name });
+                    FilterType = FilterType.Brand,
+                    Text = Resource.Brands
                 }
-                item.CategoryFilters.ForEach(r => r.Parent = item);
-                categoryFilterTypes.Add(item);
-            }
+            };
+
+            item.CategoryFilters = brands
+                .Select(brand => new CategoryFilter
+                {
+                    CategoryFilterId = $"b{brand.Id}",
+                    name = brand.Name
+                })
+                .ToList();
+
+            item.CategoryFilters.ForEach(f => f.Parent = item);
+            categoryFilterTypes.Add(item);
         }
+
 
         public void AddPriceFilter(List<CategoryFilterType> categoryFilterTypes)
         {
-            CategoryFilterType item = new CategoryFilterType();
-            item.Position = 1;
-            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Price, Text = Resource.Price };
-            var item1 = new CategoryFilter()
-            {
-                CategoryFilterId = string.Format("p{0}", 100),
-                minPrice = 0,
-                maxPrice = 49
-            };
-            item1.name = string.Format("{0} {1}", item1.maxPrice.CurrencySign(), Resource.AndUnderPrice);
-            item.CategoryFilters.Add(item1);
+            PriceFilterConfig priceRanges = ReadPriceFilterFromSetting();
 
-            item1 = new CategoryFilter()
+            var item = new CategoryFilterType
             {
-                CategoryFilterId = string.Format("p{0}", 101),
-                minPrice = 49,
-                maxPrice = 99
+                Position = 1,
+                FilterTypeName = new FilterTypeName { FilterType = FilterType.Price, Text = Resource.Price }
             };
-            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
-            item.CategoryFilters.Add(item1);
 
-            item1 = new CategoryFilter()
+            for (int i = 0; i < priceRanges.PriceRanges.Count; i++)
             {
-                CategoryFilterId = string.Format("p{0}", 102),
-                minPrice = 99,
-                maxPrice = 499
-            };
-            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
-            item.CategoryFilters.Add(item1);
+                PriceRange priceRange = priceRanges.PriceRanges[i];
+                var filter = new CategoryFilter
+                {
+                    CategoryFilterId = $"p{100 + i}",
+                    minPrice = priceRange.Min,
+                    maxPrice = priceRange.Max
+                };
 
-            item1 = new CategoryFilter()
-            {
-                CategoryFilterId = string.Format("p{0}", 103),
-                minPrice = 499,
-                maxPrice = 999
-            };
-            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
-            item.CategoryFilters.Add(item1);
+                filter.name = priceRange.IsLast
+                    ? $"{priceRange.Min.CurrencySign()} {Resource.AndOverPrice}"
+                    : i == 0
+                        ? $"{priceRange.Max.CurrencySign()} {Resource.AndUnderPrice}"
+                        : $"{priceRange.Min.CurrencySign()} - {priceRange.Max.CurrencySign()}";
 
-            item1 = new CategoryFilter()
-            {
-                CategoryFilterId = string.Format("p{0}", 104),
-                minPrice = 999,
-                maxPrice = 4999
-            };
-            item1.name = string.Format("{0} - {1}", item1.minPrice.CurrencySign(), item1.maxPrice.CurrencySign());
-            item.CategoryFilters.Add(item1);
+                item.CategoryFilters.Add(filter);
+            }
 
-            item1 = new CategoryFilter()
-            {
-                CategoryFilterId = string.Format("p{0}", 106),
-                minPrice = 4999,
-                maxPrice = 9999999
-            };
-            item1.name = string.Format("{0} {1}", item1.minPrice.CurrencySign(), Resource.AndOverPrice);
-            item.CategoryFilters.Add(item1);
-            item.CategoryFilters.ForEach(r => r.Parent = item);
+            item.CategoryFilters.ForEach(f => f.Parent = item);
             categoryFilterTypes.Add(item);
+        }
+        //       "PriceFilterConfig": {
+        // "PriceRanges": [
+        //   { "Min": 0, "Max": 49, "IsLast": false },
+        //   { "Min": 49, "Max": 99, "IsLast": false },
+        //   { "Min": 99, "Max": 499, "IsLast": false },
+        //   { "Min": 499, "Max": 999, "IsLast": false },
+        //   { "Min": 999, "Max": 4999, "IsLast": false },
+        //   { "Min": 4999, "Max": 9999999, "IsLast": true }
+        // ]
+        //}
+
+        private PriceFilterConfig ReadPriceFilterFromSetting()
+        {
+            if (priceFilterSetting.IsEmpty())
+            {
+                // Return default hardcoded price ranges
+                return new PriceFilterConfig
+                {
+                    PriceRanges = new List<PriceRange>
+                        {
+                            new PriceRange { Min = 0, Max = 49, IsLast = false },
+                            new PriceRange { Min = 49, Max = 99, IsLast = false },
+                            new PriceRange { Min = 99, Max = 499, IsLast = false },
+                            new PriceRange { Min = 499, Max = 999, IsLast = false },
+                            new PriceRange { Min = 999, Max = 4999, IsLast = false },
+                            new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
+                                }
+                    };
+            }
+            else
+            {
+                var json = priceFilterSetting.SettingValue.ToStr();
+                var result =  JsonConvert.DeserializeObject<PriceFilterConfig>(json);
+                return result;
+            }
         }
 
         public void AddRatingFilter(List<CategoryFilterType> categoryFilterTypes)
         {
-            CategoryFilterType item = new CategoryFilterType();
-            item.Position = 5;
-            item.FilterTypeName = new FilterTypeName() { FilterType = FilterType.Rating, Text = Resource.Rating };
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 5), name = string.Format("5 {0}", Resource.Star), rating = 5 });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 4), name = string.Format("4 {0}", Resource.Star), rating = 4 });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 3), name = string.Format("3 {0}", Resource.Star), rating = 3 });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 2), name = string.Format("2 {0}", Resource.Star), rating = 2 });
-            item.CategoryFilters.Add(new CategoryFilter() { CategoryFilterId = string.Format("r{0}", 1), name = string.Format("1 {0}", Resource.Star), rating = 1 });
-            item.CategoryFilters.ForEach(r => r.Parent = item);
+            var item = new CategoryFilterType
+            {
+                Position = 5,
+                FilterTypeName = new FilterTypeName
+                {
+                    FilterType = FilterType.Rating,
+                    Text = Resource.Rating
+                }
+            };
+
+            for (int rating = 5; rating >= 1; rating--)
+            {
+                var filter = new CategoryFilter
+                {
+                    CategoryFilterId = $"r{rating}",
+                    name = $"{rating} {Resource.Star}",
+                    rating = rating
+                };
+                item.CategoryFilters.Add(filter);
+            }
+
+            item.CategoryFilters.ForEach(f => f.Parent = item);
             categoryFilterTypes.Add(item);
         }
+    }
+    public class PriceRange
+    {
+        public int Min { get; set; }
+        public int Max { get; set; }
+        public bool IsLast { get; set; }
+    }
+
+    public class PriceFilterConfig
+    {
+        public List<PriceRange> PriceRanges { get; set; }
     }
 }

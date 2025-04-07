@@ -18,7 +18,7 @@ namespace EImece.Domain.Models.FrontModels
         public List<Brand> Brands { get; set; }
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
         public List<CategoryFilter> SelectedFilterTypes { get; set; }
-
+        public Setting PriceFilterSetting { get; set; }
         public List<Product> AllProducts { get; set; }
 
         public List<Product> Products
@@ -112,7 +112,7 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var categoryFilterTypes = new List<CategoryFilterType>();
-                var categoryFilterHelper = new CategoryFilterHelper();
+                var categoryFilterHelper = new CategoryFilterHelper(this.PriceFilterSetting);
                 categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
                 categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
 

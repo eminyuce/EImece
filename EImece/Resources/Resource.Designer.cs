@@ -3583,6 +3583,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Fiyat Filtresi Ayarı.
+        /// </summary>
+        public static string ProductPriceFilterSetting {
+            get {
+                return ResourceManager.GetString("ProductPriceFilterSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürünler.
         /// </summary>
         public static string Products {

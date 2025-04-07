@@ -15,6 +15,8 @@ namespace EImece.Domain.Services
     public class SettingService : BaseEntityService<Setting>, ISettingService
     {
         private ISettingRepository SettingRepository { get; set; }
+
+        public const string NULL_VALUE = "RETURN-NULL-VALUE";
         private static string ALL_SETTING_CACHE_KEY = "ALL_SETTING_CACHE_KEY_V3";
 
         public SettingService(ISettingRepository repository) : base(repository)
@@ -83,7 +85,7 @@ namespace EImece.Domain.Services
             {
                 var setting = EntityFactory.GetBaseEntityInstance<Setting>();
                 setting.SettingKey = key;
-                setting.SettingValue = key;
+                setting.SettingValue = NULL_VALUE;
                 return setting;
             }
         }
@@ -100,7 +102,7 @@ namespace EImece.Domain.Services
             {
                 var setting = EntityFactory.GetBaseEntityInstance<Setting>();
                 setting.SettingKey = key;
-                setting.SettingValue = "RETURN-NULL-VALUE";
+                setting.SettingValue = NULL_VALUE;
                 setting.Lang = language;
                 return setting;
             }
@@ -284,5 +286,7 @@ namespace EImece.Domain.Services
 
             return emailAccount;
         }
+
+        
     }
 }

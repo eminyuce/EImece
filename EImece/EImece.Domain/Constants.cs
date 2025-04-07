@@ -81,7 +81,8 @@ namespace EImece.Domain
         public const string LastVisit = "LastVisit";
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";
-
+        public const string ProductPriceFilterSetting = "ProductPriceFilterSetting";
+        
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";

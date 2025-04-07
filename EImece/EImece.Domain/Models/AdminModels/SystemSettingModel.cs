@@ -91,7 +91,10 @@ namespace EImece.Domain.Models.AdminModels
         public bool IsProductPriceEnable { get; set; }
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsProductReviewEnable))]
-        public bool IsProductReviewEnable { get; set; }
+        public bool IsProductReviewEnable { get; set; } 
+        
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductPriceFilterSetting))]
+        public string ProductPriceFilterSetting { get; set; }
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CompanyName))]
         public string CompanyName { get; set; }
