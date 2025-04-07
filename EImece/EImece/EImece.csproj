@@ -361,11 +361,15 @@
     <Content Include="App_Data\usefulSql.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
     <Content Include="Areas\Admin\Content\main\1.gif" />
+    <Content Include="Areas\Admin\Content\main\brand.png" />
+    <Content Include="Areas\Admin\Content\main\Customers.png" />
     <Content Include="Areas\Admin\Content\main\excel.jpg" />
     <Content Include="Areas\Admin\Content\main\giris-kayan-gorseller.png" />
     <Content Include="Areas\Admin\Content\main\hakkimizda-iletisim-diger-menuler.png" />
     <Content Include="Areas\Admin\Content\main\iyzico.png" />
     <Content Include="Areas\Admin\Content\main\kargo.png" />
+    <Content Include="Areas\Admin\Content\main\MailTemplates.png" />
+    <Content Include="Areas\Admin\Content\main\settings.png" />
     <Content Include="Areas\Admin\Content\main\urun-ekle-yonet.png" />
     <Content Include="Areas\Admin\Content\main\urun-kategorileri.png" />
     <Content Include="Areas\Admin\Content\main\uyeler.png" />

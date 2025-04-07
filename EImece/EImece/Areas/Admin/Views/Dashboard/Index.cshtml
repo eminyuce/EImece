@@ -18,19 +18,19 @@
 
         @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "" }))
         {
-        <div class="col-md-5 col-md-offset-3">
-            <input type="text" name="searchContent"
-                   value="@Request.QueryString["searchContent"].ToStr()"
-                   id="searchTxt"
-                   data-provide="typehead"
-                   title="Aramaya başlamak için en az 2 karakter yazmalısınız"
-                   class="form-control"
-                   placeholder="@AdminResource.AdminMainSeachPlaceHolder"
-                   autocomplete="off">
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-search"></span></button>
-        </div>
+            <div class="col-md-5 col-md-offset-3">
+                <input type="text" name="searchContent"
+                       value="@Request.QueryString["searchContent"].ToStr()"
+                       id="searchTxt"
+                       data-provide="typehead"
+                       title="Aramaya başlamak için en az 2 karakter yazmalısınız"
+                       class="form-control"
+                       placeholder="@AdminResource.AdminMainSeachPlaceHolder"
+                       autocomplete="off">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-search"></span></button>
+            </div>
         }
     </div>
 
@@ -76,10 +76,31 @@
                 <a href="@Url.Action("Index","customers")">
                     <img src="~/Areas/Admin/Content/main/uyeler.png" />
                 </a>
-                <a href="https://sandbox-merchant.iyzipay.com/auth/login/expire">
+                <a href="https://merchant.iyzipay.com/auth/login">
                     <img src="~/Areas/Admin/Content/main/iyzico.png" />
                 </a>
             </div>
         </div>
     </div>
+
+    <div class="col-md-12">
+
+        <div class="MainPage">
+            <div>
+                <a href="@Url.Action("Index","brands")">
+                    <img src="~/Areas/Admin/Content/main/brand.png" />
+                </a>
+                <a href="@Url.Action("SystemSettings","adminsettings")">
+                    <img src="~/Areas/Admin/Content/main/settings.png" />
+                </a>
+                <a href="@Url.Action("Index","MailTemplates")">
+                    <img src="~/Areas/Admin/Content/main/MailTemplates.png" />
+                </a>
+                <a href="@Url.Action("Index","Customers")">
+                    <img src="~/Areas/Admin/Content/main/Customers.png" />
+                </a>
+            </div>
+        </div>
+    </div>
+
 </div>
