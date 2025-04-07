@@ -360,3 +360,25 @@ function GetDistrictsByTown(cityName, townName) {
         });
     });
 }
+
+$("#SubscribeEmailBtn").click(function () {
+    var subscribeEmail = $("#SubscribeEmailText").val().trim();
+    console.log(subscribeEmail);
+    // Check if the email is empty before making the AJAX call
+    if (subscribeEmail === "") {
+        alert("Please enter a valid email.");
+        return;  // Prevent AJAX call if the email is empty
+    }
+    var postData = JSON.stringify({ subscribeEmail: subscribeEmail });
+    console.log(postData);
+    $("#SubscribeEmailTextSuccessMessage").hide();
+    ajaxMethodCall(postData, "/Ajax/SubscribeEmail", function (data) {
+        if (data === "success") {
+            // Show success message if the response is 'success'
+            $("#SubscribeEmailTextSuccessMessage").show();
+        } else {
+            // Handle failure if needed
+            alert(data);
+        }
+    });
+});

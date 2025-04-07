@@ -13,5 +13,10 @@ namespace EImece.Domain.Services
         {
             SubscriberRepository = repository;
         }
+
+        public Subscriber GetSubscriberByEmail(string email)
+        {
+            return SubscriberRepository.GetSubscriberByEmail(email);
+        }
     }
 }

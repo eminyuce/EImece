@@ -2456,6 +2456,27 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;h3 class=&quot;text-center&quot;&gt;Haberleri Takip Edin!&lt;/h3&gt;
+        ///&lt;p class=&quot;text-center&quot;&gt;Ürünlerimiz stokta olduğunda veya ilk kez satışa sunulduğunda ilk siz haberdar olun. &lt;/p&gt;
+        ///&lt;p class=&quot;text-center&quot;&gt;E-postanızı girin, hazır olur olmaz size bir bildirim gönderelim!&lt;/p&gt;
+        ///&lt;p class=&quot;text-center text-muted&quot;&gt;Özel teklifleri, yeni gelenleri ve doğrudan gelen kutunuza gönderilen heyecan verici ürün güncellemelerini kaçırmayın.&lt;/p&gt;.
+        /// </summary>
+        public static string MainPageProductSubscriptionHtml {
+            get {
+                return ResourceManager.GetString("MainPageProductSubscriptionHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;strong&gt;Teşekkürler! Mevcut olduğunda size e-posta göndereceğiz.&lt;/strong&gt;.
+        /// </summary>
+        public static string MainPageProductSubscriptionThanks {
+            get {
+                return ResourceManager.GetString("MainPageProductSubscriptionThanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ana Kategori Yap.
         /// </summary>
         public static string MakeItRootCategory {

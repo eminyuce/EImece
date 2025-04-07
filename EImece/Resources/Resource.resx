@@ -1912,4 +1912,13 @@ Stokta</value>
   <data name="ProductPriceFilterSetting" xml:space="preserve">
     <value>Ürün Fiyat Filtresi Ayarı</value>
   </data>
+  <data name="MainPageProductSubscriptionHtml" xml:space="preserve">
+    <value>&lt;h3 class="text-center"&gt;Haberleri Takip Edin!&lt;/h3&gt;
+&lt;p class="text-center"&gt;Ürünlerimiz stokta olduğunda veya ilk kez satışa sunulduğunda ilk siz haberdar olun. &lt;/p&gt;
+&lt;p class="text-center"&gt;E-postanızı girin, hazır olur olmaz size bir bildirim gönderelim!&lt;/p&gt;
+&lt;p class="text-center text-muted"&gt;Özel teklifleri, yeni gelenleri ve doğrudan gelen kutunuza gönderilen heyecan verici ürün güncellemelerini kaçırmayın.&lt;/p&gt;</value>
+  </data>
+  <data name="MainPageProductSubscriptionThanks" xml:space="preserve">
+    <value>&lt;strong&gt;Teşekkürler! Mevcut olduğunda size e-posta göndereceğiz.&lt;/strong&gt;</value>
+  </data>
 </root>

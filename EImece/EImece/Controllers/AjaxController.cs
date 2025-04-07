@@ -1,8 +1,11 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using Resources;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -15,6 +18,10 @@ namespace EImece.Controllers
         [Inject]
         public IOrderService OrderService { get; set; }
 
+        [Inject]
+        public ISubscriberService SubsciberService { get; set; }
+
+        private const string Main_Page_Product_Subscription = "Main-Page-Product-Subscription";
         public TurkishRegionService turkishRegionService;
 
         [HttpPost]
@@ -33,6 +40,53 @@ namespace EImece.Controllers
         {
             this.adresService = adresService;
             turkishRegionService = new TurkishRegionService();
+        }
+
+        public async Task<JsonResult> SubscribeEmail(string subscribeEmail)
+        {
+            if (IsNotValidEmail(subscribeEmail))
+            {
+                return await Task.Run(() =>
+                {
+                    return Json(Resource.NotValidEmailAddress, JsonRequestBehavior.AllowGet);  // Return the list directly
+                }).ConfigureAwait(true);
+            }
+            else 
+            {
+                return await Task.Run(() =>
+                {
+                    if (SubsciberService.GetSubscriberByEmail(subscribeEmail) == null)
+                    {
+                        var subscriber = new Subscriber();
+                        subscriber.Name = subscribeEmail;
+                        subscriber.Email = subscribeEmail;
+                        subscriber.Note = Main_Page_Product_Subscription;
+                        subscriber.IsActive = true;
+                        subscriber.CreatedDate = System.DateTime.Now;
+                        subscriber.UpdatedDate = System.DateTime.Now;
+                        subscriber.Position = 1;
+                        subscriber.Lang = CurrentLanguage;
+                        SubsciberService.SaveOrEditEntity(subscriber);
+                    }
+                    return Json("success", JsonRequestBehavior.AllowGet);  // Return the list directly
+                }).ConfigureAwait(true);
+            }
+        }
+
+        private bool IsNotValidEmail(string subscribeEmail)
+        {
+            // Check if the email is null or empty
+            if (string.IsNullOrEmpty(subscribeEmail))
+            {
+                return true;
+            }
+
+            // Regular expression for validating an email address
+            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            var regex = new Regex(emailPattern);
+
+            // Return true if the email doesn't match the pattern
+            return !regex.IsMatch(subscribeEmail);
         }
 
         public async Task<JsonResult> GetAllCities()
