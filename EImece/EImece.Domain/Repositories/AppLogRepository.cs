@@ -79,18 +79,18 @@ namespace EImece.Domain.Repositories
         public List<AppLog> GetAppLogsFromDb(string search)
         {
             var list = new List<AppLog>();
-            String commandText = "";
+            var commandText = "";
             if (string.IsNullOrEmpty(search))
             {
-                commandText = @"SELECT * FROM dbo.AppLogs ORDER BY Id DESC";
+                commandText = @"SELECT top 10000 * FROM dbo.AppLogs ORDER BY Id DESC";
             }
             else
             {
-                commandText = @"SELECT * FROM dbo.AppLogs where EventMessage LIKE '%" + search.Trim() + "%' ORDER BY Id DESC";
+                commandText = @"SELECT top 10000 * FROM dbo.AppLogs where EventMessage LIKE '%" + search.Trim() + "%' ORDER BY Id DESC";
             }
 
             var parameterList = new List<SqlParameter>();
-            string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings[Constants.DbConnectionKey].ConnectionString;
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
             {
