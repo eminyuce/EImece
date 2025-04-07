@@ -125,6 +125,7 @@ namespace EImece.Domain.Helpers
 
             return identityNumber;
         }
+
         internal static string CheckGsmNumber(string gsmNumber)
         {
             if (string.IsNullOrWhiteSpace(gsmNumber))
@@ -193,10 +194,9 @@ namespace EImece.Domain.Helpers
                     throw new Exception("gsmNumber is not valid:" + gsmNumber);
 
                 default:
-                    throw new Exception("gsmNumber is not valid:"+ gsmNumber);
+                    throw new Exception("gsmNumber is not valid:" + gsmNumber);
             }
         }
-
 
         /// <summary>
         /// Generates a Random Password

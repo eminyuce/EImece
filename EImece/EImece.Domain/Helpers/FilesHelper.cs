@@ -16,7 +16,6 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 
@@ -328,7 +327,6 @@ namespace EImece.Domain.Helpers
             var fullName = Path.Combine(patchOnServer, Path.GetFileName(FileName));
             Bitmap img = LoadImage(fullName);
 
-
             var result = new ViewDataUploadFilesResult()
             {
                 name = FileName,
@@ -600,7 +598,6 @@ namespace EImece.Domain.Helpers
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
         }
 
-
         private void saveWebPformat(string fullPath, byte[] byteArrayIn)
         {
             string webPFileName = Path.GetFileNameWithoutExtension(fullPath) + ".webp";
@@ -788,7 +785,6 @@ namespace EImece.Domain.Helpers
                 ConvertAndSaveBitmap(newBitmap, imageFullPath, format, 100);
             }
         }
-
 
         public byte[] ImageToByteArray(Image imageIn)
         {

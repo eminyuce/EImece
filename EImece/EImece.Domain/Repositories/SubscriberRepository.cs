@@ -10,7 +10,6 @@ namespace EImece.Domain.Repositories
     {
         public SubscriberRepository(IEImeceContext dbContext) : base(dbContext)
         {
-
         }
 
         public Subscriber GetSubscriberByEmail(string email)

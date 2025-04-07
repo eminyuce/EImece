@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    class TurkishRegions
+    internal class TurkishRegions
     {
     }
 
@@ -43,5 +42,4 @@ namespace EImece.Domain.Models.FrontModels
         [JsonProperty("name")]
         public string Name { get; set; }
     }
-
 }

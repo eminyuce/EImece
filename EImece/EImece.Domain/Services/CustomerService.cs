@@ -128,7 +128,7 @@ namespace EImece.Domain.Services
 
                 if (!string.IsNullOrEmpty(search))
                 {
-                    resultList = resultList.Where(r => 
+                    resultList = resultList.Where(r =>
                     r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
                                                        string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
                                            .ToList();

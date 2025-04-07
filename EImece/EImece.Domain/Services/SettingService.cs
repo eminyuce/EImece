@@ -286,7 +286,5 @@ namespace EImece.Domain.Services
 
             return emailAccount;
         }
-
-        
     }
 }

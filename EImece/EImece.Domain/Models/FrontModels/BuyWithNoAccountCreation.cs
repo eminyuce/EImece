@@ -1,7 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,8 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         public Coupon Coupon { get; set; }
-        public string CouponStr { get { return Coupon == null ? "" : Coupon.Name; } }
+        public string CouponStr
+        { get { return Coupon == null ? "" : Coupon.Name; } }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
         public Address ShippingAddress { get; set; }
@@ -38,6 +38,7 @@ namespace EImece.Domain.Models.FrontModels
                 string.Join(",", ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
             }
         }
+
         public Customer Customer
         {
             get
@@ -49,6 +50,7 @@ namespace EImece.Domain.Models.FrontModels
                 _customer = value;
             }
         }
+
         public List<ShoppingCartItem> ShoppingCartItems
         {
             get
@@ -60,7 +62,6 @@ namespace EImece.Domain.Models.FrontModels
                 _shoppingCartItems = value;
             }
         }
-
 
         [JsonIgnore]
         public Setting CargoCompany { get; set; }
@@ -80,7 +81,7 @@ namespace EImece.Domain.Models.FrontModels
                     return 0;
                 else if (BasketMinTotalPriceForCargoInt > 0 && TotalPrice > BasketMinTotalPriceForCargoInt)
                     return 0;
-                else if (CargoPrice!=null && CargoPrice.SettingValue.ToDecimal() > 0)
+                else if (CargoPrice != null && CargoPrice.SettingValue.ToDecimal() > 0)
                     return CargoPrice.SettingValue.ToDecimal();
                 else
                     return 0;
@@ -162,8 +163,5 @@ namespace EImece.Domain.Models.FrontModels
                 return ShoppingCartItems.IsEmpty() ? 0 : ShoppingCartItems.Count;
             }
         }
-
-      
-
     }
 }

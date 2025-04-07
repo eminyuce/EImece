@@ -8,7 +8,6 @@ namespace EImece.Domain.Entities
 {
     public class Order : BaseEntity
     {
-   
         public DateTime DeliveryDate { get; set; }
         public string UserId { get; set; }
         public int OrderType { get; set; }

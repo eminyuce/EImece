@@ -82,7 +82,7 @@ namespace EImece.Domain
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";
         public const string ProductPriceFilterSetting = "ProductPriceFilterSetting";
-        
+
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
@@ -116,7 +116,7 @@ namespace EImece.Domain
         public const string PageThemeT1 = "T1";
         public const string DefaultImageText = "X";
 
-        public const string BuyNowCustomerUserId = "BNC";     
+        public const string BuyNowCustomerUserId = "BNC";
         public const string ShoppingWithoutAccountUserId = "SWA";
         public const string LanguageSession = "LanguageSession";
 

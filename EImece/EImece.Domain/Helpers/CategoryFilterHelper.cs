@@ -1,11 +1,11 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
+using Newtonsoft.Json;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace EImece.Domain.Helpers
 {
@@ -140,7 +140,6 @@ namespace EImece.Domain.Helpers
             categoryFilterTypes.Add(item);
         }
 
-
         public void AddPriceFilter(List<CategoryFilterType> categoryFilterTypes)
         {
             PriceFilterConfig priceRanges = ReadPriceFilterFromSetting();
@@ -173,6 +172,7 @@ namespace EImece.Domain.Helpers
             item.CategoryFilters.ForEach(f => f.Parent = item);
             categoryFilterTypes.Add(item);
         }
+
         //       "PriceFilterConfig": {
         // "PriceRanges": [
         //   { "Min": 0, "Max": 49, "IsLast": false },
@@ -200,12 +200,12 @@ namespace EImece.Domain.Helpers
                             new PriceRange { Min = 999, Max = 4999, IsLast = false },
                             new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
                                 }
-                    };
+                };
             }
             else
             {
                 var json = priceFilterSetting.SettingValue.ToStr();
-                var result =  JsonConvert.DeserializeObject<PriceFilterConfig>(json);
+                var result = JsonConvert.DeserializeObject<PriceFilterConfig>(json);
                 return result;
             }
         }
@@ -237,6 +237,7 @@ namespace EImece.Domain.Helpers
             categoryFilterTypes.Add(item);
         }
     }
+
     public class PriceRange
     {
         public int Min { get; set; }

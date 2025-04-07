@@ -35,6 +35,7 @@ namespace EImece.Domain.Repositories
 
             return item;
         }
+
         public Order GetByOrderNumber(string orderNumber)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -48,6 +49,7 @@ namespace EImece.Domain.Repositories
             var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
             return orders.FirstOrDefault();
         }
+
         public List<Order> GetOrdersUserId(string userId, string search)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -73,7 +75,5 @@ namespace EImece.Domain.Repositories
 
             return orders.ToList();
         }
-
-      
     }
 }

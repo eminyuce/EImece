@@ -486,7 +486,6 @@ namespace EImece.Controllers
                 if (!(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     Logger.Info($"Email not confirmed for user ID: {user.Id}");
-                 
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);

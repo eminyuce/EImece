@@ -13,7 +13,7 @@ namespace EImece.Domain.Entities
     {
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         //   [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
-      
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string Surname { get; set; }
 
@@ -27,7 +27,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
 
-       // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        // [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IdentityNumber))]
         public string IdentityNumber { get; set; }
 

@@ -15,7 +15,7 @@ namespace EImece.Domain.Helpers
         /// <param name="inputImageDirectoryPath">The full path to the input directory containing images.</param>
         /// <param name="outputDirectory">The directory where the compressed/resized images will be saved.</param>
         /// <param name="quality">
-        /// JPEG compression quality (1–100). 
+        /// JPEG compression quality (1–100).
         /// Ignored for non-JPEG formats.
         /// Recommended: 40–70 for reasonable size/quality.
         /// </param>
@@ -24,7 +24,7 @@ namespace EImece.Domain.Helpers
         /// Pass <c>null</c> to retain the original extension.
         /// </param>
         /// <param name="baseFileName">
-        /// The base name for all output files. 
+        /// The base name for all output files.
         /// Files will be saved as baseFileName-1.jpg, baseFileName-2.jpg, etc.
         /// If <c>null</c>, original file names will be used.
         /// </param>
@@ -137,12 +137,14 @@ namespace EImece.Domain.Helpers
 
             return messages;
         }
+
         private static string EnsureDotPrefix(string extension)
         {
             if (string.IsNullOrEmpty(extension) || extension.StartsWith("."))
                 return extension;
             return "." + extension;
         }
+
         private static ImageFormat GetImageFormatByExtension(string ext)
         {
             switch (ext)
@@ -150,14 +152,19 @@ namespace EImece.Domain.Helpers
                 case ".jpg":
                 case ".jpeg":
                     return ImageFormat.Jpeg;
+
                 case ".png":
                     return ImageFormat.Png;
+
                 case ".bmp":
                     return ImageFormat.Bmp;
+
                 case ".gif":
                     return ImageFormat.Gif;
+
                 case ".ico":
                     return ImageFormat.Icon;
+
                 default:
                     return ImageFormat.Jpeg; // Default fallback
             }

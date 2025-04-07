@@ -9,14 +9,7 @@ using Newtonsoft.Json;
 using NLog;
 using Resources;
 using System;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -224,6 +217,7 @@ namespace EImece.Domain.Services
 
             return savedOrder;
         }
+
         public Order SaveBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm)
         {
             Logger.Info($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
@@ -278,6 +272,7 @@ namespace EImece.Domain.Services
             Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
             return savedOrder;
         }
+
         public Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
         {
             Logger.Info($"SaveBuyNow started - OrderGuid: {buyNowSession?.OrderGuid}");
@@ -331,6 +326,7 @@ namespace EImece.Domain.Services
             Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
             return savedOrder;
         }
+
         private Order SaveOrder(String userId, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm,
           int shippingAddressId)
         {
@@ -393,6 +389,7 @@ namespace EImece.Domain.Services
 
             return savedOrder;
         }
+
         private Order SaveOrder(String userId, BuyNowModel buyNowSession, CheckoutForm checkoutForm,
           int shippingAddressId)
         {
@@ -454,10 +451,12 @@ namespace EImece.Domain.Services
 
             return savedOrder;
         }
+
         private void SaveOrderProduct(ShoppingCartSession shoppingCart, Order savedOrder)
         {
             SaveOrderProduct(shoppingCart.ShoppingCartItems, savedOrder);
         }
+
         private void SaveOrderProduct(List<ShoppingCartItem> shoppingCartItems, Order savedOrder)
         {
             Logger.Info($"SaveOrderProduct started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCartItems.Count}");
@@ -507,6 +506,5 @@ namespace EImece.Domain.Services
             var savedOrderProduct = OrderProductService.SaveOrEditEntity(entity);
             Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
-
     }
 }

@@ -1,12 +1,10 @@
 ﻿using EImece.Domain.Helpers;
 using System;
-using System.Web.Mvc;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Web;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -110,8 +108,6 @@ namespace EImece.Areas.Admin.Controllers
 
             return true;
         }
-
-
 
         // Get method to display image compression form
         [HttpGet]

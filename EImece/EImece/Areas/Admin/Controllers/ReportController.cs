@@ -400,7 +400,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
 
                 var report = _reportService.GetProductSummaryReport(startDate, endDate, isActive, productCategoryId);
-   
+
                 return View(new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -523,7 +523,6 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
-        
 
         [HttpGet]
         public ActionResult ProductStatsByDateRange()

@@ -37,6 +37,7 @@ namespace EImece.Areas.Admin.Controllers
             MailTemplateService.SaveOrEditEntity(itemCopy);
             return RedirectToAction("Index");
         }
+
         public ActionResult SaveOrEdit(int id = 0)
         {
             var item = EntityFactory.GetBaseEntityInstance<MailTemplate>();

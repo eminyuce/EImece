@@ -27,7 +27,7 @@ namespace EImece.Domain.Services
             return response.Result;
         }
 
-        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId, String actionName= "PaymentResult")
+        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId, String actionName = "PaymentResult")
         {
             Logger.Info("Initializing CheckoutForm for user: " + userId);
 
@@ -273,7 +273,5 @@ namespace EImece.Domain.Services
             Logger.Debug("Iyzico API options fetched successfully.");
             return options;
         }
-
-        
     }
 }

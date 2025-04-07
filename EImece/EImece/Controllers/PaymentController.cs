@@ -8,7 +8,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using Iyzipay.Model;
 using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -387,6 +386,7 @@ namespace EImece.Controllers
                 return View(shoppingCart);
             }
         }
+
         public ActionResult CargoTracking(string id)
         {
             ViewBag.OrderNumber = id;
@@ -411,6 +411,7 @@ namespace EImece.Controllers
                         new ViewDataDictionary(order), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult CheckoutDelivery()
         {
             PaymentLogger.Info("Entering CheckoutDelivery action.");
@@ -524,6 +525,7 @@ namespace EImece.Controllers
                 return Json(new { status = Domain.Constants.FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
+
         public ActionResult PlaceOrder()
         {
             PaymentLogger.Info("Entering PlaceOrder action.");
@@ -556,7 +558,6 @@ namespace EImece.Controllers
                 return Content("RegisterCustomer");
             }
         }
-         
 
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
         {
@@ -840,11 +841,11 @@ namespace EImece.Controllers
                 PaymentLogger.Info("Street is empty. Adding model error.");
                 ModelState.AddModelError("customer.Street", Resource.PleaseEnterYourStreet);
             }
-           // if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
-           // {
-           //     PaymentLogger.Info("IdentityNumber is empty. Adding model error.");
-           //     ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
-           // }
+            // if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
+            // {
+            //     PaymentLogger.Info("IdentityNumber is empty. Adding model error.");
+            //     ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
+            // }
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 
@@ -883,9 +884,9 @@ namespace EImece.Controllers
             try
             {
                 var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                if(emailTemplate.Item2.Result == null)
+                if (emailTemplate.Item2.Result == null)
                 {
-                    PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:"+ order.Id);
+                    PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:" + order.Id);
                 }
                 PaymentLogger.Info("Generated order confirmation email template.");
                 EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
@@ -912,7 +913,7 @@ namespace EImece.Controllers
                 PaymentLogger.Error($"Failed to send company new order email: {e.Message}", e);
             }
         }
-       
+
         public ActionResult ShoppingWithoutAccount()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -970,7 +971,7 @@ namespace EImece.Controllers
                 item.UserId = Domain.Constants.ShoppingWithoutAccountUserId;
                 ShoppingCartService.SaveOrEditShoppingCart(item);
                 PaymentLogger.Info("Saved ShoppingWithoutAccount shopping cart.");
-           
+
                 ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
                 return View("ShoppingWithoutAccountPayment", p);
             }

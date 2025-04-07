@@ -10,7 +10,7 @@ namespace EImece.Domain.Models.FrontModels
         public string CompanyName { get; set; }
         public string CompanyPhoneNumber { get; set; }
         public string CompanyEmailAddress { get; set; }
-        public string CompanyWebSiteUrl { get; set; }        
+        public string CompanyWebSiteUrl { get; set; }
         public string BaseUrl { get; set; }
         public string ImgLogoSrc { get; set; }
         public Order FinishedOrder { get; set; }

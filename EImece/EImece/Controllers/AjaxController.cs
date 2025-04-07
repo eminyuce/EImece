@@ -1,5 +1,7 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -34,8 +36,6 @@ namespace EImece.Controllers
             return Json(html, JsonRequestBehavior.AllowGet);
         }
 
-
-
         public AjaxController(AdresService adresService)
         {
             this.adresService = adresService;
@@ -51,7 +51,7 @@ namespace EImece.Controllers
                     return Json(Resource.NotValidEmailAddress, JsonRequestBehavior.AllowGet);  // Return the list directly
                 }).ConfigureAwait(true);
             }
-            else 
+            else
             {
                 return await Task.Run(() =>
                 {
@@ -89,11 +89,12 @@ namespace EImece.Controllers
             return !regex.IsMatch(subscribeEmail);
         }
 
+        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public async Task<JsonResult> GetAllCities()
         {
             return await Task.Run(() =>
             {
-                var allIller = turkishRegionService.GetAllCities().OrderBy(r=>r).ToList();
+                var allIller = turkishRegionService.GetAllCities().OrderBy(r => r).ToList();
                 return Json(allIller, JsonRequestBehavior.AllowGet);  // Return the list directly
             }).ConfigureAwait(true);
         }
@@ -102,7 +103,7 @@ namespace EImece.Controllers
         {
             return await Task.Run(() =>
             {
-                var ilceler = turkishRegionService.GetTownsByCity(cityName).OrderBy(r => r).ToList();  
+                var ilceler = turkishRegionService.GetTownsByCity(cityName).OrderBy(r => r).ToList();
 
                 return Json(ilceler, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
@@ -112,13 +113,11 @@ namespace EImece.Controllers
         {
             return await Task.Run(() =>
             {
-                var districts = turkishRegionService.GetDistrictsByTown(cityName, townName).OrderBy(r => r).ToList();  
+                var districts = turkishRegionService.GetDistrictsByTown(cityName, townName).OrderBy(r => r).ToList();
 
                 return Json(districts, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
-
-
 
         // GET: Ajax
         public async Task<JsonResult> GetIller()
