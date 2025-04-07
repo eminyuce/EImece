@@ -1147,6 +1147,7 @@
     <Content Include="Areas\Admin\Views\Report\ProductStatsByDateRange.cshtml" />
     <Content Include="Areas\Admin\Views\Images\CompressImages.cshtml" />
     <Content Include="App_Data\data.json" />
+    <Content Include="Areas\Admin\Views\Users\CustomerRoles.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

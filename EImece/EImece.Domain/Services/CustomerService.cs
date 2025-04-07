@@ -43,7 +43,7 @@ namespace EImece.Domain.Services
                 {
                     UserId = userId,
                     Name = model.FirstName,
-                    GsmNumber = model.PhoneNumber,
+                    GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
                     IdentityNumber = "",
                     Ip = GeneralHelper.GetIpAddress(),
                     IsActive = true,
@@ -99,6 +99,7 @@ namespace EImece.Domain.Services
             if (customer != null)
             {
                 customer.CustomerType = (int)EImeceCustomerType.Normal;
+                customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 SaveOrEditEntity(customer);
                 Logger.Info("Customer type updated successfully.");
             }
@@ -112,8 +113,8 @@ namespace EImece.Domain.Services
         {
             Logger.Info($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
-            var result = CustomerRepository.GetAll().Where(r => r.CustomerType == (int)EImeceCustomerType.Normal).ToList();
-            var allOrders = OrderService.GetAll().Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder).ToList();
+            var result = CustomerRepository.GetAll().Where(r => r.CustomerType == (int)EImeceCustomerType.Normal || r.CustomerType == (int)EImeceCustomerType.ShoppingWithoutAccount).ToList();
+            var allOrders = OrderService.GetAll().Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder || r.OrderType == (int)EImeceOrderType.BuyWithNoAccountCreation).ToList();
             var resultList = result.ToList();
 
             if (resultList.IsNotEmpty())
@@ -127,7 +128,8 @@ namespace EImece.Domain.Services
 
                 if (!string.IsNullOrEmpty(search))
                 {
-                    resultList = resultList.Where(r => r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    resultList = resultList.Where(r => 
+                    r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
                                                        string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
                                            .ToList();
                 }

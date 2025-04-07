@@ -82,12 +82,27 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label><i class="fas fa-phone"></i> @Html.LabelFor(model => customer.GsmNumber)</label>
-                                    @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 5XX XXX XX XX" } })
                                     <span class="badge badge-info">@Resource.WhyNeedGsmNumber</span>
                                     @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => customer.Gender, htmlAttributes: new { @class = "control-label" })<br />
+
+                                    <label class="me-2">
+                                        @Html.RadioButtonFor(model => customer.Gender, ((int)GenderType.Woman).ToString()) Kadin
+                                    </label>
+
+                                    <label>
+                                        @Html.RadioButtonFor(model => customer.Gender, ((int)GenderType.Man).ToString()) Erkek
+                                    </label>
+
+                                    @Html.ValidationMessageFor(model => customer.Gender, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>

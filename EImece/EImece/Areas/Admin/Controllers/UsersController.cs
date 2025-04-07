@@ -41,6 +41,13 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
 
+        public ActionResult CustomerRoles(String search = "")
+        {
+            List<EditUserViewModel> model = UsersService.GetUsers(search);
+            model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
+            return View(model);
+        }
+
         //[Authorize(Roles = "Admin")]
         public ActionResult Register()
         {

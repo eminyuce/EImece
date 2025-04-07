@@ -70,19 +70,24 @@
     </div>
     }
 </div>
-@if (!String.IsNullOrEmpty(Model.RegistrationAddress))
-{
+ 
 <div class="row">
     <div class="col-md-12">
         <b class="display-label">
             @AdminResource.CustomerRegistrationAddress
         </b>
         <div class="display-field">
-            @Html.DisplayFor(model => model.RegistrationAddress)
+         <strong>@Resource.City:</strong> @Html.DisplayFor(model => model.City) |
+        <strong>@Resource.Town:</strong> @Html.DisplayFor(model => model.Town) |
+        <strong>@Resource.District:</strong> @Html.DisplayFor(model => model.District) |
+        <strong>@Resource.Street:</strong> @Html.DisplayFor(model => model.Street) |
+        <strong>@Resource.ZipCode:</strong> @Html.DisplayFor(model => model.ZipCode) |
+        <strong>@Resource.Country:</strong> @Html.DisplayFor(model => model.Country) |
+        <strong>@Resource.Description:</strong> @Html.DisplayFor(model => model.Description)
         </div>
     </div>
 </div>
-}
+ 
 
 <div class="row">
     <div class="col-md-12">

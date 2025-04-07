@@ -85,7 +85,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
-                        @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone" } })
+                        @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone", placeholder = "+90 5XX XXX XX XX" } })
                         <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
                         @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
                     </div>
@@ -94,8 +94,15 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })<br />
-                        Kadin  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString())
-                        Erkek  @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString())
+
+                        <label class="me-2">
+                            @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString()) Kadin
+                        </label>
+
+                        <label>
+                            @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString()) Erkek
+                        </label>
+
                         @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                     </div>
                 </div>

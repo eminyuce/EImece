@@ -1538,7 +1538,8 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ödemeniz şu anda işleme koyulamıyor, lütfen birkaç dakika sonra tekrar deneyin.
+        ///   Looks up a localized string similar to &lt;h4 class=&quot;text-danger mb-3&quot;&gt;Ödeme İşlenemedi&lt;/h4&gt;
+        ///                    &lt;p class=&quot;text-muted&quot;&gt;Ödemeniz şu anda işleme koyulamıyor. Lütfen birkaç dakika sonra tekrar deneyin.&lt;/p&gt;.
         /// </summary>
         public static string FailedOrderInfoMessage {
             get {

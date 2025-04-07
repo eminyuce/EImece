@@ -244,6 +244,7 @@ namespace EImece.Domain.Services
             customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
+            customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
             customer = CustomerService.SaveOrEditEntity(customer);
             Logger.Info($"Customer saved with Id: {customer.Id}");
 

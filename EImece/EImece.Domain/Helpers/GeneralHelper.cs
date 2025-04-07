@@ -125,6 +125,77 @@ namespace EImece.Domain.Helpers
 
             return identityNumber;
         }
+        internal static string CheckGsmNumber(string gsmNumber)
+        {
+            if (string.IsNullOrWhiteSpace(gsmNumber))
+            {
+                throw new Exception("gsmNumber is NULL or empty");
+            }
+
+            // Remove spaces and non-digit characters
+            string digitsOnly = new string(gsmNumber.Where(char.IsDigit).ToArray());
+
+            // Normalize number based on digit count
+            if (digitsOnly.Length == 10 && digitsOnly.StartsWith("5"))
+            {
+                // Example: 5XX1234567 → add +90
+                return "+90" + digitsOnly;
+            }
+            else if (digitsOnly.Length == 11 && digitsOnly.StartsWith("05"))
+            {
+                // Example: 05XX1234567 → strip leading 0, add +90
+                return "+90" + digitsOnly.Substring(1);
+            }
+            else if (digitsOnly.Length == 12 && digitsOnly.StartsWith("90"))
+            {
+                // Example: 90XXXXXXXXXX → add +
+                return "+" + digitsOnly;
+            }
+            else if (digitsOnly.Length == 13 && digitsOnly.StartsWith("905"))
+            {
+                // Redundant, but some might write full +905XXXXXXXXX with digits only
+                return "+" + digitsOnly;
+            }
+            else
+            {
+                throw new Exception("gsmNumber is not valid: " + gsmNumber);
+            }
+        }
+
+        internal static string CheckGsmNumber_v2(string gsmNumber)
+        {
+            if (string.IsNullOrEmpty(gsmNumber))
+            {
+                throw new Exception("gsmNumber is NULL");
+            }
+
+            // Remove any non-digit characters
+            string digitsOnly = new string(gsmNumber.Where(char.IsDigit).ToArray());
+
+            // Check length and handle different format cases
+            switch (digitsOnly.Length)
+            {
+                case 10: // Format: 5321234567
+                    return "+90" + digitsOnly;
+
+                case 11: // Format: 05321234567
+                    if (digitsOnly.StartsWith("0"))
+                    {
+                        return "+9" + digitsOnly;
+                    }
+                    return "+" + digitsOnly;
+
+                case 12: // Format: 905321234567
+                    if (digitsOnly.StartsWith("90"))
+                    {
+                        return "+" + digitsOnly;
+                    }
+                    throw new Exception("gsmNumber is not valid:" + gsmNumber);
+
+                default:
+                    throw new Exception("gsmNumber is not valid:"+ gsmNumber);
+            }
+        }
 
 
         /// <summary>

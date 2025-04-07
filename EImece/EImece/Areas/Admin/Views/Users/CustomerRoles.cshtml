@@ -15,8 +15,8 @@
 
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
-
+    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1); 
+    
     var controllerName = "Users";
     var gridDeleteText = AdminResource.GridDeleteText;
     var title = "Users";
@@ -29,18 +29,11 @@
     var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
 }
 
-<h2>@AdminResource.Users</h2>
+<h2>@AdminResource.Customers Customer Role Users</h2>
 <hr class="adminLine" />
-<p>
-    @Html.ActionLink("Customer With Accounts In Our Site", "CustomerRoles", controllerName, null, new { @class = "btn btn-info" })
-</p>
+
 <div class="panel panel-info">
     <div class="row">
-        <span class="col-md-3">
-            <p>
-                @Html.ActionLink(AdminResource.NewUserInsert, "Register", controllerName, null, new { @class = "btn btn-primary btn-block" })
-            </p>
-        </span>
         <span class="col-md-9">
             @Html.Partial("pSearchForm")
         </span>
@@ -63,58 +56,39 @@
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 
-
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
 
-
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(AdminResource.Edit, "Edit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-sm" })
-</b>);
-
-columns.Add()
+    columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-{ "ItemId", d.Id },
-{"controllerName",controllerName},
-{ "DeleteText", gridDeleteText },
-{ "ItemDescription", String.Format("{0} {1}", d.FirstName, d.LastName) } }));
+        { "ItemId", d.Id },
+        {"controllerName",controllerName},
+        { "DeleteText", gridDeleteText },
+        { "ItemDescription", String.Format("{0} {1}", d.FirstName, d.LastName) } }));
+
+    columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.SetWidth(30)
+.RenderValueAs(d =>
+    @<b>
+        @Html.ActionLink(AdminResource.ForgotPassword, "ForgotPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
+    </b>);
 
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(30)
 .RenderValueAs(d =>
-        @<b>
-            @Html.ActionLink(AdminResource.ForgotPassword, "ForgotPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
-        </b>);
+    @<b>
+        @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
+    </b>);
 
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d =>
-        @<b>
-            @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
-        </b>);
-
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d =>
-        @<b>
-            @Html.ActionLink(AdminResource.Roles, "UserRoles", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-sm" })
-        </b>);
 
 columns.Add(c => c.Email)
  .Titled(AdminResource.Email)

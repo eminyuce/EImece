@@ -574,7 +574,8 @@
     <value>Kapat</value>
   </data>
   <data name="FailedOrderInfoMessage" xml:space="preserve">
-    <value>Ödemeniz şu anda işleme koyulamıyor, lütfen birkaç dakika sonra tekrar deneyin</value>
+    <value>&lt;h4 class="text-danger mb-3"&gt;Ödeme İşlenemedi&lt;/h4&gt;
+                    &lt;p class="text-muted"&gt;Ödemeniz şu anda işleme koyulamıyor. Lütfen birkaç dakika sonra tekrar deneyin.&lt;/p&gt;</value>
   </data>
   <data name="TotalPriceOfYourOrderWithCargoPrice" xml:space="preserve">
     <value>Toplam Ödeme Miktarınız (Kargo ücreti ile birlikte)</value>

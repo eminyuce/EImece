@@ -13,7 +13,7 @@ namespace EImece.Domain.Entities
     {
         //      [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         //   [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
-        [NotMapped]
+      
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string Surname { get; set; }
 
