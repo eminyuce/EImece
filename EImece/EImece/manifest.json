@@ -1,7 +1,9 @@
-{
-  "name": "Angel Silk Ltd.",
-  "short_name": "Angel Silk",
+﻿{
+  "id": "/?app=yuvadan",
+  "name": "AYK KÜBRA GIDA TURİZM SAN.VE TİC.LTD.ŞTI",
+  "short_name": "Yuvadan",
   "theme_color": "#1789F9",
+  "description": "Antalya bölgesinde köylülerin emeğiyle üretilen en sağlıklı ve doğal ürünleri keşfedin...",
   "background_color": "#ffffff",
   "start_url": "/",
   "display": "standalone",
