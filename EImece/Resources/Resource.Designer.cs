@@ -3406,6 +3406,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Markası.
+        /// </summary>
+        public static string ProductBrand {
+            get {
+                return ResourceManager.GetString("ProductBrand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Kategorileri.
         /// </summary>
         public static string ProductCategories {

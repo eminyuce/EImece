@@ -68,8 +68,12 @@
         </div>
         <h1 class="page-title">@product.ProductNameStr</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
-        <span class="d-block mt-2 text-muted">@Resource.ProductCode : @product.ProductCode</span>
-        <span class="d-block mt-2 text-muted">@product.ShortDescription</span>
+        @if (product.Brand != null)
+        {
+            <span class="d-block mt-1 text-muted">@Resource.ProductBrand : <strong>@product.Brand.Name</strong></span>
+        }
+        <span class="d-block mt-1 text-muted">@Resource.ProductCode : <strong>@product.ProductCode</strong></span>
+        <span class="d-block mt-1 text-muted">@Html.Raw(product.ShortDescription)</span>
     </div>
 </div>
 
@@ -339,6 +343,13 @@
                     </div>
                     <div class="collapse show" id="productInfo" data-parent="#productPanels">
                         <div class="card-body">
+                            @if (product.Brand!=null && !String.IsNullOrEmpty(product.Brand.Name))
+                            {
+                                <span class="product-code">
+                                    <i>@Resource.ProductBrand : @product.Brand.Name</i>
+                                </span>
+                                <br />
+                            }
                             @if (!String.IsNullOrEmpty(product.ProductCode))
                             {
                                 <span class="product-code">

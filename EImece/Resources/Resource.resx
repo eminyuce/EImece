@@ -1922,4 +1922,7 @@ Stokta</value>
   <data name="MainPageProductSubscriptionThanks" xml:space="preserve">
     <value>&lt;strong&gt;Teşekkürler! Mevcut olduğunda size e-posta göndereceğiz.&lt;/strong&gt;</value>
   </data>
+  <data name="ProductBrand" xml:space="preserve">
+    <value>Ürün Markası</value>
+  </data>
 </root>
