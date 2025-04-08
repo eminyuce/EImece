@@ -54,17 +54,17 @@
         }
 
         <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
-        <div class="font-size-sm border-bottom px-4 pt-3 pb-3">
+        <div class="font-size-sm border-bottom pt-3 pb-3">
             <div class="d-flex justify-content-between mb-2">
                 <span>@Resource.MyBasket:</span>
-                <span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span>
+                <span id="TotalPrice"><strong>@Model.TotalPrice.CurrencySign()</strong></span>
             </div>
 
             @if (Model.Coupon != null)
             {
                 <div class="d-flex justify-content-between mb-2">
                     <span>@Resource.CouponCode:</span>
-                    <span id="CouponName">@Model.CouponName</span>
+                    <span id="CouponName"><strong>@Model.CouponName</strong></span>
                 </div>
             }
 
@@ -80,13 +80,13 @@
                     else
                     {
                         <span>@Resource.CargoPrice:</span>
-                        <span>@Model.CargoPriceValue.CurrencySign()</span>
+                        <span><strong>@Model.CargoPriceValue.CurrencySign()</strong></span>
                     }
                 }
                 else if (Model.CargoPriceValue > 0)
                 {
                     <span>@Resource.CargoPrice:</span>
-                    <span>@Model.CargoPriceValue.CurrencySign()</span>
+                    <span><strong>@Model.CargoPriceValue.CurrencySign()</strong></span>
                 }
                 else
                 {
@@ -99,7 +99,7 @@
 
         <div class="font-weight-semibold text-center py-3">
             <span>@Resource.Total: </span>
-            <span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span>
+            <span id="TotalPriceWithCargoPrice"><strong>@Model.TotalPriceWithCargoPrice.CurrencySign()</strong></span>
         </div>
     </div>
 </div>
