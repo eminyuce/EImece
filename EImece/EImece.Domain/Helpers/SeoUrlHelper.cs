@@ -10,8 +10,8 @@ namespace EImece.Domain.Helpers
     {
         public static string GetCanonicalTag(ViewContext viewContext, string SeoId = "", string linkArea = "")
         {
-            String url = GetCanonicalUrl(viewContext, SeoId, linkArea);
-            if (!String.IsNullOrEmpty(url))
+            string url = GetCanonicalUrl(viewContext, SeoId, linkArea);
+            if (!string.IsNullOrEmpty(url))
             {
                 string canonicalRel = "canonical";
                 if (linkArea.Equals("amp", StringComparison.InvariantCultureIgnoreCase))
@@ -19,14 +19,15 @@ namespace EImece.Domain.Helpers
                     canonicalRel = "amphtml";
                 }
 
-                url = String.Format("<link href='{0}' rel='{1}'/>", url, canonicalRel);
+                url = string.Format("<link href=\"{0}\" rel=\"{1}\" />", url, canonicalRel);
                 return url;
             }
             else
             {
-                return String.Empty;
+                return string.Empty;
             }
         }
+
 
         public static string GetCanonicalUrl(ViewContext viewContext, string id = "", string linkArea = "")
         {

@@ -45,30 +45,25 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                // Strip HTML from description
                 string plainDescription = GeneralHelper.StripHtml(Product.Description ?? "No description available");
 
-                var schema = new
+                var schema = new GoogleProductSchema
                 {
-                    @context = "https://schema.org/",
-                    @type = "Product",
-                    name = Product.ProductNameStr,
-                    image = Product.ImageFullPath(200, 200),
-                    description = plainDescription,
-                    brand = new
+                    Name = Product.ProductNameStr,
+                    Image = Product.ImageFullPath(200, 200),
+                    Description = plainDescription,
+                    Brand = new GoogleBrand
                     {
-                        @type = "Brand",
-                        name = Product.Brand.Name
+                        Name = Product.Brand.Name
                     },
-                    sku = Product.ProductCode,
-                    offers = new
+                    Sku = Product.ProductCode,
+                    Offers = new GoogleOffer
                     {
-                        @type = "Offer",
-                        url = Product.DetailPageAbsoluteUrl,
-                        priceCurrency = "TRY", // Para birimini gerektiği gibi ayarla
-                        price = Product.PriceWithDiscount.CurrencySignForIyizo(),
-                        availability = Product.StateEnum == Enums.ProductState.ProductInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                        itemCondition = "https://schema.org/NewCondition"
+                        Url = Product.DetailPageAbsoluteUrl,
+                        PriceCurrency = "TRY",
+                        Price = Product.PriceWithDiscount,
+                        Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
+                        ItemCondition = "https://schema.org/NewCondition"
                     }
                 };
 
@@ -222,4 +217,49 @@ namespace EImece.Domain.Models.FrontModels
             this.Percentage = percentage;
         }
     }
+
+    public class GoogleProductSchema
+    {
+        [JsonProperty("@context")]
+        public string Context { get; set; } = "https://schema.org/";
+
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Product";
+
+        public string Name { get; set; }
+
+        public string Image { get; set; }
+
+        public string Description { get; set; }
+
+        public GoogleBrand Brand { get; set; }
+
+        public string Sku { get; set; }
+
+        public GoogleOffer Offers { get; set; }
+    }
+
+    public class GoogleBrand
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Brand";
+        public string Name { get; set; }
+    }
+
+    public class GoogleOffer
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Offer";
+
+        public string Url { get; set; }
+
+        public string PriceCurrency { get; set; }
+
+        public decimal Price { get; set; }
+
+        public string Availability { get; set; }
+
+        public string ItemCondition { get; set; }
+    }
+
 }

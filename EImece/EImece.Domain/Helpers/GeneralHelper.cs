@@ -72,7 +72,53 @@ namespace EImece.Domain.Helpers
             return result.ToString();
         }
 
-        public static List<T> GetUnique<T>(List<T> clazzes) where T : BaseEntity
+        public static string GetSchemaAvailability(ProductState productState)
+        {
+            switch (productState)
+            {
+                case ProductState.ProductInStock:
+                    return "https://schema.org/InStock";
+
+                case ProductState.ProductOutOfStock:
+                    return "https://schema.org/OutOfStock";
+
+                case ProductState.PreOrder:
+                    return "https://schema.org/PreOrder";
+
+                case ProductState.Discontinued:
+                    return "https://schema.org/Discontinued";
+
+                case ProductState.Backorder:
+                    return "https://schema.org/BackOrder";
+
+                case ProductState.ComingSoon:
+                    // "Coming Soon" doesn’t have a direct Schema.org match; "PreOrder" is closest if orders are accepted,
+                    // otherwise "OutOfStock" is used as a fallback.
+                    return "https://schema.org/OutOfStock";
+
+                case ProductState.LimitedStock:
+                    return "https://schema.org/LimitedAvailability";
+
+                case ProductState.Reserved:
+                    // "Reserved for Customers" implies it’s not generally available, so "OutOfStock" fits best.
+                    return "https://schema.org/OutOfStock";
+
+                case ProductState.AwaitingRestock:
+                    // "Awaiting Restock" aligns with "BackOrder" if orders are accepted, otherwise "OutOfStock".
+                    return "https://schema.org/OutOfStock";
+
+                case ProductState.NotForSale:
+                    // "Not for Sale" could map to "Discontinued" or "OutOfStock"; "OutOfStock" is more generic.
+                    return "https://schema.org/OutOfStock";
+
+                case ProductState.NONE:
+                default:
+                    // Default to "OutOfStock" for undefined or neutral states.
+                    return "https://schema.org/OutOfStock";
+            }
+        }
+
+            public static List<T> GetUnique<T>(List<T> clazzes) where T : BaseEntity
         {
             var list = new List<T>();
             foreach (var item in clazzes)
