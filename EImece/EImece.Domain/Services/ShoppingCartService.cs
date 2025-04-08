@@ -78,7 +78,7 @@ namespace EImece.Domain.Services
             Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
-        public Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
+        public Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
         {
             Logger.Info($"SaveShoppingCart started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 
@@ -133,7 +133,7 @@ namespace EImece.Domain.Services
             CustomerService.SaveCustomerTypeToNormal(userId);
 
             Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-            Order savedOrder = SaveOrder(userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
+            Order savedOrder = SaveOrder(orderNumber,userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
             Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
@@ -144,7 +144,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private Order SaveOrder(String userId, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
+        private Order SaveOrder(string orderNumber, String userId, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
             int shippingAddressId,
            int billingAddressId)
         {
@@ -169,7 +169,7 @@ namespace EImece.Domain.Services
             item.Name = shoppingCart.Customer.FullName;
             item.OrderGuid = shoppingCart.OrderGuid;
             item.OrderType = (int)EImeceOrderType.NormalOrder;
-            item.OrderNumber = GeneralHelper.RandomNumber(12);
+            item.OrderNumber = orderNumber;
             item.CargoPrice = shoppingCart.CargoPriceValue;
             item.UserId = userId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
@@ -218,7 +218,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public Order SaveBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm)
+        public Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm)
         {
             Logger.Info($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
@@ -234,10 +234,6 @@ namespace EImece.Domain.Services
             }
 
             Customer customer = buyWithNoAccountCreation.Customer;
-            Logger.Info($"Customer saved with Id: {customer.Id}");
-            buyWithNoAccountCreation.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.ShoppingWithoutAccountUserId + "-" + buyWithNoAccountCreation.Customer.Id;
-            Logger.Info($"Generated UserId for BuyNow customer: {buyWithNoAccountCreation.Customer.UserId}");
-
             Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
             int shippingAddressId = shippingAddress.Id;
             if (shippingAddressId == 0)
@@ -255,7 +251,7 @@ namespace EImece.Domain.Services
             }
 
             Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = SaveOrder(buyWithNoAccountCreation.Customer.UserId, buyWithNoAccountCreation, checkoutForm, shippingAddressId);
+            Order savedOrder = SaveOrder(orderNumber,buyWithNoAccountCreation, checkoutForm, shippingAddressId);
             Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
@@ -320,10 +316,10 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private Order SaveOrder(String userId, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm,
+        private Order SaveOrder(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm,
           int shippingAddressId)
         {
-            Logger.Info($"SaveOrder (buyWithNoAccountCreation) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
+            Logger.Info($"SaveOrder (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
 
             var item = new Order();
 
@@ -331,9 +327,9 @@ namespace EImece.Domain.Services
             item.Name = buyWithNoAccountCreation.Customer.FullName;
             item.OrderGuid = buyWithNoAccountCreation.OrderGuid;
             item.OrderType = (int)EImeceOrderType.BuyWithNoAccountCreation;
-            item.OrderNumber = GeneralHelper.RandomNumber(12);
+            item.OrderNumber = orderNumber;
             item.CargoPrice = buyWithNoAccountCreation.CargoPriceValue;
-            item.UserId = userId;
+            item.UserId = buyWithNoAccountCreation.Customer.UserId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;

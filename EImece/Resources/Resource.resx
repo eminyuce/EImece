@@ -1925,4 +1925,10 @@ Stokta</value>
   <data name="ProductBrand" xml:space="preserve">
     <value>Ürün Markası</value>
   </data>
+  <data name="EmailNotValidMessage" xml:space="preserve">
+    <value>Geçersiz e-posta formatı. Lütfen doğru bir e-posta adresi giriniz.</value>
+  </data>
+  <data name="GsmNumberNotValidMessage" xml:space="preserve">
+    <value>Telefon numarası formatı hatalı. Lütfen kontrol ediniz.</value>
+  </data>
 </root>

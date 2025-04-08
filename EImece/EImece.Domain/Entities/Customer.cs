@@ -133,8 +133,8 @@ namespace EImece.Domain.Entities
         {
             return !string.IsNullOrEmpty(Name)
                             && !string.IsNullOrEmpty(Surname)
-                            && !string.IsNullOrEmpty(GsmNumber)
-                            && !string.IsNullOrEmpty(Email)
+                            && !string.IsNullOrEmpty(GsmNumber.ToStr()) && GeneralHelper.IsGsmNumberValid(GsmNumber.ToStr())
+                            && !string.IsNullOrEmpty(Email.ToStr()) && GeneralHelper.IsValidEmail(Email.ToStr())
                             && !string.IsNullOrEmpty(City)
                             && !string.IsNullOrEmpty(Town)
                             && !string.IsNullOrEmpty(Country);

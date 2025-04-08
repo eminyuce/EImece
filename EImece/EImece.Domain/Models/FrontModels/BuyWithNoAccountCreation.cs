@@ -15,8 +15,7 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         public Coupon Coupon { get; set; }
-        public string CouponStr
-        { get { return Coupon == null ? "" : Coupon.Name; } }
+        public string CouponStr    { get { return Coupon == null ? "" : Coupon.Name; } }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
         public Address ShippingAddress { get; set; }
@@ -28,14 +27,15 @@ namespace EImece.Domain.Models.FrontModels
                 return Coupon == null ? "" : Coupon.Name;
             }
         }
-
+        // we use ConversationId as OrderNumber in Order table
+        // İstek esnasında gönderip, sonuçta alabileceğiniz bir değer,
+        // request/response eşleşmesi yapmak için kullanılabilir.
+        // En yaygın kullanış biçimi üye iş yerinin ürün numarasıdır.
         public string ConversationId
         {
             get
             {
-                return string.Format("c-{0}-p-{1}",
-                _customer.Id.ToString(),
-                string.Join(",", ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
+                return GeneralHelper.RandomNumber(20);
             }
         }
 

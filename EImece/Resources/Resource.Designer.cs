@@ -1412,6 +1412,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geçersiz e-posta formatı. Lütfen doğru bir e-posta adresi giriniz..
+        /// </summary>
+        public static string EmailNotValidMessage {
+            get {
+                return ResourceManager.GetString("EmailNotValidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-posta alani zorunlu..
         /// </summary>
         public static string EmailRequired {
@@ -1940,6 +1949,15 @@ namespace Resources {
         public static string GridSelectAllButtonText {
             get {
                 return ResourceManager.GetString("GridSelectAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telefon numarası formatı hatalı. Lütfen kontrol ediniz..
+        /// </summary>
+        public static string GsmNumberNotValidMessage {
+            get {
+                return ResourceManager.GetString("GsmNumberNotValidMessage", resourceCulture);
             }
         }
         

@@ -62,16 +62,17 @@ namespace EImece.Domain.Services
             var requestContext = HttpContext.Current.Request.RequestContext;
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
             string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
+            string orderNumber = GeneralHelper.GenerateOrderNumber();
             string callbackUrl = new UrlHelper(requestContext).Action(actionName,
                                                "Payment",
-                                               new { o, u },
+                                               new { o, u, orderNumber },
                                                AppConfig.HttpProtocol);
 
             // Initialize request
             CreateCheckoutFormInitializeRequest request = new CreateCheckoutFormInitializeRequest
             {
                 Locale = Locale.TR.ToString(),
-                ConversationId = shoppingCart.ConversationId,
+                ConversationId = orderNumber,
                 Currency = Currency.TRY.ToString(),
                 BasketId = shoppingCart.OrderGuid,
                 PaymentGroup = PaymentGroup.PRODUCT.ToString(),

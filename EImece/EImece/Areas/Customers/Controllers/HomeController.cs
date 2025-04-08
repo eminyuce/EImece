@@ -154,6 +154,13 @@ namespace EImece.Areas.Customers.Controllers
             {
                 ModelState.AddModelError("GsmNumber", Resource.MandatoryField);
             }
+            else
+            {
+                if (GeneralHelper.IsGsmNumberNotValid(customer.GsmNumber.ToStr()))
+                {
+                    ModelState.AddModelError("GsmNumber", Resource.GsmNumberNotValidMessage);
+                }
+            }
             if (String.IsNullOrEmpty(customer.City))
             {
                 ModelState.AddModelError("City", Resource.MandatoryField);

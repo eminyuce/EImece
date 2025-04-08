@@ -49,17 +49,6 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public string ConversationId
-        {
-            get
-            {
-                return string.Format("t-{0}-c-{1}-p-{2}",
-             _customer.CustomerType,   
-             _customer.Id.ToString(),
-                string.Join(",", ShoppingCartItems.Select(r => r.Product.Id).ToArray()));
-            }
-        }
-
         public List<ShoppingCartItem> ShoppingCartItems
         {
             get

@@ -130,7 +130,12 @@ namespace EImece.Domain.Helpers
             }
             return list;
         }
-
+        public static string GenerateOrderNumber()
+        {
+            var datePart = DateTime.UtcNow.ToString("yyyyMMdd");
+            var randomPart = RandomNumber(6);
+            return $"ORD-{datePart}-{randomPart}";
+        }
         public static string RandomNumber(int length)
         {
             const string chars = "0123456789";
@@ -171,7 +176,41 @@ namespace EImece.Domain.Helpers
 
             return identityNumber;
         }
+        public static bool IsValidEmail(string subscribeEmail)
+        {
+            return !IsNotValidEmail(subscribeEmail);
+        }
+        public static bool IsNotValidEmail(string subscribeEmail)
+        {
+            // Check if the email is null or empty
+            if (string.IsNullOrEmpty(subscribeEmail))
+            {
+                return true;
+            }
 
+            // Regular expression for validating an email address
+            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            var regex = new Regex(emailPattern);
+
+            // Return true if the email doesn't match the pattern
+            return !regex.IsMatch(subscribeEmail);
+        }
+        public static bool IsGsmNumberNotValid(string gsmNumber)
+        {
+            return !IsGsmNumberValid(gsmNumber);
+        }
+        public static bool IsGsmNumberValid(string gsmNumber)
+        {
+            try
+            {
+                CheckGsmNumber(gsmNumber);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
         public static string CheckGsmNumber(string gsmNumber)
         {
             if (string.IsNullOrWhiteSpace(gsmNumber))

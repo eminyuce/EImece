@@ -8,6 +8,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using Iyzipay.Model;
 using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -185,7 +186,7 @@ namespace EImece.Controllers
             return PartialView("ShoppingCartTemplates/_ShoppingCartLinks", shoppingCart);
         }
 
-        private void SaveShoppingCart(ShoppingCartSession shoppingCart)
+        private ShoppingCart SaveShoppingCart(ShoppingCartSession shoppingCart)
         {
             PaymentLogger.Info("Entering SaveShoppingCart method.");
             var item = new ShoppingCart();
@@ -204,6 +205,8 @@ namespace EImece.Controllers
             shoppingCart.CurrentLanguage = CurrentLanguage;
             ShoppingCartService.SaveOrEditShoppingCart(item);
             PaymentLogger.Info("Shopping cart saved to data source.");
+
+            return item;
         }
 
         private string getUserId()
@@ -558,12 +561,12 @@ namespace EImece.Controllers
                 return Content("RegisterCustomer");
             }
         }
-
-        public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u)
+        
+        public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u, String orderNumber)
         {
             PaymentLogger.Info("Entering PaymentResult action.");
-            var checkoutForm = IyzicoService.GetCheckoutForm(model);
-            PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
+            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            PaymentLogger.Info($"PaymentResult with ACCOUNT status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
@@ -571,7 +574,7 @@ namespace EImece.Controllers
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
                 var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
                 PaymentLogger.Info($"Decrypted userId: {userId}");
-                var order = ShoppingCartService.SaveShoppingCart(shoppingCart, checkoutForm, userId);
+                var order = ShoppingCartService.SaveShoppingCart(orderNumber, shoppingCart, checkoutForm, userId);
                 PaymentLogger.Info($"Order saved with ID: {order.Id}");
                 SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
                 ClearCart(shoppingCart);
@@ -725,7 +728,7 @@ namespace EImece.Controllers
         public ActionResult BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
         {
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
-            var checkoutForm = IyzicoService.GetCheckoutForm(model);
+            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
             PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -798,23 +801,33 @@ namespace EImece.Controllers
             }
             if (string.IsNullOrEmpty(customer.Name.ToStr().Trim()))
             {
-                PaymentLogger.Info("Name is empty. Adding model error.");
                 ModelState.AddModelError("customer.Name", Resource.PleaseEnterYourName);
             }
             if (string.IsNullOrEmpty(customer.Surname.ToStr().Trim()))
             {
-                PaymentLogger.Info("Surname is empty. Adding model error.");
                 ModelState.AddModelError("customer.Surname", Resource.PleaseEnterYourSurname);
             }
             if (string.IsNullOrEmpty(customer.GsmNumber.ToStr().Trim()))
             {
-                PaymentLogger.Info("GsmNumber is empty. Adding model error.");
                 ModelState.AddModelError("customer.GsmNumber", Resource.MandatoryField);
+            }
+            else
+            {
+                if (GeneralHelper.IsGsmNumberNotValid(customer.GsmNumber.ToStr()))
+                {
+                    ModelState.AddModelError("customer.GsmNumber", Resource.GsmNumberNotValidMessage);
+                }
             }
             if (string.IsNullOrEmpty(customer.Email.ToStr().Trim()))
             {
-                PaymentLogger.Info("Email is empty. Adding model error.");
                 ModelState.AddModelError("customer.Email", Resource.PleaseEnterYourEmail);
+            }
+            else
+            {
+                if (GeneralHelper.IsNotValidEmail(customer.Email.ToStr()))
+                {
+                    ModelState.AddModelError("customer.Email", Resource.EmailNotValidMessage);
+                }
             }
             if (string.IsNullOrEmpty(customer.City.ToStr().Trim()))
             {
@@ -918,11 +931,11 @@ namespace EImece.Controllers
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
             ViewBag.ShoppingCartSession = shoppingCart;
-            var p = new BuyWithNoAccountCreation();
-            p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
-            p.Coupon = shoppingCart.Coupon;
+            var buyWithNoAccountCreation = new BuyWithNoAccountCreation();
+            buyWithNoAccountCreation.ShoppingCartItems = shoppingCart.ShoppingCartItems;
+            buyWithNoAccountCreation.Coupon = shoppingCart.Coupon;
             PaymentLogger.Info("Returning ShoppingWithoutAccount view.");
-            return View(p);
+            return View(buyWithNoAccountCreation);
         }
 
         [HttpPost]
@@ -936,9 +949,11 @@ namespace EImece.Controllers
             }
             ShoppingCartSession shoppingCart = GetShoppingCart();
             ViewBag.ShoppingCartSession = shoppingCart;
-            var p = new BuyWithNoAccountCreation();
-            p.ShoppingCartItems = shoppingCart.ShoppingCartItems;
-            p.Coupon = shoppingCart.Coupon;
+
+            var buyWithNoAccountCreation = new BuyWithNoAccountCreation();
+            buyWithNoAccountCreation.OrderGuid = shoppingCart.OrderGuid;
+            buyWithNoAccountCreation.ShoppingCartItems = shoppingCart.ShoppingCartItems;
+            buyWithNoAccountCreation.Coupon = shoppingCart.Coupon;
             bool isValidCustomer = customer.isValidCustomer();
             PaymentLogger.Info($"Customer validation result: {isValidCustomer}");
             if (isValidCustomer)
@@ -951,6 +966,7 @@ namespace EImece.Controllers
                 customer.CreatedDate = DateTime.Now;
                 customer.UpdatedDate = DateTime.Now;
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
+                customer.UserId = Guid.NewGuid().ToString();
                 customer = CustomerService.SaveOrEditEntity(customer);
                 PaymentLogger.Info("Saving customer information,customer.Id:"+ customer.Id);
 
@@ -961,48 +977,35 @@ namespace EImece.Controllers
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
                 PaymentLogger.Info("Set shipping and billing addresses.");
 
-                SaveShoppingCart(shoppingCart);
-
-                p.OrderGuid = Guid.NewGuid().ToString();
-                PaymentLogger.Info($"Set shipping address and OrderGuid: {p.OrderGuid}");
-
-                var item = new ShoppingCart();
-                item.CreatedDate = DateTime.Now;
-                item.UpdatedDate = DateTime.Now;
-                item.Name = p.OrderGuid;
-                item.IsActive = false;
-                item.Lang = CurrentLanguage;
-                item.Position = 0;
-                item.ShoppingCartJson = JsonConvert.SerializeObject(p);
-                item.OrderGuid = p.OrderGuid;
-                item.UserId = Domain.Constants.ShoppingWithoutAccountUserId;
-                ShoppingCartService.SaveOrEditShoppingCart(item);
-                PaymentLogger.Info("Saved ShoppingWithoutAccount shopping cart.");
-
+                ShoppingCart item = SaveShoppingCart(shoppingCart);
           
 
                 ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
-                return View("ShoppingWithoutAccountPayment", p);
+                return View("ShoppingWithoutAccountPayment", buyWithNoAccountCreation);
             }
             else
             {
                 InformCustomerToFillOutForm(customer);
                 shoppingCart.Customer = customer;
                 PaymentLogger.Info("Returning view with validation errors.");
-                return View(p);
+                return View(buyWithNoAccountCreation);
             }
         }
 
-        public ActionResult ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o)
+        public ActionResult ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o, String orderNumber)
         {
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
-            var checkoutForm = IyzicoService.GetCheckoutForm(model);
-            PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
+            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            PaymentLogger.Info($"ShoppingWithoutAccountResult status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
+
+            PaymentLogger.Info("ShoppingWithoutAccountResult.CheckoutForm: " + JsonConvert.SerializeObject(checkoutForm));
+            PaymentLogger.Info("ShoppingWithoutAccountResult.RetrieveCheckoutFormRequest: " + JsonConvert.SerializeObject(model));
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
                 PaymentLogger.Info($"Decrypted orderGuid: {orderGuid}");
                 var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
+                ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
                 BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);
                 PaymentLogger.Info("Deserialized BuyWithNoAccountCreation model from shopping cart.");
                 if (buyWithNoAccountCreation.ShoppingCartItems.IsEmpty())
@@ -1021,9 +1024,10 @@ namespace EImece.Controllers
                 buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
                 PaymentLogger.Info("Updated buyWithNoAccountCreation model with cargo and language details.");
 
-                var order = ShoppingCartService.SaveBuyWithNoAccountCreation(buyWithNoAccountCreation, checkoutForm);
+                var order = ShoppingCartService.SaveBuyWithNoAccountCreation(orderNumber, buyWithNoAccountCreation, checkoutForm);
                 PaymentLogger.Info($"Order saved with ID: {order.Id}");
                 ClearBuyWithNoAccountCreation(buyWithNoAccountCreation);
+                ClearCart(shoppingCart);
                 PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }

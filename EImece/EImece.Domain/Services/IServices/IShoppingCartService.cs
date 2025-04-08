@@ -10,12 +10,12 @@ namespace EImece.Domain.Services.IServices
 
         void SaveOrEditShoppingCart(ShoppingCart item);
 
-        Order SaveShoppingCart(ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId);
+        Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId);
 
         void DeleteByOrderGuid(string orderGuid);
 
         Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm);
 
-        Order SaveBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
+        Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
     }
 }

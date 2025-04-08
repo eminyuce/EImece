@@ -44,7 +44,7 @@ namespace EImece.Controllers
 
         public async Task<JsonResult> SubscribeEmail(string subscribeEmail)
         {
-            if (IsNotValidEmail(subscribeEmail))
+            if (GeneralHelper.IsNotValidEmail(subscribeEmail))
             {
                 return await Task.Run(() =>
                 {
@@ -73,21 +73,6 @@ namespace EImece.Controllers
             }
         }
 
-        private bool IsNotValidEmail(string subscribeEmail)
-        {
-            // Check if the email is null or empty
-            if (string.IsNullOrEmpty(subscribeEmail))
-            {
-                return true;
-            }
-
-            // Regular expression for validating an email address
-            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-            var regex = new Regex(emailPattern);
-
-            // Return true if the email doesn't match the pattern
-            return !regex.IsMatch(subscribeEmail);
-        }
 
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public async Task<JsonResult> GetAllCities()
