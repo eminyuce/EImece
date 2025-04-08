@@ -1185,4 +1185,7 @@
   <data name="WarningForDesign" xml:space="preserve">
     <value>Dikkat! 5'ten fazla resim tasarımınızı kötüleştirebilir.</value>
   </data>
+  <data name="OurSiteFeatures" xml:space="preserve">
+    <value>Sitemizin Özellikleri</value>
+  </data>
 </root>

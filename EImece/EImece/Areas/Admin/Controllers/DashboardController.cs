@@ -147,6 +147,11 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { @area = "" });
         }
 
+        public ActionResult OurSiteFeatures()
+        {
+            return View();
+        }
+
         public PartialViewResult Languages()
         {
             List<SelectListItem> listItems = EnumHelper.ToSelectList3(Domain.Constants.AdminCultureCookieName);

@@ -1978,6 +1978,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sitemizin Özellikleri.
+        /// </summary>
+        public static string OurSiteFeatures {
+            get {
+                return ResourceManager.GetString("OurSiteFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sayfa Teması.
         /// </summary>
         public static string PageTheme {
