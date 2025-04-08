@@ -233,15 +233,8 @@ namespace EImece.Domain.Services
                 throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
             }
 
-            Logger.Info("Saving customer information");
             Customer customer = buyWithNoAccountCreation.Customer;
-            customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
-            customer.CreatedDate = DateTime.Now;
-            customer.UpdatedDate = DateTime.Now;
-            customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
-            customer = CustomerService.SaveOrEditEntity(customer);
             Logger.Info($"Customer saved with Id: {customer.Id}");
-
             buyWithNoAccountCreation.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.ShoppingWithoutAccountUserId + "-" + buyWithNoAccountCreation.Customer.Id;
             Logger.Info($"Generated UserId for BuyNow customer: {buyWithNoAccountCreation.Customer.UserId}");
 

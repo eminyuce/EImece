@@ -97,7 +97,7 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public String Address
+        public string Address
         {
             get
             {
@@ -113,18 +113,19 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public String RegistrationAddress
+        public string RegistrationAddress
         {
             get
             {
-                return string.Format("{0} {1} {2} {3} {4} {5} {6}",
-               District.ToStr(),
-               Street.ToStr(),
-               Town.ToStr(),
-               ZipCode.ToStr(),
-               Description.ToStr(),
-               City.ToStr(),
-               Country.ToStr());
+                return string.Format("{0} {1}, {2}, {3} {4}, {5}. {6}",
+                             Street.ToStr(),     // Street
+                             District.ToStr(),   // Neighborhood or District (optional, before town)
+                             Town.ToStr(),       // Town or Suburb
+                             ZipCode.ToStr(),    // Postal Code
+                             City.ToStr(),       // City
+                             Country.ToStr(),    // Country
+                             Description.ToStr() // Optional Description (e.g., Apt #, Floor, etc.)
+                         );
             }
         }
 

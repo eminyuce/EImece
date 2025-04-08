@@ -943,11 +943,18 @@ namespace EImece.Controllers
             PaymentLogger.Info($"Customer validation result: {isValidCustomer}");
             if (isValidCustomer)
             {
-                customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
-                shoppingCart.Customer = customer;
-                shoppingCart.Customer.Country = CUSTOMER_COUNTRY;
-                shoppingCart.Customer.Ip = GeneralHelper.GetIpAddress();
+                PaymentLogger.Info("Saving customer information");
 
+                customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
+                customer.Country = CUSTOMER_COUNTRY;
+                customer.Ip = GeneralHelper.GetIpAddress();
+                customer.CreatedDate = DateTime.Now;
+                customer.UpdatedDate = DateTime.Now;
+                customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
+                customer = CustomerService.SaveOrEditEntity(customer);
+                PaymentLogger.Info("Saving customer information,customer.Id:"+ customer.Id);
+
+                shoppingCart.Customer = customer;
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
                 shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
@@ -971,6 +978,8 @@ namespace EImece.Controllers
                 item.UserId = Domain.Constants.ShoppingWithoutAccountUserId;
                 ShoppingCartService.SaveOrEditShoppingCart(item);
                 PaymentLogger.Info("Saved ShoppingWithoutAccount shopping cart.");
+
+          
 
                 ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
                 return View("ShoppingWithoutAccountPayment", p);

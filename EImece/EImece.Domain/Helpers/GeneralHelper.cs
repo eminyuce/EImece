@@ -172,7 +172,7 @@ namespace EImece.Domain.Helpers
             return identityNumber;
         }
 
-        internal static string CheckGsmNumber(string gsmNumber)
+        public static string CheckGsmNumber(string gsmNumber)
         {
             if (string.IsNullOrWhiteSpace(gsmNumber))
             {
