@@ -1,5 +1,6 @@
 ﻿using Resources;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EImece.Domain.Entities
@@ -9,5 +10,7 @@ namespace EImece.Domain.Entities
     {
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public Boolean MainPage { get; set; }
+
+        public ICollection<Product> Products { get; set; }
     }
 }

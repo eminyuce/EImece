@@ -211,7 +211,7 @@ namespace EImece.Domain.Services
             List<Menu> lists = MenuService.GetActiveBaseContentsFromCache(true, lang);
             result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-            result.Brands = BrandService.GetActiveBaseContentsFromCache(true, lang);
+            result.Brands = BrandService.GetBrandsIfAnyProductExists(lang);
             result.ProductCategoryTree = BuildTree(true, lang);
             result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
             result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);

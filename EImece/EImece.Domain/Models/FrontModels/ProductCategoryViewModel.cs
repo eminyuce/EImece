@@ -121,7 +121,9 @@ namespace EImece.Domain.Models.FrontModels
                 join t2 in this.Brands on t1.BrandId equals t2.Id
                 orderby t2.Position, t2.UpdatedDate
                 select t2;
+                List<Brand> brands = brandsWithProducts.Distinct().ToList();
                 categoryFilterHelper.AddBrandFilter(categoryFilterTypes, brandsWithProducts.Distinct().ToList());
+
                 return categoryFilterTypes;
             }
         }

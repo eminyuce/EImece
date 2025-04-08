@@ -6,5 +6,6 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IBrandRepository : IBaseContentRepository<Brand>
     {
         List<Brand> GetAdminPageList(string search, int lang);
+        List<Brand> GetBrandsIfAnyProductExists(int lang);
     }
 }

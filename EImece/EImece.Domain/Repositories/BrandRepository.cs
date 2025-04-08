@@ -30,5 +30,17 @@ namespace EImece.Domain.Repositories
 
             return brands.ToList();
         }
+
+        public List<Brand> GetBrandsIfAnyProductExists(int lang)
+        {
+            // Including the Products for checking if any product is associated with the Brand.
+            Expression<Func<Brand, object>> includeProperty = r => r.Products;
+            var brandsWithProducts = GetAllIncluding(includeProperty)
+                .Where(r => r.Lang == lang && r.Products.Any())  // Check if there are any products associated with the brand
+                .OrderBy(r => r.Position)  // Optional: Order by position
+                .ThenByDescending(r => r.UpdatedDate);  // Optional: Then order by updated date
+
+            return brandsWithProducts.ToList();  // Return the list of brands with products
+        }
     }
 }

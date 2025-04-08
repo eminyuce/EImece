@@ -10,5 +10,6 @@ namespace EImece.Domain.Services.IServices
         bool DeleteBrandById(int brandId);
 
         Brand GetBrandById(int BrandId);
+        List<Brand> GetBrandsIfAnyProductExists(int lang);
     }
 }

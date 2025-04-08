@@ -31,5 +31,10 @@ namespace EImece.Domain.Services
         {
             return BrandRepository.GetSingle(brandId);
         }
+
+        public List<Brand> GetBrandsIfAnyProductExists(int lang)
+        {
+            return BrandRepository.GetBrandsIfAnyProductExists(lang);
+        }
     }
 }
