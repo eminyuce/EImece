@@ -17,7 +17,7 @@ namespace EImece.Domain
         public const string CategoryPrefix = "pc/{id}"; //
 
         public const string LogoImagePath = "/images/logo.jpg";
-
+        public const string ShipmentTrackingCompanyLink = "https://geliver.io/takip";
         public const string INFO_PREFIX = "info-";
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         public const string OrderGuidCookieKey = "orderGuid";

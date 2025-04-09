@@ -80,7 +80,7 @@
                                 <td>
                                     @if (string.IsNullOrEmpty(o.ShipmentTrackingNumber))
                                     {
-                                        <a href="@string.Format("https://www.hepsijet.com/gonderi-takibi/{0}",@HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr())) target="_blank">@o.ShipmentTrackingNumber</a>
+                                        <a href="@string.Format("{0}/{1}",Constants.ShipmentTrackingCompanyLink,@HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr())) target="_blank">@o.ShipmentTrackingNumber</a>
                                     }
                                     else
                                     {

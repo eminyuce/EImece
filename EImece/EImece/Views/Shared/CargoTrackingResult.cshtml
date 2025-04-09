@@ -33,7 +33,7 @@
                             @Resource.ShipmentTrackingNumber:
                             @if (!string.IsNullOrEmpty(item.ShipmentTrackingNumber))
                             {
-                                <a href="@string.Format("https://www.hepsijet.com/gonderi-takibi/{0}",@HttpUtility.HtmlEncode(item.ShipmentTrackingNumber.ToStr())) target="_blank">@item.ShipmentTrackingNumber</a>
+                                <a href="@string.Format("{0}/{1}",Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(item.ShipmentTrackingNumber.ToStr())) target="_blank">@item.ShipmentTrackingNumber</a>
                             }
                             else
                             {
