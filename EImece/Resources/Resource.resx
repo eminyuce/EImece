@@ -1931,4 +1931,7 @@ Stokta</value>
   <data name="GsmNumberNotValidMessage" xml:space="preserve">
     <value>Telefon numarası formatı hatalı. Lütfen kontrol ediniz.</value>
   </data>
+  <data name="NoShipmentDoneYetForYourOrder" xml:space="preserve">
+    <value>Hayır Gönderildi Yapıldı</value>
+  </data>
 </root>

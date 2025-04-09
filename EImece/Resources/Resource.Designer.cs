@@ -2869,6 +2869,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hayır Gönderildi Yapıldı.
+        /// </summary>
+        public static string NoShipmentDoneYetForYourOrder {
+            get {
+                return ResourceManager.GetString("NoShipmentDoneYetForYourOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not.
         /// </summary>
         public static string Note {

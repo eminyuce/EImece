@@ -62,27 +62,34 @@
                     <tbody>
                         @foreach (var o in paginatedOrders)
                         {
-                        <tr>
-                            <td>
-                                @Html.ActionLink(Resource.OrderSummary,                
-                                    "CustomerOrderDetail", "Home",new { id = o.Id },  
-                                    new { @class = "btn btn-pill btn-outline-success", area="customers" })
-                            </td>
-                            <td>
-                                <h5>@createOrderStatus(o)</h5>
-                            </td>
-                            <td>
-                                @o.OrderNumber
-                            </td>
-                            <td>
-                                @o.ShipmentCompanyName
-                            </td>
-                            <td>
-                                @o.ShipmentTrackingNumber
-                            </td>
-                            <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
-                            <td>@o.PaidPriceDecimal.CurrencySign()</td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(Resource.OrderSummary,
+                                        "CustomerOrderDetail", "Home", new { id = o.Id },
+                                        new { @class = "btn btn-pill btn-outline-success", area = "customers" })
+                                </td>
+                                <td>
+                                    <h5>@createOrderStatus(o)</h5>
+                                </td>
+                                <td>
+                                    @o.OrderNumber
+                                </td>
+                                <td>
+                                    @o.ShipmentCompanyName
+                                </td>
+                                <td>
+                                    @if (string.IsNullOrEmpty(o.ShipmentTrackingNumber))
+                                    {
+                                        <a href="@string.Format("https://www.hepsijet.com/gonderi-takibi/{0}",@HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr())) target="_blank">@o.ShipmentTrackingNumber</a>
+                                    }
+                                    else
+                                    {
+                                        @Resource.NoShipmentDoneYetForYourOrder
+                                    }
+                                </td>
+                                <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
+                                <td>@o.PaidPriceDecimal.CurrencySign()</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -96,13 +103,13 @@
 @helper createOrderStatus(Order o)
 {
 
-var os = (EImeceOrderStatus)o.OrderStatus;
-var rm = new ResourceManager(typeof(Resource));
-var resourceDisplayName = rm.GetString(os.GetType().Name + "_" + os);
-var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
-switch (os)
-{
-    case EImeceOrderStatus.NewlyOrder:
+    var os = (EImeceOrderStatus)o.OrderStatus;
+    var rm = new ResourceManager(typeof(Resource));
+    var resourceDisplayName = rm.GetString(os.GetType().Name + "_" + os);
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+    switch (os)
+    {
+        case EImeceOrderStatus.NewlyOrder:
             <span class="badge badge-secondary m-0">@resourceDisplayName</span>
             break;
         case EImeceOrderStatus.InProgress:
@@ -122,4 +129,3 @@ switch (os)
     }
 
 }
- 
