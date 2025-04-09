@@ -1376,11 +1376,38 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to İade Sipariş.
+        ///   Looks up a localized string similar to Ödeme Bekleniyor.
+        /// </summary>
+        public static string EImeceOrderStatus_PaymentPending {
+            get {
+                return ResourceManager.GetString("EImeceOrderStatus_PaymentPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün iade edildi ve para iadesi yapıldı.
+        /// </summary>
+        public static string EImeceOrderStatus_Refunded {
+            get {
+                return ResourceManager.GetString("EImeceOrderStatus_Refunded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün iade edildi, para iadesi bekleniyor.
         /// </summary>
         public static string EImeceOrderStatus_Returned {
             get {
                 return ResourceManager.GetString("EImeceOrderStatus_Returned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargoya Verildi.
+        /// </summary>
+        public static string EImeceOrderStatus_Shipped {
+            get {
+                return ResourceManager.GetString("EImeceOrderStatus_Shipped", resourceCulture);
             }
         }
         
@@ -1742,6 +1769,15 @@ namespace Resources {
         public static string FrequentlyAskedQuestions {
             get {
                 return ResourceManager.GetString("FrequentlyAskedQuestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ad Soyad.
+        /// </summary>
+        public static string FullName {
+            get {
+                return ResourceManager.GetString("FullName", resourceCulture);
             }
         }
         
@@ -2869,7 +2905,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hayır Gönderildi Yapıldı.
+        ///   Looks up a localized string similar to Henüz kargo gönderimi yapılmadı..
         /// </summary>
         public static string NoShipmentDoneYetForYourOrder {
             get {
@@ -3018,6 +3054,15 @@ namespace Resources {
         public static string OrderStatus {
             get {
                 return ResourceManager.GetString("OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş #{0} onaylandı! Ürünleriniz 3-5 iş günü içinde teslim edilecektir..
+        /// </summary>
+        public static string OrderSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("OrderSuccessfullyCompleted", resourceCulture);
             }
         }
         
@@ -4950,6 +4995,15 @@ namespace Resources {
         public static string ThankYouForContactingUs {
             get {
                 return ResourceManager.GetString("ThankYouForContactingUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişiniz İçin Teşekkür Ederiz.
+        /// </summary>
+        public static string ThankYouForYourOrder {
+            get {
+                return ResourceManager.GetString("ThankYouForYourOrder", resourceCulture);
             }
         }
         

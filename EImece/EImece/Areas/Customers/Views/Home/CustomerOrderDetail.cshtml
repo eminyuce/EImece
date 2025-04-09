@@ -1,6 +1,6 @@
 ﻿@using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
+@using GridMvc.Html;
+@using GridMvc.Sorting;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
@@ -26,8 +26,8 @@
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updatedblogs!</span>
+                <button class="close text-white ml/Si-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
         </div>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                     }
-                    <!-- Item-->
+                    <!-- Summary-->
                     <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
                         <div class="media d-block d-sm-flex text-center text-sm-left">
                             <div class="media-body pt-3">
@@ -99,26 +99,56 @@
                             <div class="font-weight-semibold">@Resource.Total: @order.OrderProducts.Sum(r => r.Price).CurrencySign()</div>
                         </div>
                     </div>
+
+                    <!-- Additional Order Information (Eksik Veriler Buraya Eklendi)-->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <ul class="list-unstyled">
+                            <li>
+                                <strong>@Resource.ShipmentTrackingNumber:</strong>
+                                @if (!string.IsNullOrEmpty(order.ShipmentTrackingNumber))
+                                {
+                                    <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(order.ShipmentTrackingNumber.ToStr()))" target="_blank">
+                                        @order.ShipmentTrackingNumber
+                                    </a>
+                                }
+                                else
+                                {
+                                    @Resource.NoShipmentDoneYetForYourOrder
+                                }
+                            </li>
+                            @if (!string.IsNullOrEmpty(order.ShipmentCompanyName))
+                            {
+                                <li><strong>@Resource.ShipmentCompany:</strong> @order.ShipmentCompanyName</li>
+                            }
+                            @if (!string.IsNullOrEmpty(order.AdminOrderNote))
+                            {
+                                <li><strong>@Resource.AdminOrderNote:</strong> @order.AdminOrderNote</li>
+                            }
+                            @if (!string.IsNullOrEmpty(order.OrderComments))
+                            {
+                                <li><strong>@Resource.OrderComments:</strong> @order.OrderComments</li>
+                            }
+                        </ul>
+                    </div>
+
                 </div>
                 <!-- Footer-->
                 <div class="card-footer flex-wrap justify-content-between bg-secondary">
-                    <div class="px-2 py-1"><span class="text-muted">&nbsp;</span><span class="font-weight-semibold"></span></div>
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.CargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.CargoPrice.CurrencySign()</span></div>
+                    <div class="px-2 py-1"><span class="text-muted"> </span><span class="font-weight-semibold"></span></div>
+                    <div class="px-2 py-1"><span class="text-muted">@Resource.CargoPrice: </span><span class="text-lg font-weight-semibold">@order.CargoPrice.CurrencySign()</span></div>
                     @if (!String.IsNullOrEmpty(order.Coupon))
                     {
-                        <div class="px-2 py-1"><span class="text-muted"> @Resource.Coupon (@order.Coupon):&nbsp;</span><span class="text-lg font-weight-semibold">@order.CouponDiscount TL</span></div>
+                        <div class="px-2 py-1"><span class="text-muted"> @Resource.Coupon (@order.Coupon): </span><span class="text-lg font-weight-semibold">@order.CouponDiscount TL</span></div>
                     }
-
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice:&nbsp;</span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
+                    <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice: </span><span class="text-lg font-weight-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
                 </div>
-
             </div>
         </div>
-            <div class="col-lg-12">
-                @Html.ActionLink(Resource.BackToList,
-                         "customerorders", "Home", null,
-                         new { @class = "btn btn-pill btn-outline-info", area = "customers" })
-            </div>
+        <div class="col-lg-12">
+            @Html.ActionLink(Resource.BackToList,
+                     "customerorders", "Home", null,
+                     new { @class = "btn btn-pill btn-outline-info", area = "customers" })
+        </div>
     </div>
 </div>
 
@@ -133,8 +163,17 @@
         case EImeceOrderStatus.NewlyOrder:
             <span class="badge badge-secondary m-0">@resourceDisplayName</span>
             break;
+        case EImeceOrderStatus.PaymentPending:
+            <span class="badge badge-primary m-0">@resourceDisplayName</span>
+            break;
         case EImeceOrderStatus.InProgress:
             <span class="badge badge-warning m-0">@resourceDisplayName</span>
+            break;
+        case EImeceOrderStatus.Shipped:
+            <span class="badge badge-dark m-0">@resourceDisplayName</span>
+            break;
+        case EImeceOrderStatus.Delivered:
+            <span class="badge badge-success m-0">@resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Cancelled:
             <span class="badge badge-danger m-0">@resourceDisplayName</span>
@@ -142,10 +181,11 @@
         case EImeceOrderStatus.Returned:
             <span class="badge badge-info m-0">@resourceDisplayName</span>
             break;
-        case EImeceOrderStatus.Delivered:
-            <span class="badge badge-success m-0">@resourceDisplayName</span>
+        case EImeceOrderStatus.Refunded:
+            <span class="badge badge-light m-0">@resourceDisplayName</span>
             break;
         default:
+            <span class="badge badge-secondary m-0">Bilinmeyen Durum</span>
             break;
     }
 }

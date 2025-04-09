@@ -78,9 +78,11 @@
                                     @o.ShipmentCompanyName
                                 </td>
                                 <td>
-                                    @if (string.IsNullOrEmpty(o.ShipmentTrackingNumber))
+                                    @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
                                     {
-                                        <a href="@string.Format("{0}/{1}",Constants.ShipmentTrackingCompanyLink,@HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr())) target="_blank">@o.ShipmentTrackingNumber</a>
+                                        <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))" target="_blank">
+                                            @o.ShipmentTrackingNumber
+                                        </a>
                                     }
                                     else
                                     {
@@ -112,8 +114,17 @@
         case EImeceOrderStatus.NewlyOrder:
             <span class="badge badge-secondary m-0">@resourceDisplayName</span>
             break;
+        case EImeceOrderStatus.PaymentPending:
+            <span class="badge badge-primary m-0">@resourceDisplayName</span>
+            break;
         case EImeceOrderStatus.InProgress:
             <span class="badge badge-warning m-0">@resourceDisplayName</span>
+            break;
+        case EImeceOrderStatus.Shipped:
+            <span class="badge badge-dark m-0">@resourceDisplayName</span>
+            break;
+        case EImeceOrderStatus.Delivered:
+            <span class="badge badge-success m-0">@resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Cancelled:
             <span class="badge badge-danger m-0">@resourceDisplayName</span>
@@ -121,10 +132,11 @@
         case EImeceOrderStatus.Returned:
             <span class="badge badge-info m-0">@resourceDisplayName</span>
             break;
-        case EImeceOrderStatus.Delivered:
-            <span class="badge badge-success m-0">@resourceDisplayName</span>
+        case EImeceOrderStatus.Refunded:
+            <span class="badge badge-light m-0">@resourceDisplayName</span>
             break;
         default:
+            <span class="badge badge-secondary m-0">Bilinmeyen Durum</span>
             break;
     }
 

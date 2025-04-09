@@ -1739,7 +1739,7 @@
     <value>Yeni Sipariş</value>
   </data>
   <data name="EImeceOrderStatus_Returned" xml:space="preserve">
-    <value>İade Sipariş</value>
+    <value>Ürün iade edildi, para iadesi bekleniyor</value>
   </data>
   <data name="GetInformationAboutYourOrder" xml:space="preserve">
     <value>Siparişiniz hakkında bilgi alın</value>
@@ -1932,6 +1932,24 @@ Stokta</value>
     <value>Telefon numarası formatı hatalı. Lütfen kontrol ediniz.</value>
   </data>
   <data name="NoShipmentDoneYetForYourOrder" xml:space="preserve">
-    <value>Hayır Gönderildi Yapıldı</value>
+    <value>Henüz kargo gönderimi yapılmadı.</value>
+  </data>
+  <data name="EImeceOrderStatus_PaymentPending" xml:space="preserve">
+    <value>Ödeme Bekleniyor</value>
+  </data>
+  <data name="EImeceOrderStatus_Refunded" xml:space="preserve">
+    <value>Ürün iade edildi ve para iadesi yapıldı</value>
+  </data>
+  <data name="EImeceOrderStatus_Shipped" xml:space="preserve">
+    <value>Kargoya Verildi</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Ad Soyad</value>
+  </data>
+  <data name="OrderSuccessfullyCompleted" xml:space="preserve">
+    <value>Sipariş #{0} onaylandı! Ürünleriniz 3-5 iş günü içinde teslim edilecektir.</value>
+  </data>
+  <data name="ThankYouForYourOrder" xml:space="preserve">
+    <value>Siparişiniz İçin Teşekkür Ederiz</value>
   </data>
 </root>

@@ -94,37 +94,37 @@ RenderValueAs(o => WriteAdminOrderNote(o));
 
 @helper DisplayIyzicoInfo(Order order)
 {
-<div>
-    <b>@order.PaymentId</b>
-</div>
+    <div>
+        <b>@order.PaymentId</b>
+    </div>
 }
 
 @helper CustomerOrderDetail(Order o, String controllerName)
 {
-<b>@o.OrderNumber </b>
-<br />
-<a data-toggle="modal" class="btn btn-outline @createOrderStatusBtn(o) btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
-    @AdminResource.OrderDetails
-</a>
+    <b>@o.OrderNumber </b>
+    <br />
+    <a data-toggle="modal" class="btn btn-outline @createOrderStatusBtn(o) btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+        @AdminResource.OrderDetails
+    </a>
 
- <!-- Modal -->
-<div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="order-details__title"> @AdminResource.OrderNumber - @o.OrderNumber - @createOrderStatus(o)</h4>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("pOrderDetail", o)
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">@AdminResource.Close</button>
+    <!-- Modal -->
+    <div id="@String.Format("myModal_{0}",o.Id)" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="order-details__title"> @AdminResource.OrderNumber - @o.OrderNumber - @createOrderStatus(o)</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("pOrderDetail", o)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">@AdminResource.Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 @helper createOrderStatus(Order o)
 {
@@ -134,21 +134,31 @@ RenderValueAs(o => WriteAdminOrderNote(o));
     switch (os)
     {
         case EImeceOrderStatus.NewlyOrder:
-<span class="text-primary">@orderStatusText</span>
+            <span class="text-primary">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.PaymentPending:
+            <span class="text-secondary">@orderStatusText</span>
             break;
         case EImeceOrderStatus.InProgress:
-<span class="text-info">@orderStatusText</span>
+            <span class="text-info">@orderStatusText</span>
             break;
-        case EImeceOrderStatus.Cancelled:
-<span class="text-danger">@orderStatusText</span>
-            break;
-        case EImeceOrderStatus.Returned:
-<span class="text-warning">@orderStatusText</span>
+        case EImeceOrderStatus.Shipped:
+            <span class="text-dark">@orderStatusText</span>
             break;
         case EImeceOrderStatus.Delivered:
-<span class="text-success">@orderStatusText</span>
+            <span class="text-success">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Cancelled:
+            <span class="text-danger">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Returned:
+            <span class="text-warning">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Refunded:
+            <span class="text-muted">@orderStatusText</span>
             break;
         default:
+            <span class="text-secondary">@orderStatusText (Bilinmeyen Durum)</span>
             break;
     }
 
@@ -162,24 +172,29 @@ RenderValueAs(o => WriteAdminOrderNote(o));
         {
             case EImeceOrderStatus.NewlyOrder:
                 return "btn-primary";
+            case EImeceOrderStatus.PaymentPending:
+                return "btn-secondary";
             case EImeceOrderStatus.InProgress:
                 return "btn-info";
+            case EImeceOrderStatus.Shipped:
+                return "btn-dark";
+            case EImeceOrderStatus.Delivered:
+                return "btn-success";
             case EImeceOrderStatus.Cancelled:
                 return "btn-danger";
             case EImeceOrderStatus.Returned:
                 return "btn-warning";
-            case EImeceOrderStatus.Delivered:
-                return "btn-success";
+            case EImeceOrderStatus.Refunded:
+                return "btn-light";
             default:
-                return "btn-info";
-                break;
+                return "btn-secondary";
         }
     }
 }
 
 @helper DisplayPriceColumn(Order o)
 {
-<span class="text-primary">@o.PaidPriceDecimal.CurrencySign()</span>
+    <span class="text-primary">@o.PaidPriceDecimal.CurrencySign()</span>
 
 }
 @helper DisplayPaymentStatusColumn(Order o)
@@ -189,22 +204,22 @@ RenderValueAs(o => WriteAdminOrderNote(o));
     switch (iyzicoPaymentStatus)
     {
         case IyzicoPaymentStatus.SUCCESS:
-<span class="text-primary">@AdminResource.SUCCESS</span>
+            <span class="text-primary">@AdminResource.SUCCESS</span>
             break;
         case IyzicoPaymentStatus.FAILURE:
-<span class="text-primary">@AdminResource.FAILURE</span>
+            <span class="text-primary">@AdminResource.FAILURE</span>
             break;
         case IyzicoPaymentStatus.INIT_THREEDS:
-<span class="text-primary">@AdminResource.INIT_THREEDS</span>
+            <span class="text-primary">@AdminResource.INIT_THREEDS</span>
             break;
         case IyzicoPaymentStatus.CALLBACK_THREEDS:
-<span class="text-primary">@AdminResource.CALLBACK_THREEDS</span>
+            <span class="text-primary">@AdminResource.CALLBACK_THREEDS</span>
             break;
         case IyzicoPaymentStatus.BKM_POS_SELECTED:
-<span class="text-primary">@AdminResource.BKM_POS_SELECTED</span>
+            <span class="text-primary">@AdminResource.BKM_POS_SELECTED</span>
             break;
         case IyzicoPaymentStatus.CALLBACK_PECCO:
-<span class="text-primary">@AdminResource.CALLBACK_PECCO</span>
+            <span class="text-primary">@AdminResource.CALLBACK_PECCO</span>
             break;
         default:
             break;
@@ -218,34 +233,34 @@ RenderValueAs(o => WriteAdminOrderNote(o));
     var os = (EImeceOrderStatus)order.OrderStatus;
     var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
 
-<div class="row">
-    <div class="col-md-12">
-        <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
-    </div>
-    <div class="col-md-12">
-        <span class="text-danger" data-changed-order-result="@order.Id"></span>
-    </div>
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3">
-                <h5><b>@AdminResource.OrderStatus</b></h5>
-            </div>
-            <div class="col-md-9">
-                @Html.DropDownList("orderStatusSelectList",
-new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
-new { @class = "form-control", @data_change_order_status = order.Id })
+    <div class="row">
+        <div class="col-md-12">
+            <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
+        </div>
+        <div class="col-md-12">
+            <span class="text-danger" data-changed-order-result="@order.Id"></span>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5><b>@AdminResource.OrderStatus</b></h5>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownList("orderStatusSelectList",
+    new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
+    new { @class = "form-control", @data_change_order_status = order.Id })
+                </div>
             </div>
         </div>
+        <div class="col-md-12">
+            <textarea class="form-control" placeholder="@Resource.AdminOrderNote" rows="3" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
+        </div>
+        <div class="col-md-12">
+            <input class="form-control" type="text" placeholder="@Resource.ShipmentCompanyName" data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
+        </div>
+        <div class="col-md-12">
+            <input class="form-control" type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
+        </div>
     </div>
-    <div class="col-md-12">
-        <textarea class="form-control" placeholder="@Resource.AdminOrderNote" rows="3" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
-    </div>
-    <div class="col-md-12">
-        <input class="form-control" type="text" placeholder="@Resource.ShipmentCompanyName" data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
-    </div>
-    <div class="col-md-12">
-        <input class="form-control" type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
-    </div>
-</div>
 
 }
