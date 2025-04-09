@@ -196,7 +196,7 @@ RenderValueAs(o => WriteAdminOrderNote(o));
             case EImeceOrderStatus.InProgress:
                 return "btn-info";
             case EImeceOrderStatus.Shipped:
-                return "btn-dark";
+                return "btn-primary";
             case EImeceOrderStatus.Delivered:
                 return "btn-success";
             case EImeceOrderStatus.Cancelled:
@@ -204,7 +204,7 @@ RenderValueAs(o => WriteAdminOrderNote(o));
             case EImeceOrderStatus.Returned:
                 return "btn-warning";
             case EImeceOrderStatus.Refunded:
-                return "btn-light";
+                return "btn-danger";
             default:
                 return "btn-secondary";
         }
