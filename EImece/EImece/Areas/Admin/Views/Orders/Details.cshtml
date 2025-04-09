@@ -18,346 +18,398 @@
     <!-- Page Header -->
     <div class="row">
         <div class="col-12">
-            <h2 class="my-4">@AdminResource.OrderDetails - #@Model.OrderNumber</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="my-0">
+                    <i class="fas fa-file-invoice-dollar text-primary mr-2"></i>
+                    @AdminResource.OrderDetails - #@Model.OrderNumber
+                </h2>
+                <div>
+                    <span class="badge @(Model.OrderStatus.Equals("SUCCESS") ? "badge-success" : "badge-warning") badge-pill p-2">
+                        @Model.OrderStatus.ToString()
+                    </span>
+                    <span class="badge @(Model.PaymentStatus == "SUCCESS" ? "badge-success" : "badge-danger") badge-pill p-2 ml-1">
+                        @Model.PaymentStatus
+                    </span>
+                </div>
+            </div>
             <hr class="adminLine" />
+        </div>
+    </div>
+
+    <!-- Key Order Info Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="fas fa-calendar-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Order Date
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="fas fa-money-bill-wave fa-2x text-info"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Amount
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.PaidPriceDecimal.CurrencySign()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="fas fa-credit-card fa-2x text-success"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Payment Method
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.CardFamily (@Model.LastFourDigits)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-left-secondary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="fas fa-truck fa-2x text-secondary"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                Shipping Status
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @(string.IsNullOrEmpty(Model.ShipmentCompanyName) ? " " : Model.ShipmentCompanyName)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title mb-0">Order Overview</h3>
+        <div class="col-lg-8">
+            <!-- Customer and Shipping Info -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-user mr-2"></i>Customer & Shipping Details
+                    </h5>
                 </div>
                 <div class="card-body">
-                    <dl class="row">
-                        <dt class="col-sm-3">OrderNumber</dt>
-                        <dd class="col-sm-9">@Model.OrderNumber</dd>
-
-                        <dt class="col-sm-3">Order Type</dt>
-                        <dd class="col-sm-9">@Model.OrderType.ToString()</dd>
-
-                        <dt class="col-sm-3">OrderStatus</dt>
-                        <dd class="col-sm-9">
-                            <span class="badge @((Model.OrderStatus == 1 ? "badge-success" : "badge-warning"))">
-                                @Model.OrderStatus.ToString()
-                            </span>
-                        </dd>
-
-                        <dt class="col-sm-3">User ID</dt>
-                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.UserId) ? "-" : Model.UserId)</dd>
-
-                        <dt class="col-sm-3">CreatedDate</dt>
-                        <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
-
-                        <dt class="col-sm-3">Updated Date</dt>
-                        <dd class="col-sm-9">@Model.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
-
-                        <dt class="col-sm-3">Is Active</dt>
-                        <dd class="col-sm-9">@Model.IsActive.ToString()</dd>
-
-                        <dt class="col-sm-3">Position</dt>
-                        <dd class="col-sm-9">@Model.Position</dd>
-
-                        <dt class="col-sm-3">Language</dt>
-                        <dd class="col-sm-9">@Model.Lang</dd>
-
-                        <dt class="col-sm-3">DeliveryDate</dt>
-                        <dd class="col-sm-9">@Model.DeliveryDate.ToString("yyyy-MM-dd")</dd>
-
-                        <dt class="col-sm-3">Order GUID</dt>
-                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.OrderGuid) ? "-" : Model.OrderGuid)</dd>
-                    </dl>
-
-                    <!-- Accordion for Additional Details -->
-                    <div class="accordion" id="orderAccordion">
-                        <!-- Customer Details -->
-                        <div class="card">
-                            <div class="card-header" id="customerHeading">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#customerCollapse" aria-expanded="true" aria-controls="customerCollapse">
-                                        CustomerDetails
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="customerCollapse" class="collapse show" aria-labelledby="customerHeading" data-parent="#orderAccordion">
-                                <div class="card-body">
-                                    <dl class="row">
-                                        <dt class="col-sm-3">Name</dt>
-                                        <dd class="col-sm-9">@Model.Customer.FullName</dd>
-
-                                        <dt class="col-sm-3">Email</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Email) ? "-" : Model.Customer.Email)</dd>
-
-                                        <dt class="col-sm-3">PhoneNumber</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.GsmNumber) ? "-" : Model.Customer.GsmNumber)</dd>
-
-                                        <dt class="col-sm-3">IdentityNumber</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.IdentityNumber) ? "-" : Model.Customer.IdentityNumber)</dd>
-
-                                        <dt class="col-sm-3">IP Address</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Ip) ? "-" : Model.Customer.Ip)</dd>
-
-                                        <dt class="col-sm-3">IsSameAsShippingAddress</dt>
-                                        <dd class="col-sm-9">@Model.Customer.IsSameAsShippingAddress.ToString()</dd>
-
-                                        <dt class="col-sm-3">User ID</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.UserId) ? "-" : Model.Customer.UserId)</dd>
-
-                                        <dt class="col-sm-3">Permission Granted</dt>
-                                        <dd class="col-sm-9">@Model.Customer.IsPermissionGranted.ToString()</dd>
-
-                                        <dt class="col-sm-3">Gender</dt>
-                                        <dd class="col-sm-9">@Model.Customer.Gender.ToString()</dd>
-
-                                        <dt class="col-sm-3">Street</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Street) ? "-" : Model.Customer.Street)</dd>
-
-                                        <dt class="col-sm-3">Town</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Town) ? "-" : Model.Customer.Town)</dd>
-
-                                        <dt class="col-sm-3">District</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.District) ? "-" : Model.Customer.District)</dd>
-
-                                        <dt class="col-sm-3">City</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.City) ? "-" : Model.Customer.City)</dd>
-
-                                        <dt class="col-sm-3">Country</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Country) ? "-" : Model.Customer.Country)</dd>
-
-                                        <dt class="col-sm-3">ZipCode</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.ZipCode) ? "-" : Model.Customer.ZipCode)</dd>
-
-                                        <dt class="col-sm-3">CustomerOpenAddress</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Description) ? "-" : Model.Customer.Description)</dd>
-
-                                        <dt class="col-sm-3">Company</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Customer.Company) ? "-" : Model.Customer.Company)</dd>
-
-                                        <dt class="col-sm-3">Customer Type</dt>
-                                        <dd class="col-sm-9">@Model.Customer.CustomerType.ToString()</dd>
-                                    </dl>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-3">Customer Information</h6>
+                            <p class="mb-1"><strong>Name:</strong> @Model.Customer.FullName</p>
+                            <p class="mb-1"><strong>Email:</strong> @Model.Customer.Email</p>
+                            <p class="mb-1"><strong>Phone:</strong> @Model.Customer.GsmNumber</p>
+                            <p class="mb-1"><strong>IP:</strong> @Model.Customer.Ip</p>
+                            <p class="mb-1"><strong>Identity Number:</strong> @Model.Customer.IdentityNumber</p>
+                            <p class="mb-1"><strong>Company:</strong> @Model.Customer.Company</p>
                         </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-3">Shipping Address</h6>
+                            <p class="mb-1">@Model.ShippingAddress.Name</p>
+                            <p class="mb-1">@Model.ShippingAddress.Description</p>
+                            <p class="mb-1">@Model.ShippingAddress.City, @Model.ShippingAddress.Country @Model.ShippingAddress.ZipCode</p>
 
-                        <!-- Shipping & Billing -->
-                        <div class="card">
-                            <div class="card-header" id="addressHeading">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="false" aria-controls="addressCollapse">
-                                        ShippingAndBilling
-                                    </button>
-                                </h5>
+                            <!-- Highlighted Shipping Info -->
+                            <div class="mt-3 p-2 bg-light rounded border-left border-left-3 border-primary">
+                                <h6 class="font-weight-bold">Shipping Details</h6>
+                                <p class="mb-1"><strong>Company:</strong> @(string.IsNullOrEmpty(Model.ShipmentCompanyName) ? "-" : Model.ShipmentCompanyName)</p>
+                                <p class="mb-0">
+                                    <strong>Tracking:</strong>
+                                    @if (!string.IsNullOrEmpty(Model.ShipmentTrackingNumber))
+                                    {
+                                        <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(Model.ShipmentTrackingNumber.ToStr()))"
+                                           target="_blank" class="badge badge-primary">
+                                            @Model.ShipmentTrackingNumber <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-warning">No tracking number yet</span>
+                                    }
+                                </p>
                             </div>
-                            <div id="addressCollapse" class="collapse" aria-labelledby="addressHeading" data-parent="#orderAccordion">
-                                <div class="card-body">
-                                    <h5>ShippingAddress</h5>
-                                    <p>@(Model.ShippingAddress != null ? string.Format("{0}<br>{1}<br>{2}, {3} {4}", Model.ShippingAddress.Name, Model.ShippingAddress.Description, Model.ShippingAddress.City, Model.ShippingAddress.Country, Model.ShippingAddress.ZipCode) : "-")</p>
-                                    <dl class="row">
-                                        <dt class="col-sm-3">Shipping Address ID</dt>
-                                        <dd class="col-sm-9">@Model.ShippingAddressId</dd>
 
-                                        <dt class="col-sm-3">ShipmentCompany</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ShipmentCompanyName) ? "-" : Model.ShipmentCompanyName)</dd>
-
-                                        <dt class="col-sm-3">TrackingNumber</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ShipmentTrackingNumber) ? "-" : Model.ShipmentTrackingNumber)</dd>
-                                    </dl>
-
-                                    <h5>BillingAddress</h5>
-                                    <p>@(Model.BillingAddress != null ? string.Format("{0}<br>{1}<br>{2}, {3} {4}", Model.BillingAddress.Name, Model.BillingAddress.Description, Model.BillingAddress.City, Model.BillingAddress.Country, Model.BillingAddress.ZipCode) : "-")</p>
-                                    <dl class="row">
-                                        <dt class="col-sm-3">Billing Address ID</dt>
-                                        <dd class="col-sm-9">@Model.BillingAddressId</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Payment Details -->
-                        <div class="card">
-                            <div class="card-header" id="paymentHeading">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#paymentCollapse" aria-expanded="false" aria-controls="paymentCollapse">
-                                        PaymentDetails
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="paymentCollapse" class="collapse" aria-labelledby="paymentHeading" data-parent="#orderAccordion">
-                                <div class="card-body">
-                                    <dl class="row">
-                                        <dt class="col-sm-3">Price</dt>
-                                        <dd class="col-sm-9">@Model.Price.ToDecimal().CurrencySign()</dd>
-
-                                        <dt class="col-sm-3">PaidPrice</dt>
-                                        <dd class="col-sm-9">@Model.PaidPriceDecimal.CurrencySign()</dd>
-
-                                        <dt class="col-sm-3">CargoPrice</dt>
-                                        <dd class="col-sm-9">@Model.CargoPrice.CurrencySign()</dd>
-
-                                        <dt class="col-sm-3">Coupon</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Coupon) ? "-" : Model.Coupon)</dd>
-
-                                        <dt class="col-sm-3">Coupon Discount</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CouponDiscount) ? "-" : Model.CouponDiscount.ToDecimal().CurrencySign())</dd>
-
-                                        <dt class="col-sm-3">Installment</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Installment) ? "-" : Model.Installment)</dd>
-
-                                        <dt class="col-sm-3">Currency</dt>
-                                        <dd class="col-sm-9">@Model.Currency</dd>
-
-                                        <dt class="col-sm-3">Payment ID</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.PaymentId) ? "-" : Model.PaymentId)</dd>
-
-                                        <dt class="col-sm-3">PaymentStatus</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.PaymentStatus) ? "-" : Model.PaymentStatus)</dd>
-
-                                        <dt class="col-sm-3">Fraud Status</dt>
-                                        <dd class="col-sm-9">@(Model.FraudStatus.HasValue ? Model.FraudStatus.Value.ToString() : "-")</dd>
-
-                                        <dt class="col-sm-3">Merchant Commission Rate</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.MerchantCommissionRate) ? "-" : Model.MerchantCommissionRate)</dd>
-
-                                        <dt class="col-sm-3">Merchant Commission Rate Amount</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.MerchantCommissionRateAmount) ? "-" : Model.MerchantCommissionRateAmount.ToDecimal().CurrencySign())</dd>
-
-                                        <dt class="col-sm-3">Iyzico Commission Rate Amount</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.IyziCommissionRateAmount) ? "-" : Model.IyziCommissionRateAmount.ToDecimal().CurrencySign())</dd>
-
-                                        <dt class="col-sm-3">Iyzico Commission Fee</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.IyziCommissionFee) ? "-" : Model.IyziCommissionFee.ToDecimal().CurrencySign())</dd>
-
-                                        <dt class="col-sm-3">CardType</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardType) ? "-" : Model.CardType)</dd>
-
-                                        <dt class="col-sm-3">Card Association</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardAssociation) ? "-" : Model.CardAssociation)</dd>
-
-                                        <dt class="col-sm-3">Card Family</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardFamily) ? "-" : Model.CardFamily)</dd>
-
-                                        <dt class="col-sm-3">Card Token</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardToken) ? "-" : Model.CardToken)</dd>
-
-                                        <dt class="col-sm-3">Card User Key</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.CardUserKey) ? "-" : Model.CardUserKey)</dd>
-
-                                        <dt class="col-sm-3">BIN Number</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.BinNumber) ? "-" : Model.BinNumber)</dd>
-
-                                        <dt class="col-sm-3">LastFourDigits</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.LastFourDigits) ? "-" : Model.LastFourDigits)</dd>
-
-                                        <dt class="col-sm-3">Basket ID</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.BasketId) ? "-" : Model.BasketId)</dd>
-
-                                        <dt class="col-sm-3">Conversation ID</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ConversationId) ? "-" : Model.ConversationId)</dd>
-
-                                        <dt class="col-sm-3">Connector Name</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ConnectorName) ? "-" : Model.ConnectorName)</dd>
-
-                                        <dt class="col-sm-3">Auth Code</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.AuthCode) ? "-" : Model.AuthCode)</dd>
-
-                                        <dt class="col-sm-3">Host Reference</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.HostReference) ? "-" : Model.HostReference)</dd>
-
-                                        <dt class="col-sm-3">Phase</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Phase) ? "-" : Model.Phase)</dd>
-
-                                        <dt class="col-sm-3">Status</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Status) ? "-" : Model.Status)</dd>
-
-                                        <dt class="col-sm-3">Error Code</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ErrorCode) ? "-" : Model.ErrorCode)</dd>
-
-                                        <dt class="col-sm-3">Error Message</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ErrorMessage) ? "-" : Model.ErrorMessage)</dd>
-
-                                        <dt class="col-sm-3">Locale</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Locale) ? "-" : Model.Locale)</dd>
-
-                                        <dt class="col-sm-3">System Time</dt>
-                                        <dd class="col-sm-9">@Model.SystemTime</dd>
-
-                                        <dt class="col-sm-3">Token</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Token) ? "-" : Model.Token)</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Notes -->
-                        <div class="card">
-                            <div class="card-header" id="notesHeading">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#notesCollapse" aria-expanded="false" aria-controls="notesCollapse">
-                                        Notes
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="notesCollapse" class="collapse" aria-labelledby="notesHeading" data-parent="#orderAccordion">
-                                <div class="card-body">
-                                    <dl class="row">
-                                        <dt class="col-sm-3">OrderComments</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.OrderComments) ? "-" : Model.OrderComments)</dd>
-
-                                        <dt class="col-sm-3">AdminOrderNote</dt>
-                                        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.AdminOrderNote) ? "-" : Model.AdminOrderNote)</dd>
-                                    </dl>
-                                </div>
-                            </div>
+                            <h6 class="font-weight-bold mt-3">Billing Address</h6>
+                            @if (!Model.BillingAddress.EqualsAddress(Model.ShippingAddress))
+                            {
+                                <p class="mb-1">@Model.BillingAddress.Name</p>
+                                <p class="mb-1">@Model.BillingAddress.Description</p>
+                                <p class="mb-1">@Model.BillingAddress.City, @Model.BillingAddress.Country @Model.BillingAddress.ZipCode</p>
+                            }
+                            else
+                            {
+                                <p class="mb-1 text-muted">Same as shipping address</p>
+                            }
                         </div>
                     </div>
-
-                    <!-- Order Products -->
-                    @if (Model.OrderProducts != null && Model.OrderProducts.Any())
-                    {
-                        <h4 class="mt-4">OrderProducts</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-sm">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>ProductName</th>
-                                        <th>ProductCode</th>
-                                        <th>CategoryName</th>
-                                        <th>Specifications</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Total Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var product in Model.OrderProducts)
-                                    {
-                                        <tr>
-                                            <td>@product.ProductName</td>
-                                            <td>@product.ProductCode</td>
-                                            <td>@product.CategoryName</td>
-                                            <td>@product.Quantity</td>
-                                            <td>@product.ProductSalePrice.CurrencySign()</td>
-                                            <td>@product.TotalPrice.CurrencySign()</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
                 </div>
-                <div class="card-footer">
-                    <a href="@Url.Action("Index")" class="btn btn-secondary">BackToList</a>
+            </div>
+
+            <!-- Order Products -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-boxes mr-2"></i>Order Products (@Model.OrderProducts.Count)
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th width="100" class="text-center">Qty</th>
+                                    <th width="120" class="text-right">Price</th>
+                                    <th width="120" class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.OrderProducts)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@product.ProductName</strong><br>
+                                            <small class="text-muted">@product.ProductCode</small>
+                                        </td>
+                                        <td class="text-center">@product.Quantity</td>
+                                        <td class="text-right">@product.ProductSalePrice.CurrencySign()</td>
+                                        <td class="text-right font-weight-bold">@product.TotalPrice.CurrencySign()</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="bg-light">
+                                <tr>
+                                    <td colspan="3" class="text-right font-weight-bold">Subtotal:</td>
+                                    <td class="text-right font-weight-bold">@(Model.Price.ToDecimal() - Model.CargoPrice).CurrencySign()</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right font-weight-bold">Shipping:</td>
+                                    <td class="text-right font-weight-bold">@Model.CargoPrice.CurrencySign()</td>
+                                </tr>
+                                @if (!string.IsNullOrEmpty(Model.Coupon))
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-right font-weight-bold">Coupon (@Model.Coupon):</td>
+                                        <td class="text-right font-weight-bold text-danger">-@Model.CouponDiscount.ToDecimal().CurrencySign()</td>
+                                    </tr>
+                                }
+                                <tr class="bg-primary text-white">
+                                    <td colspan="3" class="text-right font-weight-bold">Total Paid:</td>
+                                    <td class="text-right font-weight-bold">@Model.PaidPriceDecimal.CurrencySign()</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Iyzico Payment Details -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-receipt mr-2"></i>Iyzico Payment Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-3">Transaction Info</h6>
+                            <p class="mb-1"><strong>Payment ID:</strong> @Model.PaymentId</p>
+                            <p class="mb-1"><strong>Conversation ID:</strong> @Model.ConversationId</p>
+                            <p class="mb-1"><strong>Basket ID:</strong> @Model.BasketId</p>
+                            <p class="mb-1"><strong>Token:</strong> @Model.Token</p>
+                            <p class="mb-1"><strong>Locale:</strong> @Model.Locale</p>
+                            <p class="mb-1"><strong>System Time:</strong> @Model.SystemTime</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-3">Card Details</h6>
+                            <p class="mb-1"><strong>Card Type:</strong> @Model.CardType</p>
+                            <p class="mb-1"><strong>Card Association:</strong> @Model.CardAssociation</p>
+                            <p class="mb-1"><strong>Card Family:</strong> @Model.CardFamily</p>
+                            <p class="mb-1"><strong>BIN Number:</strong> @Model.BinNumber</p>
+                            <p class="mb-1"><strong>Last 4 Digits:</strong> @Model.LastFourDigits</p>
+                            <p class="mb-1"><strong>Card Token:</strong> @Model.CardToken</p>
+                            <p class="mb-1"><strong>Card User Key:</strong> @Model.CardUserKey</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-3">Commission Details</h6>
+                            <p class="mb-1"><strong>Merchant Rate:</strong> @Model.MerchantCommissionRate</p>
+                            <p class="mb-1"><strong>Merchant Amount:</strong> @Model.MerchantCommissionRateAmount.ToDecimal().CurrencySign()</p>
+                            <p class="mb-1"><strong>Iyzico Rate:</strong> @Model.IyziCommissionRateAmount.ToDecimal().CurrencySign()</p>
+                            <p class="mb-1"><strong>Iyzico Fee:</strong> @Model.IyziCommissionFee.ToDecimal().CurrencySign()</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-3">Technical Details</h6>
+                            <p class="mb-1"><strong>Phase:</strong> @Model.Phase</p>
+                            <p class="mb-1"><strong>Status:</strong> @Model.Status</p>
+                            <p class="mb-1"><strong>Connector:</strong> @Model.ConnectorName</p>
+                            <p class="mb-1"><strong>Auth Code:</strong> @Model.AuthCode</p>
+                            <p class="mb-1"><strong>Host Ref:</strong> @Model.HostReference</p>
+                            @if (!string.IsNullOrEmpty(Model.ErrorCode))
+                            {
+                                <p class="mb-1 text-danger"><strong>Error Code:</strong> @Model.ErrorCode</p>
+                                <p class="mb-1 text-danger"><strong>Error Message:</strong> @Model.ErrorMessage</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Order Notes -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-sticky-note mr-2"></i>Order Notes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Highlighted Admin Note -->
+                    <div class="mb-4 p-3 bg-light rounded border-left border-left-3 border-warning">
+                        <h6 class="font-weight-bold text-warning">Admin Note</h6>
+                        <p class="mb-0">@(string.IsNullOrEmpty(Model.AdminOrderNote) ? "No admin note" : Model.AdminOrderNote)</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="font-weight-bold">Customer Comments</h6>
+                        <p class="mb-0">@(string.IsNullOrEmpty(Model.OrderComments) ? "No customer comments" : Model.OrderComments)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-credit-card mr-2"></i>Payment Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="font-weight-bold">Basic Info</h6>
+                        <p class="mb-1"><strong>Order Number:</strong> @Model.OrderNumber</p>
+                        <p class="mb-1"><strong>Order GUID:</strong> @Model.OrderGuid</p>
+                        <p class="mb-1"><strong>Order Type:</strong> @Model.OrderType</p>
+                        <p class="mb-1"><strong>Currency:</strong> @Model.Currency</p>
+                        <p class="mb-1"><strong>Fraud Status:</strong> @Model.FraudStatus</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="font-weight-bold">Pricing Breakdown</h6>
+                        <p class="mb-1"><strong>Product Total:</strong> @(Model.Price.ToDecimal() - Model.CargoPrice).CurrencySign()</p>
+                        <p class="mb-1"><strong>Shipping Cost:</strong> @Model.CargoPrice.CurrencySign()</p>
+                        @if (!string.IsNullOrEmpty(Model.Coupon))
+                        {
+                            <p class="mb-1"><strong>Coupon (@Model.Coupon):</strong> -@Model.CouponDiscount.ToDecimal().CurrencySign()</p>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Installment) && !Model.Installment.Equals("1"))
+                        {
+                            <p class="mb-1"><strong>Installment:</strong> @Model.Installment (@Model.InstallmentDescription)</p>
+                        }
+                        <p class="mb-1 font-weight-bold"><strong>Total Paid:</strong> @Model.PaidPriceDecimal.CurrencySign()</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Actions -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-cog mr-2"></i>Order Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-block">
+                            <i class="fas fa-edit mr-2"></i>Update Status
+                        </button>
+                        <button class="btn btn-info btn-block">
+                            <i class="fas fa-truck mr-2"></i>Update Shipping
+                        </button>
+                        <button class="btn btn-warning btn-block">
+                            <i class="fas fa-envelope mr-2"></i>Resend Confirmation
+                        </button>
+                        <button class="btn btn-secondary btn-block">
+                            <i class="fas fa-print mr-2"></i>Print Invoice
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-block">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Orders
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .border-left-3 {
+            border-left-width: 3px !important;
+        }
+
+        .card-header {
+            border-bottom: 1px solid rgba(0,0,0,.125);
+        }
+
+        .table thead th {
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .adminLine {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+        }
+
+        .badge-pill {
+            border-radius: 10rem;
+        }
+    </style>
+}
+
 @section Scripts {
     <script>
-            // Optional: Add interactivity if needed (e.g., tooltips, collapse state persistence)
+        // Add any necessary JavaScript here
     </script>
 }

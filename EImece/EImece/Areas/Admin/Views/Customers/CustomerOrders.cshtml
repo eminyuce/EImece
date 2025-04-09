@@ -28,6 +28,24 @@
 
 }
 
+<style>
+    .section-header {
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 3px;
+        border-radius: 1px 1px 0 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    hr.section-divider {
+        border: 0;
+        height: 2px;
+        background: #333;
+        margin: 3px 0;
+    }
+</style>
+
 <h2>@customer.FullName @AdminResource.OrdersBelongCustomer</h2>
 <hr class="adminLine" />
 @Html.DisplayFor(r => customer, "CustomerOrderDetail")
@@ -126,6 +144,7 @@ RenderValueAs(o => WriteAdminOrderNote(o));
         </div>
     </div>
 }
+
 @helper createOrderStatus(Order o)
 {
 

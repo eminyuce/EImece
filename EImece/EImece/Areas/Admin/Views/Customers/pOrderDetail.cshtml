@@ -1,139 +1,281 @@
 ﻿@model Order
-@using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
+@using Iyzipay.Model;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
-@using Resources;
-@using Newtonsoft.Json;
-@using EImece.Domain.Models.FrontModels;
-@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Helpers.Extensions;
+@using Resources;
+@using EImece.Domain.Models.FrontModels;
+
 @{
     var order = Model;
     var orderProducts = Model.OrderProducts;
-
 }
-<section class="order-details">
 
-    <div class="text-center">
-        <b>@AdminResource.OrderDatePurchased - @order.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")</b><br />
-        <b>@AdminResource.PaymentIyzicoNumber - @order.PaymentId</b><br />
-        <b>@AdminResource.PaymentIyzicoMerchantBasketId - @order.BasketId</b><br />
+
+<section class="order-details container my-4">
+    <!-- Sipariş Genel Bakış -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white section-header">
+            <h4 class="mb-0">@AdminResource.OrderDetails</h4>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <strong>@AdminResource.OrderDatePurchased</strong><br />
+                    @order.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm")
+                </div>
+                <div class="col-md-4">
+                    <strong>@AdminResource.OrderNumber</strong><br />
+                    @order.OrderNumber
+                </div>
+                <div class="col-md-4">
+                    <strong>@AdminResource.OrderStatus</strong><br />
+                    @createOrderStatus(order)
+                </div>
+            </div>
+        </div>
     </div>
-    <section class="customer-details">
-        <h4 class="column__title">@AdminResource.ShippingAddress</h4>
-        <address>
-            @order.ShippingAddress.Description
-        </address>
-    </section>
-    <table class='table table-hover table-bordered table-striped'>
+    <hr class="section-divider" />
 
-        <thead>
-            <tr class="info">
-                <th colspan="2" class="text-center">@AdminResource.Product</th>
-                <th class="table__product-name product-Quantity">@AdminResource.UnitPrice x @AdminResource.Quantity</th>
-                <th class="table__product-table product-total">@AdminResource.TotalPrice</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var orderProduct in orderProducts)
+    <!-- Müşteri ve Adres Bilgileri -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white section-header">
+            <h4 class="mb-0">Müşteri ve Adres</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>@AdminResource.ShippingAddress</h5>
+                    <address>
+                        @order.ShippingAddress.Description
+                    </address>
+                </div>
+                <div class="col-md-6">
+                    <h5>@AdminResource.BillingAddress</h5>
+                    <address>
+                        @order.BillingAddress.Description
+                    </address>
+                </div>
+            </div>
+            @if (order.Customer != null)
             {
-                var ProductSpecItems = orderProduct.ProductSpecObjItems;
-                var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
-            <tr class="table__line-item order_item">
-                <td class="text-center">
-                    <a class="cart-item-thumb mx-auto mr-sm-4" href="@orderProduct.Product.DetailPageRelativeUrl">
-                        <img src="@imgTag" style="max-width:180px;" alt="Product">
-                    </a>
-                </td>
-                <td class="text-left">
-                    @Html.ActionLink(orderProduct.Product.Name,
-                   "Detail",
-                   "Products",
-                   new
-                        {
-                            area = "",
-                            categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
-                       id = orderProduct.Product.GetSeoUrl()
-                        }, new { @class = "btn btn-xl btn-link", @target = "_blank" })
-                    <br />
-                    <span>@AdminResource.ProductCategory : @orderProduct.Product.ProductCategory.Name</span>
-                    @if (ProductSpecItems.IsNotEmpty())
-                        {
-                            foreach (var psi in ProductSpecItems)
-                            {
-                    <div> <strong class="product-specs">@psi.SpecsName &#8594; @psi.SpecsValue  </strong></div>
-                            }
-                        }
-                </td>
-                <td class="table__product-name product-name">
-                    <strong class="product-quantity">@orderProduct.Price.CurrencySign() × @orderProduct.Quantity</strong>
-                </td>
-
-                <td class="text-right">
-                    <span>
-                        @orderProduct.TotalPrice.CurrencySign()
-                    </span>
-                </td>
-            </tr>
+                <p><strong>@AdminResource.Name:</strong> @order.Customer.FullName</p>
             }
+        </div>
+    </div>
+    <hr class="section-divider" />
 
+    <!-- Ürünler Tablosu -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white section-header">
+            <h4 class="mb-0">Sipariş Edilen Ürünler</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Ürün Resmi</th>
+                        <th>Ürün Detayları</th>
+                        <th>@AdminResource.UnitPrice x @AdminResource.Quantity</th>
+                        <th>@AdminResource.TotalPrice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var orderProduct in orderProducts)
+                    {
+                        var productSpecItems = orderProduct.ProductSpecObjItems;
+                        var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
+                        <tr>
+                            <td class="text-center">
+                                <a href="@orderProduct.Product.DetailPageRelativeUrl" target="_blank">
+                                    <img src="@imgTag" alt="Ürün" class="img-fluid" style="max-width: 100px;" />
+                                </a>
+                            </td>
+                            <td>
+                                @Html.ActionLink(orderProduct.Product.Name, "Detail", "Products",
+                                    new
+                                    {
+                                        area = "",
+                                        categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
+                                        id = orderProduct.Product.GetSeoUrl()
+                                    }, new { @class = "btn btn-link", @target = "_blank" })
+                                <br />
+                                <small>@AdminResource.ProductCategory: @orderProduct.Product.ProductCategory.Name</small>
+                                @if (productSpecItems.IsNotEmpty())
+                                {
+                                    foreach (var psi in productSpecItems)
+                                    {
+                                        <div><strong>@psi.SpecsName:</strong> @psi.SpecsValue</div>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @orderProduct.Price.CurrencySign() × @orderProduct.Quantity
+                            </td>
+                            <td class="text-right">
+                                @orderProduct.TotalPrice.CurrencySign()
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr class="section-divider" />
+
+    <!-- Ödeme Detayları -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white section-header">
+            <h4 class="mb-0">Ödeme Detayları</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    @if (!string.IsNullOrEmpty(order.PaymentId))
+                    {
+                        <p><strong>@AdminResource.PaymentIyzicoNumber:</strong> @order.PaymentId</p>
+                    }
+                    @if (!string.IsNullOrEmpty(order.BasketId))
+                    {
+                        <p><strong>@AdminResource.PaymentIyzicoMerchantBasketId:</strong> @order.BasketId</p>
+                    }
+                    @if (!string.IsNullOrEmpty(order.PaymentStatus))
+                    {
+                        <p><strong>@AdminResource.PaymentStatus:</strong> @order.PaymentStatus</p>
+                    }
+                    @if (!string.IsNullOrEmpty(order.CardType))
+                    {
+                        <p><strong>Kart Türü:</strong> @order.CardType</p>
+                    }
+                    @if (!string.IsNullOrEmpty(order.CardAssociation))
+                    {
+                        <p><strong>Kart Kuruluşu:</strong> @order.CardAssociation</p>
+                    }
+                    @if (!string.IsNullOrEmpty(order.LastFourDigits))
+                    {
+                        <p><strong>Son Dört Hane:</strong> @order.LastFourDigits</p>
+                    }
+                </div>
+                <div class="col-md-6">
+                    @if (!string.IsNullOrEmpty(order.Installment))
+                    {
+                        <p><strong>@AdminResource.Installment:</strong> @order.InstallmentDescription</p>
+                    }
+                    @if (!string.IsNullOrEmpty(order.Coupon))
+                    {
+                        <p><strong>@AdminResource.Coupon:</strong> @order.Coupon (@order.CouponDiscount TL)</p>
+                    }
+                    @if (order.CargoPrice > 0)
+                    {
+                        <p><strong>@AdminResource.CargoPrice:</strong> @order.CargoPrice.CurrencySign()</p>
+                    }
+                    <p><strong>Toplam Ödenen Fiyat:</strong> @order.PaidPrice.ToDouble().CurrencySign()</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="section-divider" />
+
+    <!-- Kargo Detayları -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white section-header">
+            <h4 class="mb-0">Kargo Detayları</h4>
+        </div>
+        <div class="card-body">
+            @if (!string.IsNullOrEmpty(order.ShipmentTrackingNumber))
+            {
+                <p><strong>@AdminResource.ShipmentTrackingNumber:</strong> @order.ShipmentTrackingNumber</p>
+            }
+            @if (!string.IsNullOrEmpty(order.ShipmentCompanyName))
+            {
+                <p><strong>@AdminResource.ShipmentCompanyName:</strong> @order.ShipmentCompanyName</p>
+            }
+            <p><strong>Teslimat Tarihi:</strong> @order.DeliveryDate.ToString("dd MMMM yyyy")</p>
+        </div>
+    </div>
+    <hr class="section-divider" />
+
+    <!-- Notlar ve Yorumlar -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white section-header">
+            <h4 class="mb-0">Notlar ve Yorumlar</h4>
+        </div>
+        <div class="card-body">
             @if (!string.IsNullOrEmpty(order.OrderComments))
             {
-            <tr class="primary">
-                <td>
-                    <b>
-                        @AdminResource.OrderComments
-                    </b>
-                </td>
-                <td colspan="3">
-                    @order.OrderComments
-                </td>
-            </tr>
+                <p><strong>@AdminResource.OrderComments:</strong> @order.OrderComments</p>
             }
-
-            @if (!string.IsNullOrEmpty(order.Coupon))
+            @if (!string.IsNullOrEmpty(order.AdminOrderNote))
             {
-            <tr class="primary">
-                <td>
-                    <b>
-                        @AdminResource.Coupon (@order.Coupon)
-                    </b>
-                </td>
-                <td colspan="3">
-                    <strong class="product-quantity"> @order.CouponDiscount TL</strong>
-                </td>
-            </tr>
+                <p><strong>@AdminResource.AdminOrderNote:</strong> @order.AdminOrderNote</p>
+            }
+        </div>
+    </div>
+    <hr class="section-divider" />
 
-            }
-            @if (order.CargoPrice > 0)
-            {
-            <tr class="warning">
-                <td colspan="3">
-                    <b class="Price-amount amount">
-                        @AdminResource.CargoPrice
-                    </b>
-                </td>
-                <td class="text-right">
-                    @order.CargoPrice.CurrencySign()
-                </td>
-            </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr class="success">
-                <th colspan="2" scope="row">@AdminResource.TotalPrice</th>
-                <td>
-                    <span class="Price-Quantity">
-                        @orderProducts.Sum(r => r.Quantity)  @AdminResource.PieceOfProductSold
-                    </span>
-                </td>
-                <td class="text-right">
-                    @order.PaidPrice.ToDouble().CurrencySign()
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+    <!-- Gelişmiş Ödeme Bilgileri (Gerekmedikçe Gizli) -->
+    @if (!string.IsNullOrEmpty(order.MerchantCommissionRate) || !string.IsNullOrEmpty(order.IyziCommissionFee))
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white section-header">
+                <h4 class="mb-0">Gelişmiş Ödeme Bilgileri</h4>
+            </div>
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(order.MerchantCommissionRate))
+                {
+                    <p><strong>Tüccar Komisyon Oranı:</strong> @order.MerchantCommissionRate</p>
+                }
+                @if (!string.IsNullOrEmpty(order.MerchantCommissionRateAmount))
+                {
+                    <p><strong>@AdminResource.MerchantCommissionRateAmount:</strong> @order.MerchantCommissionRateAmount</p>
+                }
+                @if (!string.IsNullOrEmpty(order.IyziCommissionFee))
+                {
+                    <p><strong>Iyzi Komisyon Ücreti:</strong> @order.IyziCommissionFee</p>
+                }
+                @if (!string.IsNullOrEmpty(order.IyziCommissionRateAmount))
+                {
+                    <p><strong>@AdminResource.IyziCommissionRateAmount:</strong> @order.IyziCommissionRateAmount</p>
+                }
+            </div>
+        </div>
+    }
 </section>
+
+@helper createOrderStatus(Order o)
+{
+    var os = (EImeceOrderStatus)o.OrderStatus;
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+    switch (os)
+    {
+        case EImeceOrderStatus.NewlyOrder:
+            <span class="text-primary">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.PaymentPending:
+            <span class="text-secondary">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.InProgress:
+            <span class="text-info">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Shipped:
+            <span class="text-dark">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Delivered:
+            <span class="text-success">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Cancelled:
+            <span class="text-danger">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Returned:
+            <span class="text-warning">@orderStatusText</span>
+            break;
+        case EImeceOrderStatus.Refunded:
+            <span class="text-muted">@orderStatusText</span>
+            break;
+        default:
+            <span class="text-secondary">@orderStatusText (Bilinmeyen Durum)</span>
+            break;
+    }
+}
