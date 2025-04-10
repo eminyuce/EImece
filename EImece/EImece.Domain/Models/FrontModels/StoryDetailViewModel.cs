@@ -20,5 +20,8 @@ namespace EImece.Domain.Models.FrontModels
         public Menu MainPageMenu { get; set; }
 
         public List<Tag> Tags { get; set; }
+
+        public Story PreviousStory  { get; set; }
+        public Story NextStory { get; set; }
     }
 }

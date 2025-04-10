@@ -20,6 +20,7 @@
     var RelatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(8).ToList();
     var tags = Model.Tags;
 }
+
 <!-- Page Title-->
 <div class="page-title-wrapper" aria-label="Page title">
     <div class="container">
@@ -32,17 +33,25 @@
                 <li class="breadcrumb-item">
                     <a href="#">Blog</a>
                 </li>
+                @if (storyCategory != null)
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@storyCategory.DetailPageRelativeUrl">@storyCategory.Name</a>
+                    </li>
+                }
             </ol>
         </nav>
-        <h1 class="page-title">Post left sidebar</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@story.Name</h1>
+        <span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
     </div>
 </div>
+
 <!-- Page Content-->
 <div class="container pb-5 mb-1">
     <div class="row">
+        <!-- Blog sidebar-->
         <div class="col-lg-3">
-            <!-- Blog sidebar-->
             <div class="offcanvas-sidebar">
                 <div class="offcanvas-sidebar-toggle"><span class="toggle-knob"><i data-feather="chevrons-right"></i>Sidebar</span></div>
                 <div class="offcanvas-sidebar-body">
@@ -50,194 +59,206 @@
                         <!-- Categories-->
                         @if (Model.StoryCategories.IsNotEmpty())
                         {
-                        <div class="widget widget-categories mb-4 py-1">
-                            <h3 class="widget-title">Categories</h3>
-                            <ul>
-                                @foreach (var allStoryCategory in Model.StoryCategories)
+                            <div class="widget widget-categories mb-4 py-1">
+                                <h3 class="widget-title">Categories</h3>
+                                <ul>
+                                    @foreach (var allStoryCategory in Model.StoryCategories)
                                     {
-                                <li>
-                                    <a href="@allStoryCategory.DetailPageRelativeUrl">
-                                        <i class="widget-categories-indicator" data-feather="chevron-right"></i>@allStoryCategory.Name
-                                        <span class="badge text-muted ml-1">(@allStoryCategory.Stories.Count)</span>
-                                    </a>
-                                </li>
+                                        <li>
+                                            <a href="@allStoryCategory.DetailPageRelativeUrl">
+                                                <i class="widget-categories-indicator" data-feather="chevron-right"></i>@allStoryCategory.Name
+                                                <span class="badge text-muted ml-1">(@allStoryCategory.Stories.Count)</span>
+                                            </a>
+                                        </li>
                                     }
-                            </ul>
-                        </div>
+                                </ul>
+                            </div>
                         }
 
                         <!-- Featured posts-->
-
                         @if (Model.FeaturedStories.IsNotEmpty())
                         {
-                        <div class="widget widget-featured-entries mb-4 pb-2">
-
-                            <h3 class="widget-title">Featured posts</h3>
-                            @foreach (var releatedStory in Model.RelatedStories)
+                            <div class="widget widget-featured-entries mb-4 pb-2">
+                                <h3 class="widget-title">Featured posts</h3>
+                                @foreach (var featuredStory in Model.FeaturedStories)
                                 {
-                                    var imgTag = releatedStory.GetCroppedImageUrl(releatedStory.MainImageId, 64, 64);
-
-                            <div class="media">
-
-                                @if (!string.IsNullOrEmpty(imgTag))
+                                    var imgTag = featuredStory.GetCroppedImageUrl(featuredStory.MainImageId, 64, 64);
+                                    <div class="media">
+                                        @if (!string.IsNullOrEmpty(imgTag))
                                         {
-                                <a class="featured-entry-thumb" href="@releatedStory.DetailPageUrl">
-                                    <img src="@imgTag" width="64" alt="Post thumb">
-                                </a>
+                                            <a class="featured-entry-thumb" href="@featuredStory.DetailPageUrl">
+                                                <img src="@imgTag" width="64" alt="@featuredStory.Name">
+                                            </a>
                                         }
-
-                                <div class="media-body">
-                                    <h6 class="featured-entry-title"><a href="@releatedStory.DetailPageUrl">@releatedStory.Name</a></h6>
-                                    @if (!string.IsNullOrEmpty(releatedStory.AuthorName))
+                                        <div class="media-body">
+                                            <h6 class="featured-entry-title"><a href="@featuredStory.DetailPageUrl">@featuredStory.Name</a></h6>
+                                            @if (!string.IsNullOrEmpty(featuredStory.AuthorName))
                                             {
-                                    <p class="featured-entry-meta text-muted">by @releatedStory.AuthorName</p>
+                                                <p class="featured-entry-meta text-muted">by @featuredStory.AuthorName</p>
                                             }
-                                </div>
-                            </div>
-
+                                        </div>
+                                    </div>
                                 }
-                        </div>
+                            </div>
                         }
 
-                        <!-- Tags      -->
-
+                        <!-- Tags -->
                         @if (storyTags.IsNotEmpty())
                         {
-                        <div class="widget mb-4 pb-1">
-                            <h3 class="widget-title">Popular tags</h3>
-                            @for (int i = 0; i < storyTags.Count; i++)
+                            <div class="widget mb-4 pb-1">
+                                <h3 class="widget-title">Popular tags</h3>
+                                @foreach (var tag in storyTags)
                                 {
-                                    var pt = storyTags[i];
-                            <a class="tag-link mr-2 mb-2" href="@pt.DetailPageRelativeUrlForStories">@string.Format("#{0}", pt.Name)</a>
+                                    <a class="tag-link mr-2 mb-2" href="@tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", tag.Name)</a>
                                 }
-                        </div>
+                            </div>
                         }
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Main content -->
         <div class="col-lg-9">
             <!-- Post meta-->
             <div class="post-meta d-flex flex-wrap justify-content-between pb-3">
-                <div class="mr-2">by&nbsp;<a href="#">Olivia Reyes</a><span class="meta-divider"></span>in&nbsp;<a href="#">Aerial photo</a><span class="meta-divider"></span><span>Apr 20</span></div><a href="#"><i class="mr-1" data-feather="message-square"></i>13</a>
+                @if (!string.IsNullOrEmpty(story.AuthorName))
+                {
+                    <div class="mr-2">by&nbsp;<a href="#">@story.AuthorName</a></div>
+                }
+                @if (storyCategory != null)
+                {
+                    <span class="meta-divider"></span>
+                    <div class="mr-2">in&nbsp;<a href="@storyCategory.DetailPageRelativeUrl">@storyCategory.Name</a></div>
+                }
+                <span class="meta-divider"></span>
+                <span>@story.CreatedDate.ToString("MMM dd, yyyy")</span>
             </div>
+
             <!-- Gallery-->
-            <div class="row pb-2">
-                <div class="col-sm-8">
-                    <a class="gallery-item mb-grid-gutter" href="img/blog/single/01.jpg" data-fancybox="blogGallery" data-options="{&quot;caption&quot;: &quot;Operating a drone&quot;}">
-                        <img src="img/blog/single/th01.jpg" alt="Gallery image">
-                        <div class="gallery-caption">
-                            <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>Operating a drone
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    <a class="gallery-item mb-grid-gutter" href="img/blog/single/02.jpg" data-fancybox="blogGallery" data-options="{&quot;caption&quot;: &quot;Drone shot #1&quot;}">
-                        <img src="img/blog/single/th02.jpg" alt="Gallery image">
-                        <div class="gallery-caption">
-                            <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>Drone shot #1
-                        </div>
-                    </a><a class="gallery-item mb-grid-gutter" href="img/blog/single/03.jpg" data-fancybox="blogGallery" data-options="{&quot;caption&quot;: &quot;Drone shot #2&quot;}">
-                        <img src="img/blog/single/th03.jpg" alt="Gallery image">
-                        <div class="gallery-caption">
-                            <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>Drone shot #2
-                        </div>
-                    </a>
-                </div>
-            </div>
-            @if (isUserAuthenticated)
+            @if (storyFiles.IsNotEmpty())
             {
-            @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class = "adminPageLink" })
+                <div class="row pb-2">
+                    @foreach (var file in storyFiles)
+                    {
+                        var imgTag = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
+                        var thumbTag = file.GetCroppedImageUrl(file.FileStorageId, 300, 200);
+                        <div class="col-sm-@(storyFiles.Count > 2 ? "4" : storyFiles.Count == 2 ? "6" : "12")">
+                            <a class="gallery-item mb-grid-gutter" href="@imgTag" data-fancybox="blogGallery" data-caption="@file.Name">
+                                <img src="@thumbTag" alt="@file.Name">
+                                <div class="gallery-caption">
+                                    <div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div>
+                                    @file.Name
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
             }
+
+          
             <!-- Post content-->
-            @Html.Raw(story.Description)
+            <div class="post-content">
+                @Html.Raw(story.Description)
+            </div>
+
             <!-- Post tags + sharing-->
             <div class="d-flex flex-wrap justify-content-between pt-2 pb-4 mb-1">
                 @if (story.StoryTags.IsNotEmpty())
                 {
-                <div class="mt-3 mr-3">
-                    @foreach (var t in story.StoryTags)
+                    <div class="mt-3 mr-3">
+                        @foreach (var t in story.StoryTags)
                         {
-
-                    <a class="tag-link mr-2 mb-2" href="@t.Tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", t.Tag.Name)</a>
+                            <a class="tag-link mr-2 mb-2" href="@t.Tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", t.Tag.Name)</a>
                         }
-                </div>
+                    </div>
                 }
 
                 <div class="mt-3">
                     <span class="d-inline-block align-middle text-muted font-size-sm mr-2 mb-2">
                         Share post:
-                    </span><a class="social-btn sb-facebook mr-2 mb-2" href="#">
+                    </span>
+                    <a class="social-btn sb-facebook mr-2 mb-2" href="#">
                         <i class="flaticon-facebook"></i>
-                    </a><a class="social-btn sb-twitter mr-2 mb-2" href="#">
+                    </a>
+                    <a class="social-btn sb-twitter mr-2 mb-2" href="#">
                         <i class="flaticon-twitter"></i>
-                    </a><a class="social-btn sb-pinterest mr-2 mb-2" href="#">
+                    </a>
+                    <a class="social-btn sb-pinterest mr-2 mb-2" href="#">
                         <i class="flaticon-pinterest"></i>
                     </a>
                 </div>
             </div>
+
             <!-- Post navigation-->
             <nav class="entry-navigation" aria-label="Post navigation">
-                <a class="entry-navigation-link" href="#" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;img/blog/navigation/01.jpg&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6  class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;How to choose perfect shoes for running&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by Susan Mayer&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;"><i class="mr-1" data-feather="chevron-left"></i><span class="d-none d-sm-inline">Prev post</span></a>
-                <a class="entry-navigation-link" href="blog-rs.html">
-                    <i class="mr-1" data-feather="grid">
-                    </i><span class="d-none d-sm-inline">All posts</span>
-                </a>
-                <a class="entry-navigation-link" href="#" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;img/blog/navigation/02.jpg&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6  class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;Factors behind smart watches popularity&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by Logan Coleman&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
-                    <span class="d-none d-sm-inline">Next post</span>
-                    <i class="ml-1" data-feather="chevron-right"></i>
-                </a>
-            </nav>
-            @if (Model.RelatedStories.IsNotEmpty())
-            {
-                <!-- Related posts-->
-            <h3 class="h4 pt-5 pb-4 mt-2 text-center">You may also like</h3>
-            <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
-                @foreach (var releatedStory in Model.RelatedStories)
-                    {
-                        var imgTag = releatedStory.GetCroppedImageUrl(releatedStory.MainImageId, 278, 0);
-                <div>
-                    @if (!string.IsNullOrEmpty(imgTag))
-                            {
-                    <a class="d-block mb-3" href="@releatedStory.DetailPageUrl">
-                        <img class="d-block w-100" src="@imgTag" alt="Related post">
+                @if (Model.PreviousStory != null)
+                {
+                    <a class="entry-navigation-link" href="@Model.PreviousStory.DetailPageUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.PreviousStory.GetCroppedImageUrl(Model.PreviousStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.PreviousStory.Name&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by @Model.PreviousStory.AuthorName&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
+                        <i class="mr-1" data-feather="chevron-left"></i>
+                        <span class="d-none d-sm-inline">Prev post</span>
                     </a>
-                            }
+                }
+                <a class="entry-navigation-link" href="@(storyCategory.DetailPageRelativeUrl ?? "#")">
+                    <i class="mr-1" data-feather="grid"></i>
+                    <span class="d-none d-sm-inline">All posts</span>
+                </a>
+                @if (Model.NextStory != null)
+                {
+                    <a class="entry-navigation-link" href="@Model.NextStory.DetailPageUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.NextStory.GetCroppedImageUrl(Model.NextStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.NextStory.Name&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by @Model.NextStory.AuthorName&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
+                        <span class="d-none d-sm-inline">Next post</span>
+                        <i class="ml-1" data-feather="chevron-right"></i>
+                    </a>
+                }
+            </nav>
 
-                    @if (!string.IsNullOrEmpty(releatedStory.AuthorName))
+            <!-- Related stories-->
+            @if (relatedStories.IsNotEmpty())
+            {
+                <h3 class="h4 pt-5 pb-4 mt-2 text-center">You may also like</h3>
+                <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
+                    @foreach (var relatedStory in relatedStories)
+                    {
+                        var imgTag = relatedStory.GetCroppedImageUrl(relatedStory.MainImageId, 278, 0);
+                        <div>
+                            @if (!string.IsNullOrEmpty(imgTag))
                             {
-                    <div class="post-meta pb-2">
-                        by&nbsp;@releatedStory.AuthorName
-                    </div>
+                                <a class="d-block mb-3" href="@relatedStory.DetailPageUrl">
+                                    <img class="d-block w-100" src="@imgTag" alt="@relatedStory.Name">
+                                </a>
                             }
-
-                    <section class="date">
-                        <span class="day">@story.CreatedDate.Day</span>
-                        <span class="month">@story.CreatedDate.ToString("MMM")</span>
-                    </section>
-
-                    <h4 class="h6"><a class="post-title" href="@releatedStory.DetailPageUrl">@releatedStory.Name</a></h4>
-                </div>
+                            <div class="post-meta pb-2">
+                                @if (!string.IsNullOrEmpty(relatedStory.AuthorName))
+                                {
+                                    <span>by&nbsp;@relatedStory.AuthorName</span>
+                                }
+                            </div>
+                            <section class="date">
+                                <span class="day">@relatedStory.CreatedDate.Day</span>
+                                <span class="month">@relatedStory.CreatedDate.ToString("MMM")</span>
+                            </section>
+                            <h4 class="h6"><a class="post-title" href="@relatedStory.DetailPageUrl">@relatedStory.Name</a></h4>
+                        </div>
                     }
-            </div>
+                </div>
             }
+
+            <!-- Related products-->
             @if (RelatedProducts.Any())
             {
-                <!-- Related posts-->
-            <h3 class="h4 pt-5 pb-4 mt-2 text-center">      @Resource.RelatedProductsForBlog</h3>
-            <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
-
-                @foreach (var product in RelatedProducts)
+                <h3 class="h4 pt-5 pb-4 mt-2 text-center">@Resource.RelatedProductsForBlog</h3>
+                <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
+                    @foreach (var product in RelatedProducts)
                     {
-
                         var imgTag = product.GetCroppedImageUrl(product.MainImageId, 278, 0);
-                <div>
-                    <a class="d-block mb-3" href="@product.DetailPageRelativeUrl"><img class="d-block w-100" src="@imgTag" alt="Related post"></a>
-                    <h4 class="h6"><a class="post-title" href="#">@product.Name</a></h4>
-                </div>
-
+                        <div>
+                            <a class="d-block mb-3" href="@product.DetailPageRelativeUrl">
+                                <img class="d-block w-100" src="@imgTag" alt="@product.Name">
+                            </a>
+                            <h4 class="h6"><a class="post-title" href="@product.DetailPageRelativeUrl">@product.Name</a></h4>
+                        </div>
                     }
-            </div>
+                </div>
             }
         </div>
     </div>
@@ -245,5 +266,20 @@
 
 @section scripts
 {
-
+    <script>
+        $(document).ready(function() {
+            // Initialize Fancybox for gallery
+            $('[data-fancybox="blogGallery"]').fancybox({
+                buttons: [
+                    "zoom",
+                    "share",
+                    "slideShow",
+                    "fullScreen",
+                    "download",
+                    "thumbs",
+                    "close"
+                ]
+            });
+        });
+    </script>
 }
