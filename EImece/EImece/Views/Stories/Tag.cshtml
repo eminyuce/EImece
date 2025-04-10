@@ -6,34 +6,65 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
+
 @{
-    PaginatedList<StoryTag> StoryTags = Model.StoryTags;
+    PaginatedList<StoryTag> storyTags = Model.StoryTags;
     var tag = Model.Tag;
     ViewBag.Title = tag.GetSeoTitle();
-    ViewBag.Description = (Model.CompanyName.SettingValue + " - "+ String.Join(",", StoryTags.Select(r => r.Story.Name))).ToStr(150);
-
+    ViewBag.Description = (Model.CompanyName.SettingValue + " - " + String.Join(",", storyTags.Select(r => r.Story.Name))).ToStr(150);
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
-<h2>
-    @tag.Name
-    @if (isUserAuthenticated)
-{
-    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "tags", new { @id = tag.Id, @area = "admin" }, new { @class = "adminPageLink" })
-}
-</h2>
-
-@Html.BootstrapPager(StoryTags.PageIndex,
-    index => Url.Action("Tag", "Stories", new { page = index }),
-    StoryTags.TotalCount, StoryTags.PageSize, numberOfLinks: 10)
-
-<div class="row">
-    @foreach (var item in StoryTags)
-    {
-    <div class="col-lg-3 col-md-4 col-sm-6">
-        @Html.DisplayFor(modelItem => item.Story, "MainPageStory")
+<div class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        @tag.Name
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@tag.Name</h1>
+        <span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+        <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
+            <div class="d-flex flex-wrap">
+                <span class="d-block mt-2">
+                    @Html.Raw(String.Format(Resource.TagResultTotalCountText, tag.Name, storyTags.TotalCount))
+                </span>
+            </div>
+        </div>
     </div>
-    }
+</div>
+
+<div class="container potrfolio-container">
+
+    <div class="clearfix"></div>
+
+    <!-- Stories grid -->
+    <div class="row no-gutters">
+        @foreach (var item in storyTags)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 p-2">
+                @Html.DisplayFor(modelItem => item.Story, "TagStory")
+            </div>
+        }
+    </div>
+
+    <div class="offset-md-4 col-md-8 pb-5">
+        @Html.BootstrapPager(
+            storyTags.PageIndex,
+            index => Url.Action("Tag", "Stories", new { page = index }),
+            storyTags.TotalCount,
+            storyTags.PageSize,
+            numberOfLinks: 10
+        )
+    </div>
+
 </div>

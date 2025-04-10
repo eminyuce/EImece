@@ -8,16 +8,11 @@
 @{
     var category = Model.StoryCategory;
     var stories = Model.Stories;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Description = category.GetSeoDescription();
 
     Layout = "~/Views/Shared/_Layout.cshtml";
     category.PageTheme = String.IsNullOrEmpty(category.PageTheme) ? "T1" : category.PageTheme;
     var selectedPagePath = "StoriesPageThemes/PageTheme_" + category.PageTheme;
-}
-@if (isUserAuthenticated)
-{
-@Html.ActionLink(Resource.AdminEdit, "saveoredit", "storyCategories", new { @id = category.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
 }
 @Html.Partial(selectedPagePath, Model)

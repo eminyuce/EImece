@@ -1381,6 +1381,7 @@
     <Content Include="Views\Payment\CargoTracking.cshtml" />
     <Content Include="Views\Shared\CargoTrackingResult.cshtml" />
     <Content Include="Views\Payment\_OrderSummaryBeforePayment.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\TagStory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

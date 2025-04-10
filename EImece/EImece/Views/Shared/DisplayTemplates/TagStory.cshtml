@@ -1,0 +1,49 @@
+﻿@model EImece.Domain.Entities.Story
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using EImece.Domain
+@using Resources
+
+@{
+    var story = Model;
+    var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
+    int width = ViewData["Width"].ToInt(0);
+    int height = ViewData["Height"].ToInt(0);
+}
+
+<article class="post">
+
+    <figure class="post-img">
+        <a href="@story.DetailPageUrl">
+            @Html.Raw(story.GetCroppedImageTag(0, 0))
+        </a>
+    </figure>
+
+    <section class="date">
+        <span class="day">@story.CreatedDate.Day</span>
+        <span class="month">@story.CreatedDate.ToString("MMM")</span>
+    </section>
+
+    <section class="post-content">
+
+        <header class="meta">
+            <h2>
+                <a href="@story.DetailPageUrl">@story.Name</a>
+            </h2>
+            <span>
+                <i class="fa fa-tag"></i>
+                @for (int i = 0; i < tags.Count; i++)
+                {
+                    var tag = tags[i];
+                    <a href="#">@tag.Name</a>@(i < tags.Count - 1 ? ", " : "")
+                }
+            </span>
+        </header>
+
+        <p>
+            @story.GetSeoDescription(300)
+        </p>
+
+        <a href="@story.DetailPageUrl" class="button color">@Resource.ReadMore</a>
+    </section>
+</article>

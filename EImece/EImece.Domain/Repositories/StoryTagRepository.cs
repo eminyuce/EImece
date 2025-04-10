@@ -49,6 +49,7 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.Story);
             includeProperties.Add(r => r.Story.StoryCategory);
+            includeProperties.Add(r => r.Story.MainImage);
             includeProperties.Add(r => r.Story.StoryFiles);
             return this.Paginate(pageIndex,
                 pageSize,
