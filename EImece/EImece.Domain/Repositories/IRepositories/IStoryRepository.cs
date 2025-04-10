@@ -20,5 +20,9 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Story> GetFeaturedStories(int take, int language, int excludedStoryId);
 
+        Story GetPreviousStory(int currentStoryId, int language);
+
+        Story GetNextStory(int currentStoryId, int language);
+
     }
 }

@@ -94,6 +94,8 @@ namespace EImece.Domain.Services
                 result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, language, storyId);
             }
             result.FeaturedStories = StoryRepository.GetFeaturedStories(10, language, storyId);
+            result.NextStory = StoryRepository.GetNextStory(storyId, language);
+            result.PreviousStory = StoryRepository.GetPreviousStory(storyId, language);
             result.RelatedProducts = new List<Product>();
             if (result.Story != null && result.Story.StoryTags.Any())
             {
@@ -238,6 +240,16 @@ namespace EImece.Domain.Services
         public List<Story> GetFeaturedStories(int take, int language, int excludedStoryId)
         {
             return StoryRepository.GetFeaturedStories(take, language, excludedStoryId);
+        }
+
+        public Story GetPreviousStory(int currentStoryId, int language)
+        {
+            return StoryRepository.GetPreviousStory(currentStoryId, language);
+        }
+
+        public Story GetNextStory(int currentStoryId, int language)
+        {
+            return StoryRepository.GetNextStory(currentStoryId, language);
         }
     }
 }

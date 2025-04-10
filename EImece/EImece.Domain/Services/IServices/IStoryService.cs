@@ -33,5 +33,9 @@ namespace EImece.Domain.Services.IServices
         Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams);
 
         List<Story> GetFeaturedStories(int take, int language, int storyId);
+
+        Story GetPreviousStory(int currentStoryId, int language);
+
+        Story GetNextStory(int currentStoryId, int language);
     }
 }

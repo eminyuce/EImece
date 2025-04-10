@@ -6,6 +6,7 @@ using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -14,9 +15,11 @@ namespace EImece.Domain.Repositories
     public class StoryRepository : BaseContentRepository<Story>, IStoryRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private IEImeceContext dbContext;
 
         public StoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
+            this.dbContext = dbContext;
         }
 
         public List<Story> GetAdminPageList(int categoryId, string search, int lang)
@@ -49,6 +52,34 @@ namespace EImece.Domain.Repositories
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
 
             return result.ToList();
+        }
+
+        public Story GetNextStory(int currentStoryId, int language)
+        {
+            var currentStory = dbContext.Stories.FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
+            if (currentStory == null) return null;
+
+            return dbContext.Stories
+                .Where(s => s.Lang == language && s.IsActive &&
+                            (s.Position > currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate > currentStory.UpdatedDate)))
+                .OrderBy(s => s.Position)
+                .ThenBy(s => s.UpdatedDate)
+                .FirstOrDefault();
+        }
+
+        public Story GetPreviousStory(int currentStoryId, int language)
+        {
+            var currentStory = dbContext.Stories.FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
+            if (currentStory == null) return null;
+
+            return dbContext.Stories
+                .Where(s => s.Lang == language && s.IsActive &&
+                            (s.Position < currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate < currentStory.UpdatedDate)))
+                .OrderByDescending(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .FirstOrDefault();
         }
 
         public List<Story> GetLatestStories(int language, int take)
