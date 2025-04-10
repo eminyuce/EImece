@@ -166,6 +166,7 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetLatestStories(language, take);
         }
+        
 
         public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
@@ -232,6 +233,11 @@ namespace EImece.Domain.Services
             formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", imagePath.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
 
             return formatter;
+        }
+
+        public List<Story> GetFeaturedStories(int take, int language, int excludedStoryId)
+        {
+            return StoryRepository.GetFeaturedStories(take, language, excludedStoryId);
         }
     }
 }

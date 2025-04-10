@@ -18,6 +18,7 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Story> GetLatestStories(int language, int take);
 
-        List<Story> GetFeaturedStories(int take, int language, int storyId);
+        List<Story> GetFeaturedStories(int take, int language, int excludedStoryId);
+
     }
 }

@@ -7,26 +7,53 @@
 @using Resources;
 @{
     var story = Model;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
 }
 
-<div class="story">
-    <h3>
-        @*@Html.Raw(story.GetThumpImageTag())*@
-        @Html.Raw(story.GetCroppedImageTag(Width, Height))
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <!-- Cropped image -->
+                            @Html.Raw(story.GetCroppedImageTag(Width, Height))
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="card-title mb-1">
+                                    <a href="@story.DetailPageUrl" class="text-dark">
+                                        @Html.DisplayFor(model => story.Name)
+                                    </a>
+                                </h5>
+                                <div class="text-right">
+                                    <p class="mb-1 text-muted">
+                                        <strong>@Resource.StoryCategory:</strong> @Html.DisplayFor(model => story.StoryCategory.Name)
+                                    </p>
+                                    @if (story.IsFeaturedStory)
+                                    {
+                                        <span class="badge badge-success mb-2">Featured</span>
+                                    }
+                                </div>
+                            </div>
 
-        <a href="@story.DetailPageUrl">
-            @Html.DisplayFor(model => story.Name)
-            @if (isUserAuthenticated)
-            {
-            @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
-            }
-        </a>
-        <small>@story.CreatedDate</small>
-    </h3>
-    <p>
-        @story.GetSeoDescription(300)
-    </p>
+                            <p class="mb-1 text-muted">
+                                <strong>@Resource.AuthorName:</strong> @Html.DisplayFor(model => story.AuthorName)
+                            </p>
+
+                            <p class="text-muted">
+                                <small>@story.UpdatedDate.ToShortDateString()</small>
+                            </p>
+
+                            <p class="card-text mt-2">
+                                @Html.Raw(story.ShortDescription)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -28,10 +28,6 @@
 
                 <h5>
                     @product.Name
-                    @if (isUserAuthenticated)
-                {
-                    @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class = "adminPageLink", @target = "_blank" })
-                }
                 </h5>
             </section>
         </a>

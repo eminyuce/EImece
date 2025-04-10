@@ -59,10 +59,10 @@
         <div class="col-md-10">
             <div class="bg-white border p-4 rounded shadow-sm">
                 @Html.Raw(Resource.MainPageProductSubscriptionHtml)
-                <input type="text" name="email" id="SubscribeEmailText" class="form-control mb-3"   placeholder="@Resource.PleaseEnterYourEmail" />
+                <input type="text" name="email" id="SubscribeEmailText" class="form-control mb-3" placeholder="@Resource.PleaseEnterYourEmail" />
                 <button type="button" id="SubscribeEmailBtn" class="btn btn-primary btn-block">@Resource.Subscribe*</button>
                 <div class="success-message text-center mt-3" id="SubscribeEmailTextSuccessMessage" style="display: none;">@Html.Raw(@Resource.MainPageProductSubscriptionThanks)</div>
-           </div>
+            </div>
         </div>
     </div>
 </section>
@@ -95,6 +95,16 @@
         @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
     </div>
 </section>
+<br />
+@if (latestStories.IsNotEmpty())
+{
+    <section class="container px-1 pt-1 pb-1 mb-md-1">
+        <div class="row">
+            @CreateStoryWidget(Resource.Stories, latestStories.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        </div>
+    </section>
+}
+
 
 @helper  CreateMainPageImage(MainPageImage mainPageImage)
 {var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 0);
@@ -122,6 +132,22 @@
             </div>
         </section>}
 }
+
+
+@helper  CreateStoryWidget(String title, List<Story> latestStories)
+{
+        <div class="col-md-12 mb-2 py-3">
+            <div class="widget widget-featured-entries">
+                <h3 class="widget-title font-size-lg">@title</h3>
+
+                @for (int i = 0; i < latestStories.Count; i++)
+                {
+                    var p = latestStories[i];
+                    @Html.DisplayFor(model => p, "StoryShort", new { Width = 80, Height = 80 })}
+            </div>
+        </div>
+}
+
 
 @helper  CreateProductWidget(String title, List<Product> products)
 {if (products.IsNotEmpty())

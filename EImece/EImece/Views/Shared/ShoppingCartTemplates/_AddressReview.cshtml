@@ -5,51 +5,54 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@model  ShoppingCartSession
+@model ShoppingCartSession
 @{
     var products = Model.ShoppingCartItems;
     var customer = Model.Customer;
     var billingAddress = Model.BillingAddress;
 }
 
-<div class="four columns alpha">
-    <ul class="address-review">
-        @if (!string.IsNullOrEmpty(customer.Company))
-        {
-        <li>@customer.Company</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.City))
-        {
-        <li>@customer.City</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Town))
-        {
-        <li>@customer.Town</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.District))
-        {
-        <li>@customer.District</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Street))
-        {
-        <li>@customer.Street</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.ZipCode))
-        {
-        <li>@customer.ZipCode</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Country))
-        {
-        <li>@customer.Country</li>
-        }
-        @if (!string.IsNullOrEmpty(customer.Description))
-        {
-        <li>@customer.Description</li>
-        }
-    </ul>
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-unstyled address-review">
+            @if (!string.IsNullOrEmpty(customer.Company))
+            {
+                <li><strong>@Resource.Company:</strong> @customer.Company</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.City))
+            {
+                <li><strong>@Resource.City:</strong> @customer.City</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.Town))
+            {
+                <li><strong>@Resource.Town:</strong> @customer.Town</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.District))
+            {
+                <li><strong>@Resource.District:</strong> @customer.District</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.Street))
+            {
+                <li><strong>@Resource.Street:</strong> @customer.Street</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.ZipCode))
+            {
+                <li><strong>@Resource.ZipCode:</strong> @customer.ZipCode</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.Country))
+            {
+                <li><strong>@Resource.Country:</strong> @customer.Country</li>
+            }
+            @if (!string.IsNullOrEmpty(customer.Description))
+            {
+                <li>@customer.Description</li>
+            }
+        </ul>
+    </div>
 </div>
-<div class="custom-control custom-checkbox">
-    <input class="custom-control-input" type="checkbox" checked="">
-    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
+
+<div class="custom-control custom-checkbox mt-3">
+    <input type="checkbox" class="custom-control-input" id="sameAsShipping" checked>
+    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label", @for = "sameAsShipping" })
 </div>
 <div class="clearfix"></div>

@@ -76,7 +76,13 @@
                             @Html.ValidationMessageFor(model => model.AuthorName, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.ShortDescription, 2, 20, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -127,8 +133,8 @@
                         <div class="col-md-3">
                             @if (Model.MainImageId.HasValue)
                             {
-                            <b>@ExistingMainImageText :</b>
-                            @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                <b>@ExistingMainImageText :</b>
+                                @Html.Partial("pGridImageMainPage", (BaseContent)Model);
                             }
                         </div>
                     </div>

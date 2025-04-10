@@ -7,7 +7,6 @@
     var productFiles = Model.ProductFiles;
     var product = Model;
     var categoryName = product.ProductCategory.Name;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var tags = product.ProductTags.Select(r1 => r1.Tag).Distinct().ToList();
     string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
     string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
@@ -33,10 +32,6 @@
 
                 <span>
                     @product.Name
-                @if (isUserAuthenticated)
-                    {
-                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "Products", new { @id = product.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
-                    }
             </span>
             <h5>@categoryName</h5>
         </section>

@@ -12,6 +12,7 @@ namespace EImece.Domain
     public static class AppConfig
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+     
 
         public static string GetDefaultImage(int w, int h)
         {
@@ -104,6 +105,14 @@ namespace EImece.Domain
             get
             {
                 return GetConfigInt("HomePageMainProductCountLimit", 15);
+            }
+        }
+
+        public static int HomePageFeatureStoryCountLimit
+        {
+            get
+            {
+                return GetConfigInt("HomePageFeatureStoryCountLimit", 3);
             }
         }
 

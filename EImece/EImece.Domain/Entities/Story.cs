@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -22,6 +23,11 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsFeaturedStory))]
         public bool IsFeaturedStory { get; set; }
+
+        [AllowHtml]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ShortDescription))]
+        public string ShortDescription { get; set; }
+
 
         public StoryCategory StoryCategory { get; set; }
         public ICollection<StoryTag> StoryTags { get; set; }
