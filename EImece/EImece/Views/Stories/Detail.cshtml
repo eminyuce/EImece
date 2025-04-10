@@ -60,7 +60,7 @@
                         @if (Model.StoryCategories.IsNotEmpty())
                         {
                             <div class="widget widget-categories mb-4 py-1">
-                                <h3 class="widget-title">Categories</h3>
+                                <h3 class="widget-title">@Resource.StoryCategory</h3>
                                 <ul>
                                     @foreach (var allStoryCategory in Model.StoryCategories)
                                     {
@@ -106,7 +106,7 @@
                         @if (storyTags.IsNotEmpty())
                         {
                             <div class="widget mb-4 pb-1">
-                                <h3 class="widget-title">Popular tags</h3>
+                                <h3 class="widget-title">@Resource.Tags</h3>
                                 @foreach (var tag in storyTags)
                                 {
                                     <a class="tag-link mr-2 mb-2" href="@tag.DetailPageRelativeUrlForStories">@string.Format("#{0}", tag.Name)</a>

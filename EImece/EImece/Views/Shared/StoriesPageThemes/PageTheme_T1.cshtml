@@ -10,97 +10,87 @@
     var category = Model.StoryCategory;
     var stories = Model.Stories;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-
 }
 
-<section class="titlebar margin-bottom-0">
+<section class="py-4 bg-light border-bottom">
     <div class="container">
-        <div class="sixteen columns">
-            <h2>
-                @category.Name
-            </h2>
+        <div class="row">
+            <div class="col-12">
+                <h2>@category.Name</h2>
 
-            <nav id="breadcrumbs">
-
-                <ul>
-                    @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0">
+                        @if (Model.MainPageMenu != null && Model.MainPageMenu.IsActive)
                         {
-                    <li>@Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")</li>
+                            <li class="breadcrumb-item">
+                                @Html.ActionLink(Model.MainPageMenu.Name, "Index", "Home")
+                            </li>
                         }
-                    <li>@category.Name</li>
-                </ul>
-            </nav>
+                        <li class="breadcrumb-item active" aria-current="page">@category.Name</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Container -->
-<div class="container">
+<div class="container my-4">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-md-8">
+            <div class="pb-4">
+                @foreach (var story in stories)
+                {
+                    @Html.DisplayFor(modelItem => story, "Story")
+                }
+            </div>
+        </div>
 
-    <div class="twelve columns">
-        <div class="extra-padding">
+        <!-- Sidebar -->
+        <div class="col-md-4">
 
-            @foreach (var story in stories)
+            @if (!String.IsNullOrEmpty(Model.StoryCategory.Description))
             {
-            @Html.DisplayFor(modelItem => story, "Story")
+                <!-- About -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">About</h5>
+                        <p class="card-text">@Html.Raw(Model.StoryCategory.Description)</p>
+                    </div>
+                </div>
+            }
+
+            @if (Model.StoryCategories.Count > 1)
+            {
+                <!-- Categories -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Categories</h5>
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var cstory in Model.StoryCategories)
+                            {
+                                <li>@Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Tags.Count > 0)
+            {
+                <!-- Tags -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">ETİKETLER</h5>
+                        <div>
+                            @foreach (var t in Model.Tags)
+                            {
+                                <a href="@Url.Action("Tag", new { id = t.GetSeoUrl() })" class="badge badge-secondary mr-1 mb-1">@t.Name</a>
+                            }
+                        </div>
+                    </div>
+                </div>
             }
         </div>
-    </div>
-
-    <div class="four columns">
-        @if (!String.IsNullOrEmpty(Model.StoryCategory.Description))
-        {
-
-        <!-- About -->
-        <div class="widget margin-top-0">
-            <h3 class="headline">About</h3><span class="line">
-            </span>
-            <div class="clearfix"></div>
-            <p>
-                @Html.Raw(Model.StoryCategory.Description)
-            </p>
-        </div>
-
-        }
-
-        @if (Model.StoryCategories.Count > 1)
-        {
-        <!-- Categories -->
-        <div class="widget">
-            <h3 class="headline">Categories</h3><span class="line"></span><div class="clearfix"></div>
-            <nav class="categories">
-                <ul>
-
-                    @foreach (var cstory in Model.StoryCategories)
-            {
-                    <li>
-
-                        @Html.ActionLink(cstory.Name, "categories", new { id = cstory.GetSeoUrl() })
-                    </li>
-                    }
-                </ul>
-            </nav>
-        </div>
-        }
-
-        @if(Model.Tags.Count > 0)
-        {
-
-        <!-- Tags -->
-        <div class="widget margin-top-10">
-            <h3 class="headline">ETİKETLER</h3><span class="line"></span><div class="clearfix"></div>
-
-            <nav class="tags">
-                @foreach (var t in Model.Tags)
-                {
-                @Html.ActionLink(t.Name, "Tag", new { id = t.GetSeoUrl() })
-                }
-            </nav>
-        </div>
-
-        <br>
-        <br>
-
-        }
     </div>
 </div>

@@ -1,6 +1,5 @@
 ﻿@model EImece.Domain.Entities.Story
 @using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
@@ -8,55 +7,45 @@
 @{
     var story = Model;
     var categoryName = story.StoryCategory.Name;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
     var storyImageTag = story.GetCroppedImageTag(Width, Height);
 }
 
-<article class="post">
+<article class="card mb-4 shadow-sm border-0">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <a href="@story.DetailPageUrl" class="d-block">
+                @Html.Raw(storyImageTag)
+            </a>
+            <div class="position-absolute text-center bg-dark text-white rounded px-2 py-1" style="top: 10px; left: 10px;">
+                <div class="h5 mb-0">@story.CreatedDate.Day</div>
+                <small class="text-uppercase">@story.CreatedDate.ToString("MMM")</small>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="@story.DetailPageUrl" class="text-dark">@story.Name</a>
+                </h5>
 
-    <figure class="post-img">
-
-        <a href="@story.DetailPageUrl">
-            @Html.Raw(storyImageTag)
-        </a>
-    </figure>
-
-    <section class="date">
-        <span class="day">@story.CreatedDate.Day</span>
-        <span class="month">@story.CreatedDate.ToString("MMM")</span>
-    </section>
-
-    <section class="post-content">
-
-        <header class="meta">
-            <h2>
-                <a href="@story.DetailPageUrl">
-
-                    @story.Name
-                </a>
-                @if (isUserAuthenticated)
+                @if (tags.Any())
                 {
-                @Html.ActionLink(Resource.AdminEdit, "saveoredit", "stories", new { @id = story.Id, @area = "admin" }, new { @class="adminPageLink", @target="_blank"   })
+                    <p class="mb-2">
+                        <i class="fa fa-tag text-muted mr-1"></i>
+                        @for (int i = 0; i < tags.Count; i++)
+                        {
+                            var tag = tags[i];
+                            <a href="#" class="badge badge-secondary mr-1">@tag.Name</a>
+                        }
+                    </p>
                 }
-            </h2>
-            <span>
-                <i class="fa fa-tag"></i>
 
-                @for (int i = 0; i < tags.Count; i++)
-                {
-                    var tag = tags[i];
-                <a href="#">@tag.Name</a>
-                }
-            </span>
-        </header>
+                <p class="card-text">@story.GetSeoDescription(300)</p>
 
-        <p>
-            @story.GetSeoDescription(300)
-        </p>
-
-        <a href="@story.DetailPageUrl" class="button color">@Resource.ReadMore</a>
-    </section>
+                <a href="@story.DetailPageUrl" class="btn btn-primary btn-sm mt-2">@Resource.ReadMore</a>
+            </div>
+        </div>
+    </div>
 </article>
