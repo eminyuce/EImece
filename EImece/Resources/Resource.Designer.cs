@@ -4243,7 +4243,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seciniz.
+        ///   Looks up a localized string similar to Seçiniz.
         /// </summary>
         public static string Select {
             get {
