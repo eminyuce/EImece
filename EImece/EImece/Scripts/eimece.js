@@ -306,10 +306,9 @@ function GetIller() {
     // Fetch the list of cities
     ajaxMethodCall(postData, "/Ajax/GetAllCities", function (data) {
         $("#Cities").empty();  // Clear existing options
-        $.each(data, function (key, cityName) {
-            // Add city to dropdown and check if it matches the selected city
-            var option = new Option(cityName, cityName);
-            if (cityName === selectedCity) {
+        $.each(data, function (index, item) {
+            var option = new Option(item.Text, item.Value);
+            if (item.Value === selectedCity) {
                 option.selected = true;
             }
             $("#Cities").append(option);
@@ -328,9 +327,9 @@ function GetTownsByCity(cityName) {
 
     ajaxMethodCall(postData, "/Ajax/GetTownsByCity", function (data) {
         $("#Towns").empty();  // Clear existing options
-        $.each(data, function (key, townName) {
-            var option = new Option(townName, townName);
-            if (townName === selectedTown) {
+        $.each(data, function (index, item) {
+            var option = new Option(item.Text, item.Value);
+            if (item.Value === selectedTown) {
                 option.selected = true;
             }
             $("#Towns").append(option); // Add town to dropdown
@@ -351,9 +350,9 @@ function GetDistrictsByTown(cityName, townName) {
 
     ajaxMethodCall(postData, "/Ajax/GetDistrictsByTown", function (data) {
         $("#Districts").empty();  // Clear existing options
-        $.each(data, function (key, district) {
-            var option = new Option(district, district);
-            if (district === selectedDistrict) {
+        $.each(data, function (index, item) {
+            var option = new Option(item.Text, item.Value);
+            if (item.Value === selectedDistrict) {
                 option.selected = true;
             }
             $("#Districts").append(option); // Add district to dropdown

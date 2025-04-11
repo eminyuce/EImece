@@ -1952,4 +1952,7 @@ Stokta</value>
   <data name="ThankYouForYourOrder" xml:space="preserve">
     <value>Siparişiniz İçin Teşekkür Ederiz</value>
   </data>
+  <data name="Select" xml:space="preserve">
+    <value>Seciniz</value>
+  </data>
 </root>

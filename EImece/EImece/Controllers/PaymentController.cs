@@ -796,7 +796,6 @@ namespace EImece.Controllers
             PaymentLogger.Info("Entering InformCustomerToFillOutForm method.");
             if (customer == null)
             {
-                PaymentLogger.Error("Customer is null. Throwing exception.");
                 throw new NotSupportedException();
             }
             if (string.IsNullOrEmpty(customer.Name.ToStr().Trim()))
@@ -829,36 +828,34 @@ namespace EImece.Controllers
                     ModelState.AddModelError("customer.Email", Resource.EmailNotValidMessage);
                 }
             }
+            
             if (string.IsNullOrEmpty(customer.City.ToStr().Trim()))
             {
-                PaymentLogger.Info("City is empty. Adding model error.");
                 ModelState.AddModelError("customer.City", Resource.PleaseEnterYourCity);
             }
+            
             if (string.IsNullOrEmpty(customer.Town.ToStr().Trim()))
             {
-                PaymentLogger.Info("Town is empty. Adding model error.");
                 ModelState.AddModelError("customer.Town", Resource.PleaseEnterYourTown);
             }
+             
+
             if (string.IsNullOrEmpty(customer.Country.ToStr().Trim()))
             {
-                PaymentLogger.Info("Country is empty. Adding model error.");
                 ModelState.AddModelError("customer.Country", Resource.PleaseEnterYourCountry);
             }
+            
             if (string.IsNullOrEmpty(customer.District.ToStr().Trim()))
             {
-                PaymentLogger.Info("District is empty. Adding model error.");
                 ModelState.AddModelError("customer.District", Resource.PleaseEnterYourDistrict);
             }
+            
+
             if (string.IsNullOrEmpty(customer.Street.ToStr().Trim()))
             {
-                PaymentLogger.Info("Street is empty. Adding model error.");
                 ModelState.AddModelError("customer.Street", Resource.PleaseEnterYourStreet);
             }
-            // if (string.IsNullOrEmpty(customer.IdentityNumber.ToStr().Trim()))
-            // {
-            //     PaymentLogger.Info("IdentityNumber is empty. Adding model error.");
-            //     ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
-            // }
+             
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 

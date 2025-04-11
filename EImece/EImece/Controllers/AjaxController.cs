@@ -6,6 +6,7 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using Resources;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -79,8 +80,17 @@ namespace EImece.Controllers
         {
             return await Task.Run(() =>
             {
-                var allIller = turkishRegionService.GetAllCities().OrderBy(r => r).ToList();
-                return Json(allIller, JsonRequestBehavior.AllowGet);  // Return the list directly
+                var cities = turkishRegionService.GetAllCities()
+                    .OrderBy(city => city)
+                    .Select(city => new SelectListItem
+                    {
+                        Value = city,
+                        Text = city
+                    }).ToList();
+
+                cities.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
+
+                return Json(cities, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
 
@@ -88,9 +98,17 @@ namespace EImece.Controllers
         {
             return await Task.Run(() =>
             {
-                var ilceler = turkishRegionService.GetTownsByCity(cityName).OrderBy(r => r).ToList();
+                var towns = turkishRegionService.GetTownsByCity(cityName)
+                    .OrderBy(town => town)
+                    .Select(town => new SelectListItem
+                    {
+                        Value = town,
+                        Text = town
+                    }).ToList();
 
-                return Json(ilceler, JsonRequestBehavior.AllowGet);
+                towns.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
+
+                return Json(towns, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
 
@@ -98,7 +116,15 @@ namespace EImece.Controllers
         {
             return await Task.Run(() =>
             {
-                var districts = turkishRegionService.GetDistrictsByTown(cityName, townName).OrderBy(r => r).ToList();
+                var districts = turkishRegionService.GetDistrictsByTown(cityName, townName)
+                    .OrderBy(d => d)
+                    .Select(d => new SelectListItem
+                    {
+                        Value = d,
+                        Text = d
+                    }).ToList();
+
+                districts.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
                 return Json(districts, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
