@@ -59,9 +59,19 @@
                 color: #ff7f00;
             }
     </style>
+
+    <meta property="og:locale" content='tr_TR' />
+    <meta property="og:type" content='Website' />
+    <meta property="og:site_name" content='@Html.Action("GetCompanyName", "Home")' />
+
+    <meta property="og:title" content="@ViewBag.Title" />
+    <meta property="og:url" content="@string.Format("https://{0}",AppConfig.Domain)" />
+
     @if (!string.IsNullOrEmpty(ViewBag.Description))
     {
         <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+        <meta name="og:description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+
     }
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
