@@ -10,28 +10,51 @@
     ViewBag.Title = "Index";
     var stories = Model.Stories;
     var storyCategories = Model.StoryCategories;
-
 }
 
-<h2>Index</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">@Resource.StoryCategories</h2>
 
-@foreach (var item in storyCategories)
-{
-<div>
-    @Html.ActionLink(item.Name, "Categories", new { id = item.GetSeoUrl() })
+    <div class="row">
+        @foreach (var item in storyCategories)
+        {
+
+            var imgTag = item.GetCroppedImageUrl(item.MainImageId, 64, 64);
+
+
+            <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(imgTag))
+                        {
+                            <a class="featured-entry-thumb" href="@item.DetailPageRelativeUrl">
+                                <img src="@imgTag" width="64" alt="@item.Name">
+                            </a>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @Html.ActionLink(item.Name, "Categories", new { id = item.GetSeoUrl() }, new { @class = "text-dark" })
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+
+    <div class="mt-4">
+        @Html.BootstrapPager(
+            stories.PageIndex,
+            index => Url.Action("Index", "Stories", new { page = index }),
+            stories.TotalCount,
+            stories.PageSize,
+            numberOfLinks: 10)
+    </div>
+
+    <div class="row mt-4">
+        @foreach (var item in stories)
+        {
+            <div class="col-md-4 mb-4">
+                @Html.DisplayFor(modelItem => item, "StoryShort", new { Width = 300, Height = 300 })
+            </div>
+        }
+    </div>
 </div>
- if (item.MainImageId.HasValue && item.MainImageId.Value > 0) {
-@item.MainImage.Name
-
-   }
-
-}
-
-@Html.BootstrapPager(stories.PageIndex,
-    index => Url.Action("Index", "Stories", new { page = index }),
-    stories.TotalCount, stories.PageSize, numberOfLinks: 10)
-
-@foreach (var item in stories)
-{
-@Html.DisplayFor(modelItem => item,"StoryShort", new { Width = 300, Height = 300 })
-}

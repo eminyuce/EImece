@@ -50,7 +50,7 @@ namespace EImece.Domain.Services
 
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
-            result.LatestStories = StoryService.GetFeaturedStories(AppConfig.HomePageFeatureStoryCountLimit, language,0);
+            result.LatestStories = StoryService.GetFeaturedStories(10, language,0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
             result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
             result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
 

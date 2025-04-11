@@ -112,7 +112,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigInt("HomePageFeatureStoryCountLimit", 3);
+                return GetConfigInt("HomePageFeatureStoryCountLimit", 1);
             }
         }
 
