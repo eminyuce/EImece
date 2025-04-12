@@ -124,6 +124,7 @@ $('[data-shopping-quantity-id]').each(function () {
 function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
     var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
     var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
+    if (quantity == 0) return;
     var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
     console.log(postData);
     ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
@@ -140,6 +141,9 @@ $('[data-shopping-button-price]').each(function () {
     $(this).on("click", function (e) {
         var caller = e.target;
         var shoppingItemId = $(caller).attr('data-shopping-button-price');
+        var quantity = parseInt($('[data-shopping-quantity-id=' + shoppingItemId + ']').val(), 10);
+        if (isNaN(quantity)) return;
+        if (quantity == 0) return;
         triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
     });
 });
@@ -152,6 +156,8 @@ $('[data-shopping-quantity-id]').each(function () {
         const currentValue = parseInt($input.val(), 10);
 
         if (isNaN(currentValue)) return;
+
+        if (currentValue == 0) return;
 
         const shoppingItemId = $input.attr('data-shopping-quantity-id');
         console.log(shoppingItemId);
