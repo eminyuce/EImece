@@ -32,10 +32,11 @@
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
     {"controllerName",controllerName},
     {"orderingButton",false},
+    {"StateTypes","N/A" },
     {"IsNewRecordButtonEnabled",false },
     {"selectAll",true},
     {"deleteAll",true},
-    {"SetStateOnOrOff",true},
+    {"SetStateOnOrOff",false},
     {"IsExcelButtonEnabled",true}
 })
 
