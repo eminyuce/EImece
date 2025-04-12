@@ -2286,6 +2286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Iyzico Güvencesiyle Ödeme.
+        /// </summary>
+        public static string IyzicoPaymentTitle {
+            get {
+                return ResourceManager.GetString("IyzicoPaymentTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diller.
         /// </summary>
         public static string Languages {

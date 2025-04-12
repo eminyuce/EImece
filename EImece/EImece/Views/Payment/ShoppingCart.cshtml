@@ -103,21 +103,28 @@
         </a>
             }
 
-        <div class="media-body pt-3">
-            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                <a href="@product.DetailPageUrl">@product.Name</a>
-            </h3>
-            <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory :</span>@product.CategoryName</div>
-            @if (product.ProductSpecItems.IsNotEmpty())
-                {
-                    foreach (var productSpecs in product.ProductSpecItems)
-                    {
-            <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
-                    }
-                }
-        </div>
+    <div class="media-body pt-3">
+        <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+            <a href="@product.DetailPageUrl">@product.Name</a>
+        </h3>
+        <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
+        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
+        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory :</span>@product.CategoryName</div>
+        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
+        @if (!string.IsNullOrEmpty(product.BrandName))
+        {
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
+        }
+
+
+        @if (product.ProductSpecItems.IsNotEmpty())
+        {
+            foreach (var productSpecs in product.ProductSpecItems)
+            {
+                <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+            }
+        }
+    </div>
     </div>
     <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
 

@@ -1955,4 +1955,7 @@ Stokta</value>
   <data name="Select" xml:space="preserve">
     <value>Seçiniz</value>
   </data>
+  <data name="IyzicoPaymentTitle" xml:space="preserve">
+    <value>Iyzico Güvencesiyle Ödeme</value>
+  </data>
 </root>

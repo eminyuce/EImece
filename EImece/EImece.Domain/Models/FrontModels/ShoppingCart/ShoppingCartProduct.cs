@@ -16,6 +16,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
 
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }
+        public string BrandName { get; set; }
         public string CroppedImageUrl { get; set; }
         private string _detailPageUrl { get; set; }
         public List<ProductSpecItem> ProductSpecItems { set; get; }
@@ -49,6 +50,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
             this.Price = product.PriceWithDiscount;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory.Name;
+            this.BrandName = product.Brand == null ? "" : product.Brand.Name;
             this.DetailPageUrl = product.DetailPageRelativeUrl;
             if (product.MainImageId.HasValue && product.ImageState)
             {

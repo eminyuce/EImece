@@ -48,7 +48,7 @@
     <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
         @if (Model.BasketMinTotalPriceForCargoInt > 0)
         {
-            <span class="badge badge-pill badge-danger mb-3 d-block text-center">
+            <span style="color:red;" class="w-100 text-center d-block text-wrap">
                 @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
             </span>
         }
@@ -126,23 +126,29 @@
                 </a>
             }
 
-            <div class="media-body pt-3">
-                <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                    <a href="@product.DetailPageUrl">@product.Name</a>
-                </h3>
-                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
-                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
+        <div class="media-body pt-3">
+            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+                <a href="@product.DetailPageUrl">@product.Name</a>
+            </h3>
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
+            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
+            @if (!string.IsNullOrEmpty(product.BrandName))
+            {
+                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
+            }
 
-                @if (product.ProductSpecItems.IsNotEmpty())
+
+            @if (product.ProductSpecItems.IsNotEmpty())
+            {
+                foreach (var productSpecs in product.ProductSpecItems)
                 {
-                    foreach (var productSpecs in product.ProductSpecItems)
-                    {
-                        <div class="font-size-sm">
-                            <span class="text-muted mr-2">@productSpecs.SpecsName:</span>@productSpecs.SpecsValue
-                        </div>
-                    }
+                    <div class="font-size-sm">
+                        <span class="text-muted mr-2">@productSpecs.SpecsName:</span>@productSpecs.SpecsValue
+                    </div>
                 }
-            </div>
+            }
+        </div>
         </div>
 
         <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
