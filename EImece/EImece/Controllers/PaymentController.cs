@@ -931,6 +931,7 @@ namespace EImece.Controllers
             var buyWithNoAccountCreation = new BuyWithNoAccountCreation();
             buyWithNoAccountCreation.ShoppingCartItems = shoppingCart.ShoppingCartItems;
             buyWithNoAccountCreation.Coupon = shoppingCart.Coupon;
+            buyWithNoAccountCreation.Customer = shoppingCart.Customer;
             PaymentLogger.Info("Returning ShoppingWithoutAccount view.");
             return View(buyWithNoAccountCreation);
         }

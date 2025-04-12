@@ -111,6 +111,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label><i class="fas fa-city"></i> @Html.LabelFor(model => customer.City)</label>
+                                    <input type="hidden" id="SelectedCity" value="@customer.City" />
                                     @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
                                     @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
                                 </div>
@@ -118,6 +119,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label><i class="fas fa-map-marker-alt"></i> @Html.LabelFor(model => customer.Town)</label>
+                                    <input type="hidden" id="SelectedTown" value="@customer.Town" />
                                     @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
                                     @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
                                 </div>

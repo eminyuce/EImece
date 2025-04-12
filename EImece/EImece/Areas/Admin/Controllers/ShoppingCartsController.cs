@@ -80,5 +80,28 @@ namespace EImece.Areas.Admin.Controllers
             return View(shoppingCart);
         }
 
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [DeleteAuthorize()]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var item = ShoppingCartService.GetSingle(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            try
+            {
+                ShoppingCartService.DeleteById(id);
+                return ReturnIndexIfNotUrlReferrer("Index");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, item);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+        }
     }
 }

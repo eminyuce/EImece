@@ -143,6 +143,33 @@ $('[data-shopping-button-price]').each(function () {
         triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
     });
 });
+
+$('[data-shopping-quantity-id]').each(function () {
+    let previousValue = parseInt($(this).val(), 10);
+
+    $(this).off('input').on('input', function (e) {
+        const $input = $(this);
+        const currentValue = parseInt($input.val(), 10);
+
+        if (isNaN(currentValue)) return;
+
+        const shoppingItemId = $input.attr('data-shopping-quantity-id');
+        console.log(shoppingItemId);
+        if (currentValue > previousValue) {
+            console.log('Increased');
+            // custom increase logic
+            triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
+        } else if (currentValue < previousValue) {
+            console.log('Decreased');
+            // custom decrease logic
+            triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
+        }
+
+        previousValue = currentValue;
+    });
+});
+
+
 function renderShoppingCartPrice(success) {
     var postData = JSON.stringify({});
     ajaxMethodCall(postData, "/Payment/renderShoppingCartPrice", success);
