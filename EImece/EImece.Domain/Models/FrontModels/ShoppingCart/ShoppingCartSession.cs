@@ -243,7 +243,7 @@ namespace EImece.Domain.Models.FrontModels
             customer.IsSameAsShippingAddress = true;
             customer.Country = IYZICO_ADDRESS_COUNTRY;
             customer.Ip = ip;
-            customer.IdentityNumber = Guid.NewGuid().ToString();
+            customer.IdentityNumber = "";
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer.IsActive = true;
