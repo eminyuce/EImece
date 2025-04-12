@@ -283,6 +283,7 @@
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\HtmlRequestHelper.cs" />
     <Compile Include="Helpers\ImageCompressor.cs" />
+    <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\OfflineHelper.cs" />
     <Compile Include="Models\AdminHelperModels\MoveMenuCategory.cs" />
     <Compile Include="Models\AdminHelperModels\MoveProductCategory.cs" />

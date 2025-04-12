@@ -1,0 +1,79 @@
+﻿@model List<ShoppingCart>
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+
+@{
+    ViewBag.Title = "Shopping Carts";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int gridPage = Request.QueryString["grid-page"].ToInt();
+    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
+
+    var controllerName = "shoppingcarts";
+    var gridName = "ShoppingCartGrid";
+    var contents = Model;
+}
+
+<h2>Shopping Carts</h2>
+<hr class="adminLine" />
+
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+    {"controllerName",controllerName},
+    {"orderingButton",false},
+    {"selectAll",true},
+    {"deleteAll",true},
+    {"SetStateOnOrOff",true},
+    {"IsExcelButtonEnabled",true}
+})
+
+<div class="panel panel-primary">
+    @Html.Grid(contents).Named(gridName).Columns(columns =>
+    {
+        columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+
+        columns.Add(o => o.Id).Titled("ID");
+
+        columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .Css("gridButtons")
+            .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+                {"ItemId", d.Id}
+            }));
+
+
+
+        columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(30)
+            .RenderValueAs(d => Html.ActionLink(" ", "Detail", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-xs glyphicon glyphicon-info-sign" }));
+
+        columns.Add(o => o.Name).Titled(AdminResource.Name);
+        columns.Add(o => o.OrderGuid).Titled("Order GUID");
+        columns.Add(o => o.UserId).Titled("User ID");
+
+        columns.Add(o => o.IsActive)
+            .Titled(AdminResource.IsActive)
+            .Encoded(false)
+            .Sanitized(false)
+            .RenderValueAs(o => String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span>",
+                o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+
+        columns.Add(o => o.UpdatedDate)
+            .Titled(AdminResource.UpdatedDate)
+            .Sortable(true)
+            .Css("gridDateClass")
+            .RenderValueAs(o => o.UpdatedDate.ToShortDateString());
+
+    }).WithPaging(pageSizeNumber).Sortable().Filterable()
+</div>

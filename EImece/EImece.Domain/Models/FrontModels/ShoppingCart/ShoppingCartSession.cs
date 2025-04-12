@@ -141,7 +141,7 @@ namespace EImece.Domain.Models.FrontModels
                     return 0;
                 else if (BasketMinTotalPriceForCargoInt > 0 && TotalPrice > BasketMinTotalPriceForCargoInt)
                     return 0;
-                else if (CargoPrice.SettingValue.ToDecimal() > 0)
+                else if (CargoPrice !=null && CargoPrice.SettingValue.ToDecimal() > 0)
                     return CargoPrice.SettingValue.ToDecimal();
                 else
                     return 0;
@@ -153,6 +153,10 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
+                if(BasketMinTotalPriceForCargo == null)
+                {
+                    return 0;
+                }
                 return BasketMinTotalPriceForCargo.SettingValue.ToInt();
             }
         }

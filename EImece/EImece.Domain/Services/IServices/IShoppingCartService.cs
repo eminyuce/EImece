@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using Iyzipay.Model;
+using System.Collections.Generic;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -17,5 +18,6 @@ namespace EImece.Domain.Services.IServices
         Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm);
 
         Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
+        List<ShoppingCart> GetAdminPageList(string search, int currentLanguage);
     }
 }

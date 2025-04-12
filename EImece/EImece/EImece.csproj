@@ -312,6 +312,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ShoppingCartsController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoryCategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscribersController.cs" />
@@ -1154,6 +1155,8 @@
     <Content Include="App_Data\data.json" />
     <Content Include="Areas\Admin\Views\Users\CustomerRoles.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\OurSiteFeatures.cshtml" />
+    <Content Include="Areas\Admin\Views\ShoppingCarts\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ShoppingCarts\Detail.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
@@ -1371,7 +1374,6 @@
     <Content Include="Views\UnderConstruction\Index.cshtml" />
     <Content Include="Views\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Payment\_PaymentSteps.cshtml" />
-    <Content Include="Views\Payment\ShoppingCart - Copy.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FeaturedProductCategoryItem.cshtml" />
     <Content Include="Views\Payment\BuyNow.cshtml" />
     <Content Include="Views\Payment\BuyNowPayment.cshtml" />

@@ -495,5 +495,10 @@ namespace EImece.Domain.Services
             var savedOrderProduct = OrderProductService.SaveOrEditEntity(entity);
             Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
+
+        public List<ShoppingCart> GetAdminPageList(string search, int currentLanguage)
+        {
+            return ShoppingCartRepository.GetAdminPageList(search, currentLanguage);
+        }
     }
 }

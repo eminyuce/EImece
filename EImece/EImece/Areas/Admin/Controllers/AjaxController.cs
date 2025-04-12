@@ -7,6 +7,8 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories;
+using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,9 @@ namespace EImece.Areas.Admin.Controllers
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
         private AppLogRepository AppLogRepository { get; set; }
+
+        [Inject]
+        public IShoppingCartService ShoppingCartService { get; set; }
 
         public AjaxController(AppLogRepository AppLogRepository)
         {
@@ -326,6 +331,18 @@ namespace EImece.Areas.Admin.Controllers
                 return Json(values, JsonRequestBehavior.AllowGet);
             }).ConfigureAwait(true);
         }
+        
+        [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteShoppingCartGridItem(List<String> values)
+        {
+            return await Task.Run(() =>
+            {
+                ShoppingCartService.DeleteBaseEntity(values);
+                return Json(values, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
+
 
         [HttpPost]
         [DeleteAuthorize()]

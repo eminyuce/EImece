@@ -1,0 +1,60 @@
+﻿@model EImece.Domain.Entities.ShoppingCart
+@using Resources
+
+@{
+    ViewBag.Title = "Shopping Cart Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+<hr class="adminLine" />
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Detail</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Id)</dt>
+            <dd>@Model.Id</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd>@Model.Name</dd>
+
+            <dt>Order GUID</dt>
+            <dd>@Model.OrderGuid</dd>
+
+
+            <dt>User ID</dt>
+            <dd>@Model.UserId</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.IsActive)</dt>
+            <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+            <dd>@Model.CreatedDate.ToString("g")</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.UpdatedDate)</dt>
+            <dd>@Model.UpdatedDate.ToString("g")</dd>
+
+            <dt>Shopping Cart JSON</dt>
+            <dd>
+                <pre>
+              
+                    <textarea class="form-control" cols="20" id="ShoppingCartJson" name="ShoppingCartJson" 
+                              placeholder="" rows="20">
+@EImece.Domain.Helpers.JsonHelper.PrettyJsonFormatter(Model.ShoppingCartJson)</textarea>
+
+
+</pre>
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink(AdminResource.BackToList, "Index", null, new { @class = "btn btn-default" })
+</p>
+
+ 
