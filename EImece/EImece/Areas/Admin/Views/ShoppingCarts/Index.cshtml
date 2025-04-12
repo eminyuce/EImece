@@ -26,12 +26,13 @@
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
 }
 
-<h2>Shopping Carts</h2>
+<h2>Shopping Cards</h2>
 <hr class="adminLine" />
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
     {"controllerName",controllerName},
     {"orderingButton",false},
+    {"IsNewRecordButtonEnabled",false },
     {"selectAll",true},
     {"deleteAll",true},
     {"SetStateOnOrOff",true},
