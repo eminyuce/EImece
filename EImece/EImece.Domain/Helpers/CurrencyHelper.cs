@@ -7,6 +7,13 @@ namespace EImece.Domain.Helpers
     {
         private const string CulturaInfoName = "tr-TR";
 
+        // Method to convert Price to Google Product Schema format (price with currency)
+        public static string GoogleProductSchema(this decimal price)
+        {
+            // Format the price with 2 decimal places (or as needed)
+            return price.ToString("F2");
+        }
+
         public static string CurrencySignForIyizo(this decimal price)
         {
             return CurrencySign(price).Replace(".", "").Replace("₺", "").Replace(",", ".").Trim();

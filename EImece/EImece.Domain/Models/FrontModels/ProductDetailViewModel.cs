@@ -51,7 +51,7 @@ namespace EImece.Domain.Models.FrontModels
                 var schema = new GoogleProductSchema
                 {
                     Name = Product.ProductNameStr,
-                    Image = Product.ImageFullPath(200, 200),
+                    Image = new string[] { Product.ImageFullPath(200, 200) },
                     Description = plainDescription,
                     Brand = new GoogleBrand
                     {
@@ -62,7 +62,7 @@ namespace EImece.Domain.Models.FrontModels
                     {
                         Url = Product.DetailPageAbsoluteUrl,
                         PriceCurrency = "TRY",
-                        Price = Product.PriceWithDiscount,
+                        Price = Product.PriceWithDiscount.GoogleProductSchema(),
                         Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
                         ItemCondition = "https://schema.org/NewCondition",
                         Seller = new GoogleSeller
@@ -226,7 +226,7 @@ namespace EImece.Domain.Models.FrontModels
     public class GoogleProductSchema
     {
         [JsonProperty("@context")]
-        public string Context { get; set; } = "https://schema.org/";
+        public string Context { get; set; } = "https://schema.org";
 
         [JsonProperty("@type")]
         public string Type { get; set; } = "Product";
@@ -235,7 +235,7 @@ namespace EImece.Domain.Models.FrontModels
         public string Name { get; set; }
 
         [JsonProperty("image")]
-        public string Image { get; set; }
+        public string [] Image { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -271,7 +271,7 @@ namespace EImece.Domain.Models.FrontModels
         public string PriceCurrency { get; set; }
 
         [JsonProperty("price")]
-        public decimal Price { get; set; }
+        public string Price { get; set; }
 
         [JsonProperty("availability")]
         public string Availability { get; set; }
