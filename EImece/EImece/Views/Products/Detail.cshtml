@@ -79,15 +79,17 @@
 
 @section HeadExtra {
 
-    <meta property="og:locale" content='tr_TR' />
-    <meta property="og:type" content='product' />
-    <meta property="og:site_name" content='@Html.Action("GetCompanyName", "Home")' />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:type" content="product" />
+    <meta property="og:site_name" content="@Html.Action("GetCompanyName", "Home")" />
     <meta property="og:image" content="@product.ImageFullPath(imageWidth,imageHeight)" />
     <meta property="og:image:width" content="@imageWidth" />
     <meta property="og:image:height" content="@imageHeight" />
     <meta property="og:title" content="@product.GetProductSeoTitle()" />
-    <meta property="og:description" content='@GeneralHelper.StripHtml(product.ShortDescription)' />
+    <meta property="og:description" content="@HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(product.ShortDescription))" />
     <meta property="og:url" content="@product.DetailPageAbsoluteUrl" />
+    <meta property="product:price:amount" content="@product.PriceWithDiscount" />
+    <meta property="product:price:currency" content="TRY" />
 
     <script type="application/ld+json">
         @Html.Raw(productSchemaJson)
