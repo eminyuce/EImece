@@ -271,6 +271,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductTags);
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());

@@ -115,6 +115,10 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 si.ElementExtensions.Add("category", String.Empty, product.ProductCategory.Name);
             }
+            if (product.Brand !=null && !string.IsNullOrEmpty(product.Brand.Name))
+            {
+                si.ElementExtensions.Add("brand", String.Empty, product.Brand.Name);
+            }
 
             si.SetGuid(link, true);
             if (product.MainImageId.HasValue)
