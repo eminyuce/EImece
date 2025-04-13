@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.ApiRepositories;
 using EImece.Domain.Entities;
 using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.RazorCustomRssTemplate;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
@@ -11,6 +12,7 @@ using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -272,6 +274,39 @@ namespace EImece.Domain.Helpers.EmailHelper
                 webSiteCompanyEmailAddress,
                 companyName
             );
+        }
+
+
+        public string GenerateRssEmailTemplate(int id)
+        {
+            // E-posta şablonunu al
+            var rssTemplate = MailTemplateService.GetSingle(id);
+             
+            // Şirket ve Yönetici bilgileri
+            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
+            string adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
+            string webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
+
+            // Web sitesi URL'sini al
+            string baseurl = GetSiteBaseUrl();
+
+            // Razor Template için model oluştur
+           
+            RazorEngineModel razorEngineModel = new RazorEngineModel();
+            razorEngineModel["CompanyName"] = companyName;
+            razorEngineModel["BaseUrl"] = baseurl;
+            razorEngineModel["WebSiteIconUrl"] = $"{baseurl}/images/logo.jpg";
+         
+
+            // Şablonu işle
+            var result = GetRenderOutput(rssTemplate.Body, razorEngineModel);
+            if(result.RazorErrors.IsNotEmpty())
+            {
+                string errorList = string.Join(Environment.NewLine, result.RazorErrors.Select(e => e.ToString()));
+
+                throw new ArgumentException($"RazorEngine error:"+ errorList);
+            }
+            return result.Result;
         }
 
         public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel

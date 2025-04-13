@@ -126,8 +126,15 @@ columns.Add()
                .SetWidth(30)
                .RenderValueAs(d =>
         @<b>
-            @Html.ActionLink("Backup", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs" })
-        </b>);
+    @if (d.Name.ToLower().Contains("rss"))
+    {
+        @Html.ActionLink("GenerateHtmlBody", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs glyphicon glyphicon-star" })
+    }
+
+    @Html.ActionLink("Backup", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs" })
+</b>);
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
+
+

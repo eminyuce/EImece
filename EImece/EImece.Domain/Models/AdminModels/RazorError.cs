@@ -35,5 +35,10 @@
         public int LineAdjusted { get; set; }
 
         public string ErrorLine { get; set; }
+
+        public override string ToString()
+        {
+            return $"ErrorNumber: {ErrorNumber}, ErrorText: {ErrorText}, FileName: {FileName}, Line: {Line}, Column: {Column}, IsWarning: {IsWarning} ";
+        }
     }
 }

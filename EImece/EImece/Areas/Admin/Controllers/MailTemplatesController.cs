@@ -1,8 +1,10 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
+using Ninject;
 using NLog;
 using Resources;
 using System;
@@ -17,6 +19,9 @@ namespace EImece.Areas.Admin.Controllers
     public class MailTemplatesController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        [Inject]
+        public RazorEngineHelper RazorEngineHelper { get; set; }
 
         public ActionResult Index(String search = "")
         {
@@ -36,6 +41,16 @@ namespace EImece.Areas.Admin.Controllers
             itemCopy.Body = item.Body;
             MailTemplateService.SaveOrEditEntity(itemCopy);
             return RedirectToAction("Index");
+        }
+        public ActionResult GenerateHtmlBody(int id = 0)
+        {
+            string body = RazorEngineHelper.GenerateRssEmailTemplate(id);
+            byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(body);
+
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string fileName = $"email_template_{id}_{timestamp}.html";
+
+            return File(fileBytes, "text/html", fileName);
         }
 
         public ActionResult SaveOrEdit(int id = 0)

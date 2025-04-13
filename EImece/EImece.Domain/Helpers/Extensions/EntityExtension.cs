@@ -108,7 +108,7 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 ub.Query = rssParams.GetAnalyticsQueryString();
             }
-            var si = new SyndicationItem(product.Name, desc, ub.Uri);
+            var si = new SyndicationItem(product.ProductNameStr, desc, ub.Uri);
             si.PublishDate = product.UpdatedDate.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(product.ProductCategory.Name))
@@ -119,6 +119,11 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 si.ElementExtensions.Add("brand", String.Empty, product.Brand.Name);
             }
+            if (product.Brand != null && !string.IsNullOrEmpty(product.Brand.Name))
+            {
+                si.ElementExtensions.Add("price", String.Empty, product.PriceWithDiscount);
+            }
+
 
             si.SetGuid(link, true);
             if (product.MainImageId.HasValue)
