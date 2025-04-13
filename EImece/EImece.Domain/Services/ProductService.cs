@@ -157,7 +157,7 @@ namespace EImece.Domain.Services
             result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
             result.WhatsAppCommunicationLink = SettingService.GetSettingObjectByKey(Constants.WhatsAppCommunicationLink);
-
+            result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
             // if (product.MainImageId.HasValue)
             // {
             //     FileStorage fileStorage = null;

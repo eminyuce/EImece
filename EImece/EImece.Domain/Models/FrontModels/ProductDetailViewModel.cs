@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Xml.Linq;
 
 namespace EImece.Domain.Models.FrontModels
@@ -33,7 +34,7 @@ namespace EImece.Domain.Models.FrontModels
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
         public Setting WhatsAppCommunicationLink { get; set; }
-
+        public Setting CompanyName { get; set; }
         public string SeoId { get; set; }
 
         public ProductDetailViewModel()
@@ -45,7 +46,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                string plainDescription = GeneralHelper.StripHtml(Product.Description ?? "No description available");
+                string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
 
                 var schema = new GoogleProductSchema
                 {
@@ -63,7 +64,11 @@ namespace EImece.Domain.Models.FrontModels
                         PriceCurrency = "TRY",
                         Price = Product.PriceWithDiscount,
                         Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
-                        ItemCondition = "https://schema.org/NewCondition"
+                        ItemCondition = "https://schema.org/NewCondition",
+                        Seller = new GoogleSeller
+                        {
+                            Name = CompanyName.SettingValue.ToStr()
+                        }
                     }
                 };
 
@@ -74,6 +79,7 @@ namespace EImece.Domain.Models.FrontModels
                 });
             }
         }
+
 
         public string WhatsAppCommunicationLinkGenerateScript
         {
@@ -217,7 +223,6 @@ namespace EImece.Domain.Models.FrontModels
             this.Percentage = percentage;
         }
     }
-
     public class GoogleProductSchema
     {
         [JsonProperty("@context")]
@@ -226,16 +231,22 @@ namespace EImece.Domain.Models.FrontModels
         [JsonProperty("@type")]
         public string Type { get; set; } = "Product";
 
+        [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("image")]
         public string Image { get; set; }
 
+        [JsonProperty("description")]
         public string Description { get; set; }
 
+        [JsonProperty("brand")]
         public GoogleBrand Brand { get; set; }
 
+        [JsonProperty("sku")]
         public string Sku { get; set; }
 
+        [JsonProperty("offers")]
         public GoogleOffer Offers { get; set; }
     }
 
@@ -243,6 +254,8 @@ namespace EImece.Domain.Models.FrontModels
     {
         [JsonProperty("@type")]
         public string Type { get; set; } = "Brand";
+
+        [JsonProperty("name")]
         public string Name { get; set; }
     }
 
@@ -251,15 +264,33 @@ namespace EImece.Domain.Models.FrontModels
         [JsonProperty("@type")]
         public string Type { get; set; } = "Offer";
 
+        [JsonProperty("url")]
         public string Url { get; set; }
 
+        [JsonProperty("priceCurrency")]
         public string PriceCurrency { get; set; }
 
+        [JsonProperty("price")]
         public decimal Price { get; set; }
 
+        [JsonProperty("availability")]
         public string Availability { get; set; }
 
+        [JsonProperty("itemCondition")]
         public string ItemCondition { get; set; }
+
+        [JsonProperty("seller")]
+        public GoogleSeller Seller { get; set; }
     }
+
+    public class GoogleSeller
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Organization";
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+    }
+
 
 }
