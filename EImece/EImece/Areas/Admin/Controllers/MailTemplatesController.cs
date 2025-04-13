@@ -44,11 +44,13 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GenerateHtmlBody(int id = 0)
         {
-            string body = RazorEngineHelper.GenerateRssEmailTemplate(id);
+            // E-posta şablonunu al
+            var rssTemplate = MailTemplateService.GetSingle(id);
+            string body = RazorEngineHelper.GenerateRssEmailTemplate(rssTemplate);
             byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(body);
 
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            string fileName = $"email_template_{id}_{timestamp}.html";
+            string fileName = $"{rssTemplate.Name}_{timestamp}.html";
 
             return File(fileBytes, "text/html", fileName);
         }

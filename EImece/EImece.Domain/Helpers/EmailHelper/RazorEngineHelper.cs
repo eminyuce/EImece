@@ -277,12 +277,8 @@ namespace EImece.Domain.Helpers.EmailHelper
         }
 
 
-        public string GenerateRssEmailTemplate(int id)
+        public string GenerateRssEmailTemplate(MailTemplate rssTemplate)
         {
-            // E-posta şablonunu al
-            var rssTemplate = MailTemplateService.GetSingle(id);
-             
-
             // Web sitesi URL'sini al
             string baseurl = GetSiteBaseUrl();
 
