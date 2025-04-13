@@ -100,11 +100,11 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public string ImageFullPath(int width, int height)
+        public string ImageFullPath(int width, int height, bool isThump=false)
         {
             var request = HttpContext.Current.Request;
             var baseurl = request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
-            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true);
+            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump);
             if (!result.Contains(baseurl))
             {
                 result = baseurl + result;

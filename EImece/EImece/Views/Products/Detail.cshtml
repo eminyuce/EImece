@@ -51,6 +51,23 @@
     var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
 
     var productSchemaJson = Model.GoogleProductSchemaJson;
+
+    int imageWidth = 800;
+    int imageHeight = 600;
+
+    if (product.MainImage != null)
+    {
+        if (product.MainImage.Width > 0)
+                {
+                    imageWidth = product.MainImage.Width;
+                }
+
+        if (product.MainImage.Height > 0)
+        {
+            imageHeight = product.MainImage.Height;
+        }
+
+    }
 }
 
 
@@ -61,6 +78,17 @@
 <input type="hidden" name="productPriceEnabled" value="@productPriceEnabled.ToString().ToLower()" />
 
 @section HeadExtra {
+
+    <meta property="og:locale" content='tr_TR' />
+    <meta property="og:type" content='product' />
+    <meta property="og:site_name" content='@Html.Action("GetCompanyName", "Home")' />
+    <meta property="og:image" content="@product.ImageFullPath(imageWidth,imageHeight)" />
+    <meta property="og:image:width" content="@imageWidth" />
+    <meta property="og:image:height" content="@imageHeight" />
+    <meta property="og:title" content="@product.GetProductSeoTitle()" />
+    <meta property="og:description" content='@GeneralHelper.StripHtml(product.ShortDescription)' />
+    <meta property="og:url" content="@product.DetailPageAbsoluteUrl" />
+
     <script type="application/ld+json">
         @Html.Raw(productSchemaJson)
     </script>

@@ -361,15 +361,15 @@ namespace EImece.Domain.Helpers.Extensions
             return imageTag;
         }
 
-        public static string GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0, bool isFullPathImageUrl = false)
+        public static string GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump = false)
         {
             var fileStorageId = fileStorageIdOptional.HasValue ? fileStorageIdOptional.Value : 0;
-            var result = GetCroppedImageUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
+            var result = GetCroppedImageUrl(entity, fileStorageId, width, height, isFullPathImageUrl, isThump);
 
             return result;
         }
 
-        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl = false)
+        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump=false)
         {
             if (entity != null && fileStorageId > 0)
             {
@@ -377,25 +377,25 @@ namespace EImece.Domain.Helpers.Extensions
                 if (isImageFullSrcUnderMediaFolder && entity is BaseContent)
                 {
                     var baseContentEntity = (BaseContent)entity;
-                    var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, false);
+                    var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, isThump);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
                 else if (isImageFullSrcUnderMediaFolder && entity is ProductFile)
                 {
                     var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
+                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
                 else if (isImageFullSrcUnderMediaFolder && entity is StoryFile)
                 {
                     var baseContentEntity = (StoryFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, false);
+                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
                 else if (isImageFullSrcUnderMediaFolder && entity is FileStorage)
                 {
                     var fileStorage = (FileStorage)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(fileStorage, false);
+                    var imagePath = GetFullPathImageUrlFromFileStorage(fileStorage, isThump);
                     return GetImagePathOrDefaultImage(width, height, imagePath);
                 }
                 else
