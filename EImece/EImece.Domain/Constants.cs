@@ -144,6 +144,8 @@ namespace EImece.Domain
             }
         }
 
+        public static string CURRENCY_TURKISH = "TRY";
+
         public static string TR = "tr-TR";
     }
 }

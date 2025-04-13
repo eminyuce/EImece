@@ -61,7 +61,7 @@ namespace EImece.Domain.Models.FrontModels
                     Offers = new GoogleOffer
                     {
                         Url = Product.DetailPageAbsoluteUrl,
-                        PriceCurrency = "TRY",
+                        PriceCurrency = Constants.CURRENCY_TURKISH,
                         Price = Product.PriceWithDiscount.GoogleProductSchema(),
                         Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
                         ItemCondition = "https://schema.org/NewCondition",

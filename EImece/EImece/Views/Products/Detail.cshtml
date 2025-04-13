@@ -89,7 +89,7 @@
     <meta property="og:description" content="@HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(product.ShortDescription))" />
     <meta property="og:url" content="@product.DetailPageAbsoluteUrl" />
     <meta property="product:price:amount" content="@product.PriceWithDiscount" />
-    <meta property="product:price:currency" content="TRY" />
+    <meta property="product:price:currency" content="@Constants.CURRENCY_TURKISH" />
 
     <script type="application/ld+json">
         @Html.Raw(productSchemaJson)

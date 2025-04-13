@@ -282,10 +282,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             // E-posta şablonunu al
             var rssTemplate = MailTemplateService.GetSingle(id);
              
-            // Şirket ve Yönetici bilgileri
-            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
-            string adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
-            string webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
 
             // Web sitesi URL'sini al
             string baseurl = GetSiteBaseUrl();
@@ -293,7 +289,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             // Razor Template için model oluştur
            
             RazorEngineModel razorEngineModel = new RazorEngineModel();
-            razorEngineModel["CompanyName"] = companyName;
+            razorEngineModel["CompanyName"] = SettingService.GetSettingByKey(Constants.CompanyName);
+            razorEngineModel["CompanyAddress"] = SettingService.GetSettingByKey(Constants.CompanyAddress);
+            razorEngineModel["WebSiteCompanyEmailAddress"] = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
             razorEngineModel["BaseUrl"] = baseurl;
             razorEngineModel["WebSiteIconUrl"] = $"{baseurl}/images/logo.jpg";
          
