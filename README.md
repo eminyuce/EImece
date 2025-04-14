@@ -1,7 +1,3 @@
-Here's a polished and professional `README.md` file for your GitHub e-commerce project **EImece**:
-
----
-
 # 🛍️ EImece - ECommerce Web Application
 
 **EImece** is an open-source, feature-rich eCommerce web application built using **ASP.NET MVC 5**, **Entity Framework 6**, and **Ninject**. Designed with a layered architecture utilizing the **Repository Pattern** and **Service Layer**, this application provides a scalable and maintainable solution for online retail platforms.
