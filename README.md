@@ -1,6 +1,6 @@
 # 🛍️ EImece - ECommerce Web Application
 
-**EImece** is an open-source, feature-rich eCommerce web application built using **ASP.NET MVC 5**, **Entity Framework 6**, and **Ninject**. Designed with a layered architecture utilizing the **Repository Pattern** and **Service Layer**, this application provides a scalable and maintainable solution for online retail platforms.
+**EImece** is an open-source, full-featured eCommerce web application built with **ASP.NET MVC 5**, **Entity Framework 6**, and **Ninject**. It follows a clean architecture using the **Repository Pattern** and **Service Layer** for better scalability and maintainability.
 
 ---
 
@@ -15,39 +15,52 @@
 - **Bootstrap** – Responsive front-end design  
 - **Generic Repository Pattern** – Abstraction for data layer  
 - **Service Layer Pattern** – Separation of business logic  
-- **Iyzico Integration for Payment** – Payment over Iyzico for any purchase  
+
+---
+
+## 💎 Highlight Feature: Iyzico Payment Integration
+
+### ✅ Seamless Payment Experience with [Iyzico](https://www.iyzico.com/en)
+- Fully integrated with **Iyzico** for real-time, secure payment processing
+- Supports **guest** and **registered user** checkouts
+- Customers receive payment confirmation and **tracking numbers**
+- Iyzico provides **PCI-DSS compliant** infrastructure for safe transactions
+
+> This makes **EImece** production-ready for real-world commercial use in Turkey and beyond!
+
 ---
 
 ## 🎯 Key Features
 
 ### 🏠 Home Page
-- Dynamic image carousel with clickable links
-- Menu-based navigation to themed content pages
+- Scrolling image banners with link support
+- Custom menu items and themed content pages
 
 ### 🛒 Product Management
-- Categorize and tag products
-- Upload main and gallery images for each product
-- Bulk price updates by category, tag, or brand
-- Advanced product filtering: price, category, rating, brand
+- Product categorization and tagging
+- Image gallery support for each product
+- Price updates by category, tag, or brand
+- Product filtering by price, category, rating, and brand
 
 ### 💳 Shopping & Payment
-- Add to cart and checkout using **iyzico** payment gateway
-- Supports both guest and registered user checkouts
-- Customers receive a tracking number for shipping
-- Secure and reliable payment integration
+- Add to cart functionality
+- **Secure payments via Iyzico**
+- Guest or member checkout options
+- Order tracking with cargo numbers
+- Fraud prevention and secure transaction handling
 
 ### 👤 Customer & Order Management
-- Admin panel for managing users and orders
-- Order tracking, status updates, comment handling
-- Product-specific FAQs visible in the customer account
+- Admin dashboard to manage customers and orders
+- Add cargo numbers, update status, and add internal notes
+- Display FAQs for each product on customer account page
 
 ### 📞 Communication & Social Integration
-- Contact via **email** or **WhatsApp** through the contact page
+- Contact form with **email** and **WhatsApp** support
 
 ---
 
 ## 📁 Project Structure
-The application is structured using the **Repository** and **Service Layer** pattern:
+Uses Repository + Service Layer for clean separation:
 ```
 Controllers/
 Models/
@@ -55,7 +68,6 @@ Services/
 Repositories/
 Views/
 ```
-This promotes separation of concerns and makes the application easy to test, extend, and maintain.
 
 ---
 
@@ -63,18 +75,25 @@ This promotes separation of concerns and makes the application easy to test, ext
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/eiemce-ecommerce.git
+   git clone https://github.com/yourusername/eimece-ecommerce.git
    ```
 2. Open the solution in **Visual Studio**.
-3. Update the database connection string in `Web.config`.
-4. Run the application and seed the database if needed.
+3. Update the connection string in `Web.config`.
+4. Run the application and apply migrations if needed.
 
 ---
 
 ## 🤝 Contributions
-Contributions are welcome! Feel free to fork the project and submit pull requests. Open an issue if you encounter bugs or have feature requests.
+Have ideas to improve the platform? Fork the project, create a new branch, and submit a pull request!
 
 ---
 
 ## 📜 License
-This project is open-sourced under the MIT License. See the [LICENSE](LICENSE) file for details.
+Licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+---
+
+## 🌐 Live Demo *(Optional)*
+If deployed, add the link here:  
+[🔗 View Live Demo](https://www.yuvadan.com.tr)
+ 
