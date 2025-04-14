@@ -15,7 +15,7 @@
 - **Bootstrap** – Responsive front-end design  
 - **Generic Repository Pattern** – Abstraction for data layer  
 - **Service Layer Pattern** – Separation of business logic  
-
+- **Iyzico Integration for Payment** – Payment over Iyzico for any purchase  
 ---
 
 ## 🎯 Key Features
