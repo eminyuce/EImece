@@ -145,7 +145,8 @@ namespace EImece.Domain
         }
 
         public static string CURRENCY_TURKISH = "TRY";
-
+        public const string IYZICO_ADDRESS_COUNTRY = "Turkiye";
         public static string TR = "tr-TR";
+       
     }
 }

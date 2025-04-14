@@ -12,7 +12,6 @@ namespace EImece.Domain.Models.FrontModels
     [Serializable]
     public class ShoppingCartSession
     {
-        private const string IYZICO_ADDRESS_COUNTRY = "Turkiye";
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         private Customer _customer = new Customer();
         private Address _shippingAddress = new Address();
@@ -230,18 +229,18 @@ namespace EImece.Domain.Models.FrontModels
 
         public static ShoppingCartSession CreateDefaultShopingCard(int currentLanguage, string ip)
         {
-            ShoppingCartSession shoppingCart = new ShoppingCartSession();
+            var shoppingCart = new ShoppingCartSession();
             var shippingAddress = new Address();
-            shippingAddress.Country = IYZICO_ADDRESS_COUNTRY;
+            shippingAddress.Country = Constants.IYZICO_ADDRESS_COUNTRY;
             shippingAddress.AddressType = (int)AddressType.ShippingAddress;
             var billingAddress = new Domain.Entities.Address();
-            billingAddress.Country = IYZICO_ADDRESS_COUNTRY;
+            billingAddress.Country = Constants.IYZICO_ADDRESS_COUNTRY;
             billingAddress.AddressType = (int)AddressType.BillingAddress;
             shoppingCart.ShippingAddress = shippingAddress;
             shoppingCart.BillingAddress = billingAddress;
             Customer customer = shoppingCart.Customer;
             customer.IsSameAsShippingAddress = true;
-            customer.Country = IYZICO_ADDRESS_COUNTRY;
+            customer.Country = Constants.IYZICO_ADDRESS_COUNTRY;
             customer.Ip = ip;
             customer.IdentityNumber = "";
             customer.CreatedDate = DateTime.Now;

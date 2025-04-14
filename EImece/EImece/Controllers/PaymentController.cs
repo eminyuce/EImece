@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -28,7 +29,7 @@ namespace EImece.Controllers
 {
     public class PaymentController : BaseController
     {
-        private const string CUSTOMER_COUNTRY = "Türkiye";
+        
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
@@ -72,14 +73,12 @@ namespace EImece.Controllers
             ApplicationUserManager userManager,
             ApplicationSignInManager signInManager)
         {
-            PaymentLogger.Info("PaymentController constructor called. Initializing UserManager and SignInManager.");
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
         public ActionResult ShoppingCart()
         {
-            PaymentLogger.Info("Entering ShoppingCart action.");
             ShoppingCartSession shoppingCart = GetShoppingCart();
             var urlReferrer = Request.UrlReferrer;
             if (urlReferrer != null)
@@ -93,8 +92,6 @@ namespace EImece.Controllers
 
         public ActionResult Index()
         {
-            PaymentLogger.Info("Entering Index action.");
-            PaymentLogger.Info("Returning Index view.");
             return View();
         }
 
@@ -106,6 +103,21 @@ namespace EImece.Controllers
 
         public ActionResult AddToCart(string productId, int quantity, string orderGuid, string productSpecItems)
         {
+            if (quantity < 0 || quantity > 1000)
+            {
+                PaymentLogger.Error("Quantity cannot be less than 0 or greater than 1000.");
+                return Json("failed", JsonRequestBehavior.AllowGet);
+            }
+            if (string.IsNullOrEmpty(productId))
+            {
+                PaymentLogger.Error("Product ID cannot be null or empty.");
+                return Json("failed", JsonRequestBehavior.AllowGet);
+            }
+            if (string.IsNullOrEmpty(orderGuid))
+            {
+                PaymentLogger.Error("OrderGuid cannot be null or empty.");
+                return Json("failed", JsonRequestBehavior.AllowGet);
+            }
             PaymentLogger.Info($"Entering AddToCart action with productId: {productId}, quantity: {quantity}, orderGuid: {orderGuid}");
             int pId = GeneralHelper.RevertId(productId);
             PaymentLogger.Info($"Reverted productId to: {pId}");
@@ -114,7 +126,15 @@ namespace EImece.Controllers
             {
                 PaymentLogger.Info($"Product found with ID: {pId}");
                 var shoppingCart = GetShoppingCart();
-                shoppingCart.OrderGuid = orderGuid;
+                if (string.IsNullOrEmpty(shoppingCart.OrderGuid))
+                {
+                    shoppingCart.OrderGuid = orderGuid;
+                }
+                else if (!shoppingCart.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    throw new Exception($"OrderGuid does not match. Setting new OrderGuid: {orderGuid}");
+                }
+               
                 PaymentLogger.Info($"Set shopping cart OrderGuid to: {orderGuid}");
 
                 var item = new ShoppingCartItem();
@@ -133,14 +153,12 @@ namespace EImece.Controllers
                 shoppingCart.Add(item);
                 PaymentLogger.Info("Added item to shopping cart.");
                 SaveShoppingCart(shoppingCart);
-                PaymentLogger.Info("Shopping cart saved successfully.");
                 PaymentLogger.Info("Returning success JSON response.");
                 return Json("success", JsonRequestBehavior.AllowGet);
             }
             else
             {
                 PaymentLogger.Error($"Product not found with ID: {pId}");
-                PaymentLogger.Info("Returning failed JSON response.");
                 return Json("failed", JsonRequestBehavior.AllowGet);
             }
         }
@@ -148,14 +166,11 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult GetShoppingCartSmallDetails()
         {
-            PaymentLogger.Info("Entering GetShoppingCartSmallDetails action.");
             var shoppingCart = GetShoppingCartFromDataSource();
-            PaymentLogger.Info("Retrieved shopping cart from data source.");
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartSmallDetails.cshtml",
                         new ViewDataDictionary(shoppingCart), tempData);
-            PaymentLogger.Info("Rendered shopping cart small details HTML.");
             PaymentLogger.Info("Returning JSON response with HTML.");
             return Json(html, JsonRequestBehavior.AllowGet);
         }
@@ -163,14 +178,11 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult GetShoppingCartLinks()
         {
-            PaymentLogger.Info("Entering GetShoppingCartLinks action.");
             var shoppingCart = GetShoppingCartFromDataSource();
-            PaymentLogger.Info("Retrieved shopping cart from data source.");
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks.cshtml",
                         new ViewDataDictionary(shoppingCart), tempData);
-            PaymentLogger.Info("Rendered shopping cart links HTML.");
             PaymentLogger.Info("Returning JSON response with HTML.");
             return Json(html, JsonRequestBehavior.AllowGet);
         }
@@ -179,9 +191,7 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult ShoppingCartLink()
         {
-            PaymentLogger.Info("Entering ShoppingCartLink partial action.");
             var shoppingCart = GetShoppingCartFromDataSource();
-            PaymentLogger.Info("Retrieved shopping cart from data source.");
             PaymentLogger.Info("Rendering _ShoppingCartLinks partial view.");
             return PartialView("ShoppingCartTemplates/_ShoppingCartLinks", shoppingCart);
         }
@@ -211,7 +221,6 @@ namespace EImece.Controllers
 
         private string getUserId()
         {
-            PaymentLogger.Info("Entering getUserId method.");
             if (Request.IsAuthenticated)
             {
                 PaymentLogger.Info("Request is authenticated.");
@@ -223,7 +232,6 @@ namespace EImece.Controllers
                 }
                 PaymentLogger.Info("No user found.");
             }
-            PaymentLogger.Info("Request is not authenticated or no user ID found. Returning empty string.");
             return string.Empty;
         }
 
@@ -240,14 +248,12 @@ namespace EImece.Controllers
 
         private ShoppingCartSession GetShoppingCartByOrderGuid(string orderGuid)
         {
-            PaymentLogger.Info($"Entering GetShoppingCartByOrderGuid with orderGuid: {orderGuid}");
             ShoppingCartSession result = null;
             var item = orderGuid != null ? ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid) : null;
             if (item == null)
             {
                 PaymentLogger.Info("No existing shopping cart found. Creating default shopping cart.");
                 result = ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GeneralHelper.GetIpAddress());
-                PaymentLogger.Info($"Created default shopping cart with IP: {GeneralHelper.GetIpAddress()}");
                 GetCustomerIfAuthenticated(result);
             }
             else
@@ -268,10 +274,8 @@ namespace EImece.Controllers
 
         private void GetCustomerIfAuthenticated(ShoppingCartSession result)
         {
-            PaymentLogger.Info("Entering GetCustomerIfAuthenticated method.");
             if (Request.IsAuthenticated)
             {
-                PaymentLogger.Info("Request is authenticated.");
                 var user = UserManager.FindByName(User.Identity.GetUserName());
                 if (user != null)
                 {
@@ -286,7 +290,10 @@ namespace EImece.Controllers
                     }
                     result.Customer = c;
                     c.IsSameAsShippingAddress = true;
-                    PaymentLogger.Info("Customer assigned to shopping cart.");
+                }
+                else
+                {
+                    throw new ArgumentException("User cannot be null"+User.Identity.GetUserName());
                 }
             }
             else
@@ -305,10 +312,8 @@ namespace EImece.Controllers
 
         public ActionResult CheckoutBillingDetails()
         {
-            PaymentLogger.Info("Entering CheckoutBillingDetails action.");
             if (Request.IsAuthenticated)
             {
-                PaymentLogger.Info("User is authenticated.");
                 ShoppingCartSession shoppingCart = GetShoppingCart();
                 if (shoppingCart.ShoppingCartItems.IsNotEmpty())
                 {
@@ -318,7 +323,7 @@ namespace EImece.Controllers
                         PaymentLogger.Info("No customer in shopping cart. Creating new customer.");
                         shoppingCart.Customer = new Customer();
                         shoppingCart.Customer.CustomerType = (int)EImeceCustomerType.Normal;
-                        shoppingCart.Customer.Country = CUSTOMER_COUNTRY;
+                        shoppingCart.Customer.Country = Domain.Constants.IYZICO_ADDRESS_COUNTRY;
                         shoppingCart.Customer.Ip = GeneralHelper.GetIpAddress();
                     }
                     if (shoppingCart.Customer.IsEmpty())
@@ -385,7 +390,6 @@ namespace EImece.Controllers
                 InformCustomerToFillOutForm(customer);
                 ShoppingCartSession shoppingCart = GetShoppingCart();
                 shoppingCart.Customer = customer;
-                PaymentLogger.Info("Returning view with validation errors.");
                 return View(shoppingCart);
             }
         }
@@ -417,15 +421,12 @@ namespace EImece.Controllers
 
         public ActionResult CheckoutDelivery()
         {
-            PaymentLogger.Info("Entering CheckoutDelivery action.");
             ShoppingCartSession shoppingCart = GetShoppingCart();
-            PaymentLogger.Info("Returning CheckoutDelivery view.");
             return View(shoppingCart);
         }
 
         public ActionResult CheckoutPaymentOrderReview()
         {
-            PaymentLogger.Info("Entering CheckoutPaymentOrderReview action.");
             ShoppingCartSession shoppingCart = GetShoppingCart();
             if (shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
@@ -475,7 +476,6 @@ namespace EImece.Controllers
             shoppingCart.OrderComments = orderComments;
             PaymentLogger.Info("Order comments assigned to shopping cart.");
             SaveShoppingCart(shoppingCart);
-            PaymentLogger.Info("Shopping cart saved with order comments.");
             PaymentLogger.Info("Returning success JSON response.");
             return Json(new { status = Domain.Constants.SUCCESS }, JsonRequestBehavior.AllowGet);
         }
@@ -497,7 +497,6 @@ namespace EImece.Controllers
             else
             {
                 PaymentLogger.Error($"Item with ID: {shoppingItemId} not found.");
-                PaymentLogger.Info("Returning failed JSON response.");
                 return Json(new { status = Domain.Constants.FAILED, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -517,8 +516,6 @@ namespace EImece.Controllers
                     shoppingCart.Coupon = null;
                 }
                 SaveShoppingCart(shoppingCart);
-                PaymentLogger.Info("Shopping cart saved after removal.");
-                PaymentLogger.Info("Returning success JSON response.");
                 return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -557,14 +554,12 @@ namespace EImece.Controllers
             }
             else
             {
-                PaymentLogger.Info("Customer validation failed or cart is empty. Returning RegisterCustomer content.");
                 return Content("RegisterCustomer");
             }
         }
         
         public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u, String orderNumber)
         {
-            PaymentLogger.Info("Entering PaymentResult action.");
             CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
             PaymentLogger.Info($"PaymentResult with ACCOUNT status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
@@ -584,24 +579,19 @@ namespace EImece.Controllers
             else
             {
                 PaymentLogger.Error($"Payment failed. CheckoutForm: {JsonConvert.SerializeObject(checkoutForm)}");
-                PaymentLogger.Info("Redirecting to NoSuccessForYourOrder.");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)
         {
-            PaymentLogger.Info($"Entering ThankYouForYourOrder with orderId: {orderId}");
             var order = OrderService.GetOrderById(orderId);
             //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
-            PaymentLogger.Info("Returning ThankYouForYourOrder view.");
             return View(order);
         }
 
         public ActionResult NoSuccessForYourOrder()
         {
-            PaymentLogger.Info("Entering NoSuccessForYourOrder action.");
-            PaymentLogger.Info("Returning NoSuccessForYourOrder view.");
             return View();
         }
 
@@ -612,7 +602,11 @@ namespace EImece.Controllers
             {
                 PaymentLogger.Info("Removing OrderGuid cookie.");
                 Response.Cookies.Remove(Domain.Constants.OrderGuidCookieKey);
-                var aCookie = new HttpCookie(Domain.Constants.OrderGuidCookieKey) { Expires = DateTime.Now.AddDays(-1) };
+                var aCookie = new HttpCookie(Domain.Constants.OrderGuidCookieKey) { 
+                    Expires = DateTime.Now.AddDays(-1),
+                    HttpOnly = true,
+                    Secure  = Request.IsSecureConnection
+                };
                 Response.Cookies.Add(aCookie);
                 PaymentLogger.Info("Added expired cookie to response.");
             }
@@ -622,8 +616,6 @@ namespace EImece.Controllers
 
         public ActionResult PaymentSuccess(RetrieveCheckoutFormRequest model)
         {
-            PaymentLogger.Info("Entering PaymentSuccess action.");
-            PaymentLogger.Info("Returning PaymentSuccess content.");
             return Content("PaymentSuccess is done");
         }
 
@@ -959,7 +951,7 @@ namespace EImece.Controllers
                 PaymentLogger.Info("Saving customer information");
 
                 customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
-                customer.Country = CUSTOMER_COUNTRY;
+                customer.Country = Domain.Constants.IYZICO_ADDRESS_COUNTRY;
                 customer.Ip = GeneralHelper.GetIpAddress();
                 customer.CreatedDate = DateTime.Now;
                 customer.UpdatedDate = DateTime.Now;
