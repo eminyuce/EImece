@@ -479,7 +479,7 @@ namespace EImece.Domain.Helpers.Extensions
             return "";
         }
 
-        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName = "")
+        public static String GetDetailPageUrl_OLD(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName = "")
         {
             if (HttpContext.Current == null)
                 return "";
@@ -501,5 +501,43 @@ namespace EImece.Domain.Helpers.Extensions
             }
             return "";
         }
+
+        public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName = "")
+        {
+            if (HttpContext.Current == null)
+                return "";
+
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            string path = "";
+
+            if (entity != null)
+            {
+                if (!String.IsNullOrEmpty(authorName))
+                {
+                    path = urlHelper.Action(action, controller, new { id = authorName, area = "" });
+                }
+                else if (String.IsNullOrEmpty(categoryName))
+                {
+                    path = urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" });
+                }
+                else
+                {
+                    path = urlHelper.Action(action, controller, new
+                    {
+                        categoryName = GeneralHelper.GetUrlSeoString(categoryName),
+                        id = GetSeoUrl(entity),
+                        area = ""
+                    });
+                }
+            }
+            string domain = AppConfig.Domain;
+            if (string.IsNullOrEmpty(domain))
+            {
+                domain = HttpContext.Current.Request.Url.Host;
+            }
+            var httpProtocol = AppConfig.HttpProtocol;
+            return $"{httpProtocol}://{domain}{path}";
+        }
+
     }
 }
