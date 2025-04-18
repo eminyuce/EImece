@@ -47,6 +47,7 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
+                var productComments = Product.ProductComments.IsNotEmpty() ? Product.ProductComments : new List<ProductComment>();
 
                 var schema = new GoogleProductSchema
                 {
@@ -58,6 +59,27 @@ namespace EImece.Domain.Models.FrontModels
                         Name = Product.Brand.Name
                     },
                     Sku = Product.ProductCode,
+                    AggregateRating = new GoogleAggregateRating
+                    {
+                        RatingValue = Product.Rating.ToString("0.0") ?? "0.0", // Example: Replace with actual rating logic
+                        ReviewCount = productComments.Count.ToStr() ?? "0" // Example: Replace with actual review count logic
+                    },
+                    Review = productComments.Select(r => new GoogleReview
+                    {
+                        Author = new GoogleAuthor
+                        {
+                            Name = r.Name // Example: Replace with actual review author
+                        },
+                        DatePublished = r.CreatedDate.ToString("yyyy-MM-dd"), // Example: Replace with actual review date
+                        ReviewBody = r.Review, // Example: Replace with actual review body
+                        Name = r.Subject, // Example: Replace with actual review title
+                        ReviewRating = new GoogleReviewRating
+                        {
+                            RatingValue = r.Rating.ToString(), // Example: Replace with actual rating
+                            BestRating = "5",
+                            WorstRating = "1"
+                        }
+                    }).ToList(),
                     Offers = new GoogleOffer
                     {
                         Url = Product.DetailPageAbsoluteUrl,
@@ -223,6 +245,7 @@ namespace EImece.Domain.Models.FrontModels
             this.Percentage = percentage;
         }
     }
+
     public class GoogleProductSchema
     {
         [JsonProperty("@context")]
@@ -248,6 +271,69 @@ namespace EImece.Domain.Models.FrontModels
 
         [JsonProperty("offers")]
         public GoogleOffer Offers { get; set; }
+
+        [JsonProperty("aggregateRating")]
+        public GoogleAggregateRating AggregateRating { get; set; }
+
+        [JsonProperty("review")]
+        public List<GoogleReview> Review { get; set; }
+    }
+
+    public class GoogleAggregateRating
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "AggregateRating";
+
+        [JsonProperty("ratingValue")]
+        public string RatingValue { get; set; }
+
+        [JsonProperty("reviewCount")]
+        public string ReviewCount { get; set; }
+    }
+
+    public class GoogleReview
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Review";
+
+        [JsonProperty("author")]
+        public GoogleAuthor Author { get; set; }
+
+        [JsonProperty("datePublished")]
+        public string DatePublished { get; set; }
+
+        [JsonProperty("reviewBody")]
+        public string ReviewBody { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("reviewRating")]
+        public GoogleReviewRating ReviewRating { get; set; }
+    }
+
+    public class GoogleAuthor
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Person";
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+    }
+
+    public class GoogleReviewRating
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "Rating";
+
+        [JsonProperty("ratingValue")]
+        public string RatingValue { get; set; }
+
+        [JsonProperty("bestRating")]
+        public string BestRating { get; set; }
+
+        [JsonProperty("worstRating")]
+        public string WorstRating { get; set; }
     }
 
     public class GoogleBrand
