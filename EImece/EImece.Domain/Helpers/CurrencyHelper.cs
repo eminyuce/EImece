@@ -10,8 +10,9 @@ namespace EImece.Domain.Helpers
         // Method to convert Price to Google Product Schema format (price with currency)
         public static string GoogleProductSchema(this decimal price)
         {
-            // Format the price with 2 decimal places (or as needed)
-            return price.ToString("F2");
+            // Format the price with 2 decimal places and ensure period as decimal separator
+            // This uses invariant culture to guarantee period as decimal separator
+            return price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         public static string CurrencySignForIyizo(this decimal price)

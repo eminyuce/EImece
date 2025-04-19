@@ -59,27 +59,6 @@ namespace EImece.Domain.Models.FrontModels
                         Name = Product.Brand.Name
                     },
                     Sku = Product.ProductCode,
-                    AggregateRating = new GoogleAggregateRating
-                    {
-                        RatingValue = Product.Rating.ToString("0.0") ?? "0.0", // Example: Replace with actual rating logic
-                        ReviewCount = productComments.Count.ToStr() ?? "0" // Example: Replace with actual review count logic
-                    },
-                    Review = productComments.Select(r => new GoogleReview
-                    {
-                        Author = new GoogleAuthor
-                        {
-                            Name = r.Name // Example: Replace with actual review author
-                        },
-                        DatePublished = r.CreatedDate.ToString("yyyy-MM-dd"), // Example: Replace with actual review date
-                        ReviewBody = r.Review, // Example: Replace with actual review body
-                        Name = r.Subject, // Example: Replace with actual review title
-                        ReviewRating = new GoogleReviewRating
-                        {
-                            RatingValue = r.Rating.ToString(), // Example: Replace with actual rating
-                            BestRating = "5",
-                            WorstRating = "1"
-                        }
-                    }).ToList(),
                     Offers = new GoogleOffer
                     {
                         Url = Product.DetailPageAbsoluteUrl,
@@ -93,6 +72,31 @@ namespace EImece.Domain.Models.FrontModels
                         }
                     }
                 };
+
+                if (productComments.IsNotEmpty())
+                {
+                    schema.AggregateRating = new GoogleAggregateRating
+                    {
+                        RatingValue = Product.Rating.ToStr("0.0"), // Example: Replace with actual rating logic
+                        ReviewCount = productComments.Count.ToStr("0") // Example: Replace with actual review count logic
+                    };
+                    schema.Review = productComments.Select(r => new GoogleReview
+                    {
+                        Author = new GoogleAuthor
+                        {
+                            Name = r.Name // Example: Replace with actual review author
+                        },
+                        DatePublished = r.UpdatedDate.ToString("yyyy-MM-dd"), // Example: Replace with actual review date
+                        ReviewBody = r.Review, // Example: Replace with actual review body
+                        Name = r.Subject, // Example: Replace with actual review title
+                        ReviewRating = new GoogleReviewRating
+                        {
+                            RatingValue = r.Rating.ToString(System.Globalization.CultureInfo.InvariantCulture), // Example: Replace with actual rating
+                            BestRating = "5",
+                            WorstRating = "1"
+                        }
+                    }).ToList();
+                }
 
                 return JsonConvert.SerializeObject(schema, new JsonSerializerSettings
                 {
