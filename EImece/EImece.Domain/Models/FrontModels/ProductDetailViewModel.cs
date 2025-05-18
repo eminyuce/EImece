@@ -49,13 +49,26 @@ namespace EImece.Domain.Models.FrontModels
                 string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
                 var productComments = Product.ProductComments.IsNotEmpty() ? Product.ProductComments : new List<ProductComment>();
                 var productTags = Product.ProductTags.Select(r => r.Tag).ToList();
+                var productFiles = Product.ProductFiles.ToList();
+                List<string> images = new List<string>();
+                images.Add(Product.ImageFullPath(200, 200));
 
+                if (productFiles.IsNotEmpty())
+                {
+                    for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        images.Add(f.ImageFullPath(95, 105));
+                    }
+                }
+               
                 var schema = new GoogleProductSchema
                 {
                     Name = Product.ProductNameStr,
                     Category = Product.ProductCategory.Name,
                     Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null, // fixed line
-                    Image = new string[] { Product.ImageFullPath(200, 200) },
+                    //Image = new string[] { Product.ImageFullPath(200, 200) },
+                    Image = images.ToArray(),
                     Description = plainDescription,
                     Brand = new GoogleBrand
                     {
