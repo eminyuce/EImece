@@ -48,10 +48,13 @@ namespace EImece.Domain.Models.FrontModels
             {
                 string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
                 var productComments = Product.ProductComments.IsNotEmpty() ? Product.ProductComments : new List<ProductComment>();
+                var productTags = Product.ProductTags.Select(r => r.Tag).ToList();
 
                 var schema = new GoogleProductSchema
                 {
                     Name = Product.ProductNameStr,
+                    Category = Product.ProductCategory.Name,
+                    Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null, // fixed line
                     Image = new string[] { Product.ImageFullPath(200, 200) },
                     Description = plainDescription,
                     Brand = new GoogleBrand
@@ -260,6 +263,12 @@ namespace EImece.Domain.Models.FrontModels
 
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonProperty("category")]
+        public string Category { get; set; }
+
+        [JsonProperty("keywords")]
+        public string Keywords { get; set; }
 
         [JsonProperty("image")]
         public string [] Image { get; set; }
