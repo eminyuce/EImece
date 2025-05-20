@@ -31,6 +31,7 @@ namespace EImece.Domain.Models.FrontModels
         public ContactUsFormViewModel Contact { get; set; }
 
         public Setting CargoDescription { get; set; }
+        public Setting CargoPrice { get; set; }
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
         public Setting WhatsAppCommunicationLink { get; set; }
@@ -61,7 +62,7 @@ namespace EImece.Domain.Models.FrontModels
                         images.Add(f.ImageFullPath(95, 105));
                     }
                 }
-               
+
                 var schema = new GoogleProductSchema
                 {
                     Name = Product.ProductNameStr,
@@ -80,11 +81,25 @@ namespace EImece.Domain.Models.FrontModels
                         Url = Product.DetailPageAbsoluteUrl,
                         PriceCurrency = Constants.CURRENCY_TURKISH,
                         Price = Product.PriceWithDiscount.GoogleProductSchema(),
+                        PriceValidUntil = Product.UpdatedDate.AddMonths(3).ToString("yyyy-MM-dd"),
                         Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
                         ItemCondition = "https://schema.org/NewCondition",
                         Seller = new GoogleSeller
                         {
                             Name = CompanyName.SettingValue.ToStr()
+                        },
+                        HasMerchantReturnPolicy = new GoogleReturnPolicy(),
+                        ShippingDetails = new GoogleShippingDetails
+                        {
+                            ShippingRate = new GoogleShippingRate
+                            {
+                                Value = CargoPrice.SettingValue.ToDecimal().GoogleProductSchema(),
+                                Currency = Constants.CURRENCY_TURKISH
+                            },
+                            ShippingDestination = new GoogleShippingDestination
+                            {
+                                AddressCountry = "TR"
+                            }
                         }
                     }
                 };
@@ -385,6 +400,9 @@ namespace EImece.Domain.Models.FrontModels
         [JsonProperty("price")]
         public string Price { get; set; }
 
+        [JsonProperty("priceValidUntil")]
+        public string PriceValidUntil { get; set; } // NEW
+
         [JsonProperty("availability")]
         public string Availability { get; set; }
 
@@ -393,6 +411,12 @@ namespace EImece.Domain.Models.FrontModels
 
         [JsonProperty("seller")]
         public GoogleSeller Seller { get; set; }
+
+        [JsonProperty("hasMerchantReturnPolicy")]
+        public GoogleReturnPolicy HasMerchantReturnPolicy { get; set; } // NEW
+
+        [JsonProperty("shippingDetails")]
+        public GoogleShippingDetails ShippingDetails { get; set; } // NEW
     }
 
     public class GoogleSeller
@@ -402,6 +426,57 @@ namespace EImece.Domain.Models.FrontModels
 
         [JsonProperty("name")]
         public string Name { get; set; }
+    }
+
+    public class GoogleReturnPolicy
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "MerchantReturnPolicy";
+
+        [JsonProperty("returnPolicyCategory")]
+        public string ReturnPolicyCategory { get; set; } = "https://schema.org/Returnable";
+
+        [JsonProperty("merchantReturnDays")]
+        public int MerchantReturnDays { get; set; } = 14;
+
+        [JsonProperty("returnMethod")]
+        public string ReturnMethod { get; set; } = "https://schema.org/InStoreReturn";
+
+        [JsonProperty("returnFees")]
+        public string ReturnFees { get; set; } = "https://schema.org/FreeReturn";
+    }
+
+    public class GoogleShippingDetails
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "OfferShippingDetails";
+
+        [JsonProperty("shippingRate")]
+        public GoogleShippingRate ShippingRate { get; set; }
+
+        [JsonProperty("shippingDestination")]
+        public GoogleShippingDestination ShippingDestination { get; set; }
+    }
+
+    public class GoogleShippingRate
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "MonetaryAmount";
+
+        [JsonProperty("value")]
+        public string Value { get; set; } = "0.00";
+
+        [JsonProperty("currency")]
+        public string Currency { get; set; } = "TRY";
+    }
+
+    public class GoogleShippingDestination
+    {
+        [JsonProperty("@type")]
+        public string Type { get; set; } = "DefinedRegion";
+
+        [JsonProperty("addressCountry")]
+        public string AddressCountry { get; set; } = "TR";
     }
 
 

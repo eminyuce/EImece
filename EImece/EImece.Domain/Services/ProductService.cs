@@ -174,6 +174,7 @@ namespace EImece.Domain.Services
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
+            result.CargoPrice = SettingService.GetSettingObjectByKey(Constants.CargoPrice, product.Lang);
             List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, product.Lang);
             result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
