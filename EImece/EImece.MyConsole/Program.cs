@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Newtonsoft.Json;
+using System.Data.Entity.Migrations;
 
 namespace EImece.MyConsole
 {
@@ -24,30 +25,11 @@ namespace EImece.MyConsole
        
         private static void Main(string[] args)
         {
-            // CompressImagesInDirectory();
 
-            var json = @"{
-  ""PriceRanges"": [
-    { ""Min"": 0, ""Max"": 50, ""IsLast"": false },
-    { ""Min"": 50, ""Max"": 100, ""IsLast"": false },
-    { ""Min"": 100, ""Max"": 500, ""IsLast"": false },
-    { ""Min"": 500, ""Max"": 1000, ""IsLast"": false },
-    { ""Min"": 1000, ""Max"": 5000, ""IsLast"": false },
-    { ""Min"": 5000, ""Max"": 10000, ""IsLast"": false },
-    { ""Min"": 10000, ""Max"": 30000, ""IsLast"": true }
-  ]
-}";
-            var config = JsonConvert.DeserializeObject<PriceFilterConfig>(json);
-
-
-            //generateImagesForAndroidAndFaviconWithDifferentSize();
-
-            decimal productPrice = 120m;
-            Console.WriteLine(productPrice.CurrencySign());
-            productPrice = 133.5m;
-            Console.WriteLine(productPrice.CurrencySign());
-            Console.Read();
-
+            var dbMigration = new EImece.Domain.DbContext.DbMigration();
+            dbMigration.ProcessProductWithGroq();
+            Console.WriteLine("FINISHED");
+            Console.ReadLine();
 
         }
 
