@@ -63,7 +63,7 @@ namespace EImece.Domain.DbContext
         }
 
         private const string GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-        private const string GROQ_API_KEY = "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";
+        private const string GROQ_API_KEY = "";
         //private const string GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
         //private const string GROQ_MODEL = "meta-llama/Llama-Guard-4-12B";
         private const string GROQ_MODEL = "deepseek-r1-distill-llama-70b";
