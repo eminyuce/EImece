@@ -74,10 +74,10 @@ namespace EImece.Domain.DbContext
                 int productId = kvp.Key;
                 string name = kvp.Value.Item1;
                 string htmlDescription = kvp.Value.Item2;
-
+                string json = null;
                 try
                 {
-                    string json = CallGroqSync(name, htmlDescription);
+                    json = CallGroqSyncHtml(name, htmlDescription).TrimEnd().TrimStart();
                     Console.WriteLine("ProductId:" + productId + " is processed by LLM");
                     InsertProductWithTags(productId, json, prodConnectionString);
                     Console.WriteLine("ProductId:" + productId + " is updated by Stored Proc");
@@ -91,6 +91,114 @@ namespace EImece.Domain.DbContext
                 }
             }
         }
+
+        public string CallGroqSyncHtml(string productName, string htmlDescription)
+        {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(productName))
+            {
+                throw new ArgumentException("Product name cannot be null or empty.", nameof(productName));
+            }
+            if (string.IsNullOrWhiteSpace(htmlDescription))
+            {
+                throw new ArgumentException("HTML description cannot be null or empty.", nameof(htmlDescription));
+            }
+
+            string prompt = $@"
+You are a helpful assistant that generates SEO-optimized e-commerce product descriptions in Turkish.
+
+Product Information:
+- Product Name: {productName}
+- Original HTML Description: {htmlDescription}
+
+Your response must be a valid JSON object and nothing else — no extra text, explanation, or formatting.
+
+The JSON object must follow this structure exactly:
+{{
+  ""ProductName"": ""{productName}"",
+  ""Description"": ""...""
+}}
+
+Instructions:
+- Keep ProductName exactly as provided, but fix any casing or spacing issues.
+- Rewrite the original HTML description into **well-structured, SEO-optimized HTML** in Turkish.
+  - Avoid exaggerated or unverifiable claims.
+  - Use clear language for Turkish e-commerce customers.
+  - Use semantic HTML tags (<p>, <ul>, <li>, <strong>, etc.).
+  - Remove external links or unnecessary tags.
+  - Ensure output HTML is clean, valid, and production-ready.
+
+Constraints:
+- All content must be in Turkish.
+- Do NOT return any explanation, markdown, or extra content — only valid JSON.
+";
+
+            var requestBody = new
+            {
+                model = GROQ_MODEL,
+                messages = new[]
+                {
+            new {
+                role = "system",
+                content = "You are an expert SEO copywriter specialized in Turkish e-commerce. Always return a well-formatted JSON object with ProductName and Description only — no explanations or extra text."
+            },
+            new {
+                role = "user",
+                content = prompt
+            }
+        },
+                temperature = 0.7,
+                max_tokens = 1000
+            };
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {GROQ_API_KEY}");
+
+                var jsonRequest = JsonConvert.SerializeObject(requestBody);
+                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+                var response = client.PostAsync(GROQ_API_URL, content).Result;
+                var responseText = response.Content.ReadAsStringAsync().Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"GROQ API Error: {response.StatusCode} - {responseText}");
+                }
+
+                dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
+                string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
+
+                if (string.IsNullOrWhiteSpace(assistantContent))
+                {
+                    throw new Exception("GROQ API did not return any content.");
+                }
+
+                // Strip markdown if present
+                if (assistantContent.StartsWith("```json") && assistantContent.EndsWith("```"))
+                {
+                    assistantContent = assistantContent.Substring(7, assistantContent.Length - 10).Trim();
+                }
+                else if (assistantContent.StartsWith("```") && assistantContent.EndsWith("```"))
+                {
+                    assistantContent = assistantContent.Substring(3, assistantContent.Length - 6).Trim();
+                }
+
+                // Validate the JSON
+                try
+                {
+                    JsonConvert.DeserializeObject(assistantContent);
+                }
+                catch (JsonException ex)
+                {
+                    throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
+                }
+
+                return assistantContent;
+            }
+        }
+
+
         public string CallGroqSync(string productName, string htmlDescription)
         {
             // Validate inputs
@@ -239,8 +347,11 @@ Constraints:
         public static Dictionary<int,Tuple<string, string>> GetProducts(string connectionString)
         {
             var result = new Dictionary<int, Tuple<string, string>>();
-            string commandText = "SELECT Id,Name, Description FROM [dbo].[Products] where Id<>176367";
-            var parameterList = new List<SqlParameter>();
+            string commandText = "SELECT Id, Name, Description FROM [dbo].[Products] ";
+            var parameterList = new List<SqlParameter>
+    {
+      //  new SqlParameter("@descPattern", SqlDbType.NVarChar) { Value = "%https://www.tlosolive.com%" }
+    };
             DataSet dataSet = DatabaseUtility.ExecuteDataSet(new SqlConnection(connectionString), commandText, CommandType.Text, parameterList.ToArray());
 
             if (dataSet.Tables.Count > 0)
