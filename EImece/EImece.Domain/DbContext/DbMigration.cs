@@ -40,7 +40,10 @@ namespace EImece.Domain.DbContext
         }
 
 
-        string prodConnectionString = "Data Source=mssql04.trwww.com;Initial Catalog=yuva8905_yuvadan;User ID=;Password=";
+        private const string GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        private const string GROQ_API_KEY = "";
+        private const string GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+        string prodConnectionString = "Data Source=mssql04.trwww.com;Initial Catalog=yuva8905_yuvadan;User ID=yuce; Password=";
         string devConnectionString = @"Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;Integrated Security=True";
 
         public void updateProductDescription()
@@ -61,12 +64,6 @@ namespace EImece.Domain.DbContext
                 Console.WriteLine("Product Name:" + name + " is updated by UPDATE statement");
             }
         }
-
-        private const string GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-        private const string GROQ_API_KEY = "";
-        //private const string GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
-        //private const string GROQ_MODEL = "meta-llama/Llama-Guard-4-12B";
-        private const string GROQ_MODEL = "deepseek-r1-distill-llama-70b";
 
         public void ProcessProductWithGroq()
         {
@@ -109,7 +106,7 @@ namespace EImece.Domain.DbContext
             string prompt = $@"
 You are a helpful assistant that generates SEO-optimized e-commerce product descriptions in Turkish.
 Your response must be a valid JSON object and nothing else — no extra text, explanation, or formatting.
-The JSON object should have the following structure:
+The JSON object must follow this structure:
 {{
   ""ProductName"": ""{productName}"",
   ""Short_Description"": """",
@@ -119,35 +116,56 @@ The JSON object should have the following structure:
   ""Product_keywords"": """"
 }}
 
-Here's the product information:
-Product Name: {productName}
-Original HTML Description: {htmlDescription}
+Product Information:
+- Product Name: {productName}
+- Original HTML Description: {htmlDescription}
 
-Your responsibilities:
-- Generate a concise **Short_Description** (100-150 words) in Turkish based on the original HTML description content. This should be a plain text summary.
-- Improve and optimize the original HTML description content for SEO in Turkish. This improved HTML content should be placed in the **Description** field with SEO Optimization, **Description** field is HTML content.
-    - Remove any external links from the HTML content.
-    - Enhance SEO with relevant keywords.
-    - Make it a more effective and engaging product description.
-    - Ensure the text flows naturally and is grammatically correct in Turkish.
-- Generate a list of relevant **Meta_Keywords** (e.g., for meta tags) in Turkish based on the improved content. Return them as a comma-separated string.
-- Generate a unique **Product_Code** based on the product name. If the product name contains numbers or specific identifiers, incorporate them. Otherwise, create a concise, relevant code.
-- Generate a list of relevant **Product_keywords** (e.g., for internal search or tagging) in Turkish based on the improved content. Return them as a comma-separated string (e.g., ""keyword1,keyword2,keyword3"").
+Your tasks:
+1. **Short_Description**: Write a concise (100–150 words) summary of the product in **plain Turkish** based on the original description. Avoid HTML tags.
+2. **Description**: Rewrite the original HTML description into **well-structured HTML** that is SEO-optimized and ready for publishing. Ensure the content:
+   - Is written in fluent, natural Turkish.
+   - Emphasizes product features and benefits without exaggeration.
+   - Includes relevant SEO keywords naturally.
+   - Removes any external links and unnecessary tags.
+   - Uses semantic HTML tags (`<p>`, `<ul>`, `<li>`, `<strong>`, etc.) for structure and readability.
+   - Is clean, valid HTML suitable for an e-commerce website.
+   - Ensure the HTML is clean, well-formed, and ready to be used directly on an e-commerce website.
+3. **Meta_Keywords**: Generate a comma-separated list of SEO-friendly keywords in Turkish based on the improved HTML description (e.g., for meta tags).
+4. **Product_Code**: Create a short, unique identifier based on the product name.
+    - If the product name contains numbers or specific identifiers, include them.
+    - Use lowercase letters and separate words with a dash (`-`).
+    - Remove special characters and accents.
+    - The code should be short, relevant, and readable.
+5. **Product_keywords**: Generate a comma-separated list of relevant internal search keywords in Turkish based on the improved content.
+6. **ProductName**: If the provided ProductName contains typos, incorrect casing, or formatting issues, correct them. Ensure proper capitalization and spacing. Do not translate the product name — keep it in the original language.
+
 
 Constraints:
-- Do not include any definitive or medical claims.
-- Avoid terms like “100% natural,” “healing,” “miracle,” or similar exaggerated expressions.
-- All generated content (Short_Description, Description, Meta_Keywords, Product_Code, Product_keywords) must be in Turkish.
-- Return only the final JSON result. Do not include markdown code blocks (e.g., ```json), explanations, or any other text outside the JSON object.
+- All content must be in Turkish.
+- Avoid definitive or medical claims.
+- Do not use exaggerated terms like “%100 doğal”, “mucize”, or “şifa”.
+- Return **only** the final JSON — no markdown formatting, no explanations, and no extra text.
 ";
+            ;
 
             var requestBody = new
             {
                 model = GROQ_MODEL,
                 messages = new[]
                 {
-                new { role = "system", content = "You are a Turkish e-commerce product description expert. Return only valid JSON." },
-                new { role = "user", content = prompt }
+                //system Role — Sets the Rules
+                //Acts like the initial instruction or persona setup.
+                //Establishes how the model should behave.
+                //Think of it as setting the "mood" or "rules of the game."
+                new { role = "system",
+                    content = "You are an expert SEO copywriter specialized in Turkish e-commerce. Your job is to generate clear, engaging, and SEO-optimized product descriptions in Turkish. Always return a well-formatted JSON object exactly as specified, without any explanations, markdown, or extra text. All generated fields must be in Turkish and follow the instructions strictly.",
+                },
+                //user Role — Provides the Task
+                //Delivers the actual prompt, data, or question.
+                //Specifies what the model should do.
+                //Includes all the requirements, input data, and expectations.
+                new { role = "user", 
+                    content = prompt }
             },
                 temperature = 0.7,
                 max_tokens = 1500
@@ -204,77 +222,6 @@ Constraints:
 
                 return assistantContent;
             }
-        }
-
-        public string CallGroqRestClient(string productName, string htmlDescription)
-        {
-            string prompt = $@"
-You are a helpful assistant that must respond only with a valid JSON object and nothing else — no extra text, explanation, or formatting.
-Your task is to generate a JSON object with the following structure:
-{{
-  ""ProductName"": ""{productName}"",
-  ""Short_Description"": ""Generate short description (100-150 words) based on original HTML description content"",
-  ""Description"": ""Improved and Better HTML content with SEO Optimization in Turkish"",
-  ""Meta_Keywords"": ""Generate Meta Keywords"",
-  ""Product_Code"": ""Generate Product Code"",
-  ""Product_keywords"": ""keyword1,keyword2,keyword3""
-}}
-
-Input:
-{productName}: The name of the product.
-{htmlDescription}: The original HTML description content.
-
-Your responsibilities:
-- Remove any external link of the product in html content
-- Improve and Make Better HTML content with SEO Optimization based on the original HTML description content, 
-- Improve the provided HTML description to:
-    - Enhance SEO with relevant keywords.
-    - Make it a more effective and engaging product description.
-    - Ensure the text flows naturally in Turkish.
-    - Generate a list of relevant keywords based on the improved content. Return them as a comma-separated string.
-
-Constraints:
-- Do not include any definitive or medical claims.
-- Avoid terms like “100% natural,” “healing,” “miracle,” or similar exaggerated expressions.
-- All content must be in Turkish.
-- Return only the final JSON result, no markdown, explanations, or other text.";
-
-            var requestBody = new
-            {
-                model = GROQ_MODEL,
-                messages = new[]
-                {
-            new { role = "system", content = "Türkçe bir e-ticaret ürün açıklaması uzmanısın. Yalnızca geçerli JSON döndür." },
-            new { role = "user", content = prompt }
-        },
-                temperature = 0.7,
-                max_tokens = 800
-            };
-
-            var client = new RestClient(GROQ_API_URL);
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Authorization", $"Bearer {GROQ_API_KEY}");
-            request.AddHeader("Content-Type", "application/json");
-
-            string jsonRequest = JsonConvert.SerializeObject(requestBody);
-            request.AddJsonBody(jsonRequest);
-
-            var response = client.Execute(request);
-
-            if (!response.IsSuccessful)
-            {
-                throw new Exception($"GROQ API Error: {response.StatusCode} - {response.Content}");
-            }
-
-            dynamic parsed = JsonConvert.DeserializeObject(response.Content);
-            string assistantContent = parsed.choices[0].message.content.ToString();
-
-            assistantContent = assistantContent
-                .Replace("```json", "")
-                .Replace("```", "")
-                .Trim();
-
-            return assistantContent;
         }
 
         public static void InsertProductWithTags(int productId, string productJson, string connectionString)
