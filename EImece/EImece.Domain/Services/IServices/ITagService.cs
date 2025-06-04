@@ -11,5 +11,6 @@ namespace EImece.Domain.Services.IServices
         void DeleteTagById(int tagId);
 
         Tag GetTagById(int tagId);
+        List<Tag> GetProductTags(int language);
     }
 }

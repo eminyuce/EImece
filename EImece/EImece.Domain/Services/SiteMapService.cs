@@ -84,7 +84,7 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = TagService.GetActiveBaseEntitiesFromCache(true, language);
+                var tags = TagService.GetProductTags(language);
 
                 foreach (var item in tags)
                 {

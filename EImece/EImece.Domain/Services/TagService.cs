@@ -58,5 +58,18 @@ namespace EImece.Domain.Services
                 TagServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
+        public List<Tag> GetProductTags(int language)
+        {
+            List<Tag> result = null;
+            String cacheKey = String.Format(this.GetType().FullName + "-GetProductTags-{0}", language);
+
+            if (!DataCachingProvider.Get(cacheKey, out result))
+            {
+                result = TagRepository.GetProductTags(language);
+                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
+            }
+            return result;
+        }
     }
 }

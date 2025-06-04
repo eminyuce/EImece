@@ -9,5 +9,6 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Tag> GetAdminPageList(String search, int language);
 
         Tag GetTagById(int tagId);
+        List<Tag> GetProductTags(int language);
     }
 }

@@ -31,6 +31,22 @@ namespace EImece.Domain.Repositories
             return result;
         }
 
+        public List<Tag> GetProductTags(int language)
+        {
+            // Include navigation property ProductTags
+            Expression<Func<Tag, object>>[] includeProperties = { r => r.ProductTags };
+
+            // Get all tags with includes, filter by language and active status
+            var tags = GetAllIncluding(includeProperties)
+                .Where(r => r.Lang == language && r.IsActive);
+
+            // Sort by Position ASC, then Id DESC
+            return tags
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.Id)
+                .ToList();
+        }
+
         public Tag GetTagById(int tagId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
