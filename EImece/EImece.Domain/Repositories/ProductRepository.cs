@@ -138,7 +138,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Brand);
             includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
             includeProperties.Add(r => r.ProductCategory);
-            includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
+            includeProperties.Add(r => r.ProductTags.Select(q => q.Tag).Select(q1 => q1.TagCategory));
             includeProperties.Add(r => r.ProductSpecifications);
             var item = GetSingleIncluding(id, includeProperties.ToArray());
 

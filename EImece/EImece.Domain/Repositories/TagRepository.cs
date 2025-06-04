@@ -33,14 +33,17 @@ namespace EImece.Domain.Repositories
 
         public List<Tag> GetProductTags(int language)
         {
-            // Include navigation property ProductTags
-            Expression<Func<Tag, object>>[] includeProperties = { r => r.ProductTags };
+            // Include navigation properties: ProductTags and TagCategory
+            Expression<Func<Tag, object>>[] includeProperties = {
+                r => r.ProductTags,
+                r => r.TagCategory
+            };
 
-            // Get all tags with includes, filter by language and active status
+            // Get all tags with includes, then filter by language and active status
             var tags = GetAllIncluding(includeProperties)
-                .Where(r => r.Lang == language && r.IsActive);
+                .Where(r => r.Lang == language && r.IsActive && r.TagCategory.IsActive);
 
-            // Sort by Position ASC, then Id DESC
+            // Sort and return
             return tags
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.Id)

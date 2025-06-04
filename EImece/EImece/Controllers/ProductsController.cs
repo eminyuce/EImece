@@ -96,6 +96,11 @@ namespace EImece.Controllers
                     Logger.Info($"Product with ID: {productId} is inactive. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", "Error");
                 }
+                if (!product.Product.ProductCategory.IsActive)
+                {
+                    Logger.Info($"ProductCategory with ID: {product.Product.ProductCategory.Name} is inactive. Redirecting to NotFound error page.");
+                    return RedirectToAction("NotFound", "Error");
+                }
                 ViewBag.SeoId = product.Product.GetSeoUrl();
                 product.Page = page;
                 product.RecordPerPage = AppConfig.ProductCommentsRecordPerPage;
