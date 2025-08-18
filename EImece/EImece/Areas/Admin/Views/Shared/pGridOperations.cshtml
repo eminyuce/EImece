@@ -1,6 +1,6 @@
 ﻿@using EImece.Domain.Helpers;
 @using Resources;
-
+@using EImece.Domain.Models.Enums;
 @{
     var controllerName = ViewData["controllerName"].ToStr();
 
@@ -10,6 +10,7 @@
     var IdValueExists = ViewData["IdValueExists"].ToBool(false);
     var SetStateOnOrOff = ViewData["SetStateOnOrOff"].ToBool(true);
     var StateTypes = ViewData["StateTypes"].ToStr("State,ImageState,MainPage");
+    var ProductState = ViewData["ProductState"].ToBool(true);
     var isNewRecordButtonEnabled = ViewData["IsNewRecordButtonEnabled"].ToBool(true);
     var IsExcelButtonEnabled = ViewData["IsExcelButtonEnabled"].ToBool(false);
     var NewRecordText = AdminResource.NewRecordText;
@@ -20,6 +21,7 @@
     var GridActiveSelectedButtonText = AdminResource.GridActiveSelectedButtonText;
     var GridDeActiveSelectedButtonText = AdminResource.GridDeActiveSelectedButtonText;
     var GridOrderingAllButtonText = AdminResource.GridOrderingAllButtonText;
+    var ProductStateChangeText = AdminResource.ProductStateChangeText;
     var State = AdminResource.IsActive;
     var ImageState = AdminResource.ImageState;
     var MainPage = AdminResource.MainPage;
@@ -34,22 +36,22 @@
         <div class="row">
             @if (isNewRecordButtonEnabled)
             {
-            <span class="col-md-3">
-                <p>
-                    @Html.ActionLink(NewRecordText, "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block" })
-                </p>
-            </span>
-            <span class="col-md-9">
-                @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
-                                    {"IdValueExists",IdValueExists}})
-            </span>
+                <span class="col-md-3">
+                    <p>
+                        @Html.ActionLink(NewRecordText, "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block" })
+                    </p>
+                </span>
+                <span class="col-md-9">
+                    @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
+                                        {"IdValueExists",IdValueExists}})
+                </span>
             }
             else
             {
-            <span class="col-md-12">
-                @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
-                                          {"IdValueExists",IdValueExists}})
-            </span>
+                <span class="col-md-12">
+                    @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
+                                              {"IdValueExists",IdValueExists}})
+                </span>
             }
         </div>
 
@@ -59,88 +61,109 @@
                     @if (selectAll)
                     {
 
-                    <span class="btn btn-sm  btn-link" id="SelectAll">
-                        @GridSelectAllButtonText<span class="vl"></span>
-                    </span>
-                    <div class="btn-group" role="group">
-                    </div>
-                    <span class="btn btn-sm  btn-link" id="DeselectAll">
-                        @GridDeSelectAllButtonText<span class="vl"></span>
-                    </span>
+                        <span class="btn btn-sm  btn-link" id="SelectAll">
+                            @GridSelectAllButtonText<span class="vl"></span>
+                        </span>
+                        <div class="btn-group" role="group">
+                        </div>
+                        <span class="btn btn-sm  btn-link" id="DeselectAll">
+                            @GridDeSelectAllButtonText<span class="vl"></span>
+                        </span>
                     }
 
                     @if (deleteAll)
                     {
-                    <a href="#" class="btn btn-sm  btn-link" id="DeleteAll">
-                        @GridDeleteSelectedButtonText<span class="vl"></span>
-                    </a>
+                        <a href="#" class="btn btn-sm  btn-link" id="DeleteAll">
+                            @GridDeleteSelectedButtonText<span class="vl"></span>
+                        </a>
                     }
 
                     @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                     {
-                    <div class="btn-group" role="group">
-                        <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">@State</option>
-                            <option value="ImageState">@ImageState</option>
-                            <option value="MainPage">@MainPage</option>
-                            <option value="IsCampaign">@IsCampaign</option>
-                        </select>
-                    </div>
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                                <option value="IsCampaign">@IsCampaign</option>
+                            </select>
+                        </div>
                     }
                     else if (StateTypes.Equals("State,ImageState,MainPage"))
                     {
-                    <div class="btn-group" role="group">
-                        <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">@State</option>
-                            <option value="ImageState">@ImageState</option>
-                            <option value="MainPage">@MainPage</option>
-                        </select>
-                    </div>
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                            </select>
+                        </div>
                     }
                     else if (StateTypes.Equals("State,ImageState"))
                     {
-                    <div class="btn-group" role="group">
-                        <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
-                            <option value="State">@State</option>
-                            <option value="ImageState">@ImageState</option>
-                        </select>
-                    </div>
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                            </select>
+                        </div>
                     }
                     else if (StateTypes.Equals("State"))
                     {
-                    <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                        <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
                     }
 
                     @if (SetStateOnOrOff)
                     {
-                    <div class="btn-group" role="group">
-                        <span>
+                        <div class="btn-group" role="group">
+                            <span>
 
-                            <a href="#" class="btn btn-sm  btn-link" id="SetStateOnAll">@GridActiveSelectedButtonText <span class="vl"></span></a>
-                            <a href="#" class="btn btn-sm  btn-link" id="SetStateOffAll">@GridDeActiveSelectedButtonText <span class="vl"></span></a>
-                        </span>
-                    </div>
-                            }
+                                <a href="#" class="btn btn-sm  btn-link" id="SetStateOnAll">@GridActiveSelectedButtonText <span class="vl"></span></a>
+                                <a href="#" class="btn btn-sm  btn-link" id="SetStateOffAll">@GridDeActiveSelectedButtonText <span class="vl"></span></a>
+                            </span>
+                        </div>
+                    }
+
+
 
                     @if (orderingButton)
-                            {
-                    <div class="btn-group" role="group">
-                        <span class="btn btn-sm  btn-link" id="OrderingAll">
-                            @GridOrderingAllButtonText
-                        </span>
-                    </div>
-                            }
-                    @if (IsExcelButtonEnabled)
-                            {
-                    <div class="btn-group pull-right" role="group">
-                        <a href="@Url.Action("ExportExcel", controllerName)">
-                            <span>
-                                <img src="~/Areas/Admin/Content/main/excel.jpg" />
-                                @AdminResource.Excel
+                    {
+                        <div class="btn-group" role="group">
+                            <span class="btn btn-sm  btn-link" id="OrderingAll">
+                                @GridOrderingAllButtonText<span class="vl"></span>
                             </span>
-                        </a>
-                    </div>
-                            }
+                        </div>
+                    }
+
+                    @if (ProductState)
+                    {
+                        <div class="btn-group" role="group">
+                            <select class="form-control input-sm" name="ProductStateSelection" id="ProductStateSelection">
+                                @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
+                                {
+                                    <option value="@((int)state)">@GetProductStateResourceText(state)</option>
+                                }
+                            </select>
+                          
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a href="#" class="btn btn-sm  btn-link" id="ProductStateChanged">
+                                @ProductStateChangeText<span class="vl"></span>
+                            </a>
+                        </div>
+                    }
+
+                    @if (IsExcelButtonEnabled)
+                    {
+                        <div class="btn-group pull-right" role="group">
+                            <a href="@Url.Action("ExportExcel", controllerName)">
+                                <span>
+                                    <img src="~/Areas/Admin/Content/main/excel.jpg" />
+                                    @AdminResource.Excel
+                                </span>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -165,3 +188,36 @@
         </div>
     </div>
 </div>
+@functions {
+
+    private string GetProductStateResourceText(ProductState state)
+    {
+        switch (state)
+        {
+            case ProductState.NONE:
+                return Resource.NONE;
+            case ProductState.ProductInStock:
+                return Resource.ProductInStock;
+            case ProductState.ProductOutOfStock:
+                return Resource.ProductOutOfStock;
+            case ProductState.PreOrder:
+                return Resource.PreOrderAvailable;
+            case ProductState.Discontinued:
+                return Resource.Discontinued;
+            case ProductState.Backorder:
+                return Resource.BackorderAvailable;
+            case ProductState.ComingSoon:
+                return Resource.ComingSoon;
+            case ProductState.LimitedStock:
+                return Resource.LimitedStockAvailable;
+            case ProductState.Reserved:
+                return Resource.ReservedForCustomers;
+            case ProductState.AwaitingRestock:
+                return Resource.AwaitingRestock;
+            case ProductState.NotForSale:
+                return Resource.NotForSale;
+            default:
+                throw new ArgumentOutOfRangeException("Unknown ProductState value:" + state);
+        }
+    }
+}

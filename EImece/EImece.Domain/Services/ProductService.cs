@@ -478,5 +478,20 @@ namespace EImece.Domain.Services
             r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
             return r;
         }
+
+        public void ChangeProductState(List<string> values, ProductState state)
+        {
+            if (values == null || values.IsEmpty())
+            {
+                return;
+            }
+            foreach (var id in values)
+            {
+                var product = ProductRepository.GetProduct(id.ToInt());
+                product.StateEnum = state;
+                ProductRepository.Edit(product);
+            }
+            ProductRepository.Save();
+        }
     }
 }

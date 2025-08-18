@@ -193,6 +193,28 @@ $(document).ready(function () {
         //  console.log("SetStateOnAll is clicked.");
         changeState(true);
     });
+    $("#ProductStateChanged").click(function (e) {
+        e.preventDefault();
+
+        var ProductStateSelection = parseInt($("#ProductStateSelection").val(), 10);
+        var ProductStateText = $("#ProductStateSelection option:selected").text();
+
+        var selectedProductId = GetSelectedCheckBoxValuesArray();
+        var postData = JSON.stringify({
+            values: selectedProductId,
+            ProductStateSelection: ProductStateSelection
+        });
+
+        ajaxMethodCall(postData, "/admin/Ajax/ProductStateChanged", function (data) {
+            $("div[name=ProductState]").each(function () {
+                var productId = $(this).attr('Product-State-Id');
+                if (selectedProductId.includes(productId)) {
+                    $(this).text(ProductStateText);
+                }
+            });
+        });
+    });
+
     function changeState(state) {
         var ppp = $("#ItemStateSelection").val();
         var selectedValues = GetSelectedStateValues("span" + ppp, state);

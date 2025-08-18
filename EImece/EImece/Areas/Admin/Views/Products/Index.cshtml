@@ -90,7 +90,9 @@
            ,{"orderingButton",true}
            ,{"selectAll",true}
            ,{"deleteAll",true}
+            ,{"ProductState",true}
             ,{"SetStateOnOrOff",true} ,{"IsExcelButtonEnabled",true}})
+
         @Html.ActionLink(AdminResource.MoveProductsInTrees, "MoveProductsInTrees")
         <div class="panel panel-primary">
 
@@ -167,7 +169,7 @@
             .Css("smallGridColumn")
             .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
             Sanitized(false)
-            .RenderValueAs(o => GetProductStateResourceText(o.StateEnum));
+            .RenderValueAs(o => String.Format("<div  Product-State-Id='{0}'    name='ProductState'>{1}</div>", o.Id, GetProductStateResourceText(o.StateEnum)));
 
            columns.Add(o => o.Position).Titled(AdminResource.Position)
      .Encoded(false).

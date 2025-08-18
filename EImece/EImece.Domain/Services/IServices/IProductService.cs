@@ -56,5 +56,6 @@ namespace EImece.Domain.Services.IServices
         List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories);
 
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting);
+        void ChangeProductState(List<string> values, ProductState state);
     }
 }

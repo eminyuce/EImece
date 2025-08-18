@@ -604,6 +604,18 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        public async Task<JsonResult> ProductStateChanged(List<String> values, String ProductStateSelection)
+        {
+            return await Task.Run(() =>
+            {
+                int productStateValue = int.Parse(ProductStateSelection);
+                ProductState state = (ProductState)productStateValue;
+                ProductService.ChangeProductState(values, state);
+                return Json(new { values, ProductStateSelection }, JsonRequestBehavior.AllowGet);
+            }).ConfigureAwait(true);
+        }
+
+        [HttpPost]
         public async Task<JsonResult> GetProductTags(EImeceLanguage language, int productId = 0)
         {
             return await Task.Run(() =>

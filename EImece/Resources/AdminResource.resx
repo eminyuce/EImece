@@ -1188,4 +1188,7 @@
   <data name="OurSiteFeatures" xml:space="preserve">
     <value>Sitemizin Özellikleri</value>
   </data>
+  <data name="ProductStateChangeText" xml:space="preserve">
+    <value>Urun Durumunu Guncelle</value>
+  </data>
 </root>

@@ -2374,6 +2374,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Urun Durumunu Guncelle.
+        /// </summary>
+        public static string ProductStateChangeText {
+            get {
+                return ResourceManager.GetString("ProductStateChangeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Miktar.
         /// </summary>
         public static string Quantity {

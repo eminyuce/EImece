@@ -235,5 +235,11 @@ namespace EImece.Domain.Helpers
 
             return selectedLanguages;
         }
+        public static string GetDisplayName(Enum enumValue)
+        {
+            var field = enumValue.GetType().GetField(enumValue.ToString());
+            var displayAttribute = field.GetCustomAttribute<DisplayAttribute>();
+            return displayAttribute != null ? displayAttribute.Name : enumValue.ToString();
+        }
     }
 }
