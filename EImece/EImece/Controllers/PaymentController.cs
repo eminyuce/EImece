@@ -1016,6 +1016,7 @@ namespace EImece.Controllers
 
                 var order = ShoppingCartService.SaveBuyWithNoAccountCreation(orderNumber, buyWithNoAccountCreation, checkoutForm);
                 PaymentLogger.Info($"Order saved with ID: {order.Id}");
+                SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
                 ClearBuyWithNoAccountCreation(buyWithNoAccountCreation);
                 ClearCart(shoppingCart);
                 PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
