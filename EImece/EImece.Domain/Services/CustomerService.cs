@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -77,6 +78,19 @@ namespace EImece.Domain.Services
             return item;
         }
 
+
+        public CustomerDto GetUserIdDto(string userId)
+        {
+            var customer = GetUserId(userId);
+            return DtoMappingService.MapTo<CustomerDto>(customer);
+        }
+
+        public CustomerDto SaveOrEditCustomerDto(CustomerDto customerDto)
+        {
+            var customer = DtoMappingService.MapTo<Customer>(customerDto);
+            var savedCustomer = SaveOrEditEntity(customer);
+            return DtoMappingService.MapTo<CustomerDto>(savedCustomer);
+        }
         public void DeleteByUserId(string userId)
         {
             Logger.Info($"Deleting customer by userId: {userId}");

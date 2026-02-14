@@ -1,11 +1,11 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class SendMessageToSellerViewModel
     {
-        public List<Faq> Faqs { get; set; }
-        public Customer Customer { get; set; }
+        public List<FaqDto> Faqs { get; set; }
+        public CustomerDto Customer { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Models;
+using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Services.IServices
@@ -9,6 +10,10 @@ namespace EImece.Domain.Services.IServices
         void SaveRegisterViewModel(string userId, RegisterViewModel model);
 
         Customer GetUserId(string userId);
+
+        CustomerDto GetUserIdDto(string userId);
+
+        CustomerDto SaveOrEditCustomerDto(CustomerDto customerDto);
 
         void DeleteByUserId(string userId);
 

@@ -4,6 +4,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -81,17 +82,17 @@ namespace EImece.Areas.Customers.Controllers
         // GET: Customers/Home
         public ActionResult Index()
         {
-            Customer customer = GetCustomer();
+            CustomerDto customer = GetCustomer();
             ViewBag.Title = Resource.CustomerAccount;
             return View(customer);
         }
 
-        private Customer GetCustomer()
+        private CustomerDto GetCustomer()
         {
             ApplicationUser user;
-            Customer customer;
+            CustomerDto customer;
             user = UserManager.FindByName(User.Identity.GetUserName());
-            customer = CustomerService.GetUserId(user.Id);
+            customer = CustomerService.GetUserIdDto(user.Id);
             customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
             if (customer.Gender == 0)
             {
@@ -110,7 +111,7 @@ namespace EImece.Areas.Customers.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Customer customer)
+        public ActionResult Index(CustomerDto customer)
         {
             if (customer == null)
             {
@@ -129,7 +130,7 @@ namespace EImece.Areas.Customers.Controllers
 
                 customer.UserId = user.Id;
                 customer.Ip = GeneralHelper.GetIpAddress();
-                customer = CustomerService.SaveOrEditEntity(customer);
+                customer = CustomerService.SaveOrEditCustomerDto(customer);
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 return View(customer);
             }
@@ -140,7 +141,7 @@ namespace EImece.Areas.Customers.Controllers
             }
         }
 
-        private void InformCustomerToFillOutForm(Customer customer)
+        private void InformCustomerToFillOutForm(CustomerDto customer)
         {
             if (String.IsNullOrEmpty(customer.Name))
             {
@@ -193,7 +194,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             ViewBag.Title = Resource.SendMessageToSeller;
             var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
+            var faqs = FaqService.GetActiveBaseEntitiesFromCacheDto(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
@@ -226,7 +227,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             ViewBag.Title = Resource.Faq;
             var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, CurrentLanguage);
+            var faqs = FaqService.GetActiveBaseEntitiesFromCacheDto(true, CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
@@ -235,7 +236,7 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.CustomerDetail;
             var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
-            var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
+            var orders = OrderService.GetOrdersUserIdDto(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 
@@ -243,7 +244,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             ViewBag.Title = Resource.CustomerDetail;
             var customer = GetCustomer();
-            var order = OrderService.GetOrderById(id);
+            var order = OrderService.GetOrderByIdDto(id);
             return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = order });
         }
 

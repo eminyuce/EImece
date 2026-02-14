@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Services.IServices;
 using Ninject;
 using NLog;
@@ -68,14 +69,32 @@ namespace EImece.Domain.Services
             return item;
         }
 
+        public OrderDto GetOrderByIdDto(int id)
+        {
+            var order = GetOrderById(id);
+            return DtoMappingService.MapTo<OrderDto>(order);
+        }
+
         public List<Order> GetOrdersByUserId(string userId)
         {
             return OrderRepository.FindAll(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase), r => r.CreatedDate, OrderByType.Descending, null, null).ToList();
         }
 
+        public List<OrderDto> GetOrdersByUserIdDto(string userId)
+        {
+            var orders = GetOrdersByUserId(userId);
+            return DtoMappingService.MapListTo<Order, OrderDto>(orders);
+        }
+
         public List<Order> GetOrdersUserId(string userId, string search = "")
         {
             return OrderRepository.GetOrdersUserId(userId, search);
+        }
+
+        public List<OrderDto> GetOrdersUserIdDto(string userId, string search = "")
+        {
+            var orders = GetOrdersUserId(userId, search);
+            return DtoMappingService.MapListTo<Order, OrderDto>(orders);
         }
     }
 }

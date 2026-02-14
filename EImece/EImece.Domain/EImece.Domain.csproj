@@ -440,6 +440,9 @@
     <Compile Include="Models\FrontModels\CategoryFilter.cs" />
     <Compile Include="Models\FrontModels\ContactUsFormViewModel.cs" />
     <Compile Include="Models\FrontModels\CustomerOrdersViewModel.cs" />
+    <Compile Include="Models\DTOs\CustomerDto.cs" />
+    <Compile Include="Models\DTOs\OrderDto.cs" />
+    <Compile Include="Models\DTOs\FaqDto.cs" />
     <Compile Include="Models\FrontModels\Filter.cs" />
     <Compile Include="Models\FrontModels\FilterGroup.cs" />
     <Compile Include="Models\FrontModels\FooterViewModel.cs" />
@@ -569,6 +572,7 @@
     <Compile Include="Services\ProductCommentService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\FaqService.cs" />
+    <Compile Include="Services\DtoMappingService.cs" />
     <Compile Include="Services\IdentityManager.cs" />
     <Compile Include="Services\IServices\IProductCommentService.cs" />
     <Compile Include="Services\IServices\IFaqService.cs" />
