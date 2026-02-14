@@ -1,5 +1,6 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
+using EImece.Domain.Models.DtoModels;
 using System;
 using System.Data.Entity;
 
@@ -52,5 +53,17 @@ namespace EImece.Domain.DbContext
         public IDbSet<ProductComment> ProductComments { get; set; }
         public IDbSet<Brand> Brands { get; set; }
         public IDbSet<Coupon> Coupons { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Ignore<ProductDto>();
+            modelBuilder.Ignore<StoryDto>();
+            modelBuilder.Ignore<FileStorageDto>();
+            modelBuilder.Ignore<MainPageImageDto>();
+            modelBuilder.Ignore<ProductCategoryDto>();
+            modelBuilder.Ignore<SubscriberDto>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
