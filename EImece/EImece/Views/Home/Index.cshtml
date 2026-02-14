@@ -128,7 +128,7 @@
                 @for (int i = 0; i < mainPageProductCategories.Count; i++)
                 {
                     var p = mainPageProductCategories[i];
-                    @Html.DisplayFor(model => p, "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })}
+                    @Html.DisplayFor(model => p.ToDto<ProductCategoryDto>(), "FeaturedProductCategoryItem", new { Width = 305, Height = 305 })}
             </div>
         </section>}
 }
@@ -143,7 +143,7 @@
                 @for (int i = 0; i < latestStories.Count; i++)
                 {
                     var p = latestStories[i];
-                    @Html.DisplayFor(model => p, "StoryShort")
+                    @Html.DisplayFor(model => p.ToDto<StoryDto>(), "StoryShort")
                 }
             </div>
         </div>
@@ -160,7 +160,7 @@
                 @for (int i = 0; i < products.Count; i++)
                 {
                     var p = products[i];
-                    @Html.DisplayFor(model => p, "MainPageProductShort", new { Width = 80, Height = 80 })}
+                    @Html.DisplayFor(model => p.ToDto<ProductDto>(), "MainPageProductShort", new { Width = 80, Height = 80 })}
             </div>
         </div>}
 }

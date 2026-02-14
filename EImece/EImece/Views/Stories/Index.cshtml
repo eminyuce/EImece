@@ -53,7 +53,7 @@
         @foreach (var item in stories)
         {
             <div class="col-md-4 mb-4">
-                @Html.DisplayFor(modelItem => item, "StoryShort", new { Width = 300, Height = 300 })
+                @Html.DisplayFor(modelItem => item.ToDto<StoryDto>(), "StoryShort", new { Width = 300, Height = 300 })
             </div>
         }
     </div>

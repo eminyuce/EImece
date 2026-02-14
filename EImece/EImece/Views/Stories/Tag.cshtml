@@ -52,7 +52,7 @@
         @foreach (var item in storyTags)
         {
             <div class="col-lg-3 col-md-4 col-sm-6 p-2">
-                @Html.DisplayFor(modelItem => item.Story, "TagStory")
+                @Html.DisplayFor(modelItem => item.Story.ToDto<StoryDto>(), "TagStory")
             </div>
         }
     </div>

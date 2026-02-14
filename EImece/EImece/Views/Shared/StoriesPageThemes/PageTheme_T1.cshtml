@@ -41,7 +41,7 @@
             <div class="pb-4">
                 @foreach (var story in stories)
                 {
-                    @Html.DisplayFor(modelItem => story, "Story")
+                    @Html.DisplayFor(modelItem => story.ToDto<StoryDto>(), "Story")
                 }
             </div>
         </div>

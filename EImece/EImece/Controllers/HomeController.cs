@@ -5,6 +5,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.DtoModels;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services.IServices;
@@ -98,7 +99,7 @@ namespace EImece.Controllers
             }
 
             var s = SubsciberService.GetSingle(id.Value);
-            return View(s);
+            return View(s.ToDto<SubscriberDto>());
         }
 
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]

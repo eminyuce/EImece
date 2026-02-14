@@ -288,6 +288,8 @@
     <Compile Include="Models\AdminModels\DataSetReportViewModel.cs" />
     <Compile Include="Models\AdminModels\SystemSettingModel.cs" />
     <Compile Include="Models\AdminModels\UpdatePriceRequest.cs" />
+    <Compile Include="Models\DtoModels\EntityDtoMapper.cs" />
+    <Compile Include="Models\DtoModels\FrontEntityDtoModels.cs" />
     <Compile Include="Models\Enums\EImeceCustomerType.cs" />
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />
     <Compile Include="Models\Enums\EImeceOrderType.cs" />

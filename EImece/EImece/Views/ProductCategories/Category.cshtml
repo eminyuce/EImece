@@ -164,7 +164,7 @@
                     foreach (var p in products.GetPagingResult())
                     {
 
-                @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
+                @Html.DisplayFor(model => p.ToDto<ProductDto>(), "FeaturedProductItem", new { Width = 300, Height = 300 })
                     }
                 }
                 else

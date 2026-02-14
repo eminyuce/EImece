@@ -48,7 +48,7 @@
             {
             FileStorage f = files[i].FileStorage;
         <div class="col-md-4">
-            @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+            @Html.DisplayFor(modelItem => f.ToDto<FileStorageDto>(), "FileStorageThumbnails", new { Width = 300, Height = 300 })
         </div>
             }
     </div>
