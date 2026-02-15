@@ -1,0 +1,23 @@
+You are a Senior .NET Architect. Refactor the EImece Razor Pages end-user layer so no Razor Page or end-user controller receives domain entities. Do not create any new classes in EImece.Domain.Models.FrontModels. Replace any property in existing FrontModels that references an Entity with the corresponding DTO from EImece.Domain.Models.DTOs. Keep primitive properties unchanged.
+
+Service layer rules:
+- Keep existing public methods that return entities unchanged.
+- Add new methods suffixed with ForFront or Dto that return FrontModels populated with DTOs or DTOs directly.
+- Perform all mapping in the service layer using AutoMapper (_mapper.Map<...>(...)).
+- Name examples: GetProductCategoryForFront, GetProductCategoryDto.
+
+Controller rules:
+- Update only end-user controllers and Razor Pages to call the new ForFront/Dto methods.
+- Do not change admin controllers.
+
+Mapping rules:
+- Centralize mapping in AutoMapper profiles.
+- Map nested relations and collections to DTOs.
+
+Deliver for each FrontModel:
+1. New service method code.
+2. FrontModel changed properties only.
+3. Updated controller action.
+4. AutoMapper mapping entries.
+
+Start with ProductCategoryFront, ProductFront, BlogPostFront, then continue with remaining FrontModels. Migrate incrementally and validate behavior with tests and smoke tests.
