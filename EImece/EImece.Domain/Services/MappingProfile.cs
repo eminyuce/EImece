@@ -91,7 +91,8 @@ namespace EImece.Domain.Services
                 .ForMember(d => d.ModifiedId, o => o.MapFrom(s => EImece.Domain.Helpers.GeneralHelper.ModifyId(s.Id)))
                 .ForMember(d => d.ProductNameStr, o => o.MapFrom(s => s.ProductNameStr))
                 .ForMember(d => d.PriceWithDiscount, o => o.MapFrom(s => s.PriceWithDiscount))
-                .ForMember(d => d.IsBuyableState, o => o.MapFrom(s => s.IsBuyableState));
+                .ForMember(d => d.IsBuyableState, o => o.MapFrom(s => s.IsBuyableState))
+                .ForMember(d => d.ProductCategoryName, o => o.MapFrom(s => s.ProductCategory != null ? s.ProductCategory.Name : string.Empty));
         }
 
         private void CreateMapProductCategory()
@@ -111,7 +112,7 @@ namespace EImece.Domain.Services
                     o => o.MapFrom(s => s.GetSeoUrl()))
                 .ForMember(d => d.DiscountPercentage,
                     o => o.MapFrom(s => s.DiscountPercantage))
-                .ForMember(d => d.Children, o => o.Ignore());
+                .ForMember(d => d.Children, o => o.Ignore()); // We'll populate children separately in the service
         }
 
         // Remaining basic maps...
@@ -126,7 +127,9 @@ namespace EImece.Domain.Services
         private void CreateMapSetting() => CreateMap<Setting, SettingDto>();
         private void CreateMapProductTag() => CreateMap<ProductTag, ProductTagDto>();
         private void CreateMapProductSpecification() => CreateMap<ProductSpecification, ProductSpecificationDto>();
-        private void CreateMapProductFile() => CreateMap<ProductFile, ProductFileDto>();
+        private void CreateMapProductFile() => CreateMap<ProductFile, ProductFileDto>()
+            .ForMember(d => d.MainImageUrl, o => o.MapFrom(s => 
+                s.FileStorage != null ? s.FileStorage.GetCroppedImageUrl(s.FileStorageId, 100, 100, false, false) : string.Empty));
         private void CreateMapProductComment() => CreateMap<ProductComment, ProductCommentDto>();
         private void CreateMapOrderProduct() =>  CreateMap<OrderProduct, OrderProductDto>();
         private void CreateMapOrder() => CreateMap<Order, OrderDto>();

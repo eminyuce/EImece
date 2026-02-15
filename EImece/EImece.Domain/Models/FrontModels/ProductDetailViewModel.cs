@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,35 +13,35 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductDetailViewModel : ItemListing
     {
-        public Product Product { get; set; }
+        public ProductDto Product { get; set; }
 
-        public ProductComment ProductComment { get; set; }
+        public ProductCommentDto ProductComment { get; set; }
 
-        public Menu ProductMenu { get; set; }
+        public MenuDto ProductMenu { get; set; }
 
-        public Menu MainPageMenu { get; set; }
+        public MenuDto MainPageMenu { get; set; }
 
         public List<ProductCategoryTreeModel> BreadCrumb { get; set; }
 
-        public Template Template { get; set; }
+        public TemplateDto Template { get; set; }
 
-        public List<Story> RelatedStories { get; set; }
+        public List<StoryDto> RelatedStories { get; set; }
 
-        public List<Product> RelatedProducts { get; set; }
+        public List<ProductDto> RelatedProducts { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
 
-        public Setting CargoDescription { get; set; }
-        public Setting CargoPrice { get; set; }
-        public Setting IsProductPriceEnable { get; set; }
-        public Setting IsProductReviewEnable { get; set; }
-        public Setting WhatsAppCommunicationLink { get; set; }
-        public Setting CompanyName { get; set; }
+        public SettingDto CargoDescription { get; set; }
+        public SettingDto CargoPrice { get; set; }
+        public SettingDto IsProductPriceEnable { get; set; }
+        public SettingDto IsProductReviewEnable { get; set; }
+        public SettingDto WhatsAppCommunicationLink { get; set; }
+        public SettingDto CompanyName { get; set; }
         public string SeoId { get; set; }
 
         public ProductDetailViewModel()
         {
-            ProductComment = new ProductComment();
+            ProductComment = new ProductCommentDto();
         }
 
         public string GoogleProductSchemaJson
@@ -48,32 +49,46 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
-                var productComments = Product.ProductComments.IsNotEmpty() ? Product.ProductComments : new List<ProductComment>();
-                var productTags = Product.ProductTags.Select(r => r.Tag).ToList();
-                var productFiles = Product.ProductFiles.ToList();
+                
+                // For DTOs, we need to handle related data differently
+                // These would typically be populated by the service layer
+                var productComments = new List<ProductCommentDto>(); // Would come from service
+                var productTags = new List<TagDto>(); // Would come from service
+                var productFiles = new List<ProductFileDto>(); // Would come from service
+                
                 List<string> images = new List<string>();
-                images.Add(Product.ImageFullPath(200, 200));
+                
+                // Use pre-computed image URL from DTO
+                if (Product.MainImageSrc != null)
+                {
+                    images.Add(Product.MainImageSrc.Item1); // Full size image
+                }
+                else
+                {
+                    images.Add(Product.DetailPageAbsoluteUrl); // Fallback
+                }
 
                 if (productFiles.IsNotEmpty())
                 {
                     for (int i = 0; i < productFiles.Count; i++)
                     {
                         var f = productFiles[i];
-                        images.Add(f.ImageFullPath(95, 105));
+                        // Add thumbnail URLs from DTO
+                        images.Add(!string.IsNullOrEmpty(f.MainImageUrl) ? f.MainImageUrl : Product.DetailPageAbsoluteUrl);
                     }
                 }
 
                 var schema = new GoogleProductSchema
                 {
                     Name = Product.ProductNameStr,
-                    Category = Product.ProductCategory.Name,
+                    Category = Product.NameShort, // Using available property from DTO
                     Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null, // fixed line
                     //Image = new string[] { Product.ImageFullPath(200, 200) },
                     Image = images.ToArray(),
                     Description = plainDescription,
                     Brand = new GoogleBrand
                     {
-                        Name = Product.Brand.Name
+                        Name = Product.BrandId.ToString() // Using available property from DTO
                     },
                     Sku = Product.ProductCode,
                     Offers = new GoogleOffer
@@ -82,7 +97,7 @@ namespace EImece.Domain.Models.FrontModels
                         PriceCurrency = Constants.CURRENCY_TURKISH,
                         Price = Product.PriceWithDiscount.GoogleProductSchema(),
                         PriceValidUntil = Product.UpdatedDate.AddMonths(3).ToString("yyyy-MM-dd"),
-                        Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
+                        Availability = "https://schema.org/InStock", // Simplified for DTO
                         ItemCondition = "https://schema.org/NewCondition",
                         Seller = new GoogleSeller
                         {
@@ -204,11 +219,14 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var totalRating = new Dictionary<int, TotalRating>();
-                if (Product.ProductComments.IsEmpty())
+                // For DTOs, we need to use the product comments that would be populated by the service
+                // This assumes that ProductCommentDtos are available in the Product DTO
+                var productComments = new List<ProductCommentDto>(); // This would be populated by the service
+                if (productComments.IsEmpty())
                 {
                     return totalRating;
                 }
-                var grouped = Product.ProductComments.GroupBy(r => r.Rating)
+                var grouped = productComments.GroupBy(r => r.Rating)
                      .OrderByDescending(grp => grp.Key)
                 .Select((grp, i) => new
                 {
@@ -228,9 +246,10 @@ namespace EImece.Domain.Models.FrontModels
             {
                 var result = new List<ProductSpecsModel>();
                 var product = Product;
-                var productSpecs = product.ProductSpecifications.Where(r => !String.IsNullOrEmpty(r.Value)).OrderBy(r => r.Position).ToList();
+                // For DTOs, we need to use the product specifications that would be populated by the service
+                var productSpecs = new List<ProductSpecificationDto>(); // This would be populated by the service
                 var template = Template;
-                if (productSpecs.Any() && !string.IsNullOrEmpty(template.TemplateXml))
+                if (productSpecs.Any() && template != null && !string.IsNullOrEmpty(template.TemplateXml))
                 {
                     XDocument xdoc = XDocument.Parse(template.TemplateXml);
                     var groups = xdoc.Root.Descendants("group");

@@ -1,3 +1,4 @@
+using EImece.Domain.Services;
 using System;
 
 namespace EImece.Domain.Models.DTOs
@@ -17,5 +18,15 @@ namespace EImece.Domain.Models.DTOs
         public string Description { get; set; }
         public string SettingKey { get; set; }
         public string SettingValue { get; set; }
+
+        public bool IsEmpty()
+        {
+            return this == null || string.IsNullOrEmpty(SettingValue) || SettingService.NULL_VALUE.Equals(SettingValue, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public bool IsNotEmpty()
+        {
+            return !IsEmpty();
+        }
     }
 }

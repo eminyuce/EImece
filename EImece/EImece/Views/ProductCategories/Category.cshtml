@@ -3,6 +3,7 @@
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.DTOs;
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Helpers.HtmlHelpers;
@@ -10,9 +11,9 @@
 @using EImece.Domain.Models.Enums;
 @{
 
-    ProductCategory category = Model.ProductCategory;
+    ProductCategoryDto category = Model.ProductCategory;
     var productsAll = Model.Products;
-    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.Count);
+    var products = new PaginatedModelList<ProductDto>(productsAll, Model.Page, Model.RecordPerPage, productsAll.Count);
     products.RouteId = Model.SeoId;
     products.Filter = Model.Filter;
     products.Sorting = (int)Model.Sorting;
@@ -20,9 +21,9 @@
     products.MaxPrice = Model.MaxPrice;
     var ChildrenProductCategories = Model.ChildrenProductCategories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
 
-    ViewBag.Title = category.GetSeoTitle();
-    ViewBag.Keywords = category.GetSeoKeywords();
-    ViewBag.Description = category.GetSeoDescription();
+    ViewBag.Title = !string.IsNullOrEmpty(category.Name) ? category.Name : "Category";
+    ViewBag.Keywords = !string.IsNullOrEmpty(category.MetaKeywords) ? category.MetaKeywords : "";
+    ViewBag.Description = !string.IsNullOrEmpty(category.Description) ? category.Description : "";
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
 
@@ -35,18 +36,7 @@
                     <li class="breadcrumb-item">
                         <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
                     </li>
-                    @if (category.Parent != null && category.Parent.Parent != null)
-                    {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
-                    </li>
-                    }
-                    @if (category.Parent != null)
-                    {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
-                    </li>
-                    }
+                    @* Breadcrumb navigation would need to be handled differently with DTOs *@
                     <li class="breadcrumb-item active">
                         @category.Name
                     </li>
@@ -94,8 +84,8 @@
                 <div class="offcanvas-sidebar-body">
                     <div class="offcanvas-sidebar-body-inner">
 
-                        @Html.Partial("_ProductCategoryTreeHeadLine",
-                       new Tuple<ProductCategory, List<ProductCategoryTreeModel>>(category, Model.ProductCategoryTree))
+                        @*@Html.Partial("_ProductCategoryTreeHeadLine",
+                       new Tuple<ProductCategory, List<ProductCategoryTreeModel>>(category, Model.ProductCategoryTree))*@
                         <!-- Price range-->
 
                         <div class="column mb-2 pb-1">
@@ -141,11 +131,11 @@
                     <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
                         <div class="button-group tabs">
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
+                            <a href="@Url.Action("Category", "ProductCategories", new { id = Model.SeoId, sorting = (int)SortingType.Newest, filtreler = Model.Filter, minPrice = Model.MinPrice, maxPrice = Model.MaxPrice })"
                                rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
+                            <a href="@Url.Action("Category", "ProductCategories", new { id = Model.SeoId, sorting = (int)SortingType.LowHighPrice, filtreler = Model.Filter, minPrice = Model.MinPrice, maxPrice = Model.MaxPrice })"
                                rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
+                            <a href="@Url.Action("Category", "ProductCategories", new { id = Model.SeoId, sorting = (int)SortingType.HighLowPrice, filtreler = Model.Filter, minPrice = Model.MinPrice, maxPrice = Model.MaxPrice })"
                                rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
                         </div>
                     </div>
@@ -163,8 +153,7 @@
                 {
                     foreach (var p in products.GetPagingResult())
                     {
-
-                @Html.DisplayFor(model => p, "FeaturedProductItem", new { Width = 300, Height = 300 })
+                        @Html.DisplayFor(model => p, "FeaturedProductItemDto", new { Width = 300, Height = 300 })
                     }
                 }
                 else

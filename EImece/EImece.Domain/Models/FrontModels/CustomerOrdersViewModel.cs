@@ -1,11 +1,12 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class CustomerOrdersViewModel : ItemListing
     {
-        public List<Order> Orders { get; set; }
-        public Customer Customer { get; set; }
+        public List<OrderDto> Orders { get; set; }
+        public CustomerDto Customer { get; set; }
     }
 }

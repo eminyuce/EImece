@@ -16,5 +16,8 @@ namespace EImece.Domain.Models.DTOs
         // from ProductFile
         public int FileStorageId { get; set; }
         public int ProductId { get; set; }
+        
+        // Computed properties for frontend
+        public string MainImageUrl { get; set; }
     }
 }

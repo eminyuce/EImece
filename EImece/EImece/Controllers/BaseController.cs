@@ -105,5 +105,19 @@ namespace EImece.Controllers
 
             Response.SetCookie(languageCookie);
         }
+        
+        protected void SetCurrentCultureFromDto(object dtoWithLangProperty)
+        {
+            // Extract Lang property using reflection
+            var langProperty = dtoWithLangProperty?.GetType().GetProperty("Lang");
+            if (langProperty != null)
+            {
+                var langValue = langProperty.GetValue(dtoWithLangProperty);
+                if (langValue != null)
+                {
+                    SetCurrentCulture(Convert.ToInt32(langValue));
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,9 @@
-﻿using EImece.Domain.Entities;
+﻿using AutoMapper;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using System;
@@ -285,6 +287,12 @@ namespace EImece.Domain.Services
             emailAccount.DisplayName = String.IsNullOrEmpty(emailAccount.DisplayName) ? emailAccount.Username : emailAccount.DisplayName;
 
             return emailAccount;
+        }
+        
+        public SettingDto GetSettingObjectByKeyAsDto(string key)
+        {
+            var setting = GetSettingObjectByKey(key);
+            return Mapper.Map<SettingDto>(setting);
         }
     }
 }

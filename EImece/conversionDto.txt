@@ -1,4 +1,4 @@
-
+DO NOT CREATE EImece.Domain.Models.FrontModels CLASSES, USE EXISTING EImece.Domain.Models.FrontModels CLASSES
 CONVERSION TO DTOs in FrontEnd Models SHOULD BE DONE for ALL pages and Services
 
 IF IT IS ENTITY, USE ITS DTO CONVERSION, IF IT IS NOT ENTITY, JUST KEEP IT IS
@@ -29,7 +29,8 @@ public ActionResult GetProductCategoryDto(string id)
 
 
 Service:
-
+ use Mapper object to convert entity to DTOs in service layer, below one example
+   var result = Mapper.Map<ProductCategoryDto>(productCategory);
 public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
 {
     var productCategory = GetProductCategory(productCategoryId);

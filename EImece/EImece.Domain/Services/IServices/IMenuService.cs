@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 
@@ -21,5 +22,7 @@ namespace EImece.Domain.Services.IServices
         void UpdateStoryCategoryMenuLink(int storyCategoryId, int lang);
 
         List<Menu> GetMenus();
+        
+        List<MenuDto> GetActiveBaseContentsFromCacheAsDtos(bool? isActive, int language);
     }
 }

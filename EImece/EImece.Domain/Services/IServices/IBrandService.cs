@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Services.IServices
@@ -11,5 +12,7 @@ namespace EImece.Domain.Services.IServices
 
         Brand GetBrandById(int BrandId);
         List<Brand> GetBrandsIfAnyProductExists(int lang);
+        
+        List<BrandDto> GetBrandsIfAnyProductExistsAsDtos(int lang);
     }
 }

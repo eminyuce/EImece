@@ -200,24 +200,29 @@ namespace EImece.Domain.Services
         public ProductCategoryViewModel GetProductCategoryViewModel(int productCategoryId)
         {
             var result = new ProductCategoryViewModel();
-            result.ProductCategory = GetProductCategory(productCategoryId);
-            if (result.ProductCategory.ParentId > 0)
-            {
-                result.ProductCategory.Parent = GetProductCategory(result.ProductCategory.ParentId);
-                if (result.ProductCategory.Parent.ParentId > 0)
-                {
-                    result.ProductCategory.Parent.Parent = GetProductCategory(result.ProductCategory.Parent.ParentId);
-                }
-            }
+            // Convert entity to DTO
+            result.ProductCategory = Mapper.Map<ProductCategoryDto>(GetProductCategory(productCategoryId));
+            
             int lang = result.ProductCategory.Lang;
-            List<Menu> lists = MenuService.GetActiveBaseContentsFromCache(true, lang);
+            List<MenuDto> lists = MenuService.GetActiveBaseContentsFromCacheAsDtos(true, lang);
             result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
-            result.Brands = BrandService.GetBrandsIfAnyProductExists(lang);
+            result.Brands = BrandService.GetBrandsIfAnyProductExistsAsDtos(lang);
+            // Note: ProductCategoryTree still uses entity model - may need to convert later
             result.ProductCategoryTree = BuildTree(true, lang);
-            result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
-            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
-            result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
+            result.PriceFilterSetting = SettingService.GetSettingObjectByKeyAsDto(Constants.ProductPriceFilterSetting);
+            result.ChildrenProductCategories = GetProductCategoriesByParentIdAsDtos(productCategoryId);
+            // Need to convert products to DTOs
+            var category = GetProductCategory(productCategoryId);
+            var childrenCategories = GetProductCategoryLeaves(true, lang).Where(c => c.ParentId == productCategoryId).ToList();
+            var childrenProducts = ProductService.GetChildrenProducts(category, childrenCategories);
+            result.CategoryChildrenProducts = childrenProducts.Select(cp => Mapper.Map<ProductDto>(cp)).ToList();
+            
+            // Also populate all products for this category
+            var categoryProducts = GetProductsInCategory(productCategoryId);
+            result.AllProducts = categoryProducts.Select(cp => Mapper.Map<ProductDto>(cp)).ToList();
+            result.ProductIdsInCategory = result.AllProducts.Select(p => p.Id).ToList();
+            
             return result;
         }
         public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
@@ -225,6 +230,61 @@ namespace EImece.Domain.Services
             var ProductCategory = GetProductCategory(productCategoryId);
             var result = Mapper.Map<ProductCategoryDto>(ProductCategory);
             return result;
+        }
+        
+        public ProductCategoryViewModel GetProductCategoryViewModelWithDtos(int productCategoryId)
+        {
+            var viewModel = new ProductCategoryViewModel();
+
+            // Get the main category DTO
+            viewModel.ProductCategory = GetProductCategoryDto(productCategoryId);
+
+            // Get related data as DTOs
+            var lang = viewModel.ProductCategory.Lang;
+
+            // Get menus
+            List<MenuDto> lists = MenuService.GetActiveBaseContentsFromCacheAsDtos(true, lang);
+            viewModel.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            viewModel.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
+            // Get brands that have products
+            viewModel.Brands = BrandService.GetBrandsIfAnyProductExistsAsDtos(lang);
+
+            // Build category tree - temporarily using entity-based tree until we convert it too
+            // For now, we'll skip populating ProductCategoryTree in the DTO-based ViewModel
+            // viewModel.ProductCategoryTree = BuildTree(true, lang); // Note: This still uses the old model
+
+            // Get children categories
+            viewModel.ChildrenProductCategories = GetProductCategoriesByParentIdAsDtos(productCategoryId);
+
+            // Get products in this category
+            var categoryProducts = GetProductsInCategory(productCategoryId);
+            var productDtos = categoryProducts.Select(p => Mapper.Map<ProductDto>(p)).ToList();
+            viewModel.AllProducts = productDtos;
+            viewModel.ProductIdsInCategory = productDtos.Select(p => p.Id).ToList();
+
+            // Get products from child categories
+            var childrenCategories = GetProductCategoryLeaves(true, lang).Where(c => c.ParentId == productCategoryId).ToList();
+            var childrenProducts = ProductService.GetChildrenProducts(GetProductCategory(productCategoryId), childrenCategories);
+            var childrenProductDtos = childrenProducts.Select(p => Mapper.Map<ProductDto>(p)).ToList();
+            viewModel.CategoryChildrenProducts = childrenProductDtos;
+
+            // Get price filter setting
+            viewModel.PriceFilterSetting = SettingService.GetSettingObjectByKeyAsDto(Constants.ProductPriceFilterSetting);
+
+            return viewModel;
+        }
+        
+        public List<ProductCategoryDto> GetProductCategoriesByParentIdAsDtos(int parentId)
+        {
+            var categories = ProductCategoryRepository.GetProductCategoriesByParentId(parentId);
+            return categories.Select(c => Mapper.Map<ProductCategoryDto>(c)).ToList();
+        }
+        
+        public List<Product> GetProductsInCategory(int categoryId)
+        {
+            var category = GetProductCategory(categoryId);
+            return category.Products.ToList();
         }
     }
 }

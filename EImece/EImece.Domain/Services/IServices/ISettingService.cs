@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Services.IServices
@@ -30,5 +31,6 @@ namespace EImece.Domain.Services.IServices
         Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath);
 
         void ClearCache();
+        SettingDto GetSettingObjectByKeyAsDto(string key);
     }
 }

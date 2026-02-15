@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 using Newtonsoft.Json;
 using Resources;
@@ -13,9 +14,9 @@ namespace EImece.Domain.Helpers
     {
         private List<CategoryFilterType> categoryFilterTypes;
         private List<string> selectedFilters;
-        private Setting priceFilterSetting;
+        private SettingDto priceFilterSetting;
 
-        public CategoryFilterHelper(Setting priceFilterSetting)
+        public CategoryFilterHelper(SettingDto priceFilterSetting)
         {
             this.priceFilterSetting = priceFilterSetting;
         }

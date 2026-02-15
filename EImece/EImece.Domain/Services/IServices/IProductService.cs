@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
@@ -26,6 +27,8 @@ namespace EImece.Domain.Services.IServices
         ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId);
 
         ProductDetailViewModel GetProductDetailViewModelById(int id);
+
+        ProductDetailViewModel GetProductDetailViewModelWithDtos(int id);
 
         Product GetProductById(int id);
 

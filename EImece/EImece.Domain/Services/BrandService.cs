@@ -1,8 +1,11 @@
-﻿using EImece.Domain.Entities;
+﻿using AutoMapper;
+using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
@@ -35,6 +38,12 @@ namespace EImece.Domain.Services
         public List<Brand> GetBrandsIfAnyProductExists(int lang)
         {
             return BrandRepository.GetBrandsIfAnyProductExists(lang);
+        }
+        
+        public List<BrandDto> GetBrandsIfAnyProductExistsAsDtos(int lang)
+        {
+            var brands = BrandRepository.GetBrandsIfAnyProductExists(lang);
+            return brands.Select(b => Mapper.Map<BrandDto>(b)).ToList();
         }
     }
 }

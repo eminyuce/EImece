@@ -241,7 +241,7 @@ namespace EImece.Domain.Services
             {
                 Id = item.ProductCode,
                 Name = item.NameLong,
-                Category1 = item.ProductCategory.Name,
+                Category1 = item.ProductCategoryName,
                 Category2 = AppConfig.ShoppingCartItemCategory2,
                 ItemType = BasketItemType.PHYSICAL.ToString(),
                 Price = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".")

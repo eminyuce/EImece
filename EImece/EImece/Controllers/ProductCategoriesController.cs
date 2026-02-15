@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
@@ -51,7 +52,8 @@ namespace EImece.Controllers
                 var categoryId = id.GetId();
                 Logger.Info($"Parsed category ID: {categoryId}");
 
-                var productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
+                // Use the DTO-based ViewModel
+                var productCategory = ProductCategoryService.GetProductCategoryViewModelWithDtos(categoryId);
                 Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.ProductCategory?.Name}");
 
                 productCategory.SeoId = id;
@@ -83,17 +85,26 @@ namespace EImece.Controllers
                 productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
                 Logger.Info($"Set RecordPerPage: {AppConfig.ProductDefaultRecordPerPage}");
 
-                ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
+                ViewBag.SeoId = productCategory.ProductCategory.SeoUrl; // Using DTO property
                 Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");
 
-                List<Product> productsList = productCategory.ProductCategory.Products.ToList();
+                // Using DTO collections
+                List<ProductDto> productsList = productCategory.ProductIdsInCategory != null 
+                    ? productCategory.AllProducts.Where(p => productCategory.ProductIdsInCategory.Contains(p.Id)).ToList()
+                    : new List<ProductDto>();
                 Logger.Info($"Retrieved {productsList.Count} products directly in category ID: {categoryId}");
-                productsList.AddRange(productCategory.CategoryChildrenProducts);
-                Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count()} child category products. Total products: {productsList.Count}");
+                
+                if (productCategory.CategoryChildrenProducts != null)
+                {
+                    productsList.AddRange(productCategory.CategoryChildrenProducts);
+                    Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count} child category products. Total products: {productsList.Count}");
+                }
+                
                 productCategory.AllProducts = productsList;
 
-                SetCurrentCulture(productCategory.ProductCategory);
-                Logger.Info("Set current culture based on product category.");
+                // Set culture based on DTO
+                SetCurrentCultureFromDto(productCategory.ProductCategory);
+                Logger.Info("Set current culture based on product category DTO.");
 
                 Logger.Info("Returning Category view.");
                 return View(productCategory);

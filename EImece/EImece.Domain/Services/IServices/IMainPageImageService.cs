@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Services.IServices
@@ -10,5 +11,6 @@ namespace EImece.Domain.Services.IServices
         FooterViewModel GetFooterViewModel(int language);
 
         MainPageViewModel GetMainPageViewModel(int language);
+        MainPageViewModel GetMainPageDtoViewModel(int language);
     }
 }

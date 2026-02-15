@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -152,6 +153,12 @@ namespace EImece.Domain.Services
                     MenuService.SaveOrEditEntity(item);
                 }
             }
+        }
+        
+        public List<MenuDto> GetActiveBaseContentsFromCacheAsDtos(bool? isActive, int language)
+        {
+            var entities = GetActiveBaseContentsFromCache(isActive, language);
+            return entities.Select(e => Mapper.Map<MenuDto>(e)).ToList();
         }
     }
 }
