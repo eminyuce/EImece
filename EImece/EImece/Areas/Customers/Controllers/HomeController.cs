@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -12,6 +13,7 @@ using Microsoft.Owin.Security;
 using Ninject;
 using NLog;
 using Resources;
+using AutoMapper;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -64,6 +66,9 @@ namespace EImece.Areas.Customers.Controllers
         [Inject]
         public RazorEngineHelper RazorEngineHelper { get; set; }
 
+        [Inject]
+        public IMapper Mapper { get; set; }
+
         public HomeController(ApplicationUserManager userManager)
         {
             this.UserManager = userManager;
@@ -81,23 +86,22 @@ namespace EImece.Areas.Customers.Controllers
         // GET: Customers/Home
         public ActionResult Index()
         {
-            Customer customer = GetCustomer();
+            var customer = GetCustomer();
             ViewBag.Title = Resource.CustomerAccount;
             return View(customer);
         }
 
-        private Customer GetCustomer()
+        private CustomerDto GetCustomer()
         {
-            ApplicationUser user;
-            Customer customer;
-            user = UserManager.FindByName(User.Identity.GetUserName());
-            customer = CustomerService.GetUserId(user.Id);
+            var user = UserManager.FindByName(User.Identity.GetUserName());
+            var customer = CustomerService.GetUserId(user.Id);
             customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
             if (customer.Gender == 0)
             {
                 customer.Gender = (int)GenderType.Man;
             }
-            return customer;
+
+            return Mapper.Map<CustomerDto>(customer);
         }
 
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
@@ -110,32 +114,33 @@ namespace EImece.Areas.Customers.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Customer customer)
+        public ActionResult Index(CustomerDto customer)
         {
             if (customer == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            bool isValidCustomer = customer != null && customer.isValidCustomer();
+            var customerEntity = Mapper.Map<Customer>(customer);
+            bool isValidCustomer = customerEntity != null && customerEntity.isValidCustomer();
             if (isValidCustomer)
             {
                 var user = UserManager.FindByName(User.Identity.GetUserName());
-                if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
+                if (!user.FirstName.Equals(customerEntity.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customerEntity.Surname, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    user.FirstName = customer.Name;
-                    user.LastName = customer.Surname;
+                    user.FirstName = customerEntity.Name;
+                    user.LastName = customerEntity.Surname;
                     UserManager.Update(user);
                 }
 
-                customer.UserId = user.Id;
-                customer.Ip = GeneralHelper.GetIpAddress();
-                customer = CustomerService.SaveOrEditEntity(customer);
+                customerEntity.UserId = user.Id;
+                customerEntity.Ip = GeneralHelper.GetIpAddress();
+                customerEntity = CustomerService.SaveOrEditEntity(customerEntity);
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
+                return View(Mapper.Map<CustomerDto>(customerEntity));
             }
             else
             {
-                InformCustomerToFillOutForm(customer);
+                InformCustomerToFillOutForm(customerEntity);
                 return View(customer);
             }
         }
@@ -194,7 +199,7 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.SendMessageToSeller;
             var customer = GetCustomer();
             var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
-            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
+            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = Mapper.Map<System.Collections.Generic.List<FaqDto>>(faqs) });
         }
 
         [HttpPost]
@@ -227,7 +232,7 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.Faq;
             var customer = GetCustomer();
             var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, CurrentLanguage);
-            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
+            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = Mapper.Map<System.Collections.Generic.List<FaqDto>>(faqs) });
         }
 
         public ActionResult CustomerOrders(string search = "")
@@ -236,7 +241,7 @@ namespace EImece.Areas.Customers.Controllers
             var customer = GetCustomer();
             var user = UserManager.FindByName(User.Identity.GetUserName());
             var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
-            return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
+            return View(new CustomerOrdersViewModel() { Customer = customer, Orders = Mapper.Map<System.Collections.Generic.List<OrderDto>>(orders) });
         }
 
         public ActionResult CustomerOrderDetail(int id)
@@ -244,7 +249,7 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.CustomerDetail;
             var customer = GetCustomer();
             var order = OrderService.GetOrderById(id);
-            return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = order });
+            return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = Mapper.Map<OrderDto>(order) });
         }
 
         [HttpPost]

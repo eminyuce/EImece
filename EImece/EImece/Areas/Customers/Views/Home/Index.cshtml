@@ -1,16 +1,16 @@
-﻿@model EImece.Domain.Entities.Customer
+﻿@model EImece.Domain.Models.DTOs.CustomerDto
 @using Resources;
 @using EImece.Domain;
-@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @{
     Layout = "~/Areas/Customers/Views/Shared/_Layout.cshtml";
-    List<Order> orders = Model.Orders;
+    List<OrderDto> orders = Model.Orders;
     if (orders.IsEmpty())
     {
-        orders = new List<Order>();
+        orders = new List<OrderDto>();
     }
 
 }

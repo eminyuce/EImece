@@ -2,7 +2,7 @@
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
-@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs;
 @using Resources;
 @using Newtonsoft.Json;
 @using EImece.Domain.Models.FrontModels;
@@ -16,8 +16,7 @@
     var controllerName = "Home";
     var gridName = "OrderGrid";
     var myOrders = Model.Orders;
-    var paginatedOrders = new PaginatedModelList<Order>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
-    var baseList = myOrders.DownCasting<Order>();
+    var paginatedOrders = new PaginatedModelList<OrderDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
 
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
@@ -43,7 +42,7 @@
         <!-- Main content-->
         <!-- Main content-->
         <div class="col-lg-12">
-            @Html.Partial("_CustomerDetails", (Customer)Model.Customer)
+            @Html.Partial("_CustomerDetails", Model.Customer)
 
             <!-- Orders table-->
             <div class="table-responsive font-size-sm">
@@ -102,7 +101,7 @@
     </div>
 </div>
 
-@helper createOrderStatus(Order o)
+@helper createOrderStatus(OrderDto o)
 {
 
     var os = (EImeceOrderStatus)o.OrderStatus;

@@ -2,7 +2,7 @@
 @using GridMvc.Html;
 @using GridMvc.Sorting;
 @using EImece.Domain;
-@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs;
 @using Resources;
 @using Newtonsoft.Json;
 @using EImece.Domain.Models.FrontModels;
@@ -35,7 +35,7 @@
     <div class="row pt-1">
         <!-- Main content-->
         <div class="col-lg-12">
-            @Html.Partial("_CustomerDetails", (Customer)Model.Customer)
+            @Html.Partial("_CustomerDetails", Model.Customer)
 
             <!-- Order Details-->
             <div class="card mb-4">
@@ -56,9 +56,9 @@
                     }
                     @foreach (var orderProduct in order.OrderProducts)
                     {
-                        var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
+                        var ProductSpecItems = JsonConvert.DeserializeObject<List<EImece.Domain.Models.FrontModels.ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
                         var product = orderProduct.Product;
-                        var imgTag = product.GetCroppedImageUrl(product.MainImageId, 160, 0);
+                        var imgTag = product.MainImageSrc != null ? product.MainImageSrc.Item2 : string.Empty;
                         <!-- Item-->
                         <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
                             <div class="media d-block d-sm-flex text-center text-sm-left">
@@ -152,7 +152,7 @@
     </div>
 </div>
 
-@helper createOrderStatus(Order o)
+@helper createOrderStatus(OrderDto o)
 {
     var os = (EImeceOrderStatus)o.OrderStatus;
     var rm = new ResourceManager(typeof(Resource));

@@ -55,5 +55,7 @@ namespace EImece.Domain.Models.DTOs
         public string ProductNameStr { get; set; }
         public decimal PriceWithDiscount { get; set; }
         public bool IsBuyableState { get; set; }
+
+        public ProductCategoryDto ProductCategory { get; set; }
     }
 }

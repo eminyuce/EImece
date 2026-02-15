@@ -17,6 +17,7 @@ namespace EImece.Domain.Models.DTOs
         public decimal Price { get; set; }
         public List<ProductSpecItem> ProductSpecObjItems { get; set; }
         public ProductSpecItem ProductSpecColorItem { get; set; }
+        public ProductDto Product { get; set; }
     }
 
     public class ProductSpecItem

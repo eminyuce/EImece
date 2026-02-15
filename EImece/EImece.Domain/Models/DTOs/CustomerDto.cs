@@ -38,5 +38,7 @@ namespace EImece.Domain.Models.DTOs
         public String FullName { get; set; }
         public string Address { get; set; }
         public string RegistrationAddress { get; set; }
+
+        public List<OrderDto> Orders { get; set; }
     }
 }

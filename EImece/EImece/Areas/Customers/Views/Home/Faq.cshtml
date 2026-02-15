@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+﻿@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
@@ -40,7 +40,7 @@
                                 <div class="col-sm-12">
                                     <div class="accordion" id="faqAccordion">
                                         @{ int index = 1; }
-                                        @foreach (Faq faq in Model.Faqs)
+                                        @foreach (FaqDto faq in Model.Faqs)
                                         {
                                             <div class="card mb-3">
                                                 <div class="card-header" id="heading-@faq.Id">

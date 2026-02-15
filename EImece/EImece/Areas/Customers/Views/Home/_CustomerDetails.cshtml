@@ -1,15 +1,15 @@
-﻿@model EImece.Domain.Entities.Customer
+﻿@model EImece.Domain.Models.DTOs.CustomerDto
 @using Resources;
-@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    List<Order> orders = Model.Orders;
+    List<OrderDto> orders = Model.Orders;
     var actionName = ViewContext.RouteData.GetRequiredString("action");
     if (orders.IsEmpty())
     {
-        orders = new List<Order>();
+        orders = new List<OrderDto>();
     }
 }
 
