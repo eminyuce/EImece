@@ -1,18 +1,4 @@
-﻿@model EImece.Domain.Entities.MainPageImage
-@using EImece.Domain.Helpers;
+﻿﻿@model EImece.Domain.Models.DTOs.MainPageImageDto
 @using EImece.Domain.Helpers.Extensions;
-
-@{
-    var image = Model.MainImage;
-    var mainPageImage = Model;
-    int index = ViewData["index"].ToInt() + 1;
-}
-
-<!-- Slide 1  -->
-<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-    <img src="@mainPageImage.GetFullPathImageUrlFromFileSystem(false)" alt="slidebg1" data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
-    <div class="caption sfb fadeout" data-x="145" data-y="170" data-speed="400" data-start="800" data-easing="Power4.easeOut">
-        <h3>@Html.Raw(@mainPageImage.Description)</h3>
-        <a href="shop-with-sidebar.html" class="caption-btn">@mainPageImage.Name</a>
-    </div>
-</li>
+@{var m=Model; int index=ViewData["index"].ToInt()+1; var img=Url.Action("Index","Images",new{id=string.Format("{0}.jpg",m.MainImageId ?? 0),imageSize="w900h400"});}
+<li data-transition="fade" data-slotamount="7" data-masterspeed="1500"><img src="@img" alt="slide-@index" data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat"><div class="caption sfb fadeout" data-x="145" data-y="170" data-speed="400" data-start="800" data-easing="Power4.easeOut"><h3>@Html.Raw(m.Description)</h3><a href="@m.Link" class="caption-btn">@m.Name</a></div></li>

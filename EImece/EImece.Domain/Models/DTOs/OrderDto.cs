@@ -62,5 +62,11 @@ namespace EImece.Domain.Models.DTOs
         public string ShipmentCompanyName { get; set; }
         public decimal PaidPriceDecimal { get; set; }
         public string InstallmentDescription { get; set; }
+
+        // Navigation-like DTO fields for end-user views
+        public CustomerDto Customer { get; set; }
+        public AddressDto ShippingAddress { get; set; }
+        public AddressDto BillingAddress { get; set; }
+        public List<OrderProductDto> OrderProducts { get; set; } = new List<OrderProductDto>();
     }
 }

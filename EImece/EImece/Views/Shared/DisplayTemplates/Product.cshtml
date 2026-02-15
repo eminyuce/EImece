@@ -1,18 +1,16 @@
-﻿@model EImece.Domain.Entities.Product
+﻿@model EImece.Domain.Models.DTOs.ProductDto
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
 @{
-    var productFiles = Model.ProductFiles;
     var product = Model;
-    var categoryName = product.ProductCategory.Name;
-    var tags = product.ProductTags.Select(r1 => r1.Tag).Distinct().ToList();
-    string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
-    string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
+    var categoryName = product.ProductCategoryName;
+    string tagsText = "";
+    string filters = "";
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
-    var productImageTag = product.GetCroppedImageTag(Width, Height);
+    var productImageTag = string.Format("<img src='{0}' alt='{1}'/>", Url.Action("Index", "Images", new { id = string.Format("{0}.jpg", product.MainImageId ?? 0), imageSize = string.Format("w{0}h{1}", Width, Height) }), product.Name);
 }
 
 <div class="one-third column portfolio-item media

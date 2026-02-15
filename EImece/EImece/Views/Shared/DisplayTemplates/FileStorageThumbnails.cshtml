@@ -1,29 +1,4 @@
-﻿@model EImece.Domain.Entities.FileStorage
+﻿﻿@model EImece.Domain.Models.DTOs.FileStorageDto
 @using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using EImece.Domain.Entities;
-@using Resources;
-@{
-    FileStorage fileStorage = Model;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    var tags = fileStorage.FileStorageTags.Select(r1 => r1.Tag).Distinct().ToList();
-    string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
-    string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
-    int Width = ViewData["Width"].ToInt(0);
-    int Height = ViewData["Height"].ToInt(0);
-    var imgSrcLarge = fileStorage.GetCroppedImageUrl(fileStorage.Id, 0, 0);
-    var imgSrc = fileStorage.GetCroppedImageUrl(fileStorage.Id, Width, Height);
-}
-
-@if (fileStorage.IsActive)
-{
-<a href="@imgSrcLarge" class="gallery-item mb-grid-gutter" data-fancybox=@string.Format("gallery{0}",fileStorage.Id) data-options='{"caption": "Gallery image caption #1"}'>
-    <img src="@imgSrc" class="img-thumbnail rounded" style="max-height:@Height; max-width:@Width" alt="Gallery image">
-    <div class="gallery-caption">
-        <div class="gallery-indicator">
-            <i class="gallery-indicator-icon" data-feather="zoom-in"></i>
-        </div>
-    </div>
-</a>
-}
+@{var f=Model; int Width=ViewData["Width"].ToInt(0); int Height=ViewData["Height"].ToInt(0); var large=Url.Action("Index","Images",new{id=string.Format("{0}.jpg",f.Id),imageSize="w0h0"}); var small=Url.Action("Index","Images",new{id=string.Format("{0}.jpg",f.Id),imageSize=string.Format("w{0}h{1}",Width,Height)});} 
+@if (f.IsActive){<a href="@large" class="gallery-item mb-grid-gutter" data-fancybox=@string.Format("gallery{0}",f.Id) data-options='{"caption": "Gallery image caption #1"}'><img src="@small" class="img-thumbnail rounded" style="max-height:@Height; max-width:@Width" alt="Gallery image"><div class="gallery-caption"><div class="gallery-indicator"><i class="gallery-indicator-icon" data-feather="zoom-in"></i></div></div></a>}

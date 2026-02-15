@@ -1,29 +1,4 @@
-﻿@model EImece.Domain.Entities.FileStorage
+﻿﻿@model EImece.Domain.Models.DTOs.FileStorageDto
 @using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using Resources;
-@{
-    EImece.Domain.Entities.FileStorage fileStorage = Model;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    var tags = fileStorage.FileStorageTags.Select(r1 => r1.Tag).Distinct().ToList();
-    string tagsText = String.Join(" ", tags.Select(r => String.Format("{0}", GeneralHelper.GetUrlSeoString(r.Name))));
-    string filters = String.Join(" ", tags.Select(r => String.Format("filters-{0}", GeneralHelper.GetUrlSeoString(r.Name))));
-    int Width = ViewData["Width"].ToInt(0);
-    int Height = ViewData["Height"].ToInt(0);
-    var imageUrl = fileStorage.GetCroppedImageUrl(fileStorage.Id, Width, Height);
-}
-
-@if (fileStorage.IsActive)
-{
-<div class="one-third column portfolio-item media post-@fileStorage.Id portfolio type-portfolio
-     status-publish has-post-thumbnail hentry
-     @filters @tagsText" id="post-@fileStorage.Id" style="position: absolute; left: 320px; top: 0px;">
-    <figure>
-        <div class="portfolio-holder">
-            @Html.Raw(imageUrl)
-            <div class="hover-icon"></div>
-        </div>
-    </figure>
-</div>
-}
+@{var f=Model; int Width=ViewData["Width"].ToInt(0); int Height=ViewData["Height"].ToInt(0); var img=Url.Action("Index","Images",new{id=string.Format("{0}.jpg",f.Id),imageSize=string.Format("w{0}h{1}",Width,Height)});} 
+@if (f.IsActive){<div class="one-third column portfolio-item media post-@f.Id portfolio type-portfolio status-publish has-post-thumbnail hentry" id="post-@f.Id" style="position: absolute; left: 320px; top: 0px;"><figure><div class="portfolio-holder"><img src="@img" alt="@f.Name"/><div class="hover-icon"></div></div></figure></div>}
