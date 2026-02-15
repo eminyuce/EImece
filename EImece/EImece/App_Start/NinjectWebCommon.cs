@@ -81,7 +81,7 @@ namespace EImece.App_Start
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new MappingProfile());
-            }, loggerFactory);
+            });
 
             // Optional: validate only in DEBUG or during tests
 #if DEBUG
