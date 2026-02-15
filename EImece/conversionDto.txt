@@ -1,5 +1,7 @@
 DO NOT CREATE EImece.Domain.Models.FrontModels CLASSES, USE EXISTING EImece.Domain.Models.FrontModels CLASSES
 CONVERSION TO DTOs in FrontEnd Models SHOULD BE DONE for ALL pages and Services
+in the Services layer, keep existing methods as they are and create new methods for only conversion to DTOs for EImece.Domain.Models.FrontModels CLASSES and its fields 
+Use new methods of Service layer generating EImece.Domain.Models.FrontModels CLASSES with DTOs for controller layer of just end user controllers, not admin controller classes
 
 IF IT IS ENTITY, USE ITS DTO CONVERSION, IF IT IS NOT ENTITY, JUST KEEP IT IS
 
