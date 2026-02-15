@@ -1,0 +1,108 @@
+
+
+ 
+I realized that I was using entity classes in whole project razor pages instead of DTO objects,  I need to change them all, so use DTO objects for each entity and convert them in service layer class and just use DTO objects in razor pages, conversion from entity to DTO should be in the service layer, DTO will be used in Razor pages
+
+use dto objects for all razor pages, any views file under root folder
+ of end users, not admin pages but end users
+
+DO NOT CREATE EImece.Domain.Models.FrontModels CLASSES, USE EXISTING EImece.Domain.Models.FrontModels CLASSES\nCONVERSION TO DTOs in FrontEnd Models SHOULD BE DONE for ALL pages and Services\nin the Services layer, keep existing methods as they are and create new methods for only conversion to DTOs for EImece.Domain.Models.FrontModels CLASSES and its fields \nUse new methods of Service layer generating EImece.Domain.Models.FrontModels CLASSES with DTOs for controller layer of just end user controllers, not admin controller classes\n\nIF IT IS ENTITY, USE ITS DTO CONVERSION, IF IT IS NOT ENTITY, JUST KEEP IT IS\n\n\nIn the project, Razor Pages currently use entity classes located in:\n\n\EImece.Domain\Models\FrontModels\n\n\nThis is incorrect design — UI should not depend on persistence entities.\nTherefore, all Razor Pages must use DTO objects instead of entity classes.\n\nI created DTO models under:\n\n\EImece.Domain\Models\DTOs\n\n\nMy objective is to refactor the application so every model inside FrontModels becomes a UI/ViewModel that is built from DTOs (not entities).\n\nAs a first example, I migrated ProductCategory:\n\npublic ActionResult GetProductCategoryDto(string id)\n{\n    var productCategory = ProductCategoryService.GetProductCategoryDto(id.GetId());\n    return View(productCategory);\n}\n\n\nService:\n use Mapper object to convert entity to DTOs in service layer, below one example\n   var result = Mapper.Map<ProductCategoryDto>(productCategory);\npublic ProductCategoryDto GetProductCategoryDto(int productCategoryId)\n{\n    var productCategory = GetProductCategory(productCategoryId);\n    var result = Mapper.Map<ProductCategoryDto>(productCategory);\n    return result;\n}\n\n\nThe Razor page now consumes ProductCategoryDto instead of the entity.\n\nHowever, most models inside:\n\n\EImece.Domain\Models\FrontModels\n\n\nare much more complex and contain nested relations and aggregated data.\n\nI need a scalable refactoring strategy so that:\n\nEvery Razor Page uses DTO-based models\n\nFrontModels become ViewModels composed from DTOs\n\nMapping logic stays centralized\n\nThe application behavior does not break during migration\n\n
+
+------------------
+
+You are an expert .NET refactoring architect.
+Project Context
+
+This is an ASP.NET Core Razor Pages application.
+Entity classes live in the domain layer (mostly under EImece.Domain.Models.Entities.* and similar).
+There is a folder EImece.Domain\Models\FrontModels that contains complex ViewModel-style classes used by all end-user Razor Pages (not admin pages).
+These FrontModels classes currently contain entity classes directly (sometimes deeply nested) → this is the anti-pattern we are fixing.
+We have already created clean DTOs in EImece.Domain\Models\DTOs for every relevant entity (e.g. ProductCategoryDto, ProductDto, BlogPostDto, etc.).
+
+Strict Requirements
+
+Do NOT create any new classes in EImece.Domain.Models.FrontModels.
+→ Use the existingFrontModels classes and refactor them to use DTOs instead of entities.
+FrontModels become pure ViewModels composed only of:
+DTOs (for anything that was previously an entity)
+Primitive types, enums, simple collections, etc. (keep these unchanged)
+
+Rule for properties:
+If a property is (or contains) an Entity → replace it with its corresponding DTO.
+If a property is not an entity (string, int, bool, List<string>, etc.) → leave it exactly as it is.
+
+Service Layer Rules (very important)
+Never touch existing public methods (they must continue to return entities for admin side and backward compatibility).
+Create new methods with the suffix ForFront (or Dto when it returns a single DTO) that return FrontModels populated with DTOs.
+All mapping logic must happen only in the service layer using AutoMapper (_mapper.Map<...>(...)).
+Example naming:C#// Existing (keep)
+ProductCategory GetProductCategory(int id);
+
+// New
+ProductCategoryFront GetProductCategoryForFront(string id);        // returns FrontModel with DTOs
+ProductCategoryDto GetProductCategoryDto(int id);                 // simple DTO version
+
+Controller / Razor Pages (End-User Only)
+Only end-user controllers (and their Razor Pages under the root) should use the new ForFront / DTO methods.
+Admin controllers stay unchanged (they can continue using entities).
+Every Razor Page that currently receives a FrontModel containing entities must now receive the same FrontModel but with DTOs inside.
+
+Mapping Strategy (Centralized)
+Use AutoMapper profiles (create/update them in the DTO mapping profile).
+For complex nested FrontModels, the service method should:
+Call existing entity-returning methods.
+Map every entity → DTO using AutoMapper.
+Construct and return the FrontModel with the DTOs injected.
+
+
+
+Task
+Refactor the entire end-user layer (all Razor Pages + their controllers + services) according to the rules above.
+Start with the most used FrontModels first (ProductCategoryFront, ProductFront, BlogPostFront, etc.), then continue with the rest.
+For each change, show:
+
+The new service method (or updated one)
+The refactored FrontModel class (only the changed properties)
+The updated controller action
+The AutoMapper mapping needed (if new)
+
+Begin now.
+
+-------------------------
+
+The Fixed Prompt
+Role: You are a Senior .NET Architect specializing in Clean Architecture and Refactoring.
+
+Objective:
+Refactor the EImece project to decouple the UI (Razor Pages) from Domain Entities. All Razor Pages must consume DTOs or ViewModels composed of DTOs. Persistence entities must never reach the Controller or View.
+
+Constraints:
+
+FrontModels (UI Models): DO NOT create new classes in EImece.Domain.Models.FrontModels. Use the existing ones, but update their properties to use DTOs instead of Entities.
+
+DTO Location: All DTOs are located in EImece.Domain.Models.DTOs.
+
+Service Layer: Keep existing methods that return Entities. Add new methods specifically for DTO conversion (e.g., Get[Entity]Dto).
+
+Mapping: Use the Mapper (AutoMapper) object inside the Service layer to perform the conversion.
+
+Scope: Focus strictly on End-User controllers and Razor pages. Do not modify Admin controllers or pages.
+
+Logic: If a property is a Domain Entity, replace it with its corresponding DTO. If it is a primitive or non-entity, leave it as is.
+
+Refactoring Pattern to Follow:
+
+Service Layer Change:
+
+C#
+// Existing method stays for internal/admin use
+public ProductCategory GetProductCategory(int id) { ... }
+
+// NEW method for FrontEnd
+public ProductCategoryDto GetProductCategoryDto(int id)
+{
+    var entity = GetProductCategory(id);
+    return Mapper.Map<ProductCategoryDto>(entity);
+}
+Controller Layer Change:
+Update End-User controllers to call the new DTO-based service methods and pass the DTO/FrontModel to the View.
