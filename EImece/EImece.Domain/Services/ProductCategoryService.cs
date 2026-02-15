@@ -1,5 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -216,6 +218,12 @@ namespace EImece.Domain.Services
             result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
             result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
+            return result;
+        }
+        public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
+        {
+            var ProductCategory = GetProductCategory(productCategoryId);
+            var result = Mapper.Map<ProductCategoryDto>(ProductCategory);
             return result;
         }
     }

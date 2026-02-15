@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 
@@ -25,5 +26,7 @@ namespace EImece.Domain.Services.IServices
         List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language);
 
         List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int currentLanguage);
+        
+        ProductCategoryDto GetProductCategoryDto(int productCategoryId);
     }
 }
