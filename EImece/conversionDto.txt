@@ -1,0 +1,59 @@
+
+CONVERSION TO DTOs in FrontEnd Models SHOULD BE DONE for ALL pages and Services
+
+IF IT IS ENTITY, USE ITS DTO CONVERSION, IF IT IS NOT ENTITY, JUST KEEP IT IS
+
+
+In the project, Razor Pages currently use entity classes located in:
+
+\EImece.Domain\Models\FrontModels
+
+
+This is incorrect design — UI should not depend on persistence entities.
+Therefore, all Razor Pages must use DTO objects instead of entity classes.
+
+I created DTO models under:
+
+\EImece.Domain\Models\DTOs
+
+
+My objective is to refactor the application so every model inside FrontModels becomes a UI/ViewModel that is built from DTOs (not entities).
+
+As a first example, I migrated ProductCategory:
+
+public ActionResult GetProductCategoryDto(string id)
+{
+    var productCategory = ProductCategoryService.GetProductCategoryDto(id.GetId());
+    return View(productCategory);
+}
+
+
+Service:
+
+public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
+{
+    var productCategory = GetProductCategory(productCategoryId);
+    var result = Mapper.Map<ProductCategoryDto>(productCategory);
+    return result;
+}
+
+
+The Razor page now consumes ProductCategoryDto instead of the entity.
+
+However, most models inside:
+
+\EImece.Domain\Models\FrontModels
+
+
+are much more complex and contain nested relations and aggregated data.
+
+I need a scalable refactoring strategy so that:
+
+Every Razor Page uses DTO-based models
+
+FrontModels become ViewModels composed from DTOs
+
+Mapping logic stays centralized
+
+The application behavior does not break during migration
+

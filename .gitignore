@@ -374,3 +374,8 @@ ModelManifest.xml
 /EImece/EImece/Areas/Admin/Views/Images/.vshistory/CompressImages.cshtml
 /EImece/EImece/App_Data/.vshistory/data.json
 /EImece/EImece/App_Start/.vshistory/BundleConfig.cs
+/EImece/EImece.Domain/Models/DTOs/BuyNowModelDto.cs
+/EImece/EImece.Domain/Models/DTOs/ContactUsFormViewModelDto.cs
+/EImece/EImece.Domain/Models/DTOs/ProductSpecItemDto.cs
+/EImece/EImece.Domain/Models/DTOs/ShoppingCartItemDto.cs
+/EImece/EImece.Domain/Models/DTOs/ShoppingCartProductDto.cs
