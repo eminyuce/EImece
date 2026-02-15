@@ -10,5 +10,9 @@ namespace EImece.Domain.Services.IServices
         FooterViewModel GetFooterViewModel(int language);
 
         MainPageViewModel GetMainPageViewModel(int language);
+
+        MainPageViewModel GetMainPageViewModelDto(int language);
+
+        FooterViewModel GetFooterViewModelDto(int language);
     }
 }

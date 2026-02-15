@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -110,6 +111,22 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public StoryDetailViewModel GetStoryDetailViewModelDto(int storyId)
+        {
+            var result = GetStoryDetailViewModel(storyId);
+            result.StoryDto = Mapper.Map<StoryDto>(result.Story);
+            result.StoryCategoriesDto = Mapper.Map<List<StoryCategoryDto>>(result.StoryCategories);
+            result.RelatedStoriesDto = Mapper.Map<List<StoryDto>>(result.RelatedStories);
+            result.FeaturedStoriesDto = Mapper.Map<List<StoryDto>>(result.FeaturedStories);
+            result.RelatedProductsDto = Mapper.Map<List<ProductDto>>(result.RelatedProducts);
+            result.BlogMenuDto = Mapper.Map<MenuDto>(result.BlogMenu);
+            result.MainPageMenuDto = Mapper.Map<MenuDto>(result.MainPageMenu);
+            result.TagsDto = Mapper.Map<List<TagDto>>(result.Tags);
+            result.PreviousStoryDto = Mapper.Map<StoryDto>(result.PreviousStory);
+            result.NextStoryDto = Mapper.Map<StoryDto>(result.NextStory);
+            return result;
+        }
+
         public StoryIndexViewModel GetMainPageStories(int page, int language)
         {
             StoryIndexViewModel result = null;
@@ -123,6 +140,14 @@ namespace EImece.Domain.Services
                 result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
                 DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
+            return result;
+        }
+
+        public StoryIndexViewModel GetMainPageStoriesDto(int page, int language)
+        {
+            var result = GetMainPageStories(page, language);
+            result.StoriesDto = ConvertPaginated<Story, StoryDto>(result.Stories);
+            result.StoryCategoriesDto = Mapper.Map<List<StoryCategoryDto>>(result.StoryCategories);
             return result;
         }
 
@@ -164,6 +189,17 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public StoryCategoryViewModel GetStoryCategoriesViewModelDto(int storyCategoryId, int page)
+        {
+            var result = GetStoryCategoriesViewModel(storyCategoryId, page);
+            result.StoryCategoryDto = Mapper.Map<StoryCategoryDto>(result.StoryCategory);
+            result.MainPageMenuDto = Mapper.Map<MenuDto>(result.MainPageMenu);
+            result.StoryCategoriesDto = Mapper.Map<List<StoryCategoryDto>>(result.StoryCategories);
+            result.TagsDto = Mapper.Map<List<TagDto>>(result.Tags);
+            result.StoriesDto = ConvertPaginated<Story, StoryDto>(result.Stories);
+            return result;
+        }
+
         public List<Story> GetLatestStories(int language, int take)
         {
             return StoryRepository.GetLatestStories(language, take);
@@ -178,6 +214,27 @@ namespace EImece.Domain.Services
             result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
             result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
             return result;
+        }
+
+        public SimiliarStoryTagsViewModel GetStoriesByTagIdDto(int tagId, int pageIndex, int pageSize, int lang)
+        {
+            var result = GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
+            result.TagDto = Mapper.Map<TagDto>(result.Tag);
+            result.StoryTagsDto = ConvertPaginated<StoryTag, StoryTagDto>(result.StoryTags);
+            result.ProductTagsDto = ConvertPaginated<ProductTag, ProductTagDto>(result.ProductTags);
+            result.CompanyNameDto = Mapper.Map<SettingDto>(result.CompanyName);
+            return result;
+        }
+
+        private EImece.Domain.GenericRepository.PaginatedList<TDestination> ConvertPaginated<TSource, TDestination>(EImece.Domain.GenericRepository.PaginatedList<TSource> source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var mapped = Mapper.Map<List<TDestination>>(source.ToList());
+            return new EImece.Domain.GenericRepository.PaginatedList<TDestination>(mapped, source.PageIndex, source.PageSize, source.TotalCount);
         }
 
         public Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams)

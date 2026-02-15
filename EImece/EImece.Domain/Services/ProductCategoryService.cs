@@ -220,6 +220,20 @@ namespace EImece.Domain.Services
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
+
+        public ProductCategoryViewModel GetProductCategoryViewModelDto(int productCategoryId)
+        {
+            var result = GetProductCategoryViewModel(productCategoryId);
+            result.ProductCategoryDto = Mapper.Map<ProductCategoryDto>(result.ProductCategory);
+            result.CategoryChildrenProductsDto = Mapper.Map<List<ProductDto>>(result.CategoryChildrenProducts);
+            result.ProductMenuDto = Mapper.Map<MenuDto>(result.ProductMenu);
+            result.MainPageMenuDto = Mapper.Map<MenuDto>(result.MainPageMenu);
+            result.ChildrenProductCategoriesDto = Mapper.Map<List<ProductCategoryDto>>(result.ChildrenProductCategories);
+            result.BrandsDto = Mapper.Map<List<BrandDto>>(result.Brands);
+            result.PriceFilterSettingDto = Mapper.Map<SettingDto>(result.PriceFilterSetting);
+            return result;
+        }
+
         public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
         {
             var ProductCategory = GetProductCategory(productCategoryId);

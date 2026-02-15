@@ -51,7 +51,7 @@ namespace EImece.Controllers
                 var categoryId = id.GetId();
                 Logger.Info($"Parsed category ID: {categoryId}");
 
-                var productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
+                var productCategory = ProductCategoryService.GetProductCategoryViewModelDto(categoryId);
                 Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.ProductCategory?.Name}");
 
                 productCategory.SeoId = id;
@@ -91,6 +91,7 @@ namespace EImece.Controllers
                 productsList.AddRange(productCategory.CategoryChildrenProducts);
                 Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count()} child category products. Total products: {productsList.Count}");
                 productCategory.AllProducts = productsList;
+
 
                 SetCurrentCulture(productCategory.ProductCategory);
                 Logger.Info("Set current culture based on product category.");

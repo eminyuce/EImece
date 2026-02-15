@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +12,23 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductCategoryViewModel : ItemListing
     {
         public ProductCategory ProductCategory { get; set; }
+        public ProductCategoryDto ProductCategoryDto { get; set; }
         public List<Product> CategoryChildrenProducts { get; set; }
+        public List<ProductDto> CategoryChildrenProductsDto { get; set; }
         public Menu ProductMenu { get; set; }
+        public MenuDto ProductMenuDto { get; set; }
         public Menu MainPageMenu { get; set; }
+        public MenuDto MainPageMenuDto { get; set; }
         public List<ProductCategory> ChildrenProductCategories { get; set; }
+        public List<ProductCategoryDto> ChildrenProductCategoriesDto { get; set; }
         public List<Brand> Brands { get; set; }
+        public List<BrandDto> BrandsDto { get; set; }
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
         public List<CategoryFilter> SelectedFilterTypes { get; set; }
         public Setting PriceFilterSetting { get; set; }
+        public SettingDto PriceFilterSettingDto { get; set; }
         public List<Product> AllProducts { get; set; }
+        public List<ProductDto> AllProductsDto { get; set; }
 
         public List<Product> Products
         {

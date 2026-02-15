@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,28 +15,48 @@ namespace EImece.Domain.Models.FrontModels
     {
         public Product Product { get; set; }
 
+        public ProductDto ProductDto { get; set; }
+
         public ProductComment ProductComment { get; set; }
+
+        public ProductCommentDto ProductCommentDto { get; set; }
 
         public Menu ProductMenu { get; set; }
 
+        public MenuDto ProductMenuDto { get; set; }
+
         public Menu MainPageMenu { get; set; }
+
+        public MenuDto MainPageMenuDto { get; set; }
 
         public List<ProductCategoryTreeModel> BreadCrumb { get; set; }
 
         public Template Template { get; set; }
 
+        public TemplateDto TemplateDto { get; set; }
+
         public List<Story> RelatedStories { get; set; }
 
+        public List<StoryDto> RelatedStoriesDto { get; set; }
+
         public List<Product> RelatedProducts { get; set; }
+
+        public List<ProductDto> RelatedProductsDto { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
 
         public Setting CargoDescription { get; set; }
+        public SettingDto CargoDescriptionDto { get; set; }
         public Setting CargoPrice { get; set; }
+        public SettingDto CargoPriceDto { get; set; }
         public Setting IsProductPriceEnable { get; set; }
+        public SettingDto IsProductPriceEnableDto { get; set; }
         public Setting IsProductReviewEnable { get; set; }
+        public SettingDto IsProductReviewEnableDto { get; set; }
         public Setting WhatsAppCommunicationLink { get; set; }
+        public SettingDto WhatsAppCommunicationLinkDto { get; set; }
         public Setting CompanyName { get; set; }
+        public SettingDto CompanyNameDto { get; set; }
         public string SeoId { get; set; }
 
         public ProductDetailViewModel()

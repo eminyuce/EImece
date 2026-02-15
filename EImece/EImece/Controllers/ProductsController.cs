@@ -66,7 +66,7 @@ namespace EImece.Controllers
         public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
         {
             Logger.Info($"Entering AdvancedSearchProducts with search: '{search}', filters: '{filters}', page: '{page}'");
-            var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
+            var products = ProductService.GetProductsSearchResultDto(search, filters, page, CurrentLanguage);
             Logger.Info($"Retrieved {products.Products.Count} products for search: '{search}', language: {CurrentLanguage}");
             Logger.Info("Returning AdvancedSearchProducts view.");
             return View(products);
@@ -86,7 +86,7 @@ namespace EImece.Controllers
             {
                 var productId = id.GetId();
                 Logger.Info($"Parsed product ID: {productId}");
-                var product = ProductService.GetProductDetailViewModelById(productId);
+                var product = ProductService.GetProductDetailViewModelByIdDto(productId);
                 string fullPath = Request.Path;
 
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
@@ -135,7 +135,7 @@ namespace EImece.Controllers
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
             Logger.Info($"Using page size: {pageSize}");
 
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
+            SimiliarProductTagsViewModel products = ProductService.GetProductByTagIdDto(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
             Logger.Info($"Retrieved products for tag ID: {tagId}, page: {page}, language: {CurrentLanguage}");
 
             products.Page = page;
@@ -164,7 +164,7 @@ namespace EImece.Controllers
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
             Logger.Info($"Using page size: {pageSize}");
 
-            var products = ProductService.SearchProducts(page, pageSize, search, CurrentLanguage, (SortingType)sorting);
+            var products = ProductService.SearchProductsDto(page, pageSize, search, CurrentLanguage, (SortingType)sorting);
             Logger.Info($"Retrieved {products.Products.Count} products for search: '{search}', page: {page}, language: {CurrentLanguage}");
 
             products.RecordPerPage = pageSize;

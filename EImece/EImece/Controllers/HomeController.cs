@@ -63,7 +63,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public ActionResult Index()
         {
-            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModelDto(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
             ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle, CurrentLanguage).ToStr();
             ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();

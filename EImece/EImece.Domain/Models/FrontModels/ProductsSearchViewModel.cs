@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using System.Web;
 using System.Web.Mvc;
@@ -10,9 +11,12 @@ namespace EImece.Domain.Models.FrontModels
     {
         public string Search { get; set; }
         public PaginatedList<Product> Products { get; set; }
+        public PaginatedList<ProductDto> ProductsDto { get; set; }
 
         public Menu ProductMenu { get; set; }
+        public MenuDto ProductMenuDto { get; set; }
         public Menu MainPageMenu { get; set; }
+        public MenuDto MainPageMenuDto { get; set; }
 
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {

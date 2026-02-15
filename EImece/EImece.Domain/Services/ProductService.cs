@@ -4,6 +4,7 @@ using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -211,6 +212,25 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public ProductDetailViewModel GetProductDetailViewModelByIdDto(int id)
+        {
+            var result = GetProductDetailViewModelById(id);
+            result.ProductDto = Mapper.Map<ProductDto>(result.Product);
+            result.ProductCommentDto = Mapper.Map<ProductCommentDto>(result.ProductComment);
+            result.ProductMenuDto = Mapper.Map<MenuDto>(result.ProductMenu);
+            result.MainPageMenuDto = Mapper.Map<MenuDto>(result.MainPageMenu);
+            result.TemplateDto = Mapper.Map<TemplateDto>(result.Template);
+            result.RelatedStoriesDto = Mapper.Map<List<StoryDto>>(result.RelatedStories);
+            result.RelatedProductsDto = Mapper.Map<List<ProductDto>>(result.RelatedProducts);
+            result.CargoDescriptionDto = Mapper.Map<SettingDto>(result.CargoDescription);
+            result.CargoPriceDto = Mapper.Map<SettingDto>(result.CargoPrice);
+            result.IsProductPriceEnableDto = Mapper.Map<SettingDto>(result.IsProductPriceEnable);
+            result.IsProductReviewEnableDto = Mapper.Map<SettingDto>(result.IsProductReviewEnable);
+            result.WhatsAppCommunicationLinkDto = Mapper.Map<SettingDto>(result.WhatsAppCommunicationLink);
+            result.CompanyNameDto = Mapper.Map<SettingDto>(result.CompanyName);
+            return result;
+        }
+
         private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
@@ -305,6 +325,15 @@ namespace EImece.Domain.Services
             return r;
         }
 
+        public ProductsSearchViewModel SearchProductsDto(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        {
+            var result = SearchProducts(pageIndex, pageSize, search, lang, sorting);
+            result.ProductsDto = ConvertPaginated<Product, ProductDto>(result.Products);
+            result.MainPageMenuDto = Mapper.Map<MenuDto>(result.MainPageMenu);
+            result.ProductMenuDto = Mapper.Map<MenuDto>(result.ProductMenu);
+            return result;
+        }
+
         public void SaveProductSpecifications(List<ProductSpecification> specifications, int productId)
         {
             if (specifications.IsNotEmpty())
@@ -369,6 +398,18 @@ namespace EImece.Domain.Services
             int top = 10;
             int skip = 0;
             return ProductRepository.GetProductsSearchResult(search, filters, top, skip, language);
+        }
+
+        public ProductsSearchResult GetProductsSearchResultDto(
+         string search,
+         string filters,
+         string page,
+         int language)
+        {
+            var result = GetProductsSearchResult(search, filters, page, language);
+            result.ProductDtos = Mapper.Map<List<ProductDto>>(result.Products);
+            result.ProductCategoryDtos = Mapper.Map<List<ProductCategoryDto>>(result.ProductCategories);
+            return result;
         }
 
         public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request)
@@ -470,6 +511,15 @@ namespace EImece.Domain.Services
             return r;
         }
 
+        public SimiliarProductTagsViewModel GetProductByTagIdDto(int tagId, int pageIndex, int pageSize, int lang)
+        {
+            var result = GetProductByTagId(tagId, pageIndex, pageSize, lang);
+            result.TagDto = Mapper.Map<TagDto>(result.Tag);
+            result.ProductTagsDto = ConvertPaginated<ProductTag, ProductTagDto>(result.ProductTags);
+            result.StoryTagsDto = ConvertPaginated<StoryTag, StoryTagDto>(result.StoryTags);
+            return result;
+        }
+
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             var r = new SimiliarProductTagsViewModel();
@@ -477,6 +527,26 @@ namespace EImece.Domain.Services
             r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
             r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
             return r;
+        }
+
+        public SimiliarProductTagsViewModel GetProductByTagIdDto(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
+        {
+            var result = GetProductByTagId(tagId, pageIndex, pageSize, lang, sorting);
+            result.TagDto = Mapper.Map<TagDto>(result.Tag);
+            result.ProductTagsDto = ConvertPaginated<ProductTag, ProductTagDto>(result.ProductTags);
+            result.StoryTagsDto = ConvertPaginated<StoryTag, StoryTagDto>(result.StoryTags);
+            return result;
+        }
+
+        private PaginatedList<TDestination> ConvertPaginated<TSource, TDestination>(PaginatedList<TSource> source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var mapped = Mapper.Map<List<TDestination>>(source.ToList());
+            return new PaginatedList<TDestination>(mapped, source.PageIndex, source.PageSize, source.TotalCount);
         }
 
         public void ChangeProductState(List<string> values, ProductState state)

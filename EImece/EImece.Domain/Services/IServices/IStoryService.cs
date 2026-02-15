@@ -17,17 +17,26 @@ namespace EImece.Domain.Services.IServices
 
         StoryIndexViewModel GetMainPageStories(int page, int currentLanguage);
 
+        StoryIndexViewModel GetMainPageStoriesDto(int page, int currentLanguage);
+
         void SaveStoryTags(int storyId, int[] tags);
 
         StoryDetailViewModel GetStoryDetailViewModel(int storyId);
 
+        StoryDetailViewModel GetStoryDetailViewModelDto(int storyId);
+
         StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page);
+
+        StoryCategoryViewModel GetStoryCategoriesViewModelDto(int storyCategoryId, int page);
 
         List<Story> GetLatestStories(int language, int take);
 
         Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams);
 
         SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex,
+            int pageSize, int currentLanguage);
+
+        SimiliarStoryTagsViewModel GetStoriesByTagIdDto(int tagId, int pageIndex,
             int pageSize, int currentLanguage);
 
         Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams);

@@ -57,6 +57,34 @@ namespace EImece.Domain.Services
             return result;
         }
 
+
+        public MainPageViewModel GetMainPageViewModelDto(int language)
+        {
+            var result = GetMainPageViewModel(language);
+            result.MainPageImagesDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.MainPageImageDto>>(result.MainPageImages);
+            result.MainPageProductCategoriesDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.ProductCategoryDto>>(result.MainPageProductCategories);
+            result.MainPageProductsDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.ProductDto>>(result.MainPageProducts);
+            result.LatestProductsDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.ProductDto>>(result.LatestProducts);
+            result.CampaignProductsDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.ProductDto>>(result.CampaignProducts);
+            result.MainPageMenuDto = Mapper.Map<EImece.Domain.Models.DTOs.MenuDto>(result.MainPageMenu);
+            result.LatestStoriesDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.StoryDto>>(result.LatestStories);
+            return result;
+        }
+
+        public FooterViewModel GetFooterViewModelDto(int language)
+        {
+            var result = GetFooterViewModel(language);
+            result.MenusDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.MenuDto>>(result.Menus);
+            result.ProductCategoriesDto = Mapper.Map<System.Collections.Generic.List<EImece.Domain.Models.DTOs.ProductCategoryDto>>(result.ProductCategories);
+            result.FooterLogoDto = Mapper.Map<EImece.Domain.Models.DTOs.SettingDto>(result.FooterLogo);
+            result.CompanyNameDto = Mapper.Map<EImece.Domain.Models.DTOs.SettingDto>(result.CompanyName);
+            result.CompanyAddressDto = Mapper.Map<EImece.Domain.Models.DTOs.SettingDto>(result.CompanyAddress);
+            result.FooterDescriptionDto = Mapper.Map<EImece.Domain.Models.DTOs.SettingDto>(result.FooterDescription);
+            result.FooterHtmlDescriptionDto = Mapper.Map<EImece.Domain.Models.DTOs.SettingDto>(result.FooterHtmlDescription);
+            result.FooterEmailListDescriptionDto = Mapper.Map<EImece.Domain.Models.DTOs.SettingDto>(result.FooterEmailListDescription);
+            return result;
+        }
+
         public FooterViewModel GetFooterViewModel(int language)
         {
             var result = new FooterViewModel();

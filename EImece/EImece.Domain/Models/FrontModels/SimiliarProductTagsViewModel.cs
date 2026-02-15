@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.Enums;
 using System.Web;
@@ -10,8 +11,11 @@ namespace EImece.Domain.Models.FrontModels
     {
         public string TagId { get; set; }
         public Tag Tag { get; set; }
+        public TagDto TagDto { get; set; }
         public PaginatedList<ProductTag> ProductTags { get; set; }
+        public PaginatedList<ProductTagDto> ProductTagsDto { get; set; }
         public PaginatedList<StoryTag> StoryTags { get; set; }
+        public PaginatedList<StoryTagDto> StoryTagsDto { get; set; }
 
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {

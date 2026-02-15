@@ -27,6 +27,8 @@ namespace EImece.Domain.Services.IServices
 
         ProductDetailViewModel GetProductDetailViewModelById(int id);
 
+        ProductDetailViewModel GetProductDetailViewModelByIdDto(int id);
+
         Product GetProductById(int id);
 
         Boolean DeleteProductById(int id);
@@ -34,6 +36,8 @@ namespace EImece.Domain.Services.IServices
         new void DeleteBaseEntity(List<string> values);
 
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
+
+        ProductsSearchViewModel SearchProductsDto(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
 
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
 
@@ -49,6 +53,12 @@ namespace EImece.Domain.Services.IServices
          string page,
          int language);
 
+        ProductsSearchResult GetProductsSearchResultDto(
+         string search,
+         string filters,
+         string page,
+         int language);
+
         void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request);
 
         void MoveProductsInTrees(int newCategoryId, string products);
@@ -56,6 +66,8 @@ namespace EImece.Domain.Services.IServices
         List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories);
 
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting);
+
+        SimiliarProductTagsViewModel GetProductByTagIdDto(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting);
         void ChangeProductState(List<string> values, ProductState state);
     }
 }

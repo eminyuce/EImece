@@ -28,5 +28,7 @@ namespace EImece.Domain.Services.IServices
         List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int currentLanguage);
         
         ProductCategoryDto GetProductCategoryDto(int productCategoryId);
+
+        ProductCategoryViewModel GetProductCategoryViewModelDto(int categoryId);
     }
 }

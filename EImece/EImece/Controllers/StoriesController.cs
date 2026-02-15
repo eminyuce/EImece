@@ -26,7 +26,7 @@ namespace EImece.Controllers
             Logger.Info($"Entering Index action with page: {page}");
             try
             {
-                var stories = StoryService.GetMainPageStories(page, CurrentLanguage);
+                var stories = StoryService.GetMainPageStoriesDto(page, CurrentLanguage);
                 Logger.Info($"Retrieved {stories?.Stories?.Count ?? 0} stories for page: {page}, language: {CurrentLanguage}");
                 Logger.Info("Returning Index view.");
                 return View(stories);
@@ -55,7 +55,7 @@ namespace EImece.Controllers
                 var storyId = id.GetId();
                 Logger.Info($"Parsed story ID: {storyId}");
 
-                var story = StoryService.GetStoryDetailViewModel(storyId);
+                var story = StoryService.GetStoryDetailViewModelDto(storyId);
                 Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story?.Story?.Name}");
 
                 ViewBag.SeoId = story.Story.GetSeoUrl();
@@ -88,7 +88,7 @@ namespace EImece.Controllers
                 var storyCategoryId = id.GetId();
                 Logger.Info($"Parsed story category ID: {storyCategoryId}");
 
-                var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
+                var storyCategory = StoryService.GetStoryCategoriesViewModelDto(storyCategoryId, page);
                 Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory?.StoryCategory?.Name}, Stories Count: {storyCategory?.Stories?.Count ?? 0}");
 
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
@@ -125,7 +125,7 @@ namespace EImece.Controllers
                 int pageSize = 20;
                 Logger.Info($"Using pageIndex: {pageIndex}, pageSize: {pageSize}");
 
-                var stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+                var stories = StoryService.GetStoriesByTagIdDto(tagId, pageIndex, pageSize, CurrentLanguage);
                 Logger.Info($"Retrieved {stories.StoryTags.Count} stories for tag ID: {tagId}, language: {CurrentLanguage}");
 
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();
