@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Caching;
+﻿using AutoMapper;
+using EImece.Domain.Caching;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
@@ -15,6 +16,8 @@ namespace EImece.Domain.Services
     {
         [Inject]
         public IHttpContextFactory HttpContextFactory { get; set; }
+        [Inject]
+        public IMapper Mapper { get; set; }
 
         private IEimeceCacheProvider _dataCacheProvider { get; set; }
 

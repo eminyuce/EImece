@@ -26,9 +26,12 @@ namespace EImece.Controllers
         // GET: ProductCategory
         public ActionResult Index()
         {
-            Logger.Info("Entering Index action.");
-            Logger.Info("Returning Index view.");
             return View();
+        }
+        public ActionResult GetProductCategoryDto(String id)
+        {
+            var productCategory = ProductCategoryService.GetProductCategoryDto(id.GetId());
+            return View(productCategory);
         }
 
         [Route(Constants.CategoryPrefix)]

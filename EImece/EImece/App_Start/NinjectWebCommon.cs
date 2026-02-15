@@ -3,6 +3,7 @@
 
 namespace EImece.App_Start
 {
+    using AutoMapper;
     using Domain.ApiRepositories;
     using Domain.Caching;
     using Domain.DbContext;
@@ -17,6 +18,7 @@ namespace EImece.App_Start
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Owin.Security;
     using Ninject;
     using Ninject.Web.Common;
@@ -72,7 +74,22 @@ namespace EImece.App_Start
                 throw;
             }
         }
+        private static MapperConfiguration CreateAutoMapper(IKernel kernel)
+        {
+            var loggerFactory = kernel.Get<ILoggerFactory>();
+            // Option A: If you have Profiles in the same assembly (or known assemblies)
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MappingProfile());
+            }, loggerFactory);
 
+            // Optional: validate only in DEBUG or during tests
+#if DEBUG
+            config.AssertConfigurationIsValid();
+#endif
+
+            return config;
+        }
         /// <summary>
         /// Load your modules or register your services here!
         /// </summary>
@@ -82,6 +99,24 @@ namespace EImece.App_Start
             kernel.Bind<IEimeceCacheProvider>().To<LazyCacheProvider>().InSingletonScope();
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
+            kernel.Bind<ILoggerFactory>()
+              .ToMethod(ctx =>
+              {
+                  var factory = new LoggerFactory();
+                  factory.AddProvider(new NLog.Extensions.Logging.NLogLoggerProvider());
+                  return factory;
+              })
+              .InSingletonScope();
+
+            // Add instead:
+            kernel.Bind<MapperConfiguration>()
+                  .ToConstant(CreateAutoMapper(kernel))   // or just new MapperConfiguration(...) here
+                  .InSingletonScope();                     // configuration is application-wide
+
+            kernel.Bind<IMapper>()
+                  .ToMethod(ctx => ctx.Kernel.Get<MapperConfiguration>().CreateMapper())
+                  .InRequestScope();                       // or .InSingletonScope() in many cases
+
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
             m.WithConstructorArgument("nameOrConnectionString", Domain.Constants.DbConnectionKey);
             m.InRequestScope();
@@ -90,9 +125,6 @@ namespace EImece.App_Start
 
             BindServices(kernel);
             BindRepositories(kernel);
-
-            //        BindByReflection(kernel, typeof(IBaseEntityService<>), "Service");
-            //      BindByReflection(kernel, typeof(IBaseRepository<>), "Repository");
 
             kernel.Bind<FilesHelper>().ToSelf().InRequestScope();
             kernel.Bind<AdresService>().ToSelf().InRequestScope();
@@ -109,33 +141,28 @@ namespace EImece.App_Start
             kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
             kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
             kernel.Bind<AppLogRepository>().ToSelf().InRequestScope();
-            //kernel.Bind<StdSchedulerFactory>().ToSelf().InRequestScope();
-            //kernel.Bind<QuartzService>().ToSelf().InRequestScope();
-
-            // setup Quartz scheduler that uses our NinjectJobFactory
 
             kernel.Bind<Task<IScheduler>>().ToMethod(x =>
             {
                 StdSchedulerFactory factory = new StdSchedulerFactory();
-                // get a scheduler
                 var sched = factory.GetScheduler();
                 return sched;
             });
 
             kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
-              .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
-              {
-                  DataProtectionProvider = Startup.DataProtectionProvider
-              });
+                .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
+                {
+                    DataProtectionProvider = Startup.DataProtectionProvider
+                });
 
             kernel.Bind<IUserStore<ApplicationUser>>()
-             .ToMethod(x => new UserStore<ApplicationUser>(
-                x.Kernel.Get<ApplicationDbContext>()))
-             .InRequestScope();
+                .ToMethod(x => new UserStore<ApplicationUser>(
+                    x.Kernel.Get<ApplicationDbContext>()))
+                .InRequestScope();
 
             kernel.Bind<IAuthenticationManager>()
-              .ToMethod(x => HttpContext.Current.GetOwinContext().Authentication)
-              .InRequestScope();
+                .ToMethod(x => HttpContext.Current.GetOwinContext().Authentication)
+                .InRequestScope();
 
             kernel.Bind<IIdentityMessageService>().To(typeof(SmsService)).InRequestScope().Named("Sms");
             kernel.Bind<IIdentityMessageService>().To(typeof(EmailService)).InRequestScope().Named("Email");
