@@ -9,7 +9,7 @@ using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

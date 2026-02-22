@@ -4,7 +4,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using Resources;
 using System;

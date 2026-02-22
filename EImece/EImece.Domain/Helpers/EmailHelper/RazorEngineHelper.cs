@@ -6,7 +6,7 @@ using EImece.Domain.Helpers.RazorCustomRssTemplate;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;

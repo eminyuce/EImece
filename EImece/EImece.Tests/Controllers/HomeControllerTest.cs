@@ -1,5 +1,4 @@
-﻿using EImece.App_Start;
-using EImece.Domain;
+﻿using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
@@ -12,7 +11,7 @@ using EImece.Domain.Services;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using RazorEngine;
 using RazorEngine.Templating;
@@ -47,7 +46,6 @@ namespace EImece.Tests.Controllers
     [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class HomeControllerTest
     {
-        private IKernel kernel = null;
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static void BindByReflection(Type typeOfInterface, string typeofText)
@@ -68,7 +66,6 @@ namespace EImece.Tests.Controllers
         [TestInitialize]
         public void MyTestInitialize()
         {
-            kernel = NinjectWebCommon.CreateKernel();
             Console.WriteLine("Reflecting Repository Assemblies");
         }
 

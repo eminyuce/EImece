@@ -163,9 +163,6 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.6.1.0\lib\net46\NLog.dll</HintPath>
     </Reference>
@@ -391,6 +388,7 @@
     <Compile Include="DbContext\DbMigration.cs" />
     <Compile Include="DbContext\EImeceContext.cs" />
     <Compile Include="DbContext\IEImeceContext.cs" />
+    <Compile Include="DependencyInjection\InjectAttribute.cs" />
     <Compile Include="Entities\Addres.cs" />
     <Compile Include="Entities\BaseContent.cs" />
     <Compile Include="Entities\BaseEntity.cs" />

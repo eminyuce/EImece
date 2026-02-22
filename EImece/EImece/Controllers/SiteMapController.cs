@@ -2,7 +2,7 @@
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using System.Text;
 using System.Web.Mvc;
 

@@ -1,7 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Repositories.IRepositories;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Net;

@@ -1,4 +1,6 @@
-﻿using EImece.Controllers;
+﻿using Autofac;
+using EImece.App_Start;
+using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
@@ -16,11 +18,14 @@ namespace EImece
     public class MvcApplication : System.Web.HttpApplication
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static IContainer Container;
 
         protected void Application_Start()
         {
             //System.Net.ServicePointManager.SecurityProtocol
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls; // comparable to modern browsers
+
+            Container = AutofacConfig.RegisterDependencies();
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -36,6 +41,11 @@ namespace EImece
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
+
+        protected void Application_End()
+        {
+            Container?.Dispose();
+        }
         public override string GetVaryByCustomString(HttpContext context, string custom)
         {
             if (custom == "User")

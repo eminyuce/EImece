@@ -9,7 +9,7 @@ using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using Resources;
 using System;

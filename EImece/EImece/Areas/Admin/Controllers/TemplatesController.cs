@@ -1,6 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using Resources;
 using System;

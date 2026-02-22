@@ -4,7 +4,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using Resources;
 using System.Collections.Generic;
 using System.Linq;
