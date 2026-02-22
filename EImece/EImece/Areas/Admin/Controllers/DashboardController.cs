@@ -5,7 +5,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;

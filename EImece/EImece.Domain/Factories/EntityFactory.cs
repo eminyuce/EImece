@@ -2,7 +2,7 @@
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 
 namespace EImece.Domain.Factories
 {

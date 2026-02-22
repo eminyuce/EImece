@@ -4,7 +4,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using Resources;
 using System;
 using System.Collections.Generic;

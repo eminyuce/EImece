@@ -2,7 +2,7 @@
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;

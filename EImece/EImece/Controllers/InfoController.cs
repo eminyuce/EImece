@@ -1,8 +1,6 @@
 ﻿using EImece.Domain;
-using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
-using Ninject;
 using System;
 using System.Net;
 using System.Web.Mvc;
@@ -11,8 +9,12 @@ namespace EImece.Controllers
 {
     public class InfoController : BaseController
     {
-        [Inject]
-        public IMenuService MenuService { get; set; }
+        private readonly IMenuService _menuService;
+
+        public InfoController(IMenuService menuService)
+        {
+            _menuService = menuService;
+        }
 
         // GET: Info
         public ActionResult Index(string id, string lang = "")
@@ -26,7 +28,7 @@ namespace EImece.Controllers
             {
                 eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
             }
-            var page = MenuService.GetPageByMenuLink(Constants.INFO_PREFIX + id, eImageLang);
+            var page = _menuService.GetPageByMenuLink(Constants.INFO_PREFIX + id, eImageLang);
             if (page == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);

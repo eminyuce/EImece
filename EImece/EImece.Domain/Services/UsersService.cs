@@ -2,7 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;

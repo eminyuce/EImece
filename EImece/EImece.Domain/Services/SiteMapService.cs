@@ -4,7 +4,7 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
