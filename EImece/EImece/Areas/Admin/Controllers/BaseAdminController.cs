@@ -196,15 +196,13 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult RequestReturn(RedirectToRouteResult returnDefault)
         {
-            var urlReferrer = Request.UrlReferrer;
-            if (urlReferrer != null)
+            string redirectUrl;
+            if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                return Redirect(urlReferrer.ToStr());
+                return Redirect(redirectUrl);
             }
-            else
-            {
-                return returnDefault;
-            }
+
+            return returnDefault;
         }
 
         protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
@@ -216,26 +214,32 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action)
         {
+            string redirectUrl;
             if (Request.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLower().Contains("saveoredit"))
             {
                 return RedirectToAction(action);
             }
-            else
+            else if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                return Redirect(Request.UrlReferrer.ToString());
+                return Redirect(redirectUrl);
             }
+
+            return RedirectToAction(action);
         }
 
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action, object routeValues)
         {
+            string redirectUrl;
             if (Request.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLower().Contains("saveoredit"))
             {
                 return RedirectToAction(action, routeValues);
             }
-            else
+            else if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                return Redirect(Request.UrlReferrer.ToString());
+                return Redirect(redirectUrl);
             }
+
+            return RedirectToAction(action, routeValues);
         }
 
         protected ActionResult DownloadFileDataTable(DataTable result, string fileName)

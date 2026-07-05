@@ -53,7 +53,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                result = ProductCategoryRepository.BuildTree(isActive, language);
+                result = ProductCategoryRepository.BuildNavigation(isActive, language);
             }
 
             return result;

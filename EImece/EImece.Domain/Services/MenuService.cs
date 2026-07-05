@@ -63,15 +63,17 @@ namespace EImece.Domain.Services
         {
             var cacheKey = "GetMenus";
             List<Menu> result = null;
-            if (!DataCachingProvider.Get(cacheKey, out result) && IsCachingActivated)
+            if (DataCachingProvider.Get(cacheKey, out result))
             {
-                result = MenuRepository.GetMenus();
+                return result;
+            }
+
+            result = MenuRepository.GetMenus();
+            if (IsCachingActivated)
+            {
                 DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
             }
-            else
-            {
-                result = MenuRepository.GetMenus();
-            }
+
             return result;
         }
 

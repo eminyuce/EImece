@@ -34,9 +34,25 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             return _dbContext.Set<TEntity>();
         }
 
+        public IQueryable<TEntity> GetAllReadOnly()
+        {
+            return _dbContext.Set<TEntity>().AsNoTracking();
+        }
+
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> queryable = GetAll();
+            foreach (Expression<Func<TEntity, object>> includeProperty in includeProperties)
+            {
+                queryable = queryable.Include<TEntity, object>(includeProperty);
+            }
+
+            return queryable;
+        }
+
+        public IQueryable<TEntity> GetAllIncludingReadOnly(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> queryable = GetAllReadOnly();
             foreach (Expression<Func<TEntity, object>> includeProperty in includeProperties)
             {
                 queryable = queryable.Include<TEntity, object>(includeProperty);
@@ -218,8 +234,8 @@ namespace EImece.Domain.GenericRepository.EntityFramework
         {
             IQueryable<TEntity> queryable =
                 (orderByType == OrderByType.Ascending)
-                    ? GetAllIncluding(includeProperties).OrderBy(keySelector)
-                    : GetAllIncluding(includeProperties).OrderByDescending(keySelector);
+                    ? GetAllIncludingReadOnly(includeProperties).OrderBy(keySelector)
+                    : GetAllIncludingReadOnly(includeProperties).OrderByDescending(keySelector);
 
             queryable = (predicate != null) ? queryable.Where(predicate) : queryable;
             PaginatedList<TEntity> paginatedList = queryable.ToPaginatedList(pageIndex, pageSize);

@@ -13,7 +13,7 @@ namespace EImece.Domain.DbContext
 
         public EImeceContext(String nameOrConnectionString) : base(nameOrConnectionString)
         {
-            this.Database.CommandTimeout = int.MaxValue;
+            this.Database.CommandTimeout = AppConfig.GetConfigInt("DatabaseCommandTimeoutSeconds", 120);
             this.Configuration.LazyLoadingEnabled = false;
         }
 

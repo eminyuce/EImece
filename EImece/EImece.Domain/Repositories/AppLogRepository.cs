@@ -32,9 +32,33 @@ namespace EImece.Domain.Repositories
 
         public void DeleteAppLogs(List<string> values)
         {
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
+            var ids = new List<int>();
+            foreach (var value in values)
+            {
+                if (!int.TryParse(value, out var id) || id <= 0)
+                {
+                    throw new ArgumentException("Invalid log id: " + value, nameof(values));
+                }
+
+                ids.Add(id);
+            }
+
             string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
-            String commandText = @"DELETE FROM dbo.AppLogs WHERE Id IN (" + String.Join(",", values) + ")";
             var parameterList = new List<SqlParameter>();
+            var parameterNames = new List<string>();
+            for (var i = 0; i < ids.Count; i++)
+            {
+                var parameterName = "Id" + i;
+                parameterNames.Add("@" + parameterName);
+                parameterList.Add(DatabaseUtility.GetSqlParameter(parameterName, ids[i], SqlDbType.Int));
+            }
+
+            String commandText = @"DELETE FROM dbo.AppLogs WHERE Id IN (" + String.Join(",", parameterNames) + ")";
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
             {
@@ -86,10 +110,14 @@ namespace EImece.Domain.Repositories
             }
             else
             {
-                commandText = @"SELECT top 10000 * FROM dbo.AppLogs where EventMessage LIKE '%" + search.Trim() + "%' ORDER BY Id DESC";
+                commandText = @"SELECT top 10000 * FROM dbo.AppLogs where EventMessage LIKE @Search ORDER BY Id DESC";
             }
 
             var parameterList = new List<SqlParameter>();
+            if (!string.IsNullOrEmpty(search))
+            {
+                parameterList.Add(DatabaseUtility.GetSqlParameter("Search", "%" + search.Trim() + "%", SqlDbType.NVarChar));
+            }
             string connectionString = ConfigurationManager.ConnectionStrings[Constants.DbConnectionKey].ConnectionString;
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))

@@ -8,6 +8,7 @@ using EImece.Domain.Services.IServices;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -62,12 +63,18 @@ namespace EImece.Domain.Repositories
             {
                 match = match.And(r => r.IsActive == isActive);
             }
-            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
+            var categoryIds = pcList.Select(c => c.Id).ToList();
+            var productCounts = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => categoryIds.Contains(p.ProductCategoryId) && p.Lang == language && (!isActived || p.IsActive))
+                .GroupBy(p => p.ProductCategoryId)
+                .Select(g => new { CategoryId = g.Key, Count = g.Count() })
+                .ToDictionary(x => x.CategoryId, x => x.Count);
             var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
             new
             {
                 ProductCategory = c,
-                ProductCount = c.Products.Where(r => isActived ? r.IsActive : true).Count()
+                ProductCount = productCounts.ContainsKey(c.Id) ? productCounts[c.Id] : 0
             }).ToList();
 
             List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();

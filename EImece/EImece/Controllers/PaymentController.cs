@@ -401,12 +401,19 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CargoTrackingResult(string orderNumber)
+        public JsonResult CargoTrackingResult(string orderNumber)
         {
             if (string.IsNullOrEmpty(orderNumber))
             {
                 return Json("", JsonRequestBehavior.AllowGet);
             }
+
+            orderNumber = orderNumber.Trim();
+            if (orderNumber.Length > 50)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+
             var order = OrderService.GetByOrderNumber(orderNumber);
             if (order == null)
             {
@@ -574,6 +581,7 @@ namespace EImece.Controllers
                 SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
                 ClearCart(shoppingCart);
                 PaymentLogger.Info("Cart cleared. Redirecting to ThankYouForYourOrder.");
+                TempData["LastCompletedOrderId"] = order.Id;
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
             else
@@ -586,8 +594,31 @@ namespace EImece.Controllers
         public ActionResult ThankYouForYourOrder(int orderId)
         {
             var order = OrderService.GetOrderById(orderId);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!CanViewOrder(order))
+            {
+                return new HttpUnauthorizedResult();
+            }
+
             //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             return View(order);
+        }
+
+        private bool CanViewOrder(Order order)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                return !string.IsNullOrEmpty(order.UserId)
+                    && order.UserId.Equals(userId, StringComparison.OrdinalIgnoreCase);
+            }
+
+            var lastCompletedOrderId = TempData["LastCompletedOrderId"] as int?;
+            return lastCompletedOrderId.HasValue && lastCompletedOrderId.Value == order.Id;
         }
 
         public ActionResult NoSuccessForYourOrder()
@@ -749,6 +780,7 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Order saved with ID: {order.Id}");
                 ClearBuyNow(buyNowModel);
                 PaymentLogger.Info("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
+                TempData["LastCompletedOrderId"] = order.Id;
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
             else
@@ -1020,6 +1052,7 @@ namespace EImece.Controllers
                 ClearBuyWithNoAccountCreation(buyWithNoAccountCreation);
                 ClearCart(shoppingCart);
                 PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
+                TempData["LastCompletedOrderId"] = order.Id;
                 return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
             }
             else
