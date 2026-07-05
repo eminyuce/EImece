@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PATH="${HOME}/.dotnet:${PATH}"
 
 if ! command -v dotnet >/dev/null 2>&1; then
@@ -18,6 +18,15 @@ dotnet msbuild "${ROOT}/EImece.sln" \
   /t:Clean,Build \
   /p:Configuration=Release \
   /p:DeployOnBuild=false \
-  /v:minimal
+  /v:minimal \
+  /clp:ErrorsOnly
+
+if [[ ! -f "${ROOT}/EImece/bin/EImece.dll" && ! -f "${ROOT}/EImece/bin/Release/EImece.dll" ]]; then
+  echo "ERROR: EImece.dll was not produced." >&2
+  exit 1
+fi
 
 echo "Build succeeded."
+echo "  Resources     -> ${ROOT}/Resources/bin/Release/Resources.dll"
+echo "  EImece.Domain -> ${ROOT}/EImece.Domain/bin/Release/EImece.Domain.dll"
+echo "  EImece        -> ${ROOT}/EImece/bin/EImece.dll"
