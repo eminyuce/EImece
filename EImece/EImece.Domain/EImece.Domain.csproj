@@ -191,6 +191,30 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Polly, Version=8.0.0.0, Culture=neutral, PublicKeyToken=4089b40aef54e098, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.8.5.2\lib\net472\Polly.dll</HintPath>
+    </Reference>
+    <Reference Include="Polly.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=4089b40aef54e098, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.Core.8.5.2\lib\net472\Polly.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c544fe84fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.6.8.1\lib\net462\RabbitMQ.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.4.2.0\lib\netstandard2.0\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Enrichers.Environment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Enrichers.Environment.3.0.1\lib\netstandard2.0\Serilog.Enrichers.Environment.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Formatting.Compact, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Formatting.Compact.3.0.0\lib\netstandard2.0\Serilog.Formatting.Compact.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=6.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.6.0.0\lib\netstandard2.0\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.2.8.16\lib\net472\StackExchange.Redis.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=3.0.6.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.0.6\lib\net452\Quartz.dll</HintPath>
       <Private>True</Private>
@@ -298,6 +322,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\MemoryCacheProvider.cs" />
+    <Compile Include="Observability\Configuration\ObservabilityOptions.cs" />
+    <Compile Include="Observability\Exceptions\ApiErrorResponse.cs" />
+    <Compile Include="Observability\HealthChecks\BackgroundServiceHealthCheck.cs" />
+    <Compile Include="Observability\HealthChecks\ExternalApiHealthCheck.cs" />
+    <Compile Include="Observability\HealthChecks\FileStorageHealthCheck.cs" />
+    <Compile Include="Observability\HealthChecks\HealthCheckResponse.cs" />
+    <Compile Include="Observability\HealthChecks\HealthCheckResult.cs" />
+    <Compile Include="Observability\HealthChecks\HealthCheckService.cs" />
+    <Compile Include="Observability\HealthChecks\HealthStatus.cs" />
+    <Compile Include="Observability\HealthChecks\IHealthCheck.cs" />
+    <Compile Include="Observability\HealthChecks\RabbitMqHealthCheck.cs" />
+    <Compile Include="Observability\HealthChecks\RedisHealthCheck.cs" />
+    <Compile Include="Observability\HealthChecks\SqlServerHealthCheck.cs" />
+    <Compile Include="Observability\Http\IResilientHttpClient.cs" />
+    <Compile Include="Observability\Http\ResilientHttpClient.cs" />
+    <Compile Include="Observability\Http\ResilientHttpClientAccessor.cs" />
+    <Compile Include="Observability\Logging\CorrelationIdContext.cs" />
+    <Compile Include="Observability\Logging\RequestLogContext.cs" />
+    <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
+    <Compile Include="Observability\Logging\StructuredLoggingBootstrap.cs" />
+    <Compile Include="Observability\Metrics\ApplicationMetrics.cs" />
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Entities\Coupon.cs" />
     <Compile Include="GenericRepository.EntityFramework\DbContextFactory.cs" />

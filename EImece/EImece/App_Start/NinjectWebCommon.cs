@@ -4,14 +4,18 @@
 namespace EImece.App_Start
 {
     using AutoMapper;
-    using Domain.ApiRepositories;
-    using Domain.Caching;
-    using Domain.DbContext;
-    using Domain.Factories;
-    using Domain.Factories.IFactories;
-    using Domain.Helpers;
-    using Domain.Helpers.EmailHelper;
-    using Domain.Repositories;
+using Domain.ApiRepositories;
+using Domain.Caching;
+using Domain.DbContext;
+using Domain.Factories;
+using Domain.Factories.IFactories;
+using Domain.Helpers;
+using Domain.Helpers.EmailHelper;
+using Domain.Observability.Configuration;
+using Domain.Observability.HealthChecks;
+using Domain.Observability.Http;
+using Domain.Observability.Metrics;
+using Domain.Repositories;
     using Domain.Repositories.IRepositories;
     using Domain.Services;
     using Domain.Services.IServices;
@@ -97,6 +101,16 @@ namespace EImece.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IEimeceCacheProvider>().To<LazyCacheProvider>().InSingletonScope();
+            kernel.Bind<ObservabilityOptions>().ToMethod(_ => ObservabilityOptions.FromAppConfig()).InSingletonScope();
+            kernel.Bind<IApplicationMetrics>().To<ApplicationMetrics>().InSingletonScope();
+            kernel.Bind<IResilientHttpClient>().To<ResilientHttpClient>().InSingletonScope();
+            kernel.Bind<IHealthCheck>().To<SqlServerHealthCheck>().InSingletonScope();
+            kernel.Bind<IHealthCheck>().To<RedisHealthCheck>().InSingletonScope();
+            kernel.Bind<IHealthCheck>().To<RabbitMqHealthCheck>().InSingletonScope();
+            kernel.Bind<IHealthCheck>().To<ExternalApiHealthCheck>().InSingletonScope();
+            kernel.Bind<IHealthCheck>().To<FileStorageHealthCheck>().InSingletonScope();
+            kernel.Bind<IHealthCheck>().To<BackgroundServiceHealthCheck>().InSingletonScope();
+            kernel.Bind<IHealthCheckService>().To<HealthCheckService>().InSingletonScope();
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();
 
             kernel.Bind<ILoggerFactory>()

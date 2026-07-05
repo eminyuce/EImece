@@ -1,4 +1,5 @@
-﻿using EImece.Controllers;
+﻿using EImece.App_Start;
+using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
@@ -28,6 +29,11 @@ namespace EImece
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             MvcHandler.DisableMvcResponseHeader = true;
+
+            ObservabilityBootstrap.Configure();
+            GlobalFilters.Filters.Add(new Filters.MetricsActionFilter(
+                DependencyResolver.Current.GetService<Domain.Observability.Metrics.IApplicationMetrics>()));
+            GlobalFilters.Filters.Add(new Filters.StructuredExceptionFilter());
 
             var adresService = DependencyResolver.Current.GetService<AdresService>();
             //  var quartzService = DependencyResolver.Current.GetService<QuartzService>();
