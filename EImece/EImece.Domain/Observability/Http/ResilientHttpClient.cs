@@ -170,7 +170,7 @@ namespace EImece.Domain.Observability.Http
             }
         }
 
-        private AsyncPolicyWrap<HttpResponseMessage> BuildRetryPolicy()
+        private AsyncRetryPolicy<HttpResponseMessage> BuildRetryPolicy()
         {
             var jitter = new Random();
 

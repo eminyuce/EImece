@@ -3,6 +3,7 @@ using EImece.Domain.Observability.Exceptions;
 using EImece.Domain.Observability.Logging;
 using Newtonsoft.Json;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Filters

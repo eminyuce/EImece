@@ -1,6 +1,5 @@
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Logging;
-using Serilog;
 
 namespace EImece.App_Start
 {
@@ -10,10 +9,8 @@ namespace EImece.App_Start
         {
             StructuredLoggingBootstrap.Configure();
 
-            var resilientHttpClient = System.Web.Mvc.DependencyResolver.Current.GetService<IResilientHttpClient>();
+            var resilientHttpClient = (IResilientHttpClient)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IResilientHttpClient));
             ResilientHttpClientAccessor.Instance = resilientHttpClient;
-
-            Log.Information("Observability infrastructure initialized.");
         }
     }
 }
