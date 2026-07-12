@@ -1,4 +1,5 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Repositories.IRepositories;
 using Ninject;
@@ -27,7 +28,14 @@ namespace EImece.Controllers
             var shortUrlObj = ShortUrlRepository.GetShortUrlByKey(key);
             if (shortUrlObj != null)
             {
-                response.Headers.Location = new Uri(shortUrlObj.Url);
+                Uri safeUri;
+                if (!SecurityHelper.IsSafeHttpRedirectUrl(shortUrlObj.Url, out safeUri))
+                {
+                    Logger.Warn("Blocked unsafe short URL redirect for key: " + key);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                response.Headers.Location = safeUri;
                 return response;
             }
 

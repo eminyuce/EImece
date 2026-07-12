@@ -9,6 +9,7 @@ using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
@@ -42,15 +43,13 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.SearchKey = search;
             if (String.IsNullOrEmpty(search))
             {
-                var urlReferrer = Request.UrlReferrer;
-                if (urlReferrer != null)
+                string redirectUrl;
+                if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
                 {
-                    return Redirect(urlReferrer.ToStr());
+                    return Redirect(redirectUrl);
                 }
-                else
-                {
-                    return RedirectToAction("Index");
-                }
+
+                return RedirectToAction("Index");
             }
             List<BaseContent> resultList = SearchDatabaseForDashboard(search);
 
@@ -81,18 +80,16 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult ClearCache()
         {
             SettingService.ClearCache();
-            var urlReferrer = Request.UrlReferrer;
             MemoryCacheProvider.ClearAll();
             ExecuteWarmUpSql();
 
-            if (urlReferrer != null)
+            string redirectUrl;
+            if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                return Redirect(urlReferrer.ToStr());
+                return Redirect(redirectUrl);
             }
-            else
-            {
-                return RedirectToAction("Index");
-            }
+
+            return RedirectToAction("Index");
         }
 
         private void ExecuteWarmUpSql()
@@ -108,7 +105,7 @@ namespace EImece.Areas.Admin.Controllers
                 var activeCategories = ProductCategoryService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
                 if (activeCategories.IsNotEmpty())
                 {
-                    foreach (var c in activeCategories)
+                    foreach (var c in activeCategories.Take(10))
                     {
                         ProductCategoryService.GetProductCategoryViewModel(c.Id);
                     }
@@ -122,7 +119,7 @@ namespace EImece.Areas.Admin.Controllers
                 MailTemplateService.GetAllMailTemplatesWithCache();
                 if (products.IsNotEmpty())
                 {
-                    foreach (var p in products)
+                    foreach (var p in products.Take(10))
                     {
                         ProductService.GetProductDetailViewModelById(p.Id);
                     }

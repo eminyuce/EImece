@@ -10,6 +10,18 @@ namespace EImece
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(
+                name: "Health",
+                url: "health",
+                defaults: new { controller = "Health", action = "Index" },
+                namespaces: new[] { "EImece.Controllers" });
+
+            routes.MapRoute(
+                name: "Healthz",
+                url: "healthz",
+                defaults: new { controller = "Health", action = "Index" },
+                namespaces: new[] { "EImece.Controllers" });
+
             // Imprive SEO by stopping duplicate URL's due to case or trailing slashes.
             routes.AppendTrailingSlash = true;
             routes.LowercaseUrls = true;

@@ -252,8 +252,8 @@ namespace EImece.Domain.Services
 
         public Boolean DeleteProductById(int id)
         {
-            var isAnyProductSold = OrderProductRepository.GetAll().Where(r => r.ProductId == id).ToList();
-            if (isAnyProductSold.IsEmpty())
+            var isAnyProductSold = OrderProductRepository.GetAll().Any(r => r.ProductId == id);
+            if (!isAnyProductSold)
             {
                 try
                 {
@@ -315,9 +315,10 @@ namespace EImece.Domain.Services
                     if (!string.IsNullOrEmpty(item.Value))
                     {
                         ProductSpecificationRepository.Add(item);
-                        ProductSpecificationRepository.Save();
                     }
                 }
+
+                ProductSpecificationRepository.Save();
             }
         }
 

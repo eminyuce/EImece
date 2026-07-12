@@ -33,11 +33,6 @@ namespace EImece.Domain.Repositories
             DbContext = dbContext;
         }
 
-        ~BaseRepository()
-        {
-            Dispose(false);
-        }
-
         protected void Dispose(Boolean disposing)
         {
             // free unmanaged ressources here

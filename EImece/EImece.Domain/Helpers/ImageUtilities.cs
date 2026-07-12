@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EImece.Domain.Observability.Http;
+using System;
 using System.Collections.Generic;
 using System.Drawing; // note: add reference to System.Drawing assembly
 using System.IO;
@@ -73,6 +74,18 @@ namespace EImece.Domain.Helpers
 
         private static byte[] GetSomeBytes(Uri uri, int startRange, int endRange)
         {
+            if (ResilientHttpClientAccessor.Instance != null)
+            {
+                try
+                {
+                    return ResilientHttpClientAccessor.Instance.GetByteRangeAsync(uri.ToString(), startRange, endRange).GetAwaiter().GetResult();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
             using (var client = new HttpClient())
             {
                 var request = new HttpRequestMessage { RequestUri = uri };

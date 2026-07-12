@@ -87,10 +87,10 @@ namespace EImece.Domain.Helpers
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = 0, originalHeight = 0;
-            String fullPath = Path.Combine(StorageRoot, fileName);
-            String thumbPath = "/thb" + fileName + "";
+            String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, fileName);
+            String thumbPath = "/thb" + Path.GetFileName(fileName) + "";
             String partThumb1 = Path.Combine(StorageRoot, THUMBS);
-            String partThumb2 = Path.Combine(partThumb1, THB + fileName);
+            String partThumb2 = Path.Combine(partThumb1, THB + Path.GetFileName(fileName));
             if (File.Exists(partThumb2))
             {
                 using (Bitmap thumpBitmap = new Bitmap(partThumb2))
@@ -143,8 +143,9 @@ namespace EImece.Domain.Helpers
 
         public string DeleteThumbFile(string file)
         {
+            string safeFileName = Path.GetFileName(file);
             string partThumb1 = Path.Combine(StorageRoot, THUMBS);
-            string partThumb2 = Path.Combine(partThumb1, THB + file);
+            string partThumb2 = Path.Combine(partThumb1, THB + safeFileName);
             string successMessage = "Error Delete";
 
             try
@@ -172,13 +173,13 @@ namespace EImece.Domain.Helpers
 
         public bool NormalFileExists(String file)
         {
-            String fullPath = Path.Combine(StorageRoot, file);
+            String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
             return File.Exists(fullPath);
         }
 
         public String DeleteNormalFile(String file)
         {
-            String fullPath = Path.Combine(StorageRoot, file);
+            String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
             if (File.Exists(fullPath))
             {
                 using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.Delete))

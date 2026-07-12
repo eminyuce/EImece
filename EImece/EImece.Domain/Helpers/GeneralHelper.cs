@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Observability.Http;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -763,6 +764,21 @@ namespace EImece.Domain.Helpers
 
         public static byte[] GetImageFromUrl(string url, Dictionary<String, String> dictionary)
         {
+            if (ResilientHttpClientAccessor.Instance != null)
+            {
+                try
+                {
+                    var payload = ResilientHttpClientAccessor.Instance.GetAsync(url, dictionary).GetAwaiter().GetResult();
+                    if (payload?.Content != null && payload.StatusCode == 200)
+                    {
+                        return payload.Content.Length > 500000 ? payload.Content.Take(500000).ToArray() : payload.Content;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+
             System.Net.HttpWebRequest request = null;
             System.Net.HttpWebResponse response = null;
             byte[] b = null;

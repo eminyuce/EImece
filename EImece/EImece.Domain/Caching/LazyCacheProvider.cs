@@ -10,7 +10,7 @@ namespace EImece.Domain.Caching
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IAppCache _lazyCache = new CachingService();
-        private static List<string> allCacheKeys = new List<string>();
+        private static readonly HashSet<string> allCacheKeys = new HashSet<string>(StringComparer.Ordinal);
 
         public void Clear(string key)
         {
@@ -55,7 +55,10 @@ namespace EImece.Domain.Caching
                 options.AbsoluteExpiration = DateTime.Now.AddSeconds(duration);
                 options.SlidingExpiration = TimeSpan.FromSeconds(duration);
                 _lazyCache.Add(keyNew, value, options);
-                allCacheKeys.Add(keyNew);
+                lock (allCacheKeys)
+                {
+                    allCacheKeys.Add(keyNew);
+                }
             }
         }
     }
