@@ -122,6 +122,15 @@ using Domain.Repositories;
               })
               .InSingletonScope();
 
+            // Explicit binding for ILogger<ResilientHttpClient> to satisfy ResilientHttpClient constructor
+            kernel.Bind<ILogger<ResilientHttpClient>>()
+                  .ToMethod(ctx =>
+                  {
+                      var factory = ctx.Kernel.Get<ILoggerFactory>();
+                      return factory.CreateLogger<ResilientHttpClient>();
+                  })
+                  .InTransientScope();
+
             // Add instead:
             kernel.Bind<MapperConfiguration>()
                   .ToConstant(CreateAutoMapper(kernel))   // or just new MapperConfiguration(...) here
