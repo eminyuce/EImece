@@ -346,6 +346,7 @@
     <Compile Include="Areas\Admin\Controllers\AppLogsController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\BrandsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MetricsController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\CustomersController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
@@ -373,6 +374,7 @@
     <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Models\MetricsViewModel.cs" />
     <Compile Include="Areas\Customers\Controllers\HomeController.cs" />
     <Compile Include="Areas\Customers\CustomersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -385,7 +387,6 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MetricsController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -1217,6 +1218,7 @@
     <Content Include="Areas\Admin\Views\Dashboard\OurSiteFeatures.cshtml" />
     <Content Include="Areas\Admin\Views\ShoppingCarts\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ShoppingCarts\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Metrics\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />

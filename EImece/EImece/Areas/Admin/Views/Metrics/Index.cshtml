@@ -1,0 +1,157 @@
+@model EImece.Areas.Admin.Models.MetricsIndexViewModel
+@using EImece.Domain.Helpers
+@using GridMvc.Html
+@using GridMvc.Sorting
+@using Resources
+
+@{
+    ViewBag.Title = "Metrics";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = Model.PageSize;
+    int gridPage = Request.QueryString["grid-page"].ToInt();
+    var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
+
+    var controllerName = "Metrics";
+    var gridName = "MetricsGrid";
+    var contents = Model.Metrics;
+}
+
+<h2>Application Metrics</h2>
+<hr class="adminLine" />
+
+<!-- Search Form -->
+<div class="panel panel-default" style="margin-bottom: 20px;">
+    <div class="panel-body">
+        <form method="get" class="form-inline">
+            <div class="form-group">
+                <label for="search">Search Metric Name:</label>
+                <input type="text" id="search" name="search" class="form-control" placeholder="e.g., request:, db:, http:" value="@Model.SearchTerm" />
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </button>
+            <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-default">
+                <span class="glyphicon glyphicon-refresh"></span> Clear
+            </a>
+        </form>
+    </div>
+</div>
+
+<!-- Results Info -->
+<div class="alert alert-info">
+    Showing <strong>@contents.Count</strong> of <strong>@Model.TotalCount</strong> metrics
+</div>
+
+<!-- Data Grid -->
+<div class="panel panel-primary">
+    <div style="border: 1px solid #ddd; padding: 10px;" class="table-responsive">
+        @Html.Grid(contents).Named(gridName).Columns(columns =>
+        {
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+
+            columns.Add(m => m.Name)
+                .Titled("Metric Name")
+                .Filterable(true)
+                .Css("metric-name");
+
+            columns.Add(m => m.Count)
+                .Titled("Count")
+                .Filterable(false)
+                .RenderValueAs(m => m.Count.ToString("N0"));
+
+            columns.Add(m => m.ErrorCount)
+                .Titled("Errors")
+                .Filterable(false)
+                .RenderValueAs(m => string.Format("<span class='label label-{0}'>{1}</span>",
+                    m.ErrorCount > 0 ? "danger" : "success", m.ErrorCount.ToString("N0")));
+
+            columns.Add(m => m.AverageDurationMs)
+                .Titled("Avg Duration (ms)")
+                .Filterable(false)
+                .RenderValueAs(m => m.AverageDurationMs.ToString("F2"));
+
+            columns.Add(m => m.P95DurationMs)
+                .Titled("P95 Duration (ms)")
+                .Filterable(false)
+                .RenderValueAs(m => m.P95DurationMs.ToString("N0"));
+        })
+        .WithPaging(Model.PageSize)
+        .Sortable(true)
+        .Filterable(true)
+    </div>
+</div>
+
+<!-- Paging Controls -->
+<div class="pagination-container" style="margin-top: 20px; text-align: center;">
+    <nav>
+        <ul class="pagination">
+            @if (Model.HasPreviousPage)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Metrics", new { area = "Admin", search = Model.SearchTerm, page = Model.PageNumber - 1 })">
+                        <span aria-hidden="true">&laquo;</span> Previous
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="disabled">
+                    <span><span aria-hidden="true">&laquo;</span> Previous</span>
+                </li>
+            }
+
+            @for (int i = 1; i <= Model.TotalPages && i <= 10; i++)
+            {
+                <li class="@(i == Model.PageNumber ? "active" : "")">
+                    <a href="@Url.Action("Index", "Metrics", new { area = "Admin", search = Model.SearchTerm, page = i })">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @if (Model.HasNextPage)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Metrics", new { area = "Admin", search = Model.SearchTerm, page = Model.PageNumber + 1 })">
+                        Next <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="disabled">
+                    <span>Next <span aria-hidden="true">&raquo;</span></span>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 4px;">
+    <h4>Metric Name Format:</h4>
+    <ul>
+        <li><code>request:*</code> - HTTP request metrics</li>
+        <li><code>http:METHOD:STATUS</code> - HTTP call metrics (e.g., http:GET:200)</li>
+        <li><code>db:*</code> - Database query metrics</li>
+    </ul>
+</div>
+
+<style>
+    .metric-name {
+        font-family: monospace;
+        font-size: 11px;
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .pagination {
+        margin: 0;
+    }
+</style>
