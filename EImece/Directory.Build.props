@@ -5,5 +5,6 @@
     <AspNetTargetsPath>$(MSBuildThisFileDirectory)build-tools\no-publish\</AspNetTargetsPath>
     <SkipEnsureBindingRedirects>true</SkipEnsureBindingRedirects>
     <Disable_CopyWebApplication>true</Disable_CopyWebApplication>
+    <NoWarn>$(NoWarn);NU1903;NU1904</NoWarn>
   </PropertyGroup>
 </Project>
