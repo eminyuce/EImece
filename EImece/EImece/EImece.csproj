@@ -1225,7 +1225,6 @@
     <Content Include="Areas\Admin\Views\ShoppingCarts\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Metrics\Index.cshtml" />
     <Content Include="ApplicationInsights.config" />
-    <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
@@ -1247,7 +1246,6 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\EImecePublishProfile.pubxml" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-fullscreen.min.js.map" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-indicator.min.js.map" />
     <Content Include="Scripts\blueimp-gallery2\js\blueimp-gallery-video.min.js.map" />
@@ -1266,10 +1264,7 @@
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\SecondWebSite.pubxml" />
-    <None Include="Properties\PublishProfiles\ThirdOne.pubxml" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -1494,6 +1489,8 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <!-- Use local NuGet package if system web targets are missing publishing components -->
+    <VSToolsPath Condition="!Exists('$(VSToolsPath)\Web\Microsoft.Web.Publishing.targets') And Exists('..\build-tools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath\Web\Microsoft.Web.Publishing.targets')">..\build-tools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
