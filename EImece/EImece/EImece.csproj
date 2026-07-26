@@ -1224,6 +1224,7 @@
     <Content Include="Areas\Admin\Views\ShoppingCarts\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ShoppingCarts\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Metrics\Index.cshtml" />
+    <Content Include="ApplicationInsights.config" />
     <None Include="Properties\PublishProfiles\Eimece_Release.pubxml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
