@@ -1,4 +1,4 @@
-﻿using EImece.App_Start;
+using EImece.App_Start;
 using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
@@ -14,6 +14,10 @@ using System.Web.Routing;
 
 namespace EImece
 {
+    /// <summary>
+    /// The main HTTP application class that handles application lifecycle events, 
+    /// configuration, and early request pipeline processing (such as canonical URL redirects).
+    /// </summary>
     public class MvcApplication : System.Web.HttpApplication
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -71,17 +75,34 @@ namespace EImece
             return base.GetVaryByCustomString(context, custom);
         }
 
+        /// <summary>
+        /// Occurs as the first event in the HTTP pipeline chain of execution when ASP.NET responds to a request.
+        /// Invokes canonical URL enforcement.
+        /// </summary>
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             Redirect301();
         }
 
+        /// <summary>
+        /// Enforces the canonical domain name by permanently redirecting requests for the "naked" domain 
+        /// (e.g., test-site.com.tr) to the "www." prefix (e.g., www.test-site.com.tr).
+        /// 
+        /// Minimal Fix for Reverse Proxies/Tunnels:
+        /// The previous logic relied on a heuristic (checking if the dot was past the midpoint of the host name) 
+        /// to identify naked domains. This accidentally matched tunnel domains like `refill-juniper-amigo.ngrok-free.dev`, 
+        /// causing broken redirects that corrupted the port and scheme.
+        /// The updated logic requires an exact match on the configured production domain (excluding "www."), 
+        /// ensuring development, staging, and tunnel requests are completely ignored while preserving production behavior.
+        /// </summary>
         private void Redirect301()
         {
             var domain = AppConfig.Domain;
 
-            if (domain.StartsWith("www") && !Request.Url.Host.StartsWith("www") && !Request.Url.IsLoopback
-                && Request.Url.Host.IndexOf('.') > Request.Url.Host.Length / 2)
+            // Ensure the configured domain expects 'www.', and that the incoming request is exactly the naked version of it.
+            if (!string.IsNullOrEmpty(domain) && 
+                domain.StartsWith("www.", StringComparison.OrdinalIgnoreCase) && 
+                Request.Url.Host.Equals(domain.Substring(4), StringComparison.OrdinalIgnoreCase))
             {
                 UriBuilder builder = new UriBuilder(Request.Url);
                 builder.Host = "www." + Request.Url.Host;
