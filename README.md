@@ -91,9 +91,4 @@ Have ideas to improve the platform? Fork the project, create a new branch, and s
 ## 📜 License
 Licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
----
-
-## 🌐 Live Demo *(Optional)*
-If deployed, add the link here:  
-[🔗 View Live Demo](https://www.yuvadan.com.tr)
  
