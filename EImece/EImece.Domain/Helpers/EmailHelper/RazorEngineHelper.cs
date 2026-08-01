@@ -161,7 +161,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
             string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact); // Use different key for body
 
-            EmailSender.SendEmail(SettingService.GetEmailAccount(),
+            EmailSender.SendEmailInBackground(SettingService.GetEmailAccount(),
                 subject,
                 body,
                 adminUserName,
@@ -215,7 +215,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
 
             // E-posta gönder
-            EmailSender.SendEmail(
+            EmailSender.SendEmailInBackground(
                 SettingService.GetEmailAccount(),
                 emailTemplate.Subject,
                 body,
@@ -265,7 +265,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
 
             // E-posta gönder
-            EmailSender.SendEmail(
+            EmailSender.SendEmailInBackground(
                 SettingService.GetEmailAccount(),
                 emailTemplate.Subject,
                 body,

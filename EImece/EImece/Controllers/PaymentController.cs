@@ -1,5 +1,6 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Entities;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -917,36 +918,85 @@ namespace EImece.Controllers
         protected void SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(Order order)
         {
             PaymentLogger.Info($"Entering SendEmails for order ID: {order.Id}");
-            try
+
+            // Render the templates and read the email account on the request thread, while the
+            // per-request DbContext is still alive. EmailSender then defers only the SMTP round-trip
+            // (via HostingEnvironment.QueueBackgroundWorkItem) when sendInBackground:true is passed,
+            // so the payment response is not blocked and app-pool recycles don't drop the mail.
+            var emailAccount = SettingService.GetEmailAccount();
+            var customerTemplate = TryRenderOrderConfirmationEmail(order.Id);
+            var adminTemplate = TryRenderCompanyGotNewOrderEmail(order.Id);
+
+            if (customerTemplate == null && adminTemplate == null)
             {
-                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(order.Id);
-                if (emailTemplate.Item2.Result == null)
-                {
-                    PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:" + order.Id);
-                }
-                PaymentLogger.Info("Generated order confirmation email template.");
-                EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
-                PaymentLogger.Info("Order confirmation email sent to customer.");
-            }
-            catch (Exception e)
-            {
-                PaymentLogger.Error($"Failed to send order confirmation email: {e.Message}", e);
+                PaymentLogger.Error($"No order notification email could be rendered. order.Id:{order.Id}");
+                return;
             }
 
+            if (customerTemplate != null)
+            {
+                try
+                {
+                    EmailSender.SendRenderedEmailTemplateToCustomer(emailAccount, customerTemplate, sendInBackground: true);
+                    PaymentLogger.Info($"Order confirmation email queued for customer. order.Id:{order.Id}");
+                }
+                catch (Exception e)
+                {
+                    PaymentLogger.Error($"Failed to queue order confirmation email. order.Id:{order.Id}: {e.Message}", e);
+                }
+            }
+
+            if (adminTemplate != null)
+            {
+                try
+                {
+                    EmailSender.SendRenderedEmailTemplateToAdminUsers(emailAccount, adminTemplate, sendInBackground: true);
+                    PaymentLogger.Info($"New order email queued for admin users. order.Id:{order.Id}");
+                }
+                catch (Exception e)
+                {
+                    PaymentLogger.Error($"Failed to queue company new order email. order.Id:{order.Id}: {e.Message}", e);
+                }
+            }
+        }
+
+        private Tuple<string, RazorRenderResult, Customer> TryRenderOrderConfirmationEmail(int orderId)
+        {
             try
             {
-                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(order.Id);
-                if (emailTemplate.Item2.Result == null)
+                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
+                if (emailTemplate?.Item2?.Result == null)
                 {
-                    PaymentLogger.Error("RazorEngineHelper CompanyGotNewOrderEmail template Is NULL.order.Id:" + order.Id);
+                    PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:" + orderId);
+                    return null;
                 }
-                PaymentLogger.Info("Generated company new order email template.");
-                EmailSender.SendRenderedEmailTemplateToAdminUsers(SettingService.GetEmailAccount(), emailTemplate);
-                PaymentLogger.Info("New order email sent to admin users.");
+                PaymentLogger.Info("Generated order confirmation email template.");
+                return emailTemplate;
             }
             catch (Exception e)
             {
-                PaymentLogger.Error($"Failed to send company new order email: {e.Message}", e);
+                PaymentLogger.Error($"Failed to render order confirmation email: {e.Message}", e);
+                return null;
+            }
+        }
+
+        private Tuple<string, RazorRenderResult, Customer> TryRenderCompanyGotNewOrderEmail(int orderId)
+        {
+            try
+            {
+                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(orderId);
+                if (emailTemplate?.Item2?.Result == null)
+                {
+                    PaymentLogger.Error("RazorEngineHelper CompanyGotNewOrderEmail template Is NULL.order.Id:" + orderId);
+                    return null;
+                }
+                PaymentLogger.Info("Generated company new order email template.");
+                return emailTemplate;
+            }
+            catch (Exception e)
+            {
+                PaymentLogger.Error($"Failed to render company new order email: {e.Message}", e);
+                return null;
             }
         }
 

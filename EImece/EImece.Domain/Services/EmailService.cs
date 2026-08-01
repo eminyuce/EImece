@@ -15,8 +15,9 @@ namespace EImece.Domain.Services
 
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            EmailSender.SendEmail(message.Destination, message.Subject, message.Body);
+            // Identity email (confirmation, password reset) must not block the request thread on
+            // the SMTP round-trip. Resolve/build synchronously and defer only the send.
+            EmailSender.SendEmailInBackground(message.Destination, message.Subject, message.Body);
             return Task.FromResult(0);
         }
     }
