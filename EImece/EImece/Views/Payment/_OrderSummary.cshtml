@@ -63,6 +63,7 @@
     {
         using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation", @novalidate = "" }))
         {
+            @Html.AntiForgeryToken()
             <div class="form-group">
                 <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
                 <div class="invalid-feedback">@Resource.ValidPromoCode</div>

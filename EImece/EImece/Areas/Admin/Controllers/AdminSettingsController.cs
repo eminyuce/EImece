@@ -20,6 +20,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(SettingModel settingModel)
         {
             SettingService.SaveSettingModel(settingModel, CurrentLanguage);
@@ -42,6 +43,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SystemSettings(SystemSettingModel settingModel)
         {
             SettingService.SaveSystemSettingModel(settingModel);

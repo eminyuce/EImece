@@ -192,13 +192,11 @@ namespace EImece.Controllers
             Image image = Image.FromStream(new MemoryStream(savedImage.ImageBytes));
 
             using (Graphics g = Graphics.FromImage(image))
+            using (Font drawFont = new Font("Arial", 10))
+            using (SolidBrush drawBrush = new SolidBrush(Color.Black))
             {
                 // do something with the Graphics (eg. write "Hello World!")
                 string text = "Hello World!";
-
-                // Create font and brush.
-                Font drawFont = new Font("Arial", 10);
-                SolidBrush drawBrush = new SolidBrush(Color.Black);
 
                 // Create point for upper-left corner of drawing.
                 PointF stringPoint = new PointF(0, 0);

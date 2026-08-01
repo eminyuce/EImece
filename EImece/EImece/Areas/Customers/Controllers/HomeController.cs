@@ -110,6 +110,7 @@ namespace EImece.Areas.Customers.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(Customer customer)
         {
             if (customer == null)
@@ -198,6 +199,7 @@ namespace EImece.Areas.Customers.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SendSellerMessage(ContactUsFormViewModel contact)
         {
             if (contact == null)

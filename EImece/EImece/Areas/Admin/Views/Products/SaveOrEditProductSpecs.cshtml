@@ -36,7 +36,7 @@
 @Html.ActionLink(AdminResource.BackToList, "Index", "Products", new { @search = Model.Name }, new { @class = "btn btn-link" })
 @using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
+    @Html.AntiForgeryToken()
 <div class="form-horizontal">
     @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
     @Html.HiddenFor(model => model.Id)

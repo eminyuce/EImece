@@ -736,7 +736,7 @@ namespace EImece.Controllers
             foreach (var error in result.Errors)
             {
                 Logger.Info($"Adding error: {error}");
-                string errorMessage = error.ToLower(); // Büyük/küçük harf duyarlılığını kaldırmak için
+                string errorMessage = error.ToLowerInvariant(); // Büyük/küçük harf duyarlılığını kaldırmak için (teknik karşılaştırma, kültürden bağımsız)
 
                 if (errorMessage.Contains("passwords must have at least one lowercase"))
                 {

@@ -49,6 +49,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveOrEditProductSpecs(int id, int templateId)
         {
             int productId = id;

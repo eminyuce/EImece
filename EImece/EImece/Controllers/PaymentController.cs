@@ -698,6 +698,7 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult BuyNow(String productId, Customer customer)
         {
             PaymentLogger.Info($"Entering BuyNow POST with productId: {productId}");
@@ -792,6 +793,7 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ApplyCoupon(String couponCode)
         {
             var couponObj = CouponService.GetCouponByCode(couponCode, CurrentLanguage);
@@ -961,6 +963,7 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ShoppingWithoutAccount(Customer customer)
         {
             PaymentLogger.Info("Entering ContinueShoppingWithoutAccount POST action.");
