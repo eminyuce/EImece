@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -22,5 +23,11 @@ namespace EImece.Domain.Services.IServices
         void DeleteBaseEntity(List<string> values);
 
         bool DeleteById(int id);
+
+        Task<T> SaveOrEditEntityAsync(T entity);
+
+        Task<T> GetSingleAsync(int id);
+
+        Task<List<T>> GetAllAsync();
     }
 }

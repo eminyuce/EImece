@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -39,6 +40,25 @@ namespace EImece.Domain.Repositories
             stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return stories.ToList();
+        }
+
+        public async Task<List<Story>> GetAdminPageListAsync(int categoryId, string search, int lang)
+        {
+            Expression<Func<Story, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Story, object>> includeProperty2 = r => r.StoryCategory;
+            Expression<Func<Story, object>>[] includeProperties = { includeProperty2, includeProperty3 };
+            var stories = GetAllIncluding(includeProperties).Where(r => r.Lang == lang);
+            if (!String.IsNullOrEmpty(search))
+            {
+                stories = stories.Where(r => r.Name.ToLower().Contains(search));
+            }
+            if (categoryId > 0)
+            {
+                stories = stories.Where(r => r.StoryCategoryId == categoryId);
+            }
+            stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+
+            return await stories.ToListAsync().ConfigureAwait(false);
         }
 
         public List<Story> GetFeaturedStories(int take, int language, int excludedStoryId)

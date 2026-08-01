@@ -4,8 +4,10 @@ using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -29,6 +31,20 @@ namespace EImece.Domain.Repositories
             brands = brands.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return brands.ToList();
+        }
+
+        public async Task<List<Brand>> GetAdminPageListAsync(string search, int lang)
+        {
+            Expression<Func<Brand, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Brand, object>>[] includeProperties = { includeProperty3 };
+            var brands = GetAllIncluding(includeProperties).Where(r => r.Lang == lang);
+            if (!String.IsNullOrEmpty(search))
+            {
+                brands = brands.Where(r => r.Name.Contains(search));
+            }
+            brands = brands.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+
+            return await brands.ToListAsync().ConfigureAwait(false);
         }
 
         public List<Brand> GetBrandsIfAnyProductExists(int lang)

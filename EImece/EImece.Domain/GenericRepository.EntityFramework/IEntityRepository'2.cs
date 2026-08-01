@@ -3,6 +3,7 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 // Entity Framework 6 to support async methods
 namespace EImece.Domain.GenericRepository.EntityFramework
@@ -43,6 +44,11 @@ namespace EImece.Domain.GenericRepository.EntityFramework
         void Delete(TEntity entity);
 
         int Save();
+
+        // EF6 async counterparts (non-blocking I/O).
+        Task<TEntity> GetSingleAsync(TId id);
+
+        Task<int> SaveAsync();
 
         IQueryable<TEntity> FindAll<TKey>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TKey>> keySelector,
                                     OrderByType orderByType, int? take, int? skip);

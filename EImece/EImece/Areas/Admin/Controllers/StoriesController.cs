@@ -134,16 +134,13 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
             String search = "";
-            var stories = StoryService.GetAdminPageList(0, search, CurrentLanguage);
+            var stories = await StoryService.GetAdminPageListAsync(0, search, CurrentLanguage);
 
             var result = from r in stories
                          select new

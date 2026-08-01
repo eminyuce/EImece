@@ -3,6 +3,7 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -20,6 +21,11 @@ namespace EImece.Domain.Services
         public List<Brand> GetAdminPageList(string search, int lang)
         {
             return BrandRepository.GetAdminPageList(search, lang);
+        }
+
+        public async Task<List<Brand>> GetAdminPageListAsync(string search, int lang)
+        {
+            return await BrandRepository.GetAdminPageListAsync(search, lang).ConfigureAwait(false);
         }
 
         public bool DeleteBrandById(int brandId)

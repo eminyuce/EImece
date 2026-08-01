@@ -216,17 +216,14 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> ExportExcel()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
             String search = "";
             Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name, r.Name, StringComparison.OrdinalIgnoreCase);
-            var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var productCategories = await ProductCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
 
             var result = from r in productCategories
                          select new

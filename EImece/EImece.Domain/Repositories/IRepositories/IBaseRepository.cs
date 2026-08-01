@@ -3,12 +3,15 @@ using EImece.Domain.GenericRepository.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IBaseRepository<T> : IEntityRepository<T, int> where T : class, IEntity<int>
     {
         int SaveOrEdit(T item);
+
+        Task<int> SaveOrEditAsync(T item);
 
         int DeleteItem(T item);
 

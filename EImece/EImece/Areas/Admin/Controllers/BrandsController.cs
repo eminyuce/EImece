@@ -119,16 +119,13 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
             String search = "";
-            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
+            var brands = await BrandService.GetAdminPageListAsync(search, CurrentLanguage);
 
             var result = from r in brands
                          select new

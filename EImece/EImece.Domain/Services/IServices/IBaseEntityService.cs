@@ -3,6 +3,7 @@ using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -15,5 +16,9 @@ namespace EImece.Domain.Services.IServices
         List<T> GetActiveBaseEntities(bool? isActive, int? language);
 
         List<T> GetActiveBaseEntitiesFromCache(bool? isActive, int? language);
+
+        Task ChangeGridBaseEntityOrderingOrStateAsync(List<OrderingItem> values, String checkbox = "");
+
+        Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int? language);
     }
 }

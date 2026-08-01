@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -17,6 +18,11 @@ namespace EImece.Domain.Services
         public Subscriber GetSubscriberByEmail(string email)
         {
             return SubscriberRepository.GetSubscriberByEmail(email);
+        }
+
+        public async Task<Subscriber> GetSubscriberByEmailAsync(string email)
+        {
+            return await SubscriberRepository.GetSubscriberByEmailAsync(email).ConfigureAwait(false);
         }
     }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -69,6 +70,11 @@ namespace EImece.Domain.Services
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
         }
 
+        public virtual new async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language)
+        {
+            return await BaseContentRepository.SearchEntitiesAsync(whereLambda, search, language).ConfigureAwait(false);
+        }
+
         public virtual List<T> GetActiveBaseContentsFromCache(bool? isActive, int? language)
         {
             List<T> result = null;
@@ -114,6 +120,29 @@ namespace EImece.Domain.Services
                 entity.AddUserId = HttpContextFactory.GetCurrentUserId();
             }
             var tmp = BaseContentRepository.SaveOrEdit(entity);
+            return entity;
+        }
+
+        public virtual new async Task<T> SaveOrEditEntityAsync(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentException("entity cannot be empty");
+            }
+
+            if (entity.Id > 0)
+            {
+                entity.UpdatedDate = DateTime.Now;
+                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
+            }
+            else
+            {
+                entity.UpdatedDate = DateTime.Now;
+                entity.CreatedDate = DateTime.Now;
+                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
+                entity.AddUserId = HttpContextFactory.GetCurrentUserId();
+            }
+            await BaseContentRepository.SaveOrEditAsync(entity).ConfigureAwait(false);
             return entity;
         }
 

@@ -47,127 +47,104 @@ namespace EImece.Controllers
         {
             if (GeneralHelper.IsNotValidEmail(subscribeEmail))
             {
-                return await Task.Run(() =>
-                {
-                    return Json(Resource.NotValidEmailAddress, JsonRequestBehavior.AllowGet);  // Return the list directly
-                }).ConfigureAwait(true);
+                return Json(Resource.NotValidEmailAddress, JsonRequestBehavior.AllowGet);
             }
-            else
+
+            if (await SubsciberService.GetSubscriberByEmailAsync(subscribeEmail) == null)
             {
-                return await Task.Run(() =>
-                {
-                    if (SubsciberService.GetSubscriberByEmail(subscribeEmail) == null)
-                    {
-                        var subscriber = new Subscriber();
-                        subscriber.Name = subscribeEmail;
-                        subscriber.Email = subscribeEmail;
-                        subscriber.Note = Main_Page_Product_Subscription;
-                        subscriber.IsActive = true;
-                        subscriber.CreatedDate = System.DateTime.Now;
-                        subscriber.UpdatedDate = System.DateTime.Now;
-                        subscriber.Position = 1;
-                        subscriber.Lang = CurrentLanguage;
-                        SubsciberService.SaveOrEditEntity(subscriber);
-                    }
-                    return Json("success", JsonRequestBehavior.AllowGet);  // Return the list directly
-                }).ConfigureAwait(true);
+                var subscriber = new Subscriber();
+                subscriber.Name = subscribeEmail;
+                subscriber.Email = subscribeEmail;
+                subscriber.Note = Main_Page_Product_Subscription;
+                subscriber.IsActive = true;
+                subscriber.CreatedDate = System.DateTime.Now;
+                subscriber.UpdatedDate = System.DateTime.Now;
+                subscriber.Position = 1;
+                subscriber.Lang = CurrentLanguage;
+                await SubsciberService.SaveOrEditEntityAsync(subscriber);
             }
+            return Json("success", JsonRequestBehavior.AllowGet);
         }
 
 
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public async Task<JsonResult> GetAllCities()
+        public JsonResult GetAllCities()
         {
-            return await Task.Run(() =>
-            {
-                var cities = turkishRegionService.GetAllCities()
-                    .OrderBy(city => city)
-                    .Select(city => new SelectListItem
-                    {
-                        Value = city,
-                        Text = city
-                    }).ToList();
+            var cities = turkishRegionService.GetAllCities()
+                .OrderBy(city => city)
+                .Select(city => new SelectListItem
+                {
+                    Value = city,
+                    Text = city
+                }).ToList();
 
-                cities.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
+            cities.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
-                return Json(cities, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
+            return Json(cities, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<JsonResult> GetTownsByCity(string cityName)
+        public JsonResult GetTownsByCity(string cityName)
         {
-            return await Task.Run(() =>
-            {
-                var towns = turkishRegionService.GetTownsByCity(cityName)
-                    .OrderBy(town => town)
-                    .Select(town => new SelectListItem
-                    {
-                        Value = town,
-                        Text = town
-                    }).ToList();
+            var towns = turkishRegionService.GetTownsByCity(cityName)
+                .OrderBy(town => town)
+                .Select(town => new SelectListItem
+                {
+                    Value = town,
+                    Text = town
+                }).ToList();
 
-                towns.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
+            towns.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
-                return Json(towns, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
+            return Json(towns, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<JsonResult> GetDistrictsByTown(string cityName, string townName)
+        public JsonResult GetDistrictsByTown(string cityName, string townName)
         {
-            return await Task.Run(() =>
-            {
-                var districts = turkishRegionService.GetDistrictsByTown(cityName, townName)
-                    .OrderBy(d => d)
-                    .Select(d => new SelectListItem
-                    {
-                        Value = d,
-                        Text = d
-                    }).ToList();
+            var districts = turkishRegionService.GetDistrictsByTown(cityName, townName)
+                .OrderBy(d => d)
+                .Select(d => new SelectListItem
+                {
+                    Value = d,
+                    Text = d
+                }).ToList();
 
-                districts.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
+            districts.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
-                return Json(districts, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
+            return Json(districts, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Ajax
-        public async Task<JsonResult> GetIller()
+        public JsonResult GetIller()
         {
-            return await Task.Run(() =>
-            {
-                var allIller = from cust in adresService.GetTurkiyeAdres().IlRoot.Iller.il
-                               select new
-                               {
-                                   id = cust.id,
-                                   name = cust.il_adi
-                               };
+            var allIller = from cust in adresService.GetTurkiyeAdres().IlRoot.Iller.il
+                           select new
+                           {
+                               id = cust.id,
+                               name = cust.il_adi
+                           };
 
-                return Json(
-                    new
-                    {
-                        allIller
-                    }, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
+            return Json(
+                new
+                {
+                    allIller
+                }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<JsonResult> GetIlceler(int il_id)
+        public JsonResult GetIlceler(int il_id)
         {
-            return await Task.Run(() =>
-            {
-                var allIceler = from cust in adresService.GetTurkiyeAdres().IlceRoot.ilceler.ilce
-                                where cust.il_id == il_id
-                                select new
-                                {
-                                    id = cust.id,
-                                    name = cust.ilce_adi
-                                };
+            var allIceler = from cust in adresService.GetTurkiyeAdres().IlceRoot.ilceler.ilce
+                            where cust.il_id == il_id
+                            select new
+                            {
+                                id = cust.id,
+                                name = cust.ilce_adi
+                            };
 
-                return Json(
-                    new
-                    {
-                        items = allIceler
-                    }, JsonRequestBehavior.AllowGet);
-            }).ConfigureAwait(true);
+            return Json(
+                new
+                {
+                    items = allIceler
+                }, JsonRequestBehavior.AllowGet);
         }
     }
 }

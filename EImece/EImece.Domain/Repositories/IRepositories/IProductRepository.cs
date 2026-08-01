@@ -4,6 +4,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -16,6 +17,10 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Product> GetAdminPageList(int categoryId, string search, int language);
 
         List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language);
+
+        Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language);
+
+        Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language);
 
         Product GetProduct(int id);
 

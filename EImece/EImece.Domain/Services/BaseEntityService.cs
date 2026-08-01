@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -51,6 +52,11 @@ namespace EImece.Domain.Services
             return baseEntityRepository.SearchEntities(whereLambda, search, language);
         }
 
+        public virtual async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int? language)
+        {
+            return await baseEntityRepository.SearchEntitiesAsync(whereLambda, search, language).ConfigureAwait(false);
+        }
+
         public virtual new T SaveOrEditEntity(T entity)
         {
             if (entity == null)
@@ -67,6 +73,25 @@ namespace EImece.Domain.Services
                 entity.CreatedDate = DateTime.Now;
             }
             var tmp = baseEntityRepository.SaveOrEdit(entity);
+            return entity;
+        }
+
+        public virtual new async Task<T> SaveOrEditEntityAsync(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentException("entity cannot be null");
+            }
+            if (entity.Id > 0)
+            {
+                entity.UpdatedDate = DateTime.Now;
+            }
+            else
+            {
+                entity.UpdatedDate = DateTime.Now;
+                entity.CreatedDate = DateTime.Now;
+            }
+            await baseEntityRepository.SaveOrEditAsync(entity).ConfigureAwait(false);
             return entity;
         }
 
@@ -139,6 +164,78 @@ namespace EImece.Domain.Services
             if (isEdit)
             {
                 baseEntityRepository.Save();
+            }
+        }
+
+        public virtual async Task ChangeGridBaseEntityOrderingOrStateAsync(List<OrderingItem> values, String checkbox = "")
+        {
+            if (values == null)
+            {
+                throw new ArgumentException("values cannot be null");
+            }
+            bool isEdit = false;
+            foreach (OrderingItem item in values)
+            {
+                var t = await baseEntityRepository.GetSingleAsync(item.Id).ConfigureAwait(false);
+                var baseContent = t as BaseEntity;
+                if (baseContent != null)
+                {
+                    try
+                    {
+                        if (String.IsNullOrEmpty(checkbox))
+                        {
+                            baseContent.Position = item.Position;
+                        }
+                        else if (checkbox.Equals(STATE, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            baseContent.IsActive = item.IsActive;
+                        }
+                        else if (checkbox.Equals(MAIN_PAGE, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (baseContent is Product)
+                            {
+                                var product = baseContent as Product;
+                                product.MainPage = item.IsActive;
+                            }
+                            else if (baseContent is Story)
+                            {
+                                var story = baseContent as Story;
+                                story.MainPage = item.IsActive;
+                            }
+                            else if (baseContent is ProductCategory)
+                            {
+                                var story = baseContent as ProductCategory;
+                                story.MainPage = item.IsActive;
+                            }
+                        }
+                        else if (checkbox.Equals(IMAGE_STATE, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (baseContent is BaseContent)
+                            {
+                                var product = baseContent as BaseContent;
+                                product.ImageState = item.IsActive;
+                            }
+                        }
+                        else if (checkbox.Equals(IS_CAMPAIGN, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (baseContent is Product)
+                            {
+                                var product = baseContent as Product;
+                                product.IsCampaign = item.IsActive;
+                            }
+                        }
+                        baseEntityRepository.Edit(t);
+                        isEdit = true;
+                    }
+                    catch (Exception exception)
+                    {
+                        BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + item.Id, checkbox);
+                    }
+                }
+            }
+            if (isEdit)
+            {
+                await baseEntityRepository.SaveAsync().ConfigureAwait(false);
             }
         }
     }

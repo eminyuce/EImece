@@ -260,17 +260,14 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
             String search = "";
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
-            var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var menus = await MenuService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
 
             var result = from r in menus
                          select new

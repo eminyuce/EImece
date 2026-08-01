@@ -17,6 +17,7 @@ using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
@@ -64,6 +65,16 @@ namespace EImece.Domain.Services
         public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int lang)
         {
             return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang);
+        }
+
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int lang)
+        {
+            return await ProductRepository.GetAdminPageListAsync(categoryId, search, lang).ConfigureAwait(false);
+        }
+
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang)
+        {
+            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang).ConfigureAwait(false);
         }
 
         public string UpdatePrices(UpdatePriceRequest request)

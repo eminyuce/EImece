@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -10,5 +11,9 @@ namespace EImece.Domain.Repositories.IRepositories
         List<T> GetActiveBaseEntities(bool? isActive, int? language);
 
         List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int? language);
+
+        Task<List<T>> GetActiveBaseEntitiesAsync(bool? isActive, int? language);
+
+        Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int? language);
     }
 }

@@ -121,17 +121,14 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
             String search = "";
             Expression<Func<Template, bool>> whereLambda = r => r.Name.Contains(search);
-            var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var templates = await TemplateService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
 
             var result = from r in templates
                          select new

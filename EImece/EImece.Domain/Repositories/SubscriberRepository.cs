@@ -2,7 +2,9 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -15,6 +17,11 @@ namespace EImece.Domain.Repositories
         public Subscriber GetSubscriberByEmail(string email)
         {
             return this.FindBy(r => r.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
+
+        public async Task<Subscriber> GetSubscriberByEmailAsync(string email)
+        {
+            return await this.FindBy(r => r.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync().ConfigureAwait(false);
         }
     }
 }

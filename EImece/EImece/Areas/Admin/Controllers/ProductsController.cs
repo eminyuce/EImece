@@ -212,15 +212,12 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
-            var products = ProductService.GetAdminPageList(-1, "", CurrentLanguage);
+            var products = await ProductService.GetAdminPageListAsync(-1, "", CurrentLanguage);
 
             var result = from r in products
                          select new

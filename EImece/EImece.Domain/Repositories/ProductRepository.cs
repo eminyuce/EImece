@@ -10,11 +10,13 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -128,6 +130,60 @@ namespace EImece.Domain.Repositories
             products = products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
             return products.ToList();
+        }
+
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language)
+        {
+            return await GetAdminPageListAsync(categoryId, 0, search, language).ConfigureAwait(false);
+        }
+
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language)
+        {
+            Expression<Func<Product, object>> includeProperty4 = r => r.ProductComments;
+            Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
+            Expression<Func<Product, object>> includeProperty5 = r => r.Brand;
+            Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
+            Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3, includeProperty4, includeProperty5 };
+            var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
+            search = search.ToStr().Trim();
+            if (!String.IsNullOrEmpty(search))
+            {
+                var productId = search.ToInt();
+                if (productId > 0)
+                {
+                    products = products.Where(r => r.Id == productId);
+                }
+                else
+                {
+                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search)
+                    || r.ProductCode.Contains(search)
+                          || r.NameLong.Contains(search)
+                           || r.NameShort.Contains(search)
+                    || r.ProductCategory.Name.Contains(search);
+                    products = products.Where(whereLamba);
+                }
+            }
+
+            if (brandId > 0)
+            {
+                products = products.Where(r => r.BrandId == brandId);
+            }
+
+            if (categoryId > 0)
+            {
+                products = products.Where(r => r.ProductCategoryId == categoryId);
+            }
+            else
+            {
+                // CategoryId is -1 for excel exporting.
+                if (String.IsNullOrEmpty(search) && categoryId != -1)
+                {
+                    products = products.Take(1000);
+                }
+            }
+            products = products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+
+            return await products.ToListAsync().ConfigureAwait(false);
         }
 
         public Product GetProduct(int id)

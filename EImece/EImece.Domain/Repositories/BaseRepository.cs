@@ -10,6 +10,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -95,6 +96,38 @@ namespace EImece.Domain.Repositories
                 }
 
                 return this.Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string errorMessage = ex.Message;
+                foreach (var errors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in errors.ValidationErrors)
+                    {
+                        // get the error message
+                        errorMessage += " " + validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
+                    }
+                }
+                BaseLogger.Error(errorMessage);
+                throw;
+            }
+        }
+
+        public virtual async Task<int> SaveOrEditAsync(T item)
+        {
+            try
+            {
+                item.TrimAllStrings();
+                if (item.Id.ToInt() == 0)
+                {
+                    this.Add(item);
+                }
+                else
+                {
+                    this.Edit(item);
+                }
+
+                return await this.SaveAsync().ConfigureAwait(false);
             }
             catch (DbEntityValidationException ex)
             {

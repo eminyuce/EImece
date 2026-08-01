@@ -1,12 +1,15 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
     public interface IStoryRepository : IBaseContentRepository<Story>
     {
         List<Story> GetAdminPageList(int categoryId, string search, int lang);
+
+        Task<List<Story>> GetAdminPageListAsync(int categoryId, string search, int lang);
 
         Story GetStoryById(int storyId);
 

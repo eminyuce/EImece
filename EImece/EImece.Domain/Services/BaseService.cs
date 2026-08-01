@@ -7,8 +7,10 @@ using EImece.Domain.Repositories.IRepositories;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -84,6 +86,22 @@ namespace EImece.Domain.Services
         public virtual void DeleteBaseEntity(List<string> values)
         {
             baseRepository.DeleteBaseEntity(values);
+        }
+
+        public virtual async Task<T> GetSingleAsync(int id)
+        {
+            return await baseRepository.GetSingleAsync(id).ConfigureAwait(false);
+        }
+
+        public virtual async Task<T> SaveOrEditEntityAsync(T entity)
+        {
+            await baseRepository.SaveOrEditAsync(entity).ConfigureAwait(false);
+            return entity;
+        }
+
+        public virtual async Task<List<T>> GetAllAsync()
+        {
+            return await baseRepository.GetAll().ToListAsync().ConfigureAwait(false);
         }
 
         [Inject]

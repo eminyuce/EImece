@@ -2,12 +2,15 @@
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
     public interface IStoryService : IBaseContentService<Story>
     {
         List<Story> GetAdminPageList(int categoryId, string search, int lang);
+
+        Task<List<Story>> GetAdminPageListAsync(int categoryId, string search, int lang);
 
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
 

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.GenericRepository.EntityFramework
 {
@@ -151,6 +152,18 @@ namespace EImece.Domain.GenericRepository.EntityFramework
         public int Save()
         {
             return _dbContext.SaveChanges();
+        }
+
+        public async Task<TEntity> GetSingleAsync(TId id)
+        {
+            IQueryable<TEntity> entities = GetAll();
+            TEntity entity = await Filter<TId>(entities, x => x.Id, id).FirstOrDefaultAsync().ConfigureAwait(false);
+            return entity;
+        }
+
+        public async Task<int> SaveAsync()
+        {
+            return await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public bool Contains(Expression<Func<TEntity, bool>> predicate)

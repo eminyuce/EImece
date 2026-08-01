@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -16,5 +17,7 @@ namespace EImece.Domain.Services.IServices
         T GetBaseContent(int id);
 
         List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language);
+
+        new Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language);
     }
 }

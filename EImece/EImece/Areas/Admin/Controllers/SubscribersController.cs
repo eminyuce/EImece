@@ -21,15 +21,12 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync()
         {
-            return await Task.Run(() =>
-            {
-                return DownloadFile();
-            }).ConfigureAwait(true);
+            return await DownloadFileAsync();
         }
 
-        private ActionResult DownloadFile()
+        private async Task<ActionResult> DownloadFileAsync()
         {
-            var subscibers = SubscriberService.GetAll().ToList();
+            var subscibers = await SubscriberService.GetAllAsync();
 
             var result = from r in subscibers
                          select new

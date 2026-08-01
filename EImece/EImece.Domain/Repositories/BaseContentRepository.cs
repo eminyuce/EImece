@@ -5,8 +5,10 @@ using EImece.Domain.Helpers;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -66,6 +68,23 @@ namespace EImece.Domain.Repositories
             }
 
             var result = menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+            return result;
+        }
+
+        public virtual new async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language)
+        {
+            Expression<Func<T, bool>> match = r2 => r2.Lang == language;
+            Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+            Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
+            var menus = GetAllIncluding(includeProperties.ToArray());
+
+            search = search.ToStr().Trim();
+            if (!String.IsNullOrEmpty(search))
+            {
+                match = match.And(whereLambda);
+            }
+
+            var result = await menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToListAsync().ConfigureAwait(false);
             return result;
         }
     }

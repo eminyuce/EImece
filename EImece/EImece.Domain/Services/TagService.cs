@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -23,6 +24,11 @@ namespace EImece.Domain.Services
         public List<Tag> GetAdminPageList(String search, int language)
         {
             return TagRepository.GetAdminPageList(search, language);
+        }
+
+        public async Task<List<Tag>> GetAdminPageListAsync(String search, int language)
+        {
+            return await TagRepository.GetAdminPageListAsync(search, language).ConfigureAwait(false);
         }
 
         public void DeleteTagById(int tagId)

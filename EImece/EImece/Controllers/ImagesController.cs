@@ -58,12 +58,9 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public async Task<ActionResult> Index333333(String id, String imageSize)
+        public ActionResult Index333333(String id, String imageSize)
         {
-            return await Task.Run(() =>
-            {
-                return GenerateImage(id, imageSize);
-            });
+            return GenerateImage(id, imageSize);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -124,12 +121,9 @@ namespace EImece.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public async Task<FileContentResult> DefaultImage(String imageSize)
+        public FileContentResult DefaultImage(String imageSize)
         {
-            return await Task.Run(() =>
-            {
-                return this.GetDefaultFileContentResult((string)imageSize);
-            }).ConfigureAwait(true);
+            return this.GetDefaultFileContentResult((string)imageSize);
         }
 
         private FileContentResult GetDefaultFileContentResult(string imageSize)
@@ -240,34 +234,31 @@ namespace EImece.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public async Task<FileContentResult> Logo()
+        public FileContentResult Logo()
         {
-            return await Task.Run(() =>
+            var cacheKey = String.Format("WebSiteLogo");
+            FileContentResult result = null;
+            if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                var cacheKey = String.Format("WebSiteLogo");
-                FileContentResult result = null;
-                if (!MemoryCacheProvider.Get(cacheKey, out result))
+                var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+                var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
+                var isFullFileExits = System.IO.File.Exists(p.Item1);
+                if (isFullFileExits)
                 {
-                    var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-                    var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
-                    var isFullFileExits = System.IO.File.Exists(p.Item1);
-                    if (isFullFileExits)
-                    {
-                        var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
-                        result = File(ms.ToArray(), ContentType);
-                        ms.Dispose();
-                        MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
-                    }
-                    else
-                    {
-                        var response = HttpContext.Response;
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
-                        response.TrySkipIisCustomErrors = true;
-                    }
+                    var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
+                    result = File(ms.ToArray(), ContentType);
+                    ms.Dispose();
+                    MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                 }
+                else
+                {
+                    var response = HttpContext.Response;
+                    response.StatusCode = (int)HttpStatusCode.NotFound;
+                    response.TrySkipIisCustomErrors = true;
+                }
+            }
 
-                return result;
-            }).ConfigureAwait(true);
+            return result;
         }
     }
 }

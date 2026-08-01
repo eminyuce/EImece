@@ -5,6 +5,7 @@ using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace EImece.Domain.Services.IServices
@@ -14,6 +15,10 @@ namespace EImece.Domain.Services.IServices
         List<Product> GetAdminPageList(int id, string search, int lang);
 
         List<Product> GetAdminPageList(int id, int brandId, string search, int lang);
+
+        Task<List<Product>> GetAdminPageListAsync(int id, string search, int lang);
+
+        Task<List<Product>> GetAdminPageListAsync(int id, int brandId, string search, int lang);
 
         Rss20FeedFormatter GetProductsRss(RssParams rssParams);
 

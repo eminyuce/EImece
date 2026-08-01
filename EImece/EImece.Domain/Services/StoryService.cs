@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
@@ -45,6 +46,11 @@ namespace EImece.Domain.Services
         public List<Story> GetAdminPageList(int categoryId, string search, int lang)
         {
             return StoryRepository.GetAdminPageList(categoryId, search, lang);
+        }
+
+        public async Task<List<Story>> GetAdminPageListAsync(int categoryId, string search, int lang)
+        {
+            return await StoryRepository.GetAdminPageListAsync(categoryId, search, lang).ConfigureAwait(false);
         }
 
         public List<StoryTag> GetStoryTagsByStoryId(int storyId)
