@@ -25,7 +25,21 @@ namespace EImece.Domain.Observability.HealthChecks
 
             foreach (var healthCheck in _healthChecks)
             {
-                results.Add(await healthCheck.CheckAsync(cancellationToken).ConfigureAwait(false));
+                var result = await healthCheck.CheckAsync(cancellationToken).ConfigureAwait(false);
+
+                // Do not include checks that are explicitly "not configured" to keep the response clean
+                if (result == null)
+                {
+                    continue;
+                }
+
+                if (!string.IsNullOrWhiteSpace(result.Message) &&
+                    result.Message.Equals("not configured", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                results.Add(result);
             }
 
             return HealthCheckResponse.Create(results);
