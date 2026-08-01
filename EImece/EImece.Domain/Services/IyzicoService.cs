@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -17,17 +18,18 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public CheckoutForm GetCheckoutForm(RetrieveCheckoutFormRequest model)
+        public async Task<CheckoutForm> GetCheckoutFormAsync(RetrieveCheckoutFormRequest model)
         {
             Options options = GetOptions();
             var request = new RetrieveCheckoutFormRequest();
             request.Token = model.Token;
 
-            var response = CheckoutForm.Retrieve(request, options);
-            return response.Result;
+            // Await the SDK call instead of blocking on .Result. ConfigureAwait(false) keeps this
+            // domain-layer code off the ASP.NET request context.
+            return await CheckoutForm.Retrieve(request, options).ConfigureAwait(false);
         }
 
-        public CheckoutFormInitialize CreateCheckoutFormInitialize(ShoppingCartSession shoppingCart, string userId, String actionName = "PaymentResult")
+        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeAsync(ShoppingCartSession shoppingCart, string userId, String actionName = "PaymentResult")
         {
             Logger.Info("Initializing CheckoutForm for user: " + userId);
 
@@ -169,11 +171,12 @@ namespace EImece.Domain.Services
 
             // Execute the request
             Logger.Info("Initializing CheckoutFormInitialize.Create for user: " + userId);
-            System.Threading.Tasks.Task<CheckoutFormInitialize> checkoutFormInitialize = CheckoutFormInitialize.Create(request, options);
-            return checkoutFormInitialize.Result;
+            // HttpContext.Current was read synchronously above (before this await), so ConfigureAwait(false)
+            // here is safe and avoids parking the request thread on the payment gateway round-trip.
+            return await CheckoutFormInitialize.Create(request, options).ConfigureAwait(false);
         }
 
-        public CheckoutFormInitialize CreateCheckoutFormInitializeBuyNow(BuyNowModel buyNowModel)
+        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeBuyNowAsync(BuyNowModel buyNowModel)
         {
             Logger.Info("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
 
@@ -257,9 +260,7 @@ namespace EImece.Domain.Services
 
             Logger.Info("Iyzico Request prepared for BuyNow CheckoutFormInitialization: " + JsonConvert.SerializeObject(request));
 
-            var result = CheckoutFormInitialize.Create(request, options);
-
-            return result.Result;
+            return await CheckoutFormInitialize.Create(request, options).ConfigureAwait(false);
         }
 
         private Options GetOptions()

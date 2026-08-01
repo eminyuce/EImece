@@ -26,6 +26,12 @@ namespace EImece.Domain.Observability.Http
         private readonly IApplicationMetrics _metrics;
         private readonly ObservabilityOptions _options;
 
+        // System.Random is not thread-safe; a single instance shared across concurrent retries can
+        // corrupt its state and start returning 0, defeating the anti-thundering-herd jitter.
+        // ThreadLocal gives each thread its own generator (4.7.2 has no RandomNumberGenerator.GetInt32).
+        private static readonly ThreadLocal<Random> Jitter =
+            new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
+
         public ResilientHttpClient(ILogger<ResilientHttpClient> logger, IApplicationMetrics metrics, ObservabilityOptions options)
         {
             _logger = logger;
@@ -172,8 +178,6 @@ namespace EImece.Domain.Observability.Http
 
         private AsyncRetryPolicy<HttpResponseMessage> BuildRetryPolicy()
         {
-            var jitter = new Random();
-
             return Policy<HttpResponseMessage>
                 .Handle<HttpRequestException>()
                 .Or<TaskCanceledException>()
@@ -184,7 +188,7 @@ namespace EImece.Domain.Observability.Http
                     retryAttempt =>
                     {
                         var exponential = Math.Pow(2, retryAttempt);
-                        var jitterMs = jitter.Next(0, 250);
+                        var jitterMs = Jitter.Value.Next(0, 250);
                         return TimeSpan.FromSeconds(exponential) + TimeSpan.FromMilliseconds(jitterMs);
                     },
                     (outcome, delay, retryAttempt, context) =>

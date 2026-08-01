@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using NLog;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace EImece.Domain.Caching
 {
@@ -10,7 +10,12 @@ namespace EImece.Domain.Caching
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IAppCache _lazyCache = new CachingService();
-        private static readonly HashSet<string> allCacheKeys = new HashSet<string>(StringComparer.Ordinal);
+
+        // ConcurrentDictionary replaces a HashSet that was only locked on writes: ClearAll()
+        // used to enumerate it without the lock, which races with concurrent Set() calls.
+        // The dictionary's snapshot enumerator is safe to iterate while other threads mutate it.
+        private static readonly ConcurrentDictionary<string, byte> allCacheKeys =
+            new ConcurrentDictionary<string, byte>(StringComparer.Ordinal);
 
         public void Clear(string key)
         {
@@ -19,9 +24,10 @@ namespace EImece.Domain.Caching
 
         public void ClearAll()
         {
-            foreach (var key in allCacheKeys)
+            foreach (var key in allCacheKeys.Keys)
             {
                 _lazyCache.Remove(key);
+                allCacheKeys.TryRemove(key, out _);
             }
         }
 
@@ -51,14 +57,11 @@ namespace EImece.Domain.Caching
             if (AppConfig.IsCacheActive)
             {
                 var keyNew = "Memory:" + key;
-                MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
-                options.AbsoluteExpiration = DateTime.Now.AddSeconds(duration);
-                options.SlidingExpiration = TimeSpan.FromSeconds(duration);
-                _lazyCache.Add(keyNew, value, options);
-                lock (allCacheKeys)
+                _lazyCache.Add(keyNew, value, new MemoryCacheEntryOptions
                 {
-                    allCacheKeys.Add(keyNew);
-                }
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration)
+                });
+                allCacheKeys.TryAdd(keyNew, 0);
             }
         }
     }

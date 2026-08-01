@@ -43,6 +43,9 @@ namespace EImece.Domain.DbContext
         private const string GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
         private const string GROQ_API_KEY = "";
         private const string GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+
+        // Reuse one HttpClient instead of newing one per call to avoid socket exhaustion.
+        private static readonly HttpClient GroqHttpClient = new HttpClient();
         string prodConnectionString = "Data Source=mssql04.trwww.com;Initial Catalog=yuva8905_yuvadan;User ID=yuce; Password=";
         string devConnectionString = @"Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;Integrated Security=True";
 
@@ -151,22 +154,23 @@ Constraints:
                 max_tokens = 1000
             };
 
-            using (var client = new HttpClient())
+            var jsonRequest = JsonConvert.SerializeObject(requestBody);
+            using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, GROQ_API_URL))
             {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {GROQ_API_KEY}");
+                httpRequest.Headers.TryAddWithoutValidation("Authorization", $"Bearer {GROQ_API_KEY}");
+                httpRequest.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-                var jsonRequest = JsonConvert.SerializeObject(requestBody);
-                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
-                var response = client.PostAsync(GROQ_API_URL, content).Result;
-                var responseText = response.Content.ReadAsStringAsync().Result;
-
-                if (!response.IsSuccessStatusCode)
+                // Reuse the shared client; block with ConfigureAwait(false) to stay deadlock-safe.
+                using (var response = GroqHttpClient.SendAsync(httpRequest).ConfigureAwait(false).GetAwaiter().GetResult())
                 {
-                    throw new Exception($"GROQ API Error: {response.StatusCode} - {responseText}");
-                }
+                    var responseText = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception($"GROQ API Error: {response.StatusCode} - {responseText}");
+                    }
+
+                    dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
                 string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
 
                 if (string.IsNullOrWhiteSpace(assistantContent))
@@ -194,7 +198,8 @@ Constraints:
                     throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
                 }
 
-                return assistantContent;
+                    return assistantContent;
+                }
             }
         }
 
@@ -279,26 +284,25 @@ Constraints:
                 max_tokens = 1500
             };
 
-            using (var client = new HttpClient())
+            var jsonRequest = JsonConvert.SerializeObject(requestBody);
+            using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, GROQ_API_URL))
             {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {GROQ_API_KEY}");
+                httpRequest.Headers.TryAddWithoutValidation("Authorization", $"Bearer {GROQ_API_KEY}");
+                httpRequest.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-                var jsonRequest = JsonConvert.SerializeObject(requestBody);
-                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
-                // Synchronously wait for the HTTP POST to complete
-                HttpResponseMessage response = client.PostAsync(GROQ_API_URL, content).Result;
-
-                // Synchronously wait for the response content to be read
-                string responseText = response.Content.ReadAsStringAsync().Result;
-
-                if (!response.IsSuccessStatusCode)
+                // Reuse the shared client; block with ConfigureAwait(false) to stay deadlock-safe.
+                using (var response = GroqHttpClient.SendAsync(httpRequest).ConfigureAwait(false).GetAwaiter().GetResult())
                 {
-                    throw new Exception($"GROQ API Error: {response.StatusCode} - {responseText}");
-                }
+                    // Synchronously read the response content (deadlock-safe via ConfigureAwait(false)).
+                    string responseText = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                // Deserialize the entire response
-                dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception($"GROQ API Error: {response.StatusCode} - {responseText}");
+                    }
+
+                    // Deserialize the entire response
+                    dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
 
                 // Access the content of the assistant's message
                 string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
@@ -328,7 +332,8 @@ Constraints:
                     throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
                 }
 
-                return assistantContent;
+                    return assistantContent;
+                }
             }
         }
 

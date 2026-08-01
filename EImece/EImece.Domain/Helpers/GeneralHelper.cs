@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Http;
+using LazyCache;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -27,7 +28,16 @@ namespace EImece.Domain.Helpers
     {
         private const string KEYID = "9182736450";
         private const string ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
-        private static Random random = new Random();
+
+        // System.Random is not thread-safe. RandomNumber()/GenerateOrderNumber() run concurrently on
+        // checkout request threads, so a single shared instance could corrupt its state and emit
+        // predictable/zero digits (risking duplicate order numbers). Give each thread its own generator.
+        private static readonly ThreadLocal<Random> random =
+            new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
+
+        // Stampede-safe image cache: LazyCache coalesces concurrent misses for the same key so the
+        // remote image is fetched once instead of once per concurrent caller.
+        private static readonly IAppCache ImageCache = new CachingService();
 
         public static SelectList GetStaticCountries()
         {
@@ -141,7 +151,7 @@ namespace EImece.Domain.Helpers
         {
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+              .Select(s => s[random.Value.Next(s.Length)]).ToArray());
         }
 
         public static String GetIpAddress()
@@ -735,26 +745,14 @@ namespace EImece.Domain.Helpers
 
         public static byte[] GetImageFromUrlFromCache(string url, Dictionary<String, String> dictionary, int minute = 100)
         {
-            String key = url;
-            byte[] ret = null;
-
-            ret = (byte[])MemoryCache.Default.Get(key);
-            if (ret == null)
+            // GetOrAdd coalesces concurrent callers for the same url onto a single fetch, avoiding
+            // the cache stampede of the previous get-then-set pattern. ICacheEntry is fully qualified
+            // to avoid a MemoryCache name clash with the System.Runtime.Caching using in this file.
+            return ImageCache.GetOrAdd(url, (Microsoft.Extensions.Caching.Memory.ICacheEntry entry) =>
             {
-                ret = GetImageFromUrl(url, dictionary);
-                if (ret != null)
-                {
-                    CacheItemPolicy policy = null;
-                    policy = new CacheItemPolicy();
-                    policy.Priority = CacheItemPriority.Default;
-                    policy.AbsoluteExpiration = DateTime.Now.AddMinutes(minute);
-                    MemoryCache.Default.Set(key, ret, policy);
-                }
-            }
-            else
-            {
-            }
-            return ret;
+                entry.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(minute);
+                return GetImageFromUrl(url, dictionary);
+            });
         }
 
         public static byte[] GetImageFromUrl(string url)
@@ -768,7 +766,10 @@ namespace EImece.Domain.Helpers
             {
                 try
                 {
-                    var payload = ResilientHttpClientAccessor.Instance.GetAsync(url, dictionary).GetAwaiter().GetResult();
+                    // ResilientHttpClient awaits with ConfigureAwait(false) internally, so this
+                    // blocking wait is deadlock-safe; ConfigureAwait(false) here makes that explicit.
+                    var payload = ResilientHttpClientAccessor.Instance.GetAsync(url, dictionary)
+                        .ConfigureAwait(false).GetAwaiter().GetResult();
                     if (payload?.Content != null && payload.StatusCode == 200)
                     {
                         return payload.Content.Length > 500000 ? payload.Content.Take(500000).ToArray() : payload.Content;

@@ -15,6 +15,11 @@ namespace EImece.Domain.Helpers
         private const string ErrorMessage = "Could not read image data";
         private const int ChunkSize = 1024;
 
+        // A single shared HttpClient reused across calls. Creating a new HttpClient per request
+        // exhausts sockets under load (each instance holds its own connection pool that lingers
+        // in TIME_WAIT after disposal). Reuse the same instance instead.
+        private static readonly HttpClient SharedHttpClient = new HttpClient();
+
         private static readonly Dictionary<byte[], Func<BinaryReader, Size>> ImageFormatDecoders = new Dictionary<byte[], Func<BinaryReader, Size>>()
         {
             { new byte[]{ 0x42, 0x4D }, DecodeBitmap},
@@ -78,7 +83,10 @@ namespace EImece.Domain.Helpers
             {
                 try
                 {
-                    return ResilientHttpClientAccessor.Instance.GetByteRangeAsync(uri.ToString(), startRange, endRange).GetAwaiter().GetResult();
+                    // ResilientHttpClient uses ConfigureAwait(false) internally, so blocking here
+                    // is deadlock-safe; ConfigureAwait(false) on the outer wait keeps it explicit.
+                    return ResilientHttpClientAccessor.Instance.GetByteRangeAsync(uri.ToString(), startRange, endRange)
+                        .ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 catch (Exception)
                 {
@@ -86,16 +94,17 @@ namespace EImece.Domain.Helpers
                 }
             }
 
-            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage { RequestUri = uri })
             {
-                var request = new HttpRequestMessage { RequestUri = uri };
                 request.Headers.Range = new RangeHeaderValue(startRange, endRange);
                 try
                 {
-                    var response = client.SendAsync(request).Result;
+                    // Reuse the shared client and block with ConfigureAwait(false) to avoid the
+                    // classic sync-over-async deadlock on a raw HttpClient that captures the context.
+                    var response = SharedHttpClient.SendAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        return response.Content.ReadAsByteArrayAsync().Result;
+                        return response.Content.ReadAsByteArrayAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                     }
                     else
                     {

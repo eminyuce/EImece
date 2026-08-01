@@ -534,7 +534,7 @@ namespace EImece.Controllers
             }
         }
 
-        public ActionResult PlaceOrder()
+        public async Task<ActionResult> PlaceOrder()
         {
             PaymentLogger.Info("Entering PlaceOrder action.");
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -555,7 +555,7 @@ namespace EImece.Controllers
                 {
                     var user = UserManager.FindByName(User.Identity.GetUserName());
                     PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id}");
-                    ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, user.Id);
+                    ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, user.Id);
                     PaymentLogger.Info("Returning PlaceOrder view.");
                     return View(shoppingCart);
                 }
@@ -566,9 +566,9 @@ namespace EImece.Controllers
             }
         }
         
-        public ActionResult PaymentResult(RetrieveCheckoutFormRequest model, string o, string u, String orderNumber)
+        public async Task<ActionResult> PaymentResult(RetrieveCheckoutFormRequest model, string o, string u, String orderNumber)
         {
-            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
             PaymentLogger.Info($"PaymentResult with ACCOUNT status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -700,7 +700,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult BuyNow(String productId, Customer customer)
+        public async Task<ActionResult> BuyNow(String productId, Customer customer)
         {
             PaymentLogger.Info($"Entering BuyNow POST with productId: {productId}");
             if (customer == null)
@@ -736,7 +736,7 @@ namespace EImece.Controllers
                 ShoppingCartService.SaveOrEditShoppingCart(item);
                 PaymentLogger.Info("Saved BuyNow shopping cart.");
 
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitializeBuyNow(buyNowModel);
+                ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeBuyNowAsync(buyNowModel);
                 PaymentLogger.Info("Initialized checkout form for BuyNow.");
                 PaymentLogger.Info("Returning BuyNowPayment view.");
                 return View("BuyNowPayment", buyNowModel);
@@ -750,10 +750,10 @@ namespace EImece.Controllers
             }
         }
 
-        public ActionResult BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
+        public async Task<ActionResult> BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
         {
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
-            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
             PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -1014,7 +1014,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ShoppingWithoutAccount(Customer customer)
+        public async Task<ActionResult> ShoppingWithoutAccount(Customer customer)
         {
             PaymentLogger.Info("Entering ContinueShoppingWithoutAccount POST action.");
             if (customer == null)
@@ -1055,7 +1055,7 @@ namespace EImece.Controllers
                 ShoppingCart item = SaveShoppingCart(shoppingCart);
           
 
-                ViewBag.CheckoutFormInitialize = IyzicoService.CreateCheckoutFormInitialize(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
+                ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
                 return View("ShoppingWithoutAccountPayment", buyWithNoAccountCreation);
             }
             else
@@ -1067,10 +1067,10 @@ namespace EImece.Controllers
             }
         }
 
-        public ActionResult ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o, String orderNumber)
+        public async Task<ActionResult> ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o, String orderNumber)
         {
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
-            CheckoutForm checkoutForm = IyzicoService.GetCheckoutForm(model);
+            CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
             PaymentLogger.Info($"ShoppingWithoutAccountResult status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
 
             PaymentLogger.Info("ShoppingWithoutAccountResult.CheckoutForm: " + JsonConvert.SerializeObject(checkoutForm));
