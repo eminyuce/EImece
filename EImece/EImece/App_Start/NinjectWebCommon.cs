@@ -108,6 +108,7 @@ using Domain.Repositories;
          
             kernel.Bind<IHealthCheck>().To<ExternalApiHealthCheck>().InSingletonScope();
             kernel.Bind<IHealthCheck>().To<FileStorageHealthCheck>().InSingletonScope();
+            // DependenciesHealthCheck removed: rely on specific health checks (sqlServer, externalApi, fileStorage, backgroundServices)
             kernel.Bind<IHealthCheck>().To<BackgroundServiceHealthCheck>().InSingletonScope();
             kernel.Bind<IHealthCheckService>().To<HealthCheckService>().InSingletonScope();
             kernel.Bind<IEmailSender>().To<EmailSender>().InRequestScope();

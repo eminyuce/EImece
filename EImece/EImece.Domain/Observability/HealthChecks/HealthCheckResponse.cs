@@ -8,44 +8,45 @@ namespace EImece.Domain.Observability.HealthChecks
     {
         public string Status { get; set; }
 
+        public string Version { get; set; }
+
+        public string Timestamp { get; set; }
+
         public Dictionary<string, HealthCheckComponentResponse> Components { get; set; }
 
         public static HealthCheckResponse Create(IReadOnlyCollection<HealthCheckResult> results)
         {
-            var details = new Dictionary<string, string>();
-            string error = null;
+            var components = new Dictionary<string, HealthCheckComponentResponse>(results.Count);
 
             foreach (var result in results)
             {
-                details[result.Name] = result.Message;
-                if (result.Status == HealthStatus.Down && error == null)
+                var comp = new HealthCheckComponentResponse
                 {
-                    error = result.Message;
+                    Status = ToResponseStatus(result.Status),
+                    Details = new Dictionary<string, string>
+                    {
+                        { "message", result.Message }
+                    }
+                };
+
+                if (result.Status == HealthStatus.Down)
+                {
+                    comp.Error = result.Message;
                 }
+
+                components[result.Name] = comp;
             }
 
             var overallStatus = results.All(r => r.Status == HealthStatus.Up)
                 ? HealthStatus.Up
                 : HealthStatus.Down;
 
-            var component = new HealthCheckComponentResponse
-            {
-                Status = ToResponseStatus(overallStatus),
-                Details = details
-            };
-
-            if (overallStatus == HealthStatus.Down)
-            {
-                component.Error = error;
-            }
-
             return new HealthCheckResponse
             {
                 Status = ToResponseStatus(overallStatus),
-                Components = new Dictionary<string, HealthCheckComponentResponse>
-                {
-                    { "allHealthChecks", component }
-                }
+                Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "unknown",
+                Timestamp = System.DateTime.UtcNow.ToString("o"),
+                Components = components
             };
         }
 
