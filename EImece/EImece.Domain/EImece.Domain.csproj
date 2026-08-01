@@ -373,8 +373,6 @@
     <Compile Include="Observability\HealthChecks\HealthCheckService.cs" />
     <Compile Include="Observability\HealthChecks\HealthStatus.cs" />
     <Compile Include="Observability\HealthChecks\IHealthCheck.cs" />
-    <Compile Include="Observability\HealthChecks\RabbitMqHealthCheck.cs" />
-    <Compile Include="Observability\HealthChecks\RedisHealthCheck.cs" />
     <Compile Include="Observability\HealthChecks\SqlServerHealthCheck.cs" />
     <Compile Include="Observability\Http\IResilientHttpClient.cs" />
     <Compile Include="Observability\Http\ResilientHttpClient.cs" />

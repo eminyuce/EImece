@@ -105,25 +105,7 @@ using Domain.Repositories;
             kernel.Bind<IApplicationMetrics>().To<ApplicationMetrics>().InSingletonScope();
             kernel.Bind<IResilientHttpClient>().To<ResilientHttpClient>().InSingletonScope();
             kernel.Bind<IHealthCheck>().To<SqlServerHealthCheck>().InSingletonScope();
-            kernel.Bind<IHealthCheck>().To<RedisHealthCheck>().InSingletonScope();
-            // Register RabbitMq health check only when a connection string is configured
-            try
-            {
-                var rabbitConn = AppConfig.GetConfigString("RabbitMqConnectionString");
-                if (!string.IsNullOrWhiteSpace(rabbitConn))
-                {
-                    kernel.Bind<IHealthCheck>().To<RabbitMqHealthCheck>().InSingletonScope();
-                }
-                else
-                {
-                    Logger.Info("RabbitMqConnectionString not configured; skipping RabbitMqHealthCheck registration.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // If AppConfig lookup fails for any reason, skip registering RabbitMq health check to avoid breaking startup
-                Logger.Warn(ex, "Failed to read RabbitMqConnectionString from config; skipping RabbitMqHealthCheck registration.");
-            }
+         
             kernel.Bind<IHealthCheck>().To<ExternalApiHealthCheck>().InSingletonScope();
             kernel.Bind<IHealthCheck>().To<FileStorageHealthCheck>().InSingletonScope();
             kernel.Bind<IHealthCheck>().To<BackgroundServiceHealthCheck>().InSingletonScope();
