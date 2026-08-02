@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -27,6 +28,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public SiteMapService SiteMapService { get; set; }
+
+        [Inject]
+        public Domain.Services.IServices.IImageDownloadService ImageDownloadService { get; set; }
 
         // GET: Admin/Dashboard
         public ActionResult Index()
@@ -77,11 +81,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult ClearCache()
+        public async Task<ActionResult> ClearCache()
         {
             SettingService.ClearCache();
             MemoryCacheProvider.ClearAll();
-            ExecuteWarmUpSql();
+            await ExecuteWarmUpSqlAsync().ConfigureAwait(true);
 
             string redirectUrl;
             if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
@@ -92,7 +96,7 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        private void ExecuteWarmUpSql()
+        private async Task ExecuteWarmUpSqlAsync()
         {
             try
             {
@@ -126,8 +130,12 @@ namespace EImece.Areas.Admin.Controllers
                 }
 
                 var pppp = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
-                var buffer = GeneralHelper.GetImageFromUrl(pppp + "/sitemap.xml");
-                SiteMapService.ReadSiteMapXmlAndRequest(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
+                // FIX: async, resilient download via DI instead of the static blocking helper.
+                var buffer = await ImageDownloadService.GetImageAsync(pppp + "/sitemap.xml").ConfigureAwait(true);
+                if (buffer != null && buffer.Length > 0)
+                {
+                    await SiteMapService.ReadSiteMapXmlAndRequestAsync(Encoding.UTF8.GetString(buffer, 0, buffer.Length)).ConfigureAwait(true);
+                }
             }
             catch (Exception ex)
             {

@@ -17,10 +17,10 @@ namespace EImece.Domain.Scheduler.Jobs
             int JobId = dataMap.GetInt("EmailScheduleJob_JobId");
 
             Logger.Info("WriteLog Executing for " + JobId + " CurrentThread: " + Thread.CurrentThread.ManagedThreadId);
-            await Task.Run(() =>
-            {
-                Console.WriteLine("Test");
-            });
+            // FIX: removed Task.Run for trivial synchronous work — it added pointless thread-pool
+            // scheduling overhead. Quartz already invokes Execute on a worker thread.
+            Console.WriteLine("Test");
+            await Task.CompletedTask;
         }
     }
 }

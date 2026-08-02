@@ -36,13 +36,10 @@ namespace EImece.Domain.Services
 
         private List<Setting> GetAllSettings()
         {
-            List<Setting> result = null;
-            if (!DataCachingProvider.Get(ALL_SETTING_CACHE_KEY, out result))
-            {
-                result = SettingRepository.GetAllSettings();
-                DataCachingProvider.Set(ALL_SETTING_CACHE_KEY, result, AppConfig.CacheLongSeconds);
-            }
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                ALL_SETTING_CACHE_KEY,
+                () => SettingRepository.GetAllSettings(),
+                AppConfig.CacheLongSeconds);
         }
 
         public string GetSettingByKey(string key)

@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -52,6 +54,9 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IFileStorageService FileStorageService { get; set; }
+
+        [Inject]
+        public IImageDownloadService ImageDownloadService { get; set; }
 
         [Inject]
         public ITemplateService TemplateService { get; set; }
@@ -300,7 +305,12 @@ namespace EImece.Domain.Services
             }
         }
 
-        public void ReadSiteMapXmlAndRequest(string xml)
+        /// <summary>
+        /// Warms the output cache by requesting every URL in the given sitemap XML. Fully async:
+        /// requests run without blocking a worker thread, and each fetch uses the resilient client
+        /// via <see cref="IImageDownloadService"/> (no static service-locator, no sync-over-async).
+        /// </summary>
+        public async Task ReadSiteMapXmlAndRequestAsync(string xml, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (String.IsNullOrEmpty(xml))
             {
@@ -314,12 +324,14 @@ namespace EImece.Domain.Services
                     var test = (Urlset)serializer.Deserialize(reader);
                     foreach (var tUrl in test.Url)
                     {
-                        var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
+                        cancellationToken.ThrowIfCancellationRequested();
+                        await ImageDownloadService.GetImageAsync(tUrl.Loc, null, cancellationToken).ConfigureAwait(false);
                     }
                 }
             }
-            catch (Exception ttt)
+            catch (Exception ex)
             {
+                Logger.Error(ex, "ReadSiteMapXmlAndRequestAsync failed");
             }
         }
     }

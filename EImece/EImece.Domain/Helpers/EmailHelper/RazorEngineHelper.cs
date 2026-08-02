@@ -33,6 +33,9 @@ namespace EImece.Domain.Helpers.EmailHelper
         [Inject]
         public BitlyRepository BitlyRepository { get; set; }
 
+        [Inject]
+        public IRazorTemplateEngine RazorTemplateEngine { get; set; }
+
         public Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ConfirmYourAccountMailTemplate);
@@ -55,7 +58,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
@@ -89,7 +92,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             string result = Engine.Razor.RunCompile(template, templateKey, null, model);
 
             return new Tuple<string, string>(emailTemplate.Subject, result);
@@ -114,7 +117,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             // Şablonun kendisi
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(template);
 
             // RazorEngine kullanarak template'i render ediyoruz
             var result = GetRenderOutputByRazorEngineModel(template, model);
@@ -136,7 +139,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             OrderConfirmationEmailRazorTemplate model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template, model);
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
@@ -156,7 +159,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template);
 
             string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
             string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact); // Use different key for body
@@ -168,13 +171,6 @@ namespace EImece.Domain.Helpers.EmailHelper
                 companyname,
                 adminUserName,
                 companyname);
-        }
-
-        private static string GetUniqueId()
-        {
-            // Generate a unique key by adding a timestamp or random identifier
-            return DateTime.Now.Ticks.ToString();
-            // or use Guid.NewGuid().ToString() for even more uniqueness
         }
 
         public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
@@ -211,7 +207,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             // Şablonu işle
-            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
             string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
 
             // E-posta gönder
@@ -261,7 +257,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             };
 
             // Şablonu işle
-            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body) + "_" + GetUniqueId();
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
             string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
 
             // E-posta gönder
@@ -305,50 +301,9 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel
         {
-            var result = new RazorRenderResult();
-
-            if (String.IsNullOrEmpty(razorTemplate))
-            {
-                return result;
-            }
-            try
-            {
-                result.Source = razorTemplate;
-
-                var configuration = new TemplateServiceConfiguration { Debug = true };
-                configuration.Namespaces.Add("EImece.Domain.Helpers");
-                configuration.Namespaces.Add("EImece.Domain.Entities");
-                configuration.Namespaces.Add("EImece.Domain.Models.FrontModels");
-                configuration.Namespaces.Add("EImece.Domain.Helpers.RazorCustomRssTemplate");
-                configuration.Namespaces.Add("System.Xml");
-                configuration.Namespaces.Add("System.Web.Mvc");
-                configuration.Namespaces.Add("System.Text");
-                configuration.Namespaces.Add("System.Web.Mvc.Html");
-                configuration.Namespaces.Add("System.Xml.Linq");
-                configuration.Namespaces.Add("System.Linq");
-                configuration.Namespaces.Add("Resources");
-                configuration.Namespaces.Add("System.ServiceModel.Syndication");
-                configuration.BaseTemplateType = typeof(VBCustomTemplateBase<>);
-
-                using (var service = RazorEngineService.Create(configuration))
-                {
-                    using (var writer = new StringWriter())
-                    {
-                        var runner = service.CompileRunner<T>(result.Source);
-                        runner.Run(razorEngineModel, writer);
-                        result.Result = writer.ToString();
-                    }
-                }
-            }
-            catch (TemplateCompilationException ex)
-            {
-                result.templateCompilationException = ex;
-            }
-            catch (Exception ex)
-            {
-                result.GeneralError = ex;
-            }
-            return result;
+            // FIX: delegate to the singleton engine. Templates are compiled once and cached by
+            // content hash instead of recompiling (and leaking a dynamic assembly) on every call.
+            return RazorTemplateEngine.GetRenderOutputByModel(razorTemplate, razorEngineModel);
         }
 
         public RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
@@ -361,31 +316,9 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             try
             {
-                result.Source = razorTemplate;
-
-                var configuration = new TemplateServiceConfiguration { Debug = true };
-                configuration.Namespaces.Add("EImece.Domain.Helpers");
-                configuration.Namespaces.Add("EImece.Domain.Entities");
-                configuration.Namespaces.Add("EImece.Domain.Models.FrontModels");
-                configuration.Namespaces.Add("EImece.Domain.Helpers.RazorCustomRssTemplate");
-                configuration.Namespaces.Add("System.Xml");
-                configuration.Namespaces.Add("System.Web.Mvc");
-                configuration.Namespaces.Add("System.Text");
-                configuration.Namespaces.Add("System.Web.Mvc.Html");
-                configuration.Namespaces.Add("System.Xml.Linq");
-                configuration.Namespaces.Add("System.Linq");
-                configuration.Namespaces.Add("Resources");
-                configuration.Namespaces.Add("System.ServiceModel.Syndication");
-                configuration.BaseTemplateType = typeof(VBCustomTemplateBase<>);
-
-                using (var service = RazorEngineService.Create(configuration))
-                using (var writer = new StringWriter())
-                {
-                    var runner = service.CompileRunner<RazorEngineModel>(result.Source);
-                    razorEngineModel = razorEngineModel == null ? new RazorEngineModel() : razorEngineModel;
-                    runner.Run(razorEngineModel, writer);
-                    result.Result = writer.ToString();
-                }
+                // FIX: single shared, compile-once engine (no per-call RazorEngineService.Create,
+                // no Debug=true, no dynamic-assembly leak).
+                return RazorTemplateEngine.GetRenderOutput(razorTemplate, razorEngineModel);
             }
             catch (TemplateCompilationException ex)
             {

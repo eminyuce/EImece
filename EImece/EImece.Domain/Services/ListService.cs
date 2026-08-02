@@ -41,16 +41,12 @@ namespace EImece.Domain.Services
 
         public List<List> GetListItems()
         {
-            List<List> result = null;
             var cacheKey = String.Format("GetListItems");
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
-            {
-                result = new List<List>();
-                result = ListRepository.GetAllListItems();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => ListRepository.GetAllListItems(),
+                AppConfig.CacheLongSeconds);
         }
     }
 }

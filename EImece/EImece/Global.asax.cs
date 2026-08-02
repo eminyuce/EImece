@@ -40,8 +40,11 @@ namespace EImece
             GlobalFilters.Filters.Add(new Filters.StructuredExceptionFilter());
 
             var adresService = DependencyResolver.Current.GetService<AdresService>();
-            //  var quartzService = DependencyResolver.Current.GetService<QuartzService>();
-            //  quartzService.StartSchedulerService();
+            // To enable the Quartz scheduler, resolve QuartzService and await its async start.
+            // Application_Start is not async, so block ONCE here at startup (no request thread,
+            // no AspNetSynchronizationContext => deadlock-free):
+            //  DependencyResolver.Current.GetService<QuartzService>()
+            //      .StartSchedulerServiceAsync().GetAwaiter().GetResult();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }

@@ -30,22 +30,16 @@ namespace EImece.Domain.Services
 
         public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
-            List<MenuTreeModel> result = null;
-            if (IsCachingActivated)
+            if (!IsCachingActivated)
             {
-                var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
-                if (!DataCachingProvider.Get(cacheKey, out result))
-                {
-                    result = MenuRepository.BuildTree(isActive, language);
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-                }
-            }
-            else
-            {
-                result = MenuRepository.BuildTree(isActive, language);
+                return MenuRepository.BuildTree(isActive, language);
             }
 
-            return result;
+            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => MenuRepository.BuildTree(isActive, language),
+                AppConfig.CacheMediumSeconds);
         }
 
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
@@ -61,20 +55,16 @@ namespace EImece.Domain.Services
 
         public List<Menu> GetMenus()
         {
+            if (!IsCachingActivated)
+            {
+                return MenuRepository.GetMenus();
+            }
+
             var cacheKey = "GetMenus";
-            List<Menu> result = null;
-            if (DataCachingProvider.Get(cacheKey, out result))
-            {
-                return result;
-            }
-
-            result = MenuRepository.GetMenus();
-            if (IsCachingActivated)
-            {
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => MenuRepository.GetMenus(),
+                AppConfig.CacheMediumSeconds);
         }
 
         public MenuPageViewModel GetPageById(int menuId)

@@ -45,11 +45,10 @@ namespace EImece.Domain.Services
             if (IsCachingActivated)
             {
                 var cacheKey = String.Format("BuildNavigation-{0}-{1}", isActive, language);
-                if (!DataCachingProvider.Get(cacheKey, out result))
-                {
-                    result = ProductCategoryRepository.BuildNavigation(isActive, language);
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-                }
+                result = DataCachingProvider.GetOrAdd(
+                    cacheKey,
+                    () => ProductCategoryRepository.BuildNavigation(isActive, language),
+                    AppConfig.CacheMediumSeconds);
             }
             else
             {
@@ -65,11 +64,10 @@ namespace EImece.Domain.Services
             if (IsCachingActivated)
             {
                 var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
-                if (!DataCachingProvider.Get(cacheKey, out result))
-                {
-                    result = ProductCategoryRepository.BuildTree(isActive, language);
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-                }
+                result = DataCachingProvider.GetOrAdd(
+                    cacheKey,
+                    () => ProductCategoryRepository.BuildTree(isActive, language),
+                    AppConfig.CacheMediumSeconds);
             }
             else
             {
@@ -134,15 +132,11 @@ namespace EImece.Domain.Services
 
         public List<ProductCategory> GetMainPageProductCategories(int language)
         {
-            List<ProductCategory> result;
             var cacheKey = $"GetMainPageProductCategories-{language}";
-            if (!DataCachingProvider.Get(cacheKey, out result))
-            {
-                result = ProductCategoryRepository.GetMainPageProductCategories(language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => ProductCategoryRepository.GetMainPageProductCategories(language),
+                AppConfig.CacheLongSeconds);
         }
 
         public List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage)

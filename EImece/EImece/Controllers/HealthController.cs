@@ -17,6 +17,11 @@ namespace EImece.Controllers
             _healthCheckService = healthCheckService;
         }
 
+        /**
+         *  icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
+         *  run it in command prompt to give permission to the app pool identity to write to the images folder as admin 
+         */
+
         [HttpGet]
         [Route("health")]
         [Route("healthz")]

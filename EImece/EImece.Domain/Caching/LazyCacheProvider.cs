@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using NLog;
 using System;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Caching
 {
@@ -19,7 +20,12 @@ namespace EImece.Domain.Caching
 
         public void Clear(string key)
         {
-            _lazyCache.Remove(key);
+            // FIX (pre-existing bug): entries are stored under the "Memory:" prefix by Set/GetOrAdd,
+            // but Clear used the raw key, so targeted eviction never actually removed anything
+            // (e.g. SettingService clearing its cache after a save was a no-op). Prefix it to match.
+            var keyNew = "Memory:" + key;
+            _lazyCache.Remove(keyNew);
+            allCacheKeys.TryRemove(keyNew, out _);
         }
 
         public void ClearAll()
@@ -29,6 +35,45 @@ namespace EImece.Domain.Caching
                 _lazyCache.Remove(key);
                 allCacheKeys.TryRemove(key, out _);
             }
+        }
+
+        public T GetOrAdd<T>(string key, Func<T> valueFactory, int duration)
+        {
+            if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
+
+            // When caching is globally disabled, bypass the cache but still honour the contract.
+            if (!AppConfig.IsCacheActive)
+            {
+                return valueFactory();
+            }
+
+            var keyNew = "Memory:" + key;
+            // LazyCache wraps the factory in a Lazy<T> internally, guaranteeing single execution
+            // under concurrent misses (single-flight) — this is the stampede fix.
+            return _lazyCache.GetOrAdd(keyNew, entry =>
+            {
+                entry.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                allCacheKeys.TryAdd(keyNew, 0);
+                return valueFactory();
+            });
+        }
+
+        public async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> valueFactory, int duration)
+        {
+            if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
+
+            if (!AppConfig.IsCacheActive)
+            {
+                return await valueFactory().ConfigureAwait(false);
+            }
+
+            var keyNew = "Memory:" + key;
+            return await _lazyCache.GetOrAddAsync(keyNew, async entry =>
+            {
+                entry.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                allCacheKeys.TryAdd(keyNew, 0);
+                return await valueFactory().ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         public bool Get<T>(string key, out T value)

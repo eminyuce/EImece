@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Caching
 {
@@ -32,6 +33,61 @@ namespace EImece.Domain.Caching
             }
         }
 
+        public T GetOrAdd<T>(string key, Func<T> valueFactory, int duration)
+        {
+            if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
+
+            if (!AppConfig.IsCacheActive)
+            {
+                return valueFactory();
+            }
+
+            var keyNew = "Memory:" + key;
+
+            // Store a Lazy<T> and publish it with AddOrGetExisting so that concurrent callers
+            // resolve the SAME Lazy instance; the value factory therefore executes exactly once
+            // (single-flight), preventing the cache stampede of a naive get-then-set.
+            var newLazy = new Lazy<T>(valueFactory, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+            var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration) };
+            var winner = _cache.AddOrGetExisting(keyNew, newLazy, policy) as Lazy<T> ?? newLazy;
+
+            try
+            {
+                return winner.Value;
+            }
+            catch
+            {
+                // Never cache a faulted factory result.
+                _cache.Remove(keyNew);
+                throw;
+            }
+        }
+
+        public async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> valueFactory, int duration)
+        {
+            if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
+
+            if (!AppConfig.IsCacheActive)
+            {
+                return await valueFactory().ConfigureAwait(false);
+            }
+
+            var keyNew = "Memory:" + key;
+            var newLazy = new Lazy<Task<T>>(valueFactory, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+            var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration) };
+            var winner = _cache.AddOrGetExisting(keyNew, newLazy, policy) as Lazy<Task<T>> ?? newLazy;
+
+            try
+            {
+                return await winner.Value.ConfigureAwait(false);
+            }
+            catch
+            {
+                _cache.Remove(keyNew);
+                throw;
+            }
+        }
+
         public void Set<T>(string key, T value, int duration)
         {
             if (AppConfig.IsCacheActive)
@@ -49,7 +105,10 @@ namespace EImece.Domain.Caching
 
         public void Clear(string key)
         {
-            _cache.Remove(key, CacheEntryRemovedReason.Removed);
+            // FIX (pre-existing bug): Set/GetOrAdd store under the "Memory:" prefix, so clearing by
+            // the raw key removed nothing. Prefix it so targeted eviction works.
+            var keyNew = "Memory:" + key;
+            _cache.Remove(keyNew, CacheEntryRemovedReason.Removed);
         }
 
         public IEnumerable<KeyValuePair<string, object>> GetAll()

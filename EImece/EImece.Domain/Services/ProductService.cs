@@ -97,12 +97,13 @@ namespace EImece.Domain.Services
 
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
-            ProductIndexViewModel result = null;
             var cacheKey = $"GetMainPageProducts-{page}-{language}";
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            // Single-flight: the whole main-page view model is built once per (page, language)
+            // even under a burst of concurrent first-hits after expiry.
+            return DataCachingProvider.GetOrAdd(cacheKey, () =>
             {
-                result = new ProductIndexViewModel();
+                var result = new ProductIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
                 result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
                 result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
@@ -111,9 +112,8 @@ namespace EImece.Domain.Services
                 var items = ProductRepository.GetActiveProducts(page, pageSize, language);
                 result.Products = items;
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            return result;
+                return result;
+            }, AppConfig.CacheMediumSeconds);
         }
 
         public void SaveProductTags(int id, int[] tags)
@@ -335,20 +335,21 @@ namespace EImece.Domain.Services
 
         public List<Product> GetActiveProducts(int? language)
         {
-            List<Product> result = null;
             var cacheKey = $"GetActiveProducts-{language}";
-            if (!DataCachingProvider.Get(cacheKey, out result))
-            {
-                result = ProductRepository.GetActiveProducts(language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            return result;
+            // Single-flight: prevents a DB thundering-herd when this hot key expires.
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => ProductRepository.GetActiveProducts(language),
+                AppConfig.CacheMediumSeconds);
         }
 
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
             var items = this.GetActiveProducts(rssParams.Language).Take(rssParams.Take).ToList();
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            // FIX: use the injected IHttpContextFactory abstraction instead of the static
+            // System.Web.HttpContext.Current ambient (testable; removes the hard web coupling).
+            var request = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -359,7 +360,7 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            var urlHelper = new UrlHelper(request.RequestContext);
             String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, AppConfig.HttpProtocol);
 
             feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));

@@ -16,10 +16,18 @@ namespace EImece.Domain.Scheduler
         //https://cronexpressiondescriptor.azurewebsites.net
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        // FIX: inject the scheduler itself (registered as a singleton) rather than a Task<IScheduler>
+        // whose binding created a fresh StdSchedulerFactory on every resolve. A single shared
+        // IScheduler guarantees the scheduler cannot accidentally be instantiated more than once.
         [Inject]
-        public Task<IScheduler> Scheduler { get; set; }
+        public IScheduler Scheduler { get; set; }
 
-        public void StartSchedulerService()
+        /// <summary>
+        /// Starts the Quartz scheduler asynchronously. Call and await this from the composition root
+        /// (Application_Start). No thread is blocked and exceptions are logged rather than wrapped in
+        /// an <see cref="AggregateException"/> (which the old <c>.Wait()</c> produced).
+        /// </summary>
+        public async Task StartSchedulerServiceAsync()
         {
             Logger.Info("StartSchedulerService has started");
 
@@ -33,7 +41,8 @@ namespace EImece.Domain.Scheduler
             try
             {
                 Logger.Info("ExecuteMultiplyTask Cron has started");
-                ExecuteMultiplyTask().Wait();
+                // FIX: await instead of .Wait() — no blocked thread, no AggregateException wrapping.
+                await ExecuteMultiplyTask().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -43,8 +52,8 @@ namespace EImece.Domain.Scheduler
 
         public async Task DeleteNonProcessingTask(int jobId)
         {
-            // get a scheduler
-            IScheduler sched = await Scheduler;
+            // get a scheduler (singleton, already constructed)
+            IScheduler sched = Scheduler;
             //  await sched.Clear();
             var job = ScheduleJob.CreateTest();
             try
@@ -69,8 +78,8 @@ namespace EImece.Domain.Scheduler
         {
             var job = ScheduleJob.CreateTest();
             var jobKey = job.JobKey;
-            // get a scheduler
-            IScheduler sched = await Scheduler;
+            // get a scheduler (singleton, already constructed)
+            IScheduler sched = Scheduler;
             var cancellationTokenSource = new CancellationTokenSource();
             bool result = await sched.Interrupt(jobKey, cancellationTokenSource.Token);
             cancellationTokenSource.Cancel();
@@ -79,8 +88,8 @@ namespace EImece.Domain.Scheduler
 
         public async Task ExecuteMultiplyTask()
         {
-            // get a scheduler
-            IScheduler sched = await Scheduler;
+            // get a scheduler (singleton, already constructed)
+            IScheduler sched = Scheduler;
             // and start it off
             await sched.Start();
 

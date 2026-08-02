@@ -68,7 +68,7 @@ namespace EImece.Domain.DbContext
             }
         }
 
-        public void ProcessProductWithGroq()
+        public async Task ProcessProductWithGroq()
         {
             Dictionary<int, Tuple<string, string>> products = GetProducts(prodConnectionString);
 
@@ -80,11 +80,12 @@ namespace EImece.Domain.DbContext
                 string json = null;
                 try
                 {
-                    json = CallGroqSyncHtml(name, htmlDescription).TrimEnd().TrimStart();
+                    json = (await CallGroqSyncHtml(name, htmlDescription).ConfigureAwait(false)).TrimEnd().TrimStart();
                     Console.WriteLine("ProductId:" + productId + " is processed by LLM");
                     InsertProductWithTags(productId, json, prodConnectionString);
                     Console.WriteLine("ProductId:" + productId + " is updated by Stored Proc");
-                    Thread.Sleep(2000);
+                    // FIX: async delay instead of blocking Thread.Sleep.
+                    await Task.Delay(2000).ConfigureAwait(false);
                     Console.WriteLine("----------------------------------------------");
                 }
                 catch (Exception ex)
@@ -95,7 +96,7 @@ namespace EImece.Domain.DbContext
             }
         }
 
-        public string CallGroqSyncHtml(string productName, string htmlDescription)
+        public async Task<string> CallGroqSyncHtml(string productName, string htmlDescription)
         {
             // Validate inputs
             if (string.IsNullOrWhiteSpace(productName))
@@ -160,10 +161,10 @@ Constraints:
                 httpRequest.Headers.TryAddWithoutValidation("Authorization", $"Bearer {GROQ_API_KEY}");
                 httpRequest.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-                // Reuse the shared client; block with ConfigureAwait(false) to stay deadlock-safe.
-                using (var response = GroqHttpClient.SendAsync(httpRequest).ConfigureAwait(false).GetAwaiter().GetResult())
+                // FIX: fully async — no sync-over-async blocking.
+                using (var response = await GroqHttpClient.SendAsync(httpRequest).ConfigureAwait(false))
                 {
-                    var responseText = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (!response.IsSuccessStatusCode)
                     {
@@ -204,7 +205,7 @@ Constraints:
         }
 
 
-        public string CallGroqSync(string productName, string htmlDescription)
+        public async Task<string> CallGroqSync(string productName, string htmlDescription)
         {
             // Validate inputs
             if (string.IsNullOrWhiteSpace(productName))
@@ -290,11 +291,11 @@ Constraints:
                 httpRequest.Headers.TryAddWithoutValidation("Authorization", $"Bearer {GROQ_API_KEY}");
                 httpRequest.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-                // Reuse the shared client; block with ConfigureAwait(false) to stay deadlock-safe.
-                using (var response = GroqHttpClient.SendAsync(httpRequest).ConfigureAwait(false).GetAwaiter().GetResult())
+                // FIX: fully async — no sync-over-async blocking.
+                using (var response = await GroqHttpClient.SendAsync(httpRequest).ConfigureAwait(false))
                 {
                     // Synchronously read the response content (deadlock-safe via ConfigureAwait(false)).
-                    string responseText = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    string responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (!response.IsSuccessStatusCode)
                     {

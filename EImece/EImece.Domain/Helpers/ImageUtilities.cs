@@ -1,11 +1,8 @@
-﻿using EImece.Domain.Observability.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing; // note: add reference to System.Drawing assembly
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace EImece.Domain.Helpers
 {
@@ -14,11 +11,6 @@ namespace EImece.Domain.Helpers
     {
         private const string ErrorMessage = "Could not read image data";
         private const int ChunkSize = 1024;
-
-        // A single shared HttpClient reused across calls. Creating a new HttpClient per request
-        // exhausts sockets under load (each instance holds its own connection pool that lingers
-        // in TIME_WAIT after disposal). Reuse the same instance instead.
-        private static readonly HttpClient SharedHttpClient = new HttpClient();
 
         private static readonly Dictionary<byte[], Func<BinaryReader, Size>> ImageFormatDecoders = new Dictionary<byte[], Func<BinaryReader, Size>>()
         {
@@ -77,46 +69,33 @@ namespace EImece.Domain.Helpers
             return new Size(0, 0);
         }
 
+        // Genuine synchronous byte-range fetch via HttpWebRequest. This replaces the previous
+        // sync-over-async HttpClient/ResilientHttpClientAccessor code: there is no .GetAwaiter()
+        // .GetResult() (no thread-pool deadlock risk) and no static service-locator dependency.
         private static byte[] GetSomeBytes(Uri uri, int startRange, int endRange)
         {
-            if (ResilientHttpClientAccessor.Instance != null)
+            try
             {
-                try
-                {
-                    // ResilientHttpClient uses ConfigureAwait(false) internally, so blocking here
-                    // is deadlock-safe; ConfigureAwait(false) on the outer wait keeps it explicit.
-                    return ResilientHttpClientAccessor.Instance.GetByteRangeAsync(uri.ToString(), startRange, endRange)
-                        .ConfigureAwait(false).GetAwaiter().GetResult();
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
+                var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+                request.AddRange(startRange, endRange);
 
-            using (var request = new HttpRequestMessage { RequestUri = uri })
-            {
-                request.Headers.Range = new RangeHeaderValue(startRange, endRange);
-                try
+                using (var response = (System.Net.HttpWebResponse)request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                using (var memory = new MemoryStream())
                 {
-                    // Reuse the shared client and block with ConfigureAwait(false) to avoid the
-                    // classic sync-over-async deadlock on a raw HttpClient that captures the context.
-                    var response = SharedHttpClient.SendAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        return response.Content.ReadAsByteArrayAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                    }
-                    else
+                    if (stream == null)
                     {
                         return null;
                     }
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = ex.Message;
+
+                    stream.CopyTo(memory);
+                    return memory.ToArray();
                 }
             }
-            return new byte[] { };
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>

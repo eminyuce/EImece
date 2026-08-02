@@ -22,13 +22,10 @@ namespace EImece.Domain.Services
         public List<Template> GetAllActiveTemplates()
         {
             var cacheKey = String.Format("GetAllActiveTemplates");
-            List<Template> result = null;
-            if (!DataCachingProvider.Get(cacheKey, out result))
-            {
-                result = TemplateRepository.GetAllActiveTemplates();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TemplateRepository.GetAllActiveTemplates(),
+                AppConfig.CacheLongSeconds);
         }
 
         public override Template GetSingle(int id)

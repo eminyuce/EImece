@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <FrameworkPathOverride Condition="Exists('$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\.NETFramework\v4.7.2\mscorlib.dll')">$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\.NETFramework\v4.7.2\</FrameworkPathOverride>
+    <FrameworkPathOverride Condition="Exists('$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\mscorlib.dll')">$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\</FrameworkPathOverride>
     <VSToolsPath>$(MSBuildThisFileDirectory)build-tools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath</VSToolsPath>
     <AspNetTargetsPath>$(MSBuildThisFileDirectory)build-tools\no-publish\</AspNetTargetsPath>
     <SkipEnsureBindingRedirects>true</SkipEnsureBindingRedirects>

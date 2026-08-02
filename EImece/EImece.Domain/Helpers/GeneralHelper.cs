@@ -760,26 +760,12 @@ namespace EImece.Domain.Helpers
             return GetImageFromUrl(url, null);
         }
 
+        // NOTE: This static overload remains for legacy synchronous callers (Razor views, data
+        // migration, admin warm-up). It performs genuine synchronous HTTP via HttpWebRequest — no
+        // sync-over-async and no service-locator. For request-path/async code prefer the injected
+        // IImageDownloadService, which uses the resilient (Polly) client end-to-end asynchronously.
         public static byte[] GetImageFromUrl(string url, Dictionary<String, String> dictionary)
         {
-            if (ResilientHttpClientAccessor.Instance != null)
-            {
-                try
-                {
-                    // ResilientHttpClient awaits with ConfigureAwait(false) internally, so this
-                    // blocking wait is deadlock-safe; ConfigureAwait(false) here makes that explicit.
-                    var payload = ResilientHttpClientAccessor.Instance.GetAsync(url, dictionary)
-                        .ConfigureAwait(false).GetAwaiter().GetResult();
-                    if (payload?.Content != null && payload.StatusCode == 200)
-                    {
-                        return payload.Content.Length > 500000 ? payload.Content.Take(500000).ToArray() : payload.Content;
-                    }
-                }
-                catch (Exception)
-                {
-                }
-            }
-
             System.Net.HttpWebRequest request = null;
             System.Net.HttpWebResponse response = null;
             byte[] b = null;

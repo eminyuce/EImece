@@ -31,27 +31,18 @@ namespace EImece.Domain.Services
         public TurkiyeAdres GetTurkiyeAdres()
         {
             var cacheKey = String.Format("GetTurkiyeAdres");
-            TurkiyeAdres turkiyeAdres = null;
-            if (!MemoryCacheProvider.Get(cacheKey, out turkiyeAdres))
-            {
-                turkiyeAdres = GetTurkiyeAdres(cacheKey);
-            }
-
-            if (turkiyeAdres == null)
-            {
-                turkiyeAdres = GetTurkiyeAdres(cacheKey);
-            }
-
-            return turkiyeAdres;
+            // Single-flight: the (file-backed) address tree is parsed once even under concurrent
+            // misses instead of every caller deserializing the JSON files in parallel.
+            return MemoryCacheProvider.GetOrAdd(cacheKey, BuildTurkiyeAdres, AppConfig.CacheVeryLongSeconds);
         }
 
-        private TurkiyeAdres GetTurkiyeAdres(string cacheKey)
+        private TurkiyeAdres BuildTurkiyeAdres()
         {
-            TurkiyeAdres turkiyeAdres = new TurkiyeAdres();
-            turkiyeAdres.IlRoot = GetIlRoot();
-            turkiyeAdres.IlceRoot = GetIlceRoot();
-            MemoryCacheProvider.Set(cacheKey, turkiyeAdres, AppConfig.CacheVeryLongSeconds);
-            return turkiyeAdres;
+            return new TurkiyeAdres
+            {
+                IlRoot = GetIlRoot(),
+                IlceRoot = GetIlceRoot()
+            };
         }
 
         public IlceRoot GetIlceRoot()

@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace EImece.Domain.Observability.HealthChecks
@@ -12,10 +14,11 @@ namespace EImece.Domain.Observability.HealthChecks
 
         public string Timestamp { get; set; }
 
-        public Dictionary<string, HealthCheckComponentResponse> Components { get; set; }
+        public IReadOnlyDictionary<string, HealthCheckComponentResponse> Components { get; private set; }
 
         public static HealthCheckResponse Create(IReadOnlyCollection<HealthCheckResult> results)
         {
+            if (results == null) throw new ArgumentNullException(nameof(results));
             var components = new Dictionary<string, HealthCheckComponentResponse>(results.Count);
 
             foreach (var result in results)
@@ -46,7 +49,7 @@ namespace EImece.Domain.Observability.HealthChecks
                 Status = ToResponseStatus(overallStatus),
                 Version = System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "unknown",
                 Timestamp = System.DateTime.UtcNow.ToString("o"),
-                Components = components
+                Components = new ReadOnlyDictionary<string, HealthCheckComponentResponse>(components)
             };
         }
 
@@ -60,7 +63,7 @@ namespace EImece.Domain.Observability.HealthChecks
     {
         public string Status { get; set; }
 
-        public Dictionary<string, string> Details { get; set; }
+        public IReadOnlyDictionary<string, string> Details { get; internal set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Error { get; set; }

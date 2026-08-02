@@ -44,18 +44,19 @@ namespace EImece.Domain.Services
 
         public List<FileStorage> GetFileStorages()
         {
+            // FIX (pre-existing bug): the previous get-then-set logic fell into the else branch on a
+            // cache HIT and re-queried the database every call, so the cache was effectively dead.
+            // Now caching actually serves from cache, with single-flight population on a miss.
+            if (!IsCachingActivated)
+            {
+                return FileStorageRepository.GetAll().ToList();
+            }
+
             var cacheKey = "GetFileStorages";
-            List<FileStorage> result = null;
-            if (!DataCachingProvider.Get(cacheKey, out result) && IsCachingActivated)
-            {
-                result = FileStorageRepository.GetAll().ToList();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
-            else
-            {
-                result = FileStorageRepository.GetAll().ToList();
-            }
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => FileStorageRepository.GetAll().ToList(),
+                AppConfig.CacheMediumSeconds);
         }
 
         public void SaveUploadImages(int contentId,

@@ -36,15 +36,13 @@ namespace EImece.Domain.Services
 
         public virtual List<T> GetActiveBaseEntitiesFromCache(bool? isActive, int? language)
         {
-            List<T> result = null;
             String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseEntitiesFromCache-{0}-{1}", isActive, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
-            {
-                result = baseEntityRepository.GetActiveBaseEntities(isActive, language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-            return result;
+            // Single-flight population: concurrent misses share one repository call.
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => baseEntityRepository.GetActiveBaseEntities(isActive, language),
+                AppConfig.CacheLongSeconds);
         }
 
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int? language)

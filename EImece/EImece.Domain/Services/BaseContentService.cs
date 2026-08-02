@@ -77,20 +77,21 @@ namespace EImece.Domain.Services
 
         public virtual List<T> GetActiveBaseContentsFromCache(bool? isActive, int? language)
         {
-            List<T> result = null;
             String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseContentsFromCache-{0}-{1}", isActive, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            // Single-flight population coalesces concurrent misses onto one DB call.
+            var result = DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => BaseContentRepository.GetActiveBaseContents(isActive, language),
+                AppConfig.CacheLongSeconds);
+
+            // Preserve original semantics: never persist an empty content set (so freshly added
+            // content becomes visible without waiting for the long cache window). Evict and return
+            // an empty list. Clear() now correctly targets the prefixed key.
+            if (!result.IsNotEmpty())
             {
-                result = BaseContentRepository.GetActiveBaseContents(isActive, language);
-                if (result.IsNotEmpty())
-                {
-                    DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-                }
-                else
-                {
-                    return new List<T>();
-                }
+                DataCachingProvider.Clear(cacheKey);
+                return new List<T>();
             }
             return result;
         }

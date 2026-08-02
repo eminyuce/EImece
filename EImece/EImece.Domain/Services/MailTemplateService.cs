@@ -38,15 +38,11 @@ namespace EImece.Domain.Services
 
         public List<MailTemplate> GetAllMailTemplatesWithCache()
         {
-            List<MailTemplate> result;
             var cacheKey = "GetAllMailTemplatesWithCache";
-            if (!DataCachingProvider.Get(cacheKey, out result))
-            {
-                result = this.GetAll();
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheLongSeconds);
-            }
-
-            return result;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => this.GetAll(),
+                AppConfig.CacheLongSeconds);
         }
 
         public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
@@ -61,7 +57,9 @@ namespace EImece.Domain.Services
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
             string baseurl = GetSiteBaseUrl();
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
+            // FIX: injected abstraction instead of static HttpContext.Current.
+            var mailRequest = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, mailRequest.Url.Host, mailRequest.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
@@ -72,7 +70,8 @@ namespace EImece.Domain.Services
 
         private string GetSiteBaseUrl()
         {
-            var Request = HttpContext.Current.Request;
+            // FIX: injected abstraction instead of static HttpContext.Current.
+            var Request = HttpContextFactory.Create().Request;
             var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
             return baseurl;
         }
@@ -88,7 +87,9 @@ namespace EImece.Domain.Services
             pp.CompanyPhoneNumber = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation).SettingValue.Trim();
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host, HttpContext.Current.Request.Url.Port);
+            // FIX: injected abstraction instead of static HttpContext.Current.
+            var confirmRequest = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, confirmRequest.Url.Host, confirmRequest.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;

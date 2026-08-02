@@ -101,9 +101,15 @@ using Domain.Repositories;
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IEimeceCacheProvider>().To<LazyCacheProvider>().InSingletonScope();
+            // Single, compile-once Razor engine shared across the app (thread-safe). Prevents
+            // per-render RazorEngineService creation and non-collectible dynamic-assembly leaks.
+            kernel.Bind<IRazorTemplateEngine>().To<RazorTemplateEngine>().InSingletonScope();
             kernel.Bind<ObservabilityOptions>().ToMethod(_ => ObservabilityOptions.FromAppConfig()).InSingletonScope();
             kernel.Bind<IApplicationMetrics>().To<ApplicationMetrics>().InSingletonScope();
             kernel.Bind<IResilientHttpClient>().To<ResilientHttpClient>().InSingletonScope();
+            // Async, resilient image downloader — DI replacement for the removed static
+            // ResilientHttpClientAccessor service-locator.
+            kernel.Bind<IImageDownloadService>().To<ImageDownloadService>().InSingletonScope();
             kernel.Bind<IHealthCheck>().To<SqlServerHealthCheck>().InSingletonScope();
          
             kernel.Bind<IHealthCheck>().To<ExternalApiHealthCheck>().InSingletonScope();
@@ -165,12 +171,13 @@ using Domain.Repositories;
             kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
             kernel.Bind<AppLogRepository>().ToSelf().InRequestScope();
 
-            kernel.Bind<Task<IScheduler>>().ToMethod(x =>
-            {
-                StdSchedulerFactory factory = new StdSchedulerFactory();
-                var sched = factory.GetScheduler();
-                return sched;
-            });
+            // FIX: bind a single shared IScheduler instead of a Task<IScheduler> whose factory ran
+            // on every resolve (risking multiple scheduler instances). Resolving the scheduler once
+            // at startup via GetAwaiter().GetResult() is safe: it runs at composition time, off any
+            // request thread and with no AspNetSynchronizationContext, so there is no deadlock risk.
+            kernel.Bind<IScheduler>()
+                  .ToMethod(x => new StdSchedulerFactory().GetScheduler().GetAwaiter().GetResult())
+                  .InSingletonScope();
 
             kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
                 .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()

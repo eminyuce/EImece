@@ -40,9 +40,18 @@ namespace EImece.Domain.Observability.Http
 
             _httpClient = new HttpClient
             {
-                Timeout = Timeout.InfiniteTimeSpan
+                // FIX: never InfiniteTimeSpan. Polly's optimistic TimeoutPolicy (BuildTimeoutPolicy)
+                // enforces the intended per-attempt timeout via CancellationToken, but if a socket
+                // stall fails to observe cancellation, HttpClient.Timeout is the hard backstop that
+                // still aborts the attempt. A small buffer above the Polly timeout guarantees Polly
+                // wins under normal conditions while capping the absolute per-attempt wall-clock time.
+                // This bounds a blocked call to (HttpTimeoutSeconds+buffer) per attempt instead of forever.
+                Timeout = TimeSpan.FromSeconds(_options.HttpTimeoutSeconds + 5)
             };
 
+            // Retry (outer) -> Circuit Breaker (middle) -> Timeout (inner, per-attempt).
+            // The inner timeout applies to each individual try so a single hung host cannot
+            // consume the whole retry budget on one attempt.
             _policy = Policy.WrapAsync(
                 BuildRetryPolicy(),
                 BuildCircuitBreakerPolicy(),

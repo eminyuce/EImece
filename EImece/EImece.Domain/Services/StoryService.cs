@@ -118,17 +118,16 @@ namespace EImece.Domain.Services
 
         public StoryIndexViewModel GetMainPageStories(int page, int language)
         {
-            StoryIndexViewModel result = null;
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language);
 
-            if (!DataCachingProvider.Get(cacheKey, out result))
+            var result = DataCachingProvider.GetOrAdd(cacheKey, () =>
             {
-                result = new StoryIndexViewModel();
+                var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                result.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
-                result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
-                DataCachingProvider.Set(cacheKey, result, AppConfig.CacheMediumSeconds);
-            }
+                vm.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
+                vm.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
+                return vm;
+            }, AppConfig.CacheMediumSeconds);
             return result;
         }
 
@@ -191,7 +190,8 @@ namespace EImece.Domain.Services
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
 
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            // FIX: injected abstraction instead of static HttpContext.Current.
+            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
@@ -216,7 +216,8 @@ namespace EImece.Domain.Services
                 return null;
             }
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContext.Current.Request.Url.Host);
+            // FIX: injected abstraction instead of static HttpContext.Current.
+            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
@@ -231,7 +232,7 @@ namespace EImece.Domain.Services
             feed.LastUpdatedTime = new DateTimeOffset(items.Max(t => t.UpdatedDate));
             feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
 
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            var urlHelper = new UrlHelper(HttpContextFactory.Create().Request.RequestContext);
             String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol);
 
             var formatter = new Rss20FeedFormatter(feed);

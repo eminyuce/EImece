@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EImece.Domain</RootNamespace>
     <AssemblyName>EImece.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -147,12 +147,12 @@
       <HintPath>..\packages\Microsoft.Owin.Security.4.2.3\lib\net45\Microsoft.Owin.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.3\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.2.3\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
@@ -376,7 +376,6 @@
     <Compile Include="Observability\HealthChecks\SqlServerHealthCheck.cs" />
     <Compile Include="Observability\Http\IResilientHttpClient.cs" />
     <Compile Include="Observability\Http\ResilientHttpClient.cs" />
-    <Compile Include="Observability\Http\ResilientHttpClientAccessor.cs" />
     <Compile Include="Observability\Logging\CorrelationIdContext.cs" />
     <Compile Include="Observability\Logging\RequestLogContext.cs" />
     <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
@@ -536,6 +535,7 @@
     <Compile Include="Helpers\EmailHelper\EmailSender.cs" />
     <Compile Include="Helpers\EmailHelper\IEmailSender.cs" />
     <Compile Include="Helpers\EmailHelper\RazorEngineHelper.cs" />
+    <Compile Include="Helpers\EmailHelper\RazorTemplateEngine.cs" />
     <Compile Include="Helpers\EntityFilterHelper.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
@@ -748,11 +748,13 @@
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\FileStorageService.cs" />
+    <Compile Include="Services\ImageDownloadService.cs" />
     <Compile Include="Services\IServices\ICustomerService.cs" />
     <Compile Include="Services\IServices\IBaseContentService.cs" />
     <Compile Include="Services\IServices\IBaseEntityService.cs" />
     <Compile Include="Services\IServices\IBaseService.cs" />
     <Compile Include="Services\IServices\IFileStorageService.cs" />
+    <Compile Include="Services\IServices\IImageDownloadService.cs" />
     <Compile Include="Services\IServices\IListItemService.cs" />
     <Compile Include="Services\IServices\IListService.cs" />
     <Compile Include="Services\IServices\IAddressService.cs" />
