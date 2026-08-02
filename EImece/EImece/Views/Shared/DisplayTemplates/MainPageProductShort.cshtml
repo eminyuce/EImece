@@ -12,6 +12,7 @@
     int Height = ViewData["Height"].ToInt(0);
     var imageTag = product.GetCroppedImageTag(Width, Height);
     var productLink = product.DetailPageRelativeUrl;
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
 }
 
 <div class="media">
@@ -24,6 +25,9 @@
             @:<i class="sr-star active" data-feather="star"></i>
             }
         </div>
-        <p class="featured-entry-meta">@product.PriceWithDiscount.CurrencySign()</p>
+        @if (productPriceEnabled)
+        {
+            <p class="featured-entry-meta">@product.PriceWithDiscount.CurrencySign()</p>
+        }
     </div>
 </div>

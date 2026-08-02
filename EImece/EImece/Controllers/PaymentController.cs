@@ -192,6 +192,10 @@ namespace EImece.Controllers
         [NoCache]
         public ActionResult ShoppingCartLink()
         {
+            if (!IsProductPriceEnabled)
+            {
+                return Content(string.Empty);
+            }
             var shoppingCart = GetShoppingCartFromDataSource();
             PaymentLogger.Info("Rendering _ShoppingCartLinks partial view.");
             return PartialView("ShoppingCartTemplates/_ShoppingCartLinks", shoppingCart);

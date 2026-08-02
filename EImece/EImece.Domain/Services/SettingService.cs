@@ -44,65 +44,54 @@ namespace EImece.Domain.Services
 
         public string GetSettingByKey(string key)
         {
-            var allSettings = GetAllSettings();
-            var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
-            if (result != null)
-            {
-                return result.SettingValue;
-            }
-            else
-            {
-                return String.Empty;
-            }
+            var result = GetSettingObjectByKey(key);
+            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
         }
 
         public string GetSettingByKey(string key, int language)
         {
-            var allSettings = GetAllSettings();
-            var result = allSettings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
-            if (result != null)
-            {
-                return result.SettingValue;
-            }
-            else
-            {
-                return String.Empty;
-            }
+            var result = GetSettingObjectByKey(key, language);
+            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
         }
 
         public Setting GetSettingObjectByKey(string key)
         {
             var allSettings = GetAllSettings();
-            var result = allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            // Prefer the most recently updated row when duplicates exist for the same key.
+            var result = allSettings
+                .Where(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase))
+                .OrderByDescending(r => r.UpdatedDate)
+                .ThenByDescending(r => r.Id)
+                .FirstOrDefault();
             if (result != null)
             {
                 return result;
             }
-            else
-            {
-                var setting = EntityFactory.GetBaseEntityInstance<Setting>();
-                setting.SettingKey = key;
-                setting.SettingValue = NULL_VALUE;
-                return setting;
-            }
+
+            var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+            setting.SettingKey = key;
+            setting.SettingValue = NULL_VALUE;
+            return setting;
         }
 
         public Setting GetSettingObjectByKey(string key, int language)
         {
             var allSettings = GetAllSettings();
-            var result = allSettings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase));
+            var result = allSettings
+                .Where(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(r => r.UpdatedDate)
+                .ThenByDescending(r => r.Id)
+                .FirstOrDefault();
             if (result != null)
             {
                 return result;
             }
-            else
-            {
-                var setting = EntityFactory.GetBaseEntityInstance<Setting>();
-                setting.SettingKey = key;
-                setting.SettingValue = NULL_VALUE;
-                setting.Lang = language;
-                return setting;
-            }
+
+            var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+            setting.SettingKey = key;
+            setting.SettingValue = NULL_VALUE;
+            setting.Lang = language;
+            return setting;
         }
 
         private List<Setting> GetAllSettingsNoCache()

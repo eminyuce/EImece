@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
@@ -78,6 +79,17 @@ namespace EImece.Areas.Customers.Controllers
             }
             base.Initialize(requestContext);
         }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (!SettingService.GetSettingByKey(Domain.Constants.IsProductPriceEnable).ToBool(true))
+            {
+                filterContext.Result = new RedirectResult("~/");
+                return;
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
         // GET: Customers/Home
         public ActionResult Index()
         {

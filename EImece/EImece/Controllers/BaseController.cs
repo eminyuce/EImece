@@ -62,6 +62,20 @@ namespace EImece.Controllers
             base.Initialize(requestContext);
         }
 
+        protected bool IsProductPriceEnabled
+        {
+            get
+            {
+                return SettingService.GetSettingByKey(Constants.IsProductPriceEnable).ToBool(true);
+            }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.IsProductPriceEnable = IsProductPriceEnabled;
+            base.OnActionExecuting(filterContext);
+        }
+
         protected void SetCurrentCulture(BaseEntity entity)
         {
             if (entity == null)

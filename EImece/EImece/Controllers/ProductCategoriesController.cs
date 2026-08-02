@@ -35,7 +35,6 @@ namespace EImece.Controllers
         }
 
         [Route(Constants.CategoryPrefix)]
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
             Logger.Info($"Entering Category action with id: '{id}', page: {page}, sorting: {sorting}, filtreler: '{filtreler}', minPrice: {minPrice}, maxPrice: {maxPrice}");

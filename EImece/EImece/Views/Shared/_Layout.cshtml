@@ -9,6 +9,7 @@
 
 @{
     var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
 }
 
 <!DOCTYPE html>
@@ -197,20 +198,23 @@
                     <i class="mx-auto mb-2" data-feather="menu">
                     </i>Menu
                 </div>
-                @if (Request.IsAuthenticated)
+                @if (productPriceEnabled)
                 {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
-                    </a>
-                }
-                else
-                {
-                    <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
-                        <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
-                    </a>
-                }
+                    if (Request.IsAuthenticated)
+                    {
+                        <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                            <i class="mx-auto mb-1" data-feather="user"></i>@Resource.MyAccount
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                            <i class="mx-auto mb-1" data-feather="log-in"></i>@Resource.SignInOrUp
+                        </a>
+                    }
 
-                @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+                    @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+                }
             </div>
 
             @Html.Partial("_SearchProductForm")

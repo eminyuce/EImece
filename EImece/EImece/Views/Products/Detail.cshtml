@@ -480,11 +480,14 @@
                 </button>
             </li>
         }
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
-                <i class="fas fa-credit-card me-2"></i> @Resource.PaymentSection
-            </button>
-        </li>
+        @if (productPriceEnabled)
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                    <i class="fas fa-credit-card me-2"></i> @Resource.PaymentSection
+                </button>
+            </li>
+        }
     </ul>
 
     <!-- Tab content -->
@@ -504,9 +507,12 @@
                 @ProductVideoHelper(Model)
             </div>
         }
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            @PaymentOptionsHelper(Model)
-        </div>
+        @if (productPriceEnabled)
+        {
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                @PaymentOptionsHelper(Model)
+            </div>
+        }
     </div>
 </div>
 <br />
@@ -814,6 +820,7 @@
 {
     var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
+    var relatedProductPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
 
     <div class="product-card">
         <div class="product-thumb box-shadow-0">
@@ -834,7 +841,7 @@
                     </div>
                 }
             </div>
-            @if (product.IsBuyableState)
+            @if (relatedProductPriceEnabled && product.IsBuyableState)
             {
                 <h3 class="product-card-title">
                     <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-toggle="toast" data-target="#cart-toast">

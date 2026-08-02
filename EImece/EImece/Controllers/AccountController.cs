@@ -178,6 +178,10 @@ namespace EImece.Controllers
         public ActionResult Login(string returnUrl = "")
         {
             Logger.Info($"Entering Login with returnUrl: {returnUrl}");
+            if (!IsProductPriceEnabled)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             ViewBag.ReturnUrl = returnUrl;
             Logger.Info("Returning Login view.");
             return View();
@@ -189,6 +193,10 @@ namespace EImece.Controllers
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
             Logger.Info($"Entering Login POST with email: {model?.Email}, returnUrl: {returnUrl}");
+            if (!IsProductPriceEnabled)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (model == null)
             {
                 Logger.Error("Model is null. Throwing ArgumentException.");
@@ -328,6 +336,10 @@ namespace EImece.Controllers
         public ActionResult Register()
         {
             Logger.Info("Entering Register action.");
+            if (!IsProductPriceEnabled)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var model = new RegisterViewModel();
             model.IsPermissionGranted = true;
             Logger.Info("Returning Register view with default model.");
@@ -340,6 +352,10 @@ namespace EImece.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             Logger.Info($"Entering Register POST with email: {model.Email}");
+            if (!IsProductPriceEnabled)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (ModelState.IsValid)
             {
                 if (Session[CaptchaCustomerRegister] == null || !Session[CaptchaCustomerRegister].ToString().Equals(model.Captcha, StringComparison.InvariantCultureIgnoreCase))

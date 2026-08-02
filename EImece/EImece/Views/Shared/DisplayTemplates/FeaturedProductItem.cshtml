@@ -13,6 +13,7 @@
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
     var productLink = product.DetailPageAbsoluteUrl;
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
 }
 
 <!-- Product-->
@@ -36,13 +37,13 @@
                 }
             </div>
             <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3>
-            @if (@product.PriceWithDiscount > 0)
+            @if (productPriceEnabled && @product.PriceWithDiscount > 0)
             {
                 <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
             }
         </div>
         <div class="product-card-body body-hidden pt-2">
-            @if (product.IsBuyableState)
+            @if (productPriceEnabled && product.IsBuyableState)
             {
                 <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@Model.ModifiedId" type="button"
                         data-toggle="toast" data-target="#cart-toast">

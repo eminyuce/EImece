@@ -210,6 +210,8 @@ namespace EImece.Domain.Services
             result.Brands = BrandService.GetBrandsIfAnyProductExists(lang);
             result.ProductCategoryTree = BuildTree(true, lang);
             result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
+            result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
             result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;

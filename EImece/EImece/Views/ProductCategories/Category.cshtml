@@ -24,6 +24,7 @@
     ViewBag.Keywords = category.GetSeoKeywords();
     ViewBag.Description = category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    var productPriceEnabled = Model.IsProductPriceEnabled;
 }
 
 <div class="page-title-wrapper" aria-label="Page title">
@@ -96,14 +97,15 @@
 
                         @Html.Partial("_ProductCategoryTreeHeadLine",
                        new Tuple<ProductCategory, List<ProductCategoryTreeModel>>(category, Model.ProductCategoryTree))
-                        <!-- Price range-->
-
-                        <div class="column mb-2 pb-1">
-                            <button class="btn btn-primary rounded btn-block mb-2 mr-1" id="FilterButton">@Resource.Filter</button>
-                        </div>
-                        @foreach (var filterType in Model.CategoryFilterTypes.OrderBy(r=>r.Position))
+                        @if (Model.HasAnyFilters)
                         {
-                        @CreateFilterTypeList(filterType, Model);
+                            <div class="column mb-2 pb-1">
+                                <button class="btn btn-primary rounded btn-block mb-2 mr-1" id="FilterButton">@Resource.Filter</button>
+                            </div>
+                            foreach (var filterType in Model.CategoryFilterTypes.OrderBy(r => r.Position))
+                            {
+                                @CreateFilterTypeList(filterType, Model);
+                            }
                         }
                     </div>
                 </div>
@@ -143,10 +145,13 @@
                         <div class="button-group tabs">
                             <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
                                rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
+                            @if (productPriceEnabled)
+                            {
+                                <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
+                                   rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
+                                <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
+                                   rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
+                            }
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,24 @@ namespace EImece.Domain.Models.FrontModels
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
         public List<CategoryFilter> SelectedFilterTypes { get; set; }
         public Setting PriceFilterSetting { get; set; }
+        public Setting IsProductPriceEnable { get; set; }
+        public Setting IsProductReviewEnable { get; set; }
         public List<Product> AllProducts { get; set; }
+
+        public bool IsProductPriceEnabled
+        {
+            get { return IsProductPriceEnable == null || IsProductPriceEnable.SettingValue.ToBool(true); }
+        }
+
+        public bool IsProductReviewEnabled
+        {
+            get { return IsProductReviewEnable == null || IsProductReviewEnable.SettingValue.ToBool(true); }
+        }
+
+        public bool HasAnyFilters
+        {
+            get { return CategoryFilterTypes != null && CategoryFilterTypes.Any(r => r.CategoryFilters != null && r.CategoryFilters.Any()); }
+        }
 
         public List<Product> Products
         {
@@ -27,8 +44,8 @@ namespace EImece.Domain.Models.FrontModels
             {
                 List<Product> result = new List<Product>();
                 var products = AllProducts;
-                bool hasMinPrice = MinPrice.HasValue && MinPrice.Value > 0;
-                bool hasMaxPrice = MaxPrice.HasValue && MaxPrice.Value > 0;
+                bool hasMinPrice = IsProductPriceEnabled && MinPrice.HasValue && MinPrice.Value > 0;
+                bool hasMaxPrice = IsProductPriceEnabled && MaxPrice.HasValue && MaxPrice.Value > 0;
                 if (hasMinPrice || hasMaxPrice)
                 {
                     if (hasMinPrice && hasMaxPrice)
@@ -47,8 +64,13 @@ namespace EImece.Domain.Models.FrontModels
                 if (!string.IsNullOrEmpty(Filter))
                 {
                     var categoryFilterHelper = new CategoryFilterHelper(CategoryFilterTypes, SelectedFilters);
-                    ICollection<Product> filteredProducts = categoryFilterHelper.FilterProductsByPrice(products);
-                    filteredProducts = categoryFilterHelper.FilterProductsByRating(filteredProducts);
+                    ICollection<Product> filteredProducts = IsProductPriceEnabled
+                        ? categoryFilterHelper.FilterProductsByPrice(products)
+                        : products;
+                    if (IsProductReviewEnabled)
+                    {
+                        filteredProducts = categoryFilterHelper.FilterProductsByRating(filteredProducts);
+                    }
                     filteredProducts = categoryFilterHelper.FilterProductsByBrand(filteredProducts);
                     result = filteredProducts.ToList();
                 }
@@ -65,11 +87,17 @@ namespace EImece.Domain.Models.FrontModels
                         break;
 
                     case Enums.SortingType.LowHighPrice:
-                        result = result.OrderBy(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                        if (IsProductPriceEnabled)
+                        {
+                            result = result.OrderBy(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                        }
                         break;
 
                     case Enums.SortingType.HighLowPrice:
-                        result = result.OrderByDescending(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                        if (IsProductPriceEnabled)
+                        {
+                            result = result.OrderByDescending(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                        }
                         break;
 
                     case Enums.SortingType.AverageRating:
@@ -113,8 +141,14 @@ namespace EImece.Domain.Models.FrontModels
             {
                 var categoryFilterTypes = new List<CategoryFilterType>();
                 var categoryFilterHelper = new CategoryFilterHelper(this.PriceFilterSetting);
-                categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
-                categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
+                if (IsProductPriceEnabled)
+                {
+                    categoryFilterHelper.AddPriceFilter(categoryFilterTypes);
+                }
+                if (IsProductReviewEnabled)
+                {
+                    categoryFilterHelper.AddRatingFilter(categoryFilterTypes);
+                }
 
                 var brandsWithProducts =
                 from t1 in ProductCategory.Products.ToList()
@@ -122,7 +156,11 @@ namespace EImece.Domain.Models.FrontModels
                 orderby t2.Position, t2.UpdatedDate
                 select t2;
                 List<Brand> brands = brandsWithProducts.Distinct().ToList();
-                categoryFilterHelper.AddBrandFilter(categoryFilterTypes, brandsWithProducts.Distinct().ToList());
+                // A single brand is not a useful filter choice for end users.
+                if (brands.Count > 1)
+                {
+                    categoryFilterHelper.AddBrandFilter(categoryFilterTypes, brands);
+                }
 
                 return categoryFilterTypes;
             }
