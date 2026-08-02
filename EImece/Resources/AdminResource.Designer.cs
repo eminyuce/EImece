@@ -2464,7 +2464,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Urun Durumunu Guncelle.
+        ///   Looks up a localized string similar to Ürün Durumunu Güncelle.
         /// </summary>
         public static string ProductStateChangeText {
             get {

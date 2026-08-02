@@ -1192,7 +1192,7 @@
     <value>Sitemizin Özellikleri</value>
   </data>
   <data name="ProductStateChangeText" xml:space="preserve">
-    <value>Urun Durumunu Guncelle</value>
+    <value>Ürün Durumunu Güncelle</value>
   </data>
   <data name="OriginalWidthHeightFormat" xml:space="preserve">
     <value>Orijinal Genişlik={0} Yükseklik={1}</value>
