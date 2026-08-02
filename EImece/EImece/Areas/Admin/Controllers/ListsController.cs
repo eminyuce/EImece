@@ -97,15 +97,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 ListService.DeleteListById(id);
+                SetSuccessMessage();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, List);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index");
             }
-
-            return View(List);
         }
     }
 }

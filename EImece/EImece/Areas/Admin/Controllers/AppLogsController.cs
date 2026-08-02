@@ -28,6 +28,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             AppLogRepository.DeleteAppLog(id);
+            SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }
 
@@ -35,6 +36,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult RemoveAll(string eventLevel = "")
         {
             AppLogRepository.RemoveAll(eventLevel);
+            SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }
     }

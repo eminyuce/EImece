@@ -102,14 +102,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 FaqService.DeleteEntity(Faq);
+                SetSuccessMessage();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, Faq);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index");
             }
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

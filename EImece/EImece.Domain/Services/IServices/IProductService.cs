@@ -34,7 +34,7 @@ namespace EImece.Domain.Services.IServices
 
         Product GetProductById(int id);
 
-        Boolean DeleteProductById(int id);
+        ProductDeleteResult DeleteProductById(int id);
 
         new void DeleteBaseEntity(List<string> values);
 

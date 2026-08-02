@@ -167,6 +167,7 @@ namespace EImece.Areas.Admin.Controllers
                 EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(CurrentSelectedModul["imageType"]);
 
                 FileStorageService.DeleteUploadImage(id, contentId, enumImageType, enumMod);
+                SetSuccessMessage();
                 return RedirectToAction("Index",
                     new
                     {
@@ -179,10 +180,16 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete fileStorage:" + ex.StackTrace, fileStorage);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index",
+                    new
+                    {
+                        contentId = CurrentSelectedModul["contentId"],
+                        mod = CurrentSelectedModul["mod"],
+                        imageType = CurrentSelectedModul["imageType"]
+                    }
+                );
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
     }
 }

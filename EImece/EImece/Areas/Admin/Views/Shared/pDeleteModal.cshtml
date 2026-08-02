@@ -45,7 +45,7 @@ else
                 }
             </div>
             <div class="modal-footer">
-                @using (Html.BeginForm(action, controllerName))
+                @using (Html.BeginForm(action, controllerName, new { id = Id }, FormMethod.Post))
                 {
                 @Html.AntiForgeryToken()
                 <input name="Id" type="hidden" value="@Id">

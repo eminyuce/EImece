@@ -187,20 +187,28 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                Boolean isDeleted = ProductService.DeleteProductById(id);
-                if (!isDeleted)
+                var deleteResult = ProductService.DeleteProductById(id);
+                switch (deleteResult)
                 {
-                    Logger.Info("Product has sold items cannot be deleted right now. ProductId: " + id);
+                    case ProductDeleteResult.Deleted:
+                        SetSuccessMessage();
+                        break;
+                    case ProductDeleteResult.BlockedByOrders:
+                        Logger.Info("Product has sold items cannot be deleted right now. ProductId: " + id);
+                        SetErrorMessage(AdminResource.ProductDeleteBlockedByOrders);
+                        break;
+                    default:
+                        SetErrorMessage();
+                        break;
                 }
                 return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, product);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet]

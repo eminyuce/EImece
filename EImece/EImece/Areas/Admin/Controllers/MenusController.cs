@@ -191,16 +191,16 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 MenuService.DeleteMenu(menu.Id);
+                SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" +
                     ex.StackTrace, menu);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet]

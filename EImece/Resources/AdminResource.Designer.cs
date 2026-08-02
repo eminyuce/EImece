@@ -2266,6 +2266,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bu ürün siparişlerde kullanıldığı için silinemez. Sipariş geçmişini korumak adına ürünü pasife alabilirsiniz..
+        /// </summary>
+        public static string ProductDeleteBlockedByOrders {
+            get {
+                return ResourceManager.GetString("ProductDeleteBlockedByOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürüne özel ek TL indirimi.
         /// </summary>
         public static string ProductDiscount {

@@ -59,6 +59,7 @@ namespace EImece.Areas.Admin.Controllers
             UsersService.DeleteUser(id);
             CustomerService.DeleteByUserId(id);
             OrderService.DeleteByUserId(id);
+            SetSuccessMessage();
             return RedirectToAction("Index");
         }
 
@@ -75,6 +76,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 ShoppingCartService.DeleteById(item.Id);
             }
+            SetSuccessMessage();
             return RedirectToAction("CustomerBaskets");
         }
     }

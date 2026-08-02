@@ -1158,6 +1158,7 @@
     <Content Include="manifest.json" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_StatusMessage.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\SelectUserRolesViewModel.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pLanguages.cshtml" />
     <Content Include="Areas\Admin\Views\Products\MoveProductsInTrees.cshtml" />

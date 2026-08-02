@@ -87,6 +87,8 @@ namespace EImece.Areas.Admin.Controllers
             MemoryCacheProvider.ClearAll();
             await ExecuteWarmUpSqlAsync().ConfigureAwait(true);
 
+            SetSuccessMessage();
+
             string redirectUrl;
             if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {

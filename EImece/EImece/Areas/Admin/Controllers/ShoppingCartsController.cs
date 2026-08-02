@@ -46,15 +46,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 ShoppingCartService.DeleteById(id);
+                SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, item);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
     }
 }

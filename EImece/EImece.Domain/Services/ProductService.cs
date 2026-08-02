@@ -261,40 +261,47 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Boolean DeleteProductById(int id)
+        public ProductDeleteResult DeleteProductById(int id)
         {
-            var isAnyProductSold = OrderProductRepository.GetAll().Any(r => r.ProductId == id);
-            if (!isAnyProductSold)
+            var isAnyProductSold = OrderProductRepository.FindBy(r => r.ProductId == id).Any();
+            if (isAnyProductSold)
             {
-                try
-                {
-                    var product = ProductRepository.GetProduct(id);
-                    ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    // OrderProductRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    if (product.MainImageId.HasValue)
-                    {
-                        FileStorageService.DeleteFileStorage(product.MainImageId.Value);
-                    }
-                    if (product.ProductFiles != null)
-                    {
-                        var menuFiles = new List<ProductFile>(product.ProductFiles);
-                        foreach (var file in menuFiles)
-                        {
-                            FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
-                        }
-                        ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                    }
-                    DeleteEntity(product);
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
-                }
+                ProductServiceLogger.Info("Product cannot be deleted because it has order history. ProductId: " + id);
+                return ProductDeleteResult.BlockedByOrders;
             }
-            return false;
+
+            try
+            {
+                var product = ProductRepository.GetProduct(id);
+                if (product == null)
+                {
+                    return ProductDeleteResult.Failed;
+                }
+
+                ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                if (product.MainImageId.HasValue)
+                {
+                    FileStorageService.DeleteFileStorage(product.MainImageId.Value);
+                }
+                if (product.ProductFiles != null)
+                {
+                    var menuFiles = new List<ProductFile>(product.ProductFiles);
+                    foreach (var file in menuFiles)
+                    {
+                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
+                    }
+                    ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                }
+                DeleteEntity(product);
+                return ProductDeleteResult.Deleted;
+            }
+            catch (Exception e)
+            {
+                ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
+                return ProductDeleteResult.Failed;
+            }
         }
 
         public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)

@@ -34,15 +34,15 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var productId = productComment.ProductId;
                 ProductCommentService.DeleteEntity(productComment);
+                SetSuccessMessage();
                 return RedirectToAction("Index", new { id = productId });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, productComment);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index", new { id = productComment.ProductId });
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
     }
 }

@@ -96,15 +96,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 CouponService.DeleteEntity(item);
+                SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, item);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

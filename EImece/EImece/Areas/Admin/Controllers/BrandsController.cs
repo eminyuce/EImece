@@ -105,15 +105,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 BrandService.DeleteBrandById(id);
+                SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Brand);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return ReturnIndexIfNotUrlReferrer("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

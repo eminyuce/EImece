@@ -696,6 +696,9 @@
   <data name="SuccessfullySavedCompleted" xml:space="preserve">
     <value>İşleminiz başarıyla gerçekleşmiştir.</value>
   </data>
+  <data name="ProductDeleteBlockedByOrders" xml:space="preserve">
+    <value>Bu ürün siparişlerde kullanıldığı için silinemez. Sipariş geçmişini korumak adına ürünü pasife alabilirsiniz.</value>
+  </data>
   <data name="SelectTemplate" xml:space="preserve">
     <value>Şablon Seçin</value>
   </data>

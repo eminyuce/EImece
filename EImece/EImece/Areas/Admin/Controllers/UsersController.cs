@@ -166,6 +166,7 @@ namespace EImece.Areas.Admin.Controllers
             var user = ApplicationDbContext.Users.First(u => u.Id == id);
             ApplicationDbContext.Users.Remove(user);
             ApplicationDbContext.SaveChanges();
+            SetSuccessMessage();
             return RedirectToAction("Index");
         }
 
@@ -194,6 +195,7 @@ namespace EImece.Areas.Admin.Controllers
                     IdentityManager.AddUserToRole(user.Id, role.RoleName);
                 }
             }
+            SetSuccessMessage();
             return RedirectToAction("index");
             // }
             // return View();

@@ -90,15 +90,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 TagCategoryService.DeleteTagCategoryById(id);
+                SetSuccessMessage();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tagCategory);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

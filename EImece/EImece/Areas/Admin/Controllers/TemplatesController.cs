@@ -107,15 +107,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 TemplateService.DeleteEntity(template);
+                SetSuccessMessage();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete template:" + ex.StackTrace, template);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

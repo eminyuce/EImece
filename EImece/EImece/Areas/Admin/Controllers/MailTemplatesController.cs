@@ -141,15 +141,15 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 MailTemplateService.DeleteEntity(MailTemplate);
+                SetSuccessMessage();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
-                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
+                SetErrorMessage();
+                return RedirectToAction("Index");
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet, ActionName("ExportExcel")]

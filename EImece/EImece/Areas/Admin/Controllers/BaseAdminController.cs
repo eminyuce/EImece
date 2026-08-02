@@ -7,6 +7,7 @@ using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using Ninject;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -267,6 +268,28 @@ namespace EImece.Areas.Admin.Controllers
             RemoveModelState("CreatedDate");
             RemoveModelState("UpdatedDate");
             RemoveModelState("Lang");
+        }
+
+        protected void SetSuccessMessage(string message = null)
+        {
+            TempData["StatusMessage"] = string.IsNullOrEmpty(message)
+                ? AdminResource.SuccessfullySavedCompleted
+                : message;
+            TempData["StatusMessageType"] = "success";
+        }
+
+        protected void SetErrorMessage(string message = null)
+        {
+            TempData["StatusMessage"] = string.IsNullOrEmpty(message)
+                ? AdminResource.GeneralSaveErrorMessage
+                : message;
+            TempData["StatusMessageType"] = "danger";
+        }
+
+        protected void SetStatusMessage(string message, string messageType)
+        {
+            TempData["StatusMessage"] = message;
+            TempData["StatusMessageType"] = string.IsNullOrEmpty(messageType) ? "info" : messageType;
         }
 
         private void RemoveModelState(string key)
