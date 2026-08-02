@@ -9,7 +9,7 @@
 @model MediaAdminIndexModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = AdminResource.FileUploadingPage;
     var baseContent = Model.BaseContent;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
@@ -18,7 +18,7 @@
     var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);  
 
     var controllerName = "Media";
-    var title = "Medias";
+    var title = AdminResource.Medias;
     var gridName = "MediaGrid";
     var contents = Model.FileStorages;
     var baseList = contents.DownCasting<FileStorage>();
@@ -54,7 +54,7 @@
 @Html.HiddenFor(r => Model.Lang)
 <!-- Warning Alert -->
 <div class="alert alert-info">
-    <strong>Attention! More than 5 images may degrade your design.</strong>
+    <strong>@AdminResource.WarningForDesign</strong>
 </div>
 <!-- blueimp File Upload & Gallery styles -->
 @Styles.Render("~/Content/jQuery-File-Upload")
@@ -66,7 +66,13 @@
     $(function () {
 
         $form = $('#fileupload').fileupload({
-            dataType: 'json'
+            dataType: 'json',
+            messages: {
+                maxNumberOfFiles: '@AdminResource.FileUploadMaxNumberOfFiles',
+                acceptFileTypes: '@AdminResource.FileUploadAcceptFileTypes',
+                maxFileSize: '@AdminResource.FileUploadMaxFileSize',
+                minFileSize: '@AdminResource.FileUploadMinFileSize'
+            }
         });
         $('#fileupload').bind('fileuploadsubmit', function (e, data) {
 
@@ -221,12 +227,12 @@
     </div>
     <div class="col-md-6">
         <div>
-            @String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-            <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Full Image</a>
+            @String.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)
+            <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">@AdminResource.FullImage</a>
         </div>
         <div>
-            @String.Format("Thumbs Width={0} Height={1}", imageSizes.Width, imageSizes.Height)
-            <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">Thumps Image</a>
+            @String.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)
+            <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">@AdminResource.ThumbsImage</a>
         </div>
     </div>
 </div>
@@ -242,7 +248,7 @@
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
          { "ItemId", d.Id },
          {"controllerName",controllerName},
-        {"gridDeleteText","REMOVE"},
+        {"gridDeleteText", AdminResource.Remove},
          { "ItemDescription", d.Name } })
     </span>
         }

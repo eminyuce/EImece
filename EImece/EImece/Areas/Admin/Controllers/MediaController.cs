@@ -117,7 +117,7 @@ namespace EImece.Areas.Admin.Controllers
             bool isEmpty = !resultList.Any();
             if (isEmpty)
             {
-                return Json("Error ");
+                return Json(AdminResource.UploadError);
             }
             else
             {

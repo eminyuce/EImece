@@ -151,7 +151,7 @@
     <value>Sayfalama</value>
   </data>
   <data name="GridResultRecordNumber" xml:space="preserve">
-    <value>Toplam Kayit</value>
+    <value>Toplam Kayıt</value>
   </data>
   <data name="GridSearchButtonText" xml:space="preserve">
     <value>Arama</value>
@@ -163,7 +163,7 @@
     <value>Yeni Giriş</value>
   </data>
   <data name="SaveButtonText" xml:space="preserve">
-    <value>Kayit Et</value>
+    <value>Kaydet</value>
   </data>
   <data name="GridNoMainPageImageText" xml:space="preserve">
     <value>Resim Yok</value>
@@ -190,7 +190,7 @@
     <value>Excel Dosyasına Aktar</value>
   </data>
   <data name="AdminDeleteConfirmMessage" xml:space="preserve">
-    <value>Seçilenleri silmeyi onayliyor musunuz?</value>
+    <value>Seçilenleri silmeyi onaylıyor musunuz?</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Temizle</value>
@@ -199,7 +199,7 @@
     <value>Lütfen Ağaçtan Ürün Kategorinizi Seçiniz</value>
   </data>
   <data name="PleaseSelectYourMenuCategoryFromTree" xml:space="preserve">
-    <value>Lütfen Menü Kategorinizi Ağaçtan Seçin</value>
+    <value>Lütfen menü kategorinizi ağaçtan seçin</value>
   </data>
   <data name="MainImageId" xml:space="preserve">
     <value>Vitrin Resmi</value>
@@ -229,7 +229,7 @@
     <value>İsim 500 karakterden uzun olamaz</value>
   </data>
   <data name="NamePropertyRequiredErrorMessage" xml:space="preserve">
-    <value>İsim Zorunlu</value>
+    <value>İsim zorunlu</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Fiyat</value>
@@ -247,7 +247,7 @@
     <value>Video Url</value>
   </data>
   <data name="MenuParentId" xml:space="preserve">
-    <value>Menu Ana Kategori</value>
+    <value>Menü Ana Kategori</value>
   </data>
   <data name="Link" xml:space="preserve">
     <value>Sayfa Linki</value>
@@ -256,7 +256,7 @@
     <value>Dış Link Aktif mi?</value>
   </data>
   <data name="MenuLink" xml:space="preserve">
-    <value>Hazir Menu Sayfalari</value>
+    <value>Hazır Menü Sayfaları</value>
   </data>
   <data name="PageTheme" xml:space="preserve">
     <value>Sayfa Teması</value>
@@ -298,7 +298,7 @@
     <value>Resimler</value>
   </data>
   <data name="IsService" xml:space="preserve">
-    <value>IsServices</value>
+    <value>Hizmet mi?</value>
   </data>
   <data name="IsValues" xml:space="preserve">
     <value>IsValues</value>
@@ -325,7 +325,7 @@
     <value>Tamam</value>
   </data>
   <data name="MenuSameSelectionErrorMessage" xml:space="preserve">
-    <value>Ebeveyn için aynı menüyü seçemezsiniz</value>
+    <value>Üst menü olarak aynı menüyü seçemezsiniz</value>
   </data>
   <data name="ProductSameSelectionErrorMessage" xml:space="preserve">
     <value>Ürün Aynı Seçim Hata Mesajı</value>
@@ -355,7 +355,7 @@
     <value>Ürün Kategorisi</value>
   </data>
   <data name="Menu" xml:space="preserve">
-    <value>Menu</value>
+    <value>Menü</value>
   </data>
   <data name="Templates" xml:space="preserve">
     <value>Şablonlar</value>
@@ -415,13 +415,13 @@
     <value>E-posta Başlık Zorunlu</value>
   </data>
   <data name="SaveButtonAndCloseText" xml:space="preserve">
-    <value>Kayit Et ve Kapat</value>
+    <value>Kaydet ve Kapat</value>
   </data>
   <data name="AdminHome" xml:space="preserve">
     <value>Yönetim Ana Sayfa</value>
   </data>
   <data name="AdminSettings" xml:space="preserve">
-    <value>Yönetici Ayarlari</value>
+    <value>Yönetici Ayarları</value>
   </data>
   <data name="ChangePassword" xml:space="preserve">
     <value>Şifre değiştir</value>
@@ -436,13 +436,13 @@
     <value>Merhaba</value>
   </data>
   <data name="Lists" xml:space="preserve">
-    <value>Lists</value>
+    <value>Listeler</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Çıkış Yap</value>
   </data>
   <data name="Menus" xml:space="preserve">
-    <value>Menuler</value>
+    <value>Menüler</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
     <value>Yeni Şifre</value>
@@ -526,25 +526,25 @@
     <value>Cep Telefonu</value>
   </data>
   <data name="TagCategoryName" xml:space="preserve">
-    <value>Etiket Kategori İsim</value>
+    <value>Etiket Kategori Adı</value>
   </data>
   <data name="TagName" xml:space="preserve">
-    <value>Etiket İsim</value>
+    <value>Etiket Adı</value>
   </data>
   <data name="ActionOptionsOfSelectedItems" xml:space="preserve">
     <value>Seçilenler ile Aksiyon</value>
   </data>
   <data name="ProductSpecTemplateItemList" xml:space="preserve">
-    <value>Şablonlarin Deger Listesi</value>
+    <value>Şablonların Değer Listesi</value>
   </data>
   <data name="MakeItRootCategory" xml:space="preserve">
     <value>Ana Kategori Yap</value>
   </data>
   <data name="ImageHeight" xml:space="preserve">
-    <value>Resim Boy (Tavsiye: 800 Px)</value>
+    <value>Resim boyu (tavsiye: 800 px)</value>
   </data>
   <data name="ImageWidth" xml:space="preserve">
-    <value>Resim En (Tavsiye: 800 Px)</value>
+    <value>Resim eni (tavsiye: 800 px)</value>
   </data>
   <data name="MetaKeywords" xml:space="preserve">
     <value>SEO anahtar kelimeler</value>
@@ -655,7 +655,7 @@
     <value>İsim</value>
   </data>
   <data name="LastName" xml:space="preserve">
-    <value>Soyisim</value>
+    <value>Soyadı</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Giriş</value>
@@ -676,7 +676,7 @@
     <value>E-Posta Link Yolla</value>
   </data>
   <data name="EnterYourEmailToRecover" xml:space="preserve">
-    <value>Kurtarmak için E-postanızı Girin</value>
+    <value>Kurtarmak için e-postanızı girin</value>
   </data>
   <data name="CreateNewAccount" xml:space="preserve">
     <value>Yeni bir hesap oluştur</value>
@@ -712,7 +712,7 @@
     <value>SEO Bilgileri</value>
   </data>
   <data name="SocialMediaSetttings" xml:space="preserve">
-    <value>Sosyal Media Linkleri</value>
+    <value>Sosyal Medya Linkleri</value>
   </data>
   <data name="WhatsAppCommunicationScript" xml:space="preserve">
     <value>WhatsApp Script</value>
@@ -733,7 +733,7 @@
     <value>İstek Geçerli Değil</value>
   </data>
   <data name="PasswordInfoMessage" xml:space="preserve">
-    <value>Şifre en az 6 karakterden oluşmalı, büyük, küçük harf ve sayı içermelidir.</value>
+    <value>Şifre en az 6 karakterden oluşmalı; büyük harf, küçük harf ve sayı içermelidir.</value>
   </data>
   <data name="AdminPanelWelcome" xml:space="preserve">
     <value>Yönetici Paneline Hoş Geldiniz</value>
@@ -778,7 +778,7 @@
     <value>Satıcıya Mesaj Gönder</value>
   </data>
   <data name="IsPermissionGrantedDescription" xml:space="preserve">
-    <value>Önemli kampanyalardan eposta ile haberdar olmak istiyorum.</value>
+    <value>Önemli kampanyalardan e-posta ile haberdar olmak istiyorum.</value>
   </data>
   <data name="Gender" xml:space="preserve">
     <value>Cinsiyet</value>
@@ -832,7 +832,7 @@
     <value>Şirket</value>
   </data>
   <data name="IsSameAsShippingAddress" xml:space="preserve">
-    <value>Teslimat adresleri ile Fatura adresi aynı oldugunu bilmenizi isteriz.</value>
+    <value>Teslimat adresi ile fatura adresinin aynı olduğunu bilmenizi isteriz.</value>
   </data>
   <data name="Payment" xml:space="preserve">
     <value>Ödeme</value>
@@ -847,7 +847,7 @@
     <value>Profil bilgileriniz başarıyla güncellendi.</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
-    <value>E-posta alani zorunlu.</value>
+    <value>E-posta alanı zorunlu.</value>
   </data>
   <data name="NotValidEmailAddress" xml:space="preserve">
     <value>E-posta alanı geçerli bir e-posta adresi değil.</value>
@@ -907,7 +907,7 @@
     <value>Blog Başlık</value>
   </data>
   <data name="IsFeaturedStory" xml:space="preserve">
-    <value>Öne Çıkan Blog Yazisi</value>
+    <value>Öne Çıkan Blog Yazısı</value>
   </data>
   <data name="GoogleMapScript" xml:space="preserve">
     <value>Google Harita Script</value>
@@ -928,13 +928,13 @@
     <value>Üye Ol</value>
   </data>
   <data name="PriceErrorMessage" xml:space="preserve">
-    <value>Fiyat alani Zorunlu</value>
+    <value>Fiyat alanı zorunlu.</value>
   </data>
   <data name="AppLogs" xml:space="preserve">
-    <value>Uygulama Loglari</value>
+    <value>Uygulama Logları</value>
   </data>
   <data name="WebSiteCompanyEmailAddressRequired" xml:space="preserve">
-    <value>Web Sitesi Şirketi E-posta Adresi uygun bir email adresi yaziniz. Zorunlu Alan.</value>
+    <value>Lütfen geçerli bir web sitesi şirket e-posta adresi yazınız. Zorunlu alan.</value>
   </data>
   <data name="AddImages" xml:space="preserve">
     <value>Resimler ekle</value>
@@ -1069,13 +1069,13 @@
     <value>Gideceği Yeni Kategori</value>
   </data>
   <data name="MoveProductMenu" xml:space="preserve">
-    <value>Menu Kategorileri Başka Kategoriye Taşımak</value>
+    <value>Menü kategorilerini başka kategoriye taşı</value>
   </data>
   <data name="FirstMenuCategoryId" xml:space="preserve">
-    <value>Taşımak İstenilen Menu Kategorisi</value>
+    <value>Taşınacak menü kategorisi</value>
   </data>
   <data name="SecondMenuCategoryId" xml:space="preserve">
-    <value>Gideceği Yeni Menu Kategori</value>
+    <value>Gideceği yeni menü kategori</value>
   </data>
   <data name="NoImage" xml:space="preserve">
     <value>Resim Yok</value>
@@ -1117,7 +1117,7 @@
     <value>Yönetici Sipariş Notu</value>
   </data>
   <data name="ShipmentCompanyName" xml:space="preserve">
-    <value>Kargo Firmasi ismi</value>
+    <value>Kargo Firması Adı</value>
   </data>
   <data name="ShipmentTrackingNumber" xml:space="preserve">
     <value>Kargo Takip Numarası</value>
@@ -1193,5 +1193,41 @@
   </data>
   <data name="ProductStateChangeText" xml:space="preserve">
     <value>Urun Durumunu Guncelle</value>
+  </data>
+  <data name="OriginalWidthHeightFormat" xml:space="preserve">
+    <value>Orijinal Genişlik={0} Yükseklik={1}</value>
+  </data>
+  <data name="FullImage" xml:space="preserve">
+    <value>Tam Resim</value>
+  </data>
+  <data name="ThumbsWidthHeightFormat" xml:space="preserve">
+    <value>Küçük Resim Genişlik={0} Yükseklik={1}</value>
+  </data>
+  <data name="ThumbsImage" xml:space="preserve">
+    <value>Küçük Resim</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>İşleniyor...</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Hata</value>
+  </data>
+  <data name="UploadError" xml:space="preserve">
+    <value>Yükleme hatası</value>
+  </data>
+  <data name="FileUploadMaxNumberOfFiles" xml:space="preserve">
+    <value>Maksimum dosya sayısı aşıldı</value>
+  </data>
+  <data name="FileUploadAcceptFileTypes" xml:space="preserve">
+    <value>Dosya türüne izin verilmiyor</value>
+  </data>
+  <data name="FileUploadMaxFileSize" xml:space="preserve">
+    <value>Dosya çok büyük</value>
+  </data>
+  <data name="FileUploadMinFileSize" xml:space="preserve">
+    <value>Dosya çok küçük</value>
+  </data>
+  <data name="Medias" xml:space="preserve">
+    <value>Medyalar</value>
   </data>
 </root>

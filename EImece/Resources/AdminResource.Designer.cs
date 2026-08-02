@@ -961,6 +961,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hata.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Excel Dosyasına Aktar.
         /// </summary>
         public static string ExportToExcel {
@@ -993,6 +1002,42 @@ namespace Resources {
         public static string Faq {
             get {
                 return ResourceManager.GetString("Faq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dosya türüne izin verilmiyor.
+        /// </summary>
+        public static string FileUploadAcceptFileTypes {
+            get {
+                return ResourceManager.GetString("FileUploadAcceptFileTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dosya çok büyük.
+        /// </summary>
+        public static string FileUploadMaxFileSize {
+            get {
+                return ResourceManager.GetString("FileUploadMaxFileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maksimum dosya sayısı aşıldı.
+        /// </summary>
+        public static string FileUploadMaxNumberOfFiles {
+            get {
+                return ResourceManager.GetString("FileUploadMaxNumberOfFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dosya çok küçük.
+        /// </summary>
+        public static string FileUploadMinFileSize {
+            get {
+                return ResourceManager.GetString("FileUploadMinFileSize", resourceCulture);
             }
         }
         
@@ -1047,6 +1092,15 @@ namespace Resources {
         public static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tam Resim.
+        /// </summary>
+        public static string FullImage {
+            get {
+                return ResourceManager.GetString("FullImage", resourceCulture);
             }
         }
         
@@ -1663,6 +1717,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Medyalar.
+        /// </summary>
+        public static string Medias {
+            get {
+                return ResourceManager.GetString("Medias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu.
         /// </summary>
         public static string Menu {
@@ -1969,6 +2032,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Orijinal Genişlik={0} Yükseklik={1}.
+        /// </summary>
+        public static string OriginalWidthHeightFormat {
+            get {
+                return ResourceManager.GetString("OriginalWidthHeightFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sipariş durumu.
         /// </summary>
         public static string OrderStatus {
@@ -2154,6 +2226,15 @@ namespace Resources {
         public static string Privacypolicy {
             get {
                 return ResourceManager.GetString("Privacypolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İşleniyor....
+        /// </summary>
+        public static string Processing {
+            get {
+                return ResourceManager.GetString("Processing", resourceCulture);
             }
         }
         
@@ -3047,7 +3128,25 @@ namespace Resources {
                 return ResourceManager.GetString("TemplateXml", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Küçük Resim.
+        /// </summary>
+        public static string ThumbsImage {
+            get {
+                return ResourceManager.GetString("ThumbsImage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Küçük Resim Genişlik={0} Yükseklik={1}.
+        /// </summary>
+        public static string ThumbsWidthHeightFormat {
+            get {
+                return ResourceManager.GetString("ThumbsWidthHeightFormat", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Şartlar ve Koşullar.
         /// </summary>
@@ -3137,7 +3236,16 @@ namespace Resources {
                 return ResourceManager.GetString("UploadedFilesSection", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yükleme hatası.
+        /// </summary>
+        public static string UploadError {
+            get {
+                return ResourceManager.GetString("UploadError", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Kullanıcılar.
         /// </summary>
