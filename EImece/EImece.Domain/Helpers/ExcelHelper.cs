@@ -463,8 +463,9 @@ namespace EImece.Domain.Helpers
             //headerStyle.FillBackgroundColor = IndexedColors.Red.Index;
             //headerStyle.FillPattern = FillPattern.SolidForeground;
 
-            HSSFFont font = (HSSFFont)workbook.CreateFont();
-            font.Boldweight = (short)NPOI.SS.UserModel.FontBoldWeight.Bold;
+            IFont font = workbook.CreateFont();
+            // Use IsBold for newer NPOI versions instead of deprecated Boldweight
+            font.IsBold = true;
             font.Color = HSSFColor.Black.Index;
             font.FontHeightInPoints = 11;
             headerStyle.SetFont(font);
@@ -479,8 +480,8 @@ namespace EImece.Domain.Helpers
             //headerStyle.FillBackgroundColor = IndexedColors.Red.Index;
             //headerStyle.FillPattern = FillPattern.SolidForeground;
 
-            HSSFFont font = (HSSFFont)workbook.CreateFont();
-            // font.Boldweight = (short)NPOI.SS.UserModel.FontBoldWeight.Bold;
+            IFont font = workbook.CreateFont();
+            font.IsBold = false;
             font.Color = HSSFColor.Red.Index;
             font.FontHeightInPoints = 11;
             headerStyle.SetFont(font);
@@ -495,7 +496,8 @@ namespace EImece.Domain.Helpers
             //headerStyle.FillPattern = FillPattern.SolidForeground;
 
             var font = workbook.CreateFont();
-            font.Boldweight = 10;
+            // set bold via IsBold; numeric boldweight is deprecated
+            font.IsBold = true;
             font.Color = HSSFColor.DarkBlue.Index;
             font.FontHeightInPoints = 11;
             headerStyle.SetFont(font);

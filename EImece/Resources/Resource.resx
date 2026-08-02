@@ -121,10 +121,10 @@
     <value>Adres</value>
   </data>
   <data name="ContactUsCaptcha" xml:space="preserve">
-    <value>Guvenlik Sorusunu:</value>
+    <value>Güvenlik sorusu:</value>
   </data>
   <data name="ContactUsCaptchaErrorMessage" xml:space="preserve">
-    <value>Lütfen Guvenlik Sorunu Cevaplayiniz.</value>
+    <value>Lütfen güvenlik sorusunu cevaplayınız.</value>
   </data>
   <data name="ContactUsCompanyName" xml:space="preserve">
     <value>Firma Adı</value>
@@ -133,19 +133,19 @@
     <value>E-Posta</value>
   </data>
   <data name="ContactUsEmailErrorMessage" xml:space="preserve">
-    <value>Lütfen E-Postanızı Giriniz</value>
+    <value>Lütfen e-posta adresinizi giriniz.</value>
   </data>
   <data name="ContactUsMessage" xml:space="preserve">
     <value>Mesajınız</value>
   </data>
   <data name="ContactUsMessageErrorMessage" xml:space="preserve">
-    <value>Lütfen Mesajınızı Giriniz</value>
+    <value>Lütfen mesajınızı giriniz.</value>
   </data>
   <data name="ContactUsName" xml:space="preserve">
     <value>Ad / Soyad</value>
   </data>
   <data name="ContactUsNameErrorMessage" xml:space="preserve">
-    <value>Lütfen Ad / Soyadınızı Giriniz</value>
+    <value>Lütfen adınızı ve soyadınızı giriniz.</value>
   </data>
   <data name="ContactUsPhone" xml:space="preserve">
     <value>Telefon</value>
@@ -193,16 +193,16 @@
     <value>Ara</value>
   </data>
   <data name="SearchErrorMessage" xml:space="preserve">
-    <value>Arama Yapmak için lütfen birşeyler yazınız</value>
+    <value>Arama yapmak için lütfen bir şey yazınız.</value>
   </data>
   <data name="SearchRequiredErrorMessage" xml:space="preserve">
-    <value>Lütfen bir arama terimi girin 2</value>
+    <value>Lütfen bir arama terimi giriniz.</value>
   </data>
   <data name="SearchValidText" xml:space="preserve">
-    <value>Lütfen geçerli bir metin girin 2</value>
+    <value>Lütfen geçerli bir metin giriniz.</value>
   </data>
   <data name="NOSearchResult" xml:space="preserve">
-    <value>Anahtar kelimelere uyan hiç ürün bulunamadı</value>
+    <value>Anahtar kelimelere uyan ürün bulunamadı.</value>
   </data>
   <data name="NewModelsClick" xml:space="preserve">
     <value>Yeni modellerimiz için tıklayınız</value>
@@ -223,7 +223,7 @@
     <value>{0} için Arama Sonucu</value>
   </data>
   <data name="ContactUsWrongSumForSecurityQuestion" xml:space="preserve">
-    <value>Yanlış Toplam, Lütfen tekrar deneyin.</value>
+    <value>Yanlış toplam, lütfen tekrar deneyiniz.</value>
   </data>
   <data name="ProductsInfo" xml:space="preserve">
     <value>Ürün Bilgisi</value>
@@ -295,7 +295,7 @@
     <value>Eposta gönder</value>
   </data>
   <data name="ForgotPasswordConfirmationText" xml:space="preserve">
-    <value>Şifrenizi sıfırlamak için lütfen e-postanızı kontrol edin</value>
+    <value>Şifrenizi sıfırlamak için lütfen e-posta gelen kutunuzu kontrol ediniz.</value>
   </data>
   <data name="ThankYouForContactingUs" xml:space="preserve">
     <value>Bizimle iletişime geçtiğiniz için teşekkürler</value>
@@ -322,7 +322,7 @@
     <value>Hakkımızda</value>
   </data>
   <data name="NoUserFound" xml:space="preserve">
-    <value>Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır.Lütfen bilgilerinizi kontrol ediniz.</value>
+    <value>Sistemimize kayıtlı böyle bir kullanıcı bulunamamıştır. Lütfen bilgilerinizi kontrol ediniz.</value>
   </data>
   <data name="MandatoryField" xml:space="preserve">
     <value>Bu alanın doldurulması zorunludur.</value>
@@ -378,25 +378,25 @@
   <data name="QuestionAboutItemForCustomer" xml:space="preserve">
     <value>&lt;section class="uvFaq typeset"&gt;
                         &lt;p style="font-size:x-large"&gt;
-                            Herhangi bir konu hakkinda soru veya istek için ürünü satan satıcıyla doğrudan iletişime geçin.
+                            Herhangi bir konu hakkında soru veya istek için ürünü satan satıcıyla doğrudan iletişime geçin.
                         &lt;/p&gt;
                         &lt;h3&gt;Bir konu hakkında soru&lt;/h3&gt;
                         &lt;p&gt;
                             &lt;font class="Apple-style-span" color="#2e2f33"&gt;
                                 &lt;span class="Apple-style-span"
                                       style="line-height: 14px;"&gt;
-                                    &lt;b&gt;Yapmak istediginiz durum için lütfen doğrudan satıcıyla da iletişime geçin:&lt;/b&gt;
+                                    &lt;b&gt;Yapmak istediğiniz işlem için lütfen doğrudan satıcıyla iletişime geçin:&lt;/b&gt;
                                 &lt;/span&gt;
                             &lt;/font&gt;
                         &lt;/p&gt;
                         &lt;ul&gt;
-                            &lt;li&gt;Belirli bir ürün veya ürünün mevcut olup olmadığını sorun&lt;/li&gt;
+                            &lt;li&gt;Belirli bir ürünün mevcut olup olmadığını sorun&lt;/li&gt;
                             &lt;li&gt;Siparişiniz hakkında bilgi alın&lt;/li&gt;
                             &lt;li&gt;Boyut veya renk tercihi gibi siparişinizle ilgili bir mesaj gönderin&lt;/li&gt;
-                            &lt;li&gt;Özel bir ürün istegi isteyin&lt;/li&gt;
-                            &lt;li&gt;İptal, iade, geri ödeme veya değiştirme organize edin&lt;/li&gt;
+                            &lt;li&gt;Özel bir ürün isteği talep edin&lt;/li&gt;
+                            &lt;li&gt;İptal, iade, geri ödeme veya değiştirme işlemlerini organize edin&lt;/li&gt;
                         &lt;/ul&gt; 
-                         
+
                     &lt;/section&gt;</value>
   </data>
   <data name="FrequentlyAskedQuestions" xml:space="preserve">
@@ -415,7 +415,7 @@
     <value>Lütfen bir neden seçin.</value>
   </data>
   <data name="ContactUsPhoneErrorMessage" xml:space="preserve">
-    <value>Lütfen Tel No Giriniz</value>
+    <value>Lütfen telefon numarası giriniz.</value>
   </data>
   <data name="Discount" xml:space="preserve">
     <value>İndirim</value>
