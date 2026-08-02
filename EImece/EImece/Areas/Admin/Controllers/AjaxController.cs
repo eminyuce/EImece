@@ -18,11 +18,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using NLog;
 
 namespace EImece.Areas.Admin.Controllers
 {
     public class AjaxController : BaseAdminController
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
@@ -36,21 +38,53 @@ namespace EImece.Areas.Admin.Controllers
             this.AppLogRepository = AppLogRepository;
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            try
+            {
+                var ex = filterContext.Exception;
+                var routeData = filterContext.RouteData;
+                var action = routeData.Values.ContainsKey("action") ? routeData.Values["action"] : "";
+                var controller = routeData.Values.ContainsKey("controller") ? routeData.Values["controller"] : "";
+                var user = filterContext.HttpContext?.User?.Identity?.Name ?? "-";
+                var url = filterContext.HttpContext?.Request?.Url?.ToString() ?? "-";
+                var message = $"Unhandled exception in Admin AjaxController - Controller:{controller} Action:{action} User:{user} Url:{url}";
+                Logger.Error(ex, message);
+            }
+            catch (Exception logEx)
+            {
+                try
+                {
+                    // Worst-case fallback to System.Diagnostics if NLog fails
+                    System.Diagnostics.Trace.TraceError("Error while logging exception in AjaxController: " + logEx.ToString());
+                }
+                catch
+                {
+                }
+            }
+
+            base.OnException(filterContext);
+        }
+
         [HttpPost]
         public ActionResult UpdatePrices(UpdatePriceRequest request)
         {
+            Logger.Info($"UpdatePrices called by {User?.Identity?.Name ?? "-"} with Percentage={request?.PercentageOfIncreaseOrDecrease}, ProductId={request?.ProductId}, CategoryId={request?.CategoryId}, BrandId={request?.BrandId}, TagId={request?.TagId}");
             try
             {
                 if (request == null || request.PercentageOfIncreaseOrDecrease == null)
                 {
+                    Logger.Warn("UpdatePrices: missing percentage in request");
                     return Json(new { success = false, message = "Yüzde değeri gerekli." }, JsonRequestBehavior.AllowGet);
                 }
                 var affectedRows = ProductService.UpdatePrices(request);
+                Logger.Info($"UpdatePrices completed. AffectedRows={affectedRows}");
                 // Başarılı yanıt döndür
                 return Json(new { success = true, affectedRows = affectedRows }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
+                Logger.Error(ex, "UpdatePrices failed");
                 // Hata durumunda yanıt
                 return Json(new { success = false, message = $"Hata: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
@@ -58,8 +92,10 @@ namespace EImece.Areas.Admin.Controllers
 
         public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
         {
+            Logger.Info($"DeleteBaseContentMainImage called by {User?.Identity?.Name ?? "-"} ContentId={contentId} ImageId={imageId} ContentClass={contentClass}");
             if (string.IsNullOrEmpty(contentClass))
             {
+                Logger.Warn("DeleteBaseContentMainImage: contentClass is empty");
                 return Json("Error contentClassName does not exists", JsonRequestBehavior.AllowGet);
             }
 
