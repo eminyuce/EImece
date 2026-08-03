@@ -20,6 +20,9 @@ namespace EImece.Domain.DependencyInjection
         private static readonly ConcurrentDictionary<Type, PropertyInfo[]> InjectPropertiesCache =
             new ConcurrentDictionary<Type, PropertyInfo[]>();
 
+        private static readonly ConcurrentDictionary<Type, FieldInfo[]> InjectFieldsCache =
+            new ConcurrentDictionary<Type, FieldInfo[]>();
+
         private static readonly AsyncLocal<Dictionary<Type, object>> UnderConstruction =
             new AsyncLocal<Dictionary<Type, object>>();
 
@@ -68,7 +71,7 @@ namespace EImece.Domain.DependencyInjection
 
             foreach (var property in GetInjectProperties(instance.GetType()))
             {
-                var dependency = provider.GetService(property.PropertyType);
+                var dependency = Resolve(provider, property.PropertyType);
                 if (dependency != null)
                 {
                     property.SetValue(instance, dependency, null);
@@ -77,12 +80,62 @@ namespace EImece.Domain.DependencyInjection
 
             foreach (var field in GetInjectFields(instance.GetType()))
             {
-                var dependency = provider.GetService(field.FieldType);
+                var dependency = Resolve(provider, field.FieldType);
                 if (dependency != null)
                 {
                     field.SetValue(instance, dependency);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns an in-flight instance assignable to <paramref name="serviceType"/>, if any.
+        /// Used by DI factories and property injection to break cycles without re-entering MS.DI
+        /// (which throws "An item with the same key has already been added" from CallSiteRuntimeResolver).
+        /// </summary>
+        public static object TryGetUnderConstruction(Type serviceType)
+        {
+            if (serviceType == null)
+            {
+                return null;
+            }
+
+            var tracker = UnderConstruction.Value;
+            if (tracker == null || tracker.Count == 0)
+            {
+                return null;
+            }
+
+            if (tracker.TryGetValue(serviceType, out var exact))
+            {
+                return exact;
+            }
+
+            // Interface / base-type [Inject] properties map to the concrete being built.
+            foreach (var kvp in tracker)
+            {
+                if (serviceType.IsAssignableFrom(kvp.Key))
+                {
+                    return kvp.Value;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Resolves a dependency for property/field injection.
+        /// Must short-circuit to in-flight instances before calling MS.DI.
+        /// </summary>
+        private static object Resolve(IServiceProvider provider, Type serviceType)
+        {
+            var underConstruction = TryGetUnderConstruction(serviceType);
+            if (underConstruction != null)
+            {
+                return underConstruction;
+            }
+
+            return provider.GetService(serviceType);
         }
 
         private static PropertyInfo[] GetInjectProperties(Type type)
@@ -93,9 +146,6 @@ namespace EImece.Domain.DependencyInjection
                                 && p.IsDefined(typeof(InjectAttribute), inherit: true))
                     .ToArray());
         }
-
-        private static readonly ConcurrentDictionary<Type, FieldInfo[]> InjectFieldsCache =
-            new ConcurrentDictionary<Type, FieldInfo[]>();
 
         private static FieldInfo[] GetInjectFields(Type type)
         {

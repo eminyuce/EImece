@@ -345,7 +345,7 @@ namespace EImece.App_Start
             where TImplementation : class, TService
         {
             services.AddSingleton<TImplementation>(sp => PropertyInjector.Create<TImplementation>(sp));
-            services.AddSingleton<TService>(sp => sp.GetRequiredService<TImplementation>());
+            services.AddSingleton<TService>(ResolveImplementationOrUnderConstruction<TService, TImplementation>);
         }
 
         public static void AddScopedWithProps<TService, TImplementation>(this IServiceCollection services)
@@ -353,7 +353,7 @@ namespace EImece.App_Start
             where TImplementation : class, TService
         {
             services.AddScoped<TImplementation>(sp => PropertyInjector.Create<TImplementation>(sp));
-            services.AddScoped<TService>(sp => sp.GetRequiredService<TImplementation>());
+            services.AddScoped<TService>(ResolveImplementationOrUnderConstruction<TService, TImplementation>);
         }
 
         public static void AddScopedWithProps<TImplementation>(this IServiceCollection services)
@@ -367,7 +367,25 @@ namespace EImece.App_Start
             where TImplementation : class, TService
         {
             services.AddTransient<TImplementation>(sp => PropertyInjector.Create<TImplementation>(sp));
-            services.AddTransient<TService>(sp => sp.GetRequiredService<TImplementation>());
+            services.AddTransient<TService>(ResolveImplementationOrUnderConstruction<TService, TImplementation>);
+        }
+
+        /// <summary>
+        /// Shares the concrete scoped/singleton instance for the interface registration.
+        /// When the concrete is mid-construction (circular [Inject] graph), returns that
+        /// in-flight instance instead of re-entering MS.DI's scope cache.
+        /// </summary>
+        private static TService ResolveImplementationOrUnderConstruction<TService, TImplementation>(IServiceProvider sp)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            var underConstruction = PropertyInjector.TryGetUnderConstruction(typeof(TImplementation));
+            if (underConstruction is TService typed)
+            {
+                return typed;
+            }
+
+            return sp.GetRequiredService<TImplementation>();
         }
     }
 }

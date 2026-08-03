@@ -32,9 +32,7 @@ namespace EImece.App_Start
             var service = provider.GetService(serviceType);
             if (service != null)
             {
-                // Registered services already receive property injection from their factories;
-                // controllers and other ActivatorUtilities-created types still need it here.
-                PropertyInjector.Inject(service, provider);
+                // Registered services already receive property injection from their factories.
                 return service;
             }
 
@@ -42,6 +40,7 @@ namespace EImece.App_Start
             {
                 try
                 {
+                    // Controllers and other unregistered concretes: ActivatorUtilities + [Inject].
                     return PropertyInjector.Create(serviceType, provider);
                 }
                 catch (InvalidOperationException)

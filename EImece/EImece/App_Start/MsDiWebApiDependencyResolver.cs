@@ -58,7 +58,7 @@ namespace EImece.App_Start
             var service = provider.GetService(serviceType);
             if (service != null)
             {
-                PropertyInjector.Inject(service, provider);
+                // Registered services already receive property injection from their factories.
                 return service;
             }
 
