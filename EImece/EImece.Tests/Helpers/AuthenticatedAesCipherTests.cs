@@ -21,7 +21,7 @@ namespace EImece.Tests.Helpers
                 rng.GetBytes(bytes);
             }
 
-            _testPassphrase = Convert.ToBase64String(bytes);
+            _testPassphrase = System.Convert.ToBase64String(bytes);
             EncryptionSecretProvider.ClearCache();
             Environment.SetEnvironmentVariable(
                 EncryptionSecretProvider.EnvironmentVariableName,
@@ -62,9 +62,9 @@ namespace EImece.Tests.Helpers
         public void EncryptDecryptQueryString_RejectsTamperedCiphertext()
         {
             var cipher = EncryptDecryptQueryString.Encrypt("user-id-42");
-            var bytes = Convert.FromBase64String(cipher);
+            var bytes = System.Convert.FromBase64String(cipher);
             bytes[bytes.Length - 5] ^= 0xFF;
-            var tampered = Convert.ToBase64String(bytes);
+            var tampered = System.Convert.ToBase64String(bytes);
 
             try
             {
@@ -81,7 +81,7 @@ namespace EImece.Tests.Helpers
         public void EncryptDecryptQueryString_RejectsLegacyInsecurePayload()
         {
             // Legacy payloads had no version/HMAC prefix; must fail closed.
-            var legacyLooking = Convert.ToBase64String(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
+            var legacyLooking = System.Convert.ToBase64String(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
             try
             {
                 EncryptDecryptQueryString.Decrypt(legacyLooking);
