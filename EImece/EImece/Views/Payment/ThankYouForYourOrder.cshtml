@@ -19,7 +19,7 @@
     <div class="pt-5">
         <div class="card py-3 mt-sm-3">
             <!-- Success Message -->
-            @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, item.OrderNumber, urlActionLink))
+            @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, HttpUtility.HtmlEncode(item.OrderNumber), HttpUtility.HtmlAttributeEncode(urlActionLink)))
             <hr />
             <!-- Order Summary -->
             <div class="card-body">

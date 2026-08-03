@@ -27,7 +27,7 @@
 {
 <div class="alert alert-secondary">
     <div class="pt-3 pb-2 text-center ">
-        @Html.Raw(@Resource.NOSearchResult)
+        @Resource.NOSearchResult
     </div>
 </div>
 }
@@ -53,7 +53,7 @@ else
         <hr class="mt-4">
         <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
             <div class="d-flex flex-wrap">
-                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, Model.Search, productsAll.TotalCount))</span>
+                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, HttpUtility.HtmlEncode(Model.Search), productsAll.TotalCount))</span>
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@ else
 
     <div class="alert alert-secondary alert-with-icon" role="alert">
         <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-        @Html.Raw(@Resource.NOSearchResult)
+        @Resource.NOSearchResult
     </div>
 
         }

@@ -41,7 +41,7 @@
         <hr class="mt-4">
         <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
             <div class="d-flex flex-wrap">
-                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.TagResultTotalCountText, tag.Name, productTags.TotalCount))</span>
+                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.TagResultTotalCountText, HttpUtility.HtmlEncode(tag.Name), productTags.TotalCount))</span>
             </div>
         </div>
     </div>
