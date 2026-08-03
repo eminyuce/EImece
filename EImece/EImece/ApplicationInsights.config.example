@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy this file to ApplicationInsights.config and set your connection string.
+  ApplicationInsights.config is gitignored because it often contains environment-specific secrets.
+
+  Prefer setting APPLICATIONINSIGHTS_CONNECTION_STRING in Web.config appSettings
+  or as an environment variable in Azure App Service / IIS.
+-->
+<ApplicationInsights xmlns="http://schemas.microsoft.com/ApplicationInsights/2013/Settings">
+  <ConnectionString>InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/</ConnectionString>
+  <DisableTelemetry>false</DisableTelemetry>
+  <ApplicationVersion>1.0.0</ApplicationVersion>
+  <!-- Rate-limited sampling (default in 3.x). Set SamplingRatio instead for fixed-ratio sampling. -->
+  <TracesPerSecond>5</TracesPerSecond>
+  <EnableQuickPulseMetricStream>true</EnableQuickPulseMetricStream>
+  <EnableTraceBasedLogsSampler>true</EnableTraceBasedLogsSampler>
+  <EnablePerformanceCounterCollectionModule>true</EnablePerformanceCounterCollectionModule>
+  <AddAutoCollectedMetricExtractor>true</AddAutoCollectedMetricExtractor>
+  <EnableDependencyTrackingTelemetryModule>true</EnableDependencyTrackingTelemetryModule>
+  <EnableRequestTrackingTelemetryModule>true</EnableRequestTrackingTelemetryModule>
+</ApplicationInsights>
