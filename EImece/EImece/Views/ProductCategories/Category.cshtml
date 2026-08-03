@@ -158,7 +158,7 @@
             </div>
             <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
                 <div class="d-flex flex-wrap">
-                    <span class="d-block mt-2">@Html.Raw(string.Format(Resource.ProductFoundInfoForCategory, category.Name, products.Count))</span>
+                    <span class="d-block mt-2">@Html.Raw(string.Format(Resource.ProductFoundInfoForCategory, HttpUtility.HtmlEncode(category.Name), products.Count))</span>
                 </div>
             </div>
             <!-- Products grid-->

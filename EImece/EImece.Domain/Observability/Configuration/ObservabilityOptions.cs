@@ -16,6 +16,12 @@ namespace EImece.Domain.Observability.Configuration
 
         public bool EnableMetrics { get; set; } = true;
 
+        /// <summary>
+        /// When true, Entity Framework generated SQL is written to application logs.
+        /// Defaults to on for non-live environments; override with appSetting EnableEfSqlLogging.
+        /// </summary>
+        public bool EnableEfSqlLogging { get; set; }
+
         public bool ExposeDetailedErrors { get; set; }
 
         public static ObservabilityOptions FromAppConfig()
@@ -28,6 +34,7 @@ namespace EImece.Domain.Observability.Configuration
                 HttpCircuitBreakerDurationSeconds = AppConfig.GetConfigInt("HttpClientCircuitBreakerDurationSeconds", 30),
                 EnableRequestLogging = AppConfig.GetConfigBool("EnableRequestLogging", true),
                 EnableMetrics = AppConfig.GetConfigBool("EnableMetrics", true),
+                EnableEfSqlLogging = AppConfig.GetConfigBool("EnableEfSqlLogging", AppConfig.IsSiteUnderDevelopment),
                 ExposeDetailedErrors = AppConfig.IsSiteUnderDevelopment
             };
         }

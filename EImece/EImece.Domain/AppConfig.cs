@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,96 @@ namespace EImece.Domain
         public static string GetDefaultImage(String imageSize)
         {
             return $"/images/defaultimage/{imageSize}/default.jpg";
+        }
+
+        /// <summary>
+        /// Captcha implementation: Legacy (arithmetic image), Recaptcha (Google v2), or None.
+        /// Default is Legacy for backward compatibility with the original CAPTCHA.
+        /// </summary>
+        public static CaptchaProviderType CaptchaProvider
+        {
+            get
+            {
+                var raw = GetConfigString("CaptchaProvider", string.Empty);
+                if (!string.IsNullOrWhiteSpace(raw))
+                {
+                    if (Enum.TryParse(raw.Trim(), true, out CaptchaProviderType parsed))
+                    {
+                        return parsed;
+                    }
+
+                    // Accept common aliases
+                    if (raw.Equals("Arithmetic", StringComparison.OrdinalIgnoreCase)
+                        || raw.Equals("Weak", StringComparison.OrdinalIgnoreCase)
+                        || raw.Equals("Old", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return CaptchaProviderType.Legacy;
+                    }
+
+                    if (raw.Equals("Google", StringComparison.OrdinalIgnoreCase)
+                        || raw.Equals("GoogleRecaptcha", StringComparison.OrdinalIgnoreCase)
+                        || raw.Equals("RecaptchaV2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return CaptchaProviderType.Recaptcha;
+                    }
+
+                    Logger.Warn($"Unknown CaptchaProvider value '{raw}'. Falling back to Legacy.");
+                    return CaptchaProviderType.Legacy;
+                }
+
+                // Backward compatible with RecaptchaEnabled from earlier integration
+                if (GetConfigBool("RecaptchaEnabled", false))
+                {
+                    return CaptchaProviderType.Recaptcha;
+                }
+
+                return CaptchaProviderType.Legacy;
+            }
+        }
+
+        /// <summary>
+        /// Google reCAPTCHA v2 site key (public). Configure via Web.config RecaptchaSiteKey.
+        /// </summary>
+        public static string RecaptchaSiteKey
+        {
+            get
+            {
+                return GetConfigString("RecaptchaSiteKey", string.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Google reCAPTCHA v2 secret key (private). Configure via Web.config RecaptchaSecretKey.
+        /// </summary>
+        public static string RecaptchaSecretKey
+        {
+            get
+            {
+                return GetConfigString("RecaptchaSecretKey", string.Empty);
+            }
+        }
+
+        /// <summary>
+        /// True when CaptchaProvider is Recaptcha. Kept for callers that previously checked RecaptchaEnabled.
+        /// Prefer <see cref="CaptchaProvider"/>.
+        /// </summary>
+        public static bool RecaptchaEnabled
+        {
+            get
+            {
+                return CaptchaProvider == CaptchaProviderType.Recaptcha;
+            }
+        }
+
+        /// <summary>
+        /// True when CaptchaProvider is Legacy (original arithmetic CAPTCHA).
+        /// </summary>
+        public static bool IsLegacyCaptchaEnabled
+        {
+            get
+            {
+                return CaptchaProvider == CaptchaProviderType.Legacy;
+            }
         }
 
         public static string IyzicoBaseUrl

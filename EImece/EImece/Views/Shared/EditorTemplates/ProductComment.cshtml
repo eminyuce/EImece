@@ -76,6 +76,7 @@
                 @Html.TextAreaFor(model => model.Review, 8, 0, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Review, "", new { @class = "text-danger" })
             </div>
+            @Html.CaptchaWidget("ProductReview")
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" type="submit">@Resource.SubmitReview</button>

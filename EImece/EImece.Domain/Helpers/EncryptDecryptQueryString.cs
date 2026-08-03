@@ -1,63 +1,58 @@
-﻿using System.IO;
+﻿using System;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace EImece.Domain.Helpers
 {
+    /// <summary>
+    /// Encrypts/decrypts values used in query strings (e.g. payment callback o/u parameters).
+    /// Uses AES-256-CBC with a random IV and Encrypt-then-MAC (HMAC-SHA256).
+    /// The encryption key must be configured; there is no hard-coded fallback.
+    /// </summary>
+    /// <remarks>
+    /// Breaking change: ciphertext produced by the previous implementation (fixed salt/IV,
+    /// hard-coded key fallback) cannot be decrypted. In-flight payment callback URLs become
+    /// invalid after deploy; users must restart checkout. This is intentional for security.
+    /// </remarks>
     public static class EncryptDecryptQueryString
     {
-        private static string sEncryptionKey
-
-        {
-            get
-            {
-                return AppConfig.GetConfigString("encrypt-password", "SAUW193BX628TD57"); ;
-            }
-        }
-
         public static string Encrypt(string clearText)
         {
-            string EncryptionKey = sEncryptionKey;
-            byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
-            using (Aes encryptor = Aes.Create())
+            if (clearText == null)
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
-                    }
-                    clearText = System.Convert.ToBase64String(ms.ToArray());
-                }
+                throw new ArgumentNullException("clearText");
             }
-            return clearText;
+
+            var masterKey = EncryptionSecretProvider.GetMasterKey();
+            try
+            {
+                return AuthenticatedAesCipher.Encrypt(clearText, masterKey);
+            }
+            finally
+            {
+                Array.Clear(masterKey, 0, masterKey.Length);
+            }
         }
 
         public static string Decrypt(string cipherText)
         {
-            string EncryptionKey = sEncryptionKey;
-            cipherText = cipherText.Replace(" ", "+");
-            byte[] cipherBytes = System.Convert.FromBase64String(cipherText);
-            using (Aes encryptor = Aes.Create())
+            if (string.IsNullOrWhiteSpace(cipherText))
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(cipherBytes, 0, cipherBytes.Length);
-                        cs.Close();
-                    }
-                    cipherText = Encoding.Unicode.GetString(ms.ToArray());
-                }
+                throw new ArgumentException("Cipher text is required.", "cipherText");
             }
-            return cipherText;
+
+            var masterKey = EncryptionSecretProvider.GetMasterKey();
+            try
+            {
+                return AuthenticatedAesCipher.Decrypt(cipherText, masterKey);
+            }
+            catch (FormatException ex)
+            {
+                throw new CryptographicException("Failed to decrypt query string value.", ex);
+            }
+            finally
+            {
+                Array.Clear(masterKey, 0, masterKey.Length);
+            }
         }
     }
 }
