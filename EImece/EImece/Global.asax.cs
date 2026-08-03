@@ -24,6 +24,9 @@ namespace EImece
 
         protected void Application_Start()
         {
+            // Fail closed on missing/placeholder DB credentials before any request handling.
+            ConnectionStringProvider.Initialize();
+
             //System.Net.ServicePointManager.SecurityProtocol
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // TLS 1.2 only; older protocols (TLS 1.0/1.1) removed for security
 

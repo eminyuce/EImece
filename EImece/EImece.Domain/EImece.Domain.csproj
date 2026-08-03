@@ -616,6 +616,7 @@
     <Compile Include="Helpers\Extensions\SyndicationFeedExtensions.cs" />
     <Compile Include="Helpers\SqlTableCreator.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
+    <Compile Include="Helpers\ConnectionStringProvider.cs" />
     <Compile Include="Helpers\StringCipher.cs" />
     <Compile Include="Helpers\StringConverter.cs" />
     <Compile Include="Helpers\StringMethodExtensions.cs" />

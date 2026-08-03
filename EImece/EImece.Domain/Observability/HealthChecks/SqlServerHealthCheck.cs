@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Threading;
@@ -14,10 +15,14 @@ namespace EImece.Domain.Observability.HealthChecks
 
         public async Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings[Constants.DbConnectionKey]?.ConnectionString;
-            if (string.IsNullOrWhiteSpace(connectionString))
+            string connectionString;
+            try
             {
-                return HealthCheckResult.Down(Name, "Connection string is not configured.");
+                connectionString = ConnectionStringProvider.GetConnectionString();
+            }
+            catch (ConfigurationErrorsException ex)
+            {
+                return HealthCheckResult.Down(Name, ex.Message);
             }
 
             try

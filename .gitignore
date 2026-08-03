@@ -374,3 +374,20 @@ ModelManifest.xml
 /EImece/EImece/Areas/Admin/Views/Images/.vshistory/CompressImages.cshtml
 /EImece/EImece/App_Data/.vshistory/data.json
 /EImece/EImece/App_Start/.vshistory/BundleConfig.cs
+
+# =============================================================================
+# Secrets / local connection strings (CWE-798) — never commit real credentials
+# =============================================================================
+**/ConnectionStrings.config
+**/ConnectionStrings.*.config
+!**/ConnectionStrings.config.example
+*.Secret.config
+*.secrets.config
+**/App.Local.config
+**/Web.Local.config
+.env
+.env.*
+!.env.example
+
+# Local NuGet extract markers from scripts/restore-packages.py
+**/.nupkg_extracted

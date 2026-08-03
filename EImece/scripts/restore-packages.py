@@ -40,6 +40,7 @@ build_tools_dir = os.path.join(ROOT, "build-tools")
 os.makedirs(build_tools_dir, exist_ok=True)
 build_tool_packages = (
     ("Microsoft.NETFramework.ReferenceAssemblies.net472", "1.0.3"),
+    ("Microsoft.NETFramework.ReferenceAssemblies.net481", "1.0.3"),
     ("MSBuild.Microsoft.VisualStudio.Web.targets", "14.0.0.3"),
 )
 

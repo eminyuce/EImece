@@ -1,7 +1,7 @@
 ﻿using EImece.Domain.DbContext;
+using EImece.Domain.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -16,14 +16,10 @@ namespace EImece.Domain.Services
         {
         }
 
-        // Helper method to get connection string from configuration
+        // Helper method to get connection string from configuration / environment
         private static string GetConnectionStringFromConfig()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["EImeceDbConnection"]?.ConnectionString;
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new ConfigurationErrorsException("Connection string not found in configuration");
-
-            return connectionString;
+            return ConnectionStringProvider.GetConnectionString();
         }
 
         private ReportService(string connectionString)

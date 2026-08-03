@@ -46,8 +46,34 @@ namespace EImece.Domain.DbContext
 
         // Reuse one HttpClient instead of newing one per call to avoid socket exhaustion.
         private static readonly HttpClient GroqHttpClient = new HttpClient();
-        string prodConnectionString = "Data Source=mssql04.trwww.com;Initial Catalog=yuva8905_yuvadan;User ID=yuce; Password=";
-        string devConnectionString = @"Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;Integrated Security=True";
+        // Prefer EIMECE_DB_CONNECTION_STRING. Optional overrides for one-off migration tools:
+        // EIMECE_DB_CONNECTION_STRING_PROD / EIMECE_DB_CONNECTION_STRING_DEV
+        private string prodConnectionString
+        {
+            get
+            {
+                return ResolveOptionalConnectionString("EIMECE_DB_CONNECTION_STRING_PROD");
+            }
+        }
+
+        private string devConnectionString
+        {
+            get
+            {
+                return ResolveOptionalConnectionString("EIMECE_DB_CONNECTION_STRING_DEV");
+            }
+        }
+
+        private static string ResolveOptionalConnectionString(string environmentVariableName)
+        {
+            var value = Environment.GetEnvironmentVariable(environmentVariableName);
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                return ConnectionStringProvider.Validate(value.Trim(), environmentVariableName);
+            }
+
+            return ConnectionStringProvider.GetConnectionString();
+        }
 
         public void updateProductDescription()
         {

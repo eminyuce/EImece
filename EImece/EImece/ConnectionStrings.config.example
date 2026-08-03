@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy this file to ConnectionStrings.config (same folder as Web.config / App.config)
+  and fill in real values. ConnectionStrings.config is gitignored — never commit it.
+
+  Prefer Integrated Security when the app pool / Windows identity has SQL access.
+  Prefer environment variable EIMECE_DB_CONNECTION_STRING in CI and production.
+
+  TLS: Keep Encrypt=True and TrustServerCertificate=False.
+  Install a valid certificate on SQL Server (or use Azure SQL which already presents one).
+  Only use TrustServerCertificate=True temporarily on isolated local SSL setups — never in production.
+-->
+<connectionStrings>
+  <!-- Windows authentication (recommended for local IIS / IIS Express when possible) -->
+  <add name="EImeceDbConnection"
+       connectionString="Data Source=localhost;Initial Catalog=EImece;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+
+  <!-- SQL authentication example (use only when Integrated Security is not available).
+       Prefer setting these via EIMECE_DB_CONNECTION_STRING instead of this file.
+  <add name="EImeceDbConnection"
+       connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;User ID=YOUR_USER;Password=YOUR_PASSWORD;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+  -->
+</connectionStrings>
