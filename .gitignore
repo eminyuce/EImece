@@ -388,3 +388,6 @@ ModelManifest.xml
 .env
 .env.*
 !.env.example
+
+# Local NuGet extract markers from scripts/restore-packages.py
+**/.nupkg_extracted
