@@ -1,3 +1,4 @@
+using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 
 namespace EImece.App_Start
@@ -8,7 +9,8 @@ namespace EImece.App_Start
         {
             // The resilient HTTP client is now consumed via constructor injection
             // (see IImageDownloadService); no global static accessor to prime here.
-            StructuredLoggingBootstrap.Configure();
+            var options = ObservabilityOptions.FromAppConfig();
+            StructuredLoggingBootstrap.Configure(options);
         }
     }
 }
